@@ -27,14 +27,14 @@
 
 /**
  *
- * @see XooNIpsApi
+ * @see   XooNIpsApi
  *
  * @brief Class that has result of logic
  *
- * @li set/get result(success or failure) using get/setResult
- * @li set/get error information using get/setError
- * @li set/get result of logic using set/getSuccess
- * @li content of setError¡¢setSuccess is not defined here(depends each logics)
+ * @li    set/get result(success or failure) using get/setResult
+ * @li    set/get error information using get/setError
+ * @li    set/get result of logic using set/getSuccess
+ * @li    content of setErrorï¿½ï¿½setSuccess is not defined here(depends each logics)
  *
  */
 class XooNIpsXmlRpcResponse
@@ -43,8 +43,12 @@ class XooNIpsXmlRpcResponse
     /**
      * @protected
      */
-    var $vars = array();
-    function XooNIpsXmlRpcResponse() 
+    public $vars = array();
+
+    /**
+     * XooNIpsXmlRpcResponse constructor.
+     */
+    public function __construct()
     {
         $this->set('result', false);
         $this->set('error', new XooNIpsError());
@@ -54,30 +58,30 @@ class XooNIpsXmlRpcResponse
     /**
      * @brief set success or failure
      *
-     * @param[in] result true:success, false:failure
+     * @param [in] result true:success, false:failure
      *
      */
-    function setResult($result) 
+    public function setResult($result)
     {
         $this->set('result', $result);
     }
 
     /**
-     * @brief get success or failure
+     * @brief  get success or failure
      *
      * @retval true success
      * @retval false failure
      */
-    function getResult() 
+    public function getResult()
     {
         return $this->get('result');
     }
 
     /**
-     * @brief set error infomation
+     * @brief set error information
      * @param XooNIpsError error
      */
-    function setError(&$error) 
+    public function setError($error)
     {
         $this->set('error', $error);
     }
@@ -86,16 +90,16 @@ class XooNIpsXmlRpcResponse
      * @brief get error infomation
      * @return XooNIpsError
      */
-    function &getError() 
+    public function &getError()
     {
         return $this->get('error');
     }
 
     /**
      * @brief set result of logic
-     *
+     * @param $success
      */
-    function setSuccess(&$success) 
+    public function setSuccess($success)
     {
         $this->set('success', $success);
     }
@@ -104,7 +108,7 @@ class XooNIpsXmlRpcResponse
      * @brief get result of logic
      *
      */
-    function &getSuccess() 
+    public function &getSuccess()
     {
         return $this->get('success');
     }
@@ -112,8 +116,10 @@ class XooNIpsXmlRpcResponse
     /**
      *
      * @access protected
+     * @param $key
+     * @return mixed
      */
-    function &get($key) 
+    public function &get($key)
     {
         return $this->vars[$key];
     }
@@ -122,12 +128,17 @@ class XooNIpsXmlRpcResponse
      *
      *
      * @access protected
+     * @param $key
+     * @param $value
      */
-    function set($key, $value) 
+    public function set($key, $value)
     {
-        if (empty($key)) return;
-        if (!isset($value)) return;
-        $this->vars[$key] = &$value;
+        if (empty($key)) {
+            return;
+        }
+        if (!isset($value)) {
+            return;
+        }
+        $this->vars[$key] =  $value;
     }
 }
-?>

@@ -24,84 +24,82 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 // class files
-require_once( '../class/base/pattemplate.class.php' );
+require_once __DIR__ . '/../../class/base/pattemplate.class.php';
 
 // title
-$title = _AM_XOONIPS_SYSTEM_TITLE;
+$title       = _AM_XOONIPS_SYSTEM_TITLE;
 $description = _AM_XOONIPS_SYSTEM_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
-  array(
-    'type' => 'top',
-    'label' => _AM_XOONIPS_TITLE,
-    'url' => $xoonips_admin['admin_url'].'/',
-  ),
-  array(
-    'type' => 'label',
-    'label' => $title,
-    'url' => '',
-  ),
+    array(
+        'type'  => 'top',
+        'label' => _AM_XOONIPS_TITLE,
+        'url'   => $xoonips_admin['admin_url'] . '/',
+    ),
+    array(
+        'type'  => 'label',
+        'label' => $title,
+        'url'   => '',
+    ),
 );
 
 // menu
 $menu = array(
-  array(
-    'label' => _AM_XOONIPS_SYSTEM_BASIC_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=basic',
-  ),
-  array(
-    'label' => _AM_XOONIPS_SYSTEM_TREE_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=tree',
-  ),
-  array(
-    'label' => _AM_XOONIPS_SYSTEM_PRINT_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=print',
-  ),
-  array(
-    'label' => _AM_XOONIPS_SYSTEM_RSS_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=rss',
-  ),
-  array(
-    'label' => _AM_XOONIPS_SYSTEM_OAIPMH_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=oaipmh',
-  ),
-  array(
-    'label' => _AM_XOONIPS_SYSTEM_PROXY_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=proxy',
-  ),
-  array(
-    'label' => _AM_XOONIPS_SYSTEM_MODULE_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=module',
-  ),
-  array(
-    'label' => _AM_XOONIPS_SYSTEM_XOOPS_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=xoops',
-  ),
-  array(
-    'label' => _AM_XOONIPS_SYSTEM_CHECK_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=check',
-  ),
+    array(
+        'label' => _AM_XOONIPS_SYSTEM_BASIC_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=basic',
+    ),
+    array(
+        'label' => _AM_XOONIPS_SYSTEM_TREE_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=tree',
+    ),
+    array(
+        'label' => _AM_XOONIPS_SYSTEM_PRINT_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=print',
+    ),
+    array(
+        'label' => _AM_XOONIPS_SYSTEM_RSS_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=rss',
+    ),
+    array(
+        'label' => _AM_XOONIPS_SYSTEM_OAIPMH_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=oaipmh',
+    ),
+    array(
+        'label' => _AM_XOONIPS_SYSTEM_PROXY_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=proxy',
+    ),
+    array(
+        'label' => _AM_XOONIPS_SYSTEM_MODULE_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=module',
+    ),
+    array(
+        'label' => _AM_XOONIPS_SYSTEM_XOOPS_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=xoops',
+    ),
+    array(
+        'label' => _AM_XOONIPS_SYSTEM_CHECK_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=check',
+    ),
 );
 
 // templates
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir( 'templates' );
-$tmpl->readTemplatesFromFile( 'adminmenu.tmpl.html' );
-$tmpl->addVar( 'header', 'TITLE', $title );
-$tmpl->setAttribute( 'description', 'visibility', 'visible' );
-$tmpl->addVar( 'description', 'DESCRIPTION', $description );
-$tmpl->setAttribute( 'breadcrumbs', 'visibility', 'visible' );
-$tmpl->addRows( 'breadcrumbs_items', $breadcrumbs );
-$tmpl->addRows( 'menu', $menu );
+$tmpl->setBasedir('templates');
+$tmpl->readTemplatesFromFile('adminmenu.tmpl.tpl');
+$tmpl->addVar('header', 'TITLE', $title);
+$tmpl->setAttribute('description', 'visibility', 'visible');
+$tmpl->addVar('description', 'DESCRIPTION', $description);
+$tmpl->setAttribute('breadcrumbs', 'visibility', 'visible');
+$tmpl->addRows('breadcrumbs_items', $breadcrumbs);
+$tmpl->addRows('menu', $menu);
 
 xoops_cp_header();
-$tmpl->displayParsedTemplate( 'main' );
+$tmpl->displayParsedTemplate('main');
 xoops_cp_footer();
-
-?>

@@ -24,79 +24,93 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
-require_once __DIR__.'/abstract_ranking.class.php';
+require_once __DIR__ . '/abstract_ranking.class.php';
 
 /**
  * @brief data object of ranking new group
  *
- * @li getVar('gid') :
- * @li getVar('timestamp') :
+ * @li    getVar('gid') :
+ * @li    getVar('timestamp') :
  */
-class XooNIpsOrmRankingNewGroup extends XooNIpsTableObject {
-  function XooNIpsOrmRankingNewGroup() {
-    parent::XooNIpsTableObject();
-    $this->initVar( 'gid', XOBJ_DTYPE_INT, 0, true );
-    $this->initVar( 'timestamp', XOBJ_DTYPE_OTHER, null, false );
-  }
+class XooNIpsOrmRankingNewGroup extends XooNIpsTableObject
+{
+    /**
+     * XooNIpsOrmRankingNewGroup constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->initVar('gid', XOBJ_DTYPE_INT, 0, true);
+        $this->initVar('timestamp', XOBJ_DTYPE_OTHER, null, false);
+    }
 }
 
 /**
  * @brief handler object of ranking new group
  *
  */
-class XooNIpsOrmRankingNewGroupHandler extends XooNIpsOrmAbstractRankingHandler {
-  function XooNIpsOrmRankingNewGroupHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmRankingNewGroup', 'xoonips_ranking_new_group', 'gid', false );
-    $this->_set_columns( array( 'gid', 'timestamp' ) );
-  }
+class XooNIpsOrmRankingNewGroupHandler extends XooNIpsOrmAbstractRankingHandler
+{
+    /**
+     * XooNIpsOrmRankingNewGroupHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmRankingNewGroup', 'xoonips_ranking_new_group', 'gid', false);
+        $this->_set_columns(array(
+                                'gid',
+                                'timestamp'
+                            ));
+    }
 
-  /**
-   * insert/upldate/replace object
-   *
-   * @access public
-   * @param object &$obj
-   * @param bool $force force operation
-   * @return bool false if failed
-   */
-  function insert( &$obj, $force = false ) {
-    $gid = $obj->get( 'gid' );
-    if ( $gid == 0 ) {
-      // ignore if group id is zero
-      return true;
+    /**
+     * insert/upldate/replace object
+     *
+     * @access public
+     * @param XoopsObject $obj
+     * @param bool        $force force operation
+     * @return bool false if failed
+     */
+    public function insert(XoopsObject $obj, $force = false)
+    {
+        $gid = $obj->get('gid');
+        if ($gid == 0) {
+            // ignore if group id is zero
+            return true;
+        }
+        return parent::insert($obj, $force);
     }
-    return parent::insert( $obj, $force );
-  }
 
-  /**
-   * delete old entries for updating/rebuilding rankings
-   *
-   * @param int $num_rows number of new entries
-   * @return bool FALSE if failed
-   */
-  function trim( $num_rows ) {
-    $field = 'timestamp';
-    $criteria = new CriteriaElement();
-    $criteria->setSort( 'timestamp' );
-    $criteria->setOrder( 'DESC' );
-    $criteria->setStart( $num_rows );
-    $criteria->setLimit( 1 );
-    $objs =& $this->getObjects( $criteria, false, $field );
-    if ( empty( $objs ) ) {
-      return true;
+    /**
+     * delete old entries for updating/rebuilding rankings
+     *
+     * @param int $num_rows number of new entries
+     * @return bool FALSE if failed
+     */
+    public function trim($num_rows)
+    {
+        $field    = 'timestamp';
+        $criteria = new CriteriaElement();
+        $criteria->setSort('timestamp');
+        $criteria->setOrder('DESC');
+        $criteria->setStart($num_rows);
+        $criteria->setLimit(1);
+        $objs =&  $this->getObjects($criteria, false, $field);
+        if (empty($objs)) {
+            return true;
+        }
+        $timestamp = $objs[0]->get('timestamp');
+        $criteria  = new Criteria($field, $timestamp, '<');
+        // force deletion
+        if (!$this->deleteAll($criteria, true)) {
+            return false;
+        }
+        return true;
     }
-    $timestamp = $objs[0]->get( 'timestamp' );
-    $criteria = new Criteria( $field, $timestamp, '<' );
-    // force deletion
-    if ( ! $this->deleteAll( $criteria, true ) ) {
-      return false;
-    }
-    return true;
-  }
 }
-
-?>

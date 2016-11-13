@@ -24,56 +24,67 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 /**
  * @brief Data object of XooNIps Item Show
  *
- * @li getVar('item_show_id') :
- * @li getVar('item_id') : item ID
- * @li getVar('uid') : user ID
+ * @li    getVar('item_show_id') :
+ * @li    getVar('item_id') : item ID
+ * @li    getVar('uid') : user ID
  */
-class XooNIpsOrmItemShow extends XooNIpsTableObject {
-  function XooNIpsOrmItemShow() {
-    parent::XooNIpsTableObject();
-    $this->initVar( 'item_show_id', XOBJ_DTYPE_INT, null, false, null );
-    $this->initVar( 'item_id', XOBJ_DTYPE_INT, null, true, null );
-    $this->initVar( 'uid', XOBJ_DTYPE_INT, null, true, null );
-  }
+class XooNIpsOrmItemShow extends XooNIpsTableObject
+{
+    /**
+     * XooNIpsOrmItemShow constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->initVar('item_show_id', XOBJ_DTYPE_INT, null, false, null);
+        $this->initVar('item_id', XOBJ_DTYPE_INT, null, true, null);
+        $this->initVar('uid', XOBJ_DTYPE_INT, null, true, null);
+    }
 }
 
 /**
  * @brief Handler object of XooNIps Item Status
  *
  */
-class XooNIpsOrmItemShowHandler extends XooNIpsTableObjectHandler {
-  function XooNIpsOrmItemShowHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmItemShow', 'xoonips_item_show', 'item_show_id', true );
-  }
-
-  /**
-   * count user defined publications
-   *
-   * @access public
-   * @param int $uid user id
-   * @return array publication count by item type id
-   */
-  function getCountPublications( $uid ) {
-    $join = new XooNIpsJoinCriteria( 'xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'ib' );
-    $criteria = new Criteria( 'uid', $uid, '=', $this->db->prefix( $this->__table_name ) );
-    $criteria->setGroupby( 'ib.item_type_id' );
-    $res = $this->open( $criteria, 'item_type_id, COUNT(DISTINCT ib.item_id)', false, $join );
-    $nums = array();
-    while ( $obj =& $this->getNext( $res ) ) {
-      $item_type_id = $obj->getExtraVar( 'item_type_id' );
-      $count = $obj->getExtraVar( 'COUNT(DISTINCT ib.item_id)' );
-      $nums[$item_type_id] = $count;
+class XooNIpsOrmItemShowHandler extends XooNIpsTableObjectHandler
+{
+    /**
+     * XooNIpsOrmItemShowHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmItemShow', 'xoonips_item_show', 'item_show_id', true);
     }
-    $this->close( $res );
-    return $nums;
-  }
+
+    /**
+     * count user defined publications
+     *
+     * @access public
+     * @param int $uid user id
+     * @return array publication count by item type id
+     */
+    public function getCountPublications($uid)
+    {
+        $join     = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'ib');
+        $criteria = new Criteria('uid', $uid, '=', $this->db->prefix($this->__table_name));
+        $criteria->setGroupBy('ib.item_type_id');
+        $res  =& $this->open($criteria, 'item_type_id, COUNT(DISTINCT ib.item_id)', false, $join);
+        $nums = array();
+        while ($obj =  $this->getNext($res)) {
+            $item_type_id        = $obj->getExtraVar('item_type_id');
+            $count               = $obj->getExtraVar('COUNT(DISTINCT ib.item_id)');
+            $nums[$item_type_id] = $count;
+        }
+        $this->close($res);
+        return $nums;
+    }
 }
-?>

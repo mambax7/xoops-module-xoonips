@@ -24,46 +24,44 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 // get requests
 $get_keys = array(
-  'uid' => array(
-    'i',
-    false,
-    false,
-  ),
-  'upage' => array(
-    'i',
-    false,
-    false,
-  ),
+    'uid'   => array(
+        'i',
+        false,
+        false,
+    ),
+    'upage' => array(
+        'i',
+        false,
+        false,
+    ),
 );
-$get_vals = xoonips_admin_get_requests( 'get', $get_keys );
-$uid = $get_vals['uid'];
-$upage = $get_vals['upage'];
+$get_vals = xoonips_admin_get_requests('get', $get_keys);
+$uid      = $get_vals['uid'];
+$upage    = $get_vals['upage'];
 
-if ( is_null( $uid ) ) {
-  // user select
-  $title = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_TITLE;
-  $nextaction = 'delete';
-  include 'actions/maintenance_item_uselect.php';
-  exit();
+if (null === $uid) {
+    // user select
+    $title      = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_TITLE;
+    $nextaction = 'delete';
+    include __DIR__ . '/maintenance_item_uselect.php';
+    exit();
 }
 
 // index select
-$title = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_TITLE;
-$description = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_DESC;
-$ticket_area = 'xoonips_admin_maintenance_item_delete';
-$index_mode = 'private';
-$has_back = true;
+$title        = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_TITLE;
+$description  = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_DESC;
+$ticket_area  = 'xoonips_admin_maintenance_item_delete';
+$index_mode   = 'private';
+$has_back     = true;
 $confirm_desc = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_CONFIRM;
-$confirm = _AM_XOONIPS_MSG_DELETE_CONFIRM;
-$nextaction = 'dupdate';
-$submit = _AM_XOONIPS_LABEL_DELETE;
-include 'actions/maintenance_item_idxselect.php';
+$confirm      = _AM_XOONIPS_MSG_DELETE_CONFIRM;
+$nextaction   = 'dupdate';
+$submit       = _AM_XOONIPS_LABEL_DELETE;
+include __DIR__ . '/maintenance_item_idxselect.php';
 exit();
-
-?>

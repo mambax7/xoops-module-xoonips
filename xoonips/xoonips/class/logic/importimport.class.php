@@ -25,90 +25,98 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once dirname( __DIR__ ) . '/base/logic.class.php';
-include_once XOOPS_ROOT_PATH 
-. '/modules/xoonips/class/base/transaction.class.php';
+include_once __DIR__ . '/../base/logic.class.php';
+include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/transaction.class.php';
 
+/**
+ * Class XooNIpsLogicImportImport
+ */
 class XooNIpsLogicImportImport extends XooNIpsLogic
 {
-    function XooNIpsLogicImportImport(){
-        parent::XooNIpsLogic();
+    /**
+     * XooNIpsLogicImportImport constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
     }
-    
-    function execute(&$vars, &$response){
+
+    /**
+     * @param $vars
+     * @param $response
+     * @return bool|void
+     */
+    public function execute($vars, $response)
+    {
         global $xoopsUser;
-        
+
         $success = array();
-        $error = false;
-        
+        $error   = false;
+
         $transaction = XooNIpsTransaction::getInstance();
         $transaction->start();
-        
-        $itemtype_handler =& xoonips_getormhandler( 'xoonips', 'item_type' );
-        foreach( array_keys( $vars[0] ) as $key ){
-            assert( !( $vars[0][$key] -> getImportAsNewFlag()
-                       && $vars[0][$key] -> getUpdateFlag() ) );
+
+        $itemtypeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
+        foreach (array_keys($vars[0]) as $key) {
+            assert(!($vars[0][$key]->getImportAsNewFlag()
+                     && $vars[0][$key]->getUpdateFlag()));
             //skip this item if don't import as new and update
-            if( !$vars[0][$key] -> getImportAsNewFlag()
-                && !$vars[0][$key] -> getUpdateFlag() ) continue;
-            
-            $item_handler =& xoonips_getormcompohandler( 'xoonips', 'item' );
-            if( $vars[0][$key] -> getUpdateFlag() 
-                && !$item_handler -> getPerm(
-                    $vars[0][$key] -> getUpdateItemId(),
-                    $xoopsUser -> getVar( 'uid' ), 'write' ) ){
+            if (!$vars[0][$key]->getImportAsNewFlag()
+                && !$vars[0][$key]->getUpdateFlag()
+            ) {
+                continue;
+            }
+
+            $itemHandler = xoonips_getOrmCompoHandler('xoonips', 'item');
+            if ($vars[0][$key]->getUpdateFlag()
+                && !$itemHandler->getPerm($vars[0][$key]->getUpdateItemId(), $xoopsUser->getVar('uid'), 'write')
+            ) {
                 //no write permission to updating exist item -> error
-                $vars[0][$key] -> setErrors(
-                    E_XOONIPS_UPDATE_CERTIFY_REQUEST_LOCKED,
-                    "can't update locked item(" 
-                    . $vars[0][$key] -> getUpdateItemId() . ")" );
+                $vars[0][$key]->setErrors(E_XOONIPS_UPDATE_CERTIFY_REQUEST_LOCKED,
+                                          "can't update locked item(" . $vars[0][$key]->getUpdateItemId() . ')');
                 $error = true;
                 break;
             }
-            
-            $basic =& $vars[0][$key] -> getVar( 'basic' );
-            $itemtype =& $itemtype_handler -> get(
-                $basic -> get( 'item_type_id' ) );
-            $handler =& xoonips_gethandler( $itemtype -> get( 'name' ),
-                                            'import_item' );
-            $handler -> import( $vars[0][$key] );
-            $error = $error || count( $vars[0][$key] -> getErrors() ) > 0;
+
+            $basic    = $vars[0][$key]->getVar('basic');
+            $itemtype = $itemtypeHandler->get($basic->get('item_type_id'));
+            $handler  = xoonips_getHandler($itemtype->get('name'), 'import_item');
+            $handler->import($vars[0][$key]);
+            $error = $error || count($vars[0][$key]->getErrors()) > 0;
         }
 
-        if( $error ){
+        if ($error) {
             $transaction->rollback();
-        }else{
-            foreach( array_keys( $vars[0] ) as $key ){
-                $basic =& $vars[0][$key] -> getVar( 'basic' );
-                $itemtype =& $itemtype_handler -> get( 
-                    $basic -> get( 'item_type_id' ) );
-                $handler =& xoonips_gethandler( $itemtype -> get( 'name' ),
-                                                'import_item' );
-                $handler -> onImportFinished( $vars[0][$key], $vars[0] );
-                $error = $error || count( $vars[0][$key] -> getErrors() ) > 0;
+        } else {
+            foreach (array_keys($vars[0]) as $key) {
+                $basic    = $vars[0][$key]->getVar('basic');
+                $itemtype = $itemtypeHandler->get($basic->get('item_type_id'));
+                $handler  = xoonips_getHandler($itemtype->get('name'), 'import_item');
+                $handler->onImportFinished($vars[0][$key], $vars[0]);
+                $error = $error || count($vars[0][$key]->getErrors()) > 0;
             }
             $transaction->commit();
-            
-            $this -> _remove_files();
+
+            $this->_remove_files();
         }
-        
-        $success['import_items'] =& $vars[0];
-        $response -> setResult( !$error );
-        $response -> setSuccess( $success );
+
+        $success['import_items'] = $vars[0];
+        $response->setResult(!$error);
+        $response->setSuccess($success);
     }
-    
+
     /**
      * remove all deleted(is_deleted=1) files from file system
      */
-    function _remove_files(){
-        $handler =& xoonips_getormhandler( 'xoonips', 'file' );
-        $criteria = new Criteria( 'is_deleted', 1 );
-        $delete_files =& $handler -> getObjects( $criteria );
-        if( $delete_files ){
-            foreach( $delete_files as $file ){
-                $handler -> deleteFile( $file );
+    public function _remove_files()
+    {
+        $handler      = xoonips_getOrmHandler('xoonips', 'file');
+        $criteria     = new Criteria('is_deleted', 1);
+        $delete_files =  $handler->getObjects($criteria);
+        if ($delete_files) {
+            foreach ($delete_files as $file) {
+                $handler->deleteFile($file);
             }
         }
     }
 }
-?>

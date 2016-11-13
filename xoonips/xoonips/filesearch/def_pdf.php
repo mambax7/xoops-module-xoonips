@@ -32,8 +32,6 @@ $module['class_name']    = 'XooNIpsFileSearchPluginPDF';
 $module['php_file_name'] = 'pdf.php';
 $module['name']          = 'pdf';
 $module['display_name']  = 'PDF';
-$module['mime_type']     = array( 'application/pdf' );
-$module['extensions']    = array( 'pdf' );
-$module['version']       = '2.0';
-// php-indent: enable
-?>
+$module['mime_type']     = array('application/pdf');
+$module['extensions']    = array('pdf');
+$module['version']       = '2.0';// php-indent: enable

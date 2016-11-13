@@ -25,53 +25,90 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-class IdentifyHandler extends HarvesterHandler {
-    var $_dateFormat;
-    var $_earliestDatestamp;
-    var $_tagstack;
-    var $_repositoryName;
-    function IdentifyHandler( $_parser ) {
-        parent::HarvesterHandler( $_parser );
+/**
+ * Class IdentifyHandler
+ */
+class IdentifyHandler extends HarvesterHandler
+{
+    public $_dateFormat;
+    public $_earliestDatestamp;
+    public $_tagstack;
+    public $_repositoryName;
+
+    /**
+     * IdentifyHandler constructor.
+     * @param $_parser
+     */
+    public function __construct($_parser)
+    {
+        parent::__construct($_parser);
         $this->_earliestDatestamp = null;
-        $this->_dateFormat = null;
-        $this->_tagstack = array( );
-        $this->_repositoryName = '';
-    }
-    function __construct( $_parser ) {
-        $this->IdentifyHandler( $_parser );
+        $this->_dateFormat        = null;
+        $this->_tagstack          = array();
+        $this->_repositoryName    = '';
     }
 
-    function startElementHandler( $parser, $name, $attribs ) {
-        array_push( $this->_tagstack, $name );
+    /**
+     * @param $parser
+     * @param $name
+     * @param $attribs
+     */
+    public function startElementHandler($parser, $name, $attribs)
+    {
+        array_push($this->_tagstack, $name);
     }
 
-    function endElementHandler( $parser, $name ) {
-        array_pop( $this->_tagstack );
+    /**
+     * @param $parser
+     * @param $name
+     */
+    public function endElementHandler($parser, $name)
+    {
+        array_pop($this->_tagstack);
     }
 
-    function characterDataHandler( $parser, $data ) {
-        if( end( $this->_tagstack ) == 'GRANULARITY' ) {
-            if( $data == "YYYY-MM-DDThh:mm:ssZ" )
+    /**
+     * @param $parser
+     * @param $data
+     */
+    public function characterDataHandler($parser, $data)
+    {
+        if (end($this->_tagstack) === 'GRANULARITY') {
+            if ($data === 'YYYY-MM-DDThh:mm:ssZ') {
                 $this->_dateFormat = "Y-m-d\TH:i:s\Z";
-            else if( $data == "YYYY-MM-DD" )
-                $this->_dateFormat = "Y-m-d";
-            else
+            } elseif ($data === 'YYYY-MM-DD') {
+                $this->_dateFormat = 'Y-m-d';
+            } else {
                 $this->_dateFormat = false;
-        } else if( end( $this->_tagstack ) == 'EARLIESTDATESTAMP' ) {
-            $this->_earliestDatestamp = ISO8601toUTC( $data );
-        } else if( end( $this->_tagstack ) == 'REPOSITORYNAME' ) {
-            $this->_repositoryName.=$data;
+            }
+        } elseif (end($this->_tagstack) === 'EARLIESTDATESTAMP') {
+            $this->_earliestDatestamp = ISO8601toUTC($data);
+        } elseif (end($this->_tagstack) === 'REPOSITORYNAME') {
+            $this->_repositoryName .= $data;
         }
     }
 
-    function getDateFormat( ) {
+    /**
+     * @return null
+     */
+    public function getDateFormat()
+    {
         return $this->_dateFormat;
     }
-    function getEarliestDatestamp( ) {
+
+    /**
+     * @return null
+     */
+    public function getEarliestDatestamp()
+    {
         return $this->_earliestDatestamp;
     }
-    function getRepositoryName(){
+
+    /**
+     * @return string
+     */
+    public function getRepositoryName()
+    {
         return $this->_repositoryName;
     }
 }
-

@@ -24,19 +24,17 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-include '../../../include/cp_header.php';
+include __DIR__ . '/../../../include/cp_header.php';
 
 // load common file.
-include 'actions/common.inc.php';
+include __DIR__ . '/actions/common.inc.php';
 
 // page definition
-$pages = array();
+$pages         = array();
 $pages['main'] = array();
 
 // initialize
-xoonips_admin_initialize( __FILE__, 'index', $pages );
+xoonips_admin_initialize(__FILE__, 'index', $pages);
 
 // call action file
 include $xoonips_admin['myaction_path'];
-
-?>

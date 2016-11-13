@@ -25,128 +25,147 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-class JuniiListRecordsHandler extends ListRecordsHandler{
-    var $_identifierTypeAttr;
-    var $_support_tags = array(
-        'CODE',
-        'USERID',
-        'FANO',
-        'ADATE',
-        'UDATE',
-        'INSTITUTION',
-        'TITLE.TRANSCRIPTION',
-        'TITLE.ALTERNATIVE',
-        'CREATOR.TRANSCRIPTION',
-        'CREATOR.ALTERNATIVE',
-        'SUBJECT',
-        'DESCRIPTION',
-        'PUBLISHER',
-        'PUBLISHER.TRANSCRIPTION',
-        'PUBLISHER.ALTERNATIVE',
-        'CONTRIBUTOR',
-        'CONTRIBUTOR.TRANSCRIPTION',
-        'CONTRIBUTOR.ALTERNATIVE',
-        'DATE',
-        'DATE.CREATED',
-        'DATE.MODIFIED',
-        'TYPE',
-        'FORMAT',
-        'IDENTIFIER',
-        'SOURCE',
-        'LANGUAGE',
-        'RELATION.ISVERSIONOF',
-        'RELATION.HASVERSION',
-        'RELATION.ISREPLACEDBY',
-        'RELATION.REPLACES',
-        'RELATION.ISREQUIREDBY',
-        'RELATION.REQUIRES',
-        'RELATION.ISPARTOF',
-        'RELATION.HASPART',
-        'RELATION.ISREFERENCEDBY',
-        'RELATION.REFERENCES',
-        'RELATION.ISFORMATOF',
-        'RELATION.HASFORMAT',
-        'RELATION.HASIMAGEOF',
-        'COVERAGE',
-        'COVERAGE.SPATIAL',
-        'COVERAGE.TEMPORAL',
-        'RIGHTS',
-        'COMMENT',
-        'AHDNG',
-        'AID' );
-    
-    function JuniiListRecordsHandler( $_parser, $_baseURL ){
-        parent::ListRecordsHandler( $_parser, $_baseURL, 'junii' );
-        $this -> _identifierTypeAttr = '';
+/**
+ * Class JuniiListRecordsHandler
+ */
+class JuniiListRecordsHandler extends ListRecordsHandler
+{
+    public $_identifierTypeAttr;
+    public $_support_tags
+        = array(
+            'CODE',
+            'USERID',
+            'FANO',
+            'ADATE',
+            'UDATE',
+            'INSTITUTION',
+            'TITLE.TRANSCRIPTION',
+            'TITLE.ALTERNATIVE',
+            'CREATOR.TRANSCRIPTION',
+            'CREATOR.ALTERNATIVE',
+            'SUBJECT',
+            'DESCRIPTION',
+            'PUBLISHER',
+            'PUBLISHER.TRANSCRIPTION',
+            'PUBLISHER.ALTERNATIVE',
+            'CONTRIBUTOR',
+            'CONTRIBUTOR.TRANSCRIPTION',
+            'CONTRIBUTOR.ALTERNATIVE',
+            'DATE',
+            'DATE.CREATED',
+            'DATE.MODIFIED',
+            'TYPE',
+            'FORMAT',
+            'IDENTIFIER',
+            'SOURCE',
+            'LANGUAGE',
+            'RELATION.ISVERSIONOF',
+            'RELATION.HASVERSION',
+            'RELATION.ISREPLACEDBY',
+            'RELATION.REPLACES',
+            'RELATION.ISREQUIREDBY',
+            'RELATION.REQUIRES',
+            'RELATION.ISPARTOF',
+            'RELATION.HASPART',
+            'RELATION.ISREFERENCEDBY',
+            'RELATION.REFERENCES',
+            'RELATION.ISFORMATOF',
+            'RELATION.HASFORMAT',
+            'RELATION.HASIMAGEOF',
+            'COVERAGE',
+            'COVERAGE.SPATIAL',
+            'COVERAGE.TEMPORAL',
+            'RIGHTS',
+            'COMMENT',
+            'AHDNG',
+            'AID'
+        );
+
+    /**
+     * JuniiListRecordsHandler constructor.
+     * @param $_parser
+     * @param $_baseURL
+     */
+    public function __construct($_parser, $_baseURL)
+    {
+        parent::__construct($_parser, $_baseURL, 'junii');
+        $this->_identifierTypeAttr = '';
     }
-    
-    function __construct( $_parser, $_baseURL ){
-        $this->JuniiListRecordsHandler( $_parser, $_baseURL );
-    }
-    
-    function startElementHandler( $parser, $name, $attribs ) {
-        if( $this->getElementName( $name ) == 'IDENTIFIER' ) {
-            if( $this->isTypeIsURL( $attribs ) ){
-                $this -> _identifierTypeAttr = 'URL';
-            }else{
-                $this -> _identifierTypeAttr = '';
+
+    /**
+     * @param $parser
+     * @param $name
+     * @param $attribs
+     */
+    public function startElementHandler($parser, $name, $attribs)
+    {
+        if ($this->getElementName($name) === 'IDENTIFIER') {
+            if ($this->isTypeIsURL($attribs)) {
+                $this->_identifierTypeAttr = 'URL';
+            } else {
+                $this->_identifierTypeAttr = '';
             }
-            $this->_cdata_buf='';
-            array_push( $this->tagstack, $name );
-        }else if( $this->getElementName( $name ) == 'META' ) {
-            $this -> _namespaces = $this -> getNamespaceArray( $attribs );
-            array_push( $this->tagstack, $name );
-        }else
-            parent::startElementHandler( $parser, $name, $attribs );
-    }
-    
-    function endElementHandler( $parser, $name ){
-        if( isset($this->tagstack[3])
-            && $this->getElementName( $this->tagstack[3] ) == 'HEADER'
-            || !in_array( $this->getElementName( end( $this->tagstack ) ),
-                          $this->_support_tags ) ){
-            parent::endElementHandler( $parser, $name );
-        }else if( $this->getElementName( end( $this->tagstack ) )
-                  =='DATE.MODIFIED'){
-            $this->_last_update_date = $this->_cdata_buf;
-            $this->search_text[] = $this->_cdata_buf;
-            $this->addMetadataField(
-                end( $this->tagstack ), $this->_cdata_buf,
-                XOONIPS_METADATA_CATEGORY_LAST_UPDATE_DATE );
-            array_pop( $this->tagstack );
-        }else if($this->getElementName(end($this->tagstack))=='DATE.CREATED'){
-            $this->_creation_date = $this->_cdata_buf;
-            $this->search_text[] = $this->_cdata_buf;
-            $this->addMetadataField(
-                end( $this->tagstack ), $this->_cdata_buf,
-                XOONIPS_METADATA_CATEGORY_CREATION_DATE );
-            array_pop( $this->tagstack );
-        }else if( $this->getElementName( end( $this->tagstack ) ) == 'DATE' ){
-            $this->_date = $this->_cdata_buf;
-            $this->search_text[] = $this->_cdata_buf;
-            $this->addMetadataField(end( $this->tagstack ), $this->_cdata_buf,
-                                    XOONIPS_METADATA_CATEGORY_DATE );
-            array_pop( $this->tagstack );
-        }else if($this->getElementName(end($this->tagstack))=='IDENTIFIER'
-                 && $this -> _identifierTypeAttr == 'URL' ){
-            $this->_resource_url[] = $this->_cdata_buf;
-            $this->search_text[] = $this->_cdata_buf;
-            $this->addMetadataField(
-                end( $this->tagstack ), $this->_cdata_buf,
-                XOONIPS_METADATA_CATEGORY_RESOURCE_LINK);
-            array_pop( $this->tagstack );
-        }else{
-            $this->addMetadataField(end( $this->tagstack ), $this->_cdata_buf);
-            array_pop( $this->tagstack );
+            $this->_cdata_buf = '';
+            array_push($this->tagstack, $name);
+        } elseif ($this->getElementName($name) === 'META') {
+            $this->_namespaces = $this->getNamespaceArray($attribs);
+            array_push($this->tagstack, $name);
+        } else {
+            parent::startElementHandler($parser, $name, $attribs);
         }
     }
-    
-    function isTypeIsURL( $attribs ){
-        foreach( $attribs as $key => $val ){
-            $tmp = preg_split( '/:/', $key );
-            if( end( $tmp ) == 'TYPE' ) return $val == 'URL';
+
+    /**
+     * @param $parser
+     * @param $name
+     */
+    public function endElementHandler($parser, $name)
+    {
+        if (isset($this->tagstack[3])
+            && $this->getElementName($this->tagstack[3]) === 'HEADER'
+            || !in_array($this->getElementName(end($this->tagstack)), $this->_support_tags)
+        ) {
+            parent::endElementHandler($parser, $name);
+        } elseif ($this->getElementName(end($this->tagstack)) === 'DATE.MODIFIED') {
+            $this->_last_update_date = $this->_cdata_buf;
+            $this->search_text[]     = $this->_cdata_buf;
+            $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_LAST_UPDATE_DATE);
+            array_pop($this->tagstack);
+        } elseif ($this->getElementName(end($this->tagstack)) === 'DATE.CREATED') {
+            $this->_creation_date = $this->_cdata_buf;
+            $this->search_text[]  = $this->_cdata_buf;
+            $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_CREATION_DATE);
+            array_pop($this->tagstack);
+        } elseif ($this->getElementName(end($this->tagstack)) === 'DATE') {
+            $this->_date         = $this->_cdata_buf;
+            $this->search_text[] = $this->_cdata_buf;
+            $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_DATE);
+            array_pop($this->tagstack);
+        } elseif ($this->getElementName(end($this->tagstack)) === 'IDENTIFIER'
+                  && $this->_identifierTypeAttr === 'URL'
+        ) {
+            $this->_resource_url[] = $this->_cdata_buf;
+            $this->search_text[]   = $this->_cdata_buf;
+            $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_RESOURCE_LINK);
+            array_pop($this->tagstack);
+        } else {
+            $this->addMetadataField(end($this->tagstack), $this->_cdata_buf);
+            array_pop($this->tagstack);
+        }
+    }
+
+    /**
+     * @param $attribs
+     * @return bool
+     */
+    public function isTypeIsURL($attribs)
+    {
+        foreach ($attribs as $key => $val) {
+            $tmp = preg_split('/:/', $key);
+            if (end($tmp) === 'TYPE') {
+                return $val === 'URL';
+            }
         }
         return false;
     }
 }
-

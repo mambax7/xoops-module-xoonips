@@ -25,33 +25,39 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include 'include/common.inc.php';
-include 'include/AL.php';
+include __DIR__ . '/include/common.inc.php';
+include __DIR__ . '/include/AL.php';
 
 include_once __DIR__ . '/class/base/actionfactory.class.php';
 
-$formdata =& xoonips_getutility( 'formdata' );
-$op = $formdata->getValue( 'get', 'action', 's', false );
-if ( is_null( $op ) ) {
-  header( 'Location: '.XOOPS_URL.'/modules/xoonips/import.php?action=default' );
-  exit();
+$formdata = xoonips_getUtility('formdata');
+$op       = $formdata->getValue('get', 'action', 's', false);
+if (null === $op) {
+    header('Location: ' . XOOPS_URL . '/modules/xoonips/import.php?action=default');
+    exit();
 }
 
-xoonips_validate_request( is_valid_action( $op ) );
+xoonips_validate_request(is_valid_action($op));
 
-$factory =& XooNIpsActionFactory::getInstance();
-$action =& $factory->create( 'import_'.$op );
-if( ! $action ) {
-  header( 'Location: '.XOOPS_URL.'/' );
+$factory = XooNIpsActionFactory::getInstance();
+$action  = $factory->create('import_' . $op);
+if (!$action) {
+    header('Location: ' . XOOPS_URL . '/');
 }
 $action->action();
 exit();
 
-function is_valid_action( $action ){
-    return in_array( $action, array( 'default',
-                                     'upload',
-                                     'import',
-                                     'import_index_tree',
-                                     'resolve_conflict' ) );
+/**
+ * @param $action
+ * @return bool
+ */
+function is_valid_action($action)
+{
+    return in_array($action, array(
+        'default',
+        'upload',
+        'import',
+        'import_index_tree',
+        'resolve_conflict'
+    ));
 }
-?>

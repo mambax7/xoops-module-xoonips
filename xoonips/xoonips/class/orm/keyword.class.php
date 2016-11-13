@@ -24,8 +24,8 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 /*
@@ -35,22 +35,28 @@ ALTER TABLE `x_xoonips_item_keyword` ADD `seq_id` INT( 10 ) NOT NULL AUTO_INCREM
 ALTER TABLE `x_xoonips_item_keyword` CHANGE `keyword` `keyword` VARCHAR( 255 ) NOT NULL;
 ALTER TABLE `x_xoonips_item_keyword` ADD UNIQUE (`item_id` ,`keyword_id` );
 */
+
 /**
  * @brief data object of keyword
  *
- * @li getVar('seq_id') :
- * @li getVar('item_id') :
- * @li getVar('keyword_id') :
- * @li getVar('keyword') :
+ * @li    getVar('seq_id') :
+ * @li    getVar('item_id') :
+ * @li    getVar('keyword_id') :
+ * @li    getVar('keyword') :
  *
  */
-class XooNIpsOrmKeyword extends XooNIpsTableObject {
-  function XooNIpsOrmKeyword() {
-    $this->initVar( 'seq_id', XOBJ_DTYPE_INT, 0, false );
-    $this->initVar( 'item_id', XOBJ_DTYPE_INT, null, false );
-    $this->initVar( 'keyword_id', XOBJ_DTYPE_INT, null, false );
-    $this->initVar( 'keyword', XOBJ_DTYPE_TXTBOX, null, true, 255 );
-  }
+class XooNIpsOrmKeyword extends XooNIpsTableObject
+{
+    /**
+     * XooNIpsOrmKeyword constructor.
+     */
+    public function __construct()
+    {
+        $this->initVar('seq_id', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('item_id', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('keyword_id', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('keyword', XOBJ_DTYPE_TXTBOX, null, true, 255);
+    }
 }
 
 /**
@@ -58,24 +64,30 @@ class XooNIpsOrmKeyword extends XooNIpsTableObject {
  *
  *
  */
-class XooNIpsOrmKeywordHandler extends XooNIpsTableObjectHandler {
-  function XooNIpsOrmKeywordHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmKeyword', 'xoonips_item_keyword', 'seq_id' );
-  }
+class XooNIpsOrmKeywordHandler extends XooNIpsTableObjectHandler
+{
+    /**
+     * XooNIpsOrmKeywordHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmKeyword', 'xoonips_item_keyword', 'seq_id');
+    }
 
-  /**
-   * get keywords
-   *
-   * @access public
-   * @param int $item_id
-   * @return array object array
-   */
-  function &getKeywords( $item_id ) {
-    $criteria = new Criteria( 'item_id', $item_id );
-    $criteria->setSort( 'keyword_id' );
-    $criteria->setOrder( 'ASC' );
-    return $this->getObjects( $criteria );
-  }
+    /**
+     * get keywords
+     *
+     * @access public
+     * @param int $item_id
+     * @return array object array
+     */
+    public function &getKeywords($item_id)
+    {
+        $criteria = new Criteria('item_id', $item_id);
+        $criteria->setSort('keyword_id');
+        $criteria->setOrder('ASC');
+        return $this->getObjects($criteria);
+    }
 }
-?>

@@ -25,14 +25,18 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-function xoonips_item_list_header(){
-  $formdata =& xoonips_getutility( 'formdata' );
-  $order_by = $formdata->getValue( 'post', 'order_by', 's', false );
-  $order_dir = $formdata->getValue( 'post', 'order_dir', 'i', false );
-  $item_per_page = $formdata->getValue( 'post', 'item_per_page', 'i', false );
-  return array( 'order_by' => $order_by, 
-                'order_dir' => $order_dir, 
-                'item_per_page' => $item_per_page );
+/**
+ * @return array
+ */
+function xoonips_item_list_header()
+{
+    $formdata      = xoonips_getUtility('formdata');
+    $order_by      = $formdata->getValue('post', 'order_by', 's', false);
+    $order_dir     = $formdata->getValue('post', 'order_dir', 'i', false);
+    $item_per_page = $formdata->getValue('post', 'item_per_page', 'i', false);
+    return array(
+        'order_by'      => $order_by,
+        'order_dir'     => $order_dir,
+        'item_per_page' => $item_per_page
+    );
 }
-
-?>

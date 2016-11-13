@@ -24,29 +24,34 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 /**
  * @brief data object of changelog
  *
- * @li getVar('log_id') :
- * @li getVar('uid') :
- * @li getVar('item_id') :
- * @li getVar('log_date') :
- * @li getVar('log') :
+ * @li    getVar('log_id') :
+ * @li    getVar('uid') :
+ * @li    getVar('item_id') :
+ * @li    getVar('log_date') :
+ * @li    getVar('log') :
  *
  */
-class XooNIpsOrmChangelog extends XooNIpsTableObject {
-  function XooNIpsOrmChangelog() {
-    parent::XooNIpsTableObject();
-    $this->initVar( 'log_id', XOBJ_DTYPE_INT, 0, false );
-    $this->initVar( 'uid', XOBJ_DTYPE_INT, null, true );
-    $this->initVar( 'item_id', XOBJ_DTYPE_INT, null, false );
-    $this->initVar( 'log_date', XOBJ_DTYPE_INT, null, false );
-    $this->initVar( 'log', XOBJ_DTYPE_TXTBOX, null, true, 65535 );
-  }
+class XooNIpsOrmChangelog extends XooNIpsTableObject
+{
+    /**
+     * XooNIpsOrmChangelog constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->initVar('log_id', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('uid', XOBJ_DTYPE_INT, null, true);
+        $this->initVar('item_id', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('log_date', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('log', XOBJ_DTYPE_TXTBOX, null, true, 65535);
+    }
 }
 
 /**
@@ -54,24 +59,30 @@ class XooNIpsOrmChangelog extends XooNIpsTableObject {
  *
  *
  */
-class XooNIpsOrmChangelogHandler extends XooNIpsTableObjectHandler {
-  function XooNIpsOrmChangelogHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmChangelog', 'xoonips_changelog', 'log_id' );
-  }
+class XooNIpsOrmChangelogHandler extends XooNIpsTableObjectHandler
+{
+    /**
+     * XooNIpsOrmChangelogHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmChangelog', 'xoonips_changelog', 'log_id');
+    }
 
-  /**
-   * get change logs
-   *
-   * @access public
-   * @param int $item_id
-   * @return array objects
-   */
-  function getChangeLogs( $item_id ) {
-    $criteria = new Criteria( 'item_id', $item_id );
-    $criteria->setSort( 'log_date' );
-    $criteria->setOrder( 'DESC' );
-    return $this->getObjects( $criteria );
-  }
+    /**
+     * get change logs
+     *
+     * @access public
+     * @param int $item_id
+     * @return array objects
+     */
+    public function getChangeLogs($item_id)
+    {
+        $criteria = new Criteria('item_id', $item_id);
+        $criteria->setSort('log_date');
+        $criteria->setOrder('DESC');
+        return $this->getObjects($criteria);
+    }
 }
-?>

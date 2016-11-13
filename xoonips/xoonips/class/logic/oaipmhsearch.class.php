@@ -26,8 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/logic.class.php';
-include_once XOOPS_ROOT_PATH
-    . '/modules/xoonips/class/base/transaction.class.php';
+include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/transaction.class.php';
 
 /**
  *
@@ -48,30 +47,48 @@ class XooNIpsLogicOaipmhSearch extends XooNIpsLogic
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response->success metadata search cache id
+     * @return bool
      */
-    function execute(&$vars, &$response) 
+    public function execute($vars, $response)
     {
         // parameter check
-        $error = &$response->getError();
-        if (count($vars) > 5) $error->add(XNPERR_EXTRA_PARAM);
-        if (count($vars) < 5) $error->add(XNPERR_MISSING_PARAM);
+        $error =  $response->getError();
+        if (count($vars) > 5) {
+            $error->add(XNPERR_EXTRA_PARAM);
+        }
+        if (count($vars) < 5) {
+            $error->add(XNPERR_MISSING_PARAM);
+        }
         //
-        if (isset($vars[0]) && strlen($vars[0]) > 32)
+        if (isset($vars[0]) && strlen($vars[0]) > 32) {
             $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
-        if (isset($vars[1]) && !is_int($vars[1]) && !ctype_digit($vars[1]))
+        }
+        if (isset($vars[1]) && !is_int($vars[1]) && !ctype_digit($vars[1])) {
             $error->add(XNPERR_INVALID_PARAM, 'not integer parameter 2');
+        }
         if (isset($vars[1]) && isset($vars[2])
-            && intval($vars[1]) == 0 && empty($vars[2]))
-            $error->add(XNPERR_INVALID_PARAM,
-                        'parameter 2(repository_id) or parameter 3(keyword)'
-                        .'is required.');
+            && (int)$vars[1] == 0
+            && empty($vars[2])
+        ) {
+            $error->add(XNPERR_INVALID_PARAM, 'parameter 2(repository_id) or parameter 3(keyword)' . 'is required.');
+        }
         if (isset($vars[3])
-            && !in_array( $vars[3], array( 'title', 'identifier',
-                                           'last_update_date', 'creation_date',
-                                           'date' ) ) ){
+            && !in_array($vars[3], array(
+                'title',
+                'identifier',
+                'last_update_date',
+                'creation_date',
+                'date'
+            ))
+        ) {
             $error->add(XNPERR_INVALID_PARAM, 'invalid parameter 4(order by)');
         }
-        if (isset($vars[4]) && !in_array( $vars[4], array( 'asc', 'desc' ) ) ){
+        if (isset($vars[4])
+            && !in_array($vars[4], array(
+                'asc',
+                'desc'
+            ))
+        ) {
             $error->add(XNPERR_INVALID_PARAM, 'invalid parameter 5(order dir)');
         }
         //
@@ -80,11 +97,11 @@ class XooNIpsLogicOaipmhSearch extends XooNIpsLogic
             $response->setResult(false);
             return;
         } else {
-            $sessionid = $vars[0];
-            $repository_id = intval($vars[1]);
-            $keyword   = $vars[2];
-            $order_by  = $vars[3];
-            $order_dir = $vars[4];
+            $sessionid     = $vars[0];
+            $repository_id = (int)$vars[1];
+            $keyword       = $vars[2];
+            $order_by      = $vars[3];
+            $order_dir     = $vars[4];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
@@ -92,117 +109,118 @@ class XooNIpsLogicOaipmhSearch extends XooNIpsLogic
             $error->add(XNPERR_INVALID_SESSION);
             return false;
         }
-        
-        $cache_id = $this->searchMetadata(
-            $repository_id,$keyword, $this->getOrderByColumn($order_by),
-            $order_dir);
-        if( !$cache_id ){
-            $error = &$response->getError();
+
+        $cache_id = $this->searchMetadata($repository_id, $keyword, $this->getOrderByColumn($order_by), $order_dir);
+        if (!$cache_id) {
+            $error =  $response->getError();
             $error->add(XNPERR_SERVER_ERROR, 'failure in search');
             $response->setResult(false);
             return false;
-        }else{
+        } else {
             $response->setSuccess($cache_id);
             $response->setResult(true);
             return true;
         }
     }
-    
+
     /**
      * create cache and insert identifiers
      * @access private
      * @param array $identifiers array of metadata identifier
      * @return search cache id
      */
-    function createCache( $identifiers ){
-        $cache_handler =& xoonips_getormhandler( 'xoonips', 'search_cache' );
-        $cache_metadata_handler
-            =& xoonips_getormhandler('xoonips','search_cache_metadata');
-        
-        $cache =& $cache_handler -> create();
-        $cache -> set( 'sess_id', session_id() );
+    public function createCache($identifiers)
+    {
+        $cacheHandler = xoonips_getOrmHandler('xoonips', 'search_cache');
+        $cache_metadataHandler
+                      = xoonips_getOrmHandler('xoonips', 'search_cache_metadata');
+
+        $cache = $cacheHandler->create();
+        $cache->set('sess_id', session_id());
         //$cache -> set( 'timestamp', time() );
-        $cache_handler -> insert( $cache );
-        
-        foreach( $identifiers as $id ){
-            $metadata =& $cache_metadata_handler->create();
-            $metadata -> set( 'search_cache_id',
-                              $cache -> get( 'search_cache_id' ) );
-            $metadata -> set( 'identifier', $id );
-            $cache_metadata_handler->insert( $metadata );
+        $cacheHandler->insert($cache);
+
+        foreach ($identifiers as $id) {
+            $metadata = $cache_metadataHandler->create();
+            $metadata->set('search_cache_id', $cache->get('search_cache_id'));
+            $metadata->set('identifier', $id);
+            $cache_metadataHandler->insert($metadata);
         }
-        return $cache -> get( 'search_cache_id' );
+        return $cache->get('search_cache_id');
     }
-    
+
     /**
      * search metadata and return array of identifiers
      * @access private
-     * @param int $repository_id zero is no repository specified.
-     * @param string $keyword search keyword string
-     * @return search cache id or false
+     * @param int    $repository_id zero is no repository specified.
+     * @param string $keyword       search keyword string
+     * @param        $order_by
+     * @param        $order_dir
+     * @return bool|search
      */
-    function searchMetadata($repository_id, $keyword, $order_by, $order_dir){
-        $metadata_handler =& xoonips_getormhandler(
-            'xoonips','oaipmh_metadata' );
-        $repository_handler =& xoonips_getormhandler(
-            'xoonips','oaipmh_repositories' );
-        $cache_handler =& xoonips_getormhandler( 'xoonips', 'search_cache' );
-        $cache_metadata_handler
-            =& xoonips_getormhandler('xoonips','search_cache_metadata');
-        
-        if( $repository_id == 0 && strval($keyword)=='' )
+    public function searchMetadata($repository_id, $keyword, $order_by, $order_dir)
+    {
+        $metadataHandler   = xoonips_getOrmHandler('xoonips', 'oaipmh_metadata');
+        $repositoryHandler = xoonips_getOrmHandler('xoonips', 'oaipmh_repositories');
+        $cacheHandler      = xoonips_getOrmHandler('xoonips', 'search_cache');
+        $cache_metadataHandler
+                           = xoonips_getOrmHandler('xoonips', 'search_cache_metadata');
+
+        if ($repository_id == 0 && (string)$keyword == '') {
             return $search_cache_id;
+        }
 
         $result = array();
-        if( strval($keyword)=='' ){
-            $metadata =& $metadata_handler -> getObjects(
-                new Criteria( 'repository_id', $repository_id ));
-            foreach( $metadata as $data ){
+        if ((string)$keyword == '') {
+            $metadata =  $metadataHandler->getObjects(new Criteria('repository_id', $repository_id));
+            foreach ($metadata as $data) {
                 $result[] = $data->get('identifier');
             }
-        }else{
-            if( !xnpSearchExec( 'quicksearch', $keyword, 'metadata',
-                                false, $errormessage, $item_ids,
-                                $search_var, $search_cache_id,
-                                'metadata' ) ){
+        } else {
+            if (!xnpSearchExec('quicksearch', $keyword, 'metadata', false, $errormessage, $item_ids, $search_var, $search_cache_id, 'metadata')) {
                 return false;
             }
-            if( $repository_id == 0 ) return $search_cache_id;
-            
+            if ($repository_id == 0) {
+                return $search_cache_id;
+            }
+
             global $xoopsDB;
-            if( !$cache_handler -> get( $search_cache_id ) ) return false;
+            if (!$cacheHandler->get($search_cache_id)) {
+                return false;
+            }
 
             $criteria = new CriteriaCompo();
-            $criteria -> add( new Criteria( 'search_cache_id',
-                                            $search_cache_id ));
-            $criteria -> add( new Criteria( 'repository_id', $repository_id ));
-            $join = new XooNIpsJoinCriteria( 'xoonips_oaipmh_metadata', 'identifier', 'identifier', 'INNER' );
+            $criteria->add(new Criteria('search_cache_id', $search_cache_id));
+            $criteria->add(new Criteria('repository_id', $repository_id));
+            $join = new XooNIpsJoinCriteria('xoonips_oaipmh_metadata', 'identifier', 'identifier', 'INNER');
 
-            $metadata_cache = $cache_metadata_handler
-                -> getObjects($criteria, false, '', false, $join );
+            $metadata_cache = $cache_metadataHandler->getObjects($criteria, false, '', false, $join);
 
-            foreach( $metadata_cache as $cache ){
+            foreach ($metadata_cache as $cache) {
                 $result[] = $cache->get('identifier');
             }
         }
-        return $this->createCache( $result );
+        return $this->createCache($result);
     }
-    
 
-    function getOrderByColumn($order_by){
-        switch($order_by){
-        case 'title':
-        case 'identifier':
-            return $order_by;
-        case 'last_update_date':
-            return 'last_update_date_for_sort';
-        case 'creation_date':
-            return 'creation_date_for_sort';
-        case 'date':
-            return 'date_for_sort';
-        default:
-            return 'title';
+    /**
+     * @param $order_by
+     * @return string
+     */
+    public function getOrderByColumn($order_by)
+    {
+        switch ($order_by) {
+            case 'title':
+            case 'identifier':
+                return $order_by;
+            case 'last_update_date':
+                return 'last_update_date_for_sort';
+            case 'creation_date':
+                return 'creation_date_for_sort';
+            case 'date':
+                return 'date_for_sort';
+            default:
+                return 'title';
         }
     }
 }
-?>

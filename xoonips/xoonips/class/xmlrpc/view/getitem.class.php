@@ -36,13 +36,19 @@ include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/xmlrpcfault.class.
  */
 class XooNIpsXmlRpcViewGetItem extends XooNIpsXmlRpcViewElement
 {
-    function XooNIpsXmlRpcViewGetItem(&$response) 
+    /**
+     * XooNIpsXmlRpcViewGetItem constructor.
+     * @param $response
+     */
+    public function __construct($response)
     {
-        parent::XooNIpsXmlRpcViewElement($response);
-        $factory = &XooNIpsXmlRpcItemViewFactory::getInstance();
-        $item = &$response->getSuccess();
-        $view = &$factory->create('getItem', $item);
-        if ($view) $this->addView($view);
+        parent::__construct($response);
+        $factory = XooNIpsXmlRpcItemViewFactory::getInstance();
+        $item    =  $response->getSuccess();
+        $view    = $factory->create('getItem', $item);
+        if ($view) {
+            $this->addView($view);
+        }
     }
 
     /**
@@ -51,7 +57,7 @@ class XooNIpsXmlRpcViewGetItem extends XooNIpsXmlRpcViewElement
      *
      * @return XoopsXmlRpcTag
      */
-    function render() 
+    public function render()
     {
         if (isset($this->views[0])) {
             return $this->views[0]->render();
@@ -61,4 +67,3 @@ class XooNIpsXmlRpcViewGetItem extends XooNIpsXmlRpcViewElement
         }
     }
 }
-?>

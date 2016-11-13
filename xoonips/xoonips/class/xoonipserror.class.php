@@ -35,55 +35,56 @@ define('XNPERR_MISSING_PARAM', 106); // missing parameters
 define('XNPERR_EXTRA_PARAM', 107); // extra parameters
 define('XNPERR_INVALID_PARAM', 108); // invalid parameter(data type, value format)
 define('XNPERR_SERVER_ERROR', 109); // error in server
-define('XNPERR_NUMBER_OF_ITEM_LIMIT_EXCEEDS', 111); 
-define('XNPERR_STORAGE_OF_ITEM_LIMIT_EXCEEDS', 112); 
-
+define('XNPERR_NUMBER_OF_ITEM_LIMIT_EXCEEDS', 111);
+define('XNPERR_STORAGE_OF_ITEM_LIMIT_EXCEEDS', 112);
 
 /**
  *
  * @brief Class that has error informations of logic
  *
- * @see XooNIpsResponse
+ * @see   XooNIpsResponse
  *
  * error codes shown below is reserved.
- * @li 100 generic error
- * @li 101 invalid session
- * @li 102 authentication failue
- * @li 103 access forbidden(no access right)
- * @li 104 requested content is not found
- * @li 105 given parameter is incomplete.
- * @li 106 missing parameters
- * @li 107 extra parameters
- * @li 108 invalid parameter(data type, value format)
- * @li 109 error in server
- * @li 110 no such method
+ * @li    100 generic error
+ * @li    101 invalid session
+ * @li    102 authentication failue
+ * @li    103 access forbidden(no access right)
+ * @li    104 requested content is not found
+ * @li    105 given parameter is incomplete.
+ * @li    106 missing parameters
+ * @li    107 extra parameters
+ * @li    108 invalid parameter(data type, value format)
+ * @li    109 error in server
+ * @li    110 no such method
  *
  */
 class XooNIpsError
 {
-    var $error = array();
+    public $error = array();
 
     /**
      * @brief create XooNIpsError with error code and error message
      *
-     * @param int $code error code
+     * @param int    $code  error code
      * @param string $extra extra information of err(null if omitted)
      */
-    function XooNIpsError($code = null, $extra = null) 
+    public function __construct($code = null, $extra = null)
     {
-        if (!is_null($code)) $this->add($code, $extra);
+        if (null !== $code) {
+            $this->add($code, $extra);
+        }
     }
 
     /**
      * @brief add error code and error message
-     * @param int $code error code
+     * @param int    $code  error code
      * @param string $extra extra information of err(null if omitted)
      */
-    function add($code, $extra = null) 
+    public function add($code, $extra = null)
     {
         $this->error[] = array(
-            'code' => intval($code) ,
-            'extra' => is_null($extra) ? "" : $extra
+            'code'  => (int)$code,
+            'extra' => null === $extra ? '' : $extra
         );
     }
 
@@ -96,21 +97,23 @@ class XooNIpsError
      *         ... );
      * @endcode
      */
-    function getAll() 
+    public function getAll()
     {
         return $this->error;
     }
 
     /**
-     * @brief return error information
+     * @brief  return error information
      * @param int index of error(>=0)
      * @retval array associative array( 'code' => CODE, 'extra' => EXTRA ) that correspond to $i
      * @retval false no errors correspond to $i
+     * @return bool|mixed
      */
-    function get($i = 0) 
+    public function get($i = 0)
     {
-        if (isset($this->error[intval($i) ])) return $this->error[intval($i) ];
+        if (isset($this->error[(int)$i])) {
+            return $this->error[(int)$i];
+        }
         return false;
     }
 }
-?>

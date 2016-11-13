@@ -25,61 +25,69 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-class XooNIpsActionFactory{
-    
-    function XooNIpsActionFactory(){
+/**
+ * Class XooNIpsActionFactory
+ */
+class XooNIpsActionFactory
+{
+    /**
+     * XooNIpsActionFactory constructor.
+     */
+    public function __construct()
+    {
     }
-    
+
     /**
      * return XooNIpsActionFactory instance
      *
      * @return XooNIpsActionFactory
      */
-    function &getInstance() 
+    public static function getInstance()
     {
         static $singleton = null;
-        if (!isset($singleton)) $singleton = new XooNIpsActionFactory();
+        if (!isset($singleton)) {
+            $singleton = new XooNIpsActionFactory();
+        }
         return $singleton;
     }
-    
+
     /**
      * return XooNIpsAction corresponding to $logic
      *
      * @param string $name action name
      * @retval XooNIpsAction corresponding to $name
      * @retval false unknown action
+     * @return bool|null
      */
-    function &create($name) 
+    public function create($name)
     {
         static $falseVar = false;
         $action = null;
         //
         $name = trim($name);
-        if (false !== strstr($name, '..')) return $falseVar;
-        $include_file = XOOPS_ROOT_PATH
-            . "/modules/xoonips/class/action/"
-            . strtolower($name) . ".class.php";
+        if (false !== strstr($name, '..')) {
+            return $falseVar;
+        }
+        $include_file = XOOPS_ROOT_PATH . '/modules/xoonips/class/action/' . strtolower($name) . '.class.php';
         if (file_exists($include_file)) {
             include_once $include_file;
         } else {
             return $falseVar;
         }
         //
-        $class = 'XooNIpsAction'
-            . str_replace( " ", "",
-                           ucwords( str_replace( "_", " ", $name ) ) );
+        $class = 'XooNIpsAction' . str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
         if (class_exists($class)) {
             $action = new $class();
         }
         //
         if (!isset($action)) {
-            trigger_error('Handler does not exist. Name: '
-                          . $name, E_USER_ERROR);
+            trigger_error('Handler does not exist. Name: ' . $name, E_USER_ERROR);
         }
         // return result
-        if (isset($action)) return $action;
-        else return $falseVar;
+        if (isset($action)) {
+            return $action;
+        } else {
+            return $falseVar;
+        }
     }
 }
-
-?>

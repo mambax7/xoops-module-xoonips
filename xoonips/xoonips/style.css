@@ -42,11 +42,11 @@
 /* Index tree in tree.php */
 
 .directory { font-size: 10pt; font-weight: bold; }
-.directory p { margin: 0px; white-space: nowrap; line-height: 10pt; vertical-align: text-bottom; }
-.tree { margin: 0px; white-space: nowrap; vertical-align: text-bottom; font-size: 10pt; font-weight: bold; }
-.directory div { margin: 0px; white-space: nowrap; }
+.directory p { margin: 0; white-space: nowrap; line-height: 10pt; vertical-align: text-bottom; }
+.tree { margin: 0; white-space: nowrap; vertical-align: text-bottom; font-size: 10pt; font-weight: bold; }
+.directory div { margin: 0; white-space: nowrap; }
 .directory img { vertical-align: text-bottom; }
-.directory table {  border-spacing: 0px; margin: 0px; border: 0px; padding: 0px; height: 19px;}
+.directory table {  border-spacing: 0; margin: 0; border: 0; padding: 0; height: 19px;}
 
 /* for view xoonips_transfer_requested_item_detail */
 

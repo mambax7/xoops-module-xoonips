@@ -1,0 +1,4 @@
+Credits
+===============
+
+Originally developed by RIKEN BSI Neuroinformatics Japan Center

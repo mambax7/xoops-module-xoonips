@@ -24,46 +24,48 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 /**
  * abstract class for xoonips utility classes
  */
-class XooNIpsUtility {
+class XooNIpsUtility
+{
 
-  /**
-   * singleton class flag. true if class is singleton 
-   * @access private
-   * @var bool
-   */
-  var $_is_singleton = false;
+    /**
+     * singleton class flag. true if class is singleton
+     * @access private
+     * @var bool
+     */
+    public $_is_singleton = false;
 
-  /**
-   * set flag for singleton class
-   * @access protected
-   */
-  function setSingleton() {
-    $this->_is_singleton = true;
-  }
+    /**
+     * set flag for singleton class
+     * @access protected
+     */
+    public function setSingleton()
+    {
+        $this->_is_singleton = true;
+    }
 
-  /**
-   * unset flag for non-singleton class
-   * @access protected
-   */
-  function unsetSingleton() {
-    $this->_is_singleton = false;
-  }
+    /**
+     * unset flag for non-singleton class
+     * @access protected
+     */
+    public function unsetSingleton()
+    {
+        $this->_is_singleton = false;
+    }
 
-  /**
-   * unset flag for non-singleton class
-   * @access public
-   * @return bool true if class is singleton
-   */
-  function isSingleton() {
-    return $this->_is_singleton;
-  }
+    /**
+     * unset flag for non-singleton class
+     * @access public
+     * @return bool true if class is singleton
+     */
+    public function isSingleton()
+    {
+        return $this->_is_singleton;
+    }
 }
-
-?>

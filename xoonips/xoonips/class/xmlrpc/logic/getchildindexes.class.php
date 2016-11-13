@@ -26,14 +26,10 @@
 // ------------------------------------------------------------------------- //
 
 include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonipserror.class.php';
-include_once XOOPS_ROOT_PATH
-. '/modules/xoonips/class/xoonipsresponse.class.php';
-include_once XOOPS_ROOT_PATH 
-. '/modules/xoonips/class/xmlrpc/xmlrpcresponse.class.php';
-include_once XOOPS_ROOT_PATH 
-. '/modules/xoonips/class/xmlrpc/xmlrpctransform.class.php';
-include_once XOOPS_ROOT_PATH
-. '/modules/xoonips/class/xmlrpc/logic/xmlrpclogic.class.php';
+include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonipsresponse.class.php';
+include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/xmlrpcresponse.class.php';
+include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/xmlrpctransform.class.php';
+include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/logic/xmlrpclogic.class.php';
 
 /**
  * @brief Class that executes logic specified by XML-RPC getChildIndexes request
@@ -49,51 +45,49 @@ class XooNIpsXmlRpcLogicGetChildIndexes extends XooNIpsXmlRpcLogic
      * @param[in] XooNIpsXmlRpcRequest $request
      * @param[out] XooNIpsXmlRpcResponse $response
      *  result of logic(success/fault, response, error)
+     * @return bool|void
      */
-    function execute(&$request, &$response) 
+    public function execute($request, $response)
     {
         // load logic instance
-        $factory = &XooNIpsLogicFactory::getInstance();
-        $logic = &$factory->create($request->getMethodName());
+        $factory = XooNIpsLogicFactory::getInstance();
+        $logic   = $factory->create($request->getMethodName());
         if (!is_object($logic)) {
             $response->setResult(false);
-            $error = &$response->getError();
+            $error =  $response->getError();
             $logic = $request->getMethodName();
             $error->add(XNPERR_SERVER_ERROR, "can't create a logic of $logic");
             return;
         }
         // execute logic
-        $params = &$request->getParams();
+        $params           =  $request->getParams();
         $xoonips_response = new XooNIpsResponse();
-        
-        if ( count($params) < 2 ){
+
+        if (count($params) < 2) {
             $response->setResult(false);
-            $error = &$response->getError();
+            $error =  $response->getError();
             $error->add(XNPERR_MISSING_PARAM);
             return false;
-        }
-        else if ( count($params) > 2 ){
+        } elseif (count($params) > 2) {
             $response->setResult(false);
-            $error = &$response->getError();
+            $error =  $response->getError();
             $error->add(XNPERR_EXTRA_PARAM);
             return false;
         }
-        $vars = array();
+        $vars    = array();
         $vars[0] = $params[0];
         $vars[1] = $params[1];
-        
+
         $logic->execute($vars, $xoonips_response);
         //
         $response->setResult($xoonips_response->getResult());
         $response->setError($xoonips_response->getError());
-        if ( $xoonips_response->getResult() ){
+        if ($xoonips_response->getResult()) {
             $result = array();
-            foreach ( $xoonips_response->getSuccess() as $index_compo ){
-                $result[] = $this->convertIndexObjectToIndexStructure(
-                    $index_compo, $response);
+            foreach ($xoonips_response->getSuccess() as $index_compo) {
+                $result[] = $this->convertIndexObjectToIndexStructure($index_compo, $response);
             }
             $response->setSuccess($result);
         }
     }
 }
-?>

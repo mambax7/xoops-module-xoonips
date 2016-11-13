@@ -42,15 +42,22 @@ class XooNIpsLogicGetItemtypes extends XooNIpsLogic
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response->success array of item type structure
+     * @return bool
      */
-    function execute(&$vars, &$response) 
+    public function execute($vars, $response)
     {
         // parameter check
-        $error = &$response->getError();
-        if (count($vars) > 1) $error->add(XNPERR_EXTRA_PARAM);
-        if (count($vars) < 1) $error->add(XNPERR_MISSING_PARAM);
+        $error =  $response->getError();
+        if (count($vars) > 1) {
+            $error->add(XNPERR_EXTRA_PARAM);
+        }
+        if (count($vars) < 1) {
+            $error->add(XNPERR_MISSING_PARAM);
+        }
         //
-        if (isset($vars[0]) && strlen($vars[0]) > 32) $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
+        if (isset($vars[0]) && strlen($vars[0]) > 32) {
+            $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
+        }
         //
         if ($error->get(0)) {
             // return if parameter error
@@ -67,21 +74,21 @@ class XooNIpsLogicGetItemtypes extends XooNIpsLogic
             return false;
         }
         //
-        $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
-        $item_types =& $item_type_handler->getObjects();
+        $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
+        $item_types       =  $item_typeHandler->getObjects();
         if (!$item_types) {
             $response->setResult(false);
-            $error->add(XNPERR_SERVER_ERROR, "cannot get itemtypes");
+            $error->add(XNPERR_SERVER_ERROR, 'cannot get itemtypes');
             return false;
         }
         $result = array();
-        foreach($item_types as $item_type) {
-            $item_type_name = $item_type->get('name');
-            $detail_item_type_handler = &xoonips_getormhandler($item_type_name, 'item_type');
-            if (!$detail_item_type_handler) {
+        foreach ($item_types as $item_type) {
+            $item_type_name          = $item_type->get('name');
+            $detail_item_typeHandler = xoonips_getOrmHandler($item_type_name, 'item_type');
+            if (!$detail_item_typeHandler) {
                 continue;
             }
-            $detail_item_type = $detail_item_type_handler->get($item_type->get('item_type_id'));
+            $detail_item_type = $detail_item_typeHandler->get($item_type->get('item_type_id'));
             if (!$detail_item_type) {
                 continue;
             }
@@ -92,4 +99,3 @@ class XooNIpsLogicGetItemtypes extends XooNIpsLogic
         return true;
     }
 }
-?>

@@ -24,72 +24,70 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 // title
-$title = _AM_XOONIPS_SYSTEM_PRINT_TITLE;
+$title       = _AM_XOONIPS_SYSTEM_PRINT_TITLE;
 $description = _AM_XOONIPS_SYSTEM_PRINT_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
-  array(
-    'type' => 'top',
-    'label' => _AM_XOONIPS_TITLE,
-    'url' => $xoonips_admin['admin_url'].'/',
-  ),
-  array(
-    'type' => 'link',
-    'label' => _AM_XOONIPS_SYSTEM_TITLE,
-    'url' => $xoonips_admin['myfile_url'],
-  ),
-  array(
-    'type' => 'label',
-    'label' => $title,
-    'url' => '',
-  ),
+    array(
+        'type'  => 'top',
+        'label' => _AM_XOONIPS_TITLE,
+        'url'   => $xoonips_admin['admin_url'] . '/',
+    ),
+    array(
+        'type'  => 'link',
+        'label' => _AM_XOONIPS_SYSTEM_TITLE,
+        'url'   => $xoonips_admin['myfile_url'],
+    ),
+    array(
+        'type'  => 'label',
+        'label' => $title,
+        'url'   => '',
+    ),
 );
 
 // token ticket
-require_once( '../class/base/gtickets.php' );
-$ticket_area = 'xoonips_admin_system_print';
-$token_ticket = $xoopsGTicket->getTicketHtml( __LINE__, 1800, $ticket_area );
+require_once __DIR__ . '/../../class/base/gtickets.php';
+$ticket_area  = 'xoonips_admin_system_print';
+$token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys = array(
-  'printer_friendly_header' => 's',
+$config_keys   = array(
+    'printer_friendly_header' => 's',
 );
-$config_values = xoonips_admin_get_configs( $config_keys, 'e' );
+$config_values = xoonips_admin_get_configs($config_keys, 'e');
 // >> printer_friendly_header
 $printer_friendly_header_title = _AM_XOONIPS_SYSTEM_PRINT_PRINTER_FRIENDLY_HEADER_TITLE;
-$printer_friendly_header_desc = _AM_XOONIPS_SYSTEM_PRINT_PRINTER_FRIENDLY_HEADER_DESC;
-$printer_friendly_header = $config_values['printer_friendly_header'];
+$printer_friendly_header_desc  = _AM_XOONIPS_SYSTEM_PRINT_PRINTER_FRIENDLY_HEADER_DESC;
+$printer_friendly_header       = $config_values['printer_friendly_header'];
 
 // templates
-require_once( '../class/base/pattemplate.class.php' );
+require_once __DIR__ . '/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir( 'templates' );
-$tmpl->readTemplatesFromFile( 'system_print.tmpl.html' );
+$tmpl->setBasedir('templates');
+$tmpl->readTemplatesFromFile('system_print.tmpl.tpl');
 
 // assign template variables
-$tmpl->addVar( 'header', 'TITLE', $title );
-$tmpl->addVar( 'main', 'TITLE', $title );
-$tmpl->setAttribute( 'description', 'visibility', 'visible' );
-$tmpl->addVar( 'description', 'DESCRIPTION', $description );
-$tmpl->setAttribute( 'breadcrumbs', 'visibility', 'visible' );
-$tmpl->addRows( 'breadcrumbs_items', $breadcrumbs );
-$tmpl->addVar( 'main', 'token_ticket', $token_ticket );
-$tmpl->addVar( 'main', 'submit', _AM_XOONIPS_LABEL_UPDATE );
+$tmpl->addVar('header', 'TITLE', $title);
+$tmpl->addVar('main', 'TITLE', $title);
+$tmpl->setAttribute('description', 'visibility', 'visible');
+$tmpl->addVar('description', 'DESCRIPTION', $description);
+$tmpl->setAttribute('breadcrumbs', 'visibility', 'visible');
+$tmpl->addRows('breadcrumbs_items', $breadcrumbs);
+$tmpl->addVar('main', 'token_ticket', $token_ticket);
+$tmpl->addVar('main', 'submit', _AM_XOONIPS_LABEL_UPDATE);
 
 // >> header part of printer friendly
-$tmpl->addVar( 'main', 'printer_friendly_header_title', $printer_friendly_header_title );
-$tmpl->addVar( 'main', 'printer_friendly_header_desc', $printer_friendly_header_desc );
-$tmpl->addVar( 'main', 'printer_friendly_header', $printer_friendly_header );
+$tmpl->addVar('main', 'printer_friendly_header_title', $printer_friendly_header_title);
+$tmpl->addVar('main', 'printer_friendly_header_desc', $printer_friendly_header_desc);
+$tmpl->addVar('main', 'printer_friendly_header', $printer_friendly_header);
 
 // display
 xoops_cp_header();
-$tmpl->displayParsedTemplate( 'main' );
+$tmpl->displayParsedTemplate('main');
 xoops_cp_footer();
-
-?>

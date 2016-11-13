@@ -44,16 +44,25 @@ class XooNIpsLogicRemoveFile extends XooNIpsLogic
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response->success file ID of deleted file
+     * @return bool
      */
-    function execute(&$vars, &$response) 
+    public function execute($vars, $response)
     {
         // parameter check
-        $error = &$response->getError();
-        if (count($vars) > 2) $error->add(XNPERR_EXTRA_PARAM);
-        if (count($vars) < 2) $error->add(XNPERR_MISSING_PARAM);
+        $error =  $response->getError();
+        if (count($vars) > 2) {
+            $error->add(XNPERR_EXTRA_PARAM);
+        }
+        if (count($vars) < 2) {
+            $error->add(XNPERR_MISSING_PARAM);
+        }
         //
-        if (isset($vars[0]) && strlen($vars[0]) > 32) $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
-        if (!is_int($vars[1]) && !ctype_digit($vars[1])) $error->add(XNPERR_INVALID_PARAM, 'not integer parameter 2');
+        if (isset($vars[0]) && strlen($vars[0]) > 32) {
+            $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
+        }
+        if (!is_int($vars[1]) && !ctype_digit($vars[1])) {
+            $error->add(XNPERR_INVALID_PARAM, 'not integer parameter 2');
+        }
         //
         if ($error->get(0)) {
             // return if parameter error
@@ -61,7 +70,7 @@ class XooNIpsLogicRemoveFile extends XooNIpsLogic
             return;
         } else {
             $sessionid = $vars[0];
-            $file_id = intval($vars[1]);
+            $file_id   = (int)$vars[1];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
@@ -70,8 +79,8 @@ class XooNIpsLogicRemoveFile extends XooNIpsLogic
             return false;
         }
         // file_id -> file, item_id
-        $file_handler =& xoonips_getormhandler('xoonips', 'file');
-        $file = $file_handler->get($file_id);
+        $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
+        $file        = $fileHandler->get($file_id);
         if (!$file) {
             $response->setResult(false);
             $error->add(XNPERR_NOT_FOUND); // not found
@@ -83,40 +92,37 @@ class XooNIpsLogicRemoveFile extends XooNIpsLogic
             $error->add(XNPERR_ACCESS_FORBIDDEN); // maybe belong to other session
             return false;
         }
-        // item_id -> basic -> item_type_id -> item_type_name -> item_handler
-        $basic_handler =& xoonips_getormhandler('xoonips', 'item_basic');
-        $basic = $basic_handler->get($item_id);
+        // item_id -> basic -> item_type_id -> item_type_name -> itemHandler
+        $basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
+        $basic        = $basicHandler->get($item_id);
         if (!$basic) {
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, "non-existent item(item_id=$item_id) owns that file");
             return false;
         }
-        $item_type_id = $basic->get('item_type_id');
-        $item_type_handler =& xoonips_getormhandler('xoonips', 'item_type');
-        $item_type = $item_type_handler->get($item_type_id);
+        $item_type_id     = $basic->get('item_type_id');
+        $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
+        $item_type        = $item_typeHandler->get($item_type_id);
         if (!$item_type) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_PARAM, "bad itemtype(item_type_id=$item_type_id)");
             return false;
         }
         $item_type_name = $item_type->get('name');
-        $item_handler =& xoonips_getormcompohandler($item_type_name, 'item');
-        if (!$item_handler) {
+        $itemHandler    = xoonips_getOrmCompoHandler($item_type_name, 'item');
+        if (!$itemHandler) {
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, "cannot get item handler(item_type_id=$item_type_id)");
             return false;
         }
         // can modify?
-        if (!$item_handler->getPerm($item_id, $uid, 'write')) {
-            $item_lock_handler =& xoonips_getormhandler( 'xoonips', 'item_lock' );
+        if (!$itemHandler->getPerm($item_id, $uid, 'write')) {
+            $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
             $response->setResult(false);
-            if ( $item_lock_handler->isLocked($item_id) ){
-                $error->add(XNPERR_ACCESS_FORBIDDEN, 
-                    "cannot remove file because item is " . 
-                    $this->getLockTypeString(
-                        $item_lock_handler->getLockType($item_id)));
-            }
-            else {
+            if ($item_lockHandler->isLocked($item_id)) {
+                $error->add(XNPERR_ACCESS_FORBIDDEN,
+                            'cannot remove file because item is ' . $this->getLockTypeString($item_lockHandler->getLockType($item_id)));
+            } else {
                 $error->add(XNPERR_ACCESS_FORBIDDEN);
             }
             return false;
@@ -124,24 +130,24 @@ class XooNIpsLogicRemoveFile extends XooNIpsLogic
         // already deleted?
         if ($file->getVar('is_deleted')) {
             $response->setResult(false);
-            $error->add(XNPERR_NOT_FOUND, "already deleted or replaced");
+            $error->add(XNPERR_NOT_FOUND, 'already deleted or replaced');
             return false;
         }
         // file -> file_type_name
-        $file_type_handler =& xoonips_getormhandler('xoonips', 'file_type');
-        $file_type = $file_type_handler->get($file->getVar('file_type_id'));
+        $file_typeHandler = xoonips_getOrmHandler('xoonips', 'file_type');
+        $file_type        = $file_typeHandler->get($file->getVar('file_type_id'));
         if (!$file_type) {
             $response->setResult(false);
-            $error->add(XNPERR_SERVER_ERROR, "that file has unkonwn file type");
+            $error->add(XNPERR_SERVER_ERROR, 'that file has unkonwn file type');
             return false;
         }
         $file_type_name = $file_type->getVar('name');
         // item_type -> detail_item_type
-        $detail_item_type_handler =& xoonips_getormhandler($item_type->getVar('name') , 'item_type');
-        $detail_item_type = $detail_item_type_handler->get($item_type_id);
+        $detail_item_typeHandler = xoonips_getOrmHandler($item_type->getVar('name'), 'item_type');
+        $detail_item_type        = $detail_item_typeHandler->get($item_type_id);
         if (!$detail_item_type) {
             $response->setResult(false);
-            $error->add(XNPERR_SERVER_ERROR, "cannot get detail itemtype of that item");
+            $error->add(XNPERR_SERVER_ERROR, 'cannot get detail itemtype of that item');
             return false;
         }
         // is that file optional? or required?
@@ -151,14 +157,14 @@ class XooNIpsLogicRemoveFile extends XooNIpsLogic
             $criteria->add(new Criteria('item_id', $item_id));
             $criteria->add(new Criteria('file_type_id', $file->getVar('file_type_id')));
             $criteria->add(new Criteria('is_deleted', 0));
-            $count = $file_handler->getCount($criteria);
+            $count = $fileHandler->getCount($criteria);
             if ($count == 0) {
                 $response->setResult(false);
-                $error->add(XNPERR_SERVER_ERROR, "cannot count files");
+                $error->add(XNPERR_SERVER_ERROR, 'cannot count files');
                 return false;
-            } else if ($count == 1) {
+            } elseif ($count == 1) {
                 $response->setResult(false);
-                $error->add(XNPERR_ERROR, "that file is not optional and the last one");
+                $error->add(XNPERR_ERROR, 'that file is not optional and the last one');
                 return false;
             }
         }
@@ -167,44 +173,43 @@ class XooNIpsLogicRemoveFile extends XooNIpsLogic
         $transaction->start();
         // set is_deleted = 1;
         $file->setVar('is_deleted', 1);
-        if (!$file_handler->insert($file)) {
+        if (!$fileHandler->insert($file)) {
             $transaction->rollback();
             $response->setResult(false);
-            $error->add(XNPERR_SERVER_ERROR, "cannot update file table");
+            $error->add(XNPERR_SERVER_ERROR, 'cannot update file table');
             return false;
         }
         // event log ( update item )
-        $eventlog_handler =& xoonips_getormhandler('xoonips', 'event_log');
-        if ( ! $eventlog_handler->recordUpdateItemEvent( $item_id ) ) {
-            $error->add(XNPERR_SERVER_ERROR, "cannot insert event");
+        $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
+        if (!$eventlogHandler->recordUpdateItemEvent($item_id)) {
+            $error->add(XNPERR_SERVER_ERROR, 'cannot insert event');
             $response->setResult(false);
             return false;
         }
         // item insert/update/certify_required/certified event, change certify_state, send notification, update RSS, update item_status.
-        $item = $item_handler->get($item_id);
+        $item = $itemHandler->get($item_id);
         if (!$this->touchItem($error, $item, $uid)) {
             $transaction->rollback();
             $response->setResult(false);
             return false;
         }
         // delete search_text
-        $search_text_handler =& xoonips_getormhandler('xoonips', 'search_text');
-        $search_text = $search_text_handler->get($file_id);
+        $search_textHandler = xoonips_getOrmHandler('xoonips', 'search_text');
+        $search_text        = $search_textHandler->get($file_id);
         if ($search_text) {
-            if (!$search_text_handler->delete($search_text)) {
+            if (!$search_textHandler->delete($search_text)) {
                 $transaction->rollback();
                 $response->setResult(false);
-                $error->add(XNPERR_SERVER_ERROR, "cannot remove search text");
+                $error->add(XNPERR_SERVER_ERROR, 'cannot remove search text');
                 return false;
             }
         }
         // commit
         $transaction->commit();
         // unlink file
-        $file_handler->deleteFile($file);
+        $fileHandler->deleteFile($file);
         $response->setSuccess($file_id);
         $response->setResult(true);
         return true;
     }
 }
-?>

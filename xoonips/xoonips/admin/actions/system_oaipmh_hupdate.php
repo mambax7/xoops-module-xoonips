@@ -24,35 +24,32 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 // check token ticket
-require_once( '../class/base/gtickets.php' );
+require_once __DIR__ . '/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_system_oaipmh';
-if ( ! $xoopsGTicket->check( true, $ticket_area, false ) ) {
-  redirect_header( $xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors() );
-  exit();
+if (!$xoopsGTicket->check(true, $ticket_area, false)) {
+    redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
 }
 
 // get requests
 $post_keys = array(
-  'repositories' => array(
-    's',
-    false,
-    true,
-  ),
+    'repositories' => array(
+        's',
+        false,
+        true,
+    ),
 );
-$post_vals = xoonips_admin_get_requests( 'post', $post_keys );
+$post_vals = xoonips_admin_get_requests('post', $post_keys);
 
 // split all repositories
-$repositories = explode( "\r\n", $post_vals['repositories'] );
+$repositories = explode("\r\n", $post_vals['repositories']);
 
 // update repositories
-$repositories_handler =& xoonips_getormhandler( 'xoonips', 'oaipmh_repositories' );
-$repositories_handler->setRepositories( $repositories );
+$repositoriesHandler = xoonips_getOrmHandler('xoonips', 'oaipmh_repositories');
+$repositoriesHandler->setRepositories($repositories);
 
-redirect_header( $xoonips_admin['mypage_url'], 3, _AM_XOONIPS_MSG_DBUPDATED );
-
-?>
+redirect_header($xoonips_admin['mypage_url'], 3, _AM_XOONIPS_MSG_DBUPDATED);

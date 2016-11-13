@@ -24,73 +24,87 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
-require_once __DIR__.'/abstract_ranking.class.php';
+require_once __DIR__ . '/abstract_ranking.class.php';
 
 /**
  * @brief data object of ranking active group
  *
- * @li getVar('gid') :
- * @li getVar('count') :
+ * @li    getVar('gid') :
+ * @li    getVar('count') :
  */
-class XooNIpsOrmRankingActiveGroup extends XooNIpsTableObject {
-  function XooNIpsOrmRankingActiveGroup() {
-    parent::XooNIpsTableObject();
-    $this->initVar( 'gid', XOBJ_DTYPE_INT, 0, true );
-    $this->initVar( 'count', XOBJ_DTYPE_INT, 0, true );
-  }
+class XooNIpsOrmRankingActiveGroup extends XooNIpsTableObject
+{
+    /**
+     * XooNIpsOrmRankingActiveGroup constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->initVar('gid', XOBJ_DTYPE_INT, 0, true);
+        $this->initVar('count', XOBJ_DTYPE_INT, 0, true);
+    }
 }
 
 /**
  * @brief handler object of ranking active group
  *
  */
-class XooNIpsOrmRankingActiveGroupHandler extends XooNIpsOrmAbstractRankingHandler {
-  function XooNIpsOrmRankingActiveGroupHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmRankingActiveGroup', 'xoonips_ranking_active_group', 'gid', false );
-    $this->_set_columns( array( 'gid', 'count' ) );
-  }
-
-  /**
-   * insert/upldate/replace object
-   *
-   * @access public
-   * @param object &$obj
-   * @param bool $force force operation
-   * @return bool false if failed
-   */
-  function insert( &$obj, $force = false ) {
-    $gid = $obj->get( 'gid' );
-    if ( $gid == 0 ) {
-      // ignore if group id is zero
-      return true;
+class XooNIpsOrmRankingActiveGroupHandler extends XooNIpsOrmAbstractRankingHandler
+{
+    /**
+     * XooNIpsOrmRankingActiveGroupHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmRankingActiveGroup', 'xoonips_ranking_active_group', 'gid', false);
+        $this->_set_columns(array(
+                                'gid',
+                                'count'
+                            ));
     }
-    return parent::insert( $obj, $force );
-  }
 
-  /**
-   * increment active group counter for updating/rebuilding rankings
-   *
-   * @param int $gid group id
-   * @param int $delta counter delta
-   * @return bool FALSE if failed
-   */
-  function increment( $gid, $delta ) {
-    $obj =& $this->get( $gid );
-    if ( is_object( $obj ) ) {
-      $delta += $obj->get( 'count' );
-    } else {
-      $obj =& $this->create();
-      $obj->set( 'gid', $gid );
+    /**
+     * insert/upldate/replace object
+     *
+     * @access public
+     * @param XoopsObject $obj
+     * @param bool        $force force operation
+     * @return bool false if failed
+     */
+    public function insert(XoopsObject $obj, $force = false)
+    {
+        $gid = $obj->get('gid');
+        if ($gid == 0) {
+            // ignore if group id is zero
+            return true;
+        }
+        return parent::insert($obj, $force);
     }
-    $obj->set( 'count', $delta );
-    // force insertion
-    return $this->insert( $obj, true );
-  }
+
+    /**
+     * increment active group counter for updating/rebuilding rankings
+     *
+     * @param int $gid   group id
+     * @param int $delta counter delta
+     * @return bool FALSE if failed
+     */
+    public function increment($gid, $delta)
+    {
+        $obj =  $this->get($gid);
+        if (is_object($obj)) {
+            $delta += $obj->get('count');
+        } else {
+            $obj =  $this->create();
+            $obj->set('gid', $gid);
+        }
+        $obj->set('count', $delta);
+        // force insertion
+        return $this->insert($obj, true);
+    }
 }
-
-?>

@@ -24,42 +24,39 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 // check token ticket
-require_once( '../class/base/gtickets.php' );
+require_once __DIR__ . '/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_policy_position';
-if ( ! $xoopsGTicket->check( true, $ticket_area, false ) ) {
-  redirect_header( $xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors() );
-  exit();
+if (!$xoopsGTicket->check(true, $ticket_area, false)) {
+    redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
 }
 
 // get variables
 $post_keys = array(
-  'title' => array(
-    's',
-    true,
-    true,
-  ),
-  'order' => array(
-    's',
-    true,
-    true,
-  ),
+    'title' => array(
+        's',
+        true,
+        true,
+    ),
+    'order' => array(
+        's',
+        true,
+        true,
+    ),
 );
-$post_vals = xoonips_admin_get_requests( 'post', $post_keys );
+$post_vals = xoonips_admin_get_requests('post', $post_keys);
 
 // update db values
-$posi_handler =& xoonips_getormhandler( 'xoonips', 'positions' );
-foreach ( $post_vals['title'] as $posi_id => $title ) {
-  $posi_obj =& $posi_handler->get( $posi_id );
-  $posi_obj->set( 'posi_title', $title );
-  $posi_obj->set( 'posi_order', $post_vals['order'][$posi_id] );
-  $posi_handler->insert( $posi_obj );
+$posiHandler = xoonips_getOrmHandler('xoonips', 'positions');
+foreach ($post_vals['title'] as $posi_id => $title) {
+    $posi_obj = $posiHandler->get($posi_id);
+    $posi_obj->set('posi_title', $title);
+    $posi_obj->set('posi_order', $post_vals['order'][$posi_id]);
+    $posiHandler->insert($posi_obj);
 }
 
-redirect_header( $xoonips_admin['mypage_url'], 3, _AM_XOONIPS_MSG_DBUPDATED );
-
-?>
+redirect_header($xoonips_admin['mypage_url'], 3, _AM_XOONIPS_MSG_DBUPDATED);

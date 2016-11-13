@@ -25,33 +25,62 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-class XooNIpsItemEventDispatcher{
-    
-    var $_listeners = array();
-    
-    function &getInstance(){
+/**
+ * Class XooNIpsItemEventDispatcher
+ */
+class XooNIpsItemEventDispatcher
+{
+    public $_listeners = array();
+
+    /**
+     * @return XooNIpsItemEventDispatcher
+     */
+    public static function getInstance()
+    {
         static $singleton_;
         if ($singleton_ == null) {
             $singleton_ = new XooNIpsItemEventDispatcher();
         }
         return $singleton_;
     }
-    
-    function registerEvent( &$instance ){
-        if (!in_array($instance, $this->_listeners))
-          $this->_listeners[] =& $instance;
-    }
-    
-    function onUpdate( $item_id ){
-        foreach( $this -> _listeners as $l ) $l -> onUpdate( $item_id );
+
+    /**
+     * @param $instance
+     */
+    public function registerEvent($instance)
+    {
+        if (!in_array($instance, $this->_listeners)) {
+            $this->_listeners[] = $instance;
+        }
     }
 
-    function onDelete( $item_id ){
-        foreach( $this -> _listeners as $l ) $l -> onDelete( $item_id );
+    /**
+     * @param $item_id
+     */
+    public function onUpdate($item_id)
+    {
+        foreach ($this->_listeners as $l) {
+            $l->onUpdate($item_id);
+        }
     }
 
-    function onRegister( $item_id ){
-        foreach( $this -> _listeners as $l ) $l -> onRegister( $item_id );
+    /**
+     * @param $item_id
+     */
+    public function onDelete($item_id)
+    {
+        foreach ($this->_listeners as $l) {
+            $l->onDelete($item_id);
+        }
+    }
+
+    /**
+     * @param $item_id
+     */
+    public function onRegister($item_id)
+    {
+        foreach ($this->_listeners as $l) {
+            $l->onRegister($item_id);
+        }
     }
 }
-?>

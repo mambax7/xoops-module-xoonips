@@ -24,24 +24,31 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
-require_once __DIR__.'/abstract_ranking.class.php';
-require_once __DIR__.'/ranking_searched_keyword.class.php';
+require_once __DIR__ . '/abstract_ranking.class.php';
+require_once __DIR__ . '/ranking_searched_keyword.class.php';
 
 /**
  * @brief handler object of ranking sum searched keyword
  *
  */
-class XooNIpsOrmRankingSumSearchedKeywordHandler extends XooNIpsOrmRankingSearchedKeywordHandler {
-  function XooNIpsOrmRankingSumSearchedKeywordHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmRankingSearchedKeyword', 'xoonips_ranking_sum_searched_keyword', 'keyword', false, true );
-    $this->_set_columns( array( 'keyword', 'count' ) );
-    $this->_set_sum_table();
-  }
+class XooNIpsOrmRankingSumSearchedKeywordHandler extends XooNIpsOrmRankingSearchedKeywordHandler
+{
+    /**
+     * XooNIpsOrmRankingSumSearchedKeywordHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmRankingSearchedKeyword', 'xoonips_ranking_sum_searched_keyword', 'keyword', false, true);
+        $this->_set_columns(array(
+                                'keyword',
+                                'count'
+                            ));
+        $this->_set_sum_table();
+    }
 }
-
-?>

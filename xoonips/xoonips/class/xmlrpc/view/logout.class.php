@@ -42,9 +42,8 @@ class XooNIpsXmlRpcViewLogout extends XooNIpsXmlRpcViewElement
      *
      * @return XoopsXmlRpcTag
      */
-    function render() 
+    public function render()
     {
         return new XoopsXmlRpcString('logged out');
     }
 }
-?>

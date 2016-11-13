@@ -24,66 +24,64 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-require_once( '../../../include/cp_header.php' );
+require_once __DIR__ . '/../../../include/cp_header.php';
 
 // load common file.
-include 'actions/common.inc.php';
+include __DIR__ . '/actions/common.inc.php';
 
 // page definition
-$pages = array();
-$pages['main'] = array();
-$pages['account'] = array(
-  'get' => array(
-    'modify',
-    'add',
-    'dconfirm',
-  ),
-  'post' => array(
-    'update',
-    'activate',
-    'delete',
-  ),
+$pages               = array();
+$pages['main']       = array();
+$pages['account']    = array(
+    'get'  => array(
+        'modify',
+        'add',
+        'dconfirm',
+    ),
+    'post' => array(
+        'update',
+        'activate',
+        'delete',
+    ),
 );
-$pages['item'] = array(
-  'get' => array(
-    'withdraw',
-    'delete',
-    'transfer',
-  ),
-  'post' => array(
-    'wupdate',
-    'dupdate',
-    'transfer',
-    'tconfirm',
-    'tupdate',
-  ),
+$pages['item']       = array(
+    'get'  => array(
+        'withdraw',
+        'delete',
+        'transfer',
+    ),
+    'post' => array(
+        'wupdate',
+        'dupdate',
+        'transfer',
+        'tconfirm',
+        'tupdate',
+    ),
 );
-$pages['ranking'] = array(
-  'get' => array(
-    'download',
-  ),
-  'post' => array(
-    'download',
-    'upload',
-    'clear',
-  ),
+$pages['ranking']    = array(
+    'get'  => array(
+        'download',
+    ),
+    'post' => array(
+        'download',
+        'upload',
+        'clear',
+    ),
 );
-$pages['position'] = array(
-  'post' => array(
-    'update',
-  ),
+$pages['position']   = array(
+    'post' => array(
+        'update',
+    ),
 );
 $pages['filesearch'] = array(
-  'post' => array(
-    'rescan',
-  ),
+    'post' => array(
+        'rescan',
+    ),
 );
-$pages['oaipmh'] = array();
+$pages['oaipmh']     = array();
 
 // initialize
-xoonips_admin_initialize( __FILE__, 'maintenance', $pages );
+xoonips_admin_initialize(__FILE__, 'maintenance', $pages);
 
 // call action file
 include $xoonips_admin['myaction_path'];
-
-?>

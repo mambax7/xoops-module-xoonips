@@ -25,22 +25,32 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once dirname( __DIR__ ) . '/base/view.class.php';
+include_once __DIR__ . '/../base/view.class.php';
 
-class XooNIpsViewImportConfirm extends XooNIpsView{
-    
-    function XooNIpsViewImportConfirm($response){
-        parent::XooNIpsView($response);
+/**
+ * Class XooNIpsViewImportConfirm
+ */
+class XooNIpsViewImportConfirm extends XooNIpsView
+{
+    /**
+     * XooNIpsViewImportConfirm constructor.
+     * @param associative $response
+     */
+    public function __construct($response)
+    {
+        parent::__construct($response);
     }
-    
-    function render(){
+
+    /**
+     *
+     */
+    public function render()
+    {
         global $xoopsOption, $xoopsConfig, $xoopsUser, $xoopsUserIsAdmin, $xoopsLogger, $xoopsTpl;
-        
-        $xoopsOption['template_main'] = 'xoonips_import_confirm.html';
-        include XOOPS_ROOT_PATH.'/header.php';
-        $xoopsTpl -> assign( 'token_hidden', $this -> _params['ticket_html'] );
-        include XOOPS_ROOT_PATH.'/footer.php';
+
+        $GLOBALS['xoopsOption']['template_main'] = 'xoonips_import_confirm.tpl';
+        include XOOPS_ROOT_PATH . '/header.php';
+        $xoopsTpl->assign('token_hidden', $this->_params['ticket_html']);
+        include XOOPS_ROOT_PATH . '/footer.php';
     }
 }
-
-?>

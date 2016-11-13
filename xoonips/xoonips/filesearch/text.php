@@ -27,16 +27,16 @@
 /**
  * file search plugin class for TEXT
  */
-class XooNIpsFileSearchPluginTEXT extends XooNIpsFileSearchPlugin {
+class XooNIpsFileSearchPluginTEXT extends XooNIpsFileSearchPlugin
+{
 
-  /**
-   * constractor
-   */
-  function XooNIpsFileSearchPluginTEXT() {
-    parent::XooNIpsFileSearchPlugin();
-    $this->is_xml = false;
-    $this->is_utf8 = false;
-  }
+    /**
+     * constractor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->is_xml  = false;
+        $this->is_utf8 = false;
+    }
 }
-
-?>

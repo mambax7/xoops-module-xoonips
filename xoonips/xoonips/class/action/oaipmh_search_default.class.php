@@ -25,108 +25,133 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once dirname( dirname( __DIR__ ) )
-    .'/class/base/action.class.php';
+include_once __DIR__ . '/../base/action.class.php';
 
-class XooNIpsActionOaipmhSearchDefault extends XooNIpsAction{
-    
-    function XooNIpsActionOaipmhSearchDefault(){
-        parent::XooNIpsAction();
+/**
+ * Class XooNIpsActionOaipmhSearchDefault
+ */
+class XooNIpsActionOaipmhSearchDefault extends XooNIpsAction
+{
+    /**
+     * XooNIpsActionOaipmhSearchDefault constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
     }
-    
-    function _get_logic_name(){
+
+    /**
+     * @return null
+     */
+    public function _get_logic_name()
+    {
         return null;
     }
-    
-    function _get_view_name(){
-        return "oaipmh_search_default";
+
+    /**
+     * @return string
+     */
+    public function _get_view_name()
+    {
+        return 'oaipmh_search_default';
     }
-    
-    function preAction(){
+
+    public function preAction()
+    {
         xoonips_allow_both_method();
     }
-    
-    function doAction(){
+
+    public function doAction()
+    {
         global $xoopsUser;
-        $textutil=&xoonips_getutility('text');
-        
-        $repository_id = $this->_formdata->getValue( 'post', 'repository_id', 'i', false );
-        if( !is_null( $repository_id ) ) {
-            xoonips_validate_request( $this->isValidRepositoryId( $repository_id ) );
+        $textutil = xoonips_getUtility('text');
+
+        $repository_id = $this->_formdata->getValue('post', 'repository_id', 'i', false);
+        if (null !== $repository_id) {
+            xoonips_validate_request($this->isValidRepositoryId($repository_id));
         }
-        
-        $this -> _view_params['repository_id'] = $repository_id;
-        $this -> _view_params['keyword'] = $textutil->html_special_chars( $this->_formdata->getValue( 'post', 'keyword', 's', false ) );
-        $this -> _view_params['repositories'] = $this->getRepositoryArrays();
-        $this -> _view_params['total_repository_count'] 
-            = $this -> getTotalRepositoryCount();
-        $this -> _view_params['total_metadata_count'] 
-            = $this -> getTotalMetadataCount();
+
+        $this->_view_params['repository_id'] = $repository_id;
+        $this->_view_params['keyword']       = $textutil->html_special_chars($this->_formdata->getValue('post', 'keyword', 's', false));
+        $this->_view_params['repositories']  = $this->getRepositoryArrays();
+        $this->_view_params['total_repository_count']
+                                             = $this->getTotalRepositoryCount();
+        $this->_view_params['total_metadata_count']
+                                             = $this->getTotalMetadataCount();
     }
-    
+
     /**
-     * 
+     *
      * note: repository name is truncated in 70 chars
      * @access private
      * @return array of associative array of repository
      */
-    function getRepositoryArrays(){
-        $textutil =& xoonips_getutility( 'text' );
-        $handler =& xoonips_getormhandler( 'xoonips', 'oaipmh_repositories' );
-        
+    public function getRepositoryArrays()
+    {
+        $textutil = xoonips_getUtility('text');
+        $handler  = xoonips_getOrmHandler('xoonips', 'oaipmh_repositories');
+
         $criteria = new CriteriaCompo();
-        $criteria->add( new Criteria( 'last_success_date', null, '!=' ) );
-        $criteria->add( new Criteria( 'enabled', 1 ) );
-        $criteria->add( new Criteria( 'deleted', 0 ) );
-        $rows =& $handler->getObjects( $criteria );
-        if( !$rows ) return array();
+        $criteria->add(new Criteria('last_success_date', null, '!='));
+        $criteria->add(new Criteria('enabled', 1));
+        $criteria->add(new Criteria('deleted', 0));
+        $rows =  $handler->getObjects($criteria);
+        if (!$rows) {
+            return array();
+        }
         $result = array();
-        foreach( $rows as $row ){
-            $result[] = array('repository_id' => $row->getVar('repository_id', 's'),
-                              'repository_name' => $textutil->truncate(
-                                                                       ( trim( $row->getVar('repository_name', 's') ) != ''
-                                                                         ? $row->getVar('repository_name', 's')
-                                                                         : $row->getVar('URL', 's') ),
-                                                                       70, '...' ),
-                              'metadata_count' => $row->getVar('metadata_count', 's') );
+        foreach ($rows as $row) {
+            $result[] = array(
+                'repository_id'   => $row->getVar('repository_id', 's'),
+                'repository_name' => $textutil->truncate((trim($row->getVar('repository_name', 's')) != '' ? $row->getVar('repository_name',
+                                                                                                                          's') : $row->getVar('URL',
+                                                                                                                                              's')),
+                    70, '...'),
+                'metadata_count'  => $row->getVar('metadata_count', 's')
+            );
         }
         return $result;
     }
-    
+
     /**
      * number of all of metadata to search
      * @access private
      * @return integer
      */
-    function getTotalMetadataCount(){
+    public function getTotalMetadataCount()
+    {
         $result = 0;
-        foreach( $this->getRepositoryArrays() as $repo ){
+        foreach ($this->getRepositoryArrays() as $repo) {
             $result += $repo['metadata_count'];
         }
         return $result;
     }
-    
+
     /**
      * number of repositories to search
      * @access private
      * @return integer
      */
-    function getTotalRepositoryCount(){
-        return count( $this->getRepositoryArrays() );
+    public function getTotalRepositoryCount()
+    {
+        return count($this->getRepositoryArrays());
     }
-    
+
     /**
-     * 
+     *
      * @access private
      * @param $id repository id
      * @return bool true if valid repository id
      */
-    function isValidRepositoryId( $id ){
-        if( $id == 0 ) return true;
-        $handler =& xoonips_getormhandler( 'xoonips', 'oaipmh_repositories' );
-        
-        $rows =& $handler->getObjects( new Criteria( 'repository_id', addslashes($id) ) );
-                          
-        return $rows && count( $rows ) > 0;
+    public function isValidRepositoryId($id)
+    {
+        if ($id == 0) {
+            return true;
+        }
+        $handler = xoonips_getOrmHandler('xoonips', 'oaipmh_repositories');
+
+        $rows =  $handler->getObjects(new Criteria('repository_id', addslashes($id)));
+
+        return $rows && count($rows) > 0;
     }
 }

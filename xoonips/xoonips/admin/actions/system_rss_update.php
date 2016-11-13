@@ -24,44 +24,41 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 // check token ticket
-require_once( '../class/base/gtickets.php' );
+require_once __DIR__ . '/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_system_rss';
-if ( ! $xoopsGTicket->check( true, $ticket_area, false ) ) {
-  redirect_header( $xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors() );
-  exit();
+if (!$xoopsGTicket->check(true, $ticket_area, false)) {
+    redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
 }
 
 // get requests
 $post_keys = array(
-  'rss_item_max' => array(
-    'i',
-    false,
-    true,
-  ),
+    'rss_item_max' => array(
+        'i',
+        false,
+        true,
+    ),
 );
-$post_vals = xoonips_admin_get_requests( 'post', $post_keys );
+$post_vals = xoonips_admin_get_requests('post', $post_keys);
 
 // set config keys
 $config_keys = array();
-foreach ( $post_keys as $key => $attributes ) {
-  list( $data_type, $is_array, $required ) = $attributes;
-  $config_keys[$key] = $data_type;
+foreach ($post_keys as $key => $attributes) {
+    list($data_type, $is_array, $required) = $attributes;
+    $config_keys[$key] = $data_type;
 }
 
 // check values
-$config_vals = xoonips_admin_get_configs( $config_keys, 'n' );
+$config_vals = xoonips_admin_get_configs($config_keys, 'n');
 
 // rss item max
-if ( $post_vals['rss_item_max'] < 0 ) {
-  $post_vals['rss_item_max'] = 0;
+if ($post_vals['rss_item_max'] < 0) {
+    $post_vals['rss_item_max'] = 0;
 }
-xoonips_admin_set_config( 'rss_item_max', $post_vals['rss_item_max'], 'i' );
+xoonips_admin_set_config('rss_item_max', $post_vals['rss_item_max'], 'i');
 
-redirect_header( $xoonips_admin['mypage_url'], 3, _AM_XOONIPS_MSG_DBUPDATED );
-
-?>
+redirect_header($xoonips_admin['mypage_url'], 3, _AM_XOONIPS_MSG_DBUPDATED);

@@ -44,31 +44,31 @@ class XooNIpsXmlRpcLogicUpdateItem extends XooNIpsXmlRpcLogic
      *
      * @param[in] XooNIpsXmlRpcRequest $request
      * @param[out] XooNIpsXmlRpcResponse $response result of logic(success/fault, response, error)
+     * @return bool|void
      */
-    function execute(&$request, &$response) 
+    public function execute($request, $response)
     {
         // load logic instance
-        $factory = &XooNIpsLogicFactory::getInstance();
-        $logic = &$factory->create($request->getMethodName());
+        $factory = XooNIpsLogicFactory::getInstance();
+        $logic   = $factory->create($request->getMethodName());
         if (!is_object($logic)) {
             $response->setResult(false);
-            $error = &$response->getError();
+            $error =  $response->getError();
             $logic = $request->getMethodName();
             $error->add(XNPERR_SERVER_ERROR, "can't create a logic of $logic");
             return;
         }
         //
-        $params = &$request->getParams();
-        $vars = array();
-        if ( count($params) < 2 ){
+        $params =  $request->getParams();
+        $vars   = array();
+        if (count($params) < 2) {
             $response->setResult(false);
-            $error = &$response->getError();
+            $error =  $response->getError();
             $error->add(XNPERR_MISSING_PARAM);
             return false;
-        }
-        else if ( count($params) > 2 ){
+        } elseif (count($params) > 2) {
             $response->setResult(false);
-            $error = &$response->getError();
+            $error =  $response->getError();
             $error->add(XNPERR_EXTRA_PARAM);
             return false;
         }
@@ -79,38 +79,38 @@ class XooNIpsXmlRpcLogicUpdateItem extends XooNIpsXmlRpcLogic
         // transform array to object
         // parameter 2(item structure) to XooNIpsItemCompo object
         // using XooNIpsTransformCompo<itemtype>
-        $item_type_id = intval($params[1]['itemtype']);
-        $itemtype_handler = &xoonips_getormhandler('xoonips', 'item_type');
-        $itemtype = &$itemtype_handler->get($item_type_id);
+        $item_type_id    = (int)$params[1]['itemtype'];
+        $itemtypeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
+        $itemtype        = $itemtypeHandler->get($item_type_id);
         if (!$itemtype) {
             $response->setResult(false);
             $response->setError(new XooNIpsError(XNPERR_INVALID_PARAM, "item type of $item_type_id is not found"));
             return false;
         }
         //
-        $factory = &XooNIpsXmlRpcTransformCompoFactory::getInstance();
-        $trans = &$factory->create($itemtype->get('name'));
+        $factory = XooNIpsXmlRpcTransformCompoFactory::getInstance();
+        $trans   = $factory->create($itemtype->get('name'));
         $missing = array();
         if (!$trans->isFilledRequired($params[1], $missing)) {
             $response->setResult(false);
-            $err = &$response->getError();
-            foreach($missing as $m) {
+            $err =  $response->getError();
+            foreach ($missing as $m) {
                 $err->add(XNPERR_INCOMPLETE_PARAM, $m);
             }
             return false;
         }
         // check mulitple of each variable
         $fields = array();
-        if( !$trans->checkMultipleFields($params[1], $fields) ){
+        if (!$trans->checkMultipleFields($params[1], $fields)) {
             $response->setResult(false);
-            $err = &$response->getError();
-            foreach($fields as $m) {
+            $err =  $response->getError();
+            foreach ($fields as $m) {
                 $err->add(XNPERR_INCOMPLETE_PARAM, $m);
             }
             return false;
         }
         // check fields
-        if( !$trans->checkFields($params[1], $response->getError()) ){
+        if (!$trans->checkFields($params[1], $response->getError())) {
             // some fields have invalid value
             return false;
         }
@@ -126,4 +126,3 @@ class XooNIpsXmlRpcLogicUpdateItem extends XooNIpsXmlRpcLogic
         $response->setSuccess($xoonips_response->getSuccess());
     }
 }
-?>

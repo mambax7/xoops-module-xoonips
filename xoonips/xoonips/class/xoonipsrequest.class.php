@@ -37,18 +37,18 @@ class XooNIpsRequest
      *
      * @brief requested logic name
      */
-    var $method = false;
+    public $method = false;
 
     /**
      *
      * @brief parameters
      */
-    var $vars = false;
+    public $vars = false;
 
     /**
      * @brief get requested logic name
      */
-    function &getMethod() 
+    public function &getMethod()
     {
         return $this->method;
     }
@@ -56,18 +56,24 @@ class XooNIpsRequest
     /**
      * @brief get all parameters.
      */
-    function &getVars() 
+    public function &getVars()
     {
         return $this->vars;
     }
-    function setMethod($method) 
+
+    /**
+     * @param $method
+     */
+    public function setMethod($method)
     {
         $this->method = $method;
     }
-    function setVars(&$params) 
+
+    /**
+     * @param $params
+     */
+    public function setVars($params)
     {
-        $this->vars = $params;
+        $this->vars =& $params;
     }
 }
-
-?>

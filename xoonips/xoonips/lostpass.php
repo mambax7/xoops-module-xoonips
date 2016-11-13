@@ -25,86 +25,82 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-$xoopsOption['pagetype'] = "user";
-include 'include/common.inc.php';
+$xoopsOption['pagetype'] = 'user';
+include __DIR__ . '/include/common.inc.php';
 
-$uid = is_object( $xoopsUser ) ? $xoopsUser->getVar( 'uid', 'n' ) : UID_GUEST;
+$uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
 
-if ( $uid != UID_GUEST ) {
-  // deny to access from registered user
-  redirect_header( XOOPS_URL.'/', 3, _NOPERM );
-  exit();
+if ($uid != UID_GUEST) {
+    // deny to access from registered user
+    redirect_header(XOOPS_URL . '/', 3, _NOPERM);
 }
 
-$formdata =& xoonips_getutility( 'formdata' );
-$email = $formdata->getValue( 'both', 'email', 's', true );
+$formdata = xoonips_getUtility('formdata');
+$email    = $formdata->getValue('both', 'email', 's', true);
 
-$myxoopsConfig =& xoonips_get_xoops_configs( XOOPS_CONF );
+$myxoopsConfig = xoonips_get_xoops_configs(XOOPS_CONF);
 
-$member_handler =& xoops_gethandler( 'member' );
-$getuser =& $member_handler->getUsers( new Criteria( 'email', addslashes( $email ) ) );
+$memberHandler = xoops_getHandler('member');
+$getuser       = $memberHandler->getUsers(new Criteria('email', addslashes($email)));
 
-if ( count( $getuser ) != 1 ) {
-  redirect_header( 'user.php', 2, _US_SORRYNOTFOUND );
-  exit();
+if (count($getuser) != 1) {
+    redirect_header('user.php', 2, _US_SORRYNOTFOUND);
 }
 
-$code = $formdata->getValue( 'get', 'code', 's', false );
-$areyou = substr( $getuser[0]->getVar( 'pass', 's' ), 0, 5 );
-if ( ! is_null( $code ) && $areyou == $code ) {
-  $newpass = xoops_makepass();
-  $xoopsMailer =& getMailer();
-  $xoopsMailer->useMail();
-  $xoopsMailer->setTemplate( 'lostpass2.tpl' );
-  $xoopsMailer->assign( 'SITENAME', $myxoopsConfig['sitename'] );
-  $xoopsMailer->assign( 'ADMINMAIL', $myxoopsConfig['adminmail'] );
-  $xoopsMailer->assign( 'SITEURL', XOOPS_URL.'/' );
-  $xoopsMailer->assign( 'IP', $_SERVER['REMOTE_ADDR'] );
-  $xoopsMailer->assign( 'NEWPWD', $newpass );
-  $xoopsMailer->setToUsers( $getuser[0] );
-  $xoopsMailer->setFromEmail( $myxoopsConfig['adminmail'] );
-  $xoopsMailer->setFromName( $myxoopsConfig['sitename'] );
-  $xoopsMailer->setSubject( sprintf( _US_NEWPWDREQ,XOOPS_URL ) );
-  if ( !$xoopsMailer->send() ) {
-    echo $xoopsMailer->getErrors();
-  }
-  // Next step: add the new password to the database
-  $sql = sprintf( 'UPDATE `%s` SET `pass`=%s WHERE `uid`=%u', $xoopsDB->prefix( 'users' ), $xoopsDB->quoteString( md5( $newpass ) ), $getuser[0]->getVar( 'uid', 's' ) );
-  if ( ! $xoopsDB->queryF( $sql ) ) {
-    include XOOPS_ROOT_PATH.'/header.php';
-    echo _US_MAILPWDNG;
-    include XOOPS_ROOT_PATH.'/footer.php';
-    exit();
-  }
-  redirect_header( 'user.php', 3, sprintf( _US_PWDMAILED, $getuser[0]->getVar( 'uname' ) ), false );
-  exit();
+$code   = $formdata->getValue('get', 'code', 's', false);
+$areyou = substr($getuser[0]->getVar('pass', 's'), 0, 5);
+if (null !== $code && $areyou == $code) {
+    $newpass     = xoops_makepass();
+    $xoopsMailer = getMailer();
+    $xoopsMailer->useMail();
+    $xoopsMailer->setTemplate('lostpass2.tpl');
+    $xoopsMailer->assign('SITENAME', $myxoopsConfig['sitename']);
+    $xoopsMailer->assign('ADMINMAIL', $myxoopsConfig['adminmail']);
+    $xoopsMailer->assign('SITEURL', XOOPS_URL . '/');
+    $xoopsMailer->assign('IP', $_SERVER['REMOTE_ADDR']);
+    $xoopsMailer->assign('NEWPWD', $newpass);
+    $xoopsMailer->setToUsers($getuser[0]);
+    $xoopsMailer->setFromEmail($myxoopsConfig['adminmail']);
+    $xoopsMailer->setFromName($myxoopsConfig['sitename']);
+    $xoopsMailer->setSubject(sprintf(_US_NEWPWDREQ, XOOPS_URL));
+    if (!$xoopsMailer->send()) {
+        echo $xoopsMailer->getErrors();
+    }
+    // Next step: add the new password to the database
+    $sql = sprintf('UPDATE `%s` SET `pass`=%s WHERE `uid`=%u', $xoopsDB->prefix('users'), $xoopsDB->quoteString(md5($newpass)),
+                   $getuser[0]->getVar('uid', 's'));
+    if (!$xoopsDB->queryF($sql)) {
+        include XOOPS_ROOT_PATH . '/header.php';
+        echo _US_MAILPWDNG;
+        include XOOPS_ROOT_PATH . '/footer.php';
+        exit();
+    }
+    redirect_header('user.php', 3, sprintf(_US_PWDMAILED, $getuser[0]->getVar('uname')), false);
 } else {
-  // If no validation code, send it
-  if ( ! is_null( $code ) ) {
-    // if invalid code send, die process
-    // die( 'invalid code request' );
-    die( 'Your new password has been send to your email address. Please check your email again.' );
-  }
-  $xoopsMailer =& getMailer();
-  $xoopsMailer->useMail();
-  $xoopsMailer->setTemplate("lostpass1.tpl");
-  $xoopsMailer->assign("SITENAME", $myxoopsConfig['sitename']);
-  $xoopsMailer->assign("ADMINMAIL", $myxoopsConfig['adminmail']);
-  $xoopsMailer->assign("SITEURL", XOOPS_URL."/");
-  $xoopsMailer->assign("IP", $_SERVER['REMOTE_ADDR']);
-  $xoopsMailer->assign("NEWPWD_LINK", XOOPS_URL."/modules/xoonips/lostpass.php?email=".$email."&code=".$areyou);
-  $xoopsMailer->setToUsers($getuser[0]);
-  $xoopsMailer->setFromEmail($myxoopsConfig['adminmail']);
-  $xoopsMailer->setFromName($myxoopsConfig['sitename']);
-  $xoopsMailer->setSubject(sprintf(_US_NEWPWDREQ,$myxoopsConfig['sitename']));
-  include XOOPS_ROOT_PATH.'/header.php';
-  if ( !$xoopsMailer->send() ) {
-    echo $xoopsMailer->getErrors();
-  }
-  echo "<h4>";
-  printf(_US_CONFMAIL,$getuser[0]->getVar("uname"));
-  echo "</h4>";
-  include XOOPS_ROOT_PATH.'/footer.php';
+    // If no validation code, send it
+    if (null !== $code) {
+        // if invalid code send, die process
+        // die( 'invalid code request' );
+        die('Your new password has been send to your email address. Please check your email again.');
+    }
+    $xoopsMailer = getMailer();
+    $xoopsMailer->useMail();
+    $xoopsMailer->setTemplate('lostpass1.tpl');
+    $xoopsMailer->assign('SITENAME', $myxoopsConfig['sitename']);
+    $xoopsMailer->assign('ADMINMAIL', $myxoopsConfig['adminmail']);
+    $xoopsMailer->assign('SITEURL', XOOPS_URL . '/');
+    $xoopsMailer->assign('IP', $_SERVER['REMOTE_ADDR']);
+    $xoopsMailer->assign('NEWPWD_LINK', XOOPS_URL . '/modules/xoonips/lostpass.php?email=' . $email . '&code=' . $areyou);
+    $xoopsMailer->setToUsers($getuser[0]);
+    $xoopsMailer->setFromEmail($myxoopsConfig['adminmail']);
+    $xoopsMailer->setFromName($myxoopsConfig['sitename']);
+    $xoopsMailer->setSubject(sprintf(_US_NEWPWDREQ, $myxoopsConfig['sitename']));
+    include XOOPS_ROOT_PATH . '/header.php';
+    if (!$xoopsMailer->send()) {
+        echo $xoopsMailer->getErrors();
+    }
+    echo '<h4>';
+    printf(_US_CONFMAIL, $getuser[0]->getVar('uname'));
+    echo '</h4>';
+    include XOOPS_ROOT_PATH . '/footer.php';
 }
-
-?>

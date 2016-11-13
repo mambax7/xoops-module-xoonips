@@ -30,7 +30,10 @@
  */
 class XooNIpsLogicFactory
 {
-    function XooNIpsLogicFactory() 
+    /**
+     * XooNIpsLogicFactory constructor.
+     */
+    public function __construct()
     {
     }
 
@@ -39,10 +42,12 @@ class XooNIpsLogicFactory
      *
      * @return XooNIpsLogicFactory
      */
-    function &getInstance() 
+    public static function getInstance()
     {
         static $singleton = null;
-        if (!isset($singleton)) $singleton = new XooNIpsLogicFactory();
+        if (!isset($singleton)) {
+            $singleton = new XooNIpsLogicFactory();
+        }
         return $singleton;
     }
 
@@ -52,15 +57,18 @@ class XooNIpsLogicFactory
      * @param string $name logic name
      * @retval XooNIpsLogic corresponding to $name
      * @retval false unknown logic
+     * @return bool|null
      */
-    function &create($name) 
+    public function create($name)
     {
         static $falseVar = false;
         $logic = null;
         //
         $name = trim($name);
-        if (false !== strstr($name, '..')) return $falseVar;
-        $include_file = XOOPS_ROOT_PATH . "/modules/xoonips/class/logic/" . strtolower($name) . ".class.php";
+        if (false !== strstr($name, '..')) {
+            return $falseVar;
+        }
+        $include_file = XOOPS_ROOT_PATH . '/modules/xoonips/class/logic/' . strtolower($name) . '.class.php';
         if (file_exists($include_file)) {
             include_once $include_file;
         } else {
@@ -76,8 +84,10 @@ class XooNIpsLogicFactory
             trigger_error('Handler does not exist. Name: ' . $name, E_USER_ERROR);
         }
         // return result
-        if (isset($logic)) return $logic;
-        else return $falseVar;
+        if (isset($logic)) {
+            return $logic;
+        } else {
+            return $falseVar;
+        }
     }
 }
-?>

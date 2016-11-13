@@ -25,110 +25,123 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-class Junii2ListRecordsHandler extends ListRecordsHandler{
-    var $_support_tags = array(
-        'ALTERNATIVE',
-        'SUBJECT',
-        'NIISUBJECT',
-        'NDC',
-        'NDLC',
-        'BSH',
-        'NDLSH',
-        'MESH',
-        'DDC',
-        'LCC',
-        'UDC',
-        'LCSH',
-        'DESCRIPTION',
-        'PUBLISHER',
-        'CONTRIBUTOR',
-        'DATE',
-        'TYPE',
-        'NIITYPE',
-        'FORMAT',
-        'IDENTIFIER',
-        'URI',
-        'FULLTEXTURL',
-        'ISSN',
-        'NCID',
-        'JTITLE',
-        'VOLUME',
-        'ISSUE',
-        'SPAGE',
-        'EPAGE',
-        'DATEOFISSUED',
-        'SOURCE',
-        'LANGUAGE',
-        'RELATION',
-        'PMID',
-        'DOI',
-        'ISVERSIONOF',
-        'HASVERSION',
-        'ISREPLACEDBY',
-        'REPLACES',
-        'ISREQUIREDBY',
-        'REQUIRES',
-        'ISPARTOF',
-        'HASPART',
-        'ISREFERENCEDBY',
-        'REFERENCES',
-        'ISFORMATOF',
-        'HASFORMAT',
-        'COVERAGE',
-        'SPATIAL',
-        'NIISPATIAL',
-        'TEMPORAL',
-        'NIITEMPORAL',
-        'RIGHTS',
-        'TEXTVERSION'
+/**
+ * Class Junii2ListRecordsHandler
+ */
+class Junii2ListRecordsHandler extends ListRecordsHandler
+{
+    public $_support_tags
+        = array(
+            'ALTERNATIVE',
+            'SUBJECT',
+            'NIISUBJECT',
+            'NDC',
+            'NDLC',
+            'BSH',
+            'NDLSH',
+            'MESH',
+            'DDC',
+            'LCC',
+            'UDC',
+            'LCSH',
+            'DESCRIPTION',
+            'PUBLISHER',
+            'CONTRIBUTOR',
+            'DATE',
+            'TYPE',
+            'NIITYPE',
+            'FORMAT',
+            'IDENTIFIER',
+            'URI',
+            'FULLTEXTURL',
+            'ISSN',
+            'NCID',
+            'JTITLE',
+            'VOLUME',
+            'ISSUE',
+            'SPAGE',
+            'EPAGE',
+            'DATEOFISSUED',
+            'SOURCE',
+            'LANGUAGE',
+            'RELATION',
+            'PMID',
+            'DOI',
+            'ISVERSIONOF',
+            'HASVERSION',
+            'ISREPLACEDBY',
+            'REPLACES',
+            'ISREQUIREDBY',
+            'REQUIRES',
+            'ISPARTOF',
+            'HASPART',
+            'ISREFERENCEDBY',
+            'REFERENCES',
+            'ISFORMATOF',
+            'HASFORMAT',
+            'COVERAGE',
+            'SPATIAL',
+            'NIISPATIAL',
+            'TEMPORAL',
+            'NIITEMPORAL',
+            'RIGHTS',
+            'TEXTVERSION'
         );
-    function Junii2ListRecordsHandler( $_parser, $_baseURL ){
-        parent::ListRecordsHandler( $_parser, $_baseURL, 'junii2' );
+
+    /**
+     * Junii2ListRecordsHandler constructor.
+     * @param $_parser
+     * @param $_baseURL
+     */
+    public function __construct($_parser, $_baseURL)
+    {
+        parent::__construct($_parser, $_baseURL, 'junii2');
     }
-    function __construct( $_parser, $_baseURL ){
-        $this->Junii2ListRecordsHandler( $_parser, $_baseURL );
-    }
-    
-    function startElementHandler( $parser, $name, $attrs ){
-        if( $this->getElementName( $name ) == 'JUNII2' ) {
-            $this -> _namespaces = $this -> getNamespaceArray( $attrs );
-            array_push( $this->tagstack, $name );
-        }else{
-            parent::startElementHandler( $parser, $name, $attrs );
+
+    /**
+     * @param $parser
+     * @param $name
+     * @param $attrs
+     */
+    public function startElementHandler($parser, $name, $attrs)
+    {
+        if ($this->getElementName($name) === 'JUNII2') {
+            $this->_namespaces = $this->getNamespaceArray($attrs);
+            array_push($this->tagstack, $name);
+        } else {
+            parent::startElementHandler($parser, $name, $attrs);
         }
     }
-    
-    function endElementHandler( $parser, $name ){
-        if( isset($this->tagstack[3])
-            && $this->getElementName( $this->tagstack[3] ) == 'HEADER'
-            || !in_array( $this->getElementName( end( $this->tagstack ) ),
-                          $this->_support_tags ) ){
-            parent::endElementHandler( $parser, $name );
-        }else if( $this->getElementName( end( $this->tagstack ) ) == 'DATE' ) {
+
+    /**
+     * @param $parser
+     * @param $name
+     */
+    public function endElementHandler($parser, $name)
+    {
+        if (isset($this->tagstack[3])
+            && $this->getElementName($this->tagstack[3]) === 'HEADER'
+            || !in_array($this->getElementName(end($this->tagstack)), $this->_support_tags)
+        ) {
+            parent::endElementHandler($parser, $name);
+        } elseif ($this->getElementName(end($this->tagstack)) === 'DATE') {
             $this->_creation_date = $this->_cdata_buf;
+            $this->search_text[]  = $this->_cdata_buf;
+            $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_DATE);
+            array_pop($this->tagstack);
+        } elseif ($this->getElementName(end($this->tagstack)) === 'DATEOFISSUED') {
+            $this->_date         = $this->_cdata_buf;
             $this->search_text[] = $this->_cdata_buf;
-            $this->addMetadataField(end( $this->tagstack ), $this->_cdata_buf,
-                                    XOONIPS_METADATA_CATEGORY_DATE );
-            array_pop( $this->tagstack );
-        }else if( $this->getElementName( end( $this->tagstack ) )
-                  == 'DATEOFISSUED' ) {
-            $this->_date = $this->_cdata_buf;
-            $this->search_text[] = $this->_cdata_buf;
-            $this->addMetadataField(
-                end( $this->tagstack ), $this->_cdata_buf,
-                XOONIPS_METADATA_CATEGORY_CREATION_DATE );
-            array_pop( $this->tagstack );
-        }else if( $this->getElementName( end( $this->tagstack ) ) == 'URI' ){
+            $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_CREATION_DATE);
+            array_pop($this->tagstack);
+        } elseif ($this->getElementName(end($this->tagstack)) === 'URI') {
             $this->_resource_url[] = $this->_cdata_buf;
-            $this->search_text[] = $this->_cdata_buf;
-            $this->addMetadataField(
-                end( $this->tagstack ), $this->_cdata_buf,
-                XOONIPS_METADATA_CATEGORY_RESOURCE_LINK);
-            array_pop( $this->tagstack );
-        }else{
-            $this->addMetadataField(end( $this->tagstack ), $this->_cdata_buf);
-            array_pop( $this->tagstack );
+            $this->search_text[]   = $this->_cdata_buf;
+            $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_RESOURCE_LINK);
+            array_pop($this->tagstack);
+        } else {
+            $this->addMetadataField(end($this->tagstack), $this->_cdata_buf);
+            array_pop($this->tagstack);
         }
     }
 }
-

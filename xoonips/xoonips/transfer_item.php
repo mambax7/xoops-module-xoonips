@@ -25,40 +25,46 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include 'include/common.inc.php';
+include __DIR__ . '/include/common.inc.php';
 
-include_once 'class/base/actionfactory.class.php';
+include_once __DIR__ . '/class/base/actionfactory.class.php';
 
-$formdata =& xoonips_getutility( 'formdata' );
-$op = $formdata->getValue( 'get', 'action', 'n', false );
-if( empty( $op ) ){
-    header( 'Location: '.XOOPS_URL 
-            .'/modules/xoonips/transfer_item.php?action=request_initialize' );
+$formdata = xoonips_getUtility('formdata');
+$op       = $formdata->getValue('get', 'action', 'n', false);
+if (empty($op)) {
+    header('Location: ' . XOOPS_URL . '/modules/xoonips/transfer_item.php?action=request_initialize');
     exit(0);
 }
 
-xoonips_validate_request( is_valid_action( $op ) );
+xoonips_validate_request(is_valid_action($op));
 
 // disable to link index tree
 $xoonipsURL = '';
 
-$factory =& XooNIpsActionFactory::getInstance();
-$action =& $factory -> create( 'transfer_user_'.$op );
-if ( ! $action ) {
-  header( 'Location: '.XOOPS_URL.'/' );
-  exit(0);
+$factory = XooNIpsActionFactory::getInstance();
+$action  = $factory->create('transfer_user_' . $op);
+if (!$action) {
+    header('Location: ' . XOOPS_URL . '/');
+    exit(0);
 }
 $action->action();
 exit(0);
 
-function is_valid_action( $action ){
-    return in_array( $action, array( 'accept',
-                                     'detail_item',
-                                     'list_item',
-                                     'reject',
-                                     'request',
-                                     'request_check',
-                                     'request_initialize',
-                                     'request_select_item',
-                                     'request_unselect_item' ) );
+/**
+ * @param $action
+ * @return bool
+ */
+function is_valid_action($action)
+{
+    return in_array($action, array(
+        'accept',
+        'detail_item',
+        'list_item',
+        'reject',
+        'request',
+        'request_check',
+        'request_initialize',
+        'request_select_item',
+        'request_unselect_item'
+    ));
 }

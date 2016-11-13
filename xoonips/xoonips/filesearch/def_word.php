@@ -32,8 +32,6 @@ $module['class_name']    = 'XooNIpsFileSearchPluginWORD';
 $module['php_file_name'] = 'word.php';
 $module['name']          = 'word';
 $module['display_name']  = 'MS-Word 95/97/2000/XP/2003';
-$module['mime_type']     = array( 'application/msword' );
-$module['extensions']    = array( 'doc' );
-$module['version']       = '2.0';
-// php-indent: enable
-?>
+$module['mime_type']     = array('application/msword');
+$module['extensions']    = array('doc');
+$module['version']       = '2.0';// php-indent: enable

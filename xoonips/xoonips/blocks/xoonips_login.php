@@ -24,43 +24,45 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 // xoonips login block
-function b_xoonips_login_show() {
-  global $xoopsUser;
+/**
+ * @return array|bool
+ */
+function b_xoonips_login_show()
+{
+    global $xoopsUser;
 
-  // hide block during site login
-  if ( is_object( $xoopsUser ) ) {
-    return false;
-  }
+    // hide block during site login
+    if (is_object($xoopsUser)) {
+        return false;
+    }
 
-  // get xoops configurations
-  $myxoopsConfig =& xoonips_get_xoops_configs( XOOPS_CONF );
-  $usercookie = $myxoopsConfig['usercookie'];
-  $use_ssl = $myxoopsConfig['use_ssl'];
-  $sslloginlink = $myxoopsConfig['sslloginlink'];
+    // get xoops configurations
+    $myxoopsConfig =  xoonips_get_xoops_configs(XOOPS_CONF);
+    $usercookie    = $myxoopsConfig['usercookie'];
+    $use_ssl       = $myxoopsConfig['use_ssl'];
+    $sslloginlink  = $myxoopsConfig['sslloginlink'];
 
-  // set variables
-  $block = array();
-  $block['lang_username'] = _MB_XOONIPS_LOGIN_USERNAME;
-  if ( $usercookie != '' && isset( $_COOKIE[$usercookie] ) ) {
-    $block['unamevalue'] = $_COOKIE[$usercookie];
-  } else {
-    $block['unamevalue'] = '';
-  }
-  $block['lang_password'] = _MB_XOONIPS_LOGIN_PASSWORD;
-  $block['lang_login'] = _MB_XOONIPS_LOGIN_LOGIN;
-  $block['lang_lostpass'] = _MB_XOONIPS_LOGIN_LOSTPASS;
-  $block['lang_registernow'] = _MB_XOONIPS_LOGIN_USERREG;
-  if ( $use_ssl == 1 && $sslloginlink != '' ) {
-    $block['use_ssl'] = $use_ssl;
-    $block['sslloginlink'] = $sslloginlink;
-  }
-  // $block['lang_rememberme'] = _MB_XOONIPS_LOGIN_REMEMBERME;
-  return $block;
+    // set variables
+    $block                  = array();
+    $block['lang_username'] = _MB_XOONIPS_LOGIN_USERNAME;
+    if ($usercookie != '' && isset($_COOKIE[$usercookie])) {
+        $block['unamevalue'] = $_COOKIE[$usercookie];
+    } else {
+        $block['unamevalue'] = '';
+    }
+    $block['lang_password']    = _MB_XOONIPS_LOGIN_PASSWORD;
+    $block['lang_login']       = _MB_XOONIPS_LOGIN_LOGIN;
+    $block['lang_lostpass']    = _MB_XOONIPS_LOGIN_LOSTPASS;
+    $block['lang_registernow'] = _MB_XOONIPS_LOGIN_USERREG;
+    if ($use_ssl == 1 && $sslloginlink != '') {
+        $block['use_ssl']      = $use_ssl;
+        $block['sslloginlink'] = $sslloginlink;
+    }
+    // $block['lang_rememberme'] = _MB_XOONIPS_LOGIN_REMEMBERME;
+    return $block;
 }
-
-?>

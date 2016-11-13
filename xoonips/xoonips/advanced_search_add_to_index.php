@@ -27,25 +27,22 @@
 
 // advanced search form for add to index
 
-include 'include/common.inc.php';
+include __DIR__ . '/include/common.inc.php';
 
 // access permission check
 if (!$xoopsUser) {
-  redirect_header('user.php',3,_MD_XOONIPS_ITEM_FORBIDDEN);
-  exit();
+    redirect_header('user.php', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
 }
 
-$pankuzu = "";
+$pankuzu = '';
 
 // disable to link index tree
 $xoonipsURL = '';
 
-$xoopsOption['template_main'] = 'xoonips_advanced_search_add_to_index.html';
+$GLOBALS['xoopsOption']['template_main'] = 'xoonips_advanced_search_add_to_index.tpl';
 
-include XOOPS_ROOT_PATH.'/header.php';
+include XOOPS_ROOT_PATH . '/header.php';
 
-include 'include/advanced_search.inc.php';
+include __DIR__ . '/include/advanced_search.inc.php';
 
-include XOOPS_ROOT_PATH.'/footer.php';
-
-?>
+include XOOPS_ROOT_PATH . '/footer.php';

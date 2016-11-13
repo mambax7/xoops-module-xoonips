@@ -26,41 +26,54 @@
 // ------------------------------------------------------------------------- //
 
 include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/relatedobject.class.php';
+
+/**
+ * Class XooNIpsUserCompoHandler
+ */
 class XooNIpsUserCompoHandler extends XooNIpsRelatedObjectHandler
 {
-    function XooNIpsUserCompoHandler(&$db) 
+    /**
+     * XooNIpsUserCompoHandler constructor.
+     * @param $db
+     */
+    public function __construct($db)
     {
-        $u_handler =& xoonips_getormhandler('xoonips', 'xoops_users');
-        $xu_handler =& xoonips_getormhandler('xoonips', 'users');
-        parent::XooNIpsRelatedObjectHandler($db);
-        parent::__init_handler('xoops_user', $u_handler, 'uid');
-        $this->addHandler('xoonips_user', $xu_handler, 'uid');
+        $uHandler  = xoonips_getOrmHandler('xoonips', 'xoops_users');
+        $xuHandler = xoonips_getOrmHandler('xoonips', 'users');
+        parent::__construct($db);
+        parent::__initHandler('xoops_user', $uHandler, 'uid');
+        $this->addHandler('xoonips_user', $xuHandler, 'uid');
     }
-    function &create() 
+
+    /**
+     * @return XooNIpsUserCompo
+     */
+    public function create()
     {
         $user = new XooNIpsUserCompo();
         return $user;
     }
 
     /**
-     * 
+     *
      * @access public
      * @param int $uid uid of transferee
      * @return true if uid is activated and certified user.
-     * 
+     *
      */
-    function isCertifiedUser( $uid ){
+    public function isCertifiedUser($uid)
+    {
         $c = new CriteriaCompo();
-        $c -> add( new Criteria( 'uid', intval( $uid ) ) );
-        $c -> add( new Criteria( 'level', 1, '>=' ) );
-        $rows =& $this->getObjects( $c );
-        if( $rows && count( $rows ) == 1 ){
-            $user = $rows[0]->getVar('xoonips_user' );
-            return $user->get( 'activate' ) == 1;
+        $c->add(new Criteria('uid', (int)$uid));
+        $c->add(new Criteria('level', 1, '>='));
+        $rows =&  $this->getObjects($c);
+        if ($rows && count($rows) == 1) {
+            $user = $rows[0]->getVar('xoonips_user');
+            return $user->get('activate') == 1;
         }
         return false;
     }
-    
+
     /**
      * delete user account and related data
      * - delete user account
@@ -71,61 +84,72 @@ class XooNIpsUserCompoHandler extends XooNIpsRelatedObjectHandler
      * - remove user from notifications
      * @access public
      * @param int $uid uid to be deleted
-     * 
+     *
+     * @return bool
      */
-    function deleteAccount($uid){
-        $criteria=new Criteria('uid', intval($uid));
-        
+    public function deleteAccount($uid)
+    {
+        $criteria = new Criteria('uid', (int)$uid);
+
         //delete user's item
-        $item_type_handler=&xoonips_getormhandler('xoonips', 'item_type');
-        foreach( $item_type_handler->getObjects() as $itemtype ){
-            if( $itemtype->get('item_type_id')==ITID_INDEX ) continue;
-            $item_handler =& xoonips_getormcompohandler($itemtype->get('name'), 'item');
-            if( !$item_handler ) continue;
-            foreach($item_handler->getObjects($criteria) as $item){
-                $item_handler->delete($item);
+        $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
+        foreach ($item_typeHandler->getObjects() as $itemtype) {
+            if ($itemtype->get('item_type_id') == ITID_INDEX) {
+                continue;
+            }
+            $itemHandler = xoonips_getOrmCompoHandler($itemtype->get('name'), 'item');
+            if (!$itemHandler) {
+                continue;
+            }
+            foreach ($itemHandler->getObjects($criteria) as $item) {
+                $itemHandler->delete($item);
             }
         }
-        
+
         //remove user from groups
-        $member_handler=&xoops_gethandler('member');
-        if( $member_handler->getUser($uid) ){
-            $member_handler->deleteUser($member_handler->getUser($uid));
+        $memberHandler = xoops_getHandler('member');
+        if ($memberHandler->getUser($uid)) {
+            $memberHandler->deleteUser($memberHandler->getUser($uid));
         }
-        
+
         //remove user from xoonips groups
-        $xgroups_users_link_handler=&xoonips_getormhandler('xoonips', 'groups_users_link');
-        $xgroups_users_link_handler->deleteAll($criteria);
-        
+        $xgroups_users_linkHandler = xoonips_getOrmHandler('xoonips', 'groups_users_link');
+        $xgroups_users_linkHandler->deleteAll($criteria);
+
         //delete index
-        $index_compo_handler=&xoonips_getormcompohandler('xoonips', 'index');
-        foreach( $index_compo_handler->getObjects($criteria) as $index ){
-            $index_compo_handler->delete($index);
+        $index_compoHandler = xoonips_getOrmCompoHandler('xoonips', 'index');
+        foreach ($index_compoHandler->getObjects($criteria) as $index) {
+            $index_compoHandler->delete($index);
         }
-        
+
         //remove user from notifications
-        $notification_handler=&xoops_gethandler('notification');
-        $notification_handler->deleteAll(new Criteria('not_uid', intval($uid)));
-        
+        $notificationHandler = xoops_getHandler('notification');
+        $notificationHandler->deleteAll(new Criteria('not_uid', (int)$uid));
+
         //delete xoonips user
-        $xu_handler =& xoonips_getormhandler('xoonips', 'users');
-        $xu_handler->deleteAll($criteria);
-        
+        $xuHandler = xoonips_getOrmHandler('xoonips', 'users');
+        $xuHandler->deleteAll($criteria);
+
         return true;
     }
-    
 }
+
+/**
+ * Class XooNIpsUserCompo
+ */
 class XooNIpsUserCompo extends XooNIpsRelatedObject
 {
-    function XooNIpsUserCompo() 
+    /**
+     * XooNIpsUserCompo constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsRelatedObject();
-        $u_handler =& xoonips_getormhandler('xoonips', 'xoops_users');
-        $u_obj =& $u_handler->create();
-        $xu_handler =& xoonips_getormhandler('xoonips', 'users');
-        $xu_obj =& $xu_handler->create();
+        parent::__construct();
+        $uHandler  = xoonips_getOrmHandler('xoonips', 'xoops_users');
+        $u_obj     = $uHandler->create();
+        $xuHandler = xoonips_getOrmHandler('xoonips', 'users');
+        $xu_obj    = $xuHandler->create();
         $this->initVar('xoops_user', $u_obj, 'uid', true);
         $this->initVar('xoonips_user', $xu_obj, 'uid', true);
     }
 }
-?>

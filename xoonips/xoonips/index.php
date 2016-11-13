@@ -25,51 +25,50 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 $xoopsOption['pagetype'] = 'user';
-include 'include/common.inc.php';
+include __DIR__ . '/include/common.inc.php';
 
-include_once 'include/lib.php';
-include_once 'include/AL.php';
+include_once __DIR__ . '/include/lib.php';
+include_once __DIR__ . '/include/AL.php';
 
 $xnpsid = $_SESSION['XNPSID'];
-if ( is_object( $xoopsUser ) ) {
-  $uid = $xoopsUser->getVar( 'uid', 'n' );
+if (is_object($xoopsUser)) {
+    $uid = $xoopsUser->getVar('uid', 'n');
 } else {
-  $uid = UID_GUEST;
+    $uid = UID_GUEST;
 }
 
-$xoopsOption['template_main'] = 'xoonips_index.html';
-include XOOPS_ROOT_PATH.'/header.php';
+$GLOBALS['xoopsOption']['template_main'] = 'xoonips_index.tpl';
+include XOOPS_ROOT_PATH . '/header.php';
 
 // exit at here if guest can't access /Public tree
-if ( ! xnp_is_valid_session_id( $xnpsid ) ) {
-  include XOOPS_ROOT_PATH.'/footer.php';
-  return;
+if (!xnp_is_valid_session_id($xnpsid)) {
+    include XOOPS_ROOT_PATH . '/footer.php';
+    return;
 }
 
 // get blocks
-$item_type_handler =& xoonips_getormhandler( 'xoonips', 'item_type' );
-$item_type_objs =& $item_type_handler->getObjectsSortByWeight();
-$blocks = array();
-foreach ( $item_type_objs as $item_type_obj ) {
-  $name = $item_type_obj->get( 'name' );
-  $file = XOOPS_ROOT_PATH.'/modules/'.$item_type_obj->get( 'viewphp' );
-  if ( file_exists( $file ) ) {
-    require_once $file;
-  }
-  $fname = $name.'GetTopBlock';
-  if ( function_exists( $fname ) ) {
-    $itemtype = $item_type_obj->getVarArray( 's' );
-    $html = $fname( $itemtype );
-    if ( ! empty( $html ) ) {
-      $blocks[] = $fname( $itemtype );
+$item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
+$item_type_objs   =  $item_typeHandler->getObjectsSortByWeight();
+$blocks           = array();
+foreach ($item_type_objs as $item_type_obj) {
+    $name = $item_type_obj->get('name');
+    $file = XOOPS_ROOT_PATH . '/modules/' . $item_type_obj->get('viewphp');
+    if (file_exists($file)) {
+        require_once $file;
     }
-  }
+    $fname = $name . 'GetTopBlock';
+    if (function_exists($fname)) {
+        $itemtype = $item_type_obj->getVarArray('s');
+        $html     = $fname($itemtype);
+        if (!empty($html)) {
+            $blocks[] = $fname($itemtype);
+        }
+    }
 }
 
-if ( count( $blocks ) != 0 ) {
-  $xoopsTpl->assign( 'blocks', $blocks );
+if (count($blocks) != 0) {
+    $xoopsTpl->assign('blocks', $blocks);
 }
 
-$xoopsTpl->assign( 'xoonips_editprofile_url', XOOPS_URL.'/modules/xoonips/edituser.php?uid='.$uid );
-include XOOPS_ROOT_PATH.'/footer.php';
-?>
+$xoopsTpl->assign('xoonips_editprofile_url', XOOPS_URL . '/modules/xoonips/edituser.php?uid=' . $uid);
+include XOOPS_ROOT_PATH . '/footer.php';

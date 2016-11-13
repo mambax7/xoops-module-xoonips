@@ -24,47 +24,49 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 //  Update script for XooNIps Url item type module
-function xoops_module_update_xnpurl( $xoopsMod, $oldversion ) {
-  global $xoopsDB;
+/**
+ * @param $xoopsMod
+ * @param $oldversion
+ * @return bool
+ */
+function xoops_module_update_xnpurl($xoopsMod, $oldversion)
+{
+    global $xoopsDB;
 
-  echo '<code>Updating modules...</code><br />';
-  switch ( $oldversion ) {
-  case 200:
-  case 310:
-    $sql = 'ALTER TABLE '.$xoopsDB->prefix( 'xnpurl_item_detail' ).' TYPE = innodb';
-    $result = $xoopsDB->query( $sql );
-    if ( ! $result ) {
-      echo 'ERROR: line='.__LINE__.' sql='.$sql.' '.$xoopsDB->error();
+    echo '<code>Updating modules...</code><br />';
+    switch ($oldversion) {
+        case 200:
+        case 310:
+            $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('xnpurl_item_detail') . ' TYPE = innodb';
+            $result = $xoopsDB->query($sql);
+            if (!$result) {
+                echo 'ERROR: line=' . __LINE__ . ' sql=' . $sql . ' ' . $xoopsDB->error();
+            }
+        case 311:
+        case 330:
+        case 331:
+        case 332:
+            // Notice:
+            //   version 333-339 are reserved number for future releases of
+            //   RELENG_3_3 branch. don't change database structure after
+            //   3.40 released.
+        case 333:
+        case 334:
+        case 335:
+        case 336:
+        case 337:
+        case 338:
+        case 339:
+            $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('xnpurl_item_detail') . ' ADD COLUMN (url_count int(10) unsigned NOT NULL default 0)';
+            $result = $xoopsDB->query($sql);
+            if (!$result) {
+                echo 'ERROR: line=' . __LINE__ . ' sql=' . $sql . ' ' . $xoopsDB->error();
+            }
+        case 340:
+        default:
     }
-  case 311:
-  case 330:
-  case 331:
-  case 332:
-    // Notice:
-    //   version 333-339 are reserved number for future releases of
-    //   RELENG_3_3 branch. don't change database structure after
-    //   3.40 released.
-  case 333:
-  case 334:
-  case 335:
-  case 336:
-  case 337:
-  case 338:
-  case 339:
-    $sql = 'ALTER TABLE '.$xoopsDB->prefix( 'xnpurl_item_detail' ).' ADD COLUMN (url_count int(10) unsigned NOT NULL default 0)';
-    $result = $xoopsDB->query( $sql );
-    if ( ! $result ) {
-      echo 'ERROR: line='.__LINE__.' sql='.$sql.' '.$xoopsDB->error();
-    }
-  case 340:
-  default:
-  }
-  return true;
+    return true;
 }
-
-?>

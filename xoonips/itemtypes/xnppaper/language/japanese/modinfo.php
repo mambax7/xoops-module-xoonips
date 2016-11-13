@@ -31,14 +31,12 @@
 // _MI_<MODULENAME>_<STRINGNAME>
 
 // The name of this module
-define("_MI_XNPPAPER_NAME","XooNIps Paper Item Type Module");
+define('_MI_XNPPAPER_NAME', 'XooNIps Paper Item Type Module');
 // A brief description of this module
-define("_MI_XNPPAPER_DESC","XooNIps Paper Item Type Module");
+define('_MI_XNPPAPER_DESC', 'XooNIps Paper Item Type Module');
 
 // Names of admin menu items
-define("_MI_XNPPAPER_CFG_SHOW_PDF",     "PDF Reprint ¤Î¸ø³«¥ì¥Ù¥ë");
-define("_MI_XNPPAPER_CFG_SHOW_PDF_DESC","");
-define("_MI_XNPPAPER_CFG_SHOW_ABST",     "Abstract ¤Î¸ø³«¥ì¥Ù¥ë");
-define("_MI_XNPPAPER_CFG_SHOW_ABST_D","");
-
-?>
+define('_MI_XNPPAPER_CFG_SHOW_PDF', 'PDF Reprint ï¿½Î¸ï¿½ï¿½ï¿½ï¿½ï¿½Ù¥ï¿½');
+define('_MI_XNPPAPER_CFG_SHOW_PDF_DESC', '');
+define('_MI_XNPPAPER_CFG_SHOW_ABST', 'Abstract ï¿½Î¸ï¿½ï¿½ï¿½ï¿½ï¿½Ù¥ï¿½');
+define('_MI_XNPPAPER_CFG_SHOW_ABST_D', '');

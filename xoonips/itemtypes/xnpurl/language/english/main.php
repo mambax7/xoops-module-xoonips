@@ -30,15 +30,13 @@
 
 // _MD_<MODULENAME>_<STRINGNAME>
 
-define( '_MD_XNPURL_URL_LABEL', 'URL' );
-define( '_MD_XNPURL_URL_BANNER_FILE_LABEL', 'Banner File' );
+define('_MD_XNPURL_URL_LABEL', 'URL');
+define('_MD_XNPURL_URL_BANNER_FILE_LABEL', 'Banner File');
 
-define( '_MD_XNPURL_URL_REQUIRED', "Please enter 'URL'" );
-define( '_MD_XNPURL_EXPLANATION', 'Link information.' );
-define( '_MD_XNPURL_XMLRPC_DISPLAY_NAME_URL_ID'          , 'Item ID' );
-define( '_MD_XNPURL_XMLRPC_DISPLAY_NAME_URL'             , 'URL' );
-define( '_MD_XNPURL_XMLRPC_DISPLAY_NAME_URL_BANNER_FILE' , 'Banner File' );
+define('_MD_XNPURL_URL_REQUIRED', "Please enter 'URL'");
+define('_MD_XNPURL_EXPLANATION', 'Link information.');
+define('_MD_XNPURL_XMLRPC_DISPLAY_NAME_URL_ID', 'Item ID');
+define('_MD_XNPURL_XMLRPC_DISPLAY_NAME_URL', 'URL');
+define('_MD_XNPURL_XMLRPC_DISPLAY_NAME_URL_BANNER_FILE', 'Banner File');
 
-define( '_MD_XNPURL_HITS', 'Hits' );
-
-?>
+define('_MD_XNPURL_HITS', 'Hits');

@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief Data object of Paper author information
@@ -33,9 +33,12 @@ if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
  */
 class XNPPaperOrmAuthor extends XooNIpsTableObject
 {
-    function XNPPaperOrmAuthor()
+    /**
+     * XNPPaperOrmAuthor constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsTableObject();
+        parent::__construct();
         $this->initVar('paper_author_id', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('paper_id', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('author', XOBJ_DTYPE_TXTBOX, '', true);
@@ -50,10 +53,13 @@ class XNPPaperOrmAuthor extends XooNIpsTableObject
  */
 class XNPPaperOrmAuthorHandler extends XooNIpsTableObjectHandler
 {
-    function XNPPaperOrmAuthorHandler(&$db) 
+    /**
+     * XNPPaperOrmAuthorHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsTableObjectHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPPaperOrmAuthor', 'xnppaper_author', 'paper_author_id', false);
     }
 }
-?>

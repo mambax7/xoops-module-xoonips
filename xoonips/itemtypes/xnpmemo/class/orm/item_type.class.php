@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/orm/item_type.class.php';
 
@@ -34,9 +34,12 @@ include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/orm/item_type.class.php';
  */
 class XNPMemoOrmItemType extends XooNIpsOrmItemType
 {
-    function XNPMemoOrmItemType() 
+    /**
+     * XNPMemoOrmItemType constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsOrmItemType('xnpmemo');
+        parent::__construct('xnpmemo');
     }
 }
 
@@ -47,10 +50,13 @@ class XNPMemoOrmItemType extends XooNIpsOrmItemType
  */
 class XNPMemoOrmItemTypeHandler extends XooNIpsOrmItemTypeHandler
 {
-    function XNPMemoOrmItemTypeHandler(&$db) 
+    /**
+     * XNPMemoOrmItemTypeHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsOrmItemTypeHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPMemoOrmItemType', 'xoonips_item_type', 'item_type_id', false);
     }
 }
-?>

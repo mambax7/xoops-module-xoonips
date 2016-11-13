@@ -28,6 +28,4 @@
 // _AM_<MODULENAME>_<STRINGNAME>
 
 // main title
-define( '_AM_XNPMODEL_TITLE', 'XooNIps Model アイテムタイプ設定' );
-
-?>
+define('_AM_XNPMODEL_TITLE', 'XooNIps Model アイテムタイプ設定');

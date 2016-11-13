@@ -24,10 +24,9 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-define("_MI_XNPBINDER_NAME","XooNIps Binder Item Type Module");
-define("_MI_XNPBINDER_DESC","XooNIps Binder Item Type Module");
-define( "_MI_XNPBINDER_CONTENT_EMPTY_NOTIFY", "¶õ¤Î¥Ð¥¤¥ó¥À¡¼¤òÄÌÃÎ" );
-define( "_MI_XNPBINDER_CONTENT_EMPTY_NOTIFYCAP", "¸ø³«¥Ð¥¤¥ó¥À¡¼¤¬¶õ¤Ë¤Ê¤Ã¤¿¾ì¹ç¤ËÄÌÃÎ¤¹¤ë" );
-define( "_MI_XNPBINDER_CONTENT_EMPTY_NOTIFYDSC", "¸ø³«¥Ð¥¤¥ó¥À¡¼¤ËÅÐÏ¿¤µ¤ì¤¿¥¢¥¤¥Æ¥à¤¬0¸Ä¤Ë¤Ê¤Ã¤¿¾ì¹ç¤ËÄÌÃÎ¤ò¼õ¤±¼è¤ë¡¥" );
-define( "_MI_XNPBINDER_CONTENT_EMPTY_NOTIFYSBJ", "¸ø³«¥Ð¥¤¥ó¥À¡¼¤¬¶õ¤Ë¤Ê¤ê¤Þ¤·¤¿" );
-?>
+define('_MI_XNPBINDER_NAME', 'XooNIps Binder Item Type Module');
+define('_MI_XNPBINDER_DESC', 'XooNIps Binder Item Type Module');
+define('_MI_XNPBINDER_CONTENT_EMPTY_NOTIFY', 'ï¿½ï¿½ï¿½Î¥Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MI_XNPBINDER_CONTENT_EMPTY_NOTIFYCAP', 'ï¿½ï¿½ï¿½ï¿½ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¤Ê¤Ã¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¤ï¿½ï¿½ï¿½');
+define('_MI_XNPBINDER_CONTENT_EMPTY_NOTIFYDSC', 'ï¿½ï¿½ï¿½ï¿½ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ì¤¿ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥à¤¬0ï¿½Ä¤Ë¤Ê¤Ã¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¡¥');
+define('_MI_XNPBINDER_CONTENT_EMPTY_NOTIFYSBJ', 'ï¿½ï¿½ï¿½ï¿½ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¤Ê¤ï¿½Þ¤ï¿½ï¿½ï¿½');

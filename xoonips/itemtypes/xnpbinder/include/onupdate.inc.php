@@ -24,17 +24,20 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-function xoops_module_update_xnpbinder( $xoopsMod, $oldversion ) {
-  global $xoopsDB;
-  // remember that version is multiplied with 100 to get an integer
-  switch ( $oldversion ) {
-  case 340:
-  default:
-  }
-  return true;
+/**
+ * @param $xoopsMod
+ * @param $oldversion
+ * @return bool
+ */
+function xoops_module_update_xnpbinder($xoopsMod, $oldversion)
+{
+    global $xoopsDB;
+    // remember that version is multiplied with 100 to get an integer
+    switch ($oldversion) {
+        case 340:
+        default:
+    }
+    return true;
 }
-?>

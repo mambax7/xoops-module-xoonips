@@ -25,21 +25,24 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief data object of binder item link
  *
- * @li getVar('binder_item_link_id') :
- * @li getVar('binder_id') :
- * @li getVar('item_id') :
+ * @li    getVar('binder_item_link_id') :
+ * @li    getVar('binder_id') :
+ * @li    getVar('item_id') :
  *
  */
 class XNPBinderOrmBinderItemLink extends XooNIpsTableObject
 {
-    function XNPBinderOrmBinderItemLink() 
+    /**
+     * XNPBinderOrmBinderItemLink constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsTableObject();
+        parent::__construct();
         $this->initVar('binder_item_link_id', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('binder_id', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('item_id', XOBJ_DTYPE_INT, 0, false);
@@ -53,10 +56,13 @@ class XNPBinderOrmBinderItemLink extends XooNIpsTableObject
  */
 class XNPBinderOrmBinderItemLinkHandler extends XooNIpsTableObjectHandler
 {
-    function XNPBinderOrmBinderItemLinkHandler(&$db) 
+    /**
+     * XNPBinderOrmBinderItemLinkHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsTableObjectHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPBinderOrmBinderItemLink', 'xnpbinder_binder_item_link', 'binder_item_link_id', true);
     }
 }
-?>

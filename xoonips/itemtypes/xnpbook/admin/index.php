@@ -25,47 +25,46 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include '../../../include/cp_header.php';
+include __DIR__ . '/../../../include/cp_header.php';
 
 // load xoonips
-if ( !file_exists( '../../xoonips/condefs.php' ) ) {
-  xoops_cp_header();
-  echo '<span style="font-weight:bold; color:red;">';
-  echo 'error: xoonips module not found';
-  echo '</span>';
-  xoops_cp_footer();
-  exit();
+if (!file_exists('../../xoonips/condefs.php')) {
+    xoops_cp_header();
+    echo '<span style="font-weight:bold; color:red;">';
+    echo 'error: xoonips module not found';
+    echo '</span>';
+    xoops_cp_footer();
+    exit();
 }
-include '../../xoonips/condefs.php';
-include '../../xoonips/include/functions.php';
+include __DIR__ . '/../../xoonips/condefs.php';
+include __DIR__ . '/../../xoonips/include/functions.php';
 
-$textutil =& xoonips_getutility( 'text' );
+$textutil = xoonips_getUtility('text');
 
 $title = _AM_XNPBOOK_TITLE;
 
-$mid = $xoopsModule->getVar( 'mid' );
-if ( defined( 'XOOPS_CUBE_LEGACY' ) ) {
-  // for XOOPS Cube 2.1 Legacy
-  $pref_url = XOOPS_URL.'/modules/legacy/admin/index.php?action=PreferenceEdit&confmod_id='.$mid;
+$mid = $xoopsModule->getVar('mid');
+if (defined('XOOPS_CUBE_LEGACY')) {
+    // for XOOPS Cube 2.1 Legacy
+    $pref_url = XOOPS_URL . '/modules/legacy/admin/index.php?action=PreferenceEdit&confmod_id=' . $mid;
 } else {
-  // for XOOPS 2.0
-  $pref_url = XOOPS_URL.'/modules/system/admin.php?fct=preferences&op=showmod&mod='.$mid;
+    // for XOOPS 2.0
+    $pref_url = XOOPS_URL . '/modules/system/admin.php?fct=preferences&op=showmod&mod=' . $mid;
 }
 $pref_title = _PREFERENCES;
-$pref_url = $textutil->html_special_chars( $pref_url );
+$pref_url   = $textutil->html_special_chars($pref_url);
 
 xoops_cp_header();
 
-echo '<h3>'.$title.'</h3>';
+echo '<h3>' . $title . '</h3>';
 echo '<table width="100%" border="0" cellspacing="1" class="outer">';
 echo '<tr class="odd"><td>';
 echo '<ul style="margin: 5px;">';
 echo '<li style="padding: 5px;">';
-echo '<a href="'.$pref_url.'">'.$pref_title.'</a>'."\n";
+echo '<a href="' . $pref_url . '">' . $pref_title . '</a>' . "\n";
 echo '</li>';
 echo '</ul>';
-echo "</td></tr>";
-echo "</table>";
+echo '</td></tr>';
+echo '</table>';
 
 xoops_cp_footer();
-

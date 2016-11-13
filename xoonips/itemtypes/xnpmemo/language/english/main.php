@@ -30,13 +30,11 @@
 
 // _MD_<MODULENAME>_<STRINGNAME>
 
-define( "_MD_XNPMEMO_ITEM_LINK_LABEL", "Item Link" );
-define( "_MD_XNPMEMO_MEMO_FILE_LABEL", "Memo File" );
+define('_MD_XNPMEMO_ITEM_LINK_LABEL', 'Item Link');
+define('_MD_XNPMEMO_MEMO_FILE_LABEL', 'Memo File');
 
-define( "_MD_XNPMEMO_EXPLANATION", "Personal Memo Pad." );
+define('_MD_XNPMEMO_EXPLANATION', 'Personal Memo Pad.');
 
-define( '_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_MEMO_ID'   , 'Item ID' );
-define( '_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_ITEM_LINK' , 'Item Link' );
-define( '_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_MEMO_FILE' , 'Memo File' );
-
-?>
+define('_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_MEMO_ID', 'Item ID');
+define('_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_ITEM_LINK', 'Item Link');
+define('_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_MEMO_FILE', 'Memo File');

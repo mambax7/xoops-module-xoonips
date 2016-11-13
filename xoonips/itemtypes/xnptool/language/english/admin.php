@@ -28,6 +28,4 @@
 // _AM_<MODULENAME>_<STRINGNAME>
 
 // main title
-define( '_AM_XNPTOOL_TITLE', 'XooNIps Tool Item Type Configuration' );
-
-?>
+define('_AM_XNPTOOL_TITLE', 'XooNIps Tool Item Type Configuration');

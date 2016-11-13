@@ -31,7 +31,6 @@
 // _MI_<MODULENAME>_<STRINGNAME>
 
 // The name of this module
-define("_MI_XNPMEMO_NAME","XooNIps Memo Item Type Module");
+define('_MI_XNPMEMO_NAME', 'XooNIps Memo Item Type Module');
 // A brief description of this module
-define("_MI_XNPMEMO_DESC","XooNIps Memo Item Type Module");
-
+define('_MI_XNPMEMO_DESC', 'XooNIps Memo Item Type Module');

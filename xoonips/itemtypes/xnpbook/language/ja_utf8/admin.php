@@ -28,6 +28,4 @@
 // _AM_<MODULENAME>_<STRINGNAME>
 
 // main title
-define( '_AM_XNPBOOK_TITLE', 'XooNIps Book アイテムタイプ設定' );
-
-?>
+define('_AM_XNPBOOK_TITLE', 'XooNIps Book アイテムタイプ設定');

@@ -31,37 +31,35 @@
 // _MD_<MODULENAME>_<STRINGNAME>
 
 //specify classification(separated by '\t')
-define( '_MD_XNPBOOK_CLASSIFICATION_SELECT', "Regular\tReview\tHistorical" );
+define('_MD_XNPBOOK_CLASSIFICATION_SELECT', "Regular\tReview\tHistorical");
 
-define( '_MD_XNPBOOK_ISBN_COMPLETE_LABEL', 'Êä´°' );
+define('_MD_XNPBOOK_ISBN_COMPLETE_LABEL', 'ï¿½ä´°');
 
-define( '_MD_XNPBOOK_EDITOR_REQUIRED', "'ÊÔ½¸¼Ô' ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
-define( '_MD_XNPBOOK_PUBLISHER_REQUIRED', "'½ÐÈÇ¼Ò' ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
-define( '_MD_XNPBOOK_YEAR_REQUIRED', "'½ÐÈÇÇ¯' ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
-define( '_MI_AMAZON_ASSOCIATE_ID_IS_NOT_DEFINED', 'Amazon¥¢¥½¥·¥¨¥¤¥ÈID¤¬ÀßÄê¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡¡´ÉÍý¼Ô¤ËÏ¢Íí¤·¤Æ¤¯¤À¤µ¤¤' );
-define( '_MI_AMAZON_COMPLETE_FAILURE', 'Amazon¥Ç¡¼¥¿¤Î¼èÆÀ¤Ë¼ºÇÔ¤·¤Þ¤·¤¿' );
+define('_MD_XNPBOOK_EDITOR_REQUIRED', "'ï¿½Ô½ï¿½ï¿½ï¿½' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPBOOK_PUBLISHER_REQUIRED', "'ï¿½ï¿½ï¿½Ç¼ï¿½' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPBOOK_YEAR_REQUIRED', "'ï¿½ï¿½ï¿½ï¿½Ç¯' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MI_AMAZON_ASSOCIATE_ID_IS_NOT_DEFINED', 'Amazonï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½ï¿½ï¿½ï¿½ê¤µï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ó¡¡´ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½Ï¢ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MI_AMAZON_COMPLETE_FAILURE', 'Amazonï¿½Ç¡ï¿½ï¿½ï¿½ï¿½Î¼ï¿½ï¿½ï¿½ï¿½Ë¼ï¿½ï¿½Ô¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
-define( '_MD_XNPBOOK_BOOK_CLASSIFICATION_LABEL', "Ê¬Îà" );
-define( '_MD_XNPBOOK_AUTHOR_LABEL', "Ãø¼Ô" );
-define( '_MD_XNPBOOK_EDITOR_LABEL', "ÊÔ½¸¼Ô" );
-define( '_MD_XNPBOOK_PUBLISHER_LABEL', "½ÐÈÇ¼Ò" );
-define( '_MD_XNPBOOK_YEAR_LABEL', '½ÐÈÇÇ¯' );
-define( '_MD_XNPBOOK_URL_LABEL', 'URL' );
-define( '_MD_XNPBOOK_ISBN_LABEL', 'ISBN' );
-define( '_MD_XNPBOOK_PDF_LABEL', 'PDF ¥Õ¥¡¥¤¥ë' );
+define('_MD_XNPBOOK_BOOK_CLASSIFICATION_LABEL', 'Ê¬ï¿½ï¿½');
+define('_MD_XNPBOOK_AUTHOR_LABEL', 'ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPBOOK_EDITOR_LABEL', 'ï¿½Ô½ï¿½ï¿½ï¿½');
+define('_MD_XNPBOOK_PUBLISHER_LABEL', 'ï¿½ï¿½ï¿½Ç¼ï¿½');
+define('_MD_XNPBOOK_YEAR_LABEL', 'ï¿½ï¿½ï¿½ï¿½Ç¯');
+define('_MD_XNPBOOK_URL_LABEL', 'URL');
+define('_MD_XNPBOOK_ISBN_LABEL', 'ISBN');
+define('_MD_XNPBOOK_PDF_LABEL', 'PDF ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½');
 //define( '_MD_XNPBOOK_EXPLANATION', 'Collection in regular/review/historical categories.' );
-define( '_MD_XNPBOOK_EXPLANATION', '´ØÏ¢½ñÀÒ' );
-define( "_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_BOOK_ID"             , "¥¢¥¤¥Æ¥àID" );
-define( "_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_AUTHOR"              , "Ãø¼Ô" );
-define( "_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_EDITOR"              , "ÊÔ½¸¼Ô" );
-define( "_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_PUBLISHER"           , "½ÐÈÇ¼Ò" );
-define( "_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_ISBN"                , "ISBN" );
-define( "_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_URL"                 , "URL" );
-define( "_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_LIMIT" , "¥À¥¦¥ó¥í¡¼¥ÉÀ©¸Â" );
-define( "_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_NOTIFY", "¥À¥¦¥ó¥í¡¼¥ÉÄÌÃÎ" );
-define( "_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_BOOK_PDF"            , "PDF¥Õ¥¡¥¤¥ë" );
-define( "_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_CREATION_YEAR"       , "½ÐÈÇÇ¯" );
-define( "_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_CREATION_MONTH"      , "½ÐÈÇ·î" );
-define( "_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_CREATION_MDAY"       , "½ÐÈÇÆü" );
-
-?>
+define('_MD_XNPBOOK_EXPLANATION', 'ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_BOOK_ID', 'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ID');
+define('_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_AUTHOR', 'ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_EDITOR', 'ï¿½Ô½ï¿½ï¿½ï¿½');
+define('_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_PUBLISHER', 'ï¿½ï¿½ï¿½Ç¼ï¿½');
+define('_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_ISBN', 'ISBN');
+define('_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_URL', 'URL');
+define('_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_LIMIT', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_NOTIFY', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_BOOK_PDF', 'PDFï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_CREATION_YEAR', 'ï¿½ï¿½ï¿½ï¿½Ç¯');
+define('_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_CREATION_MONTH', 'ï¿½ï¿½ï¿½Ç·ï¿½');
+define('_MD_XNPBOOK_XMLRPC_DISPLAY_NAME_CREATION_MDAY', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');

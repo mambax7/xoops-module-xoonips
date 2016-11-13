@@ -11,6 +11,10 @@
  * @author      revulo <revulon@gmail.com>
  * @since       PHP 5.1.2
  * @require     PHP 4.0.0 (user_error)
+ * @param      $algo
+ * @param      $data
+ * @param bool $raw_output
+ * @return bool|string
  */
 function php_compat_hash($algo, $data, $raw_output = false)
 {
@@ -46,9 +50,14 @@ function php_compat_hash($algo, $data, $raw_output = false)
     }
 }
 
-
 // Define
 if (!function_exists('hash')) {
+    /**
+     * @param      $algo
+     * @param      $data
+     * @param bool $raw_output
+     * @return bool|string
+     */
     function hash($algo, $data, $raw_output = false)
     {
         return php_compat_hash($algo, $data, $raw_output);

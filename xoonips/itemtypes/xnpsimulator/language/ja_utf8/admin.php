@@ -28,6 +28,4 @@
 // _AM_<MODULENAME>_<STRINGNAME>
 
 // main title
-define( '_AM_XNPSIMULATOR_TITLE', 'XooNIps Simulator アイテムタイプ設定' );
-
-?>
+define('_AM_XNPSIMULATOR_TITLE', 'XooNIps Simulator アイテムタイプ設定');

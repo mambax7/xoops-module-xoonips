@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  *
@@ -35,28 +35,29 @@ if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
  */
 class XNPToolXmlRpcTransformCompo extends XooNIpsXmlRpcTransformCompo
 {
-    function XNPToolXmlRpcTransformCompo() 
+    /**
+     * XNPToolXmlRpcTransformCompo constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsXmlRpcTransformCompo('xnptool');
+        parent::__construct('xnptool');
     }
 
     /**
      * override getObject to order creator.
-     * 
+     *
      * @see XooNIpsXmlRpcTransformCompo::getObject
      *
      * @param array associative array of XML-RPC argument
      * @return XNPToolOrmDeveloper
      */
-    function getObject($in_array) 
+    public function getObject($in_array)
     {
-        $obj=parent::getObject($in_array);
-        $developers=&$obj->getVar('developer');
-        for( $i=0; $i < count($developers); $i++){
+        $obj        = parent::getObject($in_array);
+        $developers = $obj->getVar('developer');
+        for ($i = 0; $i < count($developers); $i++) {
             $developers[$i]->set('developer_order', $i);
         }
         return $obj;
     }
 }
-
-?>

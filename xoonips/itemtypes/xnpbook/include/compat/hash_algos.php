@@ -14,12 +14,18 @@
  */
 function php_compat_hash_algos()
 {
-    return array('md5', 'sha1', 'sha256');
+    return array(
+        'md5',
+        'sha1',
+        'sha256'
+    );
 }
-
 
 // Define
 if (!function_exists('hash_algos')) {
+    /**
+     * @return array
+     */
     function hash_algos()
     {
         return php_compat_hash_algos();

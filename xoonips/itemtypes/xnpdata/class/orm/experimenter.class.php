@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief Data object of Data experimenter information
@@ -33,9 +33,12 @@ if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
  */
 class XNPDataOrmExperimenter extends XooNIpsTableObject
 {
-    function XNPDataOrmExperimenter()
+    /**
+     * XNPDataOrmExperimenter constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsTableObject();
+        parent::__construct();
         $this->initVar('data_experimenter_id', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('data_id', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('experimenter', XOBJ_DTYPE_TXTBOX, '', true);
@@ -50,10 +53,13 @@ class XNPDataOrmExperimenter extends XooNIpsTableObject
  */
 class XNPDataOrmExperimenterHandler extends XooNIpsTableObjectHandler
 {
-    function XNPDataOrmExperimenterHandler(&$db) 
+    /**
+     * XNPDataOrmExperimenterHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsTableObjectHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPDataOrmExperimenter', 'xnpdata_experimenter', 'data_experimenter_id', false);
     }
 }
-?>

@@ -25,32 +25,36 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief Data object of Tool detail information
  *
- * @li getVar('') :
+ * @li    getVar('') :
  */
 class XNPToolOrmItemDetail extends XooNIpsTableObject
 {
     // for column length check
-    var $lengths = array(
-        'tool_id' => 10,
-        'tool_type' => 30,
-        'developer' => 255,
-        'readme' => 65535,
-        'rights' => 65535,
-        'use_cc' => 3,
-        'cc_commercial_use' => 3,
-        'cc_modification' => 3,
-        'attachment_dl_limit' => 1,
-        'attachment_dl_notify' => 1,
-    );
+    public $lengths
+        = array(
+            'tool_id'              => 10,
+            'tool_type'            => 30,
+            'developer'            => 255,
+            'readme'               => 65535,
+            'rights'               => 65535,
+            'use_cc'               => 3,
+            'cc_commercial_use'    => 3,
+            'cc_modification'      => 3,
+            'attachment_dl_limit'  => 1,
+            'attachment_dl_notify' => 1,
+        );
     //
-    function XNPToolOrmItemDetail() 
+    /**
+     * XNPToolOrmItemDetail constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsTableObject();
+        parent::__construct();
         $this->initVar('tool_id', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('tool_type', XOBJ_DTYPE_TXTBOX, null, false, $this->lengths['tool_type']);
         $this->initVar('rights', XOBJ_DTYPE_TXTBOX, null, false, $this->lengths['rights']);
@@ -64,15 +68,15 @@ class XNPToolOrmItemDetail extends XooNIpsTableObject
 
     /**
      * get developer objects of this item
-     * @return XNPToolOrmDeveloper[] 
+     * @return XNPToolOrmDeveloper[]
      */
-    function getDevelopers()
+    public function getDevelopers()
     {
-        $handler=&xoonips_getormhandler('xnptool', 'developer');
-        $criteria=new Criteria('tool_id', $this->get('tool_id'));
+        $handler  = xoonips_getOrmHandler('xnptool', 'developer');
+        $criteria = new Criteria('tool_id', $this->get('tool_id'));
         $criteria->setSort('developer_order');
-        $result=&$handler->getObjects($criteria);
-        if($result){
+        $result = $handler->getObjects($criteria);
+        if ($result) {
             return $result;
         }
         return array();
@@ -86,34 +90,48 @@ class XNPToolOrmItemDetail extends XooNIpsTableObject
  */
 class XNPToolOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
-    function XNPToolOrmItemDetailHandler(&$db) 
+    /**
+     * XNPToolOrmItemDetailHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsTableObjectHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPToolOrmItemDetail', 'xnptool_item_detail', 'tool_id', false);
     }
-    
-    function insert(&$obj, $force = false) {
+
+    /**
+     * @param XoopsObject $obj
+     * @param bool        $force
+     * @return bool
+     */
+    public function insert(XoopsObject $obj, $force = false)
+    {
         if (strtolower(get_class($obj)) != strtolower($this->__class_name)) {
             return false;
         }
         if (!$obj->isDirty()) {
             return true;
         }
-        
+
         $cc = $this->get_cc($obj);
-        if( $cc ){
-            $obj -> set( 'rights', $cc );
+        if ($cc) {
+            $obj->set('rights', $cc);
         }
-        
+
         return parent::insert($obj, $force);
     }
 
-    function get_cc( $detail ) {
-      if ( $detail->get( 'use_cc' ) == '1' ) {
-        return xoonips_get_cc_license( $detail->get( 'cc_commercial_use' ), $detail->get( 'cc_modification' ), 2.5, 'GENERIC' );
-      } else {
-        return false;
-      }
+    /**
+     * @param $detail
+     * @return bool|string
+     */
+    public function get_cc($detail)
+    {
+        if ($detail->get('use_cc') == '1') {
+            return xoonips_get_cc_license($detail->get('cc_commercial_use'), $detail->get('cc_modification'), 2.5, 'GENERIC');
+        } else {
+            return false;
+        }
     }
 }
-?>

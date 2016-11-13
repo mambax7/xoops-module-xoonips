@@ -28,6 +28,4 @@
 // _AM_<MODULENAME>_<STRINGNAME>
 
 // main title
-define( '_AM_XNPSTIMULUS_TITLE', 'XooNIps Stimulus アイテムタイプ設定' );
-
-?>
+define('_AM_XNPSTIMULUS_TITLE', 'XooNIps Stimulus アイテムタイプ設定');

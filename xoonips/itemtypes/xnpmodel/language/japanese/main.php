@@ -29,40 +29,38 @@
  */
 
 // _MD_<MODULENAME>_<STRINGNAME>
-define( '_MD_XNPMODEL_MODEL_TYPE_LABEL', '¥â¥Ç¥ë¥¿¥¤¥×' );
-define( '_MD_XNPMODEL_CREATOR_LABEL', 'ºîÀ®¼Ô' );
-define( '_MD_XNPMODEL_MODEL_FILE_LABEL', '¥â¥Ç¥ë¥Õ¥¡¥¤¥ë' );
-define( '_MD_XNPMODEL_CAPTION_LABEL', '¥­¥ã¥×¥·¥ç¥ó' );
-define( '_MD_XNPMODEL_PREVIEW_LABEL', '¥×¥ì¥Ó¥å¡¼' );
+define('_MD_XNPMODEL_MODEL_TYPE_LABEL', 'ï¿½ï¿½Ç¥ë¥¿ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPMODEL_CREATOR_LABEL', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPMODEL_MODEL_FILE_LABEL', 'ï¿½ï¿½Ç¥ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPMODEL_CAPTION_LABEL', 'ï¿½ï¿½ï¿½ï¿½×¥ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPMODEL_PREVIEW_LABEL', 'ï¿½×¥ï¿½Ó¥å¡¼');
 
 //specify model types(separated by '\t')
-define( '_MD_XNPMODEL_MODEL_TYPE_SELECT', "Matlab\tNeuron\tOriginalProgram\tSatellite\tGenesis\tA-Cell\tOther" );
+define('_MD_XNPMODEL_MODEL_TYPE_SELECT', "Matlab\tNeuron\tOriginalProgram\tSatellite\tGenesis\tA-Cell\tOther");
 
-define( '_MD_XNPMODEL_CREATOR_REQUIRED', "'ºîÀ®¼Ô' ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
-define( '_MD_XNPMODEL_MODEL_FILE_REQUIRED', "'¥â¥Ç¥ë¥Õ¥¡¥¤¥ë' ¤òÅÐÏ¿¤·¤Æ²¼¤µ¤¤" );
+define('_MD_XNPMODEL_CREATOR_REQUIRED', "'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPMODEL_MODEL_FILE_REQUIRED', "'ï¿½ï¿½Ç¥ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½' ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
 
-define( '_MD_XNPMODEL_README_REQUIRED', "'Readme' ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
-define( '_MD_XNPMODEL_LICENSE_REQUIRED', "'License' ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
-define( '_MD_XNPMODEL_RIGHTS_REQUIRED', "'Rights' ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
-define( '_MD_XNPMODEL_EXPLANATION', "¥â¥Ç¥ë ¥×¥í¥°¥é¥à/¥¹¥¯¥ê¥×¥È" );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE_MATLAB'           , 'Matlab' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE_NEURON'           , 'Neuron' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE_ORIGINAL_PROGRAM' , 'OriginalProgram' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE_SATELLITE'        , 'Satellite' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE_GENESIS'          , 'Genesis' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE_A_CELL'           , 'A-Cell' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE_OTHER'            , 'Other' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_ID'            , '¥¢¥¤¥Æ¥àID' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE'          , '¥â¥Ç¥ë¥¿¥¤¥×' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_CREATOR'             , 'ºîÀ®¼Ô' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_README'              , 'Readme' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_RIGHTS'              , 'Rights' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_USE_CC'              , '¥¯¥ê¥¨¥¤¥Æ¥£¥Ö¥³¥â¥ó¥º¤ò»ÈÍÑ¤¹¤ë' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_CC_COMMERCIAL_USE'   , 'ºîÉÊ¤Î±ÄÍøÌÜÅªÍøÍÑ¤òµö²Ä¤¹¤ë' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_CC_MODIFICATION'     , 'ºîÉÊ¤ÎËÝ°Æ¡¦²þÊÑ¤òµö²Ä¤¹¤ë' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_LIMIT' , '¥À¥¦¥ó¥í¡¼¥ÉÀ©¸Â' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_NOTIFY', '¥À¥¦¥ó¥í¡¼¥ÉÄÌÃÎ' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_DATA'          , '¥â¥Ç¥ë¥Õ¥¡¥¤¥ë' );
-define( '_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_PREVIEW'             , '¥×¥ì¥Ó¥å¡¼' );
-
-?>
+define('_MD_XNPMODEL_README_REQUIRED', "'Readme' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPMODEL_LICENSE_REQUIRED', "'License' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPMODEL_RIGHTS_REQUIRED', "'Rights' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPMODEL_EXPLANATION', 'ï¿½ï¿½Ç¥ï¿½ ï¿½×¥ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¥ï¿½');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE_MATLAB', 'Matlab');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE_NEURON', 'Neuron');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE_ORIGINAL_PROGRAM', 'OriginalProgram');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE_SATELLITE', 'Satellite');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE_GENESIS', 'Genesis');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE_A_CELL', 'A-Cell');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE_OTHER', 'Other');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_ID', 'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ID');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_TYPE', 'ï¿½ï¿½Ç¥ë¥¿ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_CREATOR', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_README', 'Readme');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_RIGHTS', 'Rights');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_USE_CC', 'ï¿½ï¿½ï¿½ê¥¨ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ö¥ï¿½ï¿½ï¿½ó¥º¤ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_CC_COMMERCIAL_USE', 'ï¿½ï¿½ï¿½Ê¤Î±ï¿½ï¿½ï¿½ï¿½ï¿½Åªï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_CC_MODIFICATION', 'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Ý°Æ¡ï¿½ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_LIMIT', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_NOTIFY', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_MODEL_DATA', 'ï¿½ï¿½Ç¥ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPMODEL_XMLRPC_DISPLAY_NAME_PREVIEW', 'ï¿½×¥ï¿½Ó¥å¡¼');

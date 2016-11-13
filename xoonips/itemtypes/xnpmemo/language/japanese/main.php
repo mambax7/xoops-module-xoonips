@@ -30,13 +30,11 @@
 
 // _MD_<MODULENAME>_<STRINGNAME>
 
-define( "_MD_XNPMEMO_ITEM_LINK_LABEL", "¥ê¥ó¥¯" );
-define( "_MD_XNPMEMO_MEMO_FILE_LABEL", "¥Õ¥¡¥¤¥ë" );
+define('_MD_XNPMEMO_ITEM_LINK_LABEL', 'ï¿½ï¿½ï¿½');
+define('_MD_XNPMEMO_MEMO_FILE_LABEL', 'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½');
 
-define( "_MD_XNPMEMO_EXPLANATION", "ÈÆÍÑ¥á¥â¥Ñ¥Ã¥É" );
+define('_MD_XNPMEMO_EXPLANATION', 'ï¿½ï¿½ï¿½Ñ¥ï¿½ï¿½Ñ¥Ã¥ï¿½');
 
-define( '_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_MEMO_ID'   , '¥¢¥¤¥Æ¥àID' );
-define( '_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_ITEM_LINK' , '¥ê¥ó¥¯' );
-define( '_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_MEMO_FILE' , '¥Õ¥¡¥¤¥ë' );
-
-?>
+define('_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_MEMO_ID', 'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ID');
+define('_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_ITEM_LINK', 'ï¿½ï¿½ï¿½');
+define('_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_MEMO_FILE', 'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½');

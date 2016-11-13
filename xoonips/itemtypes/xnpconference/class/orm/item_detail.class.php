@@ -25,34 +25,39 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief Data object of Conference detail information
  *
- * @li getVar('') :
+ * @li    getVar('') :
  */
 class XNPConferenceOrmItemDetail extends XooNIpsTableObject
 {
     // for column length check
-    var $lengths = array(
-        'conference_id' => 10,
-        'presentation_type' => 30,
-        'conference_title' => 255,
-        'place' => 255,
-        'abstract' => 65535,
-        'conference_from_year' => 10,
-        'conference_from_month' => 10,
-        'conference_from_mday' => 10,
-        'conference_to_year' => 10,
-        'conference_to_month' => 10,
-        'conference_to_mday' => 10,
-        'attachment_dl_limit' => 1,
-        'attachment_dl_notify' => 1
-    );
-    function XNPConferenceOrmItemDetail() 
+    public $lengths
+        = array(
+            'conference_id'         => 10,
+            'presentation_type'     => 30,
+            'conference_title'      => 255,
+            'place'                 => 255,
+            'abstract'              => 65535,
+            'conference_from_year'  => 10,
+            'conference_from_month' => 10,
+            'conference_from_mday'  => 10,
+            'conference_to_year'    => 10,
+            'conference_to_month'   => 10,
+            'conference_to_mday'    => 10,
+            'attachment_dl_limit'   => 1,
+            'attachment_dl_notify'  => 1
+        );
+
+    /**
+     * XNPConferenceOrmItemDetail constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsTableObject();
+        parent::__construct();
         $this->initVar('conference_id', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('presentation_type', XOBJ_DTYPE_TXTBOX, '', true, $this->lengths['presentation_type']);
         $this->initVar('conference_title', XOBJ_DTYPE_TXTBOX, '', true, $this->lengths['conference_title']);
@@ -67,18 +72,18 @@ class XNPConferenceOrmItemDetail extends XooNIpsTableObject
         $this->initVar('attachment_dl_limit', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('attachment_dl_notify', XOBJ_DTYPE_INT, 0, false);
     }
-    
+
     /**
      * get author objects of this item
-     * @return XNPConferenceOrmAuthor[] 
+     * @return XNPConferenceOrmAuthor[]
      */
-    function getAuthors()
+    public function getAuthors()
     {
-        $handler=&xoonips_getormhandler('xnpconference', 'author');
-        $criteria=new Criteria('conference_id', $this->get('conference_id'));
+        $handler  = xoonips_getOrmHandler('xnpconference', 'author');
+        $criteria = new Criteria('conference_id', $this->get('conference_id'));
         $criteria->setSort('author_order');
-        $result=&$handler->getObjects($criteria);
-        if($result){
+        $result = $handler->getObjects($criteria);
+        if ($result) {
             return $result;
         }
         return array();
@@ -92,10 +97,13 @@ class XNPConferenceOrmItemDetail extends XooNIpsTableObject
  */
 class XNPConferenceOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
-    function XNPConferenceOrmItemDetailHandler(&$db) 
+    /**
+     * XNPConferenceOrmItemDetailHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsTableObjectHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPConferenceOrmItemDetail', 'xnpconference_item_detail', 'conference_id', false);
     }
 }
-?>

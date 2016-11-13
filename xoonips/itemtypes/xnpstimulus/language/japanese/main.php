@@ -29,46 +29,44 @@
  */
 
 // _MD_<MODULENAME>_<STRINGNAME>
-define( '_MD_XNPSTIMULUS_STIMULUS_TYPE', '»É·ã¥¿¥¤¥×' );
-define( '_MD_XNPSTIMULUS_DEVELOPER', '³«È¯¼Ô' );
-define( '_MD_XNPSTIMULUS_STIMULUS_FILE', '¥Õ¥¡¥¤¥ë' );
-define( '_MD_XNPSTIMULUS_CAPTION_LABEL', '¥­¥ã¥×¥·¥ç¥ó' );
+define('_MD_XNPSTIMULUS_STIMULUS_TYPE', 'ï¿½É·ã¥¿ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_DEVELOPER', 'ï¿½ï¿½È¯ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_STIMULUS_FILE', 'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_CAPTION_LABEL', 'ï¿½ï¿½ï¿½ï¿½×¥ï¿½ï¿½ï¿½ï¿½');
 
 //specify stimulus types(separated by '\t')
-define( '_MD_XNPSTIMULUS_STIMULUS_TYPE_SELECT', "Picture\tMovie\tProgram\tOther" );
+define('_MD_XNPSTIMULUS_STIMULUS_TYPE_SELECT', "Picture\tMovie\tProgram\tOther");
 
-define( '_MD_XNPSTIMULUS_DEVELOPER_REQUIRED', "'³«È¯¼Ô' ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
-define( '_MD_XNPSTIMULUS_STIMULUS_FILE_REQUIRED', "'¥Õ¥¡¥¤¥ë' ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
-define( '_MD_XNPSTIMULUS_DATE_REQUIRED', "'ÆüÉÕ' ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
-define( '_MD_XNPSTIMULUS_YEAR_RANGE_ILLEGAL', "'Ç¯' ¤òÀµ¤·¤¯ÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
+define('_MD_XNPSTIMULUS_DEVELOPER_REQUIRED', "'ï¿½ï¿½È¯ï¿½ï¿½' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPSTIMULUS_STIMULUS_FILE_REQUIRED', "'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPSTIMULUS_DATE_REQUIRED', "'ï¿½ï¿½ï¿½ï¿½' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPSTIMULUS_YEAR_RANGE_ILLEGAL', "'Ç¯' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
 
-define( '_MD_XNPSTIMULUS_STIMULUS_TYPE_LABEL', "»É·ã¥¿¥¤¥×" );
-define( '_MD_XNPSTIMULUS_DEVELOPER_LABEL', "³«È¯¼Ô" );
-define( '_MD_XNPSTIMULUS_DATE_LABEL', 'ÆüÉÕ' );
-define( '_MD_XNPSTIMULUS_YEAR_LABEL', 'Ç¯' );
-define( '_MD_XNPSTIMULUS_MONTH_LABEL', '·î' );
-define( '_MD_XNPSTIMULUS_DAY_OF_MONTH_LABEL', 'Æü' );
-define( '_MD_XNPSTIMULUS_PREVIEW_LABEL', '¥×¥ì¥Ó¥å¡¼' );
+define('_MD_XNPSTIMULUS_STIMULUS_TYPE_LABEL', 'ï¿½É·ã¥¿ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_DEVELOPER_LABEL', 'ï¿½ï¿½È¯ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_DATE_LABEL', 'ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_YEAR_LABEL', 'Ç¯');
+define('_MD_XNPSTIMULUS_MONTH_LABEL', 'ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_DAY_OF_MONTH_LABEL', 'ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_PREVIEW_LABEL', 'ï¿½×¥ï¿½Ó¥å¡¼');
 
-define( '_MD_XNPSTIMULUS_README_REQUIRED', "'Readme' ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
-define( '_MD_XNPSTIMULUS_LICENSE_REQUIRED', "'License' ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
-define( '_MD_XNPSTIMULUS_RIGHTS_REQUIRED', "'Rights' ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
-define( '_MD_XNPSTIMULUS_EXPLANATION', "¼Â¸³ÍÑ»É·ã¥×¥í¥°¥é¥à/¥¹¥¯¥ê¥×¥È" );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_STIMULUS_ID'         , '¥¢¥¤¥Æ¥àID' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_STIMULUS_TYPE'       , '»É·ã¥¿¥¤¥×' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_DEVELOPER'           , '³«È¯¼Ô' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_README'              , 'Readme' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_RIGHTS'              , 'Rights' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_USE_CC'              , '¥¯¥ê¥¨¥¤¥Æ¥£¥Ö¥³¥â¥ó¥º¤ò»ÈÍÑ¤¹¤ë' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_CC_COMMERCIAL_USE'   , 'ºîÉÊ¤Î±ÄÍøÌÜÅªÍøÍÑ¤òµö²Ä¤¹¤ë' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_CC_MODIFICATION'     , 'ºîÉÊ¤ÎËÝ°Æ¡¦²þÊÑ¤òµö²Ä¤¹¤ë' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_LIMIT' , '¥À¥¦¥ó¥í¡¼¥ÉÀ©¸Â' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_NOTIFY', '¥À¥¦¥ó¥í¡¼¥ÉÄÌÃÎ' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_STIMULUS_DATA'       , '¥Õ¥¡¥¤¥ë' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_PREVIEW'             , '¥×¥ì¥Ó¥å¡¼' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_STIMULUS_TYPE_PICTURE', 'Picture' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_STIMULUS_TYPE_MOVIE'  , 'Movie' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_STIMULUS_TYPE_PROGRAM', 'Program' );
-define( '_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_STIMULUS_TYPE_OTHER'  , 'Other' );
-
-?>
+define('_MD_XNPSTIMULUS_README_REQUIRED', "'Readme' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPSTIMULUS_LICENSE_REQUIRED', "'License' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPSTIMULUS_RIGHTS_REQUIRED', "'Rights' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPSTIMULUS_EXPLANATION', 'ï¿½Â¸ï¿½ï¿½Ñ»É·ï¿½×¥ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¥ï¿½');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_STIMULUS_ID', 'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ID');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_STIMULUS_TYPE', 'ï¿½É·ã¥¿ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_DEVELOPER', 'ï¿½ï¿½È¯ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_README', 'Readme');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_RIGHTS', 'Rights');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_USE_CC', 'ï¿½ï¿½ï¿½ê¥¨ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ö¥ï¿½ï¿½ï¿½ó¥º¤ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_CC_COMMERCIAL_USE', 'ï¿½ï¿½ï¿½Ê¤Î±ï¿½ï¿½ï¿½ï¿½ï¿½Åªï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_CC_MODIFICATION', 'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Ý°Æ¡ï¿½ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_LIMIT', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_NOTIFY', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_STIMULUS_DATA', 'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_PREVIEW', 'ï¿½×¥ï¿½Ó¥å¡¼');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_STIMULUS_TYPE_PICTURE', 'Picture');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_STIMULUS_TYPE_MOVIE', 'Movie');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_STIMULUS_TYPE_PROGRAM', 'Program');
+define('_MD_XNPSTIMULUS_XMLRPC_DISPLAY_NAME_STIMULUS_TYPE_OTHER', 'Other');

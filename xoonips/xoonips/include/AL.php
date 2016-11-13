@@ -65,7 +65,7 @@ function _xnpal_getNewSortNumber($parentXID, &$sortNumber)
     if ((int)$sortNumber == 0) { // NULL if parentXID is leaf node.
         $sortNumber = 1; // sort_number have to be more than 1, because 0 is reserved number.
     } else {
-        $sortNumber = $sortNumber + 1;
+        $sortNumber += 1;
     }
     return RES_OK;
 }

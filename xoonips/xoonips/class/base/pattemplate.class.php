@@ -1519,7 +1519,7 @@ if (!class_exists('patTemplate')) {
         public function getVar($template, $var)
         {
             //	should the var from a different template be used
-            if (stristr($var, '.')) {
+            if (strstr($var, '.')) {
                 list($template, $var) = explode('.', $var);
             }
 

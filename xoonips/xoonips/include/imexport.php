@@ -357,7 +357,7 @@ function xnpExportRelatedTo($parent_id)
     }
     $xml = '';
     foreach ($item_id as $i) {
-        $xml = $xml . "<related_to item_id='${i}'/>\n";
+        $xml .= "<related_to item_id='${i}'/>\n";
     }
     return $xml;
 }

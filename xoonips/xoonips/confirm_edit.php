@@ -267,7 +267,7 @@ if ($op === 'update') {
         }
         $msg = '';
         eval("\$param_check_result = " . $modname . "CheckEditParameters( \$msg );");
-        $system_message = $system_message . $msg;
+        $system_message .= $msg;
     }
 
     //confirm

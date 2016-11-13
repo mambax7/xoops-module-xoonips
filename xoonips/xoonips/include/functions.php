@@ -341,9 +341,9 @@ function ISO8601toUnixTimestamp($str)
         //correct a time difference to GMT
         if (isset($match[11]) && isset($match[12]) && isset($match[13]) && isset($match[14])) {
             if ($match[11] !== 'Z' && $match[12] == '-') {
-                $tm = $tm + ($match[13] * 3600 + $match[14] * 60);
+                $tm += ($match[13] * 3600 + $match[14] * 60);
             } elseif (isset($match[12]) && $match[11] !== 'Z' && $match[12] == '+') {
-                $tm = $tm - ($match[13] * 3600 + $match[14] * 60);
+                $tm -= ($match[13] * 3600 + $match[14] * 60);
             }
         }
     } elseif (preg_match('/^([0-9]{4})(-W([0-5][0-9]))(-([1-7]))$/', $str, $match) == 1) {

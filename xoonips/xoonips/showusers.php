@@ -327,14 +327,14 @@ while ($row = $xoopsDB->fetchArray($res)) {
                                . ' as i2 WHERE i1.item_id=' . $itid . ' AND i1.uid=' . $uid . ' AND i1.item_id=i2.item_id AND i1.uid=i2.uid';
                 $res3        = $xoopsDB->query($sql3);
                 $num_of_data = $xoopsDB->getRowsNum($res3);
-                $sum_of_data = $sum_of_data + $num_of_data;
+                $sum_of_data += $num_of_data;
                 break;
 
             case 1:
                 $sql3        = 'SELECT item_id FROM ' . $xoopsDB->prefix('xoonips_item_show') . ' WHERE item_id=' . $itid . ' AND uid=' . $uid . '';
                 $res3        = $xoopsDB->query($sql3);
                 $num_of_data = $xoopsDB->getRowsNum($res3);
-                $sum_of_data = $sum_of_data + $num_of_data;
+                $sum_of_data += $num_of_data;
         }
     }
     if (!is_numeric($sum_of_data)) {

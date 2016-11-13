@@ -255,7 +255,7 @@ if (isset($op) && $op === 'register') {
 
         $msg = '';
         eval("\$param_check_result = " . $modname . "CheckRegisterParameters( \$msg );");
-        $system_message = $system_message . $msg;
+        $system_message .= $msg;
     }
 
     //confirm

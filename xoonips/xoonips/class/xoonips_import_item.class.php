@@ -1642,11 +1642,11 @@ class XooNIpsImportItemHandler
             && isset($match[14])
         ) {
             if ($match[11] !== 'Z' && $match[12] == '-') {
-                $tm = $tm + ($match[13] * 3600 + $match[14] * 60);
+                $tm += ($match[13] * 3600 + $match[14] * 60);
             } elseif (isset($match[12]) && $match[11] !== 'Z'
                       && $match[12] == '+'
             ) {
-                $tm = $tm - ($match[13] * 3600 + $match[14] * 60);
+                $tm -= ($match[13] * 3600 + $match[14] * 60);
             }
         }
         return $tm;

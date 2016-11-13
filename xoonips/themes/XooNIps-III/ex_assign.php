@@ -7,7 +7,7 @@
 
 global $xoopsUser, $xoopsModule;
 if (is_object($xoopsUser)) {
-	$pm_handler =& xoops_gethandler('privmessage');
+	$pm_handler = xoops_gethandler('privmessage');
 
 	$criteria = new CriteriaCompo(new Criteria('read_msg', 0));
 	$criteria->add(new Criteria('to_userid', $xoopsUser->getVar('uid')));
@@ -25,4 +25,4 @@ if ( file_exists(XOOPS_ROOT_PATH . '/modules/xoonips/blocks/xoonips_blocks.php')
 		$this->assign('search_block', $search_block );
 }
 
-?>
+

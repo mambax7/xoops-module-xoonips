@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief Data object of Conference author information
@@ -33,9 +33,12 @@ if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
  */
 class XNPConferenceOrmAuthor extends XooNIpsTableObject
 {
-    function XNPConferenceOrmAuthor()
+    /**
+     * XNPConferenceOrmAuthor constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsTableObject();
+        parent::__construct();
         $this->initVar('conference_author_id', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('conference_id', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('author', XOBJ_DTYPE_TXTBOX, '', true);
@@ -50,10 +53,13 @@ class XNPConferenceOrmAuthor extends XooNIpsTableObject
  */
 class XNPConferenceOrmAuthorHandler extends XooNIpsTableObjectHandler
 {
-    function XNPConferenceOrmAuthorHandler(&$db) 
+    /**
+     * XNPConferenceOrmAuthorHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsTableObjectHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPConferenceOrmAuthor', 'xnpconference_author', 'conference_author_id', false);
     }
 }
-?>

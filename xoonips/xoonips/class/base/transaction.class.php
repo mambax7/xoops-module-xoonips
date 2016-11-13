@@ -24,8 +24,8 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 /**
@@ -33,58 +33,63 @@ if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
  *
  * Don't call constructor. Use {@link XooNIpsTransaction::getInstance()} to get instance.
  */
-class XooNIpsTransaction {
-  var $db;
+class XooNIpsTransaction
+{
+    public $db;
 
-  /**
-   * constractor
-   *
-   * @access public
-   * @param object &$db XoopsDatabase
-   */
-  function XooNIpsTransaction( &$db ) {
-    $this->db =& $db;
-  }
-
-  /**
-   * start transaction
-   *
-   * @access public
-   */
-  function start() {
-    $this->db->queryF( 'START TRANSACTION' );
-  }
-
-  /**
-   * commit
-   *
-   * @access public
-   */
-  function commit() {
-    $this->db->queryF( 'COMMIT' );
-  }
-
-  /**
-   * rollback
-   *
-   * @access public
-   */
-  function rollback() {
-    $this->db->queryF( 'ROLLBACK' );
-  }
-
-  /**
-   * get object instance
-   * 
-   * @access public
-   * @return object instance of XooNIpsTransaction
-   */
-  function &getInstance() {
-    static $singleton = null;
-    if ( ! isset( $singleton ) ) {
-      $singleton = new XooNIpsTransaction( $GLOBALS['xoopsDB'] );
+    /**
+     * constractor
+     *
+     * @access public
+     * @param object $db XoopsDatabase
+     */
+    public function __construct($db)
+    {
+        $this->db = $db;
     }
-    return $singleton;
-  }
+
+    /**
+     * start transaction
+     *
+     * @access public
+     */
+    public function start()
+    {
+        $this->db->queryF('START TRANSACTION');
+    }
+
+    /**
+     * commit
+     *
+     * @access public
+     */
+    public function commit()
+    {
+        $this->db->queryF('COMMIT');
+    }
+
+    /**
+     * rollback
+     *
+     * @access public
+     */
+    public function rollback()
+    {
+        $this->db->queryF('ROLLBACK');
+    }
+
+    /**
+     * get object instance
+     *
+     * @access public
+     * @return object instance of XooNIpsTransaction
+     */
+    public static function getInstance()
+    {
+        static $singleton = null;
+        if (!isset($singleton)) {
+            $singleton = new XooNIpsTransaction($GLOBALS['xoopsDB']);
+        }
+        return $singleton;
+    }
 }
-?>

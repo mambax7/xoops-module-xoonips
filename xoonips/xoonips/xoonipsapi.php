@@ -28,8 +28,8 @@ define('XOOPS_XMLRPC', 1);
 define('DEBUG_XMLRPC', 0);
 
 error_reporting(0);
-include 'include/common.inc.php';
-restore_error_handler();
+include __DIR__ . '/include/common.inc.php';
+restore_errorHandler();
 
 include_once XOOPS_ROOT_PATH . '/class/xml/rpc/xmlrpctag.php';
 include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/xmlrpcparser.class.php';
@@ -46,47 +46,48 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 ini_set('error_log', 'syslog');
 
-
-$allow_methods=array( 'XooNIps.getChildIndexes',
-                      'XooNIps.getFile',
-                      'XooNIps.getFileMetadata',
-                      'XooNIps.getIndex',
-                      'XooNIps.getItem',
-                      'XooNIps.getItemPermission',
-                      'XooNIps.getItemtype',
-                      'XooNIps.getItemtypes',
-                      'XooNIps.getPreference',
-                      'XooNIps.getRootIndex',
-                      'XooNIps.getSimpleItems',
-                      'XooNIps.login',
-                      'XooNIps.logout',
-                      'XooNIps.putItem',
-                      'XooNIps.removeItem',
-                      'XooNIps.searchItem',
-                      'XooNIps.updateItem2' );
+$allow_methods = array(
+    'XooNIps.getChildIndexes',
+    'XooNIps.getFile',
+    'XooNIps.getFileMetadata',
+    'XooNIps.getIndex',
+    'XooNIps.getItem',
+    'XooNIps.getItemPermission',
+    'XooNIps.getItemtype',
+    'XooNIps.getItemtypes',
+    'XooNIps.getPreference',
+    'XooNIps.getRootIndex',
+    'XooNIps.getSimpleItems',
+    'XooNIps.login',
+    'XooNIps.logout',
+    'XooNIps.putItem',
+    'XooNIps.removeItem',
+    'XooNIps.searchItem',
+    'XooNIps.updateItem2'
+);
 
 $rpc_response = new XoopsXmlRpcResponse();
-$parser = new XooNIpsXmlRpcParser(file_get_contents("php://input"));
+$parser       = new XooNIpsXmlRpcParser(file_get_contents('php://input'));
 if (!$parser->parse()) {
     $rpc_response->add(new XooNIpsXmlRpcFault(102));
-}else if( !in_array($parser->getMethodName(), $allow_methods) ){
+} elseif (!in_array($parser->getMethodName(), $allow_methods)) {
     $rpc_response->add(new XooNIpsXmlRpcFault(107));
 } else {
     global $xoopsModule;
-    $module = &$xoopsModule;
+    $module  = $xoopsModule;
     $methods = explode('.', $parser->getMethodName());
-    if ($methods[0] == 'XooNIps') {
-        $request = new XooNIpsXmlRpcRequest($methods[1], $parser->getParam());
+    if ($methods[0] === 'XooNIps') {
+        $request  = new XooNIpsXmlRpcRequest($methods[1], $parser->getParam());
         $response = new XooNIpsXmlRpcResponse();
-        $factory = &XooNIpsXmlRpcLogicFactory::getInstance();
-        $logic = &$factory->create($methods[1]);
+        $factory  = XooNIpsXmlRpcLogicFactory::getInstance();
+        $logic    = $factory->create($methods[1]);
         if (is_object($logic)) {
             $logic->execute($request, $response);
             if ($response->getResult()) {
                 // succeed in XooNIpsLogic
                 // create view and render
-                $factory = &XooNIpsXmlRpcViewFactory::getInstance();
-                $view = &$factory->create($methods[1], $response);
+                $factory = XooNIpsXmlRpcViewFactory::getInstance();
+                $view    = $factory->create($methods[1], $response);
                 if (!is_object($view)) {
                     $rpc_response->add(new XooNIpsXmlRpcFault(106));
                 } else {
@@ -110,4 +111,3 @@ header('Server: XooNIps XML-RPC Server');
 header('Content-type: text/xml');
 header('Content-Length: ' . strlen($payload));
 echo $payload;
-?>

@@ -24,74 +24,89 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
-require_once __DIR__.'/abstract_ranking.class.php';
+require_once __DIR__ . '/abstract_ranking.class.php';
 
 /**
  * @brief data object of ranking contributing user
  *
- * @li getVar('item_id') :
- * @li getVar('uid') :
- * @li getVar('timestamp') :
+ * @li    getVar('item_id') :
+ * @li    getVar('uid') :
+ * @li    getVar('timestamp') :
  */
-class XooNIpsOrmRankingContributingUser extends XooNIpsTableObject {
-  function XooNIpsOrmRankingContributingUser() {
-    parent::XooNIpsTableObject();
-    $this->initVar( 'item_id', XOBJ_DTYPE_INT, 0, true );
-    $this->initVar( 'uid', XOBJ_DTYPE_INT, 0, true );
-    $this->initVar( 'timestamp', XOBJ_DTYPE_OTHER, null, false );
-  }
+class XooNIpsOrmRankingContributingUser extends XooNIpsTableObject
+{
+    /**
+     * XooNIpsOrmRankingContributingUser constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->initVar('item_id', XOBJ_DTYPE_INT, 0, true);
+        $this->initVar('uid', XOBJ_DTYPE_INT, 0, true);
+        $this->initVar('timestamp', XOBJ_DTYPE_OTHER, null, false);
+    }
 }
 
 /**
  * @brief handler object of ranking contributing user
  *
  */
-class XooNIpsOrmRankingContributingUserHandler extends XooNIpsOrmAbstractRankingHandler {
-  function XooNIpsOrmRankingContributingUserHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmRankingContributingUser', 'xoonips_ranking_contributing_user', 'item_id', false );
-    $this->_set_columns( array( 'item_id', 'uid', 'timestamp' ) );
-  }
-
-  /**
-   * insert/upldate/replace object
-   *
-   * @access public
-   * @param object &$obj
-   * @param bool $force force operation
-   * @return bool false if failed
-   */
-  function insert( &$obj, $force = false ) {
-    $item_id = $obj->get( 'item_id' );
-    $uid = $obj->get( 'uid' );
-    if ( $item_id == 0 || $uid == 0 ) {
-      // ignore if item id or user id is zero
-      return true;
+class XooNIpsOrmRankingContributingUserHandler extends XooNIpsOrmAbstractRankingHandler
+{
+    /**
+     * XooNIpsOrmRankingContributingUserHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmRankingContributingUser', 'xoonips_ranking_contributing_user', 'item_id', false);
+        $this->_set_columns(array(
+                                'item_id',
+                                'uid',
+                                'timestamp'
+                            ));
     }
-    return parent::insert( $obj, $force );
-  }
 
-  /**
-   * replace contributing user raking data for updating/rebuilding rankings
-   *
-   * @param int $item_id item id
-   * @param int $uid user id
-   * @param int $timestamp timestamp
-   * @return bool FALSE if failed
-   */
-  function replace( $item_id, $uid, $timestamp ) {
-    $obj =& $this->create();
-    $obj->setReplace();
-    $obj->set( 'item_id', $item_id );
-    $obj->set( 'uid', $uid );
-    $obj->set( 'timestamp', date( 'Y-m-d H:i:s', $timestamp ) );
-    // force insertion
-    return $this->insert( $obj, true );
-  }
+    /**
+     * insert/upldate/replace object
+     *
+     * @access public
+     * @param XoopsObject $obj
+     * @param bool        $force force operation
+     * @return bool false if failed
+     */
+    public function insert(XoopsObject $obj, $force = false)
+    {
+        $item_id = $obj->get('item_id');
+        $uid     = $obj->get('uid');
+        if ($item_id == 0 || $uid == 0) {
+            // ignore if item id or user id is zero
+            return true;
+        }
+        return parent::insert($obj, $force);
+    }
+
+    /**
+     * replace contributing user raking data for updating/rebuilding rankings
+     *
+     * @param int $item_id   item id
+     * @param int $uid       user id
+     * @param int $timestamp timestamp
+     * @return bool FALSE if failed
+     */
+    public function replace($item_id, $uid, $timestamp)
+    {
+        $obj =  $this->create();
+        $obj->setReplace();
+        $obj->set('item_id', $item_id);
+        $obj->set('uid', $uid);
+        $obj->set('timestamp', date('Y-m-d H:i:s', $timestamp));
+        // force insertion
+        return $this->insert($obj, true);
+    }
 }
-
-?>

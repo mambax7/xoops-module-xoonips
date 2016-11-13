@@ -29,47 +29,45 @@
  */
 
 // _MD_<MODULENAME>_<STRINGNAME>
-define( '_MD_XNPTOOL_TOOL_TYPE', '¥Ä¡¼¥ë' );
-define( '_MD_XNPTOOL_DEVELOPER', '³«È¯¼Ô' );
-define( '_MD_XNPTOOL_TOOL_FILE', '¥Õ¥¡¥¤¥ë' );
-define( '_MD_XNPTOOL_CAPTION_LABEL', '¸«½Ð¤·' );
+define('_MD_XNPTOOL_TOOL_TYPE', 'ï¿½Ä¡ï¿½ï¿½ï¿½');
+define('_MD_XNPTOOL_DEVELOPER', 'ï¿½ï¿½È¯ï¿½ï¿½');
+define('_MD_XNPTOOL_TOOL_FILE', 'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPTOOL_CAPTION_LABEL', 'ï¿½ï¿½ï¿½Ð¤ï¿½');
 
 //specify tool types(separated by '\t')
-define( '_MD_XNPTOOL_TOOL_TYPE_SELECT', "Matlab\tMathematica\tProgram\tOther" );
+define('_MD_XNPTOOL_TOOL_TYPE_SELECT', "Matlab\tMathematica\tProgram\tOther");
 
-define( '_MD_XNPTOOL_DEVELOPER_REQUIRED', "'³«È¯¼Ô' ¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤" );
-define( '_MD_XNPTOOL_TOOL_FILE_REQUIRED', "'¥Õ¥¡¥¤¥ë' ¤òÅÐÏ¿¤·¤Æ¤¯¤À¤µ¤¤" );
-define( '_MD_XNPTOOL_DATE_REQUIRED', "'ÆüÉÕ' ¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤" );
-define( '_MD_XNPTOOL_YEAR_RANGE_ILLEGAL', "'Ç¯' ¤òÀµ¤·¤¯ÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤" );
+define('_MD_XNPTOOL_DEVELOPER_REQUIRED', "'ï¿½ï¿½È¯ï¿½ï¿½' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPTOOL_TOOL_FILE_REQUIRED', "'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½' ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPTOOL_DATE_REQUIRED', "'ï¿½ï¿½ï¿½ï¿½' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPTOOL_YEAR_RANGE_ILLEGAL', "'Ç¯' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 
-define( '_MD_XNPTOOL_TOOL_TYPE_LABEL', "¥Õ¥¡¥¤¥ë¥¿¥¤¥×" );
-define( '_MD_XNPTOOL_DEVELOPER_LABEL', "³«È¯¼Ô" );
-define( '_MD_XNPTOOL_DATE_LABEL', 'ÆüÉÕ' );
-define( '_MD_XNPTOOL_YEAR_LABEL', 'Ç¯' );
-define( '_MD_XNPTOOL_MONTH_LABEL', '·î' );
-define( '_MD_XNPTOOL_DAY_OF_MONTH_LABEL', 'Æü' );
-define( '_MD_XNPTOOL_PREVIEW_LABEL', '¥×¥ì¥Ó¥å¡¼' );
+define('_MD_XNPTOOL_TOOL_TYPE_LABEL', 'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¥¿ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPTOOL_DEVELOPER_LABEL', 'ï¿½ï¿½È¯ï¿½ï¿½');
+define('_MD_XNPTOOL_DATE_LABEL', 'ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPTOOL_YEAR_LABEL', 'Ç¯');
+define('_MD_XNPTOOL_MONTH_LABEL', 'ï¿½ï¿½');
+define('_MD_XNPTOOL_DAY_OF_MONTH_LABEL', 'ï¿½ï¿½');
+define('_MD_XNPTOOL_PREVIEW_LABEL', 'ï¿½×¥ï¿½Ó¥å¡¼');
 
-define( '_MD_XNPTOOL_README_REQUIRED', "'Readme' ¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤" );
-define( '_MD_XNPTOOL_LICENSE_REQUIRED', "'License' ¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤" );
-define( '_MD_XNPTOOL_RIGHTS_REQUIRED', "'Rights' ¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤" );
-define( '_MD_XNPTOOL_EXPLANATION', "¥Ç¡¼¥¿²òÀÏÍÑ¥×¥í¥°¥é¥à/¥¹¥¯¥ê¥×¥È" );
+define('_MD_XNPTOOL_README_REQUIRED', "'Readme' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPTOOL_LICENSE_REQUIRED', "'License' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPTOOL_RIGHTS_REQUIRED', "'Rights' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPTOOL_EXPLANATION', 'ï¿½Ç¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¥×¥ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¥ï¿½');
 
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_TOOL_ID'             , '¥¢¥¤¥Æ¥àID' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_TOOL_TYPE'           , '¥Õ¥¡¥¤¥ë¥¿¥¤¥×' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_DEVELOPER'           , '³«È¯¼Ô' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_README'              , 'Readme' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_RIGHTS'              , 'Rights' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_USE_CC'              , '¥¯¥ê¥¨¥¤¥Æ¥£¥Ö¥³¥â¥ó¥º¤ò»ÈÍÑ¤¹¤ë' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_CC_COMMERCIAL_USE'   , 'ºîÉÊ¤Î±ÄÍøÌÜÅªÍøÍÑ¤òµö²Ä¤¹¤ë' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_CC_MODIFICATION'     , 'ºîÉÊ¤ÎËÝ°Æ¡¦²þÊÑ¤òµö²Ä¤¹¤ë' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_LIMIT' , '¥À¥¦¥ó¥í¡¼¥ÉÀ©¸Â' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_NOTIFY', '¥À¥¦¥ó¥í¡¼¥ÉÄÌÃÎ' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_TOOL_DATA'           , '¥Õ¥¡¥¤¥ë' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_PREVIEW'             , '¥×¥ì¥Ó¥å¡¼' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_TOOL_TYPE_MATLAB'     , 'Matlab' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_TOOL_TYPE_MATHEMATICA', 'Mathematica' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_TOOL_TYPE_PROGRAM'    , 'Program' );
-define( '_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_TOOL_TYPE_OTHER'      , 'Other' );
-
-?>
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_TOOL_ID', 'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ID');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_TOOL_TYPE', 'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¥¿ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_DEVELOPER', 'ï¿½ï¿½È¯ï¿½ï¿½');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_README', 'Readme');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_RIGHTS', 'Rights');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_USE_CC', 'ï¿½ï¿½ï¿½ê¥¨ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ö¥ï¿½ï¿½ï¿½ó¥º¤ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_CC_COMMERCIAL_USE', 'ï¿½ï¿½ï¿½Ê¤Î±ï¿½ï¿½ï¿½ï¿½ï¿½Åªï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_CC_MODIFICATION', 'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Ý°Æ¡ï¿½ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_LIMIT', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_NOTIFY', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_TOOL_DATA', 'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_PREVIEW', 'ï¿½×¥ï¿½Ó¥å¡¼');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_TOOL_TYPE_MATLAB', 'Matlab');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_TOOL_TYPE_MATHEMATICA', 'Mathematica');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_TOOL_TYPE_PROGRAM', 'Program');
+define('_MD_XNPTOOL_XMLRPC_DISPLAY_NAME_TOOL_TYPE_OTHER', 'Other');

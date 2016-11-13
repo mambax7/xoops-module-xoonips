@@ -26,29 +26,38 @@
 // ------------------------------------------------------------------------- //
 
 include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/orm/file.class.php';
+
+/**
+ * Class XooNIpsXmlRpcTransformFile
+ */
 class XooNIpsXmlRpcTransformFile extends XooNIpsXmlRpcTransformElement
 {
-    function getObject($array) 
+    /**
+     * @param $array
+     * @return bool|XooNIpsOrmFile
+     */
+    public function getObject($array)
     {
         $obj = new XooNIpsOrmFile();
-        //$file_handler=&xoonips_getormhandler('xoonips', 'file');
-        //$obj=&$file_handler->create();
+        //$fileHandler= xoonips_getOrmHandler('xoonips', 'file');
+        //$obj=$fileHandler->create();
         //
         // filetype to file_type_id
-        $file_type_handler = &xoonips_getormhandler('xoonips', 'file_type');
-        $filetypes = &$file_type_handler->getObjects(new Criteria('name', $array['filetype']));
-        if (!$filetypes || count($filetypes) != 1) return false;
+        $file_typeHandler = xoonips_getOrmHandler('xoonips', 'file_type');
+        $filetypes        =  $file_typeHandler->getObjects(new Criteria('name', $array['filetype']));
+        if (!$filetypes || count($filetypes) != 1) {
+            return false;
+        }
         //
         //
-        $unicode =& xoonips_getutility( 'unicode' );
+        $unicode = xoonips_getUtility('unicode');
         $obj->assignVar('file_id', $array['id']);
         $obj->assignVar('file_type_id', $filetypes[0]->get('file_type_id'));
-        $obj->assignVar('original_file_name', $unicode->decode_utf8($array['originalname'],xoonips_get_server_charset(),'h') );
-        $obj->assignVar('file_size', intval($array['size']));
+        $obj->assignVar('original_file_name', $unicode->decode_utf8($array['originalname'], xoonips_get_server_charset(), 'h'));
+        $obj->assignVar('file_size', (int)$array['size']);
         $obj->assignVar('mime_type', $array['mimetype']);
-        $obj->assignVar('caption', $unicode->decode_utf8($array['caption'],xoonips_get_server_charset(),'h') );
+        $obj->assignVar('caption', $unicode->decode_utf8($array['caption'], xoonips_get_server_charset(), 'h'));
         $obj->assignVar('thumbnail_file', $array['thumbnail']);
         return $obj;
     }
 }
-?>

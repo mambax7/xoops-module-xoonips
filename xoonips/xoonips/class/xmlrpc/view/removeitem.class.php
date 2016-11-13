@@ -42,9 +42,8 @@ class XooNIpsXmlRpcViewRemoveItem extends XooNIpsXmlRpcViewElement
      *
      * @return XoopsXmlRpcTag
      */
-    function render() 
+    public function render()
     {
         return new XoopsXmlRpcInt($this->response->getSuccess());
     }
 }
-?>

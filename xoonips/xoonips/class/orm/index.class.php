@@ -24,123 +24,138 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 /**
  * @brief data object of index
  *
- * @li getVar('index_id') :
- * @li getVar('parent_index_id') :
- * @li getVar('uid') :
- * @li getVar('gid') :
- * @li getVar('open_level') :
- * @li getVar('sort_number') :
+ * @li    getVar('index_id') :
+ * @li    getVar('parent_index_id') :
+ * @li    getVar('uid') :
+ * @li    getVar('gid') :
+ * @li    getVar('open_level') :
+ * @li    getVar('sort_number') :
  *
  */
-class XooNIpsOrmIndex extends XooNIpsTableObject {
-  function XooNIpsOrmIndex() {
-    parent::XooNIpsTableObject();
-    $this->initVar( 'index_id', XOBJ_DTYPE_INT, 0, true );
-    $this->initVar( 'parent_index_id', XOBJ_DTYPE_INT, null, true );
-    $this->initVar( 'uid', XOBJ_DTYPE_INT, null, false );
-    $this->initVar( 'gid', XOBJ_DTYPE_INT, null, false );
-    $this->initVar( 'open_level', XOBJ_DTYPE_INT, null, true );
-    $this->initVar( 'sort_number', XOBJ_DTYPE_INT, null, true );
-  }
-  function cleanVars() {
-    $result = true;
-    $open_level = $this->get( 'open_level' );
-    if ( $open_level == OL_PUBLIC ) {
-      if ( isset( $this->vars['uid']['value'] ) ) {
-        trigger_error( 'cannot specify uid if open_level is OL_PUBLIC' );
-        $result = false;
-      }
-      if ( isset( $this->vars['gid']['value'] ) ) {
-        trigger_error( 'cannot specify gid if open_level is OL_PUBLIC' );
-        $result = false;
-      }
-    } else if ( $open_level == OL_GROUP_ONLY ) {
-      if ( isset( $this->vars['uid']['value'] ) ) {
-        trigger_error( 'cannot specify uid if open_level is OL_GROUP_ONLY' );
-        $result = false;
-      }
-      $this->vars['gid']['required'] = true;
-    } else if ( $open_level == OL_PRIVATE ) {
-      $this->vars['uid']['required'] = true;
-      if ( isset( $this->vars['gid']['value'] ) ) {
-        trigger_error( 'cannot specify gid if open_level is OL_PRIVATE' );
-        $result = false;
-      }
-    } else {
-      trigger_error( "unknown open_level($open_level)" );
-      $result = false;
+class XooNIpsOrmIndex extends XooNIpsTableObject
+{
+    /**
+     * XooNIpsOrmIndex constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->initVar('index_id', XOBJ_DTYPE_INT, 0, true);
+        $this->initVar('parent_index_id', XOBJ_DTYPE_INT, null, true);
+        $this->initVar('uid', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('gid', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('open_level', XOBJ_DTYPE_INT, null, true);
+        $this->initVar('sort_number', XOBJ_DTYPE_INT, null, true);
     }
-    return $result && parent::cleanVars();
-  }
 
-  /**
-   * get parent index object of this index
-   * @return XooNIpsOrmIndex parent index object or null
-   */
-  function getParentIndex() {
-    $handler =& xoonips_getormhandler( 'xoonips', 'index' );
-    return $handler->get( $this->get( 'parent_index_id' ) );
-  }
-
-  /**
-   * get index title
-   *
-   * @access public
-   * @param string $fmt format
-   * @return string title
-   */
-  function getTitle( $fmt ) {
-    $handler =& xoonips_getormhandler( 'xoonips', 'title' );
-    $criteria = new CriteriaCompo( new Criteria( 'item_id', $this->get( 'index_id' ) ) );
-    $criteria->add( new Criteria( 'title_id', DEFAULT_INDEX_TITLE_OFFSET ) );
-    $title_objs =& $handler->getObjects( $criteria );
-    if ( count( $title_objs ) != 1 ) {
-      return false;
+    /**
+     * @return bool
+     */
+    public function cleanVars()
+    {
+        $result     = true;
+        $open_level = $this->get('open_level');
+        if ($open_level == OL_PUBLIC) {
+            if (isset($this->vars['uid']['value'])) {
+                trigger_error('cannot specify uid if open_level is OL_PUBLIC');
+                $result = false;
+            }
+            if (isset($this->vars['gid']['value'])) {
+                trigger_error('cannot specify gid if open_level is OL_PUBLIC');
+                $result = false;
+            }
+        } elseif ($open_level == OL_GROUP_ONLY) {
+            if (isset($this->vars['uid']['value'])) {
+                trigger_error('cannot specify uid if open_level is OL_GROUP_ONLY');
+                $result = false;
+            }
+            $this->vars['gid']['required'] = true;
+        } elseif ($open_level == OL_PRIVATE) {
+            $this->vars['uid']['required'] = true;
+            if (isset($this->vars['gid']['value'])) {
+                trigger_error('cannot specify gid if open_level is OL_PRIVATE');
+                $result = false;
+            }
+        } else {
+            trigger_error("unknown open_level($open_level)");
+            $result = false;
+        }
+        return $result && parent::cleanVars();
     }
-    return $title_objs[0]->getVar( 'title', $fmt );
-  }
 
-  /**
-   * get all of children
-   *
-   * @access public
-   * @return XooNIpsOrmIndex[] child indexes
-   */
-  function &getAllChildren() {
-    $index_handler =& xoonips_getormhandler( 'xoonips', 'index' );
-    $criteria = new Criteria( 'parent_index_id', $this->get( 'index_id' ) );
-    $criteria->setSort( 'sort_number' );
-    return $index_handler->getObjects( $criteria );
-  }
+    /**
+     * get parent index object of this index
+     * @return XooNIpsOrmIndex parent index object or null
+     */
+    public function getParentIndex()
+    {
+        $handler = xoonips_getOrmHandler('xoonips', 'index');
+        return $handler->get($this->get('parent_index_id'));
+    }
 
-  /**
-   * lock this index
-   *
-   * @access public
-   * @return bool false if lock failure
-   */
-  function lock() {
-    $item_lock_handler =& xoonips_getormhandler( 'xoonips', 'item_lock' );
-    return $item_lock_handler->lock( $this->get( 'index_id' ) );
-  }
+    /**
+     * get index title
+     *
+     * @access public
+     * @param string $fmt format
+     * @return string title
+     */
+    public function getTitle($fmt)
+    {
+        $handler  = xoonips_getOrmHandler('xoonips', 'title');
+        $criteria = new CriteriaCompo(new Criteria('item_id', $this->get('index_id')));
+        $criteria->add(new Criteria('title_id', DEFAULT_INDEX_TITLE_OFFSET));
+        $title_objs =  $handler->getObjects($criteria);
+        if (count($title_objs) != 1) {
+            return false;
+        }
+        return $title_objs[0]->getVar('title', $fmt);
+    }
 
-  /**
-   * unlock this index
-   *
-   * @access public
-   * @return bool false if unlock failure
-   */
-  function unlock() {
-    $item_lock_handler =& xoonips_getormhandler( 'xoonips', 'item_lock' );
-    return $item_lock_handler->unlock( $this->get( 'index_id' ) );
-  }
+    /**
+     * get all of children
+     *
+     * @access public
+     * @return XooNIpsOrmIndex[] child indexes
+     */
+    public function &getAllChildren()
+    {
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
+        $criteria     = new Criteria('parent_index_id', $this->get('index_id'));
+        $criteria->setSort('sort_number');
+        return $indexHandler->getObjects($criteria);
+    }
+
+    /**
+     * lock this index
+     *
+     * @access public
+     * @return bool false if lock failure
+     */
+    public function lock()
+    {
+        $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
+        return $item_lockHandler->lock($this->get('index_id'));
+    }
+
+    /**
+     * unlock this index
+     *
+     * @access public
+     * @return bool false if unlock failure
+     */
+    public function unlock()
+    {
+        $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
+        return $item_lockHandler->unlock($this->get('index_id'));
+    }
 }
 
 /**
@@ -148,381 +163,412 @@ class XooNIpsOrmIndex extends XooNIpsTableObject {
  *
  *
  */
-class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler {
-  function XooNIpsOrmIndexHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmIndex', 'xoonips_index', 'index_id', false );
-  }
-
-  /**
-   *
-   * return true if permitted to this index
-   *
-   * @param id id of index
-   * @param uid uid who access to this index
-   * @param operation read|write|delete|create(create child index)|export|register_item
-   * @return true if permitted
-   *
-   */
-  function getPerm( $id, $uid, $operation ) {
-
-    if ( ! in_array( $operation, array( 'read', 'write', 'delete', 'create', 'export', 'register_item' ) ) ) {
-      // bad operation.
-      return false;
-    }
-    $index = $this->get( $id );
-    if ( false == $index ) {
-      // no such index
-      return false;
-    }
-    if ( $id == IID_ROOT ) {
-      // IID_ROOT is hidden index
-      return false;
+class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
+{
+    /**
+     * XooNIpsOrmIndexHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmIndex', 'xoonips_index', 'index_id', false);
     }
 
-    if ( $operation == 'write' || $operation == 'delete' ) {
-      $item_lock_handler =& xoonips_getormhandler( 'xoonips', 'item_lock' );
-      if ( $item_lock_handler->isLocked( $id ) ) {
-        // cannot write/delete locked index
-        return false;
-      }
-    }
-
-    $item_lock_handler =& xoonips_getormhandler( 'xoonips', 'item_lock' );
-    if ( ( $operation == 'create' || $operation == 'register_item' ) && $item_lock_handler->isLocked( $id ) && $item_lock_handler->getLockType( $id ) == XOONIPS_LOCK_TYPE_PUBLICATION_GROUP_INDEX ) {
-      // cannot create new child of locked index
-      return false;
-    }
-
-    switch ( $index->get( 'open_level' ) ) {
-    case OL_PUBLIC:
-      if ( $operation == 'read' ) {
-        if ( $uid == UID_GUEST ) {
-          $xconfig_handler =& xoonips_getormhandler( 'xoonips', 'config' );
-          if ( $xconfig_handler->getValue( XNP_CONFIG_PUBLIC_ITEM_TARGET_USER_KEY ) != XNP_CONFIG_PUBLIC_ITEM_TARGET_USER_ALL ) {
-            // guest not allowed
+    /**
+     *
+     * return true if permitted to this index
+     *
+     * @param                                               id        id of index
+     * @param                                               uid       uid who access to this index
+     * @param create|delete|export|read|register_item|write $operation
+     * @return true if permitted
+     *
+     * @internal param create|delete|export|read|register_item|write $operation
+     */
+    public function getPerm($id, $uid, $operation)
+    {
+        if (!in_array($operation, array(
+            'read',
+            'write',
+            'delete',
+            'create',
+            'export',
+            'register_item'
+        ))
+        ) {
+            // bad operation.
             return false;
-          }
+        }
+        $index = $this->get($id);
+        if (false == $index) {
+            // no such index
+            return false;
+        }
+        if ($id == IID_ROOT) {
+            // IID_ROOT is hidden index
+            return false;
+        }
+
+        if ($operation == 'write' || $operation == 'delete') {
+            $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
+            if ($item_lockHandler->isLocked($id)) {
+                // cannot write/delete locked index
+                return false;
+            }
+        }
+
+        $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
+        if (($operation == 'create' || $operation == 'register_item') && $item_lockHandler->isLocked($id)
+            && $item_lockHandler->getLockType($id) == XOONIPS_LOCK_TYPE_PUBLICATION_GROUP_INDEX
+        ) {
+            // cannot create new child of locked index
+            return false;
+        }
+
+        switch ($index->get('open_level')) {
+            case OL_PUBLIC:
+                if ($operation == 'read') {
+                    if ($uid == UID_GUEST) {
+                        $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
+                        if ($xconfigHandler->getValue(XNP_CONFIG_PUBLIC_ITEM_TARGET_USER_KEY) != XNP_CONFIG_PUBLIC_ITEM_TARGET_USER_ALL) {
+                            // guest not allowed
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                if ($operation == 'register_item') {
+                    if ($uid == UID_GUEST) {
+                        return false;
+                    }
+                    return true;
+                }
+                break;
+            case OL_GROUP_ONLY:
+                $xgroupHandler = xoonips_getHandler('xoonips', 'group');
+                if ($operation == 'read' || $operation == 'register_item') {
+                    return $xgroupHandler->isGroupMember($uid, $index->get('gid'));
+                } elseif ($operation == 'write' || $operation == 'delete' || $operation == 'create' || $operation == 'export') {
+                    return $xgroupHandler->isGroupAdmin($uid, $index->get('gid'));
+                }
+                break;
+            case OL_PRIVATE:
+                if ($index->get('uid') == $uid) {
+                    return true;
+                }
+                break;
+            default:
+                // must not happen
+                return false;
+        }
+
+        // moderator or admin?
+        $memberHandler = xoonips_getHandler('xoonips', 'member');
+        if ($memberHandler->isModerator($uid) || $memberHandler->isAdmin($uid)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * rename index title
+     *
+     * @access public
+     * @param int    $xid index id
+     * @param string $title
+     * @return bool false if failure
+     */
+    public function renameIndexTitle($xid, $title)
+    {
+        $itHandler = xoonips_getOrmHandler('xoonips', 'title');
+        $criteria  = new CriteriaCompo(new Criteria('item_id', $xid));
+        $criteria->add(new Criteria('title_id', DEFAULT_INDEX_TITLE_OFFSET));
+        $it_objs =  $itHandler->getObjects($criteria);
+        if (count($it_objs) != 1) {
+            return false;
+        }
+        $it_obj =  $it_objs[0];
+        $it_obj->set('title', $title);
+        if (!$itHandler->insert($it_obj)) {
+            return false;
         }
         return true;
-      }
-      if ( $operation == 'register_item' ) {
-        if ( $uid == UID_GUEST ) {
-          return false;
+    }
+
+    /**
+     * create user root index
+     *
+     * @access public
+     * @param int uid user id
+     * @return int created index id, false if failure
+     */
+    public function createUserRootIndex($uid)
+    {
+        // check existing user index
+        $criteria = new CriteriaCompo(new Criteria('uid', $uid));
+        $criteria->add(new Criteria('parent_index_id', IID_ROOT));
+        if ($this->getCount($criteria) != 0) {
+            // already exists
+            return false;
+        }
+
+        // get account id (uname)
+        $userHandler = xoonips_getOrmHandler('xoonips', 'xoops_users');
+        $criteria    = new Criteria('uid', $uid);
+        $user_objs   =  $userHandler->getObjects($criteria);
+        if (count($user_objs) != 1) {
+            // xoops user not found
+            return false;
+        }
+        $user_obj =  $user_objs[0];
+        $uname    = $user_obj->getVar('uname', 'n');
+
+        return $this->_createRootIndex($uname, true, $uid);
+    }
+
+    /**
+     * create group root index
+     *
+     * @access public
+     * @param int gid group id
+     * @return int created index id, false if failure
+     */
+    public function createGroupRootIndex($gid)
+    {
+        // check existing group index
+        $criteria = new CriteriaCompo(new Criteria('gid', $gid));
+        $criteria->add(new Criteria('parent_index_id', IID_ROOT));
+        if ($this->getCount($criteria) != 0) {
+            // already exists
+            return false;
+        }
+
+        // get group id (gname)
+        $xgroupHandler = xoonips_getHandler('xoonips', 'group');
+        $xgroup_obj    =  $xgroupHandler->getGroupObject($gid);
+        if (!is_object($xgroup_obj)) {
+            // group not found
+            return false;
+        }
+        $gname = $xgroup_obj->getVar('gname', 'n');
+
+        return $this->_createRootIndex($gname, false, $gid);
+    }
+
+    /**
+     * create root index
+     *
+     * @access private
+     * @param string $title   index title
+     * @param bool   $is_user true: for user index, false: for group index
+     * @param int    $ugid    user id or group id
+     * @return int created index id, false if failure
+     */
+    public function _createRootIndex($title, $is_user, $ugid)
+    {
+        // transaction
+        require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/transaction.class.php';
+        $transaction =  XooNIpsTransaction::getInstance();
+        $transaction->start();
+
+        // create item basic
+        $ibHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
+        $ib_obj    = $ibHandler->create();
+        $ib_obj->set('item_type_id', ITID_INDEX);
+        if ($is_user) {
+            $ib_obj->set('uid', $ugid);
+        } else {
+            // uid is session owner for group index
+            $uid = UID_GUEST;
+            if (isset($GLOBALS['xoopsUser']) && is_object($GLOBALS['xoopsUser'])) {
+                $uid = (int)$GLOBALS['xoopsUser']->getVar('uid', 'n');
+            }
+            $ib_obj->set('uid', $uid);
+        }
+        if (!$ibHandler->insert($ib_obj)) {
+            $transaction->rollback();
+            return false;
+        }
+
+        // create item title
+        $itHandler = xoonips_getOrmHandler('xoonips', 'title');
+        $item_id   = $ib_obj->getVar('item_id', 'n');
+        $it_obj    = $itHandler->create();
+        $it_obj->set('item_id', $item_id);
+        $it_obj->set('title_id', DEFAULT_INDEX_TITLE_OFFSET);
+        $it_obj->set('title', $title);
+        if (!$itHandler->insert($it_obj)) {
+            $transaction->rollback();
+            return false;
+        }
+
+        // get sort number
+        $sort_number = 0;
+        if ($is_user) {
+            // for user index
+            $criteria = new CriteriaCompo(new Criteria('parent_index_id', IID_ROOT));
+            $criteria->add(new Criteria('open_level', OL_PRIVATE));
+            if ($this->getCount($criteria) == 0) {
+                // first creation
+                // this value will be used for admin on install xoonips module
+                $sort_number = 2147483647;
+            } else {
+                $idx_objs    =&  $this->getObjects($criteria, false, 'MIN(sort_number) AS min_value');
+                $idx_obj     =  $idx_objs[0];
+                $sort_number = (int)$idx_obj->getExtraVar('min_value') - 1;
+                unset($idx_objs);
+                unset($idx_obj);
+            }
+        } else {
+            // for group index
+            $criteria  = new CriteriaCompo(new Criteria('parent_index_id', IID_ROOT));
+            $criteria2 = new CriteriaCompo();
+            $criteria2->add(new Criteria('open_level', OL_PUBLIC));
+            $criteria2->add(new Criteria('open_level', OL_GROUP_ONLY), 'OR');
+            $criteria->add($criteria2);
+            if ($this->getCount($criteria) == 0) {
+                // not reaeched
+                $transaction->rollback();
+                return false;
+            } else {
+                $idx_objs    =&  $this->getObjects($criteria, false, 'MAX(sort_number) AS max_value');
+                $idx_obj     =  $idx_objs[0];
+                $sort_number = (int)$idx_obj->getExtraVar('max_value') + 1;
+                unset($idx_objs);
+                unset($idx_obj);
+            }
+        }
+
+        // create index
+        $idx_obj =  $this->create();
+        $idx_obj->set('index_id', $item_id);
+        $idx_obj->set('parent_index_id', IID_ROOT);
+        if ($is_user) {
+            $idx_obj->set('uid', $ugid);
+            $idx_obj->set('open_level', OL_PRIVATE);
+        } else {
+            $idx_obj->set('gid', $ugid);
+            $idx_obj->set('open_level', OL_GROUP_ONLY);
+        }
+        $idx_obj->set('sort_number', $sort_number);
+        if (!$this->insert($idx_obj)) {
+            $transaction->rollback();
+            return false;
+        }
+        $transaction->commit();
+        return $idx_obj->getVar('index_id', 'n');
+    }
+
+    /**
+     * lock descendents
+     *
+     * @access public
+     * @param int $id index_id
+     * @return bool
+     */
+    public function lockAllDescendents($id)
+    {
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
+        if ($id == IID_ROOT) {
+            return true;
+        }
+        foreach ($this->getAllDescendents($id) as $index) {
+            if (!$index->lock()) {
+                trigger_error('cannot lock descendents: ' . $index->get('index_id'));
+                return false;
+            }
         }
         return true;
-      }
-      break;
-    case OL_GROUP_ONLY:
-      $xgroup_handler =& xoonips_gethandler( 'xoonips', 'group' );
-      if ( $operation == 'read' || $operation == 'register_item' ) {
-        return $xgroup_handler->isGroupMember( $uid, $index->get( 'gid' ) );
-      } else if ( $operation == 'write' || $operation == 'delete' || $operation == 'create' || $operation == 'export' ) {
-        return $xgroup_handler->isGroupAdmin( $uid, $index->get( 'gid' ) );
-      }
-      break;
-    case OL_PRIVATE:
-      if ( $index->get( 'uid' ) == $uid ) {
+    }
+
+    /**
+     * unlock descendents
+     *
+     * @access public
+     * @param int $id index_id
+     * @return bool
+     */
+    public function unlockAllDescendents($id)
+    {
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
+        if ($id == IID_ROOT) {
+            return true;
+        }
+        foreach ($this->getAllDescendents($id) as $index) {
+            if (!$index->unlock()) {
+                trigger_error('cannot unlock descendents: ' . $index->get('index_id'));
+                return false;
+            }
+        }
         return true;
-      }
-      break;
-    default:
-      // must not happen
-      return false;
     }
 
-    // moderator or admin?
-    $member_handler =& xoonips_gethandler( 'xoonips', 'member' );
-    if ( $member_handler->isModerator( $uid ) || $member_handler->isAdmin( $uid ) ) {
-      return true;
+    /**
+     * get all parent indexes
+     *
+     * @access   private
+     * @param $index_id
+     * @return XooNIpsOrmIndex[]
+     * @internal param int $id index_id
+     */
+    public function getAllParents($index_id)
+    {
+        $current = $this->get($index_id);
+        if (!$current || $current->get('index_id') == IID_ROOT) {
+            return array();
+        }
+        $parent = $current->getParentIndex();
+        if ($parent) {
+            return array_merge($this->getAllParents($parent->get('index_id')), array($current));
+        } else {
+            return array($current);
+        }
     }
 
-    return false;
-  }
+    /**
+     * get all descendents parent indexes path string
+     *
+     * @access   public
+     * @param $index_id
+     * @return XooNIpsOrmIndex[]
+     * @internal param int $id index_id
+     */
+    public function getAllDescendents($index_id)
+    {
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
+        $index        = $indexHandler->get($index_id);
+        if (!$index) {
+            return array();
+        }
 
-  /**
-   * rename index title
-   *
-   * @access public
-   * @param int $xid index id
-   * @param string $title
-   * @return bool false if failure
-   */
-  function renameIndexTitle( $xid, $title ) {
-    $it_handler =& xoonips_getormhandler( 'xoonips', 'title' );
-    $criteria = new CriteriaCompo( new Criteria( 'item_id', $xid ) );
-    $criteria->add( new Criteria( 'title_id', DEFAULT_INDEX_TITLE_OFFSET ) );
-    $it_objs =& $it_handler->getObjects( $criteria );
-    if ( count( $it_objs ) != 1 ) {
-      return false;
-    }
-    $it_obj =& $it_objs[0];
-    $it_obj->set( 'title', $title );
-    if ( ! $it_handler->insert( $it_obj ) ) {
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * create user root index
-   *
-   * @access public
-   * @param int uid user id
-   * @return int created index id, false if failure
-   */
-  function createUserRootIndex( $uid ) {
-    // check existing user index
-    $criteria = new CriteriaCompo( new Criteria( 'uid', $uid ) );
-    $criteria->add( new Criteria( 'parent_index_id', IID_ROOT ) );
-    if ( $this->getCount( $criteria ) != 0 ) {
-      // already exists
-      return false;
+        $result = array();
+        foreach ($index->getAllChildren() as $child) {
+            $result = array_merge($result, array($child), $indexHandler->getAllDescendents($child->get('index_id')));
+        }
+        return $result;
     }
 
-    // get account id (uname)
-    $user_handler =& xoonips_getormhandler( 'xoonips', 'xoops_users' );
-    $criteria = new Criteria( 'uid', $uid );
-    $user_objs =& $user_handler->getObjects( $criteria );
-    if ( count( $user_objs ) != 1 ) {
-      // xoops user not found
-      return false;
+    /**
+     * set sort_number automatically before insert.
+     * @see TableObject::insert
+     * @param XoopsObject $obj
+     * @param bool        $force
+     * @return bool
+     */
+    public function insert(XoopsObject $obj, $force = false)
+    {
+        if (null !== $obj->get('sort_number')) {
+            return parent::insert($obj, $force);
+        }
+        // for regular index
+        $row =& $this->getObjects(new Criteria('parent_index_id', $obj->get('parent_index_id')), false, 'MAX(sort_number) as max_value');
+        if ($row) {
+            $obj->set('sort_number', $row[0]->getExtraVar('max_value') + 1);
+        } else {
+            $obj->set('sort_number', 1);
+        }
+        return parent::insert($obj, $force);
     }
-    $user_obj =& $user_objs[0];
-    $uname = $user_obj->getVar( 'uname', 'n' );
-
-    return $this->_createRootIndex( $uname, true, $uid );
-  }
-
-  /**
-   * create group root index
-   *
-   * @access public
-   * @param int gid group id
-   * @return int created index id, false if failure
-   */
-  function createGroupRootIndex( $gid ) {
-    // check existing group index
-    $criteria = new CriteriaCompo( new Criteria( 'gid', $gid ) );
-    $criteria->add( new Criteria( 'parent_index_id', IID_ROOT ) );
-    if ( $this->getCount( $criteria ) != 0 ) {
-      // already exists
-      return false;
-    }
-
-    // get group id (gname)
-    $xgroup_handler =& xoonips_gethandler( 'xoonips', 'group' );
-    $xgroup_obj =& $xgroup_handler->getGroupObject( $gid );
-    if ( ! is_object( $xgroup_obj ) ) {
-      // group not found
-      return false;
-    }
-    $gname = $xgroup_obj->getVar( 'gname', 'n' );
-
-    return $this->_createRootIndex( $gname, false, $gid );
-  }
-
-  /**
-   * create root index
-   *
-   * @access private
-   * @param string $title index title
-   * @param bool $is_user true: for user index, false: for group index
-   * @param int $ugid user id or group id
-   * @return int created index id, false if failure
-   */
-  function _createRootIndex( $title, $is_user, $ugid ) {
-    // transaction
-    require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/transaction.class.php';
-    $transaction =& XooNIpsTransaction::getInstance();
-    $transaction->start();
-
-    // create item basic
-    $ib_handler =& xoonips_getormhandler( 'xoonips', 'item_basic' );
-    $ib_obj =& $ib_handler->create();
-    $ib_obj->set( 'item_type_id', ITID_INDEX );
-    if ( $is_user ) {
-      $ib_obj->set( 'uid', $ugid );
-    } else {
-      // uid is session owner for group index
-      $uid = UID_GUEST;
-      if ( isset( $GLOBALS['xoopsUser'] ) && is_object( $GLOBALS['xoopsUser'] ) ) {
-        $uid = intval( $GLOBALS['xoopsUser']->getVar( 'uid', 'n' ) );
-      }
-      $ib_obj->set( 'uid', $uid );
-    }
-    if ( ! $ib_handler->insert( $ib_obj ) ) {
-      $transaction->rollback();
-      return false;
-    }
-
-    // create item title
-    $it_handler =& xoonips_getormhandler( 'xoonips', 'title' );
-    $item_id = $ib_obj->getVar( 'item_id', 'n' );
-    $it_obj =& $it_handler->create();
-    $it_obj->set( 'item_id', $item_id );
-    $it_obj->set( 'title_id', DEFAULT_INDEX_TITLE_OFFSET );
-    $it_obj->set( 'title', $title );
-    if ( ! $it_handler->insert( $it_obj ) ) {
-      $transaction->rollback();
-      return false;
-    }
-
-    // get sort number
-    $sort_number = 0;
-    if ( $is_user ) {
-      // for user index
-      $criteria = new CriteriaCompo( new Criteria( 'parent_index_id', IID_ROOT ) );
-      $criteria->add( new Criteria( 'open_level', OL_PRIVATE ) );
-      if ( $this->getCount( $criteria ) == 0 ) {
-        // first creation
-        // this value will be used for admin on install xoonips module
-        $sort_number = 2147483647;
-      } else {
-        $idx_objs =& $this->getObjects( $criteria, false, 'MIN(sort_number) AS min_value' );
-        $idx_obj =& $idx_objs[0];
-        $sort_number = intval( $idx_obj->getExtraVar( 'min_value' ) ) - 1;
-        unset( $idx_objs );
-        unset( $idx_obj );
-      }
-    } else {
-      // for group index
-      $criteria = new CriteriaCompo( new Criteria( 'parent_index_id', IID_ROOT ) );
-      $criteria2 = new CriteriaCompo();
-      $criteria2->add( new Criteria( 'open_level', OL_PUBLIC ) );
-      $criteria2->add( new Criteria( 'open_level', OL_GROUP_ONLY ), 'OR' );
-      $criteria->add( $criteria2 );
-      if ( $this->getCount( $criteria ) == 0 ) {
-        // not reaeched
-        $transaction->rollback();
-        return false;
-      } else {
-        $idx_objs =& $this->getObjects( $criteria, false, 'MAX(sort_number) AS max_value' );
-        $idx_obj =& $idx_objs[0];
-        $sort_number = intval( $idx_obj->getExtraVar( 'max_value' ) ) + 1;
-        unset( $idx_objs );
-        unset( $idx_obj );
-      }
-    }
-
-    // create index
-    $idx_obj =& $this->create();
-    $idx_obj->set( 'index_id', $item_id );
-    $idx_obj->set( 'parent_index_id', IID_ROOT );
-    if ( $is_user ) {
-      $idx_obj->set( 'uid', $ugid );
-      $idx_obj->set( 'open_level', OL_PRIVATE );
-    } else {
-      $idx_obj->set( 'gid', $ugid );
-      $idx_obj->set( 'open_level', OL_GROUP_ONLY );
-    }
-    $idx_obj->set( 'sort_number', $sort_number );
-    if ( ! $this->insert( $idx_obj ) ) {
-      $transaction->rollback();
-      return false;
-    }
-    $transaction->commit();
-    return $idx_obj->getVar( 'index_id', 'n' );
-  }
-
-  /**
-   * lock descendents
-   *
-   * @access public
-   * @param int $id index_id
-   */
-  function lockAllDescendents( $id ) {
-    $index_handler =& xoonips_getormhandler( 'xoonips', 'index' );
-    if ( $id == IID_ROOT ) {
-      return true;
-    }
-    foreach ( $this->getAllDescendents( $id ) as $index ) {
-      if ( ! $index->lock() ) {
-        trigger_error( 'cannot lock descendents: '.$index->get( 'index_id' ) );
-        return false;
-      }
-    }
-    return true;
-  }
-
-  /**
-   * unlock descendents
-   *
-   * @access public
-   * @param int $id index_id
-   */
-  function unlockAllDescendents( $id ) {
-    $index_handler =& xoonips_getormhandler( 'xoonips', 'index' );
-    if ( $id == IID_ROOT ) {
-      return true;
-    }
-    foreach ( $this->getAllDescendents( $id ) as $index ) {
-      if ( ! $index->unlock() ) {
-        trigger_error( 'cannot unlock descendents: '.$index->get( 'index_id' ) );
-        return false;
-      }
-    }
-    return true;
-  }
-
-  /**
-   * get all parent indexes
-   *
-   * @access private
-   * @param int $id index_id
-   * @return XooNIpsOrmIndex[]
-   */
-  function getAllParents( $index_id ) {
-    $current = $this->get( $index_id );
-    if ( ! $current || $current->get( 'index_id' ) == IID_ROOT ) {
-      return array();
-    }
-    $parent = $current->getParentIndex();
-    if ( $parent ) {
-      return array_merge( $this->getAllParents( $parent->get( 'index_id' ) ), array( $current ) );
-    } else {
-      return array( $current );
-    }
-  }
-
-  /**
-   * get all descendents parent indexes path string
-   *
-   * @access public
-   * @param int $id index_id
-   * @return XooNIpsOrmIndex[]
-   */
-  function getAllDescendents( $index_id ) {
-    $index_handler =& xoonips_getormhandler( 'xoonips', 'index' );
-    $index =& $index_handler->get( $index_id );
-    if ( ! $index ) {
-      return array();
-    }
-
-    $result = array();
-    foreach ( $index->getAllChildren() as $child ) {
-      $result = array_merge( $result, array( $child ), $index_handler->getAllDescendents( $child->get( 'index_id' ) ) );
-    }
-    return $result;
-  }
-
-  /**
-   * set sort_number automatically before insert.
-   * @see TableObject::insert
-   */
-  function insert( &$obj, $force = false ) {
-    if ( ! is_null( $obj->get( 'sort_number' ) ) ) {
-      return parent::insert( $obj, $force );
-    }
-    // for regular index
-    $row = $this->getObjects( new Criteria( 'parent_index_id', $obj->get( 'parent_index_id' ) ), false, 'MAX(sort_number) as max_value' );
-    if ( $row ) {
-      $obj->set( 'sort_number', $row[0]->getExtraVar( 'max_value' ) + 1 );
-    } else {
-      $obj->set( 'sort_number', 1 );
-    }
-    return parent::insert( $obj, $force );
-  }
 }
-
-?>

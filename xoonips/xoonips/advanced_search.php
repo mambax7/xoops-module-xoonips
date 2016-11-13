@@ -27,39 +27,35 @@
 
 //  advanced search(standard)
 
-session_cache_limiter( 'none' );
-session_cache_expire( 5 );
+session_cache_limiter('none');
+session_cache_expire(5);
 
 $xoopsOption['pagetype'] = 'user';
-include 'include/common.inc.php';
-include 'include/lib.php';
-include 'include/AL.php';
+include __DIR__ . '/include/common.inc.php';
+include __DIR__ . '/include/lib.php';
+include __DIR__ . '/include/AL.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
 // If not a user, redirect
-if( $xnpsid != 0 ){
-    if ( !$xoopsUser ) {
-        redirect_header( 'user.php',3,_MD_XOONIPS_ITEM_FORBIDDEN);
-        exit();
+if ($xnpsid != 0) {
+    if (!$xoopsUser) {
+        redirect_header('user.php', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
     }
 
     $uid = $_SESSION['xoopsUserId'];
-}
-else {
-    if( !xnp_is_valid_session_id($xnpsid) ){
+} else {
+    if (!xnp_is_valid_session_id($xnpsid)) {
         // Uncertified user can't access(except XOOPS administrator).
-        redirect_header(XOOPS_URL.'/',3,_MD_XOONIPS_ITEM_FORBIDDEN);
-        exit();
+        redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
     }
     $uid = 0;
 }
 
-$xoopsOption['template_main'] = 'xoonips_advanced_search.html';
+$GLOBALS['xoopsOption']['template_main'] = 'xoonips_advanced_search.tpl';
 
-include XOOPS_ROOT_PATH.'/header.php';
+include XOOPS_ROOT_PATH . '/header.php';
 
-include 'include/advanced_search.inc.php';
+include __DIR__ . '/include/advanced_search.inc.php';
 
-include XOOPS_ROOT_PATH.'/footer.php';
-?>
+include XOOPS_ROOT_PATH . '/footer.php';

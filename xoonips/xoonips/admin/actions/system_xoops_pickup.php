@@ -24,43 +24,39 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 // check token ticket
-require_once( '../class/base/gtickets.php' );
+require_once __DIR__ . '/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_system_xoops';
-if ( ! $xoopsGTicket->check( true, $ticket_area, false ) ) {
-  redirect_header( $xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors() );
-  exit();
+if (!$xoopsGTicket->check(true, $ticket_area, false)) {
+    redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
 }
 
 // get requests
 $post_keys = array(
-  'uid' => array(
-    'i',
-    false,
-    true,
-  ),
+    'uid' => array(
+        'i',
+        false,
+        true,
+    ),
 );
-$post_vals = xoonips_admin_get_requests( 'post', $post_keys );
-$uid = $post_vals['uid'];
+$post_vals = xoonips_admin_get_requests('post', $post_keys);
+$uid       = $post_vals['uid'];
 
 // get user certification mode
-$config_keys = array(
-  'certify_user' => 's',
+$config_keys   = array(
+    'certify_user' => 's',
 );
-$config_values = xoonips_admin_get_configs( $config_keys, 'n' );
-$is_certified = ( $config_values['certify_user'] == 'on' ) ? false : true;
+$config_values = xoonips_admin_get_configs($config_keys, 'n');
+$is_certified  = ($config_values['certify_user'] === 'on') ? false : true;
 
 // XOOPS user pickup
-$xm_handler =& xoonips_gethandler( 'xoonips', 'member' );
-if ( ! $xm_handler->pickupXoopsUser( $uid, $is_certified ) ) {
-  redirect_header( $xoonips_admin['mypage_url'], 3, _AM_XOONIPS_MSG_UNEXPECTED_ERROR );
-  exit();
+$xmHandler = xoonips_getHandler('xoonips', 'member');
+if (!$xmHandler->pickupXoopsUser($uid, $is_certified)) {
+    redirect_header($xoonips_admin['mypage_url'], 3, _AM_XOONIPS_MSG_UNEXPECTED_ERROR);
 }
 
-redirect_header( $xoonips_admin['mypage_url'], 3, _AM_XOONIPS_MSG_DBUPDATED );
-
-?>
+redirect_header($xoonips_admin['mypage_url'], 3, _AM_XOONIPS_MSG_DBUPDATED);

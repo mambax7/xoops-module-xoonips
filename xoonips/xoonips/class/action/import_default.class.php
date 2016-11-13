@@ -25,92 +25,109 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once dirname( __DIR__ ) . '/base/action.class.php';
+include_once __DIR__ . '/../base/action.class.php';
 
-class XooNIpsActionImportDefault extends XooNIpsAction{
-    
-    function XooNIpsActionImportDefault(){
-        parent::XooNIpsAction();
+/**
+ * Class XooNIpsActionImportDefault
+ */
+class XooNIpsActionImportDefault extends XooNIpsAction
+{
+    /**
+     * XooNIpsActionImportDefault constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
     }
-    
-    function _get_logic_name(){
+
+    /**
+     * @return null
+     */
+    public function _get_logic_name()
+    {
         return null;
     }
-    
-    function _get_view_name(){
-        return "import_default";
+
+    /**
+     * @return string
+     */
+    public function _get_view_name()
+    {
+        return 'import_default';
     }
-    
-    function preAction(){
+
+    public function preAction()
+    {
         xoonips_deny_guest_access();
         xoonips_allow_both_method();
     }
-    
-    function doAction(){
+
+    public function doAction()
+    {
         global $xoopsUser;
-        
-        $zipfile = $this->_formdata->getFile( 'zipfile', false );
-        
+
+        $zipfile = $this->_formdata->getFile('zipfile', false);
+
         $result = array(
             'max_file_size_bytes' => $this->_get_upload_max_filesize(),
-            'max_file_size' => ini_get( 'upload_max_filesize' ) ,
-            'xoonips_checked_xid' => $this->_formdata->getValue( 'post', 'xoonipsCheckedXID', 's', false ),
-            'zipfile_is_given' => ( $zipfile !== NULL
-                                    || is_array( $zipfile )
-                                    && !array_key_exists( 'name', $zipfile )
-                                    || $zipfile['tmp_name'] == '' 
-                                    || $zipfile['size'] == 0 ),
-            'admin' => isset( $_SESSION[ 'xoonips_old_uid' ] )
-            || $xoopsUser -> isAdmin() );
+            'max_file_size'       => ini_get('upload_max_filesize'),
+            'xoonips_checked_xid' => $this->_formdata->getValue('post', 'xoonipsCheckedXID', 's', false),
+            'zipfile_is_given'    => $zipfile !== null
+                                     || is_array($zipfile)
+                                        && !array_key_exists('name', $zipfile)
+                                     || $zipfile['tmp_name'] == ''
+                                     || $zipfile['size'] == 0,
+            'admin'               => isset($_SESSION['xoonips_old_uid'])
+                                     || $xoopsUser->isAdmin()
+        );
         //$this -> _response -> setResult( true );
         //$this -> _response -> setSuccess( $result );
-        $this -> _view_params['max_file_size_bytes'] = $this->_get_upload_max_filesize();
-        $this -> _view_params['max_file_size']       
-            = ini_get( 'upload_max_filesize' ) ;
-        $this -> _view_params['xoonips_checked_xid'] 
-            = $this->_formdata->getValue( 'post', 'xoonipsCheckedXID', 's', false );
-        $this -> _view_params['zipfile_is_given'] 
-            = ( $zipfile !== NULL
-                || is_array( $zipfile ) && !array_key_exists( 'name', $zipfile )
-                || $zipfile['tmp_name'] == '' 
-                || $zipfile['size'] == 0 );
-        $this -> _view_params['admin'] 
-            = isset( $_SESSION[ 'xoonips_old_uid' ] )
-            || $xoopsUser -> isAdmin();
-        
+        $this->_view_params['max_file_size_bytes'] = $this->_get_upload_max_filesize();
+        $this->_view_params['max_file_size']
+                                                   = ini_get('upload_max_filesize');
+        $this->_view_params['xoonips_checked_xid']
+                                                   = $this->_formdata->getValue('post', 'xoonipsCheckedXID', 's', false);
+        $this->_view_params['zipfile_is_given']
+                                                   = ($zipfile !== null
+                                                      || is_array($zipfile) && !array_key_exists('name', $zipfile)
+                                                      || $zipfile['tmp_name'] == ''
+                                                      || $zipfile['size'] == 0);
+        $this->_view_params['admin']
+                                                   = isset($_SESSION['xoonips_old_uid'])
+                                                     || $xoopsUser->isAdmin();
+
         global $xoonipsTreeCheckBox, $xoonipsEditIndex, $xoonipsEditPublic;
         $xoonipsTreeCheckBox = true;
-        $xoonipsEditIndex = true; //only import into editable index
-        $xoonipsEditPublic = true; //
+        $xoonipsEditIndex    = true; //only import into editable index
+        $xoonipsEditPublic   = true; //
     }
 
-  /**
-   * get upload max file size from PHP settings
-   *
-   * @access private
-   * @return int upload max file size
-   */
-  function _get_upload_max_filesize() {
-    $val = ini_get( 'upload_max_filesize');
-    if ( $val === '' || $val == -1 ) {
-      // unlimit
-      $val = '2G';
+    /**
+     * get upload max file size from PHP settings
+     *
+     * @access private
+     * @return int upload max file size
+     */
+    public function _get_upload_max_filesize()
+    {
+        $val = ini_get('upload_max_filesize');
+        if ($val === '' || $val == -1) {
+            // unlimit
+            $val = '2G';
+        }
+        if (preg_match('/^(-?\d+)([KMG])$/i', strtoupper($val), $matches)) {
+            $val = (int)$matches[1];
+            switch ($matches[2]) {
+                case 'G':
+                    $val *= 1024;
+                case 'M':
+                    $val *= 1024;
+                case 'K':
+                    $val *= 1024;
+            }
+        } else {
+            $val = (int)$val;
+        }
+        return $val;
     }
-    if ( preg_match( '/^(-?\d+)([KMG])$/i', strtoupper( $val ), $matches ) ) {
-      $val = intval( $matches[1] );
-      switch( $matches[2] ) {
-      case 'G':
-        $val *= 1024;
-      case 'M':
-        $val *= 1024;
-      case 'K':
-        $val *= 1024;
-      }
-    } else {
-      $val = intval( $val );
-    }
-    return $val;
-  }
 }
-
-?>

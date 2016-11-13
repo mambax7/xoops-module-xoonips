@@ -24,31 +24,29 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-$mydirname = basename( dirname( __DIR__ ) );
+$mydirname = basename(dirname(__DIR__));
 
 // load mainfile.php
-include dirname( dirname( dirname( __DIR__ ) ) ).'/mainfile.php';
+include dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
 
 // set other D3 variables
-$mod_path = XOOPS_ROOT_PATH.'/modules/'.$mydirname;
-$mod_url = XOOPS_URL.'/modules/'.$mydirname;
-if ( file_exists( $mod_path.'/mytrustdirname.php' ) ) {
-  include $mod_path.'/mytrustdirname.php';
+$mod_path = XOOPS_ROOT_PATH . '/modules/' . $mydirname;
+$mod_url  = XOOPS_URL . '/modules/' . $mydirname;
+if (file_exists($mod_path . '/mytrustdirname.php')) {
+    include $mod_path . '/mytrustdirname.php';
 } else {
-  $mytrustdirname = '';
+    $mytrustdirname = '';
 }
 
 // load condition definitions
-include $mod_path.'/condefs.php';
+include $mod_path . '/condefs.php';
 
 // load basic functions
-include $mod_path.'/include/functions.php';
+include $mod_path . '/include/functions.php';
 
 // initialize xoonips session
-$xsession_handler =& xoonips_getormhandler( 'xoonips', 'session' );
-$uid = is_object( $xoopsUser ) ? $xoopsUser->getVar( 'uid', 'n' ) : UID_GUEST;
-$xsession_handler->initSession( $uid );
-$xsession_handler->validateUser( $uid, true );
-unset( $xsession_handler );
-
-?>
+$xsessionHandler = xoonips_getOrmHandler('xoonips', 'session');
+$uid             = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
+$xsessionHandler->initSession($uid);
+$xsessionHandler->validateUser($uid, true);
+unset($xsessionHandler);

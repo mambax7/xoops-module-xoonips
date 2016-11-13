@@ -31,12 +31,10 @@
 // _MI_<MODULENAME>_<STRINGNAME>
 
 // The name of this module
-define("_MI_XNPDATA_NAME","XooNIps Data Item Type Module");
+define('_MI_XNPDATA_NAME', 'XooNIps Data Item Type Module');
 // A brief description of this module
-define("_MI_XNPDATA_DESC","XooNIps Data Item Type Module");
+define('_MI_XNPDATA_DESC', 'XooNIps Data Item Type Module');
 
 // Names of admin menu items
-define("_MI_XNPDATA_CFG_DL_LIMIT","Allow contributor to specify download limitation option?");
-define("_MI_XNPDATA_CFG_DL_LIMIT_DESC","");
-
-?>
+define('_MI_XNPDATA_CFG_DL_LIMIT', 'Allow contributor to specify download limitation option?');
+define('_MI_XNPDATA_CFG_DL_LIMIT_DESC', '');

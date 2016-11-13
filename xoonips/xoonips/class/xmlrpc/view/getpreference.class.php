@@ -42,18 +42,17 @@ class XooNIpsXmlRpcViewGetPreference extends XooNIpsXmlRpcViewElement
      *
      * @return XoopsXmlRpcTag
      */
-    function render() 
+    public function render()
     {
-        $resp = new XoopsXmlRpcArray();
+        $resp       = new XoopsXmlRpcArray();
         $preference = $this->response->getSuccess();
-        foreach( $preference as $key => $val ){
+        foreach ($preference as $key => $val) {
             $struct = new XoopsXmlRpcStruct();
-            $struct -> add( 'name', new XoopsXmlRpcString($key) );
-            $struct -> add( 'value', new XoopsXmlRpcInt((int)$val) );
-            $resp -> add( $struct );
+            $struct->add('name', new XoopsXmlRpcString($key));
+            $struct->add('value', new XoopsXmlRpcInt((int)$val));
+            $resp->add($struct);
             unset($struct);
         }
         return $resp;
     }
 }
-?>

@@ -24,65 +24,63 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-require_once( '../../../include/cp_header.php' );
+require_once __DIR__ . '/../../../include/cp_header.php';
 
 // load common file.
-include 'actions/common.inc.php';
+include __DIR__ . '/actions/common.inc.php';
 
 // page definition
-$pages = array();
-$pages['main'] = array();
-$pages['account'] = array(
-  'post' => array(
-    'rupdate',
-    'iupdate',
-    'vupdate',
-  ),
+$pages              = array();
+$pages['main']      = array();
+$pages['account']   = array(
+    'post' => array(
+        'rupdate',
+        'iupdate',
+        'vupdate',
+    ),
 );
-$pages['group'] = array(
-  'post' => array(
-    'vupdate',
-  ),
+$pages['group']     = array(
+    'post' => array(
+        'vupdate',
+    ),
 );
-$pages['item'] = array(
-  'get' => array(
-    'public',
-    'type',
-    'imexport',
-    'comment',
-  ),
-  'post' => array(
-    'pmupdate',
-    'poupdate',
-    'tupdate',
-    'imexeupdate',
-    'imexiupdate',
-    'compmupdate',
-  ),
+$pages['item']      = array(
+    'get'  => array(
+        'public',
+        'type',
+        'imexport',
+        'comment',
+    ),
+    'post' => array(
+        'pmupdate',
+        'poupdate',
+        'tupdate',
+        'imexeupdate',
+        'imexiupdate',
+        'compmupdate',
+    ),
 );
 $pages['moderator'] = array(
-  'post' => array(
-    'update',
-  ),
+    'post' => array(
+        'update',
+    ),
 );
-$pages['position'] = array(
-  'post' => array(
-    'delete',
-    'update',
-    'add',
-  ),
+$pages['position']  = array(
+    'post' => array(
+        'delete',
+        'update',
+        'add',
+    ),
 );
-$pages['ranking'] = array(
-  'post' => array(
-    'update',
-    'sort',
-  ),
+$pages['ranking']   = array(
+    'post' => array(
+        'update',
+        'sort',
+    ),
 );
 
 // initialize
-xoonips_admin_initialize( __FILE__, 'policy', $pages );
+xoonips_admin_initialize(__FILE__, 'policy', $pages);
 
 // call action file
 include $xoonips_admin['myaction_path'];
-
-?>

@@ -41,17 +41,23 @@ class XooNIpsLogicLogout extends XooNIpsLogic
      * @param[in] $vars[0] sessionid
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error error information
-     * @return true logged out
+     * @return true|void
      * @return false if error
      */
-    function execute(&$vars, &$response) 
+    public function execute($vars, $response)
     {
         // parameter check
-        $error = &$response->getError();
-        if (count($vars) > 1) $error->add(XNPERR_EXTRA_PARAM);
-        if (count($vars) < 1) $error->add(XNPERR_MISSING_PARAM);
+        $error =  $response->getError();
+        if (count($vars) > 1) {
+            $error->add(XNPERR_EXTRA_PARAM);
+        }
+        if (count($vars) < 1) {
+            $error->add(XNPERR_MISSING_PARAM);
+        }
         //
-        if (isset($vars[0]) && strlen($vars[0]) > 32) $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
+        if (isset($vars[0]) && strlen($vars[0]) > 32) {
+            $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
+        }
         //
         if ($error->get(0)) {
             // return if parameter error
@@ -68,11 +74,11 @@ class XooNIpsLogicLogout extends XooNIpsLogic
         }
         if ($uid != UID_GUEST) {
             // insert logout event
-            $eventlog_handler = &xoonips_getormhandler('xoonips', 'event_log');
-            $eventlog_handler->recordLogoutEvent( $uid );
+            $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
+            $eventlogHandler->recordLogoutEvent($uid);
             // delete XooNIps session
-            $session_handler = &xoonips_getormhandler('xoonips', 'session');
-            $session_handler->delete($session);
+            $sessionHandler = xoonips_getOrmHandler('xoonips', 'session');
+            $sessionHandler->delete($session);
         }
         // delete XOOPS session and forbid future session.write()
         $_SESSION = array();
@@ -81,4 +87,3 @@ class XooNIpsLogicLogout extends XooNIpsLogic
         return true;
     }
 }
-?>

@@ -24,72 +24,70 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 // class files
-require_once( '../class/base/pattemplate.class.php' );
+require_once __DIR__ . '/../../class/base/pattemplate.class.php';
 
 // title
-$title = _AM_XOONIPS_POLICY_TITLE;
+$title       = _AM_XOONIPS_POLICY_TITLE;
 $description = _AM_XOONIPS_POLICY_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
-  array(
-    'type' => 'top',
-    'label' => _AM_XOONIPS_TITLE,
-    'url' => $xoonips_admin['admin_url'].'/',
-  ),
-  array(
-    'type' => 'label',
-    'label' => $title,
-    'url' => '',
-  ),
+    array(
+        'type'  => 'top',
+        'label' => _AM_XOONIPS_TITLE,
+        'url'   => $xoonips_admin['admin_url'] . '/',
+    ),
+    array(
+        'type'  => 'label',
+        'label' => $title,
+        'url'   => '',
+    ),
 );
 
 // menu
 $menu = array(
-  array(
-    'label' => _AM_XOONIPS_POLICY_ACCOUNT_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=account',
-  ),
-  array(
-    'label' => _AM_XOONIPS_POLICY_GROUP_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=group',
-  ),
-  array(
-    'label' => _AM_XOONIPS_POLICY_ITEM_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=item',
-  ),
-  array(
-    'label' => _AM_XOONIPS_POLICY_MODERATOR_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=moderator',
-  ),
-  array(
-    'label' => _AM_XOONIPS_POLICY_POSITION_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=position',
-  ),
-  array(
-    'label' => _AM_XOONIPS_POLICY_RANKING_TITLE,
-    'url' => $xoonips_admin['myfile_url'].'?page=ranking',
-  ),
+    array(
+        'label' => _AM_XOONIPS_POLICY_ACCOUNT_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=account',
+    ),
+    array(
+        'label' => _AM_XOONIPS_POLICY_GROUP_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=group',
+    ),
+    array(
+        'label' => _AM_XOONIPS_POLICY_ITEM_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=item',
+    ),
+    array(
+        'label' => _AM_XOONIPS_POLICY_MODERATOR_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=moderator',
+    ),
+    array(
+        'label' => _AM_XOONIPS_POLICY_POSITION_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=position',
+    ),
+    array(
+        'label' => _AM_XOONIPS_POLICY_RANKING_TITLE,
+        'url'   => $xoonips_admin['myfile_url'] . '?page=ranking',
+    ),
 );
 
 // templates
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir( 'templates' );
-$tmpl->readTemplatesFromFile( 'adminmenu.tmpl.html' );
-$tmpl->addVar( 'header', 'TITLE', $title );
-$tmpl->setAttribute( 'description', 'visibility', 'visible' );
-$tmpl->addVar( 'description', 'DESCRIPTION', $description );
-$tmpl->setAttribute( 'breadcrumbs', 'visibility', 'visible' );
-$tmpl->addRows( 'breadcrumbs_items', $breadcrumbs );
-$tmpl->addRows( 'menu', $menu );
+$tmpl->setBasedir('templates');
+$tmpl->readTemplatesFromFile('adminmenu.tmpl.tpl');
+$tmpl->addVar('header', 'TITLE', $title);
+$tmpl->setAttribute('description', 'visibility', 'visible');
+$tmpl->addVar('description', 'DESCRIPTION', $description);
+$tmpl->setAttribute('breadcrumbs', 'visibility', 'visible');
+$tmpl->addRows('breadcrumbs_items', $breadcrumbs);
+$tmpl->addRows('menu', $menu);
 
 xoops_cp_header();
-$tmpl->displayParsedTemplate( 'main' );
+$tmpl->displayParsedTemplate('main');
 xoops_cp_footer();
-
-?>

@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  *
@@ -35,29 +35,29 @@ if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
  */
 class XNPModelXmlRpcTransformCompo extends XooNIpsXmlRpcTransformCompo
 {
-    function XNPModelXmlRpcTransformCompo() 
+    /**
+     * XNPModelXmlRpcTransformCompo constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsXmlRpcTransformCompo('xnpmodel');
+        parent::__construct('xnpmodel');
     }
 
-    
     /**
      * override getObject to order creator.
-     * 
+     *
      * @see XooNIpsXmlRpcTransformCompo::getObject
      *
      * @param array associative array of XML-RPC argument
      * @return XNPModelOrmCreator
      */
-    function getObject($in_array) 
+    public function getObject($in_array)
     {
-      $obj=parent::getObject($in_array);
-      $creators=&$obj->getVar('creator');
-      for( $i=0; $i < count($creators); $i++){
-        $creators[$i]->set('creator_order', $i);
-      }
-      return $obj;
+        $obj      = parent::getObject($in_array);
+        $creators = $obj->getVar('creator');
+        for ($i = 0; $i < count($creators); $i++) {
+            $creators[$i]->set('creator_order', $i);
+        }
+        return $obj;
     }
 }
-
-?>

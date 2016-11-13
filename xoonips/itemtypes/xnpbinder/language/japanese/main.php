@@ -24,18 +24,17 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-define('_MD_XNPBINDER_ITEMS_TO_REGISTER_TITLE', '¥¢¥¤¥Æ¥à¤òÅÐÏ¿¤·¤Þ¤¹');
-define('_MD_XNPBINDER_DELETE_CHECKED_ITEM_BUTTON_LABEL', '¥Á¥§¥Ã¥¯¤µ¤ì¤¿¥¢¥¤¥Æ¥à¤òºï½ü¤·¤Þ¤¹');
-define('_MD_XNPBINDER_REGISTERED_ITEMS_TITLE', 'ÅÐÏ¿ºÑ¤ß¥¢¥¤¥Æ¥à');
-define('_MD_XNPBINDER_ITEM_REQUIRED', '¾¯¤Ê¤¯¤È¤â1¤Ä°Ê¾å¤Î¥¢¥¤¥Æ¥à¤òÅÐÏ¿¤·¤Æ¤¯¤À¤µ¤¤');
-define('_MD_XNPBINDER_ITEM_LABEL', '¥¢¥¤¥Æ¥à');
-define('_MD_XNPBINDER_REMOVE_NONPUBLIC_ITEM', '%d¸Ä¤Î¥°¥ë¡¼¥×¶¦Í­¥¢¥¤¥Æ¥à¤ÈÈó¸ø³«¥¢¥¤¥Æ¥à¤¬¤¢¤ë¤Î¤Ç¡¤¥Ð¥¤¥ó¥À¡¼¤ò¸ø³«¤Ç¤­¤Þ¤»¤ó¡¥¤³¤ì¤é¤Î¥¢¥¤¥Æ¥à¤ò¥Ð¥¤¥ó¥À¡¼¤«¤é³°¤·¤Æ¤«¤é¸ø³«¤·¤Þ¤¹¤«¡©');
-define('_MD_XNPBINDER_REMOVE_PRIVATE_ITEM', '%d¸Ä¤ÎÈó¸ø³«¥¢¥¤¥Æ¥à¤¬¤¢¤ë¤Î¤Ç¡¤¥Ð¥¤¥ó¥À¡¼¤ò¥°¥ë¡¼¥×¶¦Í­¤Ç¤­¤Þ¤»¤ó¡¥¤³¤ì¤é¤ÎÈó¸ø³«¥¢¥¤¥Æ¥à¤ò¥Ð¥¤¥ó¥À¡¼¤«¤é³°¤·¤Æ¤«¤é¥°¥ë¡¼¥×¶¦Í­¤·¤Þ¤¹¤«¡©');
-define('_MD_XNPBINDER_EXPLANATION', '¥Ð¥¤¥ó¥À¡¼');
-define('_MD_XNPBINDER_GROUP_BINDER_HAS_PRIVATE_ITEM', '¥°¥ë¡¼¥×¶¦Í­¥Ð¥¤¥ó¥À¡¼¤¬Èó¸ø³«¥¢¥¤¥Æ¥à¤ò´Þ¤ó¤Ç¤¤¤Þ¤¹');
-define('_MD_XNPBINDER_PUBLIC_BINDER_HAS_NOT_PUBLIC_ITEM', '¸ø³«¥Ð¥¤¥ó¥À¡¼¤¬¥°¥ë¡¼¥×¶¦Í­¥¢¥¤¥Æ¥à¤Þ¤¿¤ÏÈó¸ø³«¥¢¥¤¥Æ¥à¤ò´Þ¤ó¤Ç¤¤¤Þ¤¹');
-define('_MD_XNPBINDER_USER_CONTENT_EMPTY_NOTIFYSBJ', '¸ø³«¥Ð¥¤¥ó¥À¡¼¤¬¶õ¤Ë¤Ê¤ê¤Þ¤·¤¿');
-define( '_MD_XNPBINDER_XMLRPC_DISPLAY_NAME_BINDER_ID', '¥¢¥¤¥Æ¥àID' );
-define( '_MD_XNPBINDER_XMLRPC_DISPLAY_NAME_ITEM_ID'  , '¥Ð¥¤¥ó¥À¡¼¥¢¥¤¥Æ¥à' );
-
-?>
+define('_MD_XNPBINDER_ITEMS_TO_REGISTER_TITLE', 'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½Þ¤ï¿½');
+define('_MD_XNPBINDER_DELETE_CHECKED_ITEM_BUTTON_LABEL', 'ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ì¤¿ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½');
+define('_MD_XNPBINDER_REGISTERED_ITEMS_TITLE', 'ï¿½ï¿½Ï¿ï¿½Ñ¤ß¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½');
+define('_MD_XNPBINDER_ITEM_REQUIRED', 'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½È¤ï¿½1ï¿½Ä°Ê¾ï¿½Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPBINDER_ITEM_LABEL', 'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½');
+define('_MD_XNPBINDER_REMOVE_NONPUBLIC_ITEM',
+       '%dï¿½Ä¤Î¥ï¿½ï¿½ë¡¼ï¿½×¶ï¿½Í­ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥à¤¬ï¿½ï¿½ï¿½ï¿½Î¤Ç¡ï¿½ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ó¡¥¤ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é³°ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPBINDER_REMOVE_PRIVATE_ITEM', '%dï¿½Ä¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥à¤¬ï¿½ï¿½ï¿½ï¿½Î¤Ç¡ï¿½ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò¥°¥ë¡¼ï¿½×¶ï¿½Í­ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ó¡¥¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é³°ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½é¥°ï¿½ë¡¼ï¿½×¶ï¿½Í­ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPBINDER_EXPLANATION', 'ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPBINDER_GROUP_BINDER_HAS_PRIVATE_ITEM', 'ï¿½ï¿½ï¿½ë¡¼ï¿½×¶ï¿½Í­ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Þ¤ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½');
+define('_MD_XNPBINDER_PUBLIC_BINDER_HAS_NOT_PUBLIC_ITEM', 'ï¿½ï¿½ï¿½ï¿½ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¡¼ï¿½×¶ï¿½Í­ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Þ¤ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½');
+define('_MD_XNPBINDER_USER_CONTENT_EMPTY_NOTIFYSBJ', 'ï¿½ï¿½ï¿½ï¿½ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¤Ê¤ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_MD_XNPBINDER_XMLRPC_DISPLAY_NAME_BINDER_ID', 'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ID');
+define('_MD_XNPBINDER_XMLRPC_DISPLAY_NAME_ITEM_ID', 'ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½');

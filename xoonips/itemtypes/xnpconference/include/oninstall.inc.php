@@ -24,58 +24,60 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 //  Install script for XooNIps Conference item type module
-function xoops_module_install_xnpconference( $xoopsMod ) {
-  global $xoopsDB;
+/**
+ * @param $xoopsMod
+ * @return bool
+ */
+function xoops_module_install_xnpconference($xoopsMod)
+{
+    global $xoopsDB;
 
-  // register itemtype
-  $table = $xoopsDB->prefix( 'xoonips_item_type' );
-  $mid = $xoopsMod->getVar( 'mid' );
-  $sql = "INSERT INTO $table ( name, display_name, mid, viewphp ) VALUES ( 'xnpconference', 'Conference', $mid, 'xnpconference/include/view.php' )";
-  if ( $xoopsDB->query( $sql ) == FALSE ) {
-    // cannot register itemtype
-    return false;
-  }
-
-  // register filetype
-  $table = $xoopsDB->prefix( 'xoonips_file_type' );
-  $mid = $xoopsMod->getVar( 'mid' );
-  $sql = "INSERT INTO $table ( name, display_name, mid ) VALUES ( 'conference_file', 'Conference Presentation File', $mid )";
-  if ( $xoopsDB->query( $sql ) == FALSE ) {
-    // cannot register itemtype
-    return false;
-  }
-  $sql = "INSERT INTO $table ( name, display_name, mid ) VALUES ( 'conference_paper', 'Conference Paper', $mid )";
-  if ( $xoopsDB->query( $sql ) == FALSE ) {
-    // cannot register itemtype
-    return false;
-  }
-
-  // Delete 'Module Access Rights' from all groups
-  // This allows to remove redundant module name in Main Menu
-  $member_handler =& xoops_gethandler( 'member' );
-  $gperm_handler =& xoops_gethandler( 'groupperm' );
-  $groups =& $member_handler->getGroupList();
-  foreach ( $groups as $groupid2 => $groupname ) {
-    if ( $gperm_handler->checkRight( 'module_read', $mid, $groupid2 ) ) {
-      $criteria = new CriteriaCompo();
-      $criteria->add( new Criteria( 'gperm_groupid', $groupid2 ) );
-      $criteria->add( new Criteria( 'gperm_itemid', $mid ) );
-      $criteria->add( new Criteria( 'gperm_name', 'module_read' ) );
-
-      $objects =& $gperm_handler->getObjects( $criteria );
-      if ( count( $objects ) == 1 ) {
-        $gperm_handler->delete( $objects[0] );
-      }
+    // register itemtype
+    $table = $xoopsDB->prefix('xoonips_item_type');
+    $mid   = $xoopsMod->getVar('mid');
+    $sql
+           = "INSERT INTO $table ( name, display_name, mid, viewphp ) VALUES ( 'xnpconference', 'Conference', $mid, 'xnpconference/include/view.php' )";
+    if ($xoopsDB->query($sql) == false) {
+        // cannot register itemtype
+        return false;
     }
-  }
 
-  // $item_type_id = $xoopsDB->getInsertId();
-  return true;
+    // register filetype
+    $table = $xoopsDB->prefix('xoonips_file_type');
+    $mid   = $xoopsMod->getVar('mid');
+    $sql   = "INSERT INTO $table ( name, display_name, mid ) VALUES ( 'conference_file', 'Conference Presentation File', $mid )";
+    if ($xoopsDB->query($sql) == false) {
+        // cannot register itemtype
+        return false;
+    }
+    $sql = "INSERT INTO $table ( name, display_name, mid ) VALUES ( 'conference_paper', 'Conference Paper', $mid )";
+    if ($xoopsDB->query($sql) == false) {
+        // cannot register itemtype
+        return false;
+    }
+
+    // Delete 'Module Access Rights' from all groups
+    // This allows to remove redundant module name in Main Menu
+    $memberHandler = xoops_getHandler('member');
+    $gpermHandler  = xoops_getHandler('groupperm');
+    $groups        = $memberHandler->getGroupList();
+    foreach ($groups as $groupid2 => $groupname) {
+        if ($gpermHandler->checkRight('module_read', $mid, $groupid2)) {
+            $criteria = new CriteriaCompo();
+            $criteria->add(new Criteria('gperm_groupid', $groupid2));
+            $criteria->add(new Criteria('gperm_itemid', $mid));
+            $criteria->add(new Criteria('gperm_name', 'module_read'));
+
+            $objects = $gpermHandler->getObjects($criteria);
+            if (count($objects) == 1) {
+                $gpermHandler->delete($objects[0]);
+            }
+        }
+    }
+
+    // $item_type_id = $xoopsDB->getInsertId();
+    return true;
 }
-
-?>

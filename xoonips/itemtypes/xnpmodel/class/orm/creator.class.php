@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief Data object of Model creator information
@@ -33,9 +33,12 @@ if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
  */
 class XNPModelOrmCreator extends XooNIpsTableObject
 {
-    function XNPModelOrmCreator()
+    /**
+     * XNPModelOrmCreator constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsTableObject();
+        parent::__construct();
         $this->initVar('model_creator_id', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('model_id', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('creator', XOBJ_DTYPE_TXTBOX, '', true);
@@ -50,10 +53,13 @@ class XNPModelOrmCreator extends XooNIpsTableObject
  */
 class XNPModelOrmCreatorHandler extends XooNIpsTableObjectHandler
 {
-    function XNPModelOrmCreatorHandler(&$db) 
+    /**
+     * XNPModelOrmCreatorHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsTableObjectHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPModelOrmCreator', 'xnpmodel_creator', 'model_creator_id', false);
     }
 }
-?>

@@ -24,24 +24,31 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
-require_once __DIR__.'/abstract_ranking.class.php';
-require_once __DIR__.'/ranking_new_item.class.php';
+require_once __DIR__ . '/abstract_ranking.class.php';
+require_once __DIR__ . '/ranking_new_item.class.php';
 
 /**
  * @brief handler object of ranking sum new item
  *
  */
-class XooNIpsOrmRankingSumNewItemHandler extends XooNIpsOrmRankingNewItemHandler {
-  function XooNIpsOrmRankingSumNewItemHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmRankingNewItem', 'xoonips_ranking_sum_new_item', 'item_id', false );
-    $this->_set_columns( array( 'item_id', 'timestamp' ) );
-    $this->_set_sum_table();
-  }
+class XooNIpsOrmRankingSumNewItemHandler extends XooNIpsOrmRankingNewItemHandler
+{
+    /**
+     * XooNIpsOrmRankingSumNewItemHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmRankingNewItem', 'xoonips_ranking_sum_new_item', 'item_id', false);
+        $this->_set_columns(array(
+                                'item_id',
+                                'timestamp'
+                            ));
+        $this->_set_sum_table();
+    }
 }
-
-?>

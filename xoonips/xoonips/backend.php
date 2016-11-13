@@ -24,30 +24,32 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-include 'include/common.inc.php';
+include __DIR__ . '/include/common.inc.php';
 
-function xoonips_get_backend() {
-  $formdata =& xoonips_getutility( 'formdata' );
-  $itemtype = $formdata->getValue( 'get', 'itemtype', 's', true );
-  $action = $formdata->getValue( 'get', 'action', 's', true );
-  // check item type name
-  $item_type_handler =& xoonips_getormhandler( 'xoonips', 'item_type' );
-  $criteria = new CriteriaCompo( new Criteria( 'name', $itemtype ) );
-  $criteria->add( new Criteria( 'mid', NULL, '!=' ) );
-  if ( $item_type_handler->getCount( $criteria ) != 1 ) {
-    die( 'illegal request' );
-  }
-  // check action name
-  if ( ! preg_match( '/^[a-z][_a-z]*$/', $action ) ) {
-    die( 'illegal request' );
-  }
-  $backend = '../'.$itemtype.'/backend/'.$action.'.php';
-  if ( ! file_exists( $backend ) ) {
-    die( 'illegal request' );
-  }
-  return $backend;
+/**
+ * @return string
+ */
+function xoonips_get_backend()
+{
+    $formdata = xoonips_getUtility('formdata');
+    $itemtype = $formdata->getValue('get', 'itemtype', 's', true);
+    $action   = $formdata->getValue('get', 'action', 's', true);
+    // check item type name
+    $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
+    $criteria         = new CriteriaCompo(new Criteria('name', $itemtype));
+    $criteria->add(new Criteria('mid', null, '!='));
+    if ($item_typeHandler->getCount($criteria) != 1) {
+        die('illegal request');
+    }
+    // check action name
+    if (!preg_match('/^[a-z][_a-z]*$/', $action)) {
+        die('illegal request');
+    }
+    $backend = '../' . $itemtype . '/backend/' . $action . '.php';
+    if (!file_exists($backend)) {
+        die('illegal request');
+    }
+    return $backend;
 }
 
 include xoonips_get_backend();
-
-?>

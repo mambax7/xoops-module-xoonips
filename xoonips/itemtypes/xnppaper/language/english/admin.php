@@ -28,6 +28,4 @@
 // _AM_<MODULENAME>_<STRINGNAME>
 
 // main title
-define( '_AM_XNPPAPER_TITLE', 'XooNIps Paper Item Type Configuration' );
-
-?>
+define('_AM_XNPPAPER_TITLE', 'XooNIps Paper Item Type Configuration');

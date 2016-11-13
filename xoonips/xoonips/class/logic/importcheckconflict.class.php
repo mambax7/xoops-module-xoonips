@@ -25,34 +25,60 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once dirname( __DIR__ ) . '/base/logic.class.php';
+include_once __DIR__ . '/../base/logic.class.php';
 
+/**
+ * Class XooNIpsLogicImportCheckConflict
+ */
 class XooNIpsLogicImportCheckConflict extends XooNIpsLogic
 {
-    function XooNIpsLogicImportCheckConflict(){
-        parent::XooNIpsLogic();
+    /**
+     * XooNIpsLogicImportCheckConflict constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
     }
-    
-    function execute(&$vars, &$response){
-        $this -> _import_items = $vars[0];
-        $handler =& xoonips_gethandler( 'xoonips', 'import_item' );
-        $handler -> findDuplicateItems( $this -> _import_items );
-        
-        $success = array( 'import_items' => $this -> _import_items,
-                          'is_conflict' => $this -> _is_conflict(
-                              $this -> _import_items ) );
-        $response -> setResult( true );
-        $response -> setSuccess( $success );
+
+    /**
+     * @param $vars
+     * @param $response
+     * @return bool|void
+     */
+    public function execute($vars, $response)
+    {
+        $this->_import_items = $vars[0];
+        $handler             = xoonips_getHandler('xoonips', 'import_item');
+        $handler->findDuplicateItems($this->_import_items);
+
+        $success = array(
+            'import_items' => $this->_import_items,
+            'is_conflict'  => $this->_is_conflict($this->_import_items)
+        );
+        $response->setResult(true);
+        $response->setSuccess($success);
     }
-    function _is_conflict( $import_items ){
-        foreach( $import_items as $i ){
-            if( count( $i -> getDuplicatePseudoId() ) > 0 ) return true;
-            if( count( $i -> getDuplicateUpdatableItemId() ) > 0 ) return true;
-            if( count( $i -> getDuplicateUnupdatableItemId() ) > 0 )
+
+    /**
+     * @param $import_items
+     * @return bool
+     */
+    public function _is_conflict($import_items)
+    {
+        foreach ($import_items as $i) {
+            if (count($i->getDuplicatePseudoId()) > 0) {
                 return true;
-            if( count( $i -> getDuplicateLockedItemId() ) > 0 ) return true;
+            }
+            if (count($i->getDuplicateUpdatableItemId()) > 0) {
+                return true;
+            }
+            if (count($i->getDuplicateUnupdatableItemId()) > 0) {
+                return true;
+            }
+            if (count($i->getDuplicateLockedItemId()) > 0) {
+                return true;
+            }
         }
         return false;
     }
 }
-?>

@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
 include_once XOOPS_ROOT_PATH . '/modules/xnppresentation/include/view.php';
@@ -38,11 +38,19 @@ include_once XOOPS_ROOT_PATH . '/modules/xnppresentation/iteminfo.php';
  */
 class XNPPresentationCompoHandler extends XooNIpsItemInfoCompoHandler
 {
-    function XNPPresentationCompoHandler(&$db) 
+    /**
+     * XNPPresentationCompoHandler constructor.
+     * @param $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsItemInfoCompoHandler($db, 'xnppresentation');
+        parent::__construct($db, 'xnppresentation');
     }
-    function &create() 
+
+    /**
+     * @return XNPPresentationCompo
+     */
+    public function create()
     {
         $presentation = new XNPPresentationCompo();
         return $presentation;
@@ -50,84 +58,90 @@ class XNPPresentationCompoHandler extends XooNIpsItemInfoCompoHandler
 
     /**
      * return template filename
-     * 
-     * @param string $type defined symbol 
-     *  XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *  or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
-     * @return template filename
+     *
+     * @param string $type defined symbol
+     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                     or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
+     * @return string|template
      */
-    function getTemplateFileName($type){
-        switch( $type ){
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
-            return 'xnppresentation_transfer_item_detail.html';
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
-            return 'xnppresentation_transfer_item_list.html';
-        default:
-            return '';
+    public function getTemplateFileName($type)
+    {
+        switch ($type) {
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
+                return 'xnppresentation_transfer_item_detail.tpl';
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
+                return 'xnppresentation_transfer_item_list.tpl';
+            default:
+                return '';
         }
     }
-    
+
     /**
      * return template variables of item
-     * 
-     * @param string $type defined symbol 
-     *  XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *  , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
-     *  , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
-     *  or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
-     * @param int $item_id
-     * @param int $uid user id who get item
+     *
+     * @param string $type defined symbol
+     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                     , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
+     *                     , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
+     *                     or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
+     * @param int    $item_id
+     * @param int    $uid  user id who get item
      * @return array of template variables
      */
-    function getTemplateVar($type, $item_id, $uid){
-        $presentation =& $this->get( $item_id );
-        if ( ! is_object( $presentation ) ) {
-          return array();
-        } 
-        $result = $this->getBasicTemplateVar($type, $presentation, $uid);
-        
-        $textutil=&xoonips_getutility('text');
-        $detail =& $presentation -> getVar( 'detail' );
-        $result['detail']=$detail->getVarArray('s');
-        $result['detail']['presentation_type']=$textutil->html_special_chars($this -> get_presentation_type_label($detail -> get( 'presentation_type' )));
-        $result['detail']['presentation_type_value']=$detail -> getVar( 'presentation_type', 's' );
-        if( $detail->getVar('use_cc', 'n' ) ){
-            $result['detail']['rights']=$detail->getVar('rights', 'n');
+    public function getTemplateVar($type, $item_id, $uid)
+    {
+        $presentation = $this->get($item_id);
+        if (!is_object($presentation)) {
+            return array();
         }
-        
-        switch( $type ){
-        case XOONIPS_TEMPLATE_TYPE_ITEM_LIST:
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
-            $result['creator']=array();
-            foreach( $presentation -> getVar( 'creator' ) as $creator ){
-                $result['creator'][] = $creator->getVarArray('s');
-            }
-            return $result;
-        case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
-            $result['xnppresentation_creator']
-                =xoonips_get_multiple_field_template_vars($detail->getCreators(),
-                                                          'xnppresentation',
-                                                          'creator');
-            
-            if( is_array( $presentation -> getVar( 'preview' ) ) ){
-                $result['detail']['previews'] = array();
-                foreach( $presentation -> getVar( 'preview' ) as $preview ){
-                    $result['detail']['previews'][]
-                        = $this -> getPreviewTemplateVar( $preview );
-                }
-            }
+        $result = $this->getBasicTemplateVar($type, $presentation, $uid);
 
-            $presentation_file = $presentation -> getVar( 'presentation_file' );
-            if( $presentation_file -> get( 'item_id' ) == $item_id ){
-                $result['detail']['presentation_file'] = $this -> getAttachmentTemplateVar($presentation -> getVar( 'presentation_file' ) );
-            }
-            return $result;
+        $textutil                                    = xoonips_getUtility('text');
+        $detail                                      = $presentation->getVar('detail');
+        $result['detail']                            = $detail->getVarArray('s');
+        $result['detail']['presentation_type']
+                                                     = $textutil->html_special_chars($this->get_presentation_type_label($detail->get('presentation_type')));
+        $result['detail']['presentation_type_value'] = $detail->getVar('presentation_type', 's');
+        if ($detail->getVar('use_cc', 'n')) {
+            $result['detail']['rights'] = $detail->getVar('rights', 'n');
+        }
+
+        switch ($type) {
+            case XOONIPS_TEMPLATE_TYPE_ITEM_LIST:
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
+                $result['creator'] = array();
+                foreach ($presentation->getVar('creator') as $creator) {
+                    $result['creator'][] = $creator->getVarArray('s');
+                }
+                return $result;
+            case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
+                $result['xnppresentation_creator']
+                    = xoonips_get_multiple_field_template_vars($detail->getCreators(), 'xnppresentation', 'creator');
+
+                if (is_array($presentation->getVar('preview'))) {
+                    $result['detail']['previews'] = array();
+                    foreach ($presentation->getVar('preview') as $preview) {
+                        $result['detail']['previews'][]
+                            = $this->getPreviewTemplateVar($preview);
+                    }
+                }
+
+                $presentation_file = $presentation->getVar('presentation_file');
+                if ($presentation_file->get('item_id') == $item_id) {
+                    $result['detail']['presentation_file'] = $this->getAttachmentTemplateVar($presentation->getVar('presentation_file'));
+                }
+                return $result;
         }
         return $result;
     }
-    
-    function get_presentation_type_label( $type ){
+
+    /**
+     * @param $type
+     * @return mixed
+     */
+    public function get_presentation_type_label($type)
+    {
         $keyval = xnppresentationGetTypes();
         return $keyval[$type];//"TODO convert type name '{$type}' to display name";
     }
@@ -140,9 +154,11 @@ class XNPPresentationCompoHandler extends XooNIpsItemInfoCompoHandler
  */
 class XNPPresentationCompo extends XooNIpsItemInfoCompo
 {
-    function XNPPresentationCompo() 
+    /**
+     * XNPPresentationCompo constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsItemInfoCompo('xnppresentation');
+        parent::__construct('xnppresentation');
     }
 }
-?>

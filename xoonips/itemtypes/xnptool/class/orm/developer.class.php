@@ -24,30 +24,38 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * Data object of Tool developer information
  */
-class XNPToolOrmDeveloper extends XooNIpsTableObject {
-  function XNPToolOrmDeveloper() {
-    parent::XooNIpsTableObject();
-    $this->initVar( 'tool_developer_id', XOBJ_DTYPE_INT, 0, true );
-    $this->initVar( 'tool_id', XOBJ_DTYPE_INT, 0, true );
-    $this->initVar( 'developer', XOBJ_DTYPE_TXTBOX, '', true );
-    $this->initVar( 'developer_order', XOBJ_DTYPE_INT, 0, true );
-  }
+class XNPToolOrmDeveloper extends XooNIpsTableObject
+{
+    /**
+     * XNPToolOrmDeveloper constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->initVar('tool_developer_id', XOBJ_DTYPE_INT, 0, true);
+        $this->initVar('tool_id', XOBJ_DTYPE_INT, 0, true);
+        $this->initVar('developer', XOBJ_DTYPE_TXTBOX, '', true);
+        $this->initVar('developer_order', XOBJ_DTYPE_INT, 0, true);
+    }
 }
 
 /**
  * Handler class that create, insert, update, get and delete detail information
  */
-class XNPToolOrmDeveloperHandler extends XooNIpsTableObjectHandler {
-  function XNPToolOrmDeveloperHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XNPToolOrmDeveloper', 'xnptool_developer', 'tool_developer_id', false );
-  }
+class XNPToolOrmDeveloperHandler extends XooNIpsTableObjectHandler
+{
+    /**
+     * XNPToolOrmDeveloperHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XNPToolOrmDeveloper', 'xnptool_developer', 'tool_developer_id', false);
+    }
 }
-?>

@@ -32,8 +32,9 @@ $module['class_name']    = 'XooNIpsFileSearchPluginPPT';
 $module['php_file_name'] = 'ppt.php';
 $module['name']          = 'ppt';
 $module['display_name']  = 'MS-PowerPoint 95/97/2000/XP/2003';
-$module['mime_type']     = array( 'application/vnd.ms-powerpoint', 'application/msword' );
-$module['extensions']    = array( 'ppt' );
-$module['version']       = '2.0';
-// php-indent: enable
-?>
+$module['mime_type']     = array(
+    'application/vnd.ms-powerpoint',
+    'application/msword'
+);
+$module['extensions']    = array('ppt');
+$module['version']       = '2.0';// php-indent: enable

@@ -29,24 +29,25 @@ include_once XOOPS_ROOT_PATH . '/class/xml/rpc/xmlrpcparser.php';
 
 /**
  * XML-RPC Parser
- * 
+ *
  * use XooNIpsRpcDateTimeHandler to parse <dateTime.iso8601>
- * 
- * 
+ *
+ *
  */
 class XooNIpsXmlRpcParser extends XoopsXmlRpcParser
 {
 
     /**
-    * Constructor of the class
-    *
-    * @access
-    * @author
-    * @see
-    */
-    function XooNIpsXmlRpcParser(&$input)
+     * Constructor of the class
+     *
+     * @access
+     * @author
+     * @see
+     * @param $input
+     */
+    public function __construct($input)
     {
-        $this->XoopsXmlRpcParser($input);
+        parent::__construct($input);
         $this->addTagHandler(new RpcMethodNameHandler());
         $this->addTagHandler(new RpcIntHandler());
         $this->addTagHandler(new RpcDoubleHandler());
@@ -62,16 +63,20 @@ class XooNIpsXmlRpcParser extends XoopsXmlRpcParser
     }
 }
 
+/**
+ * Class XooNIpsRpcDateTimeHandler
+ */
 class XooNIpsRpcDateTimeHandler extends RpcDateTimeHandler
 {
 
     /**
      * parse sISO-8601 date time string
-     *
+     * @param $parser
+     * @param $data
      */
-    function handleCharacterData(&$parser, &$data)
+    public function handleCharacterData($parser, $data)
     {
-        $parser->setTempValue( ISO8601toUnixTimestamp( trim( $data ) ) );
+        $parser->setTempValue(ISO8601toUnixTimestamp(trim($data)));
     }
 }
 
@@ -83,42 +88,46 @@ class XooNIpsRpcValueHandler extends RpcValueHandler
     /**
      * content of value tag. no need to be a stack.
      */
-    var $_tempValue;
-    
-    function handleBeginElement(&$parser, &$attributes)
+    public $_tempValue;
+
+    /**
+     * @param $parser
+     * @param $attributes
+     */
+    public function handleBeginElement($parser, $attributes)
     {
         $this->_tempValue = null;
         parent::handleBeginElement($parser, $attributes);
     }
 
-    function handleCharacterData(&$parser, &$data)
+    /**
+     * @param $parser
+     * @param $data
+     */
+    public function handleCharacterData($parser, $data)
     {
         parent::handleCharacterData($parser, $data);
-        if ( is_null($this->_tempValue) ){
+        if (null === $this->_tempValue) {
             $this->_tempValue = $data;
-        }
-        else {
+        } else {
             $this->_tempValue .= $data;
         }
     }
 
     /**
      * set content to $parser->_tempValue if $parser->_tempValue is not set.
+     * @param $parser
      */
-    function handleEndElement(&$parser)
+    public function handleEndElement($parser)
     {
-        if ( !isset($parser->_tempValue) ){ // maybe no tag handled in <value>...</value>
-            if ( !is_null($this->_tempValue) ){
-                $parser->setTempValue( $this->_tempValue );
-            }
-            else {
-                $parser->setTempValue( "" );
+        if (!isset($parser->_tempValue)) { // maybe no tag handled in <value>...</value>
+            if (null !== $this->_tempValue) {
+                $parser->setTempValue($this->_tempValue);
+            } else {
+                $parser->setTempValue('');
             }
         }
         parent::handleEndElement($parser);
         $this->_tempValue = null;
     }
 }
-
-
-?>

@@ -43,16 +43,25 @@ class XooNIpsLogicGetRootIndex extends XooNIpsLogic
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response->success XooNIpsIndexCompo index information
+     * @return bool
      */
-    function execute(&$vars, &$response) 
+    public function execute($vars, $response)
     {
         // parameter check
-        $error = &$response->getError();
-        if (count($vars) > 2) $error->add(XNPERR_EXTRA_PARAM);
-        if (count($vars) < 2) $error->add(XNPERR_MISSING_PARAM);
+        $error =  $response->getError();
+        if (count($vars) > 2) {
+            $error->add(XNPERR_EXTRA_PARAM);
+        }
+        if (count($vars) < 2) {
+            $error->add(XNPERR_MISSING_PARAM);
+        }
         //
-        if (isset($vars[0]) && strlen($vars[0]) > 32) $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
-        if (isset($vars[1]) && strlen($vars[1]) > 255) $error->add(XNPERR_INVALID_PARAM, 'too long parameter 2');
+        if (isset($vars[0]) && strlen($vars[0]) > 32) {
+            $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
+        }
+        if (isset($vars[1]) && strlen($vars[1]) > 255) {
+            $error->add(XNPERR_INVALID_PARAM, 'too long parameter 2');
+        }
         //
         if ($error->get(0)) {
             // return if parameter error
@@ -60,7 +69,7 @@ class XooNIpsLogicGetRootIndex extends XooNIpsLogic
             return;
         } else {
             $sessionid = $vars[0];
-            $name = $vars[1];
+            $name      = $vars[1];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
@@ -69,40 +78,40 @@ class XooNIpsLogicGetRootIndex extends XooNIpsLogic
             return false;
         }
         // get index_id from name
-        if ($name == 'Public') { // todo: define constant string
+        if ($name === 'Public') { // todo: define constant string
             $index_id = IID_PUBLIC;
-        } else if ($name == 'Private') { // todo: define constant string
-            if( $uid==UID_GUEST ){
+        } elseif ($name === 'Private') { // todo: define constant string
+            if ($uid == UID_GUEST) {
                 $response->setResult(false);
-                $error->add( XNPERR_ACCESS_FORBIDDEN, 'guest doesn\'t have private index' );
+                $error->add(XNPERR_ACCESS_FORBIDDEN, 'guest doesn\'t have private index');
                 return false;
             }
-            $users_handler = &xoonips_getormhandler('xoonips', 'users');
-            $user = $users_handler->get($uid);
-            $index_id = $user->get('private_index_id');
+            $usersHandler = xoonips_getOrmHandler('xoonips', 'users');
+            $user         = $usersHandler->get($uid);
+            $index_id     = $user->get('private_index_id');
         } else {
-            $groups_handler = &xoonips_getormhandler('xoonips', 'groups');
-            $groups =& $groups_handler->getObjects(new Criteria('gname', addslashes($name)));
+            $groupsHandler = xoonips_getOrmHandler('xoonips', 'groups');
+            $groups        =  $groupsHandler->getObjects(new Criteria('gname', addslashes($name)));
             if (!$groups || count($groups) != 1) {
                 $response->setResult(false);
-                $error->add(XNPERR_NOT_FOUND, "group not found");
+                $error->add(XNPERR_NOT_FOUND, 'group not found');
                 return false;
             }
             $index_id = $groups[0]->get('group_index_id');
         }
         // check permission
-        $index_handler = &xoonips_getormhandler('xoonips', 'index');
-        if (!$index_handler->getPerm($index_id, $uid, 'read')) {
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
+        if (!$indexHandler->getPerm($index_id, $uid, 'read')) {
             $response->setResult(false);
-            $error->add(XNPERR_ACCESS_FORBIDDEN, "no permission");
+            $error->add(XNPERR_ACCESS_FORBIDDEN, 'no permission');
             return false;
         }
         // get index from index_id
-        $index_compo_handler = &xoonips_getormcompohandler('xoonips', 'index');
-        $index = $index_compo_handler->get($index_id);
+        $index_compoHandler = xoonips_getOrmCompoHandler('xoonips', 'index');
+        $index              = $index_compoHandler->get($index_id);
         if ($index == false) {
             $response->setResult(false);
-            $error->add(XNPERR_NOT_FOUND, "cannot get index");
+            $error->add(XNPERR_NOT_FOUND, 'cannot get index');
             return false;
         }
         $response->setSuccess($index);
@@ -110,4 +119,3 @@ class XooNIpsLogicGetRootIndex extends XooNIpsLogic
         return true;
     }
 }
-?>

@@ -25,35 +25,40 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief Data object of Book detail information
  *
- * @li getVar('book_id') :
- * @li getVar('editor') :
- * @li getVar('publisher') :
- * @li getVar('isbn') :
- * @li getVar('url') :
- * @li getVar('attachment_dl_limit') :
- * @li getVar('attachment_dl_notify') :
+ * @li    getVar('book_id') :
+ * @li    getVar('editor') :
+ * @li    getVar('publisher') :
+ * @li    getVar('isbn') :
+ * @li    getVar('url') :
+ * @li    getVar('attachment_dl_limit') :
+ * @li    getVar('attachment_dl_notify') :
  */
 class XNPBookOrmItemDetail extends XooNIpsTableObject
 {
     // for column length check
-    var $lengths = array(
-        'book_id' => 10,
-        'classification' => 30,
-        'editor' => 255,
-        'publisher' => 255,
-        'isbn' => 13,
-        'url' => 65535,
-        'attachment_dl_limit' => 1,
-        'attachment_dl_notify' => 1
-    );
-    function XNPBookOrmItemDetail() 
+    public $lengths
+        = array(
+            'book_id'              => 10,
+            'classification'       => 30,
+            'editor'               => 255,
+            'publisher'            => 255,
+            'isbn'                 => 13,
+            'url'                  => 65535,
+            'attachment_dl_limit'  => 1,
+            'attachment_dl_notify' => 1
+        );
+
+    /**
+     * XNPBookOrmItemDetail constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsTableObject();
+        parent::__construct();
         $this->initVar('book_id', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('editor', XOBJ_DTYPE_TXTBOX, null, false, $this->lengths['editor']);
         $this->initVar('publisher', XOBJ_DTYPE_TXTBOX, null, true, $this->lengths['publisher']);
@@ -62,18 +67,18 @@ class XNPBookOrmItemDetail extends XooNIpsTableObject
         $this->initVar('attachment_dl_limit', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('attachment_dl_notify', XOBJ_DTYPE_INT, 0, false);
     }
-    
+
     /**
      * get author objects of this item
-     * @return XNPBookOrmAuthor[] 
+     * @return XNPBookOrmAuthor[]
      */
-    function getAuthors()
+    public function getAuthors()
     {
-        $handler=&xoonips_getormhandler('xnpbook', 'author');
-        $criteria=new Criteria('book_id', $this->get('book_id'));
+        $handler  = xoonips_getOrmHandler('xnpbook', 'author');
+        $criteria = new Criteria('book_id', $this->get('book_id'));
         $criteria->setSort('author_order');
-        $result=&$handler->getObjects($criteria);
-        if($result){
+        $result = $handler->getObjects($criteria);
+        if ($result) {
             return $result;
         }
         return array();
@@ -87,10 +92,13 @@ class XNPBookOrmItemDetail extends XooNIpsTableObject
  */
 class XNPBookOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
-    function XNPBookOrmItemDetailHandler(&$db) 
+    /**
+     * XNPBookOrmItemDetailHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsTableObjectHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPBookOrmItemDetail', 'xnpbook_item_detail', 'book_id', false);
     }
 }
-?>

@@ -42,18 +42,18 @@ class XooNIpsXmlRpcViewSearchItem extends XooNIpsXmlRpcViewElement
      *
      * @return XoopsXmlRpcTag
      */
-    function render() 
+    public function render()
     {
         $resp = new XoopsXmlRpcArray();
-        foreach($this->response->getSuccess() as $i) {
+        foreach ($this->response->getSuccess() as $i) {
             $matchfor = 0;
-            if ( $i->get('matchfor_item') ){
+            if ($i->get('matchfor_item')) {
                 $matchfor |= 1;
             }
-            if ( $i->get('matchfor_file') ){
+            if ($i->get('matchfor_file')) {
                 $matchfor |= 2;
             }
-            if ( $i->get('matchfor_index') ){
+            if ($i->get('matchfor_index')) {
                 $matchfor |= 4;
             }
             $struct = new XoopsXmlRpcStruct();
@@ -65,4 +65,3 @@ class XooNIpsXmlRpcViewSearchItem extends XooNIpsXmlRpcViewElement
         return $resp;
     }
 }
-?>

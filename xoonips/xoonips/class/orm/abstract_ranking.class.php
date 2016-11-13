@@ -24,74 +24,78 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 /**
  * @brief abstract handler object of ranking tables
  *
  */
-class XooNIpsOrmAbstractRankingHandler extends XooNIpsTableObjectHandler {
+class XooNIpsOrmAbstractRankingHandler extends XooNIpsTableObjectHandler
+{
 
-  /**
-   * object column names
-   * @var array
-   */
-  var $columns = array();
+    /**
+     * object column names
+     * @var array
+     */
+    public $columns = array();
 
-  /**
-   * flag of sum table handler
-   * @var bool
-   */
-  var $is_sum_table = false;
+    /**
+     * flag of sum table handler
+     * @var bool
+     */
+    public $is_sum_table = false;
 
-  /**
-   * get object column names
-   *
-   * @access private
-   * @param array $columns
-   */
-  function get_columns() {
-    return $this->columns;
-  }
-
-  /**
-   * set object column names
-   *
-   * @access private
-   * @param array $columns
-   */
-  function _set_columns( $columns ) {
-    $this->columns = $columns;
-  }
-
-  /**
-   * set sum table flag
-   *
-   * @access private
-   */
-  function _set_sum_table() {
-    $this->is_sum_table = true;
-  }
-
-  /**
-   * copy ranking data from ranking_sum_* table for rebuild rankings
-   *
-   * @return bool FALSE if failed
-   */
-  function copy_from_sum_table() {
-    if ( $this->is_sum_table ) {
-      die( 'invalid operation found in '.__FILE__.' at '.__LINE__ );
+    /**
+     * get object column names
+     *
+     * @access   private
+     * @return array
+     * @internal param array $columns
+     */
+    public function get_columns()
+    {
+        return $this->columns;
     }
-    $columns = implode( ', ', $this->columns );
-    $name = $this->__table_name;
-    $table = $this->db->prefix( $name );
-    $sum_name = str_replace( 'ranking_', 'ranking_sum_', $name );
-    $sum_table = $this->db->prefix( $sum_name );
-    $sql = 'INSERT INTO '.$table.' ( '.$columns.' ) SELECT '.$columns.' FROM '.$sum_table;
-    return $this->_query( $sql, true );
-  }
-}
 
-?>
+    /**
+     * set object column names
+     *
+     * @access private
+     * @param array $columns
+     */
+    public function _set_columns($columns)
+    {
+        $this->columns = $columns;
+    }
+
+    /**
+     * set sum table flag
+     *
+     * @access private
+     */
+    public function _set_sum_table()
+    {
+        $this->is_sum_table = true;
+    }
+
+    /**
+     * copy ranking data from ranking_sum_* table for rebuild rankings
+     *
+     * @return bool|resource
+     */
+    public function copy_from_sum_table()
+    {
+        if ($this->is_sum_table) {
+            die('invalid operation found in ' . __FILE__ . ' at ' . __LINE__);
+        }
+        $columns   = implode(', ', $this->columns);
+        $name      = $this->__table_name;
+        $table     = $this->db->prefix($name);
+        $sum_name  = str_replace('ranking_', 'ranking_sum_', $name);
+        $sum_table = $this->db->prefix($sum_name);
+        $sql       = 'INSERT INTO ' . $table . ' ( ' . $columns . ' ) SELECT ' . $columns . ' FROM ' . $sum_table;
+        return $this->_query($sql, true);
+    }
+}

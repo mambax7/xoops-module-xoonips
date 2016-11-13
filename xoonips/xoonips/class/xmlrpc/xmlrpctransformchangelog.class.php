@@ -26,18 +26,25 @@
 // ------------------------------------------------------------------------- //
 
 include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/orm/changelog.class.php';
+
+/**
+ * Class XooNIpsXmlRpcTransformChangelog
+ */
 class XooNIpsXmlRpcTransformChangelog extends XooNIpsXmlRpcTransformElement
 {
-    function getObject($array) 
+    /**
+     * @param $array
+     * @return XooNIpsChangelog
+     */
+    public function getObject($array)
     {
         $obj = new XooNIpsChangelog();
         //
         $fields = array();
-        foreach($fields as $f) {
+        foreach ($fields as $f) {
             $obj->assignVar($f, $array[$f]);
         }
         //
         return $obj;
     }
 }
-?>

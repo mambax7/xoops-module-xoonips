@@ -24,162 +24,157 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-include 'include/common.inc.php';
+include __DIR__ . '/include/common.inc.php';
 
-include_once 'class/base/pagenavi.class.php';
-include_once 'class/base/gtickets.php';
-include_once 'include/AL.php';
-include_once 'include/lib.php';
+include_once __DIR__ . '/class/base/pagenavi.class.php';
+include_once __DIR__ . '/class/base/gtickets.php';
+include_once __DIR__ . '/include/AL.php';
+include_once __DIR__ . '/include/lib.php';
 
-$myuid = is_object( $xoopsUser ) ? $xoopsUser->getVar( 'uid', 'n' ) : UID_GUEST;
-if ( $myuid == UID_GUEST ) {
-  redirect_header( XOOPS_URL.'/', 3, _NOPERM );
-  exit();
+$myuid = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
+if ($myuid == UID_GUEST) {
+    redirect_header(XOOPS_URL . '/', 3, _NOPERM);
 }
 
 $ticket_area = 'xoonips_editshowitem';
 
-$formdata =& xoonips_getutility( 'formdata' );
+$formdata = xoonips_getUtility('formdata');
 
 // administrator can edit everyone's show items
-$uid = $formdata->getValue( 'both', 'uid', 'i', false, $myuid );
-$xmember_handler =& xoonips_gethandler( 'xoonips', 'member' );
-if ( ! $xmember_handler->isAdmin( $uid ) && $uid != $myuid ) {
-  // no permission
-  redirect_header( XOOPS_URL.'/', 3, _NOPERM );
-  exit();
+$uid            = $formdata->getValue('both', 'uid', 'i', false, $myuid);
+$xmemberHandler = xoonips_getHandler('xoonips', 'member');
+if (!$xmemberHandler->isAdmin($uid) && $uid != $myuid) {
+    // no permission
+    redirect_header(XOOPS_URL . '/', 3, _NOPERM);
 }
 
 $breadcrumbs = array(
-  array(
-    'name' => _MD_XOONIPS_BREADCRUMBS_USER,
-  ),
-  array(
-    'name' => _MD_XOONIPS_SHOW_USER_TITLE,
-    'url' => 'showusers.php'.'?uid='.$uid,
-  ),
-  array(
-    'name' => _MD_XOONIPS_ITEM_SHOW_EDIT_TITLE,
-  ),
+    array(
+        'name' => _MD_XOONIPS_BREADCRUMBS_USER,
+    ),
+    array(
+        'name' => _MD_XOONIPS_SHOW_USER_TITLE,
+        'url'  => 'showusers.php' . '?uid=' . $uid,
+    ),
+    array(
+        'name' => _MD_XOONIPS_ITEM_SHOW_EDIT_TITLE,
+    ),
 );
 
-$op = $formdata->getValue( 'post', 'op', 's', false, '' );
-switch ( $op ) {
-case 'update':
-  // check token ticket
-  if ( ! $xoopsGTicket->check( true, $ticket_area, false ) ) {
-    redirect_header( 'showusers.php', 3, $xoopsGTicket->getErrors() );
-    exit();
-  }
-  // TODO: update
-  $checked_item_ids = $formdata->getValueArray( 'post', 'checked_item_ids', 'i', false );
-  _xoonips_editshowitem_update_item_ids( $uid, $checked_item_ids );
-  redirect_header( 'showusers.php', 1, _MD_XOONIPS_PUBLICATION_ITEM_INSERT );
-  exit();
-  break;
-case 'navi':
-  // check token ticket, if error occured accept to repost
-  if ( ! $xoopsGTicket->check( true, $ticket_area, true ) ) {
-    redirect_header( 'showusers.php', 3, $xoopsGTicket->getErrors() );
-    exit();
-  }
-  // get selected item ids
-  $checked_item_ids = $formdata->getValueArray( 'post', 'checked_item_ids', 'i', false );
-  break;
-default:
-  // get current selected item ids
-  $checked_item_ids = _xoonips_editshowitem_get_item_ids_by_uid( $uid );
-  break;
+$op = $formdata->getValue('post', 'op', 's', false, '');
+switch ($op) {
+    case 'update':
+        // check token ticket
+        if (!$xoopsGTicket->check(true, $ticket_area, false)) {
+            redirect_header('showusers.php', 3, $xoopsGTicket->getErrors());
+        }
+        // TODO: update
+        $checked_item_ids = $formdata->getValueArray('post', 'checked_item_ids', 'i', false);
+        _xoonips_editshowitem_update_item_ids($uid, $checked_item_ids);
+        redirect_header('showusers.php', 1, _MD_XOONIPS_PUBLICATION_ITEM_INSERT);
+        exit();
+        break;
+    case 'navi':
+        // check token ticket, if error occured accept to repost
+        if (!$xoopsGTicket->check(true, $ticket_area, true)) {
+            redirect_header('showusers.php', 3, $xoopsGTicket->getErrors());
+        }
+        // get selected item ids
+        $checked_item_ids = $formdata->getValueArray('post', 'checked_item_ids', 'i', false);
+        break;
+    default:
+        // get current selected item ids
+        $checked_item_ids = _xoonips_editshowitem_get_item_ids_by_uid($uid);
+        break;
 }
 
 // get item types
-$item_type_names = _xoonips_editshowitem_get_item_type_names( 's' );
-if ( empty( $item_type_names ) ) {
-  // no item types found
-  redirect_header( XOOPS_URL.'/', 3, _NOPERM );
-  exit();
+$item_type_names = _xoonips_editshowitem_get_item_type_names('s');
+if (empty($item_type_names)) {
+    // no item types found
+    redirect_header(XOOPS_URL . '/', 3, _NOPERM);
 }
-$item_type_ids = array_keys( $item_type_names );
+$item_type_ids = array_keys($item_type_names);
 
 // get showing item type id
-$item_type_id = $formdata->getValue( 'post', 'item_type_id', 'i', false );
-if ( is_null( $item_type_id ) ) {
-  $item_type_id = $item_type_ids[0];
-} else if ( ! in_array( $item_type_id, $item_type_ids ) ) {
-  // invalid item type id
-  redirect_header( XOOPS_URL.'/', 3, _NOPERM );
-  exit();
+$item_type_id = $formdata->getValue('post', 'item_type_id', 'i', false);
+if (null === $item_type_id) {
+    $item_type_id = $item_type_ids[0];
+} elseif (!in_array($item_type_id, $item_type_ids)) {
+    // invalid item type id
+    redirect_header(XOOPS_URL . '/', 3, _NOPERM);
 }
 
 // item_show_optional column in xoonips_config table
 // -> on : calculate in all public items
 // -> off : calculate in items user registered (default)
-$xconfig_handler =& xoonips_getormhandler( 'xoonips', 'config' );
-$item_show_optional = $xconfig_handler->getValue( 'item_show_optional' );
-$is_owner_only = ( $item_show_optional != 'on' );
+$xconfigHandler     = xoonips_getOrmHandler('xoonips', 'config');
+$item_show_optional = $xconfigHandler->getValue('item_show_optional');
+$is_owner_only      = ($item_show_optional !== 'on');
 
 // calculate page navigation
-$page_navi = array();
+$page_navi        = array();
 $total_item_count = 0;
 // - get page number in each item types
-$page = $formdata->getValueArray( 'post', 'page', 'i', false );
-foreach ( $item_type_ids as $it_id ) {
-  // - get total number of items in each item types
-  $item_count = _xoonips_editshowitem_count_public_items( $it_id, $uid, $is_owner_only );
-  // - maximum number of items per page
-  $item_limit = 20;
-  // - current page
-  $item_page = isset( $page[$it_id] ) ? $page[$it_id] : 1;
-  $navi = new XooNIpsPageNavi( $item_count, $item_limit, $item_page );
-  // - sort
-  $navi->setSort( 'title' );
-  // - order
-  $navi->setOrder( 'ASC' );
-  $page_navi[$it_id] = $navi;
-  // - total item count
-  $total_item_count += $item_count;
+$page = $formdata->getValueArray('post', 'page', 'i', false);
+foreach ($item_type_ids as $it_id) {
+    // - get total number of items in each item types
+    $item_count = _xoonips_editshowitem_count_public_items($it_id, $uid, $is_owner_only);
+    // - maximum number of items per page
+    $item_limit = 20;
+    // - current page
+    $item_page = isset($page[$it_id]) ? $page[$it_id] : 1;
+    $navi      = new XooNIpsPageNavi($item_count, $item_limit, $item_page);
+    // - sort
+    $navi->setSort('title');
+    // - order
+    $navi->setOrder('ASC');
+    $page_navi[$it_id] = $navi;
+    // - total item count
+    $total_item_count += $item_count;
 }
 
 // assign template values
-$token_ticket = $xoopsGTicket->getTicketHtml( __LINE__, 1800, $ticket_area );
-$xoopsOption['template_main'] = 'xoonips_editshowitem.html';
-include XOOPS_ROOT_PATH.'/header.php';
+$token_ticket                            = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
+$GLOBALS['xoopsOption']['template_main'] = 'xoonips_editshowitem.tpl';
+include XOOPS_ROOT_PATH . '/header.php';
 // create item list block after loaded header.php,
 // because $GLOBALS['xoopsTpl'] variable is used in item list block generator
-$item_types = array();
+$item_types              = array();
 $hidden_checked_item_ids = $checked_item_ids;
-foreach ( $item_type_ids as $it_id ) {
-  $navi =& $page_navi[$it_id];
-  $items = array();
-  if ( $item_type_id == $it_id ) {
-    // current selected item type
-    $item_ids = _xoonips_editshowitem_get_item_ids( $it_id, $uid, $is_owner_only, $navi->getSort(), $navi->getOrder(), $navi->getStart(), $navi->getLimit() );
-    foreach ( $item_ids as $item_id ) {
-      $items[] = array(
-        'item_id' => $item_id,
-        'checked' => in_array( $item_id, $checked_item_ids ),
-        'html' => _xoonips_editshowitem_get_item_html( $item_id ),
-      );
+foreach ($item_type_ids as $it_id) {
+    $navi  = $page_navi[$it_id];
+    $items = array();
+    if ($item_type_id == $it_id) {
+        // current selected item type
+        $item_ids = _xoonips_editshowitem_get_item_ids($it_id, $uid, $is_owner_only, $navi->getSort(), $navi->getOrder(), $navi->getStart(),
+                                                       $navi->getLimit());
+        foreach ($item_ids as $item_id) {
+            $items[] = array(
+                'item_id' => $item_id,
+                'checked' => in_array($item_id, $checked_item_ids),
+                'html'    => _xoonips_editshowitem_get_item_html($item_id),
+            );
+        }
+        $hidden_checked_item_ids = array_diff($hidden_checked_item_ids, $item_ids);
     }
-    $hidden_checked_item_ids = array_diff( $hidden_checked_item_ids, $item_ids );
-  }
-  $item_types[$it_id] = array(
-    'item_type_id' => $it_id,
-    'name' => $item_type_names[$it_id],
-    'navi' => $navi->getTemplateVars( 10 ),
-    'items' => $items,
-  );
+    $item_types[$it_id] = array(
+        'item_type_id' => $it_id,
+        'name'         => $item_type_names[$it_id],
+        'navi'         => $navi->getTemplateVars(10),
+        'items'        => $items,
+    );
 }
-$xoopsTpl->assign( 'xoops_breadcrumbs', $breadcrumbs );
-$xoopsTpl->assign( 'token_ticket', $token_ticket );
-$xoopsTpl->assign( 'uid', $uid );
-$xoopsTpl->assign( 'item_type_id', $item_type_id );
-$xoopsTpl->assign( 'checked_item_ids', $checked_item_ids );
-$xoopsTpl->assign( 'hidden_checked_item_ids', $hidden_checked_item_ids );
-$xoopsTpl->assign( 'total_item_num', $total_item_count );
-$xoopsTpl->assign( 'checked_item_num', count( $checked_item_ids ) );
-$xoopsTpl->assign( 'item_types', $item_types );
-include XOOPS_ROOT_PATH.'/footer.php';
+$xoopsTpl->assign('xoops_breadcrumbs', $breadcrumbs);
+$xoopsTpl->assign('token_ticket', $token_ticket);
+$xoopsTpl->assign('uid', $uid);
+$xoopsTpl->assign('item_type_id', $item_type_id);
+$xoopsTpl->assign('checked_item_ids', $checked_item_ids);
+$xoopsTpl->assign('hidden_checked_item_ids', $hidden_checked_item_ids);
+$xoopsTpl->assign('total_item_num', $total_item_count);
+$xoopsTpl->assign('checked_item_num', count($checked_item_ids));
+$xoopsTpl->assign('item_types', $item_types);
+include XOOPS_ROOT_PATH . '/footer.php';
 exit();
 
 /**
@@ -189,48 +184,50 @@ exit();
  * @param int $uid user id
  * @return array selected item ids
  */
-function _xoonips_editshowitem_get_item_ids_by_uid( $uid ) {
-  $is_handler =& xoonips_getormhandler( 'xoonips', 'item_show' );
-  $criteria = new Criteria( 'uid', $uid );
-  $objs =& $is_handler->getObjects( $criteria );
-  $iids = array();
-  foreach ( $objs as $obj ) {
-    $iids[] = $obj->get( 'item_id' );
-  }
-  return $iids;
+function _xoonips_editshowitem_get_item_ids_by_uid($uid)
+{
+    $isHandler = xoonips_getOrmHandler('xoonips', 'item_show');
+    $criteria  = new Criteria('uid', $uid);
+    $objs      =  $isHandler->getObjects($criteria);
+    $iids      = array();
+    foreach ($objs as $obj) {
+        $iids[] = $obj->get('item_id');
+    }
+    return $iids;
 }
 
 /**
  * update selected item ids
  *
  * @access private
- * @param int $uid user id
+ * @param int   $uid      user id
  * @param array $item_ids selected item ids
  * @return bool false if failure
  */
-function _xoonips_editshowitem_update_item_ids( $uid, $item_ids ) {
-  $is_handler =& xoonips_getormhandler( 'xoonips', 'item_show' );
-  $criteria = new Criteria( 'uid', $uid );
-  // get current item ids
-  $objs =& $is_handler->getObjects( $criteria );
-  foreach ( $objs as $obj ) {
-    $iid = $obj->get( 'item_id' );
-    if ( ! in_array( $iid, $item_ids ) ) {
-      // delete not selected item id
-      $is_handler->delete( $obj );
-    } else {
-      // already exists
-      $item_ids = array_diff( $item_ids, array( $iid ) );
+function _xoonips_editshowitem_update_item_ids($uid, $item_ids)
+{
+    $isHandler = xoonips_getOrmHandler('xoonips', 'item_show');
+    $criteria  = new Criteria('uid', $uid);
+    // get current item ids
+    $objs =&  $isHandler->getObjects($criteria);
+    foreach ($objs as $obj) {
+        $iid = $obj->get('item_id');
+        if (!in_array($iid, $item_ids)) {
+            // delete not selected item id
+            $isHandler->delete($obj);
+        } else {
+            // already exists
+            $item_ids = array_diff($item_ids, array($iid));
+        }
     }
-  }
-  // insert non existant item ids
-  foreach ( $item_ids as $iid ) {
-    $obj =& $is_handler->create();
-    $obj->set( 'uid', $uid );
-    $obj->set( 'item_id', $iid );
-    $is_handler->insert( $obj );
-  }
-  return true;
+    // insert non existant item ids
+    foreach ($item_ids as $iid) {
+        $obj = $isHandler->create();
+        $obj->set('uid', $uid);
+        $obj->set('item_id', $iid);
+        $isHandler->insert($obj);
+    }
+    return true;
 }
 
 /**
@@ -240,29 +237,31 @@ function _xoonips_editshowitem_update_item_ids( $uid, $item_ids ) {
  * @param string $fmt format
  * @return array item type ids
  */
-function _xoonips_editshowitem_get_item_type_names( $fmt ) {
-  $it_handler =& xoonips_getormhandler( 'xoonips', 'item_type' );
-  $objs =& $it_handler->getObjectsSortByWeight();
-  $res = array();
-  foreach ( $objs as $obj ) {
-    $item_type_id = $obj->get( 'item_type_id' );
-    $res[$item_type_id] = $obj->getVar( 'display_name', $fmt );
-  }
-  return $res;
+function _xoonips_editshowitem_get_item_type_names($fmt)
+{
+    $itHandler = xoonips_getOrmHandler('xoonips', 'item_type');
+    $objs      =  $itHandler->getObjectsSortByWeight();
+    $res       = array();
+    foreach ($objs as $obj) {
+        $item_type_id       = $obj->get('item_type_id');
+        $res[$item_type_id] = $obj->getVar('display_name', $fmt);
+    }
+    return $res;
 }
 
 /**
  * count certified public items by item type
  *
  * @access private
- * @param int $item_type_id item type id
- * @param int $uid user id
+ * @param int  $item_type_id  item type id
+ * @param int  $uid           user id
  * @param bool $is_owner_only true if count own items
  * @return int number of items
  */
-function _xoonips_editshowitem_count_public_items( $item_type_id, $uid, $is_owner_only ) {
-  $objs =& _xoonips_editshowitem_get_item_objects( $item_type_id, $uid, $is_owner_only, null, null, null, null );
-  return count( $objs );
+function _xoonips_editshowitem_count_public_items($item_type_id, $uid, $is_owner_only)
+{
+    $objs =&  _xoonips_editshowitem_get_item_objects($item_type_id, $uid, $is_owner_only, null, null, null, null);
+    return count($objs);
 }
 
 /**
@@ -272,82 +271,83 @@ function _xoonips_editshowitem_count_public_items( $item_type_id, $uid, $is_owne
  * @param int $item_id item id
  * @return string html
  */
-function _xoonips_editshowitem_get_item_html( $item_id ) {
-  $htmls = itemid2ListBlock( $item_id );
-  return $htmls[$item_id];
+function _xoonips_editshowitem_get_item_html($item_id)
+{
+    $htmls = itemid2ListBlock($item_id);
+    return $htmls[$item_id];
 }
 
 /**
  * get item ids
  *
  * @access private
- * @param int $item_type_id item type id
- * @param int $uid user id
- * @param bool $is_owner_only true if count own items
- * @param string $sort sort of criteria
- *  'title', 'item_id', 'ext_id', 'last_update' or 'creation_date'
- * @param string $order order of criteria
- *  'ASC' or 'DESC'
- * @param int $start start of criteria
- * @param int $limit limit of criteria
+ * @param int    $item_type_id  item type id
+ * @param int    $uid           user id
+ * @param bool   $is_owner_only true if count own items
+ * @param string $sort          sort of criteria
+ *                              'title', 'item_id', 'ext_id', 'last_update' or 'creation_date'
+ * @param string $order         order of criteria
+ *                              'ASC' or 'DESC'
+ * @param int    $start         start of criteria
+ * @param int    $limit         limit of criteria
  * @return array item ids
  */
-function _xoonips_editshowitem_get_item_ids( $item_type_id, $uid, $is_owner_only, $sort, $order, $start, $limit ) {
-  $objs =& _xoonips_editshowitem_get_item_objects( $item_type_id, $uid, $is_owner_only, $sort, $order, $start, $limit );
-  $item_ids = array();
-  foreach ( $objs as $obj ) {
-    $item_ids[] = $obj->get( 'item_id' );
-  }
-  return $item_ids;
+function _xoonips_editshowitem_get_item_ids($item_type_id, $uid, $is_owner_only, $sort, $order, $start, $limit)
+{
+    $objs     =&  _xoonips_editshowitem_get_item_objects($item_type_id, $uid, $is_owner_only, $sort, $order, $start, $limit);
+    $item_ids = array();
+    foreach ($objs as $obj) {
+        $item_ids[] = $obj->get('item_id');
+    }
+    return $item_ids;
 }
 
 /**
  * get item objects
  *
  * @access private
- * @param int $item_type_id item type id
- * @param int $uid user id
- * @param bool $is_owner_only true if count own items
- * @param string $sort sort of criteria
- *  'title', 'item_id', 'ext_id', 'last_update' or 'creation_date'
- * @param string $order order of criteria
- *  'ASC' or 'DESC'
- * @param int $start start of criteria
- * @param int $limit limit of criteria
+ * @param int    $item_type_id  item type id
+ * @param int    $uid           user id
+ * @param bool   $is_owner_only true if count own items
+ * @param string $sort          sort of criteria
+ *                              'title', 'item_id', 'ext_id', 'last_update' or 'creation_date'
+ * @param string $order         order of criteria
+ *                              'ASC' or 'DESC'
+ * @param int    $start         start of criteria
+ * @param int    $limit         limit of criteria
  * @return array item list htmls
  */
-function &_xoonips_editshowitem_get_item_objects( $item_type_id, $uid, $is_owner_only, $sort = null, $order = null, $start = null, $limit = null ) {
-  $xil_handler =& xoonips_getormhandler( 'xoonips', 'index_item_link' );
-  $join = new XooNIpsJoinCriteria( 'xoonips_index', 'index_id', 'index_id', 'INNER', 'idx' );
-  $join->cascade( new XooNIpsJoinCriteria( 'xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'ib' ) );
-  $join->cascade( new XooNIpsJoinCriteria( 'xoonips_item_title', 'item_id', 'item_id', 'INNER', 'it' ) );
-  $criteria = new CriteriaCompo( new Criteria( 'certify_state', CERTIFIED ) );
-  $criteria->add( new Criteria( 'open_level', OL_PUBLIC, '=', 'idx' ) );
-  if ( $is_owner_only ) {
-    $criteria->add( new Criteria( 'uid', $uid, '=', 'ib' ) );
-  }
-  $criteria->add( new Criteria( 'item_type_id', $item_type_id, '=', 'ib' ) );
-  $criteria->add( new Criteria( 'title_id', 0, '=', 'it' ) );
-  if ( ! is_null( $start ) ) {
-    $def_sort = array(
-      'title' => 'it.title',
-      'item_id' => 'ib.item_id',
-      'ext_id' => 'ib.doi',
-      'last_update' => 'last_updated_date',
-      'creation_date' => 'creation_date',
-    );
-    $def_order = array(
-      'ASC' => 'ASC',
-      'DESC' => 'DESC',
-    );
-    $sort = isset( $def_sort[$sort] ) ? $def_sort[$sort] : 'it.title';
-    $order = isset( $def_order[$order] ) ? $def_order[$order] : 'ASC';
-    $criteria->setSort( $sort );
-    $criteria->setOrder( $order );
-    $criteria->setStart( $start );
-    $criteria->setLimit( $limit );
-  }
-  return $xil_handler->getObjects( $criteria, false, 'ib.item_id', true, $join );
+function &_xoonips_editshowitem_get_item_objects($item_type_id, $uid, $is_owner_only, $sort = null, $order = null, $start = null, $limit = null)
+{
+    $xilHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
+    $join       = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'idx');
+    $join->cascade(new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'ib'));
+    $join->cascade(new XooNIpsJoinCriteria('xoonips_item_title', 'item_id', 'item_id', 'INNER', 'it'));
+    $criteria = new CriteriaCompo(new Criteria('certify_state', CERTIFIED));
+    $criteria->add(new Criteria('open_level', OL_PUBLIC, '=', 'idx'));
+    if ($is_owner_only) {
+        $criteria->add(new Criteria('uid', $uid, '=', 'ib'));
+    }
+    $criteria->add(new Criteria('item_type_id', $item_type_id, '=', 'ib'));
+    $criteria->add(new Criteria('title_id', 0, '=', 'it'));
+    if (null !== $start) {
+        $def_sort  = array(
+            'title'         => 'it.title',
+            'item_id'       => 'ib.item_id',
+            'ext_id'        => 'ib.doi',
+            'last_update'   => 'last_updated_date',
+            'creation_date' => 'creation_date',
+        );
+        $def_order = array(
+            'ASC'  => 'ASC',
+            'DESC' => 'DESC',
+        );
+        $sort      = isset($def_sort[$sort]) ? $def_sort[$sort] : 'it.title';
+        $order     = isset($def_order[$order]) ? $def_order[$order] : 'ASC';
+        $criteria->setSort($sort);
+        $criteria->setOrder($order);
+        $criteria->setStart($start);
+        $criteria->setLimit($limit);
+    }
+    return $xilHandler->getObjects($criteria, false, 'ib.item_id', true, $join);
 }
-
-?>

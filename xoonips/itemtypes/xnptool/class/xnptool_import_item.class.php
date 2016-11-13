@@ -24,39 +24,58 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-include_once dirname(dirname(__DIR__))
-    . '/xoonips/class/xoonips_import_item.class.php';
+include_once dirname(dirname(__DIR__)) . '/xoonips/class/xoonips_import_item.class.php';
 
-class XNPToolImportItem extends XooNIpsImportItem {
-    var $_has_tool_data = false;
-    var $_has_preview = false;
+/**
+ * Class XNPToolImportItem
+ */
+class XNPToolImportItem extends XooNIpsImportItem
+{
+    public $_has_tool_data = false;
+    public $_has_preview   = false;
 
-    function XNPToolImportItem() {
-        $handler = &xoonips_getormcompohandler('xnptool', 'item');
-        $this->_item = &$handler->create();
+    /**
+     * XNPToolImportItem constructor.
+     */
+    public function __construct()
+    {
+        $handler     = xoonips_getOrmCompoHandler('xnptool', 'item');
+        $this->_item = $handler->create();
     }
 
-    function setHasToolData() {
+    public function setHasToolData()
+    {
         $this->_has_tool_data = true;
     }
 
-    function unsetHasToolData() {
+    public function unsetHasToolData()
+    {
         $this->_has_tool_data = false;
     }
 
-    function hasToolData() {
+    /**
+     * @return bool
+     */
+    public function hasToolData()
+    {
         return $this->_has_tool_data;
     }
 
-    function setHasPreview() {
+    public function setHasPreview()
+    {
         $this->_has_preview = true;
     }
 
-    function unsetHasPreview() {
+    public function unsetHasPreview()
+    {
         $this->_has_preview = false;
     }
 
-    function hasPreview() {
+    /**
+     * @return bool
+     */
+    public function hasPreview()
+    {
         return $this->_has_preview;
     }
 
@@ -64,9 +83,10 @@ class XNPToolImportItem extends XooNIpsImportItem {
      * get total file size(bytes) of this item
      * @return integer file size in bytes.
      */
-    function getTotalFileSize() {
-        $size = 0;
-        $mainfile = &$this->getVar('tool_data');
+    public function getTotalFileSize()
+    {
+        $size     = 0;
+        $mainfile = $this->getVar('tool_data');
         if (!$mainfile) {
             return 0;
         }
@@ -77,403 +97,393 @@ class XNPToolImportItem extends XooNIpsImportItem {
         return $size;
     }
 
-    function &getClone() {
-        $clone = &parent::getClone();
+    /**
+     * @return mixed
+     */
+    public function getClone()
+    {
+        $clone                 = parent::getClone();
         $clone->_has_tool_data = $this->_has_tool_data;
-        $clone->_has_preview = $this->_has_preview;
+        $clone->_has_preview   = $this->_has_preview;
         return $clone;
     }
 }
 
-class XNPToolImportItemHandler extends XooNIpsImportItemHandler {
+/**
+ * Class XNPToolImportItemHandler
+ */
+class XNPToolImportItemHandler extends XooNIpsImportItemHandler
+{
 
     /**
      * array of supported version of import file
      */
-    var $_import_file_version = array(
-        "1.00",
-        "1.01",
-        "1.02",
-        "1.03",
+    public $_import_file_version
+        = array(
+            '1.00',
+            '1.01',
+            '1.02',
+            '1.03',
         );
 
     /**
      * version string of detail information
      */
-    var $_detail_version = null;
+    public $_detail_version = null;
 
     /**
      * attachment file object(XooNIpsFile)
      */
-    var $_tool_data = null;
+    public $_tool_data = null;
 
     /**
      * flag of attachment file parsed
      */
-    var $_tool_data_flag = false;
+    public $_tool_data_flag = false;
 
     /**
      * attachment file object(XooNIpsFile)
      */
-    var $_preview = null;
+    public $_preview = null;
 
     /**
      * flag of attachment file parsed
      */
-    var $_preview_flag = false;
+    public $_preview_flag = false;
 
     /**
      * attachment_dl_limit flag
      */
-    var $_attachment_dl_limit_flag = false;
+    public $_attachment_dl_limit_flag = false;
 
     /**
      * attachment_dl__notify_limit flag
      */
-    var $_attachment_dl_notify_limit_flag = false;
+    public $_attachment_dl_notify_limit_flag = false;
 
-    function XNPToolImportItemHandler() {
-        parent::XooNIpsImportItemHandler();
+    /**
+     * XNPToolImportItemHandler constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
     }
 
-    function create() {
+    /**
+     * @return XNPToolImportItem
+     */
+    public function create()
+    {
         return new XNPToolImportItem();
     }
 
     /**
-     * 
-     * @param
-     * @return void
+     *
+     * @param $parser
+     * @param $name
+     * @param $attribs
+     * @internal param $
      */
-    function xmlStartElementHandler($parser, $name, $attribs) {
+    public function xmlStartElementHandler($parser, $name, $attribs)
+    {
         global $xoopsDB;
         parent::xmlStartElementHandler($parser, $name, $attribs);
-        
-        switch (implode('/', $this->_tag_stack)) {
-        case "ITEM/DETAIL":
-            //
-            // validate version and set it to 'version' variable
-            //
-            if (!empty($attribs['VERSION'])) {
-                if (in_array($attribs['VERSION'],
-                             $this->_import_file_version)) {
-                    $this->_detail_version = $attribs['VERSION'];
-                } else {
-                    $this->_import_item->setErrors(
-                        E_XOONIPS_INVALID_VALUE,
-                        "unsupported version(" . $attribs['VERSION'] . ") "
-                        . $this->_get_parser_error_at());
-                }
-            } else {
-                $this->_detail_version = '1.00';
-            }
-            break;
 
-        case "ITEM/DETAIL/FILE":
-            $this->_file_type_attribute = $attribs['FILE_TYPE_NAME'];
-            
-            $file_type_handler = &xoonips_getormhandler('xoonips',
-                                                        'file_type');
-            $file_handler = &xoonips_getormhandler('xoonips', 'file');
-            $criteria = new Criteria('name',
-                                     addslashes($attribs['FILE_TYPE_NAME']));
-            $file_type = &$file_type_handler->getObjects($criteria);
-            if (count($file_type) == 0) {
-                $this->_import_item->setErrors(
-                    E_XOONIPS_ATTR_NOT_FOUND,
-                    "file_type_id is not found:"
-                    . $attribs['FILE_TYPE_NAME']
-                    . $this->_get_parser_error_at());
+        switch (implode('/', $this->_tag_stack)) {
+            case 'ITEM/DETAIL':
+                //
+                // validate version and set it to 'version' variable
+                //
+                if (!empty($attribs['VERSION'])) {
+                    if (in_array($attribs['VERSION'], $this->_import_file_version)) {
+                        $this->_detail_version = $attribs['VERSION'];
+                    } else {
+                        $this->_import_item->setErrors(E_XOONIPS_INVALID_VALUE,
+                                                       'unsupported version(' . $attribs['VERSION'] . ') ' . $this->_get_parser_error_at());
+                    }
+                } else {
+                    $this->_detail_version = '1.00';
+                }
                 break;
-            }
-            
-            $unicode =& xoonips_getutility( 'unicode' );
-            if ($this->_file_type_attribute == 'tool_data') {
-                if ($this->_tool_data_flag) {
-                    $this->_import_item->setErrors(
-                        E_XOONIPS_ATTACHMENT_HAS_REDUNDANT,
-                        "multiple $name attachments is not allowed" 
-                        . $this->_get_parser_error_at());
+
+            case 'ITEM/DETAIL/FILE':
+                $this->_file_type_attribute = $attribs['FILE_TYPE_NAME'];
+
+                $file_typeHandler = xoonips_getOrmHandler('xoonips', 'file_type');
+                $fileHandler      = xoonips_getOrmHandler('xoonips', 'file');
+                $criteria         = new Criteria('name', addslashes($attribs['FILE_TYPE_NAME']));
+                $file_type        = $file_typeHandler->getObjects($criteria);
+                if (count($file_type) == 0) {
+                    $this->_import_item->setErrors(E_XOONIPS_ATTR_NOT_FOUND,
+                                                   'file_type_id is not found:' . $attribs['FILE_TYPE_NAME'] . $this->_get_parser_error_at());
                     break;
                 }
-                $this->_tool_data = &$file_handler->create();
-                $this->_tool_data->setFilepath(
-                    $this->_attachment_dir . '/' . $attribs['FILE_NAME']);
-                $this->_tool_data->set(
-                    'original_file_name', 
-                    $unicode->decode_utf8(
-                        $attribs['ORIGINAL_FILE_NAME'],
-                        xoonips_get_server_charset(), 'h'));
-                $this->_tool_data->set('mime_type', $attribs['MIME_TYPE']);
-                $this->_tool_data->set('file_size', $attribs['FILE_SIZE']);
-                $this->_tool_data->set('sess_id', session_id());
-                $this->_tool_data->set(
-                    'file_type_id', $file_type[0]->get('file_type_id'));
-            } else if ($this->_file_type_attribute == 'preview') {
-                $this->_preview = &$file_handler->create();
-                $this->_preview->setFilepath(
-                    $this->_attachment_dir . '/' . $attribs['FILE_NAME']);
-                $this->_preview->set(
-                    'original_file_name', 
-                    $unicode->decode_utf8(
-                        $attribs['ORIGINAL_FILE_NAME'],
-                        xoonips_get_server_charset(), 'h'));
-                $this->_preview->set('mime_type', $attribs['MIME_TYPE']);
-                $this->_preview->set('file_size', $attribs['FILE_SIZE']);
-                $this->_preview->set('sess_id', session_id());
-                $this->_preview->set(
-                    'file_type_id', $file_type[0]->get('file_type_id'));
-            } else {
-                $this->_import_item->setErrors(
-                    E_XOONIPS_ATTR_NOT_FOUND,
-                    "file_type_id is not found:" . $attribs['FILE_TYPE_NAME']
-                    . $this->_get_parser_error_at());
-                break;
-            }
-            break;
 
-        case 'ITEM/DETAIL/FILE/CAPTION':
-        case 'ITEM/DETAIL/FILE/THUMBNAIL':
-            break;
+                $unicode = xoonips_getUtility('unicode');
+                if ($this->_file_type_attribute === 'tool_data') {
+                    if ($this->_tool_data_flag) {
+                        $this->_import_item->setErrors(E_XOONIPS_ATTACHMENT_HAS_REDUNDANT,
+                                                       "multiple $name attachments is not allowed" . $this->_get_parser_error_at());
+                        break;
+                    }
+                    $this->_tool_data = $fileHandler->create();
+                    $this->_tool_data->setFilepath($this->_attachment_dir . '/' . $attribs['FILE_NAME']);
+                    $this->_tool_data->set('original_file_name',
+                                           $unicode->decode_utf8($attribs['ORIGINAL_FILE_NAME'], xoonips_get_server_charset(), 'h'));
+                    $this->_tool_data->set('mime_type', $attribs['MIME_TYPE']);
+                    $this->_tool_data->set('file_size', $attribs['FILE_SIZE']);
+                    $this->_tool_data->set('sess_id', session_id());
+                    $this->_tool_data->set('file_type_id', $file_type[0]->get('file_type_id'));
+                } elseif ($this->_file_type_attribute === 'preview') {
+                    $this->_preview = $fileHandler->create();
+                    $this->_preview->setFilepath($this->_attachment_dir . '/' . $attribs['FILE_NAME']);
+                    $this->_preview->set('original_file_name',
+                                         $unicode->decode_utf8($attribs['ORIGINAL_FILE_NAME'], xoonips_get_server_charset(), 'h'));
+                    $this->_preview->set('mime_type', $attribs['MIME_TYPE']);
+                    $this->_preview->set('file_size', $attribs['FILE_SIZE']);
+                    $this->_preview->set('sess_id', session_id());
+                    $this->_preview->set('file_type_id', $file_type[0]->get('file_type_id'));
+                } else {
+                    $this->_import_item->setErrors(E_XOONIPS_ATTR_NOT_FOUND,
+                                                   'file_type_id is not found:' . $attribs['FILE_TYPE_NAME'] . $this->_get_parser_error_at());
+                    break;
+                }
+                break;
+
+            case 'ITEM/DETAIL/FILE/CAPTION':
+            case 'ITEM/DETAIL/FILE/THUMBNAIL':
+                break;
         }
     }
 
     /**
-     * 
-     * @param
-     * @return void
+     *
+     * @param $parser
+     * @param $name
+     * @internal param $
      */
-    function xmlEndElementHandler($parser, $name) {
+    public function xmlEndElementHandler($parser, $name)
+    {
         global $xoopsDB;
-        $detail = &$this->_import_item->getVar('detail');
-        $unicode =& xoonips_getutility( 'unicode' );
-        
+        $detail  = $this->_import_item->getVar('detail');
+        $unicode = xoonips_getUtility('unicode');
+
         switch (implode('/', $this->_tag_stack)) {
-        case "ITEM/DETAIL":
-            $keys = array(
-                'tool_type',
-                'rights',
-                'readme',
-                'use_cc',
-                'cc_commercial_use',
-                'cc_modification',
+            case 'ITEM/DETAIL':
+                $keys = array(
+                    'tool_type',
+                    'rights',
+                    'readme',
+                    'use_cc',
+                    'cc_commercial_use',
+                    'cc_modification',
                 );
-            if ($this->_detail_version == '1.00') {
-            } else if ($this->_detail_version == '1.01') {
-                $keys[] = 'attachment_dl_limit';
-            } else {
-                $keys[] = 'attachment_dl_notify';
-            }
-            foreach ($keys as $key) {
-                if (is_null($detail->get($key, 'n'))) {
-                    $this->_import_item->setErrors(
-                        E_XOONIPS_TAG_NOT_FOUND,
-                        " no $key" . $this->_get_parser_error_at());
+                if ($this->_detail_version === '1.00') {
+                } elseif ($this->_detail_version === '1.01') {
+                    $keys[] = 'attachment_dl_limit';
+                } else {
+                    $keys[] = 'attachment_dl_notify';
                 }
-            }
-            // error if no developers
-            if(count($this -> _import_item -> getVar('developer'))==0){
-                $this -> _import_item -> setErrors(E_XOONIPS_TAG_NOT_FOUND, " no developer" . $this -> _get_parser_error_at( ) );
-            }
-            break;
-        case "ITEM/DETAIL/TOOL_TYPE":
-        case "ITEM/DETAIL/RIGHTS":
-        case "ITEM/DETAIL/README":
-        case "ITEM/DETAIL/USE_CC":
-        case "ITEM/DETAIL/CC_MODIFICATION":
-        case "ITEM/DETAIL/CC_COMMERCIAL_USE":
-            $detail->set(strtolower(end($this->_tag_stack)),
-                         $unicode->decode_utf8($this->_cdata,
-                                               xoonips_get_server_charset(),
-                                               'h'),
-                         true);
-            break;
-        case "ITEM/DETAIL/DEVELOPERS/DEVELOPER":
-            if( $this -> _detail_version != '1.03' ){
+                foreach ($keys as $key) {
+                    if (null === $detail->get($key, 'n')) {
+                        $this->_import_item->setErrors(E_XOONIPS_TAG_NOT_FOUND, " no $key" . $this->_get_parser_error_at());
+                    }
+                }
+                // error if no developers
+                if (count($this->_import_item->getVar('developer')) == 0) {
+                    $this->_import_item->setErrors(E_XOONIPS_TAG_NOT_FOUND, ' no developer' . $this->_get_parser_error_at());
+                }
                 break;
-            }
-            $developers =& $this -> _import_item ->getVar('developer');
-            
-            $developer_handler =& xoonips_getormhandler( 'xnptool', 'developer' );
-            $developer=&$developer_handler->create();
-            
-            $developer->set('developer', $unicode->decode_utf8($this -> _cdata ,
-                                                         xoonips_get_server_charset(),'h'));
-            $developer->set('developer_order', count($developers));
-            
-            $developers[] = $developer;
-            break;
-        case 'ITEM/DETAIL/DEVELOPER':
-            if( $this -> _detail_version != '1.00'
-                && $this -> _detail_version != '1.01'
-                && $this -> _detail_version != '1.02' ){
-                // <developer> is only for 1.00, 1.01 and 1.02
+            case 'ITEM/DETAIL/TOOL_TYPE':
+            case 'ITEM/DETAIL/RIGHTS':
+            case 'ITEM/DETAIL/README':
+            case 'ITEM/DETAIL/USE_CC':
+            case 'ITEM/DETAIL/CC_MODIFICATION':
+            case 'ITEM/DETAIL/CC_COMMERCIAL_USE':
+                $detail->set(strtolower(end($this->_tag_stack)), $unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h'), true);
                 break;
-            }
-            $developer_handler =& xoonips_getormhandler( 'xnptool', 'developer' );
-            $developers =& $this -> _import_item ->getVar('developer');
-            $developer=&$developer_handler->create();
-            $developer->set('developer', trim($unicode->decode_utf8($this -> _cdata ,
-                                                              xoonips_get_server_charset(),'h')));
-            $developer->set('developer_order', 0);
-            $developers[0] = $developer;
-            break;
-        case "ITEM/DETAIL/ATTACHMENT_DL_LIMIT":
-            if ($this->_attachment_dl_limit_flag) {
-                $this->_import_item->setErrors(
-                    E_XOONIPS_TAG_REDUNDANT,
-                    "attachment_dl_limit is redundant" 
-                    . $this->_get_parser_error_at());
-            } else if (ctype_digit($this->_cdata)) {
-                $detail->set('attachment_dl_limit', intval($this->_cdata));
-                $this->_attachment_dl_limit_flag = true;
-            } else {
-                $this->_import_item->setErrors(
-                    E_XOONIPS_INVALID_VALUE,
-                    "invalid value(" . $this->_cdata
-                    . ") of attachment_dl_limit"
-                    . $this->_get_parser_error_at());
-            }
-            break;
-
-        case "ITEM/DETAIL/ATTACHMENT_DL_NOTIFY":
-            if ($this->_attachment_dl_notify_limit_flag) {
-                $this->_import_item->setErrors(
-                    E_XOONIPS_TAG_REDUNDANT,
-                    "attachment_dl_notify is redundant"
-                    . $this->_get_parser_error_at());
-            } else if (ctype_digit($this->_cdata)) {
-                $detail->set('attachment_dl_notify', intval($this->_cdata));
-                $this->_attachment_dl_notify_limit_flag = true;
-            } else {
-                $this->_import_item->setErrors(
-                    E_XOONIPS_INVALID_VALUE,
-                    "invalid value(" . $this->_cdata
-                    . ") of attachment_dl_notify"
-                    . $this->_get_parser_error_at());
-            }
-            break;
-
-        case "ITEM/DETAIL/FILE":
-            $file_handler = &xoonips_getormhandler('xoonips', 'file');
-            if ($this->_file_type_attribute == 'tool_data') {
-                $this->_tool_data_flag = true;
-                if (!$file_handler->insert($this->_tool_data)) {
-                    $this->_import_item->setErrors(
-                        E_XOONIPS_DB_QUERY,
-                        "can't insert attachment file:"
-                        . $this->_tool_data->get('original_file_name') 
-                        . $this->_get_parser_error_at());
+            case 'ITEM/DETAIL/DEVELOPERS/DEVELOPER':
+                if ($this->_detail_version !== '1.03') {
+                    break;
                 }
-                $this->_tool_data = $file_handler->get(
-                    $this->_tool_data->get('file_id'));
-                $this->_import_item->setVar('tool_data', $this->_tool_data);
-                $this->_import_item->setHasToolData();
-                $this->_file_type_attribute = null;
-            } else if ($this->_file_type_attribute == 'preview') {
-                $this->_preview_flag = true;
-                if (!$file_handler->insert($this->_preview)) {
-                    $this->_import_item->setErrors(
-                        E_XOONIPS_DB_QUERY,
-                        "can't insert attachment file:"
-                        . $this->_preview->get('original_file_name')
-                        . $this->_get_parser_error_at());
+                $developers = $this->_import_item->getVar('developer');
+
+                $developerHandler = xoonips_getOrmHandler('xnptool', 'developer');
+                $developer        = $developerHandler->create();
+
+                $developer->set('developer', $unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h'));
+                $developer->set('developer_order', count($developers));
+
+                $developers[] = $developer;
+                break;
+            case 'ITEM/DETAIL/DEVELOPER':
+                if ($this->_detail_version !== '1.00'
+                    && $this->_detail_version !== '1.01'
+                    && $this->_detail_version !== '1.02'
+                ) {
+                    // <developer> is only for 1.00, 1.01 and 1.02
+                    break;
                 }
-                $this->_preview
-                    = $file_handler->get($this->_preview->get('file_id'));
-                $previews = &$this->_import_item->getVar('preview');
-                $previews[] = $this->_preview;
-                $this->_import_item->setHasPreview();
-                $this->_file_type_attribute = null;
-            } else {
-                die('unknown file type:' . $this->_file_type_attribute);
-            }
-            break;
+                $developerHandler = xoonips_getOrmHandler('xnptool', 'developer');
+                $developers       = $this->_import_item->getVar('developer');
+                $developer        = $developerHandler->create();
+                $developer->set('developer', trim($unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h')));
+                $developer->set('developer_order', 0);
+                $developers[0] = $developer;
+                break;
+            case 'ITEM/DETAIL/ATTACHMENT_DL_LIMIT':
+                if ($this->_attachment_dl_limit_flag) {
+                    $this->_import_item->setErrors(E_XOONIPS_TAG_REDUNDANT, 'attachment_dl_limit is redundant' . $this->_get_parser_error_at());
+                } elseif (ctype_digit($this->_cdata)) {
+                    $detail->set('attachment_dl_limit', (int)$this->_cdata);
+                    $this->_attachment_dl_limit_flag = true;
+                } else {
+                    $this->_import_item->setErrors(E_XOONIPS_INVALID_VALUE,
+                                                   'invalid value(' . $this->_cdata . ') of attachment_dl_limit' . $this->_get_parser_error_at());
+                }
+                break;
 
-        case 'ITEM/DETAIL/FILE/CAPTION':
-            if ($this->_file_type_attribute == 'tool_data') {
-                $this->_tool_data->set(
-                    'caption',
-                    $unicode->decode_utf8(
-                        $this->_cdata, xoonips_get_server_charset(), 'h'));
-            } else if ($this->_file_type_attribute == 'preview') {
-                $this->_preview->set(
-                    'caption',
-                    $unicode->decode_utf8(
-                        $this->_cdata, xoonips_get_server_charset(), 'h'));
-            }
-            break;
+            case 'ITEM/DETAIL/ATTACHMENT_DL_NOTIFY':
+                if ($this->_attachment_dl_notify_limit_flag) {
+                    $this->_import_item->setErrors(E_XOONIPS_TAG_REDUNDANT, 'attachment_dl_notify is redundant' . $this->_get_parser_error_at());
+                } elseif (ctype_digit($this->_cdata)) {
+                    $detail->set('attachment_dl_notify', (int)$this->_cdata);
+                    $this->_attachment_dl_notify_limit_flag = true;
+                } else {
+                    $this->_import_item->setErrors(E_XOONIPS_INVALID_VALUE,
+                                                   'invalid value(' . $this->_cdata . ') of attachment_dl_notify' . $this->_get_parser_error_at());
+                }
+                break;
 
-            break;
+            case 'ITEM/DETAIL/FILE':
+                $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
+                if ($this->_file_type_attribute === 'tool_data') {
+                    $this->_tool_data_flag = true;
+                    if (!$fileHandler->insert($this->_tool_data)) {
+                        $this->_import_item->setErrors(E_XOONIPS_DB_QUERY,
+                                                       "can't insert attachment file:" . $this->_tool_data->get('original_file_name')
+                                                       . $this->_get_parser_error_at());
+                    }
+                    $this->_tool_data = $fileHandler->get($this->_tool_data->get('file_id'));
+                    $this->_import_item->setVar('tool_data', $this->_tool_data);
+                    $this->_import_item->setHasToolData();
+                    $this->_file_type_attribute = null;
+                } elseif ($this->_file_type_attribute === 'preview') {
+                    $this->_preview_flag = true;
+                    if (!$fileHandler->insert($this->_preview)) {
+                        $this->_import_item->setErrors(E_XOONIPS_DB_QUERY,
+                                                       "can't insert attachment file:" . $this->_preview->get('original_file_name')
+                                                       . $this->_get_parser_error_at());
+                    }
+                    $this->_preview
+                                = $fileHandler->get($this->_preview->get('file_id'));
+                    $previews   = $this->_import_item->getVar('preview');
+                    $previews[] = $this->_preview;
+                    $this->_import_item->setHasPreview();
+                    $this->_file_type_attribute = null;
+                } else {
+                    die('unknown file type:' . $this->_file_type_attribute);
+                }
+                break;
 
-        case 'ITEM/DETAIL/FILE/THUMBNAIL':
-            if ($this->_file_type_attribute == 'tool_data') {
-                $this->_tool_data->set(
-                    'thumbnail_file', base64_decode($this->_cdata));
-            } else if ($this->_file_type_attribute == 'preview') {
-                $this->_preview->set(
-                    'thumbnail_file', base64_decode($this->_cdata));
-            }
-            break;
+            case 'ITEM/DETAIL/FILE/CAPTION':
+                if ($this->_file_type_attribute === 'tool_data') {
+                    $this->_tool_data->set('caption', $unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h'));
+                } elseif ($this->_file_type_attribute === 'preview') {
+                    $this->_preview->set('caption', $unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h'));
+                }
+                break;
+
+                break;
+
+            case 'ITEM/DETAIL/FILE/THUMBNAIL':
+                if ($this->_file_type_attribute === 'tool_data') {
+                    $this->_tool_data->set('thumbnail_file', base64_decode($this->_cdata));
+                } elseif ($this->_file_type_attribute === 'preview') {
+                    $this->_preview->set('thumbnail_file', base64_decode($this->_cdata));
+                }
+                break;
         }
-        
+
         parent::xmlEndElementHandler($parser, $name);
     }
 
     /**
-     * 
+     *
      * Update item_id and sess_id of xoonips_file.
-     * 
-     * @param $item XooNIpsImportItem that is imported.
+     *
+     * @param $item         XooNIpsImportItem that is imported.
      * @param $import_items array of all of XooNIpsImportItems
      */
-    function onImportFinished(&$item, &$import_items) {
-        if ('xnptoolimportitem' != strtolower(get_class($item))) {
+    public function onImportFinished($item, $import_items)
+    {
+        if ('xnptoolimportitem' !== strtolower(get_class($item))) {
             return;
         }
-        
+
         $this->_set_file_delete_flag($item);
-        
+
         if ($item->hasToolData()) {
-            $tool_data = &$item->getVar('tool_data');
+            $tool_data = $item->getVar('tool_data');
             $this->_fix_item_id_of_file($item, $tool_data);
             $this->_create_text_search_index($tool_data);
         }
-        
+
         // nothing to do if no previews
-        $previews = &$item->getVar('preview');
+        $previews = $item->getVar('preview');
         foreach (array_keys($previews) as $key) {
             if ($previews[$key]->get('file_id') > 0) {
                 $this->_fix_item_id_of_file($item, $previews[$key]);
                 $this->_create_text_search_index($previews[$key]);
             }
         }
-        
+
         parent::onImportFinished($item, $import_items);
     }
 
-    function insert(&$item) {
-        $handler = &xoonips_getormcompohandler('xnptool', 'item');
+    /**
+     * @param $item
+     * @return bool
+     */
+    public function insert($item)
+    {
+        $handler = xoonips_getOrmCompoHandler('xnptool', 'item');
         return $handler->insert($item);
     }
 
-    function setNew(&$item) {
-        $handler = &xoonips_getormcompohandler('xnptool', 'item');
+    /**
+     * @param $item
+     */
+    public function setNew($item)
+    {
+        $handler = xoonips_getOrmCompoHandler('xnptool', 'item');
         return $handler->setNew($item);
     }
 
-    function unsetNew(&$item) {
-        $handler = &xoonips_getormcompohandler('xnptool', 'item');
+    /**
+     * @param $item
+     */
+    public function unsetNew($item)
+    {
+        $handler = xoonips_getOrmCompoHandler('xnptool', 'item');
         return $handler->unsetNew($item);
     }
 
-    function setDirty(&$item) {
-        $handler = &xoonips_getormcompohandler('xnptool', 'item');
+    /**
+     * @param $item
+     */
+    public function setDirty($item)
+    {
+        $handler = xoonips_getOrmCompoHandler('xnptool', 'item');
         return $handler->setDirty($item);
     }
 
-    function unsetDirty(&$item) {
-        $handler = &xoonips_getormcompohandler('xnptool', 'item');
+    /**
+     * @param $item
+     */
+    public function unsetDirty($item)
+    {
+        $handler = xoonips_getOrmCompoHandler('xnptool', 'item');
         return $handler->unsetDirty($item);
     }
 
@@ -482,57 +492,53 @@ class XNPToolImportItemHandler extends XooNIpsImportItemHandler {
      * @param $import_item reference of XooNIpsImportItem object
      * @return string import log text
      */
-    function getImportLog($import_item) {
-        $text = parent::getImportLog($import_item);
-        $detail = &$import_item->getVar('detail');
-        
-        $text .= "\ndetail.tool_type " . $detail->get("tool_type");
-        foreach( $import_item -> getVar( 'developer' ) as $developer ){
-            $text .= "\ndetail.developer ". $developer->get('developer');
+    public function getImportLog($import_item)
+    {
+        $text   = parent::getImportLog($import_item);
+        $detail = $import_item->getVar('detail');
+
+        $text .= "\ndetail.tool_type " . $detail->get('tool_type');
+        foreach ($import_item->getVar('developer') as $developer) {
+            $text .= "\ndetail.developer " . $developer->get('developer');
         }
-        $text .= "\ndetail.rights "
-            . mb_ereg_replace(
-                '\n', '\n', mb_ereg_replace(
-                    '\\\\', '\\\\', $detail->get('rights', 'n')));
-        $text .= "\ndetail.readme "
-            . mb_ereg_replace(
-                '\n', '\n', mb_ereg_replace(
-                    '\\\\', '\\\\', $detail->get('readme', 'n')));
-        $text .= "\ndetail.use_cc " . $detail->get("use_cc");
-        $text .= "\ndetail.cc_commercial_use "
-            . $detail->get("cc_commercial_use");
-        $text .= "\ndetail.cc_modification " . $detail->get("cc_modification");
-        $text .= "\ndetail.attachment_dl_limit "
-            . $detail->get("attachment_dl_limit");
-        $text .= "\ndetail.attachment_dl_notify "
-            . $detail->get("attachment_dl_notify");
-        
+        $text .= "\ndetail.rights " . mb_ereg_replace('\n', '\n', mb_ereg_replace('\\\\', '\\\\', $detail->get('rights', 'n')));
+        $text .= "\ndetail.readme " . mb_ereg_replace('\n', '\n', mb_ereg_replace('\\\\', '\\\\', $detail->get('readme', 'n')));
+        $text .= "\ndetail.use_cc " . $detail->get('use_cc');
+        $text .= "\ndetail.cc_commercial_use " . $detail->get('cc_commercial_use');
+        $text .= "\ndetail.cc_modification " . $detail->get('cc_modification');
+        $text .= "\ndetail.attachment_dl_limit " . $detail->get('attachment_dl_limit');
+        $text .= "\ndetail.attachment_dl_notify " . $detail->get('attachment_dl_notify');
+
         return $text;
     }
 
-    function import(&$item) {
+    /**
+     * @param reference $item
+     */
+    public function import($item)
+    {
         if ($item->getUpdateFlag()) {
-            $detail = &$item->getVar('detail');
+            $detail = $item->getVar('detail');
             $detail->unsetNew();
             $detail->setDirty();
-            
+
             //copy attachment file
-            $tool_data = &$item->getVar('tool_data');
+            $tool_data = $item->getVar('tool_data');
             if ($item->hasToolData()) {
-                $file_handler = &xoonips_getormhandler('xoonips', 'file');
-                $clonefile = &$file_handler->fileClone($tool_data);
+                $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
+                $clonefile   = $fileHandler->fileClone($tool_data);
                 $clonefile->setDirty();
                 $item->setVar('tool_data', $clonefile);
-                
-                $tool_data = &$item->getVar('tool_data');
+
+                $tool_data = $item->getVar('tool_data');
             }
             if ($item->hasPreview()) {
-                $file_handler = &xoonips_getormhandler('xoonips', 'file');
-                $previews = array();
+                $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
+                $previews    = array();
                 foreach ($item->getVar('preview') as $preview) {
-                    $clonefile = &$file_handler->fileClone($preview);
+                    $clonefile = $fileHandler->fileClone($preview);
                     $clonefile->setDirty();
-                    $previews[] = &$preview;
+                    $previews[] = $preview;
                 }
                 $item->setVar('preview', $previews);
             }
@@ -540,5 +546,3 @@ class XNPToolImportItemHandler extends XooNIpsImportItemHandler {
         parent::import($item);
     }
 }
-
-?>

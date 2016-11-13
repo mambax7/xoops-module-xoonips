@@ -24,10 +24,9 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-define("_MI_XNPBINDER_NAME","XooNIps Binder Item Type Module");
-define("_MI_XNPBINDER_DESC","XooNIps Binder Item Type Module");
-define( "_MI_XNPBINDER_CONTENT_EMPTY_NOTIFY", "Binder content empty" );
-define( "_MI_XNPBINDER_CONTENT_EMPTY_NOTIFYCAP", "Notify me of empty items of a public binder" );
-define( "_MI_XNPBINDER_CONTENT_EMPTY_NOTIFYDSC", "Receive notification when public binder's items are empty." );
-define( "_MI_XNPBINDER_CONTENT_EMPTY_NOTIFYSBJ", "Binder content is empty" );
-?>
+define('_MI_XNPBINDER_NAME', 'XooNIps Binder Item Type Module');
+define('_MI_XNPBINDER_DESC', 'XooNIps Binder Item Type Module');
+define('_MI_XNPBINDER_CONTENT_EMPTY_NOTIFY', 'Binder content empty');
+define('_MI_XNPBINDER_CONTENT_EMPTY_NOTIFYCAP', 'Notify me of empty items of a public binder');
+define('_MI_XNPBINDER_CONTENT_EMPTY_NOTIFYDSC', "Receive notification when public binder's items are empty.");
+define('_MI_XNPBINDER_CONTENT_EMPTY_NOTIFYSBJ', 'Binder content is empty');

@@ -44,29 +44,29 @@ class XooNIpsXmlRpcLogicUpdateFile extends XooNIpsXmlRpcLogic
      *
      * @param[in] XooNIpsXmlRpcRequest $request
      * @param[out] XooNIpsXmlRpcResponse $response result of logic(success/fault, response, error)
+     * @return bool|void
      */
-    function execute(&$request, &$response) 
+    public function execute($request, $response)
     {
-        $error = &$response->getError();
+        $error =  $response->getError();
         // load logic instance
-        $factory = &XooNIpsLogicFactory::getInstance();
-        $logic = &$factory->create($request->getMethodName());
+        $factory = XooNIpsLogicFactory::getInstance();
+        $logic   = $factory->create($request->getMethodName());
         if (!is_object($logic)) {
             $response->setResult(false);
-            $error = &$response->getError();
+            $error =  $response->getError();
             $logic = $request->getMethodName();
             $error->add(XNPERR_SERVER_ERROR, "can't create a logic of $logic");
             return false;
         }
         //
-        $params = &$request->getParams();
-        $vars = array();
-        if ( count($params) < 5 ){
+        $params =  $request->getParams();
+        $vars   = array();
+        if (count($params) < 5) {
             $response->setResult(false);
             $error->add(XNPERR_MISSING_PARAM);
             return false;
-        }
-        else if ( count($params) > 5 ){
+        } elseif (count($params) > 5) {
             $response->setResult(false);
             $error->add(XNPERR_EXTRA_PARAM);
             return false;
@@ -76,8 +76,8 @@ class XooNIpsXmlRpcLogicUpdateFile extends XooNIpsXmlRpcLogic
         $vars[0] = $params[0];
         //
         // parameter 2(itemid)
-        $unicode =& xoonips_getutility( 'unicode' );
-        $vars[1] = $unicode->decode_utf8($params[1],xoonips_get_server_charset(),'h');
+        $unicode = xoonips_getUtility('unicode');
+        $vars[1] = $unicode->decode_utf8($params[1], xoonips_get_server_charset(), 'h');
         //
         // parameter 3(id_type)
         $vars[2] = $params[2];
@@ -90,19 +90,19 @@ class XooNIpsXmlRpcLogicUpdateFile extends XooNIpsXmlRpcLogic
         // parameter 5(file structure) to XooNIpsFile object
         // using XooNIpsTransformFile
         // and write file data to temporary file
-        $factory = &XooNIpsXmlRpcTransformFactory::getInstance();
-        $trans = &$factory->create('xoonips', 'file');
+        $factory = XooNIpsXmlRpcTransformFactory::getInstance();
+        $trans   = $factory->create('xoonips', 'file');
         $fileobj = $trans->getObject($params[4]);
         if (!$fileobj) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_PARAM, 'can not get file from parameter #5');
             return false;
         }
-        $tmpfile = tempnam("/tmp", "FOO");
-        $h = fopen( $tmpfile, "wb" );
-        if ( $h ){
-            $len = fwrite( $h,  $params[4]['data'] );
-            fclose( $h );
+        $tmpfile = tempnam('/tmp', 'FOO');
+        $h       = fopen($tmpfile, 'wb');
+        if ($h) {
+            $len = fwrite($h, $params[4]['data']);
+            fclose($h);
         }
         if (!$h || $len != strlen($params[4]['data'])) {
             $response->setResult(false);
@@ -120,4 +120,3 @@ class XooNIpsXmlRpcLogicUpdateFile extends XooNIpsXmlRpcLogic
         $response->setSuccess($xoonips_response->getSuccess());
     }
 }
-?>

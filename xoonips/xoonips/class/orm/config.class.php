@@ -24,83 +24,95 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 /**
  *
  * @brief Data object of system preference
  *
- * @li getVar('name') : key
- * @li getVar('value') : value
+ * @li    getVar('name') : key
+ * @li    getVar('value') : value
  */
-class XooNIpsOrmConfig extends XooNIpsTableObject {
-  function XooNIpsOrmConfig() {
-    parent::XooNIpsTableOBject();
-    $this->initVar( 'id', XOBJ_DTYPE_INT, 0, false );
-    $this->initVar( 'name', XOBJ_DTYPE_TXTBOX, null, true, 255 );
-    $this->initVar( 'value', XOBJ_DTYPE_BINARY, null, false, 65535 );
-  }
+class XooNIpsOrmConfig extends XooNIpsTableObject
+{
+    /**
+     * XooNIpsOrmConfig constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->initVar('id', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('name', XOBJ_DTYPE_TXTBOX, null, true, 255);
+        $this->initVar('value', XOBJ_DTYPE_BINARY, null, false, 65535);
+    }
 }
 
 /**
  * @brief Handler object of system preference
  */
-class XooNIpsOrmConfigHandler extends XooNIpsTableObjectHandler {
-  function XooNIpsOrmConfigHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmConfig', 'xoonips_config', 'id', false );
-  }
-
-  /**
-   * get a configuration value
-   *
-   * @access public
-   * @param string $key configuration key
-   * @return string configuration value
-   */
-  function getValue( $key ) {
-    $config_obj =& $this->getConfig( $key );
-    if ( ! is_object( $config_obj ) ) {
-      return null;
+class XooNIpsOrmConfigHandler extends XooNIpsTableObjectHandler
+{
+    /**
+     * XooNIpsOrmConfigHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmConfig', 'xoonips_config', 'id', false);
     }
-    return $config_obj->get( 'value' );
-  }
 
-  /**
-   * set a configuration value
-   *
-   * @access public
-   * @param string $key configuration key
-   * @param string $val configuration value
-   * @param bool $force force update
-   * @return bool FALSE if failed
-   */
-  function setValue( $key, $val, $force = false ) {
-    $config_obj =& $this->getConfig( $key );
-    if ( ! is_object( $config_obj ) ) {
-      return false;
+    /**
+     * get a configuration value
+     *
+     * @access public
+     * @param string $key configuration key
+     * @return string configuration value
+     */
+    public function getValue($key)
+    {
+        $config_obj =  $this->getConfig($key);
+        if (!is_object($config_obj)) {
+            return null;
+        }
+        return $config_obj->get('value');
     }
-    $config_obj->set( 'value', $val );
-    return $this->insert( $config_obj, $force );
-  }
 
-  /**
-   * get a configuration value object
-   *
-   * @access public
-   * @param string key configuration key
-   * @return object XooNIpsOrmConfig. return false if key was not found.
-   */
-  function &getConfig( $key ) {
-    $config_objs =& $this->getObjects( new Criteria( 'name', addslashes( $key ) ) );
-    if ( ! $config_objs || count( $config_objs ) != 1 ) {
-      $result = false;
-      return $result;
+    /**
+     * set a configuration value
+     *
+     * @access public
+     * @param string $key   configuration key
+     * @param string $val   configuration value
+     * @param bool   $force force update
+     * @return bool FALSE if failed
+     */
+    public function setValue($key, $val, $force = false)
+    {
+        $config_obj =  $this->getConfig($key);
+        if (!is_object($config_obj)) {
+            return false;
+        }
+        $config_obj->set('value', $val);
+        return $this->insert($config_obj, $force);
     }
-    return $config_objs[0];
-  }
+
+    /**
+     * get a configuration value object
+     *
+     * @access public
+     * @param string $key configuration key
+     * @return bool|CriteriaElement
+     */
+    public function getConfig($key)
+    {
+        $config_objs =&  $this->getObjects(new Criteria('name', addslashes($key)));
+        if (!$config_objs || count($config_objs) != 1) {
+            $result = false;
+            return $result;
+        }
+        return $config_objs[0];
+    }
 }
-
-?>

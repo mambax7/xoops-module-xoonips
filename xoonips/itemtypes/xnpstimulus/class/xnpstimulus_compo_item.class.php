@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
 include_once XOOPS_ROOT_PATH . '/modules/xnpstimulus/include/view.php';
@@ -38,11 +38,19 @@ include_once XOOPS_ROOT_PATH . '/modules/xnpstimulus/iteminfo.php';
  */
 class XNPStimulusCompoHandler extends XooNIpsItemInfoCompoHandler
 {
-    function XNPStimulusCompoHandler(&$db) 
+    /**
+     * XNPStimulusCompoHandler constructor.
+     * @param $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsItemInfoCompoHandler($db, 'xnpstimulus');
+        parent::__construct($db, 'xnpstimulus');
     }
-    function &create() 
+
+    /**
+     * @return XNPStimulusCompo
+     */
+    public function create()
     {
         $stimulus = new XNPStimulusCompo();
         return $stimulus;
@@ -50,85 +58,91 @@ class XNPStimulusCompoHandler extends XooNIpsItemInfoCompoHandler
 
     /**
      * return template filename
-     * 
-     * @param string $type defined symbol 
-     *  XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *  or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
-     * @return template filename
+     *
+     * @param string $type defined symbol
+     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                     or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
+     * @return string|template
      */
-    function getTemplateFileName($type){
-        switch( $type ){
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
-            return 'xnpstimulus_transfer_item_detail.html';
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
-            return 'xnpstimulus_transfer_item_list.html';
-        default:
-            return '';
+    public function getTemplateFileName($type)
+    {
+        switch ($type) {
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
+                return 'xnpstimulus_transfer_item_detail.tpl';
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
+                return 'xnpstimulus_transfer_item_list.tpl';
+            default:
+                return '';
         }
     }
-    
+
     /**
      * return template variables of item
-     * 
-     * @param string $type defined symbol 
-     *  XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *  , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
-     *  , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
-     *  or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
-     * @param int $item_id
-     * @param int $uid user id who get item
+     *
+     * @param string $type defined symbol
+     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                     , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
+     *                     , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
+     *                     or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
+     * @param int    $item_id
+     * @param int    $uid  user id who get item
      * @return array of template variables
      */
-    function getTemplateVar($type, $item_id, $uid){
-        $stimulus =& $this->get( $item_id );
-        if ( ! is_object( $stimulus ) ) {
-          return array();
+    public function getTemplateVar($type, $item_id, $uid)
+    {
+        $stimulus = $this->get($item_id);
+        if (!is_object($stimulus)) {
+            return array();
         }
         $result = $this->getBasicTemplateVar($type, $stimulus, $uid);
 
-        $textutil=&xoonips_getutility('text');
-        $detail =& $stimulus -> getVar( 'detail' );
-        $result['detail']=$detail->getVarArray('s');
-        $result['detail']['stimulus_type']=$textutil->html_special_chars($this -> get_stimulus_type_label($detail -> getVar( 'stimulus_type', 's' ) ) );
-        $result['detail']['stimulus_type_value']=$detail -> getVar( 'stimulus_type', 's' );
-        if( $detail->getVar('use_cc', 'n' ) ){
-            $result['detail']['rights']=$detail->getVar('rights', 'n');
+        $textutil                                = xoonips_getUtility('text');
+        $detail                                  = $stimulus->getVar('detail');
+        $result['detail']                        = $detail->getVarArray('s');
+        $result['detail']['stimulus_type']       = $textutil->html_special_chars($this->get_stimulus_type_label($detail->getVar('stimulus_type',
+                                                                                                                                's')));
+        $result['detail']['stimulus_type_value'] = $detail->getVar('stimulus_type', 's');
+        if ($detail->getVar('use_cc', 'n')) {
+            $result['detail']['rights'] = $detail->getVar('rights', 'n');
         }
-        
-        switch( $type ){
-        case XOONIPS_TEMPLATE_TYPE_ITEM_LIST:
-            $result['developer']=array();
-            foreach( $stimulus -> getVar( 'developer' ) as $developer ){
-                $result['developer'][] = $developer->getVarArray('s');
-            }
-            return $result;
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
-        case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
-            $result['xnpstimulus_developer']
-                =xoonips_get_multiple_field_template_vars($detail->getDevelopers(),
-                                                          'xnpstimulus',
-                                                          'developer');
 
-            if( is_array( $stimulus -> getVar( 'preview' ) ) ){
-                $result['detail']['previews'] = array();
-                foreach( $stimulus -> getVar( 'preview' ) as $preview ){
-                    $result['detail']['previews'][]
-                        = $this -> getPreviewTemplateVar( $preview );
+        switch ($type) {
+            case XOONIPS_TEMPLATE_TYPE_ITEM_LIST:
+                $result['developer'] = array();
+                foreach ($stimulus->getVar('developer') as $developer) {
+                    $result['developer'][] = $developer->getVarArray('s');
                 }
-            }
+                return $result;
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
+            case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
+                $result['xnpstimulus_developer']
+                    = xoonips_get_multiple_field_template_vars($detail->getDevelopers(), 'xnpstimulus', 'developer');
 
-            $stimulus_data = $stimulus -> getVar( 'stimulus_data' );
-            if( $stimulus_data -> get( 'item_id' ) == $item_id ){
-                $result['detail']['stimulus_data'] = $this -> getAttachmentTemplateVar($stimulus -> getVar( 'stimulus_data' ) );
-            }
-            return $result;
+                if (is_array($stimulus->getVar('preview'))) {
+                    $result['detail']['previews'] = array();
+                    foreach ($stimulus->getVar('preview') as $preview) {
+                        $result['detail']['previews'][]
+                            = $this->getPreviewTemplateVar($preview);
+                    }
+                }
+
+                $stimulus_data = $stimulus->getVar('stimulus_data');
+                if ($stimulus_data->get('item_id') == $item_id) {
+                    $result['detail']['stimulus_data'] = $this->getAttachmentTemplateVar($stimulus->getVar('stimulus_data'));
+                }
+                return $result;
         }
         return $result;
     }
-    
-    function get_stimulus_type_label( $type ){
-        $keyval = xnpstimulus_get_type_array( );
+
+    /**
+     * @param $type
+     * @return mixed
+     */
+    public function get_stimulus_type_label($type)
+    {
+        $keyval = xnpstimulus_get_type_array();
         return $keyval[$type];//"TODO convert type name '{$type}' to display name";
     }
 }
@@ -140,9 +154,11 @@ class XNPStimulusCompoHandler extends XooNIpsItemInfoCompoHandler
  */
 class XNPStimulusCompo extends XooNIpsItemInfoCompo
 {
-    function XNPStimulusCompo() 
+    /**
+     * XNPStimulusCompo constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsItemInfoCompo('xnpstimulus');
+        parent::__construct('xnpstimulus');
     }
 }
-?>

@@ -30,7 +30,10 @@
  */
 class XooNIpsViewFactory
 {
-    function XooNIpsViewFactory() 
+    /**
+     * XooNIpsViewFactory constructor.
+     */
+    public function __construct()
     {
     }
 
@@ -39,39 +42,42 @@ class XooNIpsViewFactory
      *
      * @return XooNIpsViewFactory
      */
-    function &getInstance() 
+    public static function getInstance()
     {
         static $singleton = null;
-        if (!isset($singleton)) $singleton = new XooNIpsViewFactory();
+        if (!isset($singleton)) {
+            $singleton = new XooNIpsViewFactory();
+        }
         return $singleton;
     }
 
     /**
      * return XooNIpsView corresponding to $view
      *
-     * @param string $name view name
+     * @param string $name     view name
      * @param string $response XooNIpsResponse
      * @retval XooNIpsView corresponding to $name
      * @retval false unknown view
+     * @return bool|null
      */
-    function &create($name, $response) 
+    public function create($name, $response)
     {
         static $falseVar = false;
         $view = null;
         //
         $name = trim($name);
-        if (false !== strstr($name, '..')) return $falseVar;
-        $include_file = XOOPS_ROOT_PATH . "/modules/xoonips/class/view/"
-            . strtolower($name) . ".class.php";
+        if (false !== strstr($name, '..')) {
+            return $falseVar;
+        }
+        $include_file = XOOPS_ROOT_PATH . '/modules/xoonips/class/view/' . strtolower($name) . '.class.php';
         if (file_exists($include_file)) {
             include_once $include_file;
         } else {
             return $falseVar;
         }
-        
+
         //
-        $class = 'XooNIpsView'
-            . str_replace( " ", "", ucwords( str_replace( "_", " ", $name ) ) );
+        $class = 'XooNIpsView' . str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
         if (class_exists($class)) {
             $view = new $class($response);
         }
@@ -80,8 +86,10 @@ class XooNIpsViewFactory
             trigger_error('View does not exist. Name: ' . $name, E_USER_ERROR);
         }
         // return result
-        if (isset($view)) return $view;
-        else return $falseVar;
+        if (isset($view)) {
+            return $view;
+        } else {
+            return $falseVar;
+        }
     }
 }
-?>

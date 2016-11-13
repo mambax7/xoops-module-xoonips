@@ -24,24 +24,29 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 /**
  * @brief data object of Positions
  *
- * @li getVar('posi_id') :
- * @li getVar('posi_title') :
- * @li getVar('posi_order') :
+ * @li    getVar('posi_id') :
+ * @li    getVar('posi_title') :
+ * @li    getVar('posi_order') :
  *
  */
-class XooNIpsOrmPositions extends XooNIpsTableObject {
-  function XooNIpsOrmPositions() {
-    $this->initVar( 'posi_id', XOBJ_DTYPE_INT, 0, true );
-    $this->initVar( 'posi_title', XOBJ_DTYPE_TXTBOX, '', true, 50 );
-    $this->initVar( 'posi_order', XOBJ_DTYPE_INT, 0, true );
-  }
+class XooNIpsOrmPositions extends XooNIpsTableObject
+{
+    /**
+     * XooNIpsOrmPositions constructor.
+     */
+    public function __construct()
+    {
+        $this->initVar('posi_id', XOBJ_DTYPE_INT, 0, true);
+        $this->initVar('posi_title', XOBJ_DTYPE_TXTBOX, '', true, 50);
+        $this->initVar('posi_order', XOBJ_DTYPE_INT, 0, true);
+    }
 }
 
 /**
@@ -49,44 +54,58 @@ class XooNIpsOrmPositions extends XooNIpsTableObject {
  *
  *
  */
-class XooNIpsOrmPositionsHandler extends XooNIpsTableObjectHandler {
-  function XooNIpsOrmPositionsHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmPositions', 'xoonips_positions', 'posi_id', true );
-  }
-
-  function getPositionList( $fmt ) {
-    $criteria = new CriteriaElement();
-    $criteria->setSort( 'posi_order' );
-    $objs =& $this->getObjects( $criteria );
-    $positionlist = array();
-    foreach ( $objs as $obj ) {
-      $posi_id = $obj->getVar( 'posi_id', 'n' );
-      $positionlist[$posi_id] = $obj->getVarArray( $fmt );
-    }
-    return $positionlist;
-  }
-
-  function deleteById( $id ) {
-    // check existing id
-    $posi_criteria = new Criteria( 'posi_id', $id );
-    if ( $this->getCount( $posi_criteria ) == 0 ) {
-      return false;
+class XooNIpsOrmPositionsHandler extends XooNIpsTableObjectHandler
+{
+    /**
+     * XooNIpsOrmPositionsHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmPositions', 'xoonips_positions', 'posi_id', true);
     }
 
-    // if deleting position has used in existing users,
-    // change position to neutral.
-    $xusers_handler =& xoonips_getormhandler( 'xoonips', 'users' );
-    $xusers_criteria = new Criteria( 'posi', $id );
-    $xusers_objs =& $xusers_handler->getObjects( $xusers_criteria );
-    foreach ( $xusers_objs as $xusers_obj ) {
-      $xusers_obj->set( 'posi', 0 );
-      $xusers_handler->insert( $xusers_obj );
+    /**
+     * @param $fmt
+     * @return array
+     */
+    public function getPositionList($fmt)
+    {
+        $criteria = new CriteriaElement();
+        $criteria->setSort('posi_order');
+        $objs         =&  $this->getObjects($criteria);
+        $positionlist = array();
+        foreach ($objs as $obj) {
+            $posi_id                = $obj->getVar('posi_id', 'n');
+            $positionlist[$posi_id] = $obj->getVarArray($fmt);
+        }
+        return $positionlist;
     }
 
-    // delete
-    return $this->deleteAll( $posi_criteria );
-  }
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function deleteById($id)
+    {
+        // check existing id
+        $posi_criteria = new Criteria('posi_id', $id);
+        if ($this->getCount($posi_criteria) == 0) {
+            return false;
+        }
+
+        // if deleting position has used in existing users,
+        // change position to neutral.
+        $xusersHandler   = xoonips_getOrmHandler('xoonips', 'users');
+        $xusers_criteria = new Criteria('posi', $id);
+        $xusers_objs     = $xusersHandler->getObjects($xusers_criteria);
+        foreach ($xusers_objs as $xusers_obj) {
+            $xusers_obj->set('posi', 0);
+            $xusersHandler->insert($xusers_obj);
+        }
+
+        // delete
+        return $this->deleteAll($posi_criteria);
+    }
 }
-
-?>

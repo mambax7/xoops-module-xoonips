@@ -43,22 +43,27 @@ class XooNIpsXmlRpcViewGetChildIndexes extends XooNIpsXmlRpcViewElement
      *
      * @return XoopsXmlRpcTag
      */
-    function render() 
+    public function render()
     {
-        $unicode =& xoonips_getutility( 'unicode' );
-        $resp = new XoopsXmlRpcArray();
-        
-        foreach($this->response->getSuccess() as $index) {
+        $unicode = xoonips_getUtility('unicode');
+        $resp    = new XoopsXmlRpcArray();
+
+        foreach ($this->response->getSuccess() as $index) {
             $struct = new XoopsXmlRpcStruct();
             $struct->add('id', new XoopsXmlRpcInt($index['id']));
-            $struct->add('name', new XoopsXmlRpcString(htmlspecialchars($unicode->encode_utf8($index['name'],xoonips_get_server_charset()),ENT_QUOTES,'UTF-8')));
+            $struct->add('name',
+                         new XoopsXmlRpcString(htmlspecialchars($unicode->encode_utf8($index['name'], xoonips_get_server_charset()), ENT_QUOTES,
+                                                                'UTF-8')));
             $struct->add('parent', new XoopsXmlRpcInt($index['parent']));
-            $struct->add('open_level', new XoopsXmlRpcString(htmlspecialchars($unicode->encode_utf8($index['open_level'],xoonips_get_server_charset()),ENT_QUOTES,'UTF-8')));
-            $struct->add('path', new XoopsXmlRpcString(htmlspecialchars($unicode->encode_utf8($index['path'],xoonips_get_server_charset()),ENT_QUOTES,'UTF-8')));
+            $struct->add('open_level',
+                         new XoopsXmlRpcString(htmlspecialchars($unicode->encode_utf8($index['open_level'], xoonips_get_server_charset()), ENT_QUOTES,
+                                                                'UTF-8')));
+            $struct->add('path',
+                         new XoopsXmlRpcString(htmlspecialchars($unicode->encode_utf8($index['path'], xoonips_get_server_charset()), ENT_QUOTES,
+                                                                'UTF-8')));
             $resp->add($struct);
             unset($struct);
         }
         return $resp;
     }
 }
-?>

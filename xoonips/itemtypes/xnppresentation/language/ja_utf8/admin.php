@@ -28,6 +28,4 @@
 // _AM_<MODULENAME>_<STRINGNAME>
 
 // main title
-define( '_AM_XNPPRESENTATION_TITLE', 'XooNIps Presentation アイテムタイプ設定' );
-
-?>
+define('_AM_XNPPRESENTATION_TITLE', 'XooNIps Presentation アイテムタイプ設定');

@@ -43,16 +43,23 @@ class XooNIpsLogicGetChildIndexes extends XooNIpsLogic
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response->success array of child indexes(XooNIpsIndexCompo[], empty if no child)
+     * @return bool
      */
-    function execute(&$vars, &$response) 
+    public function execute($vars, $response)
     {
         // parameter check
-        $error = &$response->getError();
-        if (count($vars) > 2) $error->add(XNPERR_EXTRA_PARAM);
-        else if (count($vars) < 2) $error->add(XNPERR_MISSING_PARAM);
-        else {
-            if (isset($vars[0]) && strlen($vars[0]) > 32) $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
-            if (!is_int($vars[1]) && !ctype_digit($vars[1])) $error->add(XNPERR_INVALID_PARAM, 'not integer parameter 2 ');
+        $error =  $response->getError();
+        if (count($vars) > 2) {
+            $error->add(XNPERR_EXTRA_PARAM);
+        } elseif (count($vars) < 2) {
+            $error->add(XNPERR_MISSING_PARAM);
+        } else {
+            if (isset($vars[0]) && strlen($vars[0]) > 32) {
+                $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
+            }
+            if (!is_int($vars[1]) && !ctype_digit($vars[1])) {
+                $error->add(XNPERR_INVALID_PARAM, 'not integer parameter 2 ');
+            }
         }
         if ($error->get(0)) {
             // return if parameter error
@@ -60,7 +67,7 @@ class XooNIpsLogicGetChildIndexes extends XooNIpsLogic
             return;
         } else {
             $sessionid = $vars[0];
-            $index_id = $vars[1];
+            $index_id  = $vars[1];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
@@ -69,7 +76,7 @@ class XooNIpsLogicGetChildIndexes extends XooNIpsLogic
             return false;
         }
         //
-        $sessionid = $vars[0];
+        $sessionid       = $vars[0];
         $parent_index_id = $vars[1];
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
@@ -78,28 +85,28 @@ class XooNIpsLogicGetChildIndexes extends XooNIpsLogic
             return false;
         }
         // not found?
-        $index_handler = &xoonips_getormhandler('xoonips', 'index');
-        $index = $index_handler->get($index_id);
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
+        $index        = $indexHandler->get($index_id);
         if ($index == false) {
             $response->setResult(false);
             $response->error->add(XNPERR_NOT_FOUND);
             return false;
         }
         // check permission
-        if (!$index_handler->getPerm($parent_index_id, $uid, 'read')) {
+        if (!$indexHandler->getPerm($parent_index_id, $uid, 'read')) {
             $response->setResult(false);
-            $error->add(XNPERR_ACCESS_FORBIDDEN, "no permission");
+            $error->add(XNPERR_ACCESS_FORBIDDEN, 'no permission');
             return false;
         }
         // get child index_id from index_id
-        $join=new XooNIpsJoinCriteria('xoonips_index', 'item_id', 'index_id');
+        $join     = new XooNIpsJoinCriteria('xoonips_index', 'item_id', 'index_id');
         $criteria = new Criteria('parent_index_id', $parent_index_id);
         $criteria->setSort('sort_number');
-        $index_compo_handler = &xoonips_getormcompohandler('xoonips', 'index');
-        $indexes =& $index_compo_handler->getObjects($criteria, false, '', false, $join);
+        $index_compoHandler = xoonips_getOrmCompoHandler('xoonips', 'index');
+        $indexes            =  $index_compoHandler->getObjects($criteria, false, '', false, $join);
         if (false === $indexes) {
             $response->setResult(false);
-            $error->add(XNPERR_SERVER_ERROR, "cannot get child indexes");
+            $error->add(XNPERR_SERVER_ERROR, 'cannot get child indexes');
             return false;
         }
         $response->setSuccess($indexes);
@@ -107,4 +114,3 @@ class XooNIpsLogicGetChildIndexes extends XooNIpsLogic
         return true;
     }
 }
-?>

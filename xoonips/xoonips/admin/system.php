@@ -24,70 +24,68 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-require_once( '../../../include/cp_header.php' );
+require_once __DIR__ . '/../../../include/cp_header.php';
 
 // load common file.
-include 'actions/common.inc.php';
+include __DIR__ . '/actions/common.inc.php';
 
 // page definition
-$pages = array();
-$pages['main'] = array();
-$pages['basic'] = array(
-  'post' => array(
-    'update',
-  ),
+$pages           = array();
+$pages['main']   = array();
+$pages['basic']  = array(
+    'post' => array(
+        'update',
+    ),
 );
-$pages['tree'] = array(
-  'post' => array(
-    'update',
-  ),
+$pages['tree']   = array(
+    'post' => array(
+        'update',
+    ),
 );
-$pages['print'] = array(
-  'post' => array(
-    'update',
-  ),
+$pages['print']  = array(
+    'post' => array(
+        'update',
+    ),
 );
-$pages['rss'] = array(
-  'post' => array(
-    'update',
-  ),
+$pages['rss']    = array(
+    'post' => array(
+        'update',
+    ),
 );
 $pages['oaipmh'] = array(
-  'post' => array(
-    'rupdate',
-    'hupdate',
-  ),
+    'post' => array(
+        'rupdate',
+        'hupdate',
+    ),
 );
-$pages['proxy'] = array(
-  'post' => array(
-    'update',
-  ),
+$pages['proxy']  = array(
+    'post' => array(
+        'update',
+    ),
 );
 $pages['module'] = array(
-  'post' => array(
-    'update',
-  ),
+    'post' => array(
+        'update',
+    ),
 );
-$pages['xoops'] = array(
-  'post' => array(
-    'pickup',
-    'zudelete',
-    'zirescue',
-  ),
-  'get' => array(
-    'zilist',
-  ),
+$pages['xoops']  = array(
+    'post' => array(
+        'pickup',
+        'zudelete',
+        'zirescue',
+    ),
+    'get'  => array(
+        'zilist',
+    ),
 );
-$pages['check'] = array(
-  'post' => array(
-    'test',
-  ),
+$pages['check']  = array(
+    'post' => array(
+        'test',
+    ),
 );
 
 // initialize
-xoonips_admin_initialize( __FILE__, 'system', $pages );
+xoonips_admin_initialize(__FILE__, 'system', $pages);
 
 // call action file
 include $xoonips_admin['myaction_path'];
-
-?>

@@ -25,23 +25,28 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief Data object of Memo detail information
  *
- * @li getVar('') :
+ * @li    getVar('') :
  */
 class XNPMemoOrmItemDetail extends XooNIpsTableObject
 {
     // for column length check
-    var $lengths = array(
-        'memo_id' => 10,
-        'item_link' => 255
-    );
-    function XNPMemoOrmItemDetail() 
+    public $lengths
+        = array(
+            'memo_id'   => 10,
+            'item_link' => 255
+        );
+
+    /**
+     * XNPMemoOrmItemDetail constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsTableObject();
+        parent::__construct();
         $this->initVar('memo_id', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('item_link', XOBJ_DTYPE_TXTBOX, null, false, $this->lengths['item_link']);
     }
@@ -54,10 +59,13 @@ class XNPMemoOrmItemDetail extends XooNIpsTableObject
  */
 class XNPMemoOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
-    function XNPMemoOrmItemDetailHandler(&$db) 
+    /**
+     * XNPMemoOrmItemDetailHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsTableObjectHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPMemoOrmItemDetail', 'xnpmemo_item_detail', 'memo_id', false);
     }
 }
-?>

@@ -27,7 +27,7 @@
 
 /**
  *
- * @see XooNIpsApi
+ * @see   XooNIpsApi
  *
  * @brief class that has request parameters
  *
@@ -38,12 +38,12 @@ class XooNIpsXmlRpcRequest
     /**
      * request name
      */
-    var $request = null;
+    public $request = null;
 
     /**
      * @protected
      */
-    var $params = array();
+    public $params = array();
 
     /**
      *
@@ -51,19 +51,19 @@ class XooNIpsXmlRpcRequest
      * @param[in] array $params array of parameters to logic
      *
      */
-    function XooNIpsXmlRpcRequest($request, &$params) 
+    public function __construct($request, $params)
     {
         $this->request = $request;
-        $this->params = $params;
+        $this->params  =& $params;
     }
 
     /**
-     * @brief get method name
+     * @brief  get method name
      *
      * @retval string
      *
      */
-    function getMethodName() 
+    public function getMethodName()
     {
         return $this->request;
     }
@@ -72,9 +72,8 @@ class XooNIpsXmlRpcRequest
      * @brief get parameters at once.
      * @return array array of parameters
      */
-    function &getParams() 
+    public function &getParams()
     {
         return $this->params;
     }
 }
-?>

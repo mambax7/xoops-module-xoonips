@@ -35,15 +35,21 @@ include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/view/xmlrpcview.cl
  */
 class XooNIpsXmlRpcViewGetSimpleItems extends XooNIpsXmlRpcViewElement
 {
-    function XooNIpsXmlRpcViewGetSimpleItems(&$response) 
+    /**
+     * XooNIpsXmlRpcViewGetSimpleItems constructor.
+     * @param $response
+     */
+    public function __construct($response)
     {
-        parent::XooNIpsXmlRpcViewElement($response);
-        $factory = &XooNIpsXmlRpcItemViewFactory::getInstance();
-        $items = $response->getSuccess();
-        $len = count($items);
-        for ( $i = 0; $i < $len; $i++ ){
-            $view = &$factory->create('getSimpleItems', $items[$i]);
-            if ($view) $this->addView($view);
+        parent::__construct($response);
+        $factory = XooNIpsXmlRpcItemViewFactory::getInstance();
+        $items   = $response->getSuccess();
+        $len     = count($items);
+        for ($i = 0; $i < $len; $i++) {
+            $view = $factory->create('getSimpleItems', $items[$i]);
+            if ($view) {
+                $this->addView($view);
+            }
         }
     }
 
@@ -53,17 +59,18 @@ class XooNIpsXmlRpcViewGetSimpleItems extends XooNIpsXmlRpcViewElement
      *
      * @return XoopsXmlRpcTag
      */
-    function render() 
+    public function render()
     {
         $resp = new XoopsXmlRpcArray();
-        if ( $this->views ){
-            foreach($this->views as $view){
+        if ($this->views) {
+            foreach ($this->views as $view) {
                 $ret = $view->render();
-                if( $ret ) $resp -> add( $ret );
-                unset( $ret ); // because $resp->add() holds a reference to $ret, we must unbind ret for the next iteration.
+                if ($ret) {
+                    $resp->add($ret);
+                }
+                unset($ret); // because $resp->add() holds a reference to $ret, we must unbind ret for the next iteration.
             }
         }
         return $resp;
     }
 }
-?>

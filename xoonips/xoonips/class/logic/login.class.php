@@ -45,60 +45,66 @@ class XooNIpsLogicLogin extends XooNIpsLogic
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error error information
      * @param[out] $response->success session id
-     * @return false if error
+     * @return false|void
      */
-    function execute(&$vars, &$response) 
+    public function execute($vars, $response)
     {
-        $myxoopsConfig =& xoonips_get_xoops_configs( XOOPS_CONF );
+        $myxoopsConfig =  xoonips_get_xoops_configs(XOOPS_CONF);
         // parameter check
-        $error =& $response->getError();
-        if (count($vars) > 2) $error->add(XNPERR_EXTRA_PARAM);
-        if (count($vars) < 2) $error->add(XNPERR_MISSING_PARAM);
+        $error =  $response->getError();
+        if (count($vars) > 2) {
+            $error->add(XNPERR_EXTRA_PARAM);
+        }
+        if (count($vars) < 2) {
+            $error->add(XNPERR_MISSING_PARAM);
+        }
         //
-        if (isset($vars[0]) && strlen($vars[0]) > 25) $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
+        if (isset($vars[0]) && strlen($vars[0]) > 25) {
+            $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
+        }
         //
         if ($error->get(0)) {
             // return if parameter error
             $response->setResult(false);
             return;
         } else {
-            $id = $vars[0];
+            $id   = $vars[0];
             $pass = $vars[1];
         }
-        $member_handler =& xoonips_gethandler('xoonips','member');
-        $user_handler =& xoonips_getormhandler('xoonips', 'users');
-        $eventlog_handler =& xoonips_getormhandler('xoonips', 'event_log');
-        $xconfig_handler =& xoonips_getormhandler('xoonips', 'config');
-        $transaction = XooNIpsTransaction::getInstance();
+        $memberHandler   = xoonips_getHandler('xoonips', 'member');
+        $userHandler     = xoonips_getOrmHandler('xoonips', 'users');
+        $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
+        $xconfigHandler  = xoonips_getOrmHandler('xoonips', 'config');
+        $transaction     = XooNIpsTransaction::getInstance();
         $transaction->start();
         if ($id == '') {
-            $target_user = $xconfig_handler->getValue(XNP_CONFIG_PUBLIC_ITEM_TARGET_USER_KEY);
+            $target_user = $xconfigHandler->getValue(XNP_CONFIG_PUBLIC_ITEM_TARGET_USER_KEY);
             if ($pass != '' || $target_user != XNP_CONFIG_PUBLIC_ITEM_TARGET_USER_ALL) {
                 $transaction->rollback();
                 $response->error->add(XNPERR_AUTH_FAILURE);
                 $response->setResult(false);
                 return false;
             }
-            $user = false;
-            $uid = UID_GUEST;
+            $user   = false;
+            $uid    = UID_GUEST;
             $groups = array();
         } else {
-            $user =& $member_handler->loginUser($id, $pass);
+            $user = $memberHandler->loginUser($id, $pass);
             if (!$user) {
                 $transaction->rollback();
                 // insert login failure event
-                if ( ! $eventlog_handler->recordLoginFailureEvent( $id ) ) {
-                    $response->error->add(XNPERR_SERVER_ERROR, "cannot insert event");
+                if (!$eventlogHandler->recordLoginFailureEvent($id)) {
+                    $response->error->add(XNPERR_SERVER_ERROR, 'cannot insert event');
                 }
                 // return error
                 $response->error->add(XNPERR_AUTH_FAILURE);
                 $response->setResult(false);
                 return false;
             }
-            $xoonips_user = $user->getVar('xoonips_user');
-            $uid = $xoonips_user->get('uid');
-            $xoops_user_handler =& xoops_gethandler('user');
-            $xoops_user = $xoops_user_handler->get($uid);
+            $xoonips_user      = $user->getVar('xoonips_user');
+            $uid               = $xoonips_user->get('uid');
+            $xoops_userHandler = xoops_getHandler('user');
+            $xoops_user        = $xoops_userHandler->get($uid);
             if (0 == $xoops_user->getVar('level', 'n') || !$xoonips_user->get('activate')) { // not activated, not certified
                 // return error
                 $transaction->rollback();
@@ -111,7 +117,7 @@ class XooNIpsLogicLogin extends XooNIpsLogic
         if ($myxoopsConfig['closesite'] == 1) {
             $allowed = false;
             if ($user) {
-                foreach($groups as $group) {
+                foreach ($groups as $group) {
                     if (in_array($group, $myxoopsConfig['closesite_okgrp']) || XOOPS_GROUP_ADMIN == $group) {
                         $allowed = true;
                         break;
@@ -127,30 +133,30 @@ class XooNIpsLogicLogin extends XooNIpsLogic
             }
         }
         // remove expired xoonips sessions
-        $session_handler =& xoonips_getormhandler('xoonips', 'session');
-        if ( ! $session_handler->gcSession() ) {
+        $sessionHandler = xoonips_getOrmHandler('xoonips', 'session');
+        if (!$sessionHandler->gcSession()) {
             $transaction->rollback();
-            $response->error->add(XNPERR_SERVER_ERROR, "failed to gc session");
+            $response->error->add(XNPERR_SERVER_ERROR, 'failed to gc session');
             $response->setResult(false);
             return false;
         }
         // record $uid
-        $_SESSION = array();
-        $_SESSION['xoopsUserId'] = $uid;
+        $_SESSION                    = array();
+        $_SESSION['xoopsUserId']     = $uid;
         $_SESSION['xoopsUserGroups'] = $groups;
-        
+
         // set XNPSID(for old routines)
-        $_SESSION['XNPSID'] = ( $uid == UID_GUEST ) ? SID_GUEST : session_id();
-        
+        $_SESSION['XNPSID'] = ($uid == UID_GUEST) ? SID_GUEST : session_id();
+
         if ($user) {
             // update last_login
             $xoops_user->setVar('last_login', time());
-            if (!$xoops_user_handler->insert($xoops_user)) {
+            if (!$xoops_userHandler->insert($xoops_user)) {
             }
             // init xoonips_session
-            $session_handler->initSession( $uid );
+            $sessionHandler->initSession($uid);
             // insert login event
-            $eventlog_handler->recordLoginSuccessEvent( $uid );
+            $eventlogHandler->recordLoginSuccessEvent($uid);
         }
         $transaction->commit();
         $response->setSuccess(session_id());
@@ -158,4 +164,3 @@ class XooNIpsLogicLogin extends XooNIpsLogic
         return true;
     }
 }
-?>

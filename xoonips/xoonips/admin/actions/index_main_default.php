@@ -24,36 +24,34 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 // title
 $title = _AM_XOONIPS_TITLE;
 
 // load menu
-include './menu.php';
+include __DIR__ . '/../menu.php';
 $menu = array();
-foreach ( $adminmenu as $item ) {
-  $menu[] = array(
-    'label' => $item['title'],
-    'url' => $xoonips_admin['mod_url'].'/'.$item['link'],
-  );
+foreach ($adminmenu as $item) {
+    $menu[] = array(
+        'label' => $item['title'],
+        'url'   => $xoonips_admin['mod_url'] . '/' . $item['link'],
+    );
 }
 
 // templates
-require_once( '../class/base/pattemplate.class.php' );
+require_once __DIR__ . '/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir( 'templates' );
-$tmpl->readTemplatesFromFile( 'adminmenu.tmpl.html' );
+$tmpl->setBasedir('templates');
+$tmpl->readTemplatesFromFile('adminmenu.tmpl.tpl');
 
 // assign template variables
-$tmpl->addVar( 'header', 'TITLE', $title );
-$tmpl->addRows( 'menu', $menu );
+$tmpl->addVar('header', 'TITLE', $title);
+$tmpl->addRows('menu', $menu);
 
 // display
 xoops_cp_header();
-$tmpl->displayParsedTemplate( 'main' );
+$tmpl->displayParsedTemplate('main');
 xoops_cp_footer();
-
-?>

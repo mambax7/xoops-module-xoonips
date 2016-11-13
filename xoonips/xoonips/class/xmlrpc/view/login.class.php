@@ -42,10 +42,9 @@ class XooNIpsXmlRpcViewLogin extends XooNIpsXmlRpcViewElement
      *
      * @return XoopsXmlRpcTag
      */
-    function render() 
+    public function render()
     {
         $session_id = $this->response->getSuccess();
         return new XoopsXmlRpcString($session_id);
     }
 }
-?>

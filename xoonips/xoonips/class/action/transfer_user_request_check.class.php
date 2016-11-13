@@ -25,96 +25,108 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once 'transfer.class.php';
-include_once dirname( dirname( __DIR__ ) )
-    . '/include/transfer.inc.php';
+include_once __DIR__ . '/transfer.class.php';
+include_once __DIR__ . '/../../include/transfer.inc.php';
 
-class XooNIpsActionTransferUserRequestCheck extends XooNIpsActionTransfer{
-    
-    function XooNIpsActionTransferUserRequestCheck(){
-        parent::XooNIpsAction();
+/**
+ * Class XooNIpsActionTransferUserRequestCheck
+ */
+class XooNIpsActionTransferUserRequestCheck extends XooNIpsActionTransfer
+{
+    /**
+     * XooNIpsActionTransferUserRequestCheck constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
     }
-    
-    function _get_logic_name(){
+
+    /**
+     * @return null
+     */
+    public function _get_logic_name()
+    {
         return null;
     }
-    
-    function _get_view_name(){
+
+    /**
+     * @return string
+     */
+    public function _get_view_name()
+    {
         return 'transfer_user_item_confirm';
     }
-    
-    function preAction(){
+
+    public function preAction()
+    {
         global $xoopsUser;
 
         xoonips_deny_guest_access();
         xoonips_allow_post_method();
-        
-        xoonips_validate_request(
-            $this->is_valid_transferee_user(
-                $this->_formdata->getValue( 'post', 'to_uid', 'i', false ) ) );
-        
-        xoonips_validate_request(
-            $this->is_readable_all_items(
-                $this->get_item_ids_to_transfer(),
-                $xoopsUser -> getVar( 'uid' ) ) );
+
+        xoonips_validate_request($this->is_valid_transferee_user($this->_formdata->getValue('post', 'to_uid', 'i', false)));
+
+        xoonips_validate_request($this->is_readable_all_items($this->get_item_ids_to_transfer(), $xoopsUser->getVar('uid')));
     }
-    
-    function doAction(){
+
+    public function doAction()
+    {
         global $xoopsUser;
-        
-        $this -> _view_params['to_uid'] = $this->_formdata->getValue( 'post', 'to_uid', 'i', false );
-        
-        $items = xoonips_transfer_get_transferrable_item_information(
-            $xoopsUser->getVar('uid'),
-            $this -> get_item_ids_to_transfer() );
-        $this -> redirect_if_can_not_transfer_items( $items );
-        
-        $this -> _view_params['item_ids_to_transfer']
-            = $this -> sort_item_ids_by_title(
-                $this -> get_item_ids_to_transfer() );
-        
-        $this -> _view_params['child_item_ids_to_transfer']
-            = $this -> get_child_item_ids_to_transfer(
-                $xoopsUser->getVar('uid'),
-                $this -> get_item_ids_to_transfer() );
-        
-        $this -> _view_params['is_user_in_groups'] =
-            $this -> is_user_in_group_of_items(
-                $this -> _view_params['to_uid'],
-                $this -> get_item_ids_to_transfer() );
-        
-        $this -> _view_params['gids_to_subscribe'] =
-            $this -> get_gids_to_subscribe(
-                $this -> _view_params['to_uid'],
-                $this -> get_item_ids_to_transfer() );
+
+        $this->_view_params['to_uid'] = $this->_formdata->getValue('post', 'to_uid', 'i', false);
+
+        $items = xoonips_transfer_get_transferrable_item_information($xoopsUser->getVar('uid'), $this->get_item_ids_to_transfer());
+        $this->redirect_if_can_not_transfer_items($items);
+
+        $this->_view_params['item_ids_to_transfer']
+            = $this->sort_item_ids_by_title($this->get_item_ids_to_transfer());
+
+        $this->_view_params['child_item_ids_to_transfer']
+            = $this->get_child_item_ids_to_transfer($xoopsUser->getVar('uid'), $this->get_item_ids_to_transfer());
+
+        $this->_view_params['is_user_in_groups']
+            = $this->is_user_in_group_of_items($this->_view_params['to_uid'], $this->get_item_ids_to_transfer());
+
+        $this->_view_params['gids_to_subscribe']
+            = $this->get_gids_to_subscribe($this->_view_params['to_uid'], $this->get_item_ids_to_transfer());
     }
-    
-    function get_item_ids_to_transfer(){
-        return $this->_formdata->getValueArray( 'post', 'item_ids_to_transfer', 'i', false );
+
+    /**
+     * @return mixed
+     */
+    public function get_item_ids_to_transfer()
+    {
+        return $this->_formdata->getValueArray('post', 'item_ids_to_transfer', 'i', false);
     }
-    
-    function redirect_if_can_not_transfer_items( $items ){
-        foreach( $items as $item ){
-            if( $item['transfer_enable'] ) continue;
-            redirect_header( XOOPS_URL
-                             . '/modules/xoonips/transfer_item.php',
-                             3,
-                             _MD_XOONIPS_TRANSFER_USER_CAN_NOT_TRANSFER_ITEM );
+
+    /**
+     * @param $items
+     */
+    public function redirect_if_can_not_transfer_items($items)
+    {
+        foreach ($items as $item) {
+            if ($item['transfer_enable']) {
+                continue;
+            }
+            redirect_header(XOOPS_URL . '/modules/xoonips/transfer_item.php', 3, _MD_XOONIPS_TRANSFER_USER_CAN_NOT_TRANSFER_ITEM);
         }
     }
 
-    function get_child_item_ids_to_transfer($from_uid, $item_id_to_transfer ){
-        $items = xoonips_transfer_get_transferrable_item_information(
-            $from_uid, $item_id_to_transfer );
+    /**
+     * @param $from_uid
+     * @param $item_id_to_transfer
+     * @return array
+     */
+    public function get_child_item_ids_to_transfer($from_uid, $item_id_to_transfer)
+    {
+        $items  = xoonips_transfer_get_transferrable_item_information($from_uid, $item_id_to_transfer);
         $result = array();
-        foreach( $items as $item ){
+        foreach ($items as $item) {
             $result[$item['item_id']] = array();
-            foreach( $item['child_items'] as $child_item ){
+            foreach ($item['child_items'] as $child_item) {
                 $result[$item['item_id']][] = $child_item['item_id'];
             }
         }
         return $result;
     }
 }
-
-?>

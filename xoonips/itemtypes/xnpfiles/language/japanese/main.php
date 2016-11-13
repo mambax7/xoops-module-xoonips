@@ -30,16 +30,15 @@
 
 // _MD_<MODULENAME>_<STRINGNAME>
 
-define( "_MD_XNPFILES_DATE_LABEL", "ÆüÉÕ" );
-define( "_MD_XNPFILES_DATA_FILE_LABEL", "¥Õ¥¡¥¤¥ë" );
-define( "_MD_XNPFILES_DATA_FILE_NAME", "- ¥Õ¥¡¥¤¥ëÌ¾" );
-define( "_MD_XNPFILES_DATA_FILE_MIMETYPE", "- MIME¥¿¥¤¥×" );
-define( "_MD_XNPFILES_DATA_FILE_FILETYPE", "- ¥Õ¥¡¥¤¥ë¥¿¥¤¥×" );
-define( "_MD_XNPFILES_DATA_FILE_REQUIRED", "'¥Ç¡¼¥¿¥Õ¥¡¥¤¥ë' ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤" );
-define( '_MD_XNPFILES_EXPLANATION' , "¥Õ¥¡¥¤¥ë" );
-define( '_MD_XNPFILES_XMLRPC_DISPLAY_NAME_FILES_ID'           , '¥¢¥¤¥Æ¥àID' );
-define( '_MD_XNPFILES_XMLRPC_DISPLAY_NAME_DATA_FILE_NAME'     , '¥Õ¥¡¥¤¥ëÌ¾' );
-define( '_MD_XNPFILES_XMLRPC_DISPLAY_NAME_DATA_FILE_MIMETYPE' , 'MIME¥¿¥¤¥×' );
-define( '_MD_XNPFILES_XMLRPC_DISPLAY_NAME_DATA_FILE_FILETYPE' , '¥Õ¥¡¥¤¥ë¥¿¥¤¥×' );
-define( '_MD_XNPFILES_XMLRPC_DISPLAY_NAME_FILES_FILE'         , '¥Õ¥¡¥¤¥ë' );
-
+define('_MD_XNPFILES_DATE_LABEL', 'ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPFILES_DATA_FILE_LABEL', 'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPFILES_DATA_FILE_NAME', '- ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾');
+define('_MD_XNPFILES_DATA_FILE_MIMETYPE', '- MIMEï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPFILES_DATA_FILE_FILETYPE', '- ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¥¿ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPFILES_DATA_FILE_REQUIRED', "'ï¿½Ç¡ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPFILES_EXPLANATION', 'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPFILES_XMLRPC_DISPLAY_NAME_FILES_ID', 'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ID');
+define('_MD_XNPFILES_XMLRPC_DISPLAY_NAME_DATA_FILE_NAME', 'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾');
+define('_MD_XNPFILES_XMLRPC_DISPLAY_NAME_DATA_FILE_MIMETYPE', 'MIMEï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPFILES_XMLRPC_DISPLAY_NAME_DATA_FILE_FILETYPE', 'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¥¿ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPFILES_XMLRPC_DISPLAY_NAME_FILES_FILE', 'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½');

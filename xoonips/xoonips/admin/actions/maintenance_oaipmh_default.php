@@ -24,81 +24,79 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 // title
-$title = _AM_XOONIPS_MAINTENANCE_OAIPMH_TITLE;
+$title       = _AM_XOONIPS_MAINTENANCE_OAIPMH_TITLE;
 $description = _AM_XOONIPS_MAINTENANCE_OAIPMH_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
-  array(
-    'type' => 'top',
-    'label' => _AM_XOONIPS_TITLE,
-    'url' => $xoonips_admin['admin_url'].'/',
-  ),
-  array(
-    'type' => 'link',
-    'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
-    'url' => $xoonips_admin['myfile_url'],
-  ),
-  array(
-    'type' => 'label',
-    'label' => $title,
-    'url' => '',
-  ),
+    array(
+        'type'  => 'top',
+        'label' => _AM_XOONIPS_TITLE,
+        'url'   => $xoonips_admin['admin_url'] . '/',
+    ),
+    array(
+        'type'  => 'link',
+        'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
+        'url'   => $xoonips_admin['myfile_url'],
+    ),
+    array(
+        'type'  => 'label',
+        'label' => $title,
+        'url'   => '',
+    ),
 );
 
 // logic
-$repo_handler =& xoonips_getormhandler( 'xoonips', 'oaipmh_repositories' );
-$results =& $repo_handler->getLastResults( 's' );
-$evenodd = 'odd';
-foreach ( array_keys( $results ) as $id ) {
-  $results[$id]['evenodd'] = $evenodd;
-  $evenodd = ( $evenodd == 'even' ) ? 'odd' : 'even';
+$repoHandler = xoonips_getOrmHandler('xoonips', 'oaipmh_repositories');
+$results     =  $repoHandler->getLastResults('s');
+$evenodd     = 'odd';
+foreach (array_keys($results) as $id) {
+    $results[$id]['evenodd'] = $evenodd;
+    $evenodd                 = ($evenodd === 'even') ? 'odd' : 'even';
 }
 $has_results = true;
-if ( count( $results ) == 0 ) {
-  $has_results = false;
+if (count($results) == 0) {
+    $has_results = false;
 }
 
 // templates
-require_once( '../class/base/pattemplate.class.php' );
+require_once __DIR__ . '/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir( 'templates' );
-$tmpl->readTemplatesFromFile( 'maintenance_oaipmh.tmpl.html' );
+$tmpl->setBasedir('templates');
+$tmpl->readTemplatesFromFile('maintenance_oaipmh.tmpl.tpl');
 
 // assign template variables
-$tmpl->addVar( 'header', 'TITLE', $title );
-$tmpl->setAttribute( 'description', 'visibility', 'visible' );
-$tmpl->addVar( 'description', 'DESCRIPTION', $description );
-$tmpl->setAttribute( 'breadcrumbs', 'visibility', 'visible' );
-$tmpl->addRows( 'breadcrumbs_items', $breadcrumbs );
+$tmpl->addVar('header', 'TITLE', $title);
+$tmpl->setAttribute('description', 'visibility', 'visible');
+$tmpl->addVar('description', 'DESCRIPTION', $description);
+$tmpl->setAttribute('breadcrumbs', 'visibility', 'visible');
+$tmpl->addRows('breadcrumbs_items', $breadcrumbs);
 // >> configure repository url
-$tmpl->addVar( 'main', 'configure_title', _AM_XOONIPS_MAINTENANCE_OAIPMH_CONFIGURE_TITLE );
-$tmpl->addVar( 'main', 'configure_desc', _AM_XOONIPS_MAINTENANCE_OAIPMH_CONFIGURE_DESC );
+$tmpl->addVar('main', 'configure_title', _AM_XOONIPS_MAINTENANCE_OAIPMH_CONFIGURE_TITLE);
+$tmpl->addVar('main', 'configure_desc', _AM_XOONIPS_MAINTENANCE_OAIPMH_CONFIGURE_DESC);
 // >> results
-$tmpl->addVar( 'main', 'date', _AM_XOONIPS_LABEL_DATE );
-$tmpl->addVar( 'main', 'url', _AM_XOONIPS_LABEL_URL );
-$tmpl->addVar( 'main', 'result', _AM_XOONIPS_MAINTENANCE_OAIPMH_LABEL_LASTRESULT );
-$tmpl->addVar( 'main', 'results_title', _AM_XOONIPS_MAINTENANCE_OAIPMH_RESULTS_TITLE );
-$tmpl->addVar( 'empty_results', 'empty_results', _AM_XOONIPS_MAINTENANCE_OAIPMH_RESULTS_EMPTY );
-if ( $has_results ) {
-  $tmpl->addRows( 'results', $results );
+$tmpl->addVar('main', 'date', _AM_XOONIPS_LABEL_DATE);
+$tmpl->addVar('main', 'url', _AM_XOONIPS_LABEL_URL);
+$tmpl->addVar('main', 'result', _AM_XOONIPS_MAINTENANCE_OAIPMH_LABEL_LASTRESULT);
+$tmpl->addVar('main', 'results_title', _AM_XOONIPS_MAINTENANCE_OAIPMH_RESULTS_TITLE);
+$tmpl->addVar('empty_results', 'empty_results', _AM_XOONIPS_MAINTENANCE_OAIPMH_RESULTS_EMPTY);
+if ($has_results) {
+    $tmpl->addRows('results', $results);
 } else {
-  $tmpl->setAttribute( 'results', 'visibility', 'hidden' );
-  $tmpl->setAttribute( 'empty_results', 'visibility', 'visible' );
+    $tmpl->setAttribute('results', 'visibility', 'hidden');
+    $tmpl->setAttribute('empty_results', 'visibility', 'visible');
 }
 // >> run harvester
-$tmpl->addVar( 'main', 'harvest_title', _AM_XOONIPS_MAINTENANCE_OAIPMH_HARVEST_TITLE );
-$tmpl->addVar( 'main', 'harvest_desc', _AM_XOONIPS_MAINTENANCE_OAIPMH_HARVEST_DESC );
-$tmpl->addVar( 'main', 'harvest', _AM_XOONIPS_MAINTENANCE_OAIPMH_LABEL_HARVEST );
+$tmpl->addVar('main', 'harvest_title', _AM_XOONIPS_MAINTENANCE_OAIPMH_HARVEST_TITLE);
+$tmpl->addVar('main', 'harvest_desc', _AM_XOONIPS_MAINTENANCE_OAIPMH_HARVEST_DESC);
+$tmpl->addVar('main', 'harvest', _AM_XOONIPS_MAINTENANCE_OAIPMH_LABEL_HARVEST);
 
 // display
 xoops_cp_header();
-$tmpl->displayParsedTemplate( 'main' );
+$tmpl->displayParsedTemplate('main');
 xoops_cp_footer();
-
-?>

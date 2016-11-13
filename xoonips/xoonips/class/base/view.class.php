@@ -37,26 +37,25 @@ include_once XOOPS_ROOT_PATH . '/modules/xoonips/include/AL.php';
  */
 class XooNIpsView
 {
-    var $_params = null;
+    public $_params = null;
 
     /**
-     * 
+     *
      * @param $params associative array
-     * 
+     *
      */
-    function XooNIpsView($params)
+    public function __construct($params)
     {
-        $this -> _params = $params;
+        $this->_params = $params;
     }
 
     /**
      * implement of view
      * @abstract
      */
-    function render() 
+    public function render()
     {
         /* abstract */
         return false;
     }
 }
-?>

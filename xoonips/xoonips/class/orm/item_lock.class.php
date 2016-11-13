@@ -24,192 +24,210 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
-define( 'XOONIPS_LOCK_TYPE_NOT_LOCKED', 0 );
-define( 'XOONIPS_LOCK_TYPE_CERTIFY_REQUEST', 1 );
-define( 'XOONIPS_LOCK_TYPE_TRANSFER_REQUEST', 2 );
-define( 'XOONIPS_LOCK_TYPE_PUBLICATION_GROUP_INDEX', 3 );
+define('XOONIPS_LOCK_TYPE_NOT_LOCKED', 0);
+define('XOONIPS_LOCK_TYPE_CERTIFY_REQUEST', 1);
+define('XOONIPS_LOCK_TYPE_TRANSFER_REQUEST', 2);
+define('XOONIPS_LOCK_TYPE_PUBLICATION_GROUP_INDEX', 3);
 
 /**
  * @brief Data object of XooNIps Item Lock
  *
- * @li get('item_id') : item ID
- * @li get('lock_count') : lock count
+ * @li    get('item_id') : item ID
+ * @li    get('lock_count') : lock count
  */
-class XooNIpsOrmItemLock extends XooNIpsTableObject {
-  function XooNIpsOrmItemLock() {
-    parent::XooNIpsTableObject();
-    $this->initVar( 'item_id', XOBJ_DTYPE_INT, null, true, null );
-    $this->initVar( 'lock_count', XOBJ_DTYPE_INT, null, true, null );
-  }
+class XooNIpsOrmItemLock extends XooNIpsTableObject
+{
+    /**
+     * XooNIpsOrmItemLock constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->initVar('item_id', XOBJ_DTYPE_INT, null, true, null);
+        $this->initVar('lock_count', XOBJ_DTYPE_INT, null, true, null);
+    }
 }
 
 /**
  * @brief Handler object of XooNIps Item Lock
  *
  */
-class XooNIpsOrmItemLockHandler extends XooNIpsTableObjectHandler {
-  function XooNIpsOrmItemLockHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmItemLock', 'xoonips_item_lock', 'item_id', false );
-  }
-
-  /**
-   * lock content(item or index)
-   *
-   * @access public
-   * @param int $id item_id or index_id
-   * @return bool true if succeeded
-   */
-  function lock( $id ) {
-    $lock =& $this->get( $id );
-    if ( ! is_object( $lock ) ) {
-      $lock =& $this->create();
-      $lock->set( 'item_id', $id );
-      $lock->set( 'lock_count', 1 );
-    } else {
-      $lock->set( 'lock_count', $lock->get( 'lock_count' ) + 1 );
-    }
-    return $this->insert( $lock );
-  }
-
-  /**
-   * unlock content(item or index)
-   *
-   * @access public
-   * @param int $id item_id or index_id
-   * @return bool true if succeeded
-   */
-  function unlock( $id ) {
-    $lock =& $this->get( $id );
-    if ( ! is_object( $lock ) ) {
-      return true;
-    }
-    if ( $lock->get( 'lock_count' ) == 1 ) {
-      return $this->delete( $lock );
-    } else {
-      $lock->set( 'lock_count', $lock->get( 'lock_count' ) - 1 );
-      return $this->insert( $lock );
-    }
-  }
-
-  /**
-   * get lock state of content
-   *
-   * @access public
-   * @param int $id item_id or index_id
-   * @return bool true if content is locked. otherwise, false.
-   */
-  function isLocked( $id ) {
-    $lock =& $this->get( $id );
-    if ( ! is_object( $lock ) ) {
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * get lock reason of content
-   *
-   * @access public
-   * @param int $id item_id or index_id
-   * @return int XOONIPS_LOCK_TYPE_NOT_LOCKED : not locked
-   * @return int XOONIPS_LOCK_TYPE_CERTIFY_REQUEST
-   *  : locked because of certify request.
-   * @return int XOONIPS_LOCK_TYPE_TRANSFER_REQUEST
-   *  : locked because of transfer request.
-   * @return int XOONIPS_LOCK_TYPE_PUBLICATION_GROUP_INDEX
-   *  : locked because of publication group index
-   */
-  function getLockType( $id ) {
-    $lock =& $this->get( $id );
-    if ( ! is_object( $lock ) ) {
-      // not locked
-      return XOONIPS_LOCK_TYPE_NOT_LOCKED;
+class XooNIpsOrmItemLockHandler extends XooNIpsTableObjectHandler
+{
+    /**
+     * XooNIpsOrmItemLockHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmItemLock', 'xoonips_item_lock', 'item_id', false);
     }
 
-    $index_group_index_link_handler =& xoonips_getormhandler( 'xoonips', 'index_group_index_link' );
-    $criteria2 = new CriteriaCompo();
-    $criteria2->add( new Criteria( 'group_index_id', $id ) );
-
-    if ( $index_group_index_link_handler->getObjects( $criteria2 ) || $index_group_index_link_handler->getObjectsByGroupIndexId( $id ) || $index_group_index_link_handler->getObjectsByItemId( $id ) ) {
-      return XOONIPS_LOCK_TYPE_PUBLICATION_GROUP_INDEX;
+    /**
+     * lock content(item or index)
+     *
+     * @access public
+     * @param int $id item_id or index_id
+     * @return bool true if succeeded
+     */
+    public function lock($id)
+    {
+        $lock =  $this->get($id);
+        if (!is_object($lock)) {
+            $lock =  $this->create();
+            $lock->set('item_id', $id);
+            $lock->set('lock_count', 1);
+        } else {
+            $lock->set('lock_count', $lock->get('lock_count') + 1);
+        }
+        return $this->insert($lock);
     }
 
-    $item_basic_handler =& xoonips_getormhandler( 'xoonips', 'item_basic' );
-    $item_basic =& $item_basic_handler->get( $id );
-    if ( $item_basic === false ) {
-      return XOONIPS_LOCK_TYPE_NOT_LOCKED;
-      // no such content
+    /**
+     * unlock content(item or index)
+     *
+     * @access public
+     * @param int $id item_id or index_id
+     * @return bool true if succeeded
+     */
+    public function unlock($id)
+    {
+        $lock =  $this->get($id);
+        if (!is_object($lock)) {
+            return true;
+        }
+        if ($lock->get('lock_count') == 1) {
+            return $this->delete($lock);
+        } else {
+            $lock->set('lock_count', $lock->get('lock_count') - 1);
+            return $this->insert($lock);
+        }
     }
 
-    $item_type_id = $item_basic->get( 'item_type_id' );
-    if ( $item_type_id == ITID_INDEX ) {
-      return XOONIPS_LOCK_TYPE_CERTIFY_REQUEST;
-    } else {
-      // is item in certify_request state ?
-      $criteria = new CriteriaCompo();
-      $criteria->add( new Criteria( 'item_id', $id ) );
-      $criteria->add( new Criteria( 'certify_state', CERTIFY_REQUIRED ) );
-      $criteria->add( new Criteria( 'open_level', '('.OL_GROUP_ONLY.','.OL_PUBLIC.')', 'in' ) );
-
-      $index_item_link_handler =& xoonips_getormhandler( 'xoonips', 'index_item_link' );
-      $join = new XooNIpsJoinCriteria( 'xoonips_index', 'index_id', 'index_id' );
-      $index_item_links =& $index_item_link_handler->getObjects( $criteria, false, '', false, $join );
-
-      if ( $index_item_links !== false && count( $index_item_links ) != 0 ) {
-        return XOONIPS_LOCK_TYPE_CERTIFY_REQUEST;
-      }
-
-      // is item in transfer_request table?
-      $transfer_request_handler =& xoonips_getormhandler( 'xoonips', 'transfer_request' );
-      if ( $transfer_request_handler->getCount( new Criteria( 'item_id', $id ) ) != 0 ) {
-        return XOONIPS_LOCK_TYPE_TRANSFER_REQUEST;
-      }
+    /**
+     * get lock state of content
+     *
+     * @access public
+     * @param int $id item_id or index_id
+     * @return bool true if content is locked. otherwise, false.
+     */
+    public function isLocked($id)
+    {
+        $lock =  $this->get($id);
+        if (!is_object($lock)) {
+            return false;
+        }
+        return true;
     }
 
-    return XOONIPS_LOCK_TYPE_NOT_LOCKED;
-  }
+    /**
+     * get lock reason of content
+     *
+     * @access public
+     * @param int $id item_id or index_id
+     * @return int XOONIPS_LOCK_TYPE_NOT_LOCKED : not locked
+     * @return int XOONIPS_LOCK_TYPE_CERTIFY_REQUEST
+     *                : locked because of certify request.
+     * @return int XOONIPS_LOCK_TYPE_TRANSFER_REQUEST
+     *                : locked because of transfer request.
+     * @return int XOONIPS_LOCK_TYPE_PUBLICATION_GROUP_INDEX
+     *                : locked because of publication group index
+     */
+    public function getLockType($id)
+    {
+        $lock =  $this->get($id);
+        if (!is_object($lock)) {
+            // not locked
+            return XOONIPS_LOCK_TYPE_NOT_LOCKED;
+        }
 
-  /**
-   * lock an index and its ancestors
-   *
-   * @access public
-   * @param int $id index_id
-   */
-  function lockIndexes( $id ) {
-    $index_handler =& xoonips_getormhandler( 'xoonips', 'index' );
-    while ( $id != IID_ROOT ) {
-      $index =& $index_handler->get( $id );
-      if ( ! is_object( $index ) ) {
-        // no such index
-        return;
-      }
-      $this->lock( $id );
-      $id = $index->get( 'parent_index_id' );
-    }
-  }
+        $index_group_index_linkHandler = xoonips_getOrmHandler('xoonips', 'index_group_index_link');
+        $criteria2                     = new CriteriaCompo();
+        $criteria2->add(new Criteria('group_index_id', $id));
 
-  /**
-   * unlock an index and its ancestors
-   *
-   * @access public
-   * @param int $id index_id
-   */
-  function unlockIndexes( $id ) {
-    $index_handler =& xoonips_getormhandler( 'xoonips', 'index' );
-    while ( $id != IID_ROOT ) {
-      $index =& $index_handler->get( $id );
-      if ( ! is_object( $index ) ) {
-        // no such index
-        return;
-      }
-      $this->unlock( $id );
-      $id = $index->get( 'parent_index_id' );
+        if ($index_group_index_linkHandler->getObjects($criteria2) || $index_group_index_linkHandler->getObjectsByGroupIndexId($id)
+            || $index_group_index_linkHandler->getObjectsByItemId($id)
+        ) {
+            return XOONIPS_LOCK_TYPE_PUBLICATION_GROUP_INDEX;
+        }
+
+        $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
+        $item_basic        = $item_basicHandler->get($id);
+        if ($item_basic === false) {
+            return XOONIPS_LOCK_TYPE_NOT_LOCKED;
+            // no such content
+        }
+
+        $item_type_id = $item_basic->get('item_type_id');
+        if ($item_type_id == ITID_INDEX) {
+            return XOONIPS_LOCK_TYPE_CERTIFY_REQUEST;
+        } else {
+            // is item in certify_request state ?
+            $criteria = new CriteriaCompo();
+            $criteria->add(new Criteria('item_id', $id));
+            $criteria->add(new Criteria('certify_state', CERTIFY_REQUIRED));
+            $criteria->add(new Criteria('open_level', '(' . OL_GROUP_ONLY . ',' . OL_PUBLIC . ')', 'in'));
+
+            $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
+            $join                   = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
+            $index_item_links       =  $index_item_linkHandler->getObjects($criteria, false, '', false, $join);
+
+            if ($index_item_links !== false && count($index_item_links) != 0) {
+                return XOONIPS_LOCK_TYPE_CERTIFY_REQUEST;
+            }
+
+            // is item in transfer_request table?
+            $transfer_requestHandler = xoonips_getOrmHandler('xoonips', 'transfer_request');
+            if ($transfer_requestHandler->getCount(new Criteria('item_id', $id)) != 0) {
+                return XOONIPS_LOCK_TYPE_TRANSFER_REQUEST;
+            }
+        }
+
+        return XOONIPS_LOCK_TYPE_NOT_LOCKED;
     }
-  }
+
+    /**
+     * lock an index and its ancestors
+     *
+     * @access public
+     * @param int $id index_id
+     */
+    public function lockIndexes($id)
+    {
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
+        while ($id != IID_ROOT) {
+            $index = $indexHandler->get($id);
+            if (!is_object($index)) {
+                // no such index
+                return;
+            }
+            $this->lock($id);
+            $id = $index->get('parent_index_id');
+        }
+    }
+
+    /**
+     * unlock an index and its ancestors
+     *
+     * @access public
+     * @param int $id index_id
+     */
+    public function unlockIndexes($id)
+    {
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
+        while ($id != IID_ROOT) {
+            $index = $indexHandler->get($id);
+            if (!is_object($index)) {
+                // no such index
+                return;
+            }
+            $this->unlock($id);
+            $id = $index->get('parent_index_id');
+        }
+    }
 }
-?>

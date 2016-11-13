@@ -25,28 +25,31 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include 'include/common.inc.php';
+include __DIR__ . '/include/common.inc.php';
 
 include_once __DIR__ . '/class/base/actionfactory.class.php';
 
-$formdata =& xoonips_getutility( 'formdata' );
-$op = $formdata->getValue( 'get', 'action', 'n', false );
-if ( is_null( $op ) ) {
-  header( 'Location: '.XOOPS_URL.'/modules/xoonips/oaipmh_search.php?action=default' );
+$formdata = xoonips_getUtility('formdata');
+$op       = $formdata->getValue('get', 'action', 'n', false);
+if (null === $op) {
+    header('Location: ' . XOOPS_URL . '/modules/xoonips/oaipmh_search.php?action=default');
 }
 
-xoonips_validate_request( in_array( $op, array( 'default', 'detail', 'search', 'metadata_detail' ) ) );
+xoonips_validate_request(in_array($op, array(
+    'default',
+    'detail',
+    'search',
+    'metadata_detail'
+)));
 
-$factory =& XooNIpsActionFactory::getInstance();
-if( $op == 'metadata_detail' ){
-    $action =& $factory->create( 'xoonips_search_metadata_detail' );
-}else{
-    $action =& $factory->create( 'oaipmh_search_'.$op );
+$factory = XooNIpsActionFactory::getInstance();
+if ($op === 'metadata_detail') {
+    $action = $factory->create('xoonips_search_metadata_detail');
+} else {
+    $action = $factory->create('oaipmh_search_' . $op);
 }
-if ( ! $action ) {
-  header( 'Location: '.XOOPS_URL.'/' );
+if (!$action) {
+    header('Location: ' . XOOPS_URL . '/');
 }
 $action->action();
 exit();
-
-?>

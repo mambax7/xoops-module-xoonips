@@ -25,25 +25,30 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief Data object of Files detail information
  *
- * @li getVar('') :
+ * @li    getVar('') :
  */
 class XNPFilesOrmItemDetail extends XooNIpsTableObject
 {
     // for column length check
-    var $lengths = array(
-        'files_id' => 10,
-        'data_file_name' => 255,
-        'data_file_mimetype' => 255,
-        'data_file_filetype' => 255
-    );
-    function XNPFilesOrmItemDetail() 
+    public $lengths
+        = array(
+            'files_id'           => 10,
+            'data_file_name'     => 255,
+            'data_file_mimetype' => 255,
+            'data_file_filetype' => 255
+        );
+
+    /**
+     * XNPFilesOrmItemDetail constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsTableObject();
+        parent::__construct();
         $this->initVar('files_id', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('data_file_name', XOBJ_DTYPE_TXTBOX, null, true, $this->lengths['data_file_name']);
         $this->initVar('data_file_mimetype', XOBJ_DTYPE_TXTBOX, null, false, $this->lengths['data_file_mimetype']);
@@ -58,10 +63,13 @@ class XNPFilesOrmItemDetail extends XooNIpsTableObject
  */
 class XNPFilesOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
-    function XNPFilesOrmItemDetailHandler(&$db) 
+    /**
+     * XNPFilesOrmItemDetailHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsTableObjectHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPFilesOrmItemDetail', 'xnpfiles_item_detail', 'files_id', false);
     }
 }
-?>

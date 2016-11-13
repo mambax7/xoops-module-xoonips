@@ -30,14 +30,11 @@
 
 // _MI_<MODULENAME>_<STRINGNAME>
 
-
 // The name of this module
-define("_MI_XNPCONFERENCE_NAME","XooNIps Conference Item Type Module");
+define('_MI_XNPCONFERENCE_NAME', 'XooNIps Conference Item Type Module');
 // A brief description of this module
-define("_MI_XNPCONFERENCE_DESC","XooNIps Conference Item Type Module");
+define('_MI_XNPCONFERENCE_DESC', 'XooNIps Conference Item Type Module');
 
 // Names of admin menu items
-define("_MI_XNPCONFERENCE_CFG_DL_L","登録者によるダウンロード制約オプションの利用を許可しますか？");
-define("_MI_XNPCONFERENCE_CFG_DL_L_D","");
-
-?>
+define('_MI_XNPCONFERENCE_CFG_DL_L', '鐃緒申録鐃峻にわ申鐃緒申鐃緒申鐃緒申鐃緒申鐃緒申鐃緒申鵐�プワ申鐃緒申鐃緒申鐃緒申鐃術わ申鐃緒申弔鐃緒申泙鐃緒申鐃緒申鐃�');
+define('_MI_XNPCONFERENCE_CFG_DL_L_D', '');

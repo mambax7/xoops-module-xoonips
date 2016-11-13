@@ -31,12 +31,10 @@
 // _MI_<MODULENAME>_<STRINGNAME>
 
 // The name of this module
-define("_MI_XNPTOOL_NAME","XooNIps Tool Item Type Module");
+define('_MI_XNPTOOL_NAME', 'XooNIps Tool Item Type Module');
 // A brief description of this module
-define("_MI_XNPTOOL_DESC","XooNIps Tool Item Type Module");
+define('_MI_XNPTOOL_DESC', 'XooNIps Tool Item Type Module');
 
 // Names of admin menu items
-define("_MI_XNPTOOL_CFG_DL_LIMIT","登録者によるダウンロード制約オプションの利用を許可しますか？");
-define("_MI_XNPTOOL_CFG_DL_LIMIT_DESC","");
-
-?>
+define('_MI_XNPTOOL_CFG_DL_LIMIT', '鐃緒申録鐃峻にわ申鐃緒申鐃緒申鐃緒申鐃緒申鐃緒申鐃緒申鵐�プワ申鐃緒申鐃緒申鐃緒申鐃術わ申鐃緒申弔鐃緒申泙鐃緒申鐃緒申鐃�');
+define('_MI_XNPTOOL_CFG_DL_LIMIT_DESC', '');

@@ -28,6 +28,4 @@
 // _AM_<MODULENAME>_<STRINGNAME>
 
 // main title
-define( '_AM_XNPPRESENTATION_TITLE', 'XooNIps Presentation Item Type Configuration' );
-
-?>
+define('_AM_XNPPRESENTATION_TITLE', 'XooNIps Presentation Item Type Configuration');

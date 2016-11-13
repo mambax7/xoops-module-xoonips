@@ -29,36 +29,34 @@
  */
 
 // _MD_<MODULENAME>_<STRINGNAME>
-define( "_MD_XNPPAPER_AUTHOR_LABEL", "Ãø¼Ô" );
+define('_MD_XNPPAPER_AUTHOR_LABEL', 'ï¿½ï¿½ï¿½ï¿½');
 // define( "_MD_XNPPAPER_SOURCE_LABEL", "Source" );
-define( "_MD_XNPPAPER_URL_LABEL", "URL" );
-define( "_MD_XNPPAPER_JOURNAL_LABEL", "¥¸¥ã¡¼¥Ê¥ëÌ¾" );
-define( "_MD_XNPPAPER_YEAR_OF_PUBLICATION_LABEL", "½ÐÈÇÇ¯" );
-define( "_MD_XNPPAPER_VOLUME_LABEL", "´¬" );
-define( "_MD_XNPPAPER_NUMBER_LABEL", "¹æ" );
-define( "_MD_XNPPAPER_PAGE_LABEL", "¥Ú¡¼¥¸" );
-define( "_MD_XNPPAPER_ABSTRACT_LABEL", "¥¢¥Ö¥¹¥È¥é¥¯¥È" );
-define( "_MD_XNPPAPER_PDF_REPRINT_LABEL", "PDF¥ê¥×¥ê¥ó¥È" );
-define( "_MD_XNPPAPER_PUBMED_ID_LABEL", "PubMedID" );
+define('_MD_XNPPAPER_URL_LABEL', 'URL');
+define('_MD_XNPPAPER_JOURNAL_LABEL', 'ï¿½ï¿½ï¿½ã¡¼ï¿½Ê¥ï¿½Ì¾');
+define('_MD_XNPPAPER_YEAR_OF_PUBLICATION_LABEL', 'ï¿½ï¿½ï¿½ï¿½Ç¯');
+define('_MD_XNPPAPER_VOLUME_LABEL', 'ï¿½ï¿½');
+define('_MD_XNPPAPER_NUMBER_LABEL', 'ï¿½ï¿½');
+define('_MD_XNPPAPER_PAGE_LABEL', 'ï¿½Ú¡ï¿½ï¿½ï¿½');
+define('_MD_XNPPAPER_ABSTRACT_LABEL', 'ï¿½ï¿½ï¿½Ö¥ï¿½ï¿½È¥é¥¯ï¿½ï¿½');
+define('_MD_XNPPAPER_PDF_REPRINT_LABEL', 'PDFï¿½ï¿½×¥ï¿½ï¿½ï¿½');
+define('_MD_XNPPAPER_PUBMED_ID_LABEL', 'PubMedID');
 
-define( "_MD_XNPPAPER_AUTHOR_REQUIRED", "'Ãø¼Ô' ¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤" );
-define( "_MD_XNPPAPER_JOURNAL_REQUIRED", "'¥¸¥ã¡¼¥Ê¥ëÌ¾' ¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤" );
-define( "_MD_XNPPAPER_YEAR_OF_PUBLICATION_REQUIRED", "'½ÐÈÇÇ¯' ¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤" );
-define( '_MD_XNPPAPER_VOLUME_BADSTRING', "'´¬' ¤Ë¤Ï¿ô»ú¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤" );
-define( '_MD_XNPPAPER_NUMBER_BADSTRING', "'¹æ' ¤Ë¤Ï¿ô»ú¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤" );
-define( "_MD_XNPPAPER_EXPLANATION", "´ØÏ¢ÏÀÊ¸" );
+define('_MD_XNPPAPER_AUTHOR_REQUIRED', "'ï¿½ï¿½ï¿½ï¿½' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPPAPER_JOURNAL_REQUIRED', "'ï¿½ï¿½ï¿½ã¡¼ï¿½Ê¥ï¿½Ì¾' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPPAPER_YEAR_OF_PUBLICATION_REQUIRED', "'ï¿½ï¿½ï¿½ï¿½Ç¯' ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPPAPER_VOLUME_BADSTRING', "'ï¿½ï¿½' ï¿½Ë¤Ï¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPPAPER_NUMBER_BADSTRING', "'ï¿½ï¿½' ï¿½Ë¤Ï¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_MD_XNPPAPER_EXPLANATION', 'ï¿½ï¿½Ï¢ï¿½ï¿½Ê¸');
 
-define( '_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_PAPER_ID'          , '¥¢¥¤¥Æ¥àID' );
-define( '_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_AUTHOR'            , 'Ãø¼Ô' );
-define( '_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_JOURNAL'           , '¥¸¥ã¡¼¥Ê¥ëÌ¾' );
-define( '_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_VOLUME'            , '´¬' );
-define( '_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_NUMBER'            , '¹æ' );
-define( '_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_PAGE'              , '¥Ú¡¼¥¸' );
-define( '_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_ABSTRACT'          , '¥¢¥Ö¥¹¥È¥é¥¯¥È' );
-define( '_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_PUBMED_ID'         , 'PubMedID' );
-define( '_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_PAPER_PDF_REPRINT' , 'PDF¥ê¥×¥ê¥ó¥È' );
-define( '_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_CREATION_YEAR'     , '½ÐÈÇÇ¯' );
-define( '_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_CREATION_MONTH'    , '½ÐÈÇ·î' );
-define( '_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_CREATION_MDAY'     , '½ÐÈÇÆü' );
-
-?>
+define('_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_PAPER_ID', 'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ID');
+define('_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_AUTHOR', 'ï¿½ï¿½ï¿½ï¿½');
+define('_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_JOURNAL', 'ï¿½ï¿½ï¿½ã¡¼ï¿½Ê¥ï¿½Ì¾');
+define('_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_VOLUME', 'ï¿½ï¿½');
+define('_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_NUMBER', 'ï¿½ï¿½');
+define('_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_PAGE', 'ï¿½Ú¡ï¿½ï¿½ï¿½');
+define('_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_ABSTRACT', 'ï¿½ï¿½ï¿½Ö¥ï¿½ï¿½È¥é¥¯ï¿½ï¿½');
+define('_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_PUBMED_ID', 'PubMedID');
+define('_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_PAPER_PDF_REPRINT', 'PDFï¿½ï¿½×¥ï¿½ï¿½ï¿½');
+define('_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_CREATION_YEAR', 'ï¿½ï¿½ï¿½ï¿½Ç¯');
+define('_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_CREATION_MONTH', 'ï¿½ï¿½ï¿½Ç·ï¿½');
+define('_MD_XNPPAPER_XMLRPC_DISPLAY_NAME_CREATION_MDAY', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');

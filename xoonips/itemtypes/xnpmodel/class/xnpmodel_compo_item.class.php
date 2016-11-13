@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
 include_once XOOPS_ROOT_PATH . '/modules/xnpmodel/include/view.php';
@@ -38,11 +38,19 @@ include_once XOOPS_ROOT_PATH . '/modules/xnpmodel/iteminfo.php';
  */
 class XNPModelCompoHandler extends XooNIpsItemInfoCompoHandler
 {
-    function XNPModelCompoHandler(&$db) 
+    /**
+     * XNPModelCompoHandler constructor.
+     * @param $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsItemInfoCompoHandler($db, 'xnpmodel');
+        parent::__construct($db, 'xnpmodel');
     }
-    function &create() 
+
+    /**
+     * @return XNPModelCompo
+     */
+    public function create()
     {
         $model = new XNPModelCompo();
         return $model;
@@ -50,84 +58,90 @@ class XNPModelCompoHandler extends XooNIpsItemInfoCompoHandler
 
     /**
      * return template filename
-     * 
-     * @param string $type defined symbol 
-     *  XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *  or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
-     * @return template filename
+     *
+     * @param string $type defined symbol
+     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                     or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
+     * @return string|template
      */
-    function getTemplateFileName($type){
-        switch( $type ){
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
-            return 'xnpmodel_transfer_item_detail.html';
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
-            return 'xnpmodel_transfer_item_list.html';
-        default:
-            return '';
+    public function getTemplateFileName($type)
+    {
+        switch ($type) {
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
+                return 'xnpmodel_transfer_item_detail.tpl';
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
+                return 'xnpmodel_transfer_item_list.tpl';
+            default:
+                return '';
         }
     }
-    
+
     /**
      * return template variables of item
-     * 
-     * @param string $type defined symbol 
-     *  XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *  , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
-     *  , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
-     *  or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
-     * @param int $item_id
-     * @param int $uid user id who get item
+     *
+     * @param string $type defined symbol
+     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                     , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
+     *                     , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
+     *                     or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
+     * @param int    $item_id
+     * @param int    $uid  user id who get item
      * @return array of template variables
      */
-    function getTemplateVar($type, $item_id, $uid){
-        $model =& $this->get( $item_id );
-        if ( ! is_object( $model ) ) {
-          return array();
-        } 
+    public function getTemplateVar($type, $item_id, $uid)
+    {
+        $model = $this->get($item_id);
+        if (!is_object($model)) {
+            return array();
+        }
         $result = $this->getBasicTemplateVar($type, $model, $uid);
 
-        $textutil=&xoonips_getutility('text');
-        $detail =& $model -> getVar( 'detail' );
-        switch( $type ){
-        case XOONIPS_TEMPLATE_TYPE_ITEM_LIST:
-            $result['creator']=array();
-            foreach( $model -> getVar( 'creator' ) as $creator ){
-                $result['creator'][] = $creator->getVarArray('s');
-            }
-            return $result;
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
-        case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
-            $result['xnpmodel_creator']
-                =xoonips_get_multiple_field_template_vars($detail->getCreators(),
-                                                          'xnpmodel',
-                                                          'creator');
-            $result['detail']=$detail->getVarArray('s');
-            $result['detail']['model_type']=$textutil->html_special_chars($this -> get_model_type_label($detail -> getVar( 'model_type', 's' )));
-            $result['detail']['model_type_value']=$detail -> getVar( 'model_type', 's' );
-            
-            if( $detail->getVar('use_cc', 'n' ) ){
-                $result['detail']['rights']=$detail->getVar('rights', 'n');
-            }
-            
-            if( is_array( $model -> getVar( 'preview' ) ) ){
-                $result['detail']['previews'] = array();
-                foreach( $model -> getVar( 'preview' ) as $preview ){
-                    $result['detail']['previews'][]
-                        = $this -> getPreviewTemplateVar( $preview );
+        $textutil = xoonips_getUtility('text');
+        $detail   = $model->getVar('detail');
+        switch ($type) {
+            case XOONIPS_TEMPLATE_TYPE_ITEM_LIST:
+                $result['creator'] = array();
+                foreach ($model->getVar('creator') as $creator) {
+                    $result['creator'][] = $creator->getVarArray('s');
                 }
-            }
+                return $result;
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
+            case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
+                $result['xnpmodel_creator']
+                                                      = xoonips_get_multiple_field_template_vars($detail->getCreators(), 'xnpmodel', 'creator');
+                $result['detail']                     = $detail->getVarArray('s');
+                $result['detail']['model_type']       = $textutil->html_special_chars($this->get_model_type_label($detail->getVar('model_type',
+                                                                                                                                  's')));
+                $result['detail']['model_type_value'] = $detail->getVar('model_type', 's');
 
-            $model_data = $model -> getVar( 'model_data' );
-            if( $model_data -> get( 'item_id' ) == $item_id ){
-                $result['detail']['model_data'] = $this -> getAttachmentTemplateVar($model -> getVar( 'model_data' ) );
-            }
-            return $result;
+                if ($detail->getVar('use_cc', 'n')) {
+                    $result['detail']['rights'] = $detail->getVar('rights', 'n');
+                }
+
+                if (is_array($model->getVar('preview'))) {
+                    $result['detail']['previews'] = array();
+                    foreach ($model->getVar('preview') as $preview) {
+                        $result['detail']['previews'][]
+                            = $this->getPreviewTemplateVar($preview);
+                    }
+                }
+
+                $model_data = $model->getVar('model_data');
+                if ($model_data->get('item_id') == $item_id) {
+                    $result['detail']['model_data'] = $this->getAttachmentTemplateVar($model->getVar('model_data'));
+                }
+                return $result;
         }
         return $result;
     }
-    
-    function get_model_type_label( $type ){
+
+    /**
+     * @param $type
+     * @return mixed
+     */
+    public function get_model_type_label($type)
+    {
         $keyval = xnpmodel_get_type_array();
         return $keyval[$type];//"TODO convert type name '{$type}' to display name";
     }
@@ -140,9 +154,11 @@ class XNPModelCompoHandler extends XooNIpsItemInfoCompoHandler
  */
 class XNPModelCompo extends XooNIpsItemInfoCompo
 {
-    function XNPModelCompo() 
+    /**
+     * XNPModelCompo constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsItemInfoCompo('xnpmodel');
+        parent::__construct('xnpmodel');
     }
 }
-?>

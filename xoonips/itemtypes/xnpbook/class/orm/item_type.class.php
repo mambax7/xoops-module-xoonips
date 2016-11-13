@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/orm/item_type.class.php';
 
@@ -34,17 +34,20 @@ include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/orm/item_type.class.php';
  */
 class XNPBookOrmItemType extends XooNIpsOrmItemType
 {
-    function XNPBookOrmItemType() 
+    /**
+     * XNPBookOrmItemType constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsOrmItemType('xnpbook');
+        parent::__construct('xnpbook');
         // detail
-/* $this->fields is obsoleted. use $this->iteminfo.
-        foreach($this->fields as $i => $f) {
-            if ('publication_year' == $f['name']) {
-                $this->fields[$i]['required'] = true;
-            }
-        }
-*/
+        /* $this->fields is obsoleted. use $this->iteminfo.
+                foreach($this->fields as $i => $f) {
+                    if ('publication_year' == $f['name']) {
+                        $this->fields[$i]['required'] = true;
+                    }
+                }
+        */
     }
 }
 
@@ -55,10 +58,13 @@ class XNPBookOrmItemType extends XooNIpsOrmItemType
  */
 class XNPBookOrmItemTypeHandler extends XooNIpsOrmItemTypeHandler
 {
-    function XNPBookOrmItemTypeHandler(&$db) 
+    /**
+     * XNPBookOrmItemTypeHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsOrmItemTypeHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPBookOrmItemType', 'xoonips_item_type', 'item_type_id', false);
     }
 }
-?>

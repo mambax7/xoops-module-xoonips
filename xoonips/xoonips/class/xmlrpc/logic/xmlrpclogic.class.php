@@ -34,7 +34,10 @@ include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/xmlrpcresponse.cla
  */
 class XooNIpsXmlRpcLogic
 {
-    function XooNIpsXmlRpcLogic() 
+    /**
+     * XooNIpsXmlRpcLogic constructor.
+     */
+    public function __construct()
     {
     }
 
@@ -44,20 +47,20 @@ class XooNIpsXmlRpcLogic
      * @param[in] XooNIpsXmlRpcRequest $request
      * @param[out] XooNIpsXmlRpcResponse $response result of logic(success/fault, response, error)
      */
-    function execute(&$request, &$response) 
+    public function execute($request, $response)
     {
         // load logic instance
-        $factory = &XooNIpsLogicFactory::getInstance();
-        $logic = &$factory->create($request->getMethodName());
+        $factory = XooNIpsLogicFactory::getInstance();
+        $logic   = $factory->create($request->getMethodName());
         if (!is_object($logic)) {
             $response->setResult(false);
-            $error = &$response->getError();
+            $error =  $response->getError();
             $logic = $request->getMethodName();
             $error->add(XNPERR_SERVER_ERROR, "can't create a logic of $logic");
             return;
         }
         // execute logic
-        $vars = &$request->getParams();
+        $vars             =  $request->getParams();
         $xoonips_response = new XooNIpsResponse();
         $logic->execute($vars, $xoonips_response);
         //
@@ -65,13 +68,18 @@ class XooNIpsXmlRpcLogic
         $response->setError($xoonips_response->getError());
         $response->setSuccess($xoonips_response->getSuccess());
     }
-    
-    function convertIndexObjectToIndexStructure( $index_compo, &$response )
+
+    /**
+     * @param $index_compo
+     * @param $response
+     * @return array|bool
+     */
+    public function convertIndexObjectToIndexStructure($index_compo, $response)
     {
         $index = $index_compo->getVar('index');
         //
         $titles = $index_compo->getVar('titles');
-        $title = $titles[0]->get('title');
+        $title  = $titles[0]->get('title');
         //
         switch ($index->get('open_level')) {
             case 1: //public
@@ -79,8 +87,8 @@ class XooNIpsXmlRpcLogic
                 break;
 
             case 2: //group
-                $groups_handler =& xoonips_getormhandler('xoonips', 'groups');
-                $group = $groups_handler->get($index->get('gid'));
+                $groupsHandler = xoonips_getOrmHandler('xoonips', 'groups');
+                $group         = $groupsHandler->get($index->get('gid'));
                 if ($group) {
                     $open_level = $group->get('gname');
                 } else {
@@ -91,7 +99,7 @@ class XooNIpsXmlRpcLogic
 
             case 3: //private
                 $open_level = 'private';
-                if ( $index->get('parent_index_id') == IID_ROOT && $index->get('uid') == $_SESSION['xoopsUserId'] ){
+                if ($index->get('parent_index_id') == IID_ROOT && $index->get('uid') == $_SESSION['xoopsUserId']) {
                     $title = XNP_PRIVATE_INDEX_TITLE; // title of /Private is not username but "Private"
                 }
                 break;
@@ -100,36 +108,45 @@ class XooNIpsXmlRpcLogic
                 $response->addError(XNPERR_SERVER_ERROR, 'unknown open level:' . $index->get('open_level'));
                 return false;
         }
-        
-        $index_compo_handler =& xoonips_getormcompohandler( 'xoonips', 'index' );
-        $user_handler =& xoonips_getormhandler( 'xoonips', 'users' );
-        $user = $user_handler->get( $_SESSION['xoopsUserId'] );
-        $paths = $index_compo_handler->getIndexPathNames( $index->get('index_id'), $user ? $user->get('private_index_id') : false );
-        
+
+        $index_compoHandler = xoonips_getOrmCompoHandler('xoonips', 'index');
+        $userHandler        = xoonips_getOrmHandler('xoonips', 'users');
+        $user               = $userHandler->get($_SESSION['xoopsUserId']);
+        $paths              = $index_compoHandler->getIndexPathNames($index->get('index_id'), $user ? $user->get('private_index_id') : false);
+
         return array(
-            'id' => $index->get('index_id'),
-            'name' => $title,
-            'parent' => $index->get('parent_index_id'),
+            'id'         => $index->get('index_id'),
+            'name'       => $title,
+            'parent'     => $index->get('parent_index_id'),
             'open_level' => $open_level,
-            'path' => '/' . implode( '/', $paths ),
+            'path'       => '/' . implode('/', $paths),
         );
     }
 }
+
+/**
+ * Class XooNIpsXmlRpcLogicFactory
+ */
 class XooNIpsXmlRpcLogicFactory
 {
-    function XooNIpsXmlRpcLogicFactory() 
+    /**
+     * XooNIpsXmlRpcLogicFactory constructor.
+     */
+    public function __construct()
     {
     }
 
     /**
      * return XooNIpsLogicFactory instance
      *
-     * @return XooNIpsLogicFactory
+     * @return XooNIpsLogicFactory|XooNIpsXmlRpcLogicFactory
      */
-    function &getInstance() 
+    public static function getInstance()
     {
         static $singleton = null;
-        if (!isset($singleton)) $singleton = new XooNIpsXmlRpcLogicFactory();
+        if (!isset($singleton)) {
+            $singleton = new XooNIpsXmlRpcLogicFactory();
+        }
         return $singleton;
     }
 
@@ -139,15 +156,18 @@ class XooNIpsXmlRpcLogicFactory
      * @param string $name logic name
      * @retval XooNIpsLogic corresponding to $name
      * @retval false unknown logic
+     * @return bool|null|XooNIpsXmlRpcLogic
      */
-    function &create($name) 
+    public function create($name)
     {
         static $falseVar = false;
         $logic = null;
         //
         $name = trim($name);
-        if (false !== strstr($name, '..')) return $falseVar;
-        $include_file = XOOPS_ROOT_PATH . "/modules/xoonips/class/xmlrpc/logic/" . strtolower($name) . ".class.php";
+        if (false !== strstr($name, '..')) {
+            return $falseVar;
+        }
+        $include_file = XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/logic/' . strtolower($name) . '.class.php';
         if (file_exists($include_file)) {
             include_once $include_file;
         } else {
@@ -168,8 +188,10 @@ class XooNIpsXmlRpcLogicFactory
             trigger_error('Handler does not exist. Name: ' . $name, E_USER_ERROR);
         }
         // return result
-        if (isset($logic)) return $logic;
-        else return $falseVar;
+        if (isset($logic)) {
+            return $logic;
+        } else {
+            return $falseVar;
+        }
     }
 }
-?>

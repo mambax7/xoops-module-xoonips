@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief Data object of Stimulus developer information
@@ -33,9 +33,12 @@ if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
  */
 class XNPStimulusOrmDeveloper extends XooNIpsTableObject
 {
-    function XNPStimulusOrmDeveloper()
+    /**
+     * XNPStimulusOrmDeveloper constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsTableObject();
+        parent::__construct();
         $this->initVar('stimulus_developer_id', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('stimulus_id', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('developer', XOBJ_DTYPE_TXTBOX, '', true);
@@ -50,10 +53,13 @@ class XNPStimulusOrmDeveloper extends XooNIpsTableObject
  */
 class XNPStimulusOrmDeveloperHandler extends XooNIpsTableObjectHandler
 {
-    function XNPStimulusOrmDeveloperHandler(&$db) 
+    /**
+     * XNPStimulusOrmDeveloperHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsTableObjectHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPStimulusOrmDeveloper', 'xnpstimulus_developer', 'stimulus_developer_id', false);
     }
 }
-?>

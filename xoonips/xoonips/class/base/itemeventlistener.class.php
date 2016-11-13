@@ -25,10 +25,29 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-class XooNIpsItemEventListener{
-    function onUpdate( $item_id ){}
-    function onDelete( $item_id ){}
-    function onRegister( $item_id ){}
-}
+/**
+ * Class XooNIpsItemEventListener
+ */
+class XooNIpsItemEventListener
+{
+    /**
+     * @param $item_id
+     */
+    public function onUpdate($item_id)
+    {
+    }
 
-?>
+    /**
+     * @param $item_id
+     */
+    public function onDelete($item_id)
+    {
+    }
+
+    /**
+     * @param $item_id
+     */
+    public function onRegister($item_id)
+    {
+    }
+}

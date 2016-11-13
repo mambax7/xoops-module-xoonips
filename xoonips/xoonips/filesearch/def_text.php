@@ -32,8 +32,9 @@ $module['class_name']    = 'XooNIpsFileSearchPluginTEXT';
 $module['php_file_name'] = 'text.php';
 $module['name']          = 'text';
 $module['display_name']  = 'Plain Text';
-$module['mime_type']     = array( 'text/plain' );
-$module['extensions']    = array( 'txt', 'text' );
-$module['version']       = '2.0';
-// php-indent: enable
-?>
+$module['mime_type']     = array('text/plain');
+$module['extensions']    = array(
+    'txt',
+    'text'
+);
+$module['version']       = '2.0';// php-indent: enable

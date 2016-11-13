@@ -25,10 +25,8 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 $adminmenu[0]['title'] = _MI_XOONIPS_ADMENU1;
-$adminmenu[0]['link'] = 'admin/system.php';
+$adminmenu[0]['link']  = 'admin/system.php';
 $adminmenu[1]['title'] = _MI_XOONIPS_ADMENU2;
-$adminmenu[1]['link'] = 'admin/policy.php';
+$adminmenu[1]['link']  = 'admin/policy.php';
 $adminmenu[2]['title'] = _MI_XOONIPS_ADMENU3;
-$adminmenu[2]['link'] = 'admin/maintenance.php';
-
-?>
+$adminmenu[2]['link']  = 'admin/maintenance.php';

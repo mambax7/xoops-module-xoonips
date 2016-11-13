@@ -24,8 +24,8 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 /*
@@ -37,6 +37,7 @@ ALTER TABLE `x_xoonips_search_cache_metadata`
 ALTER TABLE `x_xoonips_search_cache_metadata`
  ADD UNIQUE (`search_cache_id`,`identifier`);
 */
+
 /**
  * class of XooNIps Search Cache Metadata
  * @li getVar( 'search_cache_metadata_id' ) : primary key
@@ -44,13 +45,18 @@ ALTER TABLE `x_xoonips_search_cache_metadata`
  * @li getVar( 'identifier' ) : metadata identifier
  *
  */
-class XooNIpsOrmSearchCacheMetadata extends XooNIpsTableObject {
-  function XooNIpsOrmSearchCacheMetadata() {
-    parent::XooNIpsTableObject();
-    $this->initVar( 'search_cache_metadata_id', XOBJ_DTYPE_INT, null, true, null );
-    $this->initVar( 'search_cache_id', XOBJ_DTYPE_INT, null, true, null );
-    $this->initVar( 'identifier', XOBJ_DTYPE_TXTBOX, null, true, null );
-  }
+class XooNIpsOrmSearchCacheMetadata extends XooNIpsTableObject
+{
+    /**
+     * XooNIpsOrmSearchCacheMetadata constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->initVar('search_cache_metadata_id', XOBJ_DTYPE_INT, null, true, null);
+        $this->initVar('search_cache_id', XOBJ_DTYPE_INT, null, true, null);
+        $this->initVar('identifier', XOBJ_DTYPE_TXTBOX, null, true, null);
+    }
 }
 
 /**
@@ -58,10 +64,15 @@ class XooNIpsOrmSearchCacheMetadata extends XooNIpsTableObject {
  * XooNIps search cache item Handler class
  *
  */
-class XooNIpsOrmSearchCacheMetadataHandler extends XooNIpsTableObjectHandler {
-  function XooNIpsOrmSearchCacheMetadataHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmSearchCacheMetadata', 'xoonips_search_cache_metadata', 'search_cache_metadata_id', true );
-  }
+class XooNIpsOrmSearchCacheMetadataHandler extends XooNIpsTableObjectHandler
+{
+    /**
+     * XooNIpsOrmSearchCacheMetadataHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmSearchCacheMetadata', 'xoonips_search_cache_metadata', 'search_cache_metadata_id', true);
+    }
 }
-?>

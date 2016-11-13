@@ -31,12 +31,10 @@
 // _MI_<MODULENAME>_<STRINGNAME>
 
 // The name of this module
-define("_MI_XNPSTIMULUS_NAME","XooNIps Stimulus Item Type Module");
+define('_MI_XNPSTIMULUS_NAME', 'XooNIps Stimulus Item Type Module');
 // A brief description of this module
-define("_MI_XNPSTIMULUS_DESC","XooNIps Stimulus Item Type Module");
+define('_MI_XNPSTIMULUS_DESC', 'XooNIps Stimulus Item Type Module');
 
 // Names of admin menu items
-define("_MI_XNPSTIMULUS_CFG_DL_LIMIT","登録者によるダウンロード制約オプションの利用を許可しますか？");
-define("_MI_XNPSTIMULUS_CFG_DL_LIMIT_D","");
-
-?>
+define('_MI_XNPSTIMULUS_CFG_DL_LIMIT', '登録者によるダウンロード制約オプションの利用を許可しますか？');
+define('_MI_XNPSTIMULUS_CFG_DL_LIMIT_D', '');

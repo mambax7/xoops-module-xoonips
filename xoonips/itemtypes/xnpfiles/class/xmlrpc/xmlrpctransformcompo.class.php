@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  *
@@ -35,9 +35,11 @@ if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
  */
 class XNPFilesXmlRpcTransformCompo extends XooNIpsXmlRpcTransformCompo
 {
-    function XNPFilesXmlRpcTransformCompo() 
+    /**
+     * XNPFilesXmlRpcTransformCompo constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsXmlRpcTransformCompo('xnpfiles');
+        parent::__construct('xnpfiles');
     }
 }
-?>

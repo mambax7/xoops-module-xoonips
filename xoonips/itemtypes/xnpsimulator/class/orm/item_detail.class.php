@@ -25,31 +25,35 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief Data object of Simulator detail information
  *
- * @li getVar('') :
+ * @li    getVar('') :
  */
 class XNPSimulatorOrmItemDetail extends XooNIpsTableObject
 {
     // for column length check
-    var $lengths = array(
-        'simulator_id' => 10,
-        'simulator_type' => 30,
-        'readme' => 65535,
-        'rights' => 65535,
-        'use_cc' => 3,
-        'cc_commercial_use' => 3,
-        'cc_modification' => 3,
-        'attachment_dl_limit' => 1,
-        'attachment_dl_notify' => 1
-    );
+    public $lengths
+        = array(
+            'simulator_id'         => 10,
+            'simulator_type'       => 30,
+            'readme'               => 65535,
+            'rights'               => 65535,
+            'use_cc'               => 3,
+            'cc_commercial_use'    => 3,
+            'cc_modification'      => 3,
+            'attachment_dl_limit'  => 1,
+            'attachment_dl_notify' => 1
+        );
     //
-    function XNPSimulatorOrmItemDetail() 
+    /**
+     * XNPSimulatorOrmItemDetail constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsTableObject();
+        parent::__construct();
         $this->initVar('simulator_id', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('simulator_type', XOBJ_DTYPE_TXTBOX, null, false, $this->lengths['simulator_type']);
         $this->initVar('rights', XOBJ_DTYPE_TXTBOX, null, false, $this->lengths['rights']);
@@ -61,18 +65,17 @@ class XNPSimulatorOrmItemDetail extends XooNIpsTableObject
         $this->initVar('attachment_dl_notify', XOBJ_DTYPE_INT, 0, false);
     }
 
-    
     /**
      * get developer objects of this item
-     * @return XnpsimulatorOrmDeveloper[] 
+     * @return XnpsimulatorOrmDeveloper[]
      */
-    function getDevelopers()
+    public function getDevelopers()
     {
-        $handler=&xoonips_getormhandler('xnpsimulator', 'developer');
-        $criteria=new Criteria('simulator_id', $this->get('simulator_id'));
+        $handler  = xoonips_getOrmHandler('xnpsimulator', 'developer');
+        $criteria = new Criteria('simulator_id', $this->get('simulator_id'));
         $criteria->setSort('developer_order');
-        $result=&$handler->getObjects($criteria);
-        if($result){
+        $result = $handler->getObjects($criteria);
+        if ($result) {
             return $result;
         }
         return array();
@@ -86,34 +89,48 @@ class XNPSimulatorOrmItemDetail extends XooNIpsTableObject
  */
 class XNPSimulatorOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
-    function XNPSimulatorOrmItemDetailHandler(&$db) 
+    /**
+     * XNPSimulatorOrmItemDetailHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsTableObjectHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPSimulatorOrmItemDetail', 'xnpsimulator_item_detail', 'simulator_id', false);
     }
-    
-    function insert(&$obj, $force = false) {
+
+    /**
+     * @param XoopsObject $obj
+     * @param bool        $force
+     * @return bool
+     */
+    public function insert(XoopsObject $obj, $force = false)
+    {
         if (strtolower(get_class($obj)) != strtolower($this->__class_name)) {
             return false;
         }
         if (!$obj->isDirty()) {
             return true;
         }
-        
+
         $cc = $this->get_cc($obj);
-        if( $cc ){
-            $obj -> set( 'rights', $cc );
+        if ($cc) {
+            $obj->set('rights', $cc);
         }
-        
+
         return parent::insert($obj, $force);
     }
 
-    function get_cc( $detail ) {
-      if ( $detail->get( 'use_cc' ) == '1' ) {
-        return xoonips_get_cc_license( $detail->get( 'cc_commercial_use' ), $detail->get( 'cc_modification' ), 2.5, 'GENERIC' );
-      } else {
-        return false;
-      }
+    /**
+     * @param $detail
+     * @return bool|string
+     */
+    public function get_cc($detail)
+    {
+        if ($detail->get('use_cc') == '1') {
+            return xoonips_get_cc_license($detail->get('cc_commercial_use'), $detail->get('cc_modification'), 2.5, 'GENERIC');
+        } else {
+            return false;
+        }
     }
 }
-?>

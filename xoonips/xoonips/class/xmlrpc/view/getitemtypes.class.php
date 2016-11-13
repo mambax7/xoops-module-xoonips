@@ -42,10 +42,10 @@ class XooNIpsXmlRpcViewGetItemtypes extends XooNIpsXmlRpcViewElement
      *
      * @return XoopsXmlRpcTag
      */
-    function render() 
+    public function render()
     {
         $resp = new XoopsXmlRpcArray();
-        foreach($this->response->getSuccess() as $i) {
+        foreach ($this->response->getSuccess() as $i) {
             $struct = new XoopsXmlRpcStruct();
             $struct->add('id', new XoopsXmlRpcInt($i->get('item_type_id')));
             $struct->add('name', new XoopsXmlRpcString($i->get('name')));
@@ -57,4 +57,3 @@ class XooNIpsXmlRpcViewGetItemtypes extends XooNIpsXmlRpcViewElement
         return $resp;
     }
 }
-?>

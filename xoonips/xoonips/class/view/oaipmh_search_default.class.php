@@ -25,27 +25,38 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once dirname( __DIR__ ) . '/base/view.class.php';
+include_once __DIR__ . '/../base/view.class.php';
 
-class XooNIpsViewOaipmhSearchDefault extends XooNIpsView{
-    
-    function XooNIpsViewOaipmhSearchDefault($params){
-        parent::XooNIpsView($params);
+/**
+ * Class XooNIpsViewOaipmhSearchDefault
+ */
+class XooNIpsViewOaipmhSearchDefault extends XooNIpsView
+{
+    /**
+     * XooNIpsViewOaipmhSearchDefault constructor.
+     * @param associative $params
+     */
+    public function __construct($params)
+    {
+        parent::__construct($params);
     }
-    
-    function render(){
+
+    /**
+     *
+     */
+    public function render()
+    {
         global $xoopsOption, $xoopsConfig, $xoopsUser, $xoopsUserIsAdmin, $xoopsLogger, $xoopsTpl;
-        $xoopsOption['template_main'] = 'xoonips_oaipmh_search_default.html';
-        include XOOPS_ROOT_PATH.'/header.php';
-        foreach( $this -> _params as $key => $val ){
-            $xoopsTpl -> assign( $key, $val );
+        $GLOBALS['xoopsOption']['template_main'] = 'xoonips_oaipmh_search_default.tpl';
+        include XOOPS_ROOT_PATH . '/header.php';
+        foreach ($this->_params as $key => $val) {
+            $xoopsTpl->assign($key, $val);
         }
 
-        $xoonips_module_header =
-            '<link rel="stylesheet" type="text/css" href="style.css" />'
-            .$xoopsTpl->get_template_vars('xoops_module_header');
-        $xoopsTpl->assign('xoops_module_header', $xoonips_module_header );
+        $xoonips_module_header
+            = '<link rel="stylesheet" type="text/css" href="style.css" />' . $xoopsTpl->get_template_vars('xoops_module_header');
+        $xoopsTpl->assign('xoops_module_header', $xoonips_module_header);
 
-        include XOOPS_ROOT_PATH.'/footer.php';
+        include XOOPS_ROOT_PATH . '/footer.php';
     }
 }

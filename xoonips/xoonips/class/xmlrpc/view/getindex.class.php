@@ -42,11 +42,10 @@ class XooNIpsXmlRpcViewGetIndex extends XooNIpsXmlRpcViewElement
      *
      * @return XoopsXmlRpcTag
      */
-    function render() 
+    public function render()
     {
         $factory = XooNIpsXmlRpcViewFactory::getInstance();
-        $view = $factory->create('getRootIndex', $this->response);
+        $view    = $factory->create('getRootIndex', $this->response);
         return $view->render();
     }
 }
-?>

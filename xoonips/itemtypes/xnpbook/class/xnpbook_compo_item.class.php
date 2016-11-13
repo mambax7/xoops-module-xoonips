@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
 include_once XOOPS_ROOT_PATH . '/modules/xnpbook/iteminfo.php';
@@ -37,11 +37,19 @@ include_once XOOPS_ROOT_PATH . '/modules/xnpbook/iteminfo.php';
  */
 class XNPBookCompoHandler extends XooNIpsItemInfoCompoHandler
 {
-    function XNPBookCompoHandler(&$db) 
+    /**
+     * XNPBookCompoHandler constructor.
+     * @param $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsItemInfoCompoHandler($db, 'xnpbook');
+        parent::__construct($db, 'xnpbook');
     }
-    function &create() 
+
+    /**
+     * @return XNPBookCompo
+     */
+    public function create()
     {
         $book = new XNPBookCompo();
         return $book;
@@ -49,72 +57,71 @@ class XNPBookCompoHandler extends XooNIpsItemInfoCompoHandler
 
     /**
      * return template filename
-     * 
-     * @param string $type defined symbol 
-     *  XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *  or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
-     * @return template filename
+     *
+     * @param string $type defined symbol
+     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                     or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
+     * @return string|template
      */
-    function getTemplateFileName($type){
-        switch( $type ){
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
-            return 'xnpbook_transfer_item_detail.html';
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
-            return 'xnpbook_transfer_item_list.html';
-        default:
-            return '';
+    public function getTemplateFileName($type)
+    {
+        switch ($type) {
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
+                return 'xnpbook_transfer_item_detail.tpl';
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
+                return 'xnpbook_transfer_item_list.tpl';
+            default:
+                return '';
         }
     }
-    
+
     /**
      * return template variables of item
-     * 
-     * @param string $type defined symbol 
-     *  XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *  , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
-     *  or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
-     * @param int $item_id
-     * @param int $uid user id who get item
+     *
+     * @param string $type defined symbol
+     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                     , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
+     *                     or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
+     * @param int    $item_id
+     * @param int    $uid  user id who get item
      * @return array of template variables
      */
-    function getTemplateVar($type, $item_id, $uid){
-        $book =& $this->get( $item_id );
-        if ( ! is_object( $book ) ) {
-          return array();
+    public function getTemplateVar($type, $item_id, $uid)
+    {
+        $book = $this->get($item_id);
+        if (!is_object($book)) {
+            return array();
         }
         $result = $this->getBasicTemplateVar($type, $book, $uid);
-        
-        $detail =& $book -> getVar( 'detail' );
-        switch( $type ){
-        case XOONIPS_TEMPLATE_TYPE_ITEM_LIST:
-            $result['author']=array();
-            foreach( $book -> getVar( 'author' ) as $author ){
-                $result['author'][] = $author->getVarArray('s');
-            }
-            return $result;
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
-        case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
-        case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
-            $result['xnpbook_author']
-                =xoonips_get_multiple_field_template_vars($detail->getAuthors(),
-                                                          'xnpbook',
-                                                          'author');
-            $result['detail']
-                = array( 'editor' => $detail -> getVar( 'editor', 's' ),
-                         'publisher' => $detail -> getVar( 'publisher', 's' ),
-                         'isbn' => $detail -> getVar( 'isbn', 's' ),
-                         'url' => $detail -> getVar( 'url', 's' ),
-                         'attachment_dl_limit'
-                             => $detail -> get( 'attachment_dl_limit' ),
-                         'attachment_dl_notify'
-                             => $detail -> get( 'attachment_dl_notify' ) );
-            $book_pdf = $book -> getVar( 'book_pdf' );
-            if( $book_pdf -> get( 'item_id' ) == $item_id ){
-                $result['detail']['book_pdf']
-                    = $this -> getAttachmentTemplateVar(
-                        $book -> getVar( 'book_pdf' ) );
-            }
-            return $result;
+
+        $detail = $book->getVar('detail');
+        switch ($type) {
+            case XOONIPS_TEMPLATE_TYPE_ITEM_LIST:
+                $result['author'] = array();
+                foreach ($book->getVar('author') as $author) {
+                    $result['author'][] = $author->getVarArray('s');
+                }
+                return $result;
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
+            case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
+            case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
+                $result['xnpbook_author']
+                          = xoonips_get_multiple_field_template_vars($detail->getAuthors(), 'xnpbook', 'author');
+                $result['detail']
+                          = array(
+                    'editor'               => $detail->getVar('editor', 's'),
+                    'publisher'            => $detail->getVar('publisher', 's'),
+                    'isbn'                 => $detail->getVar('isbn', 's'),
+                    'url'                  => $detail->getVar('url', 's'),
+                    'attachment_dl_limit'  => $detail->get('attachment_dl_limit'),
+                    'attachment_dl_notify' => $detail->get('attachment_dl_notify')
+                );
+                $book_pdf = $book->getVar('book_pdf');
+                if ($book_pdf->get('item_id') == $item_id) {
+                    $result['detail']['book_pdf']
+                        = $this->getAttachmentTemplateVar($book->getVar('book_pdf'));
+                }
+                return $result;
         }
     }
 }
@@ -126,9 +133,11 @@ class XNPBookCompoHandler extends XooNIpsItemInfoCompoHandler
  */
 class XNPBookCompo extends XooNIpsItemInfoCompo
 {
-    function XNPBookCompo() 
+    /**
+     * XNPBookCompo constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsItemInfoCompo('xnpbook');
+        parent::__construct('xnpbook');
     }
 }
-?>

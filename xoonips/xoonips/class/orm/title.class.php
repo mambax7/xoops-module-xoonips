@@ -24,8 +24,8 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 /*
@@ -35,22 +35,28 @@ ALTER TABLE `x_xoonips_item_title` ADD `seq_id` INT( 10 ) NOT NULL AUTO_INCREMEN
 ALTER TABLE `x_xoonips_item_title` ADD UNIQUE (`item_id` ,`title_id` ) NOT NULL;
 ALTER TABLE `x_xoonips_item_title` ADD UNIQUE (`item_id` ,`title_id` );
 */
+
 /**
  * @brief data object of title
  *
- * @li getVar('seq_id') :
- * @li getVar('item_id') :
- * @li getVar('title_id') :
- * @li getVar('title') :
+ * @li    getVar('seq_id') :
+ * @li    getVar('item_id') :
+ * @li    getVar('title_id') :
+ * @li    getVar('title') :
  *
  */
-class XooNIpsOrmTitle extends XooNIpsTableObject {
-  function XooNIpsOrmTitle() {
-    $this->initVar( 'seq_id', XOBJ_DTYPE_INT, 0, false );
-    $this->initVar( 'item_id', XOBJ_DTYPE_INT, null, false );
-    $this->initVar( 'title_id', XOBJ_DTYPE_INT, null, false );
-    $this->initVar( 'title', XOBJ_DTYPE_TXTBOX, null, true, 255 );
-  }
+class XooNIpsOrmTitle extends XooNIpsTableObject
+{
+    /**
+     * XooNIpsOrmTitle constructor.
+     */
+    public function __construct()
+    {
+        $this->initVar('seq_id', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('item_id', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('title_id', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('title', XOBJ_DTYPE_TXTBOX, null, true, 255);
+    }
 }
 
 /**
@@ -58,24 +64,30 @@ class XooNIpsOrmTitle extends XooNIpsTableObject {
  *
  *
  */
-class XooNIpsOrmTitleHandler extends XooNIpsTableObjectHandler {
-  function XooNIpsOrmTitleHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmTitle', 'xoonips_item_title', 'seq_id' );
-  }
+class XooNIpsOrmTitleHandler extends XooNIpsTableObjectHandler
+{
+    /**
+     * XooNIpsOrmTitleHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmTitle', 'xoonips_item_title', 'seq_id');
+    }
 
-  /**
-   * get titles
-   *
-   * @access public
-   * @param int $item_id
-   * @return array object array
-   */
-  function &getTitles( $item_id ) {
-    $criteria = new Criteria( 'item_id', $item_id );
-    $criteria->setSort( 'title_id' );
-    $criteria->setOrder( 'ASC' );
-    return $this->getObjects( $criteria );
-  }
+    /**
+     * get titles
+     *
+     * @access public
+     * @param int $item_id
+     * @return array object array
+     */
+    public function &getTitles($item_id)
+    {
+        $criteria = new Criteria('item_id', $item_id);
+        $criteria->setSort('title_id');
+        $criteria->setOrder('ASC');
+        return $this->getObjects($criteria);
+    }
 }
-?>

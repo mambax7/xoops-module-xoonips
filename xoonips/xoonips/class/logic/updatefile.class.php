@@ -47,8 +47,9 @@ class XooNIpsLogicUpdateFile extends XooNIpsLogic
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response->success new file id
+     * @return bool
      */
-    function execute(&$vars, &$response) 
+    public function execute($vars, $response)
     {
         /*
         check permission
@@ -65,17 +66,29 @@ class XooNIpsLogicUpdateFile extends XooNIpsLogic
         delete oldfile
         */
         // parameter check
-        $error = &$response->getError();
-        if (count($vars) > 5) $error->add(XNPERR_EXTRA_PARAM);
-        else if (count($vars) < 5) $error->add(XNPERR_MISSING_PARAM);
-        else {
-            if (isset($vars[0]) && strlen($vars[0]) > 32) $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
-            if ($vars[2] != 'item_id' && $vars[2] != 'ext_id') $error->add(XNPERR_INVALID_PARAM, 'invalid parameter 3');
-            if ($vars[2] == 'item_id' && !is_int($vars[1]) && !ctype_digit($vars[1])) $error->add(XNPERR_INVALID_PARAM, 'not integer parameter 2');
-            if ($vars[2] == 'item_id' && strlen($vars[1]) > 10) $error->add(XNPERR_INVALID_PARAM, 'too long parameter 2');
+        $error =  $response->getError();
+        if (count($vars) > 5) {
+            $error->add(XNPERR_EXTRA_PARAM);
+        } elseif (count($vars) < 5) {
+            $error->add(XNPERR_MISSING_PARAM);
+        } else {
+            if (isset($vars[0]) && strlen($vars[0]) > 32) {
+                $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
+            }
+            if ($vars[2] !== 'item_id' && $vars[2] !== 'ext_id') {
+                $error->add(XNPERR_INVALID_PARAM, 'invalid parameter 3');
+            }
+            if ($vars[2] === 'item_id' && !is_int($vars[1]) && !ctype_digit($vars[1])) {
+                $error->add(XNPERR_INVALID_PARAM, 'not integer parameter 2');
+            }
+            if ($vars[2] === 'item_id' && strlen($vars[1]) > 10) {
+                $error->add(XNPERR_INVALID_PARAM, 'too long parameter 2');
+            }
             // file size check
             $upload_max_filesize = $this->returnBytes(ini_get('upload_max_filesize'));
-            if (filesize($vars[4]->getFilepath()) > $upload_max_filesize ) $error->add(XNPERR_INVALID_PARAM, 'too large file');
+            if (filesize($vars[4]->getFilepath()) > $upload_max_filesize) {
+                $error->add(XNPERR_INVALID_PARAM, 'too large file');
+            }
             $vars[4]->set('file_size', filesize($vars[4]->getFilepath()));
         }
         if ($error->get(0)) {
@@ -83,11 +96,11 @@ class XooNIpsLogicUpdateFile extends XooNIpsLogic
             $response->setResult(false);
             return false;
         } else {
-            $sessionid = $vars[0];
-            $id = $vars[1];
-            $id_type = $vars[2];
+            $sessionid  = $vars[0];
+            $id         = $vars[1];
+            $id_type    = $vars[2];
             $field_name = $vars[3];
-            $file = $vars[4];
+            $file       = $vars[4];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
@@ -96,32 +109,28 @@ class XooNIpsLogicUpdateFile extends XooNIpsLogic
             return false;
         }
         // get item and item_id
-        $item_handler =& xoonips_getormcompohandler('xoonips', 'item');
-        $item_basic_handler =& xoonips_getormhandler('xoonips', 'item_basic');
-        if ($id_type == 'item_id') {
-            $item = $item_handler->get($id);
-        } else if ($id_type == 'ext_id') {
-            if ( strlen($id) == 0 ){
+        $itemHandler       = xoonips_getOrmCompoHandler('xoonips', 'item');
+        $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
+        if ($id_type === 'item_id') {
+            $item = $itemHandler->get($id);
+        } elseif ($id_type === 'ext_id') {
+            if (strlen($id) == 0) {
                 $response->setResult(false);
-                $error->add(XNPERR_INVALID_PARAM, "ext_id is empty");
+                $error->add(XNPERR_INVALID_PARAM, 'ext_id is empty');
                 return false;
-            }
-            else {
-                $basics =& $item_basic_handler->getObjects(new Criteria('doi', addslashes($id)));
-                if ( false === $basics ){
+            } else {
+                $basics =  $item_basicHandler->getObjects(new Criteria('doi', addslashes($id)));
+                if (false === $basics) {
                     $response->setResult(false);
-                    $error->add(XNPERR_SERVER_ERROR, "cannot get basic information");
+                    $error->add(XNPERR_SERVER_ERROR, 'cannot get basic information');
                     return false;
-                }
-                else if ( count($basics) >= 2 ){
+                } elseif (count($basics) >= 2) {
                     $response->setResult(false);
-                    $error->add(XNPERR_SERVER_ERROR, "ext_id is duplicated");
+                    $error->add(XNPERR_SERVER_ERROR, 'ext_id is duplicated');
                     return false;
-                }
-                else if ( count($basics) == 1 ){
-                    $item = $item_handler->get($basics[0]->get('item_id'));
-                }
-                else {
+                } elseif (count($basics) == 1) {
+                    $item = $itemHandler->get($basics[0]->get('item_id'));
+                } else {
                     $item = false;
                 }
             }
@@ -131,43 +140,40 @@ class XooNIpsLogicUpdateFile extends XooNIpsLogic
             $error->add(XNPERR_NOT_FOUND, "id=$id");
             return false;
         }
-        $basic = $item->getVar('basic');
+        $basic   = $item->getVar('basic');
         $item_id = $basic->get('item_id');
         // can modify?
-        if (!$item_handler->getPerm($item_id, $uid, 'write')) {
-            $item_lock_handler =& xoonips_getormhandler( 'xoonips', 'item_lock' );
+        if (!$itemHandler->getPerm($item_id, $uid, 'write')) {
+            $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
             $response->setResult(false);
-            if ( $item_lock_handler->isLocked($item_id) ){
-                $error->add(XNPERR_ACCESS_FORBIDDEN, 
-                    "cannot update file because item is " . 
-                    $this->getLockTypeString(
-                        $item_lock_handler->getLockType($item_id)));
-            }
-            else {
+            if ($item_lockHandler->isLocked($item_id)) {
+                $error->add(XNPERR_ACCESS_FORBIDDEN,
+                            'cannot update file because item is ' . $this->getLockTypeString($item_lockHandler->getLockType($item_id)));
+            } else {
                 $error->add(XNPERR_ACCESS_FORBIDDEN);
             }
             return false;
         }
-        
+
         // item -> itemtype, detail_item_type
-        $item_type_handler =& xoonips_getormhandler('xoonips', 'item_type');
-        $item_type = $item_type_handler->get($basic->get('item_type_id'));
+        $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
+        $item_type        = $item_typeHandler->get($basic->get('item_type_id'));
         if (!$item_type) {
             $response->setResult(false);
-            $error->add(XNPERR_SERVER_ERROR, "cannot get itemtype of that item");
+            $error->add(XNPERR_SERVER_ERROR, 'cannot get itemtype of that item');
             return false;
         }
-        $detail_item_type_handler =& xoonips_getormhandler($item_type->getVar('name') , 'item_type');
-        $detail_item_type = $detail_item_type_handler->get($item_type->getVar('item_type_id'));
+        $detail_item_typeHandler = xoonips_getOrmHandler($item_type->getVar('name'), 'item_type');
+        $detail_item_type        = $detail_item_typeHandler->get($item_type->getVar('item_type_id'));
         if (!$detail_item_type) {
             $response->setResult(false);
-            $error->add(XNPERR_SERVER_ERROR, "cannot get detail itemtype of that item");
+            $error->add(XNPERR_SERVER_ERROR, 'cannot get detail itemtype of that item');
             return false;
         }
         // is file_type_id proper?
-        $file_type_handler =& xoonips_getormhandler('xoonips', 'file_type');
-        $file_type_id = $file->getVar('file_type_id');
-        $file_type = $file_type_handler->get($file_type_id);
+        $file_typeHandler = xoonips_getOrmHandler('xoonips', 'file_type');
+        $file_type_id     = $file->getVar('file_type_id');
+        $file_type        = $file_typeHandler->get($file_type_id);
         if (!$file_type) {
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, "bad filetype($file_type_id)");
@@ -180,23 +186,23 @@ class XooNIpsLogicUpdateFile extends XooNIpsLogic
             return false;
         }
         // add file to non-multiple field?
-        $file_handler =& xoonips_getormhandler('xoonips', 'file');
-        if ( !$detail_item_type->getMultiple($file_type_name) && !$file->getVar('file_id')){
+        $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
+        if (!$detail_item_type->getMultiple($file_type_name) && !$file->getVar('file_id')) {
             $c = new CriteriaCompo();
             $c->add(new Criteria('item_id', $item_id));
             $c->add(new Criteria('file_type_id', $file_type_id));
             $c->add(new Criteria('is_deleted', 0));
-            $same_file_num = $file_handler->getCount($c);
-            if ( $same_file_num > 0 ){ // already file exists
-               $response->setResult(false);
-               $error->add(XNPERR_INVALID_PARAM, "multiple file not allowed for $file_type_name");
-               return false;
+            $same_file_num = $fileHandler->getCount($c);
+            if ($same_file_num > 0) { // already file exists
+                $response->setResult(false);
+                $error->add(XNPERR_INVALID_PARAM, "multiple file not allowed for $file_type_name");
+                return false;
             }
         }
         // get oldfile from oldfile_id
         $oldfile_id = $file->getVar('file_id');
         if ($oldfile_id) {
-            $oldfile = $file_handler->get($oldfile_id);
+            $oldfile = $fileHandler->get($oldfile_id);
             if ($oldfile->getVar('is_deleted')) {
                 $response->setResult(false);
                 $error->add(XNPERR_INVALID_PARAM, "cannot update deleted file(file_id=$oldfile_id)");
@@ -208,16 +214,16 @@ class XooNIpsLogicUpdateFile extends XooNIpsLogic
                     return false;
                 }
                 // check if $oldfile.item_type_id == $file.item_type_id
-                $file_type_handler =& xoonips_getormhandler('xoonips', 'file_type');
-                $file_type = $file_type_handler->get($oldfile->getVar('file_type_id'));
+                $file_typeHandler = xoonips_getOrmHandler('xoonips', 'file_type');
+                $file_type        = $file_typeHandler->get($oldfile->getVar('file_type_id'));
                 if (!$file_type) {
                     $response->setResult(false);
-                    $error->add(XNPERR_SERVER_ERROR, "old file has unknown file type id");
+                    $error->add(XNPERR_SERVER_ERROR, 'old file has unknown file type id');
                     return false;
                 }
                 if ($file_type->getVar('name') != $file_type_name) {
                     $response->setResult(false);
-                    $error->add(XNPERR_INVALID_PARAM, "cannot change filetype");
+                    $error->add(XNPERR_INVALID_PARAM, 'cannot change filetype');
                     return false;
                 }
             }
@@ -227,11 +233,11 @@ class XooNIpsLogicUpdateFile extends XooNIpsLogic
         // check item storage limit(private/group)
         $old_size = $this->getSizeOfItem($item);
         if ($oldfile) {
-            $new_size = $old_size-$oldfile->getVar('file_size') +$file->getVar('file_size');
+            $new_size = $old_size - $oldfile->getVar('file_size') + $file->getVar('file_size');
         } else {
-            $new_size = $old_size+$file->getVar('file_size');
+            $new_size = $old_size + $file->getVar('file_size');
         }
-        if (!$this->isEnoughSpace($error, $uid, $new_size, $item->getVar('indexes') , $old_size, $item->getVar('indexes'))) {
+        if (!$this->isEnoughSpace($error, $uid, $new_size, $item->getVar('indexes'), $old_size, $item->getVar('indexes'))) {
             $response->setResult(false);
             //$error->add(XNPERR_SERVER_ERROR, "not enough disk space"); // isEnoughSpace() adds errors.
             return false;
@@ -247,7 +253,7 @@ class XooNIpsLogicUpdateFile extends XooNIpsLogic
         $data = file_get_contents($file->getFilepath());
         if ($data === false) {
             $response->setResult(false);
-            $error->add(XNPERR_SERVER_ERROR, "cannot get file content");
+            $error->add(XNPERR_SERVER_ERROR, 'cannot get file content');
             return false;
         }
         $file->setVar('file_id', null);
@@ -257,38 +263,38 @@ class XooNIpsLogicUpdateFile extends XooNIpsLogic
         $transaction = XooNIpsTransaction::getInstance();
         $transaction->start();
         // insert $file
-        if (!$file_handler->insert($file)) {
+        if (!$fileHandler->insert($file)) {
             $response->setResult(false);
-            $error->add(XNPERR_SERVER_ERROR, "cannot insert file");
+            $error->add(XNPERR_SERVER_ERROR, 'cannot insert file');
             return false;
         }
         // create file search_text
-        $admin_file_handler =& xoonips_gethandler( 'xoonips', 'admin_file' );
-        $admin_file_handler->updateFileSearchText( $file->get( 'file_id' ), true );
+        $admin_fileHandler = xoonips_getHandler('xoonips', 'admin_file');
+        $admin_fileHandler->updateFileSearchText($file->get('file_id'), true);
 
         if ($oldfile) {
             // set oldfile.is_deleted = 1;
             $oldfile->setVar('is_deleted', 1);
-            if (!$file_handler->insert($oldfile)) {
+            if (!$fileHandler->insert($oldfile)) {
                 $transaction->rollback();
                 $response->setResult(false);
-                $error->add(XNPERR_SERVER_ERROR, "cannot update old file");
+                $error->add(XNPERR_SERVER_ERROR, 'cannot update old file');
                 return false;
             }
             // delete search_text of old file
-            $search_text_handler =& xoonips_getormhandler('xoonips', 'search_text');
-            $search_text = $search_text_handler->get($oldfile->get('file_id'));
-            if ($search_text && !$search_text_handler->delete($search_text)) {
+            $search_textHandler = xoonips_getOrmHandler('xoonips', 'search_text');
+            $search_text        = $search_textHandler->get($oldfile->get('file_id'));
+            if ($search_text && !$search_textHandler->delete($search_text)) {
                 $transaction->rollback();
                 $response->setResult(false);
-                $error->add(XNPERR_INVALID_PARAM, "cannot remove search text");
+                $error->add(XNPERR_INVALID_PARAM, 'cannot remove search text');
                 return false;
             }
         }
         // event log ( update item )
-        $eventlog_handler =& xoonips_getormhandler('xoonips', 'event_log');
-        if ( ! $eventlog_handler->recordUpdateItemEvent( $item_id ) ) {
-            $error->add(XNPERR_SERVER_ERROR, "cannot insert event");
+        $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
+        if (!$eventlogHandler->recordUpdateItemEvent($item_id)) {
+            $error->add(XNPERR_SERVER_ERROR, 'cannot insert event');
             $response->setResult(false);
             return false;
         }
@@ -302,7 +308,7 @@ class XooNIpsLogicUpdateFile extends XooNIpsLogic
         $transaction->commit();
         // unlink old file
         if ($oldfile) {
-            $file_handler->deleteFile($oldfile);
+            $fileHandler->deleteFile($oldfile);
         }
         // return
         $response->setSuccess($file->getVar('file_id'));
@@ -310,4 +316,3 @@ class XooNIpsLogicUpdateFile extends XooNIpsLogic
         return true;
     }
 }
-?>

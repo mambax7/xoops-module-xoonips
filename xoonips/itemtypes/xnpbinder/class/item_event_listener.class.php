@@ -25,91 +25,104 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once dirname( dirname( __DIR__ ) ) . '/xoonips/class/base/itemeventlistener.class.php';
-include_once dirname( dirname( __DIR__ ) ) . '/xoonips/include/notification.inc.php';
+include_once dirname(dirname(__DIR__)) . '/xoonips/class/base/itemeventlistener.class.php';
+include_once dirname(dirname(__DIR__)) . '/xoonips/include/notification.inc.php';
 
-class XNPBinderItemEventListener extends XooNIpsItemEventListener{
-    function onDelete( $item_id ){
+/**
+ * Class XNPBinderItemEventListener
+ */
+class XNPBinderItemEventListener extends XooNIpsItemEventListener
+{
+    /**
+     * @param $item_id
+     */
+    public function onDelete($item_id)
+    {
         //trigger_error( "Binder onDelete( $item_id )" );
-        $bilink_handler =& xoonips_getormhandler('xnpbinder', 'binder_item_link');
-        $criteria = new Criteria('item_id', $item_id);
-        $bilinks =& $bilink_handler->getObjects($criteria);
-        if (!$bilinks) return;
-        
-        foreach($bilinks as $bilink) {
-            $child_items =& $bilink_handler->getObjects(new Criteria('binder_id', $bilink->get('binder_id')));
-            if(!$child_items) continue;
-            
-            $index_item_link_handler =& xoonips_getormhandler( 'xoonips', 'index_item_link' );
-            $join = new XooNIpsJoinCriteria( 'xoonips_index', 'index_id', 'index_id' );
-            $criteria = new CriteriaCompo( new Criteria( 'open_level', OL_PUBLIC ) );
-            $criteria -> add( new Criteria( 'certify_state', CERTIFIED ) );
-            $criteria -> add( new Criteria( 'item_id', $bilink->get('binder_id')));
-            $index_item_links =& $index_item_link_handler->getObjects( $criteria, false, '', false, $join );
-            if( empty( $index_item_links ) ) continue;
+        $bilinkHandler = xoonips_getOrmHandler('xnpbinder', 'binder_item_link');
+        $criteria      = new Criteria('item_id', $item_id);
+        $bilinks       = $bilinkHandler->getObjects($criteria);
+        if (!$bilinks) {
+            return;
+        }
 
-            if( count($child_items) == 1 ){
-                $item_handler =& xoonips_getormcompohandler( 'xnpbinder', 'item' );
-                $binder = $item_handler->get($bilink->get('binder_id'));
-                $basic = $binder->getVar('basic');
-                
-                // define tags here for notification message
-                $tags = xoonips_notification_get_item_tags( $basic->get( 'item_id' ) );
-                
-                $mhandler =& xoops_gethandler( 'module' );
-                $module = $mhandler->getByDirName( 'xnpbinder' );
-                
-                $nhandler =& xoonips_gethandler('xoonips', 'notification');
-                $nhandler->triggerEvent2( 'user', 0, 'item_updated', 
-                    _MD_XNPBINDER_USER_CONTENT_EMPTY_NOTIFYSBJ,
-                    $nhandler->getTemplateDirByMid( $module->mid() ),
-                    'user_content_empty_notify', 
-                    $tags, array( $basic->get('uid') ) );
+        foreach ($bilinks as $bilink) {
+            $child_items = $bilinkHandler->getObjects(new Criteria('binder_id', $bilink->get('binder_id')));
+            if (!$child_items) {
+                continue;
             }
-            if( !$bilink_handler -> delete( $bilink ) ) die( 'cannnot remove a deleted item from a binder.' );
+
+            $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
+            $join                   = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
+            $criteria               = new CriteriaCompo(new Criteria('open_level', OL_PUBLIC));
+            $criteria->add(new Criteria('certify_state', CERTIFIED));
+            $criteria->add(new Criteria('item_id', $bilink->get('binder_id')));
+            $index_item_links = $index_item_linkHandler->getObjects($criteria, false, '', false, $join);
+            if (empty($index_item_links)) {
+                continue;
+            }
+
+            if (count($child_items) == 1) {
+                $itemHandler = xoonips_getOrmCompoHandler('xnpbinder', 'item');
+                $binder      = $itemHandler->get($bilink->get('binder_id'));
+                $basic       = $binder->getVar('basic');
+
+                // define tags here for notification message
+                $tags = xoonips_notification_get_item_tags($basic->get('item_id'));
+
+                $mhandler = xoops_getHandler('module');
+                $module   = $mhandler->getByDirName('xnpbinder');
+
+                $nhandler = xoonips_gethandler('xoonips', 'notification');
+                $nhandler->triggerEvent2('user', 0, 'item_updated', _MD_XNPBINDER_USER_CONTENT_EMPTY_NOTIFYSBJ,
+                                         $nhandler->getTemplateDirByMid($module->mid()), 'user_content_empty_notify', $tags,
+                                         array($basic->get('uid')));
+            }
+            if (!$bilinkHandler->delete($bilink)) {
+                die('cannnot remove a deleted item from a binder.');
+            }
         }
     }
 
-    function _notify(){
-/*
+    public function _notify()
+    {
+        /*
   from XooNIpsLogicRemoveItem
         // if public binder becomes empty, notify to moderator.
         $empty_binder_ids = array();
-        $bilink_handler =& xoonips_getormhandler('xoonips', 'binder_item_link');
-        $xilink_handler =& xoonips_getormhandler('xoonips', 'index_item_link');
+        $bilinkHandler = xoonips_getOrmHandler('xoonips', 'binder_item_link');
+        $xilinkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
         $criteria = new Criteria('item_id', $item_id);
-        $bilinks =& $bilink_handler->getObjects($criteria);
+        $bilinks = $bilinkHandler->getObjects($criteria);
         if ($bilinks) {
             foreach($bilinks as $bilink) {
                 $binder_id = $bilink->get('binder_id');
-                $ct = $bilink_handler->getCount(new Criteria('binder_id', $binder_id));
+                $ct = $bilinkHandler->getCount(new Criteria('binder_id', $binder_id));
                 if ($ct == 1) { // deleting the last item. binder becomes empty.
                     $criteria = new CriteriaCompo(new Criteria('index_id', IID_BINDERS));
                     $criteria->add(new Criteria('item_id', $binder_id));
                     $criteria->add(new Criteria('certify_state', CERTIFIED));
-                    if ($xilink_handler->getCount($criteria)) { // public and certified
+                    if ($xilinkHandler->getCount($criteria)) { // public and certified
                         $empty_binder_ids[] = $binder_id; // notify later
-                        
+
                     }
                 }
             }
         }
 */
-/*
-  from XooNIpsLogicRemoveItem
-        $notification_handler = &xoops_gethandler('notification');
-        foreach($empty_binder_ids as $binder_id) {
-            $binder = $item_handler->get($binder_id);
-            $basic = $binder->getVar('basic');
-            $titles = $binder->getVar('titles');
-            //define tags here for notification message
-            $tags = array();
-            $tags['URL'] = XOOPS_URL . "/modules/xoonips/detail.php?item_id=" . $basic->get('item_id');
-            $tags['TITLE'] = $titles[0]->get('title');
-            $notification_handler->triggerEvent('administrator', 0, 'binder_content_empty', $tags);
-        }
-*/
+        /*
+          from XooNIpsLogicRemoveItem
+                $notificationHandler =  xoops_getHandler('notification');
+                foreach($empty_binder_ids as $binder_id) {
+                    $binder = $itemHandler->get($binder_id);
+                    $basic = $binder->getVar('basic');
+                    $titles = $binder->getVar('titles');
+                    //define tags here for notification message
+                    $tags = array();
+                    $tags['URL'] = XOOPS_URL . "/modules/xoonips/detail.php?item_id=" . $basic->get('item_id');
+                    $tags['TITLE'] = $titles[0]->get('title');
+                    $notificationHandler->triggerEvent('administrator', 0, 'binder_content_empty', $tags);
+                }
+        */
     }
 }
-
-?>

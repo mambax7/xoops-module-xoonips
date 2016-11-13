@@ -24,32 +24,42 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 /**
  * @brief Data object of XooNIps item transfer request
  *
- * @li get('item_id') : item id
- * @li get('to_uid') : user id of new item owner
+ * @li    get('item_id') : item id
+ * @li    get('to_uid') : user id of new item owner
  */
-class XooNIpsOrmTransferRequest extends XooNIpsTableObject {
-  function XooNIpsOrmTransferRequest() {
-    parent::XooNIpsTableObject();
-    $this->initVar( 'item_id', XOBJ_DTYPE_INT, null, true, null );
-    $this->initVar( 'to_uid', XOBJ_DTYPE_INT, null, true, null );
-  }
+class XooNIpsOrmTransferRequest extends XooNIpsTableObject
+{
+    /**
+     * XooNIpsOrmTransferRequest constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->initVar('item_id', XOBJ_DTYPE_INT, null, true, null);
+        $this->initVar('to_uid', XOBJ_DTYPE_INT, null, true, null);
+    }
 }
 
 /**
  * @brief Handler object of XooNIps Item Lock
  *
  */
-class XooNIpsOrmTransferRequestHandler extends XooNIpsTableObjectHandler {
-  function XooNIpsOrmTransferRequestHandler( &$db ) {
-    parent::XooNIpsTableObjectHandler( $db );
-    $this->__initHandler( 'XooNIpsOrmTransferRequest', 'xoonips_transfer_request', 'item_id', false );
-  }
+class XooNIpsOrmTransferRequestHandler extends XooNIpsTableObjectHandler
+{
+    /**
+     * XooNIpsOrmTransferRequestHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
+    {
+        parent::__construct($db);
+        $this->__initHandler('XooNIpsOrmTransferRequest', 'xoonips_transfer_request', 'item_id', false);
+    }
 }
-?>

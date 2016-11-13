@@ -25,41 +25,65 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-class ListMetadataFormatsHandler extends HarvesterHandler {
-    var $metadataPrefix;
-    var $tagstack;
+/**
+ * Class ListMetadataFormatsHandler
+ */
+class ListMetadataFormatsHandler extends HarvesterHandler
+{
+    public $metadataPrefix;
+    public $tagstack;
 
-    function ListMetadataFormatsHandler( $_parser ) {
-        parent::HarvesterHandler( $_parser );
+    /**
+     * ListMetadataFormatsHandler constructor.
+     * @param $_parser
+     */
+    public function __construct($_parser)
+    {
+        parent::__construct($_parser);
 
-        $this->metadataPrefix = "oai_dc";
-        $this->tagstack = array( );
-    }
-    function __construct( $_parser ) {
-        $this->ListMetadataFormatsHandler( $_parser );
-    }
-
-    function startElementHandler( $parser, $name, $attribs ) {
-        array_push( $this->tagstack, $name );
-    }
-
-    function endElementHandler( $parser, $name ) {
-        array_pop( $this->tagstack );
+        $this->metadataPrefix = 'oai_dc';
+        $this->tagstack       = array();
     }
 
-    function characterDataHandler( $parser, $data ) {
-        if( end( $this->tagstack ) == 'METADATAPREFIX' ) {
-            if( $data == "junii" && $this->metadataPrefix == "oai_dc") {
+    /**
+     * @param $parser
+     * @param $name
+     * @param $attribs
+     */
+    public function startElementHandler($parser, $name, $attribs)
+    {
+        array_push($this->tagstack, $name);
+    }
+
+    /**
+     * @param $parser
+     * @param $name
+     */
+    public function endElementHandler($parser, $name)
+    {
+        array_pop($this->tagstack);
+    }
+
+    /**
+     * @param $parser
+     * @param $data
+     */
+    public function characterDataHandler($parser, $data)
+    {
+        if (end($this->tagstack) === 'METADATAPREFIX') {
+            if ($data === 'junii' && $this->metadataPrefix === 'oai_dc') {
                 $this->metadataPrefix = $data;
-            }
-            else if( $data == "junii2" ) {
+            } elseif ($data === 'junii2') {
                 $this->metadataPrefix = $data;
             }
         }
     }
 
-    function getMetadataPrefix( ) {
+    /**
+     * @return string
+     */
+    public function getMetadataPrefix()
+    {
         return $this->metadataPrefix;
     }
 }
-

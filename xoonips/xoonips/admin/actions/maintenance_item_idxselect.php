@@ -31,92 +31,90 @@
  * 'maintenance_item_delete.php'
  *
  * requrement variables
- * @var string $title page title
- * @var string $description page description
- * @var string $ticket_area area name of token ticket
- * @var string $index_mode index mode
+ * @var string $title        page title
+ * @var string $description  page description
+ * @var string $ticket_area  area name of token ticket
+ * @var string $index_mode   index mode
  *             'private' : private index
  *             'public' : public index
- * @var int $uid user id. this variable only use when $index_mode is 'private'
- * @var bool $has_back has back button?
+ * @var int    $uid          user id. this variable only use when $index_mode is 'private'
+ * @var bool   $has_back     has back button?
  * @var string $confrim_desc confirmation description
- * @var string $confrim confirmation message
- * @var string $nextaction next action
- * @var string $submit submit button label
+ * @var string $confrim      confirmation message
+ * @var string $nextaction   next action
+ * @var string $submit       submit button label
  */
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 // load libraries
-include_once '../include/libitem.php';
+include_once __DIR__ . '/../../include/libitem.php';
 
 $treelist = array();
-switch ( $index_mode ) {
-case 'private':
-  $treelist = xnpitmgrListIndexTree( XNPITMGR_LISTMODE_PRIVATEONLY, $uid );
-  break;
-case 'public':
-  $treelist = xnpitmgrListIndexTree( XNPITMGR_LISTMODE_PUBLICONLY );
-  break;
+switch ($index_mode) {
+    case 'private':
+        $treelist = xnpitmgrListIndexTree(XNPITMGR_LISTMODE_PRIVATEONLY, $uid);
+        break;
+    case 'public':
+        $treelist = xnpitmgrListIndexTree(XNPITMGR_LISTMODE_PUBLICONLY);
+        break;
 }
-if ( empty( $treelist ) ) {
-  die( 'unexpected error' );
+if (empty($treelist)) {
+    die('unexpected error');
 }
 
 // token ticket
-require_once( '../class/base/gtickets.php' );
-$token_ticket = $xoopsGTicket->getTicketHtml( __LINE__, 1800, $ticket_area );
+require_once __DIR__ . '/../../class/base/gtickets.php';
+$token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // breadcrumbs
 $breadcrumbs = array(
-  array(
-    'type' => 'top',
-    'label' => _AM_XOONIPS_TITLE,
-    'url' => $xoonips_admin['admin_url'].'/',
-  ),
-  array(
-    'type' => 'link',
-    'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
-    'url' => $xoonips_admin['myfile_url'],
-  ),
-  array(
-    'type' => 'link',
-    'label' => _AM_XOONIPS_MAINTENANCE_ITEM_TITLE,
-    'url' => $xoonips_admin['mypage_url'],
-  ),
-  array(
-    'type' => 'label',
-    'label' => $title,
-    'url' => '',
-  ),
+    array(
+        'type'  => 'top',
+        'label' => _AM_XOONIPS_TITLE,
+        'url'   => $xoonips_admin['admin_url'] . '/',
+    ),
+    array(
+        'type'  => 'link',
+        'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
+        'url'   => $xoonips_admin['myfile_url'],
+    ),
+    array(
+        'type'  => 'link',
+        'label' => _AM_XOONIPS_MAINTENANCE_ITEM_TITLE,
+        'url'   => $xoonips_admin['mypage_url'],
+    ),
+    array(
+        'type'  => 'label',
+        'label' => $title,
+        'url'   => '',
+    ),
 );
 
 // templates
-require_once( '../class/base/pattemplate.class.php' );
+require_once __DIR__ . '/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir( 'templates' );
-$tmpl->readTemplatesFromFile( 'maintenance_item_idxselect.tmpl.html' );
-$tmpl->addVar( 'header', 'TITLE', $title );
-$tmpl->setAttribute( 'description', 'visibility', 'visible' );
-$tmpl->addVar( 'description', 'DESCRIPTION', $description );
-$tmpl->setAttribute( 'breadcrumbs', 'visibility', 'visible' );
-$tmpl->addRows( 'breadcrumbs_items', $breadcrumbs );
-$tmpl->addVar( 'main', 'token_ticket', $token_ticket );
-$tmpl->addRows( 'treelist', $treelist );
-if ( $has_back ) {
-  $tmpl->setAttribute( 'back', 'visibility', 'visible' );
-  $tmpl->addVar( 'back', 'back', _AM_XOONIPS_LABEL_BACK );
+$tmpl->setBasedir('templates');
+$tmpl->readTemplatesFromFile('maintenance_item_idxselect.tmpl.tpl');
+$tmpl->addVar('header', 'TITLE', $title);
+$tmpl->setAttribute('description', 'visibility', 'visible');
+$tmpl->addVar('description', 'DESCRIPTION', $description);
+$tmpl->setAttribute('breadcrumbs', 'visibility', 'visible');
+$tmpl->addRows('breadcrumbs_items', $breadcrumbs);
+$tmpl->addVar('main', 'token_ticket', $token_ticket);
+$tmpl->addRows('treelist', $treelist);
+if ($has_back) {
+    $tmpl->setAttribute('back', 'visibility', 'visible');
+    $tmpl->addVar('back', 'back', _AM_XOONIPS_LABEL_BACK);
 }
-$tmpl->addVar( 'main', 'submit', $submit );
-$tmpl->addVar( 'submit_javascript', 'confirm_desc', $confirm_desc );
-$tmpl->addVar( 'submit_javascript', 'confirm', $confirm );
-$tmpl->addVar( 'submit_javascript', 'action', $nextaction );
-$tmpl->addVar( 'submit_javascript', 'select_index', _AM_XOONIPS_MAINTENANCE_ITEM_MSG_SELECT_INDEX );
+$tmpl->addVar('main', 'submit', $submit);
+$tmpl->addVar('submit_javascript', 'confirm_desc', $confirm_desc);
+$tmpl->addVar('submit_javascript', 'confirm', $confirm);
+$tmpl->addVar('submit_javascript', 'action', $nextaction);
+$tmpl->addVar('submit_javascript', 'select_index', _AM_XOONIPS_MAINTENANCE_ITEM_MSG_SELECT_INDEX);
 
 xoops_cp_header();
-$tmpl->displayParsedTemplate( 'main' );
+$tmpl->displayParsedTemplate('main');
 xoops_cp_footer();
-
-?>

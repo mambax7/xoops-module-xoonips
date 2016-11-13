@@ -27,4 +27,3 @@
 
 include_once XOOPS_ROOT_PATH . '/class/xml/rpc/xmlrpcapi.php';
 include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonipsview.php';
-?>

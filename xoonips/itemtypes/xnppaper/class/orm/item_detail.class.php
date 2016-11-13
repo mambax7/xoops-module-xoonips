@@ -25,26 +25,31 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) exit();
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief Data object of Paper detail information
  *
- * @li getVar('') :
+ * @li    getVar('') :
  */
 class XNPPaperOrmItemDetail extends XooNIpsTableObject
 {
     // for column length check
-    var $lengths = array(
-        'paper_id' => 10,
-        'journal' => 255,
-        'page' => 30,
-        'abstract' => 65535,
-        'pubmed_id' => 30
-    );
-    function XNPPaperOrmItemDetail() 
+    public $lengths
+        = array(
+            'paper_id'  => 10,
+            'journal'   => 255,
+            'page'      => 30,
+            'abstract'  => 65535,
+            'pubmed_id' => 30
+        );
+
+    /**
+     * XNPPaperOrmItemDetail constructor.
+     */
+    public function __construct()
     {
-        parent::XooNIpsTableObject();
+        parent::__construct();
         $this->initVar('paper_id', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('journal', XOBJ_DTYPE_TXTBOX, '', true, $this->lengths['journal']);
         $this->initVar('volume', XOBJ_DTYPE_INT, null, false);
@@ -52,20 +57,20 @@ class XNPPaperOrmItemDetail extends XooNIpsTableObject
         $this->initVar('page', XOBJ_DTYPE_TXTBOX, null, false, $this->lengths['page']);
         $this->initVar('abstract', XOBJ_DTYPE_TXTAREA, null, false, $this->lengths['abstract']);
         $this->initVar('pubmed_id', XOBJ_DTYPE_TXTBOX, null, false, $this->lengths['pubmed_id']);
-        $this->setTextAreaDisplayAttributes( false, false, false, true );
+        $this->setTextAreaDisplayAttributes(false, false, false, true);
     }
-    
+
     /**
      * get author objects of this item
-     * @return XNPPaperOrmAuthor[] 
+     * @return XNPPaperOrmAuthor[]
      */
-    function getAuthors()
+    public function getAuthors()
     {
-        $handler=&xoonips_getormhandler('xnppaper', 'author');
-        $criteria=new Criteria('paper_id', $this->get('paper_id'));
+        $handler  = xoonips_getOrmHandler('xnppaper', 'author');
+        $criteria = new Criteria('paper_id', $this->get('paper_id'));
         $criteria->setSort('author_order');
-        $result=&$handler->getObjects($criteria);
-        if($result){
+        $result = $handler->getObjects($criteria);
+        if ($result) {
             return $result;
         }
         return array();
@@ -79,10 +84,13 @@ class XNPPaperOrmItemDetail extends XooNIpsTableObject
  */
 class XNPPaperOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
-    function XNPPaperOrmItemDetailHandler(&$db) 
+    /**
+     * XNPPaperOrmItemDetailHandler constructor.
+     * @param XoopsDatabase $db
+     */
+    public function __construct($db)
     {
-        parent::XooNIpsTableObjectHandler($db);
+        parent::__construct($db);
         $this->__initHandler('XNPPaperOrmItemDetail', 'xnppaper_item_detail', 'paper_id', false);
     }
 }
-?>

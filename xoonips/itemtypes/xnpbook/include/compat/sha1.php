@@ -11,6 +11,9 @@
  * @author      revulo <revulon@gmail.com>
  * @since       PHP 4.3.0
  * @require     PHP 4.0.0
+ * @param      $str
+ * @param bool $raw_output
+ * @return string
  */
 function php_compat_sha1($str, $raw_output = false)
 {
@@ -27,14 +30,10 @@ function php_compat_sha1($str, $raw_output = false)
     $str .= pack('N2', $len >> 29, $len << 3);
 
     for ($i = 0; $i < strlen($str); $i += 64) {
-
         $w = array();
         for ($j = 0; $j < 16; ++$j) {
             $index = $i + $j * 4;
-            $w[$j] = ord($str[$index])     << 24
-                   | ord($str[$index + 1]) << 16
-                   | ord($str[$index + 2]) << 8
-                   | ord($str[$index + 3]);
+            $w[$j] = ord($str[$index]) << 24 | ord($str[$index + 1]) << 16 | ord($str[$index + 2]) << 8 | ord($str[$index + 3]);
         }
         for ($j = 16; $j < 80; ++$j) {
             $w[$j] = php_compat_sha1_rotl_helper($w[$j - 3] ^ $w[$j - 8] ^ $w[$j - 14] ^ $w[$j - 16], 1);
@@ -50,10 +49,10 @@ function php_compat_sha1($str, $raw_output = false)
             if ($j < 20) {
                 $f = ($b & $c) | (~$b & $d);
                 $k = (int)0x5a827999;
-            } else if ($j < 40) {
+            } elseif ($j < 40) {
                 $f = $b ^ $c ^ $d;
                 $k = (int)0x6ed9eba1;
-            } else if ($j < 60) {
+            } elseif ($j < 60) {
                 $f = ($b & $c) | ($b & $d) | ($c & $d);
                 $k = (int)0x8f1bbcdc;
             } else {
@@ -61,11 +60,11 @@ function php_compat_sha1($str, $raw_output = false)
                 $k = (int)0xca62c1d6;
             }
 
-            $t = php_compat_sha1_add32_helper(
-                 php_compat_sha1_add32_helper(
-                 php_compat_sha1_add32_helper(
-                 php_compat_sha1_add32_helper(
-                 php_compat_sha1_rotl_helper($a, 5), $f), $e), $k), $w[$j]);
+            $t
+                = php_compat_sha1_add32_helper(php_compat_sha1_add32_helper(php_compat_sha1_add32_helper(php_compat_sha1_add32_helper(php_compat_sha1_rotl_helper($a,
+                                                                                                                                                                  5),
+                                                                                                                                      $f), $e), $k),
+                                               $w[$j]);
 
             $e = $d;
             $d = $c;
@@ -96,6 +95,11 @@ function php_compat_sha1($str, $raw_output = false)
     }
 }
 
+/**
+ * @param $x
+ * @param $y
+ * @return int
+ */
 function php_compat_sha1_add32_helper($x, $y)
 {
     $lsw = ($x & 0xffff) + ($y & 0xffff);
@@ -103,6 +107,11 @@ function php_compat_sha1_add32_helper($x, $y)
     return ($msw << 16) | ($lsw & 0xffff);
 }
 
+/**
+ * @param $x
+ * @param $n
+ * @return int
+ */
 function php_compat_sha1_rotl_helper($x, $n)
 {
     return ($x << $n) | ($x >> (32 - $n)) & (0x7fffffff >> (31 - $n));
@@ -110,6 +119,11 @@ function php_compat_sha1_rotl_helper($x, $n)
 
 // Define
 if (!function_exists('sha1')) {
+    /**
+     * @param      $str
+     * @param bool $raw_output
+     * @return string
+     */
     function sha1($str, $raw_output = false)
     {
         return php_compat_sha1($str, $raw_output);

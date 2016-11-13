@@ -30,15 +30,13 @@
 
 // _MD_<MODULENAME>_<STRINGNAME>
 
-define( '_MD_XNPURL_URL_LABEL', 'URL' );
-define( '_MD_XNPURL_URL_BANNER_FILE_LABEL', 'バナー' );
+define('_MD_XNPURL_URL_LABEL', 'URL');
+define('_MD_XNPURL_URL_BANNER_FILE_LABEL', 'バナー');
 
-define( '_MD_XNPURL_URL_REQUIRED', "'URL' を入力して下さい" );
-define( '_MD_XNPURL_EXPLANATION', '関連リンク' );
-define( '_MD_XNPURL_XMLRPC_DISPLAY_NAME_URL_ID'          , 'アイテムID' );
-define( '_MD_XNPURL_XMLRPC_DISPLAY_NAME_URL'             , 'URL' );
-define( '_MD_XNPURL_XMLRPC_DISPLAY_NAME_URL_BANNER_FILE' , 'バナー' );
+define('_MD_XNPURL_URL_REQUIRED', "'URL' を入力して下さい");
+define('_MD_XNPURL_EXPLANATION', '関連リンク');
+define('_MD_XNPURL_XMLRPC_DISPLAY_NAME_URL_ID', 'アイテムID');
+define('_MD_XNPURL_XMLRPC_DISPLAY_NAME_URL', 'URL');
+define('_MD_XNPURL_XMLRPC_DISPLAY_NAME_URL_BANNER_FILE', 'バナー');
 
-define( '_MD_XNPURL_HITS', 'ヒット数' );
-
-?>
+define('_MD_XNPURL_HITS', 'ヒット数');

@@ -24,20 +24,18 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if ( ! defined( 'XOOPS_ROOT_PATH' ) ) {
-  exit();
+if (!defined('XOOPS_ROOT_PATH')) {
+    exit();
 }
 
 // resouces
-$langman->read( 'main.php' );
+$langman->read('main.php');
 
-include_once '../class/base/actionfactory.class.php';
+include_once __DIR__ . '/../../class/base/actionfactory.class.php';
 
-$factory =& XooNIpsActionFactory::getInstance();
-$action =& $factory->create( 'transfer_admin_initialize' );
-if ( ! is_object( $action ) ) {
-  die( 'unexpected error' );
+$factory = XooNIpsActionFactory::getInstance();
+$action  = $factory->create('transfer_admin_initialize');
+if (!is_object($action)) {
+    die('unexpected error');
 }
 $action->action();
-
-?>

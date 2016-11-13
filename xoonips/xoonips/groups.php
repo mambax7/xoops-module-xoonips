@@ -24,33 +24,31 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-include 'include/common.inc.php';
-include 'include/group.inc.php';
+include __DIR__ . '/include/common.inc.php';
+include __DIR__ . '/include/group.inc.php';
 
 // privileges check : user
-$uid = is_object( $xoopsUser ) ? $xoopsUser->getVar( 'uid', 'n' ) : UID_GUEST;
-if ( $uid == UID_GUEST ) {
-  redirect_header( XOOPS_URL.'/', 3, _MD_XOONIPS_MODERATOR_SHULD_BE_MODERATOR );
-  exit();
+$uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
+if ($uid == UID_GUEST) {
+    redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_MODERATOR_SHULD_BE_MODERATOR);
 }
 
 $breadcrumbs = array(
-  array(
-    'name' => _MD_XOONIPS_BREADCRUMBS_USER
-  ),
-  array(
-    'name' => _MD_XOONIPS_TITLE_GROUP_LIST,
-    'url' => 'groups.php'
-  ),
+    array(
+        'name' => _MD_XOONIPS_BREADCRUMBS_USER
+    ),
+    array(
+        'name' => _MD_XOONIPS_TITLE_GROUP_LIST,
+        'url'  => 'groups.php'
+    ),
 );
 
-$xgroup_handler =& xoonips_gethandler( 'xoonips', 'group' );
-$gids = $xgroup_handler->getGroupIds();
-$groups = xoonips_group_get_groups( $uid, $gids );
+$xgroupHandler = xoonips_getHandler('xoonips', 'group');
+$gids          = $xgroupHandler->getGroupIds();
+$groups        = xoonips_group_get_groups($uid, $gids);
 
-$xoopsOption['template_main'] = 'xoonips_group_list.html';
-include XOOPS_ROOT_PATH.'/header.php';
-$xoopsTpl->assign( 'xoops_breadcrumbs', $breadcrumbs );
-$xoopsTpl->assign( 'groups', $groups );
-include XOOPS_ROOT_PATH.'/footer.php';
-?>
+$GLOBALS['xoopsOption']['template_main'] = 'xoonips_group_list.tpl';
+include XOOPS_ROOT_PATH . '/header.php';
+$xoopsTpl->assign('xoops_breadcrumbs', $breadcrumbs);
+$xoopsTpl->assign('groups', $groups);
+include XOOPS_ROOT_PATH . '/footer.php';

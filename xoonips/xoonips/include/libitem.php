@@ -27,34 +27,35 @@
 
 // ***************************************************************************
 //   other module unit(dependency unit)
-require_once XOOPS_ROOT_PATH."/modules/xoonips/include/AL.php";
+require_once XOOPS_ROOT_PATH . '/modules/xoonips/include/AL.php';
 // ***************************************************************************
 
-define('XNPITMGR_LISTMODE_ALL',  0);
-define('XNPITMGR_LISTMODE_PUBLICONLY',  1);
+define('XNPITMGR_LISTMODE_ALL', 0);
+define('XNPITMGR_LISTMODE_PUBLICONLY', 1);
 define('XNPITMGR_LISTMODE_PRIVATEONLY', 2);
 
 /** list index tree
- *  @param  mode XNPITMGR_LISTINDEXTREEMODE_PUBLICONLY<br />
- *                  return public tree only.<br />
- *                XNPITMGR_LISTINDEXTREEMODE_PRIVATEONLY<br />
- *                  eturn all index tree.
- *  @return array: return index tree<br />
- *     format: array[0]['id']       = id(index id)
- *             array[0]['fullpath'] = index title(full path).<br />
+ * @param int|XNPITMGR_LISTINDEXTREEMODE_PUBLICONLY $mode
+ * @param int                                       $uid
+ * @return array|bool
+ *                   format: array[0]['id']       = id(index id)
+ *                   array[0]['fullpath'] = index title(full path).<br>
  *                   .
- *             array[n]['id']
- *             array[n]['fullpath']
- *  @return false: query error.
+ *                   array[n]['id']
+ *                   array[n]['fullpath']
+ * @internal param XNPITMGR_LISTINDEXTREEMODE_PUBLICONLY $mode <br>
+ *                   return public tree only.<br>
+ *                   XNPITMGR_LISTINDEXTREEMODE_PRIVATEONLY<br>
+ *                   eturn all index tree.
  */
 function xnpitmgrListIndexTree($mode = XNPITMGR_LISTMODE_ALL, $uid = 0)
 {
     global $xoopsDB;
-    $index      = $xoopsDB->prefix("xoonips_index");
-    $item_basic = $xoopsDB->prefix("xoonips_item_basic");
-    $item_title = $xoopsDB->prefix("xoonips_item_title");
-    $where_level= "";
-    switch ($mode){
+    $index       = $xoopsDB->prefix('xoonips_index');
+    $item_basic  = $xoopsDB->prefix('xoonips_item_basic');
+    $item_title  = $xoopsDB->prefix('xoonips_item_title');
+    $where_level = '';
+    switch ($mode) {
         case XNPITMGR_LISTMODE_ALL:
             $where_level = '1';
             break;
@@ -62,143 +63,150 @@ function xnpitmgrListIndexTree($mode = XNPITMGR_LISTMODE_ALL, $uid = 0)
             $where_level .= 'tx.open_level=' . OL_PUBLIC;
             break;
         case XNPITMGR_LISTMODE_PRIVATEONLY:
-            if ( $uid == 0 ) {
-              $where_level .= 'tx.open_level=' . OL_PRIVATE . ' OR ti.item_id=' . IID_ROOT . ' ';
+            if ($uid == 0) {
+                $where_level .= 'tx.open_level=' . OL_PRIVATE . ' OR ti.item_id=' . IID_ROOT . ' ';
             } else {
-              $where_level .= '( tx.open_level=' . OL_PRIVATE . ' AND tx.uid=' . $uid . ' ) OR ti.item_id=' . IID_ROOT . ' ';
+                $where_level .= '( tx.open_level=' . OL_PRIVATE . ' AND tx.uid=' . $uid . ' ) OR ti.item_id=' . IID_ROOT . ' ';
             }
             break;
     }
 
-    $sql = "SELECT tx.index_id, tx.parent_index_id, tx.uid, tx.gid, tx.open_level, tx.sort_number ".
-        " , ti.item_type_id, tt.title ".
-        " FROM      $item_title as tt, " .
-        " $index  AS tx " .
-        " LEFT JOIN $item_basic AS ti on tx.index_id = ti.item_id " .
-        " WHERE ($where_level) ".
-        " AND tt.title_id=".DEFAULT_ORDER_TITLE_OFFSET." AND tt.item_id=ti.item_id" .
-        " ORDER by tx.uid, tx.parent_index_id, tx.sort_number";
+    $sql       = 'SELECT tx.index_id, tx.parent_index_id, tx.uid, tx.gid, tx.open_level, tx.sort_number ' . ' , ti.item_type_id, tt.title '
+                 . " FROM      $item_title as tt, " . " $index  AS tx " . " LEFT JOIN $item_basic AS ti on tx.index_id = ti.item_id "
+                 . " WHERE ($where_level) " . ' AND tt.title_id=' . DEFAULT_ORDER_TITLE_OFFSET . ' AND tt.item_id=ti.item_id'
+                 . ' ORDER by tx.uid, tx.parent_index_id, tx.sort_number';
     $db_result = $xoopsDB->query($sql);
-    if (!$db_result){
-        echo "error in " . __FUNCTION__ . " " . $xoopsDB->error()." sql=$sql"." at ".__LINE__." in ".__FILE__."\n";
+    if (!$db_result) {
+        echo 'error in ' . __FUNCTION__ . ' ' . $xoopsDB->error() . " sql=$sql" . ' at ' . __LINE__ . ' in ' . __FILE__ . "\n";
         return false;
     }
     $tree_items       = array();
     $parent_full_path = array();
     $result           = array();
     while ($ar = $xoopsDB->fetchArray($db_result)) {
-        $index_id = intval($ar['index_id']);
+        $index_id              = (int)$ar['index_id'];
         $tree_items[$index_id] = $ar;
-        $pid = intval($ar['parent_index_id']);
-        if (!isset($parent_full_path[ $pid ])) $parent_full_path[ $pid ] = "";
+        $pid                   = (int)$ar['parent_index_id'];
+        if (!isset($parent_full_path[$pid])) {
+            $parent_full_path[$pid] = '';
+        }
     }
     // extract to full path
-    foreach ($parent_full_path as $k => $v){
-        if ($k == 0) continue;
-        $fullpath = "";
-        $idx = $k;
-        while ($idx != 0){
-            if (!isset($tree_items[ $idx ])) break;
-            $fullpath = $tree_items[ $idx ]['title'] . "/" . $fullpath;
-            $idx = $tree_items[ $idx ]['parent_index_id'];
+    foreach ($parent_full_path as $k => $v) {
+        if ($k == 0) {
+            continue;
         }
-        $parent_full_path[ $k ] = $fullpath;
+        $fullpath = '';
+        $idx      = $k;
+        while ($idx != 0) {
+            if (!isset($tree_items[$idx])) {
+                break;
+            }
+            $fullpath = $tree_items[$idx]['title'] . '/' . $fullpath;
+            $idx      = $tree_items[$idx]['parent_index_id'];
+        }
+        $parent_full_path[$k] = $fullpath;
     }
 
     $result = array();
     // set result from tree_items and parent_full_path.
-    foreach ($tree_items as $k => $v){
-        $parent_path = $parent_full_path[ $v['parent_index_id'] ];
+    foreach ($tree_items as $k => $v) {
+        $parent_path = $parent_full_path[$v['parent_index_id']];
         // exclude check.
-        if ($v['index_id'] == IID_ROOT) continue;
+        if ($v['index_id'] == IID_ROOT) {
+            continue;
+        }
         // delete "ROOT" string.
-        $idx = strpos($parent_path, "/");
-        $parent_path = substr($parent_path, $idx, strlen( $parent_path ));
-        $a = array();
-        $a['id']        = $k;
-        $a['fullpath'] = $parent_path . $v['title']; 
-        $result[] = $a;
+        $idx           = strpos($parent_path, '/');
+        $parent_path   = substr($parent_path, $idx, strlen($parent_path));
+        $a             = array();
+        $a['id']       = $k;
+        $a['fullpath'] = $parent_path . $v['title'];
+        $result[]      = $a;
     }
     return $result;
 }
 
 /** list index tree items
- * @param index_ids index id(array) of examined object
- * @return item_id array.
- * @return false: error.
-*/
+ * @param index $index_ids
+ * @return bool|item_id
+ * @internal param index $index_ids id(array) of examined object
+ */
 function xnpitmgrListIndexItems($index_ids)
 {
     global $xoopsDB;
-    $index_link = $xoopsDB->prefix( "xoonips_index_item_link" );
-    $sql        = "select distinct item_id  from $index_link where index_id in (" . implode(',', $index_ids) . ")";
+    $index_link = $xoopsDB->prefix('xoonips_index_item_link');
+    $sql        = "select distinct item_id  from $index_link where index_id in (" . implode(',', $index_ids) . ')';
     $db_result  = $xoopsDB->query($sql);
-    if (!$db_result){
-        echo "error in " . __FUNCTION__ . " " . $xoopsDB->error()." sql=$sql"." at ".__LINE__." in ".__FILE__."\n";
+    if (!$db_result) {
+        echo 'error in ' . __FUNCTION__ . ' ' . $xoopsDB->error() . " sql=$sql" . ' at ' . __LINE__ . ' in ' . __FILE__ . "\n";
         return false;
     }
     $result = array();
-    while (list( $id ) = $xoopsDB->fetchRow($db_result))
-        $result[] = intval($id);
+    while (list($id) = $xoopsDB->fetchRow($db_result)) {
+        $result[] = (int)$id;
+    }
     return $result;
 }
 
 /** get item basic information
- *  @param item_id item id
- *  @return item detail<br />
- *     format:
- *       $result['item_id']<br />
- *       $result['doi']<br />
- *       $result[''] and set other xoonips_item_basic field value.
- *  @return false: error
+ * @param item $item_id
+ * @return bool|item
+ *                format:
+ *                $result['item_id']<br>
+ *                $result['doi']<br>
+ *                $result[''] and set other xoonips_item_basic field value.
+ * @internal param item $item_id id
  */
 function xnpitmgrGetItemBasicInfo($item_id)
 {
     global $xoopsDB;
-    $basic     = $xoopsDB->prefix( "xoonips_item_basic" );
+    $basic     = $xoopsDB->prefix('xoonips_item_basic');
     $sql       = "select * from $basic where item_id=$item_id";
     $db_result = $xoopsDB->query($sql);
-    if (!$db_result){
-        echo "error in " . __FUNCTION__ . " " . $xoopsDB->error()." sql=$sql"." at ".__LINE__." in ".__FILE__."\n";
+    if (!$db_result) {
+        echo 'error in ' . __FUNCTION__ . ' ' . $xoopsDB->error() . " sql=$sql" . ' at ' . __LINE__ . ' in ' . __FILE__ . "\n";
         return false;
     }
     $result = $xoopsDB->fetchArray($db_result);
-    if (!$result) $result = array();
+    if (!$result) {
+        $result = array();
+    }
     return $result;
 }
 
 /** get item type info from item_type_id
- *  @param item_type_id
- *  @return array of item type info
- *     format:
- *       $result['item_type_id'] = item type id<br />
- *       $result['name']         = item type module name<br />
- *       $result['display_name'] = item type display name<br />
- *       $result['viewphp']      = item type view php file name<br />
- *               .<br />
- *       $result[n]
- *  @return false: error
+ * @param item_type_id
+ * @return array|bool
+ *               format:
+ *               $result['item_type_id'] = item type id<br>
+ *               $result['name']         = item type module name<br>
+ *               $result['display_name'] = item type display name<br>
+ *               $result['viewphp']      = item type view php file name<br>
+ *               .<br>
+ *               $result[n]
+ * @return false: error
  */
 function xnpitmgrGetItemTypeNameById($item_type_id)
 {
     global $xoopsDB;
-    $item_type = $xoopsDB->prefix( "xoonips_item_type" );
+    $item_type = $xoopsDB->prefix('xoonips_item_type');
     $sql       = "select * from $item_type where item_type_id=$item_type_id";
     $db_result = $xoopsDB->query($sql);
-    if (!$db_result){
-        echo "error in " . __FUNCTION__ . " " . $xoopsDB->error()." sql=$sql"." at ".__LINE__." in ".__FILE__."\n";
+    if (!$db_result) {
+        echo 'error in ' . __FUNCTION__ . ' ' . $xoopsDB->error() . " sql=$sql" . ' at ' . __LINE__ . ' in ' . __FILE__ . "\n";
         return false;
     }
     $result = $xoopsDB->fetchArray($db_result);
     return $result;
 }
 
-
-/** get item certify state<br />
- * @param xid item(item_id param) registered index id
- * @param iid item id
- * @return item certify state
- * @return false: error
+/** get item certify state<br>
+ * @param item $xid
+ * @param item $iid
+ * @return bool|item
+ * @internal param item $xid registered index id
+ * @internal param item $iid id
  */
 function xnpitmgrGetCertifyState($xid, $iid)
 {
@@ -206,11 +214,10 @@ function xnpitmgrGetCertifyState($xid, $iid)
     $iid = (int)$iid;
 
     global $xoopsDB;
-    $sql = "SELECT certify_state FROM " . $xoopsDB->prefix( "xoonips_index_item_link" ) .
-      " WHERE item_id = $iid AND index_id = $xid ";
+    $sql       = 'SELECT certify_state FROM ' . $xoopsDB->prefix('xoonips_index_item_link') . " WHERE item_id = $iid AND index_id = $xid ";
     $db_result = $xoopsDB->query($sql);
-    if (!$db_result){
-        echo "error in " . __FUNCTION__ . " " . $xoopsDB->error()." sql=$sql"." at ".__LINE__." in ".__FILE__."\n";
+    if (!$db_result) {
+        echo 'error in ' . __FUNCTION__ . ' ' . $xoopsDB->error() . " sql=$sql" . ' at ' . __LINE__ . ' in ' . __FILE__ . "\n";
         return false;
     }
     list($result) = $xoopsDB->fetchRow($db_result);
@@ -218,10 +225,11 @@ function xnpitmgrGetCertifyState($xid, $iid)
 }
 
 /** item delete in index
- * @param xid item(item_id param) registered index id
- * @param iid item id
- * @return true: success
- * @return false: error
+ * @param item $xid
+ * @param item $iid
+ * @return true : success
+ * @internal param item $xid registered index id
+ * @internal param item $iid id
  */
 function xnpitmgrUnregisterItem($xid, $iid)
 {
@@ -230,26 +238,25 @@ function xnpitmgrUnregisterItem($xid, $iid)
     $iid = (int)$iid;
     // unregister the item.
     $ret = false;
-    $sql = "DELETE FROM ".$xoopsDB->prefix("xoonips_index_item_link")
-        ." WHERE index_id=${xid} AND item_id=${iid}";
-    if ($xoopsDB->queryF($sql)){
+    $sql = 'DELETE FROM ' . $xoopsDB->prefix('xoonips_index_item_link') . " WHERE index_id=${xid} AND item_id=${iid}";
+    if ($xoopsDB->queryF($sql)) {
         // update last update date
-        $sql = "UPDATE ".$xoopsDB->prefix("xoonips_item_basic")." SET last_update_date=UNIX_TIMESTAMP(NOW())"
-            ." WHERE item_id=${xid}";
-        if ($xoopsDB->queryF($sql)){
-            $ret = true;
-        } else {
-            echo "error can't update last_updated_date in " . __FUNCTION__ . " " . $xoopsDB->error()." sql=$sql"." at ".__LINE__." in ".__FILE__."\n";
-            $ret = false;
-        }
-    }
-    if ($ret){
-        $sql = "update " . $xoopsDB->prefix( "xoonips_item_status " ) . 
-         " set deleted_timestamp=unix_timestamp(now()), is_deleted=1 where item_id=$iid";
+        $sql = 'UPDATE ' . $xoopsDB->prefix('xoonips_item_basic') . ' SET last_update_date=UNIX_TIMESTAMP(NOW())' . " WHERE item_id=${xid}";
         if ($xoopsDB->queryF($sql)) {
             $ret = true;
         } else {
-            echo "error can't update last_updated_date in " . __FUNCTION__ . " " . $xoopsDB->error()." sql=$sql"." at ".__LINE__." in ".__FILE__."\n";
+            echo "error can't update last_updated_date in " . __FUNCTION__ . ' ' . $xoopsDB->error() . " sql=$sql" . ' at ' . __LINE__ . ' in '
+                 . __FILE__ . "\n";
+            $ret = false;
+        }
+    }
+    if ($ret) {
+        $sql = 'update ' . $xoopsDB->prefix('xoonips_item_status ') . " set deleted_timestamp=unix_timestamp(now()), is_deleted=1 where item_id=$iid";
+        if ($xoopsDB->queryF($sql)) {
+            $ret = true;
+        } else {
+            echo "error can't update last_updated_date in " . __FUNCTION__ . ' ' . $xoopsDB->error() . " sql=$sql" . ' at ' . __LINE__ . ' in '
+                 . __FILE__ . "\n";
             $ret = false;
         }
     }
@@ -257,7 +264,7 @@ function xnpitmgrUnregisterItem($xid, $iid)
 }
 
 /** get remote_host
- *    @return remoto host.
+ * @return remoto host.
  */
 function getRemoteHost()
 {
@@ -265,29 +272,28 @@ function getRemoteHost()
 }
 
 /** withdraw item
- *  @param xid     item(item_id param) registered index id
- *  @param item_id item id
- *  @return true  success
- *  @return false failed
- *  @return NULL  item is not certified.(not public item)
+ * @param      xid     item(item_id param) registered index id
+ * @param item $xid
+ * @param item $item_id
+ * @return true success
  */
 function xnpitmgrWithDrawItem($xnpsid, $xid, $item_id)
 {
     global $xoopsDB;
     $uid = $_SESSION['xoopsUserId'];
-    if (xnpitmgrGetCertifyState($xid, $item_id) == CERTIFIED){
+    if (xnpitmgrGetCertifyState($xid, $item_id) == CERTIFIED) {
         $index = array();
-        if (xnpitmgrUnregisterItem($xid, $item_id)){
-            $eventlog_handler =& xoonips_getormhandler( 'xoonips', 'event_log' );
-            $eventlog_handler->recordRejectItemEvent( $item_id, $xid );
+        if (xnpitmgrUnregisterItem($xid, $item_id)) {
+            $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
+            $eventlogHandler->recordRejectItemEvent($item_id, $xid);
             // delete record in DB
             $tab_name = $xoopsDB->prefix('xoonips_item_show');
-            $sql = "DELETE FROM $tab_name WHERE item_id='".$item_id."' ";
+            $sql      = "DELETE FROM $tab_name WHERE item_id='" . $item_id . "' ";
             $xoopsDB->queryF($sql);
             return true;
         }
         return false;
-    } else return NULL;
+    } else {
+        return null;
+    }
 }
-
-?>

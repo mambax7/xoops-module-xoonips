@@ -71,4 +71,4 @@ user_reactivate($vals['uid']);
 
 // load modify panel.
 $_GET['uid'] = $_POST['uid'];
-include __DIR__ . '/maintenance_account_modify.php';
+require __DIR__ . '/maintenance_account_modify.php';

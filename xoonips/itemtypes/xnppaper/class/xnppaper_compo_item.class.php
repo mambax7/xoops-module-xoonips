@@ -27,9 +27,9 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xnppaper/iteminfo.php';
-include_once XOOPS_ROOT_PATH . '/modules/xnppaper/include/view.php';
+require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
+require_once XOOPS_ROOT_PATH . '/modules/xnppaper/iteminfo.php';
+require_once XOOPS_ROOT_PATH . '/modules/xnppaper/include/view.php';
 
 /**
  *

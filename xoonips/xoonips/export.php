@@ -56,11 +56,11 @@
 //   Undefine .... No
 session_cache_limiter('none'); // Escape IE's Bug 1 -> http://jp2.php.net/header  Harry 10-Dec-2004 03:26
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/include/imexport.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/include/imexport.php';
 
 xoonips_deny_guest_access();
 
@@ -258,7 +258,7 @@ if ($op === 'export') {
         $pankuzu          = _MD_XOONIPS_EXPORT_PANKUZU_EXPORT . _MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR . _MD_XOONIPS_EXPORT_PANKUZU_EXPORT_INDEX;
         $message          = _MD_XOONIPS_EXPORT_EXPORT_INDEX;
 
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
         echo <<<EOT
             <p>
             $pankuzu
@@ -278,11 +278,11 @@ if ($op === 'export') {
             <input type='hidden' name='recursive_index' value='$recursive_index' />
             </form>
 EOT;
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH . '/footer.php';
     } elseif ($export_type === 'item') {
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_export_license.tpl';
 
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
 
         if ($index_id != '') {
             $ids = xoonips_get_all_item_ids_to_export($index_id, $xoopsUser->getVar('uid'), $recursive_item);
@@ -310,7 +310,7 @@ EOT;
                 $func_license          = $itemtypes[$item_basic['item_type_id']]['name'] . 'GetLicenseStatement';
                 $func_html             = $itemtypes[$item_basic['item_type_id']]['name'] . 'GetListBlock';
                 $func_export           = $itemtypes[$item_basic['item_type_id']]['name'] . 'ExportItem';
-                include_once XOOPS_ROOT_PATH . '/modules/' . $itemtypes[$item_basic['item_type_id']]['viewphp'];
+                require_once XOOPS_ROOT_PATH . '/modules/' . $itemtypes[$item_basic['item_type_id']]['viewphp'];
                 $license_required = function_exists($func_license_required) ? $func_license_required($i) : false;
                 list($license, $use_cc) = function_exists($func_license) ? $func_license($i) : array(
                     '',
@@ -352,12 +352,12 @@ EOT;
         } elseif ($export_type === 'index') {
             $xoopsTpl->assign('recursive_index', $recursive_index);
         }
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH . '/footer.php';
     } else {
         die('unknown export_type');
     }
 } elseif ($op === 'config') {
-    include XOOPS_ROOT_PATH . '/header.php';
+    require XOOPS_ROOT_PATH . '/header.php';
 
     echo _MD_XOONIPS_EXPORT_PANKUZU_EXPORT;
     echo _MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR;
@@ -376,7 +376,7 @@ EOT;
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
         $basic            = $basicHandler->get($id);
         $itemtype         = $item_typeHandler->get($basic->get('item_type_id'));
-        include_once __DIR__ . '/../' . $itemtype->get('name') . '/include/view.php';
+        require_once __DIR__ . '/../' . $itemtype->get('name') . '/include/view.php';
         $func = $itemtype->get('name') . 'GetExportItemId';
         if (!function_exists($func)) {
             continue;
@@ -484,7 +484,7 @@ EOT;
         <input type="hidden" name="op" value="list" />
         </form>
 EOT;
-    include XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH . '/footer.php';
 } else {
     die('unknown op');
 }

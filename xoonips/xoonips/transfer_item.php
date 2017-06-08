@@ -25,9 +25,9 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
-include_once __DIR__ . '/class/base/actionfactory.class.php';
+require_once __DIR__ . '/class/base/actionfactory.class.php';
 
 $formdata = xoonips_getUtility('formdata');
 $op       = $formdata->getValue('get', 'action', 'n', false);

@@ -81,7 +81,7 @@ $count  = count($config);
 if ($count < 1) {
     die('error : no config');
 }
-include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 $form          = new XoopsThemeForm($title, 'xoonips_admin_system_module', $xoonips_admin['mypage_url']);
 $moduleHandler = xoops_getHandler('module');
 $module        = $moduleHandler->get($module_id);
@@ -148,20 +148,20 @@ for ($i = 0; $i < $count; $i++) {
             $ele = new XoopsFormRadioYN($eletitle, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput(), _YES, _NO);
             break;
         case 'group':
-            include_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+            require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
             $ele = new XoopsFormSelectGroup($eletitle, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 1, false);
             break;
         case 'group_multi':
-            include_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+            require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
             $ele = new XoopsFormSelectGroup($eletitle, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 5, true);
             break;
         // RMV-NOTIFY: added 'user' and 'user_multi'
         case 'user':
-            include_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+            require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
             $ele = new XoopsFormSelectUser($eletitle, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 1, false);
             break;
         case 'user_multi':
-            include_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+            require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
             $ele = new XoopsFormSelectUser($eletitle, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 5, true);
             break;
         case 'password':

@@ -28,7 +28,7 @@ if (!defined('XOOPS_ROOT_PATH')) {
     exit();
 }
 
-include_once __DIR__ . '/../../class/base/actionfactory.class.php';
+require_once __DIR__ . '/../../class/base/actionfactory.class.php';
 
 $factory = XooNIpsActionFactory::getInstance();
 $action  = $factory->create('transfer_admin_check');

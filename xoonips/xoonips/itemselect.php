@@ -30,12 +30,12 @@
 // This page can't be cached. Results of search(cached before login) don't display after login.
 session_cache_limiter('none');
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
 
 // If not a user, redirect
 if (!is_object($xoopsUser)) {
@@ -49,7 +49,7 @@ if (!is_object($xoopsUser)) {
 xnpEncodeMacSafariPost();
 xnpEncodeMacSafariGet();
 
-include_once __DIR__ . '/include/extra_param.inc.php';
+require_once __DIR__ . '/include/extra_param.inc.php';
 
 $requested_vars = array(
     'op'         => array(
@@ -99,10 +99,10 @@ if ($print) {
     xoops_header(false);
     echo "</head><body onload='window.print();'>\n";
 } else {
-    include XOOPS_ROOT_PATH . '/header.php';
+    require XOOPS_ROOT_PATH . '/header.php';
 }
 
-include __DIR__ . '/include/itemselect.inc.php';
+require __DIR__ . '/include/itemselect.inc.php';
 
 if (isset($search_itemtype)) {
     $xoopsTpl->assign('search_itemtype', $search_itemtype);
@@ -150,5 +150,5 @@ if ($print) {
     xoops_footer();
     exit();
 } else {
-    include XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH . '/footer.php';
 }

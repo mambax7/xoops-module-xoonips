@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/transfer.class.php';
+require_once __DIR__ . '/transfer.class.php';
 
 /**
  *
@@ -78,14 +78,14 @@ class XooNIpsViewTransferUserItemList extends XooNIpsViewTransfer
         $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
 
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_transfer_user_item_list.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
         $this->setXooNIpsStyleSheet($xoopsTpl);
 
         $xoopsTpl->assign('transfer_items', $this->get_transfer_item_template_vars());
         foreach ($this->_params as $key => $val) {
             $xoopsTpl->assign($key, $val);
         }
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH . '/footer.php';
     }
 
     /**

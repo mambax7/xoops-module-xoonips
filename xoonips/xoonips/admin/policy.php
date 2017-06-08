@@ -27,7 +27,7 @@
 require_once __DIR__ . '/../../../include/cp_header.php';
 
 // load common file.
-include __DIR__ . '/actions/common.inc.php';
+require __DIR__ . '/actions/common.inc.php';
 
 // page definition
 $pages              = array();
@@ -83,4 +83,4 @@ $pages['ranking']   = array(
 xoonips_admin_initialize(__FILE__, 'policy', $pages);
 
 // call action file
-include $xoonips_admin['myaction_path'];
+require $xoonips_admin['myaction_path'];

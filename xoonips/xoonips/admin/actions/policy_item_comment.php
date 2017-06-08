@@ -69,7 +69,7 @@ $config_keys   = array(
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 
 // get d3forum module list
-include XOOPS_ROOT_PATH . '/class/xoopslists.php';
+require XOOPS_ROOT_PATH . '/class/xoopslists.php';
 $moduleHandler     = xoops_getHandler('module');
 $mod_dirnames      = XoopsLists::getModulesList();
 $d3forum_not_found = true;
@@ -87,7 +87,7 @@ $d3forums[] = array(
 foreach ($mod_dirnames as $mod_dirname) {
     $trustdir_php = XOOPS_ROOT_PATH . '/modules/' . $mod_dirname . '/mytrustdirname.php';
     if (file_exists($trustdir_php)) {
-        include $trustdir_php;
+        require $trustdir_php;
         if ($mytrustdirname === 'd3forum') {
             $module = $moduleHandler->getByDirname($mod_dirname);
             if (is_object($module) && $module->getVar('isactive', 'n') == 1) {

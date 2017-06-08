@@ -26,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
 // TODO: token ticket
 
@@ -39,9 +39,9 @@ if ($xoopsUser) {
     redirect_header('user.php', 2, _MD_XOONIPS_ITEM_FORBIDDEN);
 }
 
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/include/imexport.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/include/imexport.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 $uid    = $_SESSION['xoopsUserId'];
@@ -85,11 +85,11 @@ if ($op == '') {
     array_multisort($unameValues, SORT_ASC, $users_sort);
 
     $GLOBALS['xoopsOption']['template_main'] = 'xoonips_su.tpl';
-    include XOOPS_ROOT_PATH . '/header.php';
+    require XOOPS_ROOT_PATH . '/header.php';
     // Send variables to templete
     $xoopsTpl->assign('users', $users_sort);
     $xoopsTpl->assign('su_uid', $uids[0]);
-    include XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH . '/footer.php';
 } elseif ($op === 'su') {
     $su_uid   = $formdata->getValue('post', 'su_uid', 'i', true);
     $password = $formdata->getValue('post', 'password', 'n', true);

@@ -50,7 +50,7 @@ if (!defined('XOOPS_ROOT_PATH')) {
 }
 
 // load libraries
-include_once __DIR__ . '/../../include/libitem.php';
+require_once __DIR__ . '/../../include/libitem.php';
 
 $treelist = array();
 switch ($index_mode) {

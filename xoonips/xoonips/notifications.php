@@ -26,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 $xoopsOption['pagetype'] = 'notification';
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
 if (!is_object($xoopsUser)) {
     redirect_header('user.php', 3, _NOPERM);
@@ -34,7 +34,7 @@ if (!is_object($xoopsUser)) {
 
 $uid                                     = $xoopsUser->getVar('uid');
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_notifications.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 $xoopsTpl->assign('lang_notifications', _MD_XOONIPS_ACCOUNT_NOTIFICATIONS);
 $xoopsTpl->assign('xoonips_editprofile_url', XOOPS_URL . '/modules/xoonips/edituser.php?uid=' . $uid);
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';

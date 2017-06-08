@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/logic.class.php';
+require_once __DIR__ . '/../base/logic.class.php';
 
 /**
  * Class XooNIpsLogicImportCheckImport
@@ -217,7 +217,7 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
                 while (list($id) = $xoopsDB->fetchRow($result)) {
                     $mod_iids[] = $id;
                 }
-                include_once "../$modname/include/view.php";
+                require_once "../$modname/include/view.php";
                 $fname = "${modname}GetDetailInformationTotalSize";
                 if (function_exists($fname)) {
                     $ret += $fname($mod_iids);

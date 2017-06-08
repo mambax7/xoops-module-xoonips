@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/view.class.php';
+require_once __DIR__ . '/../base/view.class.php';
 
 /**
  * Class XooNIpsViewOaipmhMetadataDetail
@@ -48,7 +48,7 @@ class XooNIpsViewOaipmhMetadataDetail extends XooNIpsView
     {
         global $xoopsOption, $xoopsConfig, $xoopsUser, $xoopsUserIsAdmin, $xoopsLogger, $xoopsTpl;
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_oaipmh_metadata_detail.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
         foreach ($this->_params as $key => $val) {
             $xoopsTpl->assign($key, $val);
         }
@@ -57,6 +57,6 @@ class XooNIpsViewOaipmhMetadataDetail extends XooNIpsView
             = '<link rel="stylesheet" type="text/css" href="style.css" />' . $xoopsTpl->get_template_vars('xoops_module_header');
         $xoopsTpl->assign('xoops_module_header', $xoonips_module_header);
 
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH . '/footer.php';
     }
 }

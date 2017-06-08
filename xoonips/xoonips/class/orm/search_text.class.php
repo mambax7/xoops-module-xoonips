@@ -28,8 +28,8 @@ if (!defined('XOOPS_ROOT_PATH')) {
     exit();
 }
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/include/lib.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/include/AL.php';
+require_once XOOPS_ROOT_PATH . '/modules/xoonips/include/lib.php';
+require_once XOOPS_ROOT_PATH . '/modules/xoonips/include/AL.php';
 
 /**
  *

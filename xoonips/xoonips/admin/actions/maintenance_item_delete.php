@@ -49,7 +49,7 @@ if (null === $uid) {
     // user select
     $title      = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_TITLE;
     $nextaction = 'delete';
-    include __DIR__ . '/maintenance_item_uselect.php';
+    require __DIR__ . '/maintenance_item_uselect.php';
     exit();
 }
 
@@ -63,5 +63,5 @@ $confirm_desc = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_CONFIRM;
 $confirm      = _AM_XOONIPS_MSG_DELETE_CONFIRM;
 $nextaction   = 'dupdate';
 $submit       = _AM_XOONIPS_LABEL_DELETE;
-include __DIR__ . '/maintenance_item_idxselect.php';
+require __DIR__ . '/maintenance_item_idxselect.php';
 exit();

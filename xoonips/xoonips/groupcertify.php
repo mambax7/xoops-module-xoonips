@@ -24,9 +24,9 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-include __DIR__ . '/include/common.inc.php';
-include_once __DIR__ . '/include/lib.php';
-include __DIR__ . '/class/base/gtickets.php';
+require __DIR__ . '/include/common.inc.php';
+require_once __DIR__ . '/include/lib.php';
+require __DIR__ . '/class/base/gtickets.php';
 
 $xnpsid   = $_SESSION['XNPSID'];
 $formdata = xoonips_getUtility('formdata');
@@ -100,7 +100,7 @@ foreach ($index_group_index_linkHandler->getObjects() as $link) {
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_groupcertify.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 
 $xoopsTpl->assign('pankuzu', $pankuzu);
 $xoopsTpl->assign('certify_button_label', _MD_XOONIPS_ITEM_CERTIFY_BUTTON_LABEL);
@@ -115,7 +115,7 @@ $xoopsTpl->assign('xoonips_editprofile_url', XOOPS_URL . '/modules/xoonips/editu
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, 'xoonips_group_certify_index');
 $xoopsTpl->assign('token_ticket', $token_ticket);
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';
 
 /**
  * @param $to_index_ids

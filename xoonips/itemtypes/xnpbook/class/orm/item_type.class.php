@@ -27,7 +27,7 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/orm/item_type.class.php';
+require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/orm/item_type.class.php';
 
 /**
  * @brief Data object of Book detail information

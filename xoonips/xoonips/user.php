@@ -26,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 require_once __DIR__ . '/include/notification.inc.php';
 require_once __DIR__ . '/class/base/gtickets.php';
 require_once __DIR__ . '/include/AL.php';
@@ -46,7 +46,7 @@ $textutil = xoonips_getUtility('text');
 if ($op === 'main') {
     if (!$xoopsUser) {
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_userform.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
         if (isset($_COOKIE[$myxoopsConfig['usercookie']])) {
             $xoopsTpl->assign('usercookie', $_COOKIE[$myxoopsConfig['usercookie']]);
         }
@@ -54,7 +54,7 @@ if ($op === 'main') {
         if (null !== $xoops_redirect) {
             $xoopsTpl->assign('redirect_page', $textutil->html_special_chars($xoops_redirect));
         }
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH . '/footer.php';
     } elseif ($xoopsUser) {
         header('Location: ' . XOOPS_URL . '/modules/xoonips/showusers.php?uid=' . $xoopsUser->getVar('uid'));
     }
@@ -62,7 +62,7 @@ if ($op === 'main') {
 }
 
 if ($op === 'login') {
-    include_once XOOPS_ROOT_PATH . '/modules/xoonips/include/checklogin.php';
+    require_once XOOPS_ROOT_PATH . '/modules/xoonips/include/checklogin.php';
     exit();
 }
 
@@ -153,7 +153,7 @@ if ($op === 'actv') {
                 $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
                 $certify_user   = $xconfigHandler->getValue('certify_user');
                 $moderator_gid  = $xconfigHandler->getValue('moderator_gid');
-                include XOOPS_ROOT_PATH . '/header.php';
+                require XOOPS_ROOT_PATH . '/header.php';
                 // To send e-mail to activated user.
                 if ($certify_user === 'on') {
                     // To send a e-mail to users who are belong to the group
@@ -193,7 +193,7 @@ if ($op === 'actv') {
                         redirect_header('user.php', 5, _MD_XOONIPS_ACTIVATED_BY_USER_CERTIFIED_AUTO, false);
                     }
                 }
-                include XOOPS_ROOT_PATH . '/footer.php';
+                require XOOPS_ROOT_PATH . '/footer.php';
             } else {
                 redirect_header(XOOPS_URL . '/', 3, 'Activation failed!');
             }
@@ -216,13 +216,13 @@ if ($op === 'delete_confirm') {
         redirect_header(XOOPS_URL . "/modules/xoonips/userinfo.php?uid={$uid}", 3, _MD_XOONIPS_ACCOUNT_DELETE_ITEM_HANDOVER);
     }
 
-    include __DIR__ . '/../../header.php';
+    require __DIR__ . '/../../header.php';
     $GLOBALS['xoopsOption']['template_main'] = 'xoonips_user_delete.tpl';
 
     $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, 'xoonips_certify_user_uncertfy');
     $xoopsTpl->assign('token_ticket', $token_ticket);
     $xoopsTpl->assign('delete_uid', $_SESSION['xoopsUserId']);
-    include __DIR__ . '/../../footer.php';
+    require __DIR__ . '/../../footer.php';
     exit();
 }
 

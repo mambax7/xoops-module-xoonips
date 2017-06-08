@@ -25,9 +25,9 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/viewfactory.class.php';
-include_once __DIR__ . '/logicfactory.class.php';
-include_once __DIR__ . '/../xoonipsresponse.class.php';
+require_once __DIR__ . '/viewfactory.class.php';
+require_once __DIR__ . '/logicfactory.class.php';
+require_once __DIR__ . '/../xoonipsresponse.class.php';
 
 /**
  * Class XooNIpsAction

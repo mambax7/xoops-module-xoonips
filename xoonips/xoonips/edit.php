@@ -29,12 +29,12 @@
 session_cache_limiter('private');
 session_cache_expire(5);
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
-include_once __DIR__ . '/include/item_limit_check.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/include/extra_param.inc.php';
+require_once __DIR__ . '/include/item_limit_check.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/include/extra_param.inc.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
@@ -102,7 +102,7 @@ if ($xoopsUser->getVar('uid') != $item['uid']) {
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_edit.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 
 //Add group_owner_permission
 $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
@@ -126,7 +126,7 @@ if (!$item_type) {
     die('item type is not found');
 }
 
-include_once XOOPS_ROOT_PATH . '/modules/' . $item_type->get('viewphp');
+require_once XOOPS_ROOT_PATH . '/modules/' . $item_type->get('viewphp');
 $func = $item_type->get('name') . 'GetEditBlock';
 $body = $func($item_id);
 
@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 header('Content-Type:text/html; charset=' . _CHARSET);
 //echo "\r\n"; flush();
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';
 
 /**
  * find whether that user have permission to read private index of the item

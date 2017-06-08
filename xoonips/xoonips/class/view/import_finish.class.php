@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/view.class.php';
+require_once __DIR__ . '/../base/view.class.php';
 
 /**
  * Class XooNIpsViewImportFinish
@@ -49,7 +49,7 @@ class XooNIpsViewImportFinish extends XooNIpsView
         global $xoopsOption, $xoopsConfig, $xoopsUser, $xoopsUserIsAdmin, $xoopsLogger, $xoopsTpl;
         $textutil                                = xoonips_getUtility('text');
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_import_finish.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
         $xoopsTpl->assign('result', $this->_params['result']);
         $xoopsTpl->assign('begin_time', $this->_params['begin_time']);
         $xoopsTpl->assign('finish_time', $this->_params['finish_time']);
@@ -59,7 +59,7 @@ class XooNIpsViewImportFinish extends XooNIpsView
         $xoopsTpl->assign('log', $textutil->html_special_chars($this->_get_item_log()));
         $xoopsTpl->assign('item_urls', $this->_get_item_urls());
         $xoopsTpl->assign('errors', $this->_params['errors']);
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH . '/footer.php';
     }
 
     /**

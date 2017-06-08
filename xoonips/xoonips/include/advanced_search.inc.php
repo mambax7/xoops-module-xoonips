@@ -25,8 +25,8 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/AL.php';
-include_once __DIR__ . '/lib.php';
+require_once __DIR__ . '/AL.php';
+require_once __DIR__ . '/lib.php';
 
 if (!defined('XOOPS_ROOT_PATH')) {
     exit();
@@ -45,7 +45,7 @@ $search_blocks = array();
 $search_var    = array();
 foreach ($itemtypes as $itemtype) {
     $modname = $itemtype->get('name');
-    include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype->get('viewphp');
+    require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype->get('viewphp');
     $fname = $modname . 'GetAdvancedSearchBlock';
     if (function_exists($fname)) {
         $search_blocks[] = $fname($search_var);

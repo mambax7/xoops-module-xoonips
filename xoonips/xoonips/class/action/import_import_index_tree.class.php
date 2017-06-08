@@ -25,10 +25,10 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/action.class.php';
-include_once __DIR__ . '/../base/logicfactory.class.php';
+require_once __DIR__ . '/../base/action.class.php';
+require_once __DIR__ . '/../base/logicfactory.class.php';
 require_once __DIR__ . '/../base/gtickets.php';
-include_once __DIR__ . '/../../include/imexport.php';
+require_once __DIR__ . '/../../include/imexport.php';
 
 /**
  * Class XooNIpsActionImportImportIndexTree
@@ -70,7 +70,7 @@ class XooNIpsActionImportImportIndexTree extends XooNIpsAction
 
     public function doAction()
     {
-        include_once __DIR__ . '/../../include/imexport.php';
+        require_once __DIR__ . '/../../include/imexport.php';
         global $xoopsDB, $xoopsConfig, $xoopsUser, $xoopsLogger, $xoopsUserIsAdmin;
 
         if (!isset($_SESSION['xoonips_import_file_path'])
@@ -91,7 +91,7 @@ class XooNIpsActionImportImportIndexTree extends XooNIpsAction
             redirect_header('import.php?action=default', 3, _MD_XOONIPS_IMPORT_FILE_NOT_FOUND);
         }
 
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
 
         //
         // start transaction
@@ -142,7 +142,7 @@ class XooNIpsActionImportImportIndexTree extends XooNIpsAction
             }
             echo "</p>\n";
         }
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH . '/footer.php';
     }
 
     /**

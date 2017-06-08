@@ -141,8 +141,8 @@ function download_unlink($file_path)
 // avoid IE bug1 -> http://jp2.php.net/header  Harry 10-Dec-2004 03:26
 session_cache_limiter('none');
 
-include __DIR__ . '/include/common.inc.php';
-include __DIR__ . '/class/base/gtickets.php';
+require __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/class/base/gtickets.php';
 
 $formdata    = xoonips_getUtility('formdata');
 $download    = xoonips_getUtility('download');
@@ -208,7 +208,7 @@ if (null === $itemtype_viewphp) {
     // maybe this is index
     download_error(500, _MD_XOONIPS_ITEM_BAD_FILE_TYPE);
 }
-include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype_viewphp;
+require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype_viewphp;
 
 // check the download limitation
 $dllimit_func = $itemtype_name . 'GetAttachmentDownloadLimitOption';

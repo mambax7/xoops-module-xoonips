@@ -30,8 +30,8 @@
 // avoid IE's bug. see: http://jp2.php.net/header  Harry 10-Dec-2004 03:26
 session_cache_limiter('none');
 
-include __DIR__ . '/include/common.inc.php';
-include __DIR__ . '/include/eventlog.inc.php';
+require __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/eventlog.inc.php';
 
 $textutil = xoonips_getUtility('text');
 
@@ -84,12 +84,12 @@ switch ($mode) {
         }
         $breadcrumbs[]                           = array('name' => _MD_XOONIPS_BREADCRUMBS_EVENTLOG_GRAPH);
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_event_graph.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
         $xoopsTpl->assign('xoops_breadcrumbs', $breadcrumbs);
         $xoopsTpl->assign('log_type_id', $log_type_id);
         $xoopsTpl->assign('start_time', $start_time);
         $xoopsTpl->assign('end_time', $end_time);
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH . '/footer.php';
         break;
     case 'graph':
         // show graph
@@ -107,7 +107,7 @@ switch ($mode) {
         } else {
             $total = xoonips_eventlog_count_items();
         }
-        include __DIR__ . '/class/base/pagenavi.class.php';
+        require __DIR__ . '/class/base/pagenavi.class.php';
         $pagenavi = new XooNIpsPageNavi($total, $limit, $page);
         $start    = $pagenavi->getStart();
         $limit    = $pagenavi->getLimit();
@@ -141,7 +141,7 @@ switch ($mode) {
         $navi                                    = $pagenavi->getTemplateVars(10);
         $breadcrumbs[]                           = array('name' => _MD_XOONIPS_BREADCRUMBS_EVENTLOG_LIST);
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_event_view.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
         $xoopsTpl->assign('xoops_breadcrumbs', $breadcrumbs);
         $xoopsTpl->assign('navi', $navi);
         $xoopsTpl->assign('navi_limits', array(
@@ -152,19 +152,19 @@ switch ($mode) {
         $xoopsTpl->assign('is_users', $is_users);
         $xoopsTpl->assign('users', $users);
         $xoopsTpl->assign('items', $items);
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH . '/footer.php';
         break;
     default:
         // main page
         $usercnt                                 = xoonips_eventlog_count_users();
         $itemcnt                                 = xoonips_eventlog_count_items();
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_event_log.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
         $xoopsTpl->assign('xoops_breadcrumbs', $breadcrumbs);
         $xoopsTpl->assign('time', time());
         $xoopsTpl->assign('start_year', 2005);
         $xoopsTpl->assign('end_year', date('Y'));
         $xoopsTpl->assign('num_of_user', $usercnt);
         $xoopsTpl->assign('num_of_item', $itemcnt);
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH . '/footer.php';
 }

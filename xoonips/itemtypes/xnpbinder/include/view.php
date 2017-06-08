@@ -33,9 +33,9 @@ $xoonips_path     = dirname($itemtype_path) . '/xoonips';
 $langman = xoonips_getUtility('languagemanager');
 $langman->read('main.php', $itemtype_dirname);
 
-include_once $xoonips_path . '/include/extra_param.inc.php';
-include_once $xoonips_path . '/class/xoonips_item_event_dispatcher.class.php';
-include_once dirname(__DIR__) . '/class/item_event_listener.class.php';
+require_once $xoonips_path . '/include/extra_param.inc.php';
+require_once $xoonips_path . '/class/xoonips_item_event_dispatcher.class.php';
+require_once dirname(__DIR__) . '/class/item_event_listener.class.php';
 
 $dispatcher = XooNIpsItemEventDispatcher::getInstance();
 $dispatcher->registerEvent(new XNPBinderItemEventListener());
@@ -725,7 +725,7 @@ function xnpbinderGetMetadata($prefix, $item_id)
  */
 function xnpbidner_get_child_item_urls($binder_item_id)
 {
-    include_once dirname(dirname(__DIR__)) . '/xoonips/include/lib.php';
+    require_once dirname(dirname(__DIR__)) . '/xoonips/include/lib.php';
 
     $binder_item_linkHandler = xoonips_getOrmHandler('xnpbinder', 'binder_item_link');
     $criteria                = new Criteria('binder_id', $binder_item_id);
@@ -906,7 +906,7 @@ function xnpbinder_get_to_be_registered_items()
     foreach ($items as $i) {
         if (array_key_exists($i['item_type_id'], $itemtypes)) {
             $itemtype = $itemtypes[$i['item_type_id']];
-            include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+            require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
             eval("\$body = " . $itemtype['name'] . "GetListBlock( \$i );");
             $item_details[] = array(
                 'item_id' => $i['item_id'],
@@ -958,7 +958,7 @@ function xnpbinder_get_registered_items($binder_id)
     foreach ($items as $i) {
         if (array_key_exists($i['item_type_id'], $itemtypes)) {
             $itemtype = $itemtypes[$i['item_type_id']];
-            include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+            require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
             eval("\$body = " . $itemtype['name'] . "GetListBlock( \$i );");
             $item_details[] = array(
                 'item_id' => $i['item_id'],

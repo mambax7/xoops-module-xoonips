@@ -26,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
 $myuid = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
 
@@ -60,7 +60,7 @@ if (!is_object($thisUser)) {
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_userinfo.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 if ($uid == $myuid || $is_admin) {
     $xoopsTpl->assign('user_ownpage', true);
     $xoopsTpl->assign('lang_editprofile', _US_EDITPROFILE);
@@ -256,4 +256,4 @@ foreach ($mids as $mid) {
         unset($module);
     }
 }
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';

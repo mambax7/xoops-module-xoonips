@@ -27,7 +27,7 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include XOOPS_ROOT_PATH . '/modules/xoonips/include/iteminfo.inc.php';
+require XOOPS_ROOT_PATH . '/modules/xoonips/include/iteminfo.inc.php';
 
 //
 //

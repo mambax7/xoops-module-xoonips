@@ -29,7 +29,7 @@ if (!defined('XOOPS_ROOT_PATH')) {
 }
 
 // for xnpGetFileInfo
-include_once __DIR__ . '/../../include/lib.php';
+require_once __DIR__ . '/../../include/lib.php';
 
 /**
  *

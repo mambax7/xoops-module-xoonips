@@ -43,5 +43,5 @@ $uid      = $get_vals['uid'];
 $title = _AM_XOONIPS_MAINTENANCE_ACCOUNT_MODIFY_TITLE;
 
 // load edit form
-include __DIR__ . '/maintenance_account_edit.php';
+require __DIR__ . '/maintenance_account_edit.php';
 exit();

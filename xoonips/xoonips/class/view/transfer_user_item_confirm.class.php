@@ -25,8 +25,8 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/transfer.class.php';
-include_once __DIR__ . '/../base/gtickets.php';
+require_once __DIR__ . '/transfer.class.php';
+require_once __DIR__ . '/../base/gtickets.php';
 
 /**
  *
@@ -72,7 +72,7 @@ class XooNIpsViewTransferUserItemConfirm extends XooNIpsViewTransfer
         $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
 
         $xoopsOption['template_main'] = 'xoonips_transfer_user_item_confirm.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
         $this->setXooNIpsStyleSheet($xoopsTpl);
 
         $xoopsTpl->assign('token_hidden', $GLOBALS['xoopsGTicket']->getTicketHtml(__LINE__, 600, 'xoonips_transfer_user_item_confirm'));
@@ -84,7 +84,7 @@ class XooNIpsViewTransferUserItemConfirm extends XooNIpsViewTransfer
         foreach ($this->_params as $key => $val) {
             $xoopsTpl->assign($key, $val);
         }
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH . '/footer.php';
     }
 
     /**

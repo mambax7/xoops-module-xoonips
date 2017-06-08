@@ -28,11 +28,11 @@
 //  page for confirm to register items
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
-include_once __DIR__ . '/include/item_limit_check.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/include/item_limit_check.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
 require_once __DIR__ . '/class/base/gtickets.php';
 
 $xgroupHandler  = xoonips_getHandler('xoonips', 'group');
@@ -86,7 +86,7 @@ if (!isset($itemtype)) {
 }
 
 //include view.php
-include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
 
 //check required field
 $title = $formdata->getValue('post', 'title', 's', false);
@@ -267,7 +267,7 @@ if (isset($op) && $op === 'register') {
     //prepare template
     $GLOBALS['xoopsOption']['template_main'] = 'xoonips_confirm_register.tpl';
 
-    include XOOPS_ROOT_PATH . '/header.php';
+    require XOOPS_ROOT_PATH . '/header.php';
 
     if ($param_check_result) {
         // select /Private and notice
@@ -310,7 +310,7 @@ if (isset($op) && $op === 'register') {
         }
     }
 
-    include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+    require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
     eval("\$body = " . $modname . 'GetConfirmBlock(false);');
     $xoopsTpl->assign('body', $body);
     ////send basic information using hidden to next(before)page.
@@ -347,5 +347,5 @@ if (isset($op) && $op === 'register') {
         $xoopsTpl->assign('register_button_visible', false);
     }
 
-    include XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH . '/footer.php';
 }

@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/relatedobject.class.php';
+require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/relatedobject.class.php';
 
 define('XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL', 'transfer_item_detail');
 define('XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST', 'transfer_item_list');
@@ -184,7 +184,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
         parent::__construct($db);
         $this->db = $db;
         if (isset($module) && null === $this->iteminfo) {
-            include XOOPS_ROOT_PATH . '/modules/' . $module . '/iteminfo.php';
+            require XOOPS_ROOT_PATH . '/modules/' . $module . '/iteminfo.php';
             $this->iteminfo = $iteminfo;
             //
             // add orm handler according to $iteminfo['orm']
@@ -1018,7 +1018,7 @@ class XooNIpsItemInfoCompo extends XooNIpsRelatedObject
     public function __construct($module = null)
     {
         if (isset($module) && null === $this->iteminfo) {
-            include XOOPS_ROOT_PATH . '/modules/' . $module . '/iteminfo.php';
+            require XOOPS_ROOT_PATH . '/modules/' . $module . '/iteminfo.php';
             $this->iteminfo = $iteminfo;
             // add orm object according to $this -> iteminfo['orm']
             foreach ($this->iteminfo['orm'] as $orminfo) {

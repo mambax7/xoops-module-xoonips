@@ -38,10 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && (isset($_GET['item_type_id']) || iss
 }
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/include/item_limit_check.php';
+require __DIR__ . '/include/common.inc.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/include/item_limit_check.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
@@ -110,7 +110,7 @@ $xoonipsURL                   = '';
 $xoonipsCheckPrivateHandlerId = 'PrivateIndexCheckedHandler'; //see also xoonips_register.tpl
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_register.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 
 //check private_item_number_limit
 if (available_space_of_private_item() == 0) {
@@ -121,7 +121,7 @@ if (available_space_of_private_item() == 0) {
     $xoopsTpl->assign('system_message', $system_message);
     $xoopsTpl->assign('scrollX', 0);
     $xoopsTpl->assign('scrollY', 0);
-    include XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH . '/footer.php';
     exit();
 }
 
@@ -140,7 +140,7 @@ $xoopsTpl->assign('prev_url', 'register.php');
 $xoopsTpl->assign('this_url', XOOPS_URL . '/modules/xoonips/register.php');
 $xoopsTpl->assign('accept_charset', xnpGetMacSafariAcceptCharset());
 
-include_once XOOPS_ROOT_PATH . '/modules/' . $item_type->get('viewphp');
+require_once XOOPS_ROOT_PATH . '/modules/' . $item_type->get('viewphp');
 $func = $item_type->get('name') . 'GetRegisterBlock';
 $body = $func();
 
@@ -187,4 +187,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 header('Content-Type:text/html; charset=' . _CHARSET);
 //echo "\r\n"; flush();
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';

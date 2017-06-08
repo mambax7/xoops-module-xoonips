@@ -26,10 +26,10 @@
 // ------------------------------------------------------------------------- //
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/class/base/pagenavi.class.php';
+require __DIR__ . '/include/common.inc.php';
+require_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/class/base/pagenavi.class.php';
 
 $myuid = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
 
@@ -122,7 +122,7 @@ if (count($item_counts) != 0) {
 
 // assign template
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_showusers.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 $xoopsTpl->assign('xoops_breadcrumbs', $breadcrumbs);
 $xoopsTpl->assign('is_owner', $is_owner);
 $xoopsTpl->assign('is_editable', $is_editable);
@@ -140,7 +140,7 @@ $xoopsTpl->assign('cvitaes', _xoonips_showusers_get_cvitaes($uid));
 $xoopsTpl->assign('tabs', $pagetabs);
 $xoopsTpl->assign('navi', $pagenavi);
 $xoopsTpl->assign('publications', itemid2ListBlock($item_ids));
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';
 exit();
 
 /**

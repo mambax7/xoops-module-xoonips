@@ -28,13 +28,13 @@
 //  page to display item's detail
 
 $GLOBALS['xoopsOption']['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/include/notification.inc.php';
-include_once __DIR__ . '/class/xoonipsresponse.class.php';
-include_once __DIR__ . '/class/xoonipserror.class.php';
-include_once __DIR__ . '/class/base/logicfactory.class.php';
+require __DIR__ . '/include/common.inc.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/include/notification.inc.php';
+require_once __DIR__ . '/class/xoonipsresponse.class.php';
+require_once __DIR__ . '/class/xoonipserror.class.php';
+require_once __DIR__ . '/class/base/logicfactory.class.php';
 
 $xnpsid   = $_SESSION['XNPSID'];
 $textutil = xoonips_getUtility('text');
@@ -177,7 +177,7 @@ if ($op === 'print') {
     $xoopsTpl->assign('meta_author', $myxoopsConfigMetaFooter['meta_author']);
     $xoopsTpl->assign('sitename', $myxoopsConfig['sitename']);
 
-    include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+    require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
     eval("\$body = " . $modname . "GetPrinterFriendlyDetailBlock( \$item_id );");
     echo "</head><body onload='window.print();'>\n";
     $val = '';
@@ -191,7 +191,7 @@ if ($op === 'print') {
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_detail.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 
 $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
 if ($item_lockHandler->isLocked($item_id)) {
@@ -252,14 +252,14 @@ function genSelectLabels($index)
 // display of 'add to public'
 if ($op == '' || $op === 'download') {
     // Display only 'Binder -> Binders'. Display 'Not Binder -> Public not Binders'.
-    include_once __DIR__ . '/include/gentree.php';
+    require_once __DIR__ . '/include/gentree.php';
     $index     = array('open_level' => OL_PUBLIC);
     $indexTree = genSameAreaIndexTree($xnpsid, $uid, $index);
     array_walk($indexTree, 'genSelectLabels');
     $xoopsTpl->assign('index_tree', $indexTree);
 }
 
-include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
 eval("\$body = " . $modname . "GetDetailBlock( \$item_id );");
 $xoopsTpl->assign('body', $body);
 
@@ -298,7 +298,7 @@ $xoopsTpl->assign('dir_name', $com_dir_name);
 $xoopsTpl->assign('forum_id', $com_forum_id);
 //end of item comment function
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';
 
 /**
  * @param $item_id

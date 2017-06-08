@@ -28,17 +28,17 @@
 //  Process of Harvest in OAI-PMH
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/include/item_limit_check.php';
+require __DIR__ . '/include/common.inc.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/include/item_limit_check.php';
 
 // how to show output results
 //  $mode='text' : plain text for external command
 //  $mode='html' : html for web browser
 $mode = 'text';
 
-include_once __DIR__ . '/class/base/oaipmh.class.php';
+require_once __DIR__ . '/class/base/oaipmh.class.php';
 
 // if connection is guest access then basic authentication required
 if (!$xoopsUser) {
@@ -78,7 +78,7 @@ if (!$is_admin && !$is_moderator) {
 global $xoopsDB;
 
 if ($mode === 'html') {
-    include XOOPS_ROOT_PATH . '/header.php';
+    require XOOPS_ROOT_PATH . '/header.php';
     echo "<p>\n";
     echo '<h3>' . _MD_XOONIPS_OAIPMH_HARVEST_RESULT . "</h3>\n";
     echo "</p>\n";
@@ -113,5 +113,5 @@ while (list($url) = $xoopsDB->fetchRow($result)) {
 if ($mode === 'html') {
     echo "</p>\n";
     echo "<a href='admin/maintenance.php?page=oaipmh'>" . _MD_XOONIPS_BACK_TO_OAIPMH_CONFIGURATION . '</a><br>';
-    include XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH . '/footer.php';
 }

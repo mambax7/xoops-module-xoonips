@@ -41,10 +41,10 @@
  */
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
-include __DIR__ . '/class/base/gtickets.php';
+require __DIR__ . '/include/common.inc.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
+require __DIR__ . '/class/base/gtickets.php';
 
 $xgroupHandler = xoonips_getHandler('xoonips', 'group');
 
@@ -204,7 +204,7 @@ $xoonipsEditIndex   = true;
 $xoonipsSelectedTab = xoonipsGetTopIndex($xid);
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_editindex.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 
 $error_messages = array();
 

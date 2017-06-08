@@ -64,8 +64,8 @@
 
 */
 
-include __DIR__ . '/include/common.inc.php';
-include __DIR__ . '/include/AL.php';
+require __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/AL.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
@@ -154,7 +154,7 @@ if ($uid == UID_GUEST && !public_item_target_user_all()) {
 }
 
 // get index tree structure
-include_once __DIR__ . '/include/gentree.php';
+require_once __DIR__ . '/include/gentree.php';
 $indexes      = genIndexTree0($xnpsid);
 $is_moderator = xnp_is_moderator($xnpsid, $uid);
 if ($is_moderator && $get_vals['puid'] > 0) {

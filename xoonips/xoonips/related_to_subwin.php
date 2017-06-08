@@ -25,10 +25,10 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
 
 // If not a user, redirect
 if (!$xoopsUser) {
@@ -45,7 +45,7 @@ xoops_header(false);
         <td id="leftcolumn">
             <?php
             $xoopsConfig['nocommon'] = '';
-            include XOOPS_ROOT_PATH . '/header.php';
+            require XOOPS_ROOT_PATH . '/header.php';
 
             require_once __DIR__ . '/../../class/template.php';
             require_once __DIR__ . '/blocks/xoonips_blocks.php';
@@ -125,7 +125,7 @@ xoops_header(false);
             }
             $formdata->set('post', 'index_id', $formdata->getValue('both', 'index_id', 'i', false));
 
-            include __DIR__ . '/include/itemselect.inc.php';
+            require __DIR__ . '/include/itemselect.inc.php';
             $xoopsTpl->display('db:xoonips_related_to_itemselect.tpl');
 
             ?>

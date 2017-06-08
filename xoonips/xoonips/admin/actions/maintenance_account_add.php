@@ -32,5 +32,5 @@ $uid   = 0;
 $title = _AM_XOONIPS_MAINTENANCE_ACCOUNT_ADD_TITLE;
 
 // load edit form
-include __DIR__ . '/maintenance_account_edit.php';
+require __DIR__ . '/maintenance_account_edit.php';
 exit();

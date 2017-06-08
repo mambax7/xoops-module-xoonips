@@ -28,8 +28,8 @@ if (!defined('XOOPS_ROOT_PATH')) {
     exit();
 }
 
-include __DIR__ . '/../../condefs.php';
-include __DIR__ . '/../../include/functions.php';
+require __DIR__ . '/../../condefs.php';
+require __DIR__ . '/../../include/functions.php';
 
 // initialize xoonips session
 $xsessionHandler = xoonips_getOrmHandler('xoonips', 'session');

@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include __DIR__ . '/../../../include/cp_header.php';
+require __DIR__ . '/../../../include/cp_header.php';
 
 $title = _AM_XNPSTIMULUS_TITLE;
 

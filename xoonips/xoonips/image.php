@@ -32,7 +32,7 @@
  *
  */
 
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
@@ -264,7 +264,7 @@ if (!empty($thumbnail)) {
         if (empty($viewphp)) {
             image_error(500);
         }
-        include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+        require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
         $fname_dllimit = "${name}GetAttachmentDownloadLimitOption";
         if (function_exists($fname_dllimit) && $fname_dllimit($item_id) == 1) {
 

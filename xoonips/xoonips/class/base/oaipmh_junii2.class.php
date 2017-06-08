@@ -74,7 +74,7 @@ class JUNII2Handler extends OAIPMHHandler
                 }
             }
 
-            include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+            require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
 
             $f = $itemtype['name'] . 'SupportMetadataFormat';
             if (!function_exists($f)) {
@@ -147,7 +147,7 @@ class JUNII2Handler extends OAIPMHHandler
             );
         }
 
-        include_once XOOPS_ROOT_PATH . '/modules/' . $parsed['item_type_viewphp'];
+        require_once XOOPS_ROOT_PATH . '/modules/' . $parsed['item_type_viewphp'];
 
         $f = $parsed['item_type_name'] . 'GetMetadata';
         if (!function_exists($f)) {

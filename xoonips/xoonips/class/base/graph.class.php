@@ -30,7 +30,7 @@ if (!defined('XOOPS_ROOT_PATH')) {
 }
 
 if (!class_exists('XooNIpsGraphLib')) {
-    include __DIR__ . '/graphlib.class.php';
+    require __DIR__ . '/graphlib.class.php';
 
     /**
      * basic data class for graph drawing

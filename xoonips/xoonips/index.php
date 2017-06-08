@@ -25,10 +25,10 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 if (is_object($xoopsUser)) {
@@ -38,11 +38,11 @@ if (is_object($xoopsUser)) {
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_index.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 
 // exit at here if guest can't access /Public tree
 if (!xnp_is_valid_session_id($xnpsid)) {
-    include XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH . '/footer.php';
     return;
 }
 
@@ -71,4 +71,4 @@ if (count($blocks) != 0) {
 }
 
 $xoopsTpl->assign('xoonips_editprofile_url', XOOPS_URL . '/modules/xoonips/edituser.php?uid=' . $uid);
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';

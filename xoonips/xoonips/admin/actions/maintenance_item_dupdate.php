@@ -36,8 +36,8 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 }
 
 // load libraries
-include __DIR__ . '/../../include/lib.php';
-include __DIR__ . '/../../include/libitem.php';
+require __DIR__ . '/../../include/lib.php';
+require __DIR__ . '/../../include/libitem.php';
 require_once __DIR__ . '/../../class/base/logicfactory.class.php';
 require_once __DIR__ . '/../../class/xoonipsresponse.class.php';
 require_once __DIR__ . '/../../class/xoonipserror.class.php';

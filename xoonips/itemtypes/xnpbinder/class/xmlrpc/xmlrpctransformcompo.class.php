@@ -27,7 +27,7 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once dirname(dirname(__DIR__)) . '/include/view.php';
+require_once dirname(dirname(__DIR__)) . '/include/view.php';
 
 /**
  *

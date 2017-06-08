@@ -283,7 +283,7 @@ class XooNIpsAdminFileHandler extends XooNIpsFileHandler
                 }
                 // load module definition
                 $module = array();
-                include $fs_path . '/' . $file;
+                require $fs_path . '/' . $file;
                 $fs_name           = $module['name'];
                 $plugins[$fs_name] = $module;
                 // load indexer class

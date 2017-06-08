@@ -26,9 +26,9 @@
 // ------------------------------------------------------------------------- //
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
+require __DIR__ . '/include/common.inc.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
@@ -58,7 +58,7 @@ if (xnp_is_moderator($xnpsid, $_SESSION['xoopsUserId']) || $xoopsUser->isAdmin($
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_editcvitae.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 
 $op = $formdata->getValue('both', 'op', 's', false);
 

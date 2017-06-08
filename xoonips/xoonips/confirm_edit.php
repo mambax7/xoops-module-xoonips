@@ -28,11 +28,11 @@
 //  page for confirm to edit items
 
 $GLOBALS['xoopsOption']['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
-include_once __DIR__ . '/include/item_limit_check.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/include/item_limit_check.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
 
 $xnpsid         = $_SESSION['XNPSID'];
 $system_message = '';
@@ -100,7 +100,7 @@ if (xnp_get_item_types($itemtypes) != RES_OK) {
 }
 
 // include view.php
-include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
 
 $title = $formdata->getValue('post', 'title', 's', false);
 if (!isset($title)) {
@@ -283,7 +283,7 @@ if ($op === 'update') {
 
     //prepare template
     $GLOBALS['xoopsOption']['template_main'] = 'xoonips_confirm_edit.tpl';
-    include XOOPS_ROOT_PATH . '/header.php';
+    require XOOPS_ROOT_PATH . '/header.php';
     $xoopsTpl->assign('item_id', $item_id);
 
     // select /Private and notice that /Private is selected automatically
@@ -357,7 +357,7 @@ if ($op === 'update') {
         $xoopsTpl->assign('update_button_visible', false);
     }
 
-    include XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH . '/footer.php';
 }
 /**
  * find whether that user have permission to read private index of the item

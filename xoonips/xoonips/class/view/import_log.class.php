@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/view.class.php';
+require_once __DIR__ . '/../base/view.class.php';
 
 /**
  * Class XooNIpsViewImportLog
@@ -51,23 +51,23 @@ class XooNIpsViewImportLog extends XooNIpsView
         $textutil                                = xoonips_getUtility('text');
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_import_log.tpl';
         if ($this->_params['result']) {
-            include XOOPS_ROOT_PATH . '/header.php';
+            require XOOPS_ROOT_PATH . '/header.php';
             $xoopsTpl->assign('result', $this->_params['result']);
             $xoopsTpl->assign('filename', $textutil->html_special_chars($this->_params['filename']));
             $xoopsTpl->assign('number_of_items', $this->_number_of_items());
             $xoopsTpl->assign('uname', $textutil->html_special_chars($this->_params['uname']));
             $xoopsTpl->assign('errors', $this->_params['errors']);
             $xoopsTpl->assign('log', $textutil->html_special_chars($this->_get_item_log()));
-            include XOOPS_ROOT_PATH . '/footer.php';
+            require XOOPS_ROOT_PATH . '/footer.php';
         } else {
-            include XOOPS_ROOT_PATH . '/header.php';
+            require XOOPS_ROOT_PATH . '/header.php';
             $xoopsTpl->assign('result', false);
             $xoopsTpl->assign('filename', $this->_params['filename']);
             $xoopsTpl->assign('number_of_items', $this->_number_of_items());
             $xoopsTpl->assign('uname', $this->_params['uname']);
             $xoopsTpl->assign('errors', $this->_params['errors']);
             $xoopsTpl->assign('log', $this->_get_item_log());
-            include XOOPS_ROOT_PATH . '/footer.php';
+            require XOOPS_ROOT_PATH . '/footer.php';
         }
     }
 

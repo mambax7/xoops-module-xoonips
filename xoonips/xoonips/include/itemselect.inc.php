@@ -29,7 +29,7 @@ if (!defined('XOOPS_ROOT_PATH')) {
     exit();
 }
 
-include_once __DIR__ . '/extra_param.inc.php';
+require_once __DIR__ . '/extra_param.inc.php';
 /*
  *
  * $_POST['op'] :
@@ -165,7 +165,7 @@ switch ($op) {
         $xoopsTpl->assign('error_message', $textutil->html_special_chars($errorMessage));
 
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_itemselect_listitem.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
         break;
     case 'quicksearch':
         $errorMessage = '';
@@ -303,7 +303,7 @@ switch ($op) {
         $xoopsTpl->assign('print_enabled', true);
         $xoopsTpl->assign('op', 'itemtypesearch');
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_itemselect_listitem.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
         $submit_url                              = 'itemselect.php';
         break;
     case 'itemsubtypesearch':
@@ -311,7 +311,7 @@ switch ($op) {
         $xoopsTpl->assign('print_enabled', true);
         $xoopsTpl->assign('op', 'itemsubtypesearch');
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_itemselect_listitem.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
         $submit_url                              = 'itemselect.php';
         break;
     case 'add_selected_item':
@@ -435,7 +435,7 @@ switch ($op) {
         $iids = array();
         xnp_get_own_public_item_id($xnpsid, $uid, $iids);
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_itemselect_listitem.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH . '/header.php';
         break;
 }
 
@@ -499,7 +499,7 @@ if ($search_tab === 'metadata' || $search_itemtype === 'metadata') {
             if (array_key_exists($i['item_type_id'], $itemtypes)) {
                 $itemtype = $itemtypes[$i['item_type_id']];
                 $modname  = $itemtype['name'];
-                include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+                require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
                 if ($print && function_exists($modname . 'GetPrinterFriendlyListBlock')) {
                     eval("\$html = " . $modname . "GetPrinterFriendlyListBlock( \$i );");
                 } elseif (function_exists($modname . 'GetListBlock')) {

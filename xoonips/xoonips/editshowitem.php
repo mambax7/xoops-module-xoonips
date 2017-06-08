@@ -24,12 +24,12 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
-include_once __DIR__ . '/class/base/pagenavi.class.php';
-include_once __DIR__ . '/class/base/gtickets.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/class/base/pagenavi.class.php';
+require_once __DIR__ . '/class/base/gtickets.php';
+require_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/include/lib.php';
 
 $myuid = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
 if ($myuid == UID_GUEST) {
@@ -137,7 +137,7 @@ foreach ($item_type_ids as $it_id) {
 // assign template values
 $token_ticket                            = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_editshowitem.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 // create item list block after loaded header.php,
 // because $GLOBALS['xoopsTpl'] variable is used in item list block generator
 $item_types              = array();
@@ -174,7 +174,7 @@ $xoopsTpl->assign('hidden_checked_item_ids', $hidden_checked_item_ids);
 $xoopsTpl->assign('total_item_num', $total_item_count);
 $xoopsTpl->assign('checked_item_num', count($checked_item_ids));
 $xoopsTpl->assign('item_types', $item_types);
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';
 exit();
 
 /**

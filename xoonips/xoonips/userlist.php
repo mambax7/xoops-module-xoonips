@@ -26,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
 $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
 
@@ -72,9 +72,9 @@ foreach ($posi_objs as $posi_obj) {
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_userlist.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 
 $xoopsTpl->assign('is_user', $uid != UID_GUEST);
 $xoopsTpl->assign('userslist', $userslist);
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';

@@ -40,8 +40,8 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 }
 
 // load libraries
-include_once __DIR__ . '/../../include/libitem.php';
-include_once __DIR__ . '/../../include/notification.inc.php';
+require_once __DIR__ . '/../../include/libitem.php';
+require_once __DIR__ . '/../../include/notification.inc.php';
 
 // get requests
 $get_keys = array(

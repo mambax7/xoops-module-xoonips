@@ -31,7 +31,7 @@ if (!defined('XOOPS_ROOT_PATH')) {
 // resources
 $langman->read_pagetype('user.php');
 $langman->read_pagetype('notification.php');
-include XOOPS_ROOT_PATH . '/include/notification_constants.php';
+require XOOPS_ROOT_PATH . '/include/notification_constants.php';
 
 // class files
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
@@ -260,7 +260,7 @@ if ($user === false) {
 }
 if ($uid != 0 && $user['xoops']['level'] == 0) {
     // needs activate
-    include __DIR__ . '/maintenance_account_aconfirm.php';
+    require __DIR__ . '/maintenance_account_aconfirm.php';
     exit();
 }
 

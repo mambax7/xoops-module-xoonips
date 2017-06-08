@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include __DIR__ . '/../../../include/cp_header.php';
+require __DIR__ . '/../../../include/cp_header.php';
 
 // load xoonips
 if (!file_exists('../../xoonips/condefs.php')) {
@@ -36,8 +36,8 @@ if (!file_exists('../../xoonips/condefs.php')) {
     xoops_cp_footer();
     exit();
 }
-include __DIR__ . '/../../xoonips/condefs.php';
-include __DIR__ . '/../../xoonips/include/functions.php';
+require __DIR__ . '/../../xoonips/condefs.php';
+require __DIR__ . '/../../xoonips/include/functions.php';
 
 $textutil = xoonips_getUtility('text');
 

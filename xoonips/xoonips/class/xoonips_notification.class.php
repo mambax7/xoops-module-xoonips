@@ -24,7 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-include_once XOOPS_ROOT_PATH . '/kernel/notification.php';
+require_once XOOPS_ROOT_PATH . '/kernel/notification.php';
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
@@ -122,7 +122,7 @@ class XooNIpsNotificationHandler extends XoopsNotificationHandler
             if (!empty($not_config['tags_file'])) {
                 $tags_file = XOOPS_ROOT_PATH . '/modules/' . $module->getVar('dirname') . '/' . $not_config['tags_file'];
                 if (file_exists($tags_file)) {
-                    include_once $tags_file;
+                    require_once $tags_file;
                     if (!empty($not_config['tags_func'])) {
                         $tags_func = $not_config['tags_func'];
                         if (function_exists($tags_func)) {
@@ -135,7 +135,7 @@ class XooNIpsNotificationHandler extends XoopsNotificationHandler
             if (!empty($not_config['lookup_file'])) {
                 $lookup_file = XOOPS_ROOT_PATH . '/modules/' . $module->getVar('dirname') . '/' . $not_config['lookup_file'];
                 if (file_exists($lookup_file)) {
-                    include_once $lookup_file;
+                    require_once $lookup_file;
                     if (!empty($not_config['lookup_func'])) {
                         $lookup_func = $not_config['lookup_func'];
                         if (function_exists($lookup_func)) {

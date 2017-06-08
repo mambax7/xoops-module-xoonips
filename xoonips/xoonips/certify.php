@@ -24,11 +24,11 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-include __DIR__ . '/include/common.inc.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/include/notification.inc.php';
-include __DIR__ . '/class/base/gtickets.php';
+require __DIR__ . '/include/common.inc.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/include/notification.inc.php';
+require __DIR__ . '/class/base/gtickets.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
@@ -151,7 +151,7 @@ switch ($menu_id) {
 $xil_objs =  $xilHandler->getObjects($criteria, false, '', false, $join);
 $items    = array();
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_certify.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 foreach ($xil_objs as $xil_obj) {
     $iid = $xil_obj->get('item_id');
     $xid = $xil_obj->get('index_id');
@@ -191,4 +191,4 @@ $xoopsTpl->assign('xoonips_editprofile_url', XOOPS_URL . '/modules/xoonips/editu
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, 'xoonips_certify_item');
 $xoopsTpl->assign('token_ticket', $token_ticket);
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';

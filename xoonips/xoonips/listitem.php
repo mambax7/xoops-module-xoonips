@@ -26,11 +26,11 @@
 // ------------------------------------------------------------------------- //
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/../../class/xoopstree.php';
+require_once __DIR__ . '/include/lib.php';
+require_once __DIR__ . '/include/AL.php';
+require_once __DIR__ . '/../../class/xoopstree.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
@@ -121,7 +121,7 @@ if ($print) {
     xoops_header(false);
     echo "</head><body onload='window.print();'>\n";
 } else {
-    include XOOPS_ROOT_PATH . '/header.php';
+    require XOOPS_ROOT_PATH . '/header.php';
 }
 
 $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
@@ -314,7 +314,7 @@ foreach ($items as $i) {
     if (array_key_exists($i['item_type_id'], $itemtypes)) {
         $itemtype = $itemtypes[$i['item_type_id']];
         $modname  = $itemtype['name'];
-        include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+        require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
         if ($print && function_exists($modname . 'GetPrinterFriendlyListBlock')) {
             eval("\$html = " . $modname . "GetPrinterFriendlyListBlock( \$i );");
         } elseif (function_exists($modname . 'GetListBlock')) {
@@ -370,7 +370,7 @@ if ($print) {
     xoops_footer();
     exit();
 } else {
-    include XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH . '/footer.php';
 }
 
 /**

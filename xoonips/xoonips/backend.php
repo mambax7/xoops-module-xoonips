@@ -24,7 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-include __DIR__ . '/include/common.inc.php';
+require __DIR__ . '/include/common.inc.php';
 
 /**
  * @return string
@@ -52,4 +52,4 @@ function xoonips_get_backend()
     return $backend;
 }
 
-include xoonips_get_backend();
+require xoonips_get_backend();

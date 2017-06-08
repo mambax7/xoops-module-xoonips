@@ -29,8 +29,8 @@ if (!defined('XOOPS_ROOT_PATH')) {
     exit();
 }
 
-include_once __DIR__ . '/../class/base/tableobject.class.php';
-include_once __DIR__ . '/../class/base/criteria.class.php';
+require_once __DIR__ . '/../class/base/tableobject.class.php';
+require_once __DIR__ . '/../class/base/criteria.class.php';
 
 /**
  * get xoonips version
@@ -66,7 +66,7 @@ function xoonips_getHandler($module, $name)
     if (!isset($handlers["${module}_${name}"])) {
         $include_file = XOOPS_ROOT_PATH . "/modules/${module}/class/${module}_{$name}.class.php";
         if (file_exists($include_file)) {
-            include_once $include_file;
+            require_once $include_file;
         } else {
             trigger_error('file not found: ' . $include_file, E_USER_ERROR);
             return $falseVar;
@@ -110,7 +110,7 @@ function xoonips_getOrmHandler($module, $name)
     if (!isset($handlers[$module . $name])) {
         $include_file = XOOPS_ROOT_PATH . "/modules/${module}/class/orm/${name}.class.php";
         if (file_exists($include_file)) {
-            include_once $include_file;
+            require_once $include_file;
         } else {
             return $falseVar;
         }
@@ -152,7 +152,7 @@ function &xoonips_getOrmCompoHandler($module, $name)
     if (!isset($handlers[$module . $name])) {
         $include_file = XOOPS_ROOT_PATH . "/modules/${module}/class/${module}_compo_${name}.class.php";
         if (file_exists($include_file)) {
-            include_once $include_file;
+            require_once $include_file;
         } else {
             return $falseVar;
         }

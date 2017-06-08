@@ -2,7 +2,6 @@
 $detail: informatin of item to register in binder
          array('html'=>HTML of item, 'item_id' => id of item)
 *}>
-<{* $Revision: 1.1.1.5 $ *}>
 <!-- begin of xnpbinder_register_block.tpl -->
 
 <script type="text/javascript">

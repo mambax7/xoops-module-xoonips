@@ -165,7 +165,6 @@ function(b){
 <{*
 template for display to edit items
 
-$Revision: 1.17.2.1.2.5 $
 
 $body:                     HTML of item registeration form
 $select_item_type[]:       array of selectable itemtypes(type name=>item_type_id)

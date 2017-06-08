@@ -1,5 +1,4 @@
 <{* xnpfiles search block *}>
-<{* $Revision: 1.2.8.2 $ *}>
 
 <table class="outer">
   <tr>

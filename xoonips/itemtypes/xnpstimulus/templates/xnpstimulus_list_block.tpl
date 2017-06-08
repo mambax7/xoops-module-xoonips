@@ -1,5 +1,4 @@
 <{* xnpstimulus list block *}>
-<{* $Revision: 1.5.4.1.2.4 $ *}>
 <table>
  <tr>
   <td width="65" style="vertical-align:middle; text-align:center;">

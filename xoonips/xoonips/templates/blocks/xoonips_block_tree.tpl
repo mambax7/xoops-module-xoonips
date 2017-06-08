@@ -1,6 +1,5 @@
 <{* tree-block *}>
 <{* input: block.indexes, block.mode *}>
-<{* $Revision: 1.21.2.1 $ *}>
 <script type="text/javascript">
 <!--
 

@@ -1,5 +1,4 @@
 <{* xnpurl list block *}>
-<{* $Revision: 1.10.4.1.2.5 $ *}>
 <script type="text/javascript" src="js/prototype.js">
 </script>
 <script type="text/javascript">

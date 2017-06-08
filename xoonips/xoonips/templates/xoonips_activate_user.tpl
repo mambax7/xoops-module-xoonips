@@ -1,5 +1,4 @@
 <{* page for activate user *}>
-<{* $Revision: 1.1.2.1 $ *}>
 
 <{* parameters
 $op

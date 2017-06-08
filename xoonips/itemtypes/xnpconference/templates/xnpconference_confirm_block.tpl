@@ -1,5 +1,4 @@
 <{* xnpconference confirm block *}>
-<{* $Revision: 1.9.6.3 $ *}>
 <table class="outer">
   <!-- Basic Information -->
   <tr>

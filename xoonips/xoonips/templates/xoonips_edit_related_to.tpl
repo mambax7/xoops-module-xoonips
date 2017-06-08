@@ -1,5 +1,4 @@
 <{* form to input link related to items (a part of edit page) *}>
-<{* $Revision: 1.5.4.1.2.3 $ *}>
 <{* 
 
 display text area to input item_id, and summary (in HTML) in linked (registered) items in edit

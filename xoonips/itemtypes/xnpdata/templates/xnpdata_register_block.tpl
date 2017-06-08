@@ -1,5 +1,4 @@
 <{* xnpdata register block *}>
-<{* $Revision: 1.22.6.4 $ *}>
 
 <script type="text/javascript">
 <!--

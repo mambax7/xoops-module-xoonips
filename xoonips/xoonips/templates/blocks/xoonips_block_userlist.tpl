@@ -1,5 +1,4 @@
 <{* user list block *}>
-<{* $Revision: 1.1.4.1 $ *}>
 <table style="width: 90%;">
 <{foreach item=position from=$block.positions}>
  <tr>

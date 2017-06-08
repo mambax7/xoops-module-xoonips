@@ -1,5 +1,4 @@
 <{* quick search block *}>
-<{* $Revision: 1.8.2.1.2.1 $ *}>
 
 <form style="margin-top: 0;" action="<{$block.submit_url}>" method="get">
   <input type="hidden" name="op" value="<{$block.op}>"/>

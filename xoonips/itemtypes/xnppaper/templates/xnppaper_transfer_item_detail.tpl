@@ -1,5 +1,4 @@
 <{* xnppaper detail block *}>
-<{* $Revision: 1.1.2.4 $ *}>
 <table class="outer">
 <{include file="db:xoonips_transfer_detail_doi.tpl"}>
 <{include file="db:xoonips_transfer_detail_lang.tpl"}>

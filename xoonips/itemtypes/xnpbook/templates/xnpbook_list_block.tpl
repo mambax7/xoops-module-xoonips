@@ -1,5 +1,4 @@
 <{* xnpbook list block *}>
-<{* $Revision: 1.10.4.1.2.6 $ *}>
 
 <table>
  <tr>

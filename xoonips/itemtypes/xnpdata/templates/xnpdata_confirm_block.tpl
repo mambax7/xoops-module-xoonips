@@ -1,5 +1,4 @@
 <{* xnpdata confirm block *}>
-<{* $Revision: 1.22.6.2 $ *}>
 <table class="outer">
   <!-- Basic Information -->
   <tr>

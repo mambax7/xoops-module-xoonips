@@ -1,5 +1,4 @@
 <{* show user information *}>
-<{* $Revision: 1.13.4.1.2.2 $ *}>
 <{include file="db:xoonips_breadcrumbs.inc.tpl"}>
 <script type="text/javascript">
 <!--//

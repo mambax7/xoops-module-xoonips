@@ -1,5 +1,4 @@
 <{* page for certify user *}>
-<{* $Revision: 1.6.4.1.2.2 $ *}>
 
 <{* parameters
 $users	array of associative array of a user(not yet certified).

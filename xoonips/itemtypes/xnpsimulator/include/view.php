@@ -1,5 +1,4 @@
 <?php
-// $Revision: 1.14.2.1.2.27 $
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2013 RIKEN, Japan All rights reserved.                //

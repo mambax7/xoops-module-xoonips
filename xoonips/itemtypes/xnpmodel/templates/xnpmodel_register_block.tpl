@@ -1,4 +1,3 @@
-<{* $Revision: 1.20.6.4 $ *}>
 <!-- begin of xnpmodel_register_block.tpl -->
 
 <script type="text/javascript">

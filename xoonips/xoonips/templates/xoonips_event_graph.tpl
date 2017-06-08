@@ -1,5 +1,4 @@
 <{* page for download event logs *}>
-<{* $Revision: 1.2.2.1.2.1 $ *}>
 
 <{include file="db:xoonips_breadcrumbs.inc.tpl"}>
 

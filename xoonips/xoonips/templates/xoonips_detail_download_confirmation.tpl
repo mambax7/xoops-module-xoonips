@@ -1,5 +1,4 @@
 <{* form to display download confirmation (a part of detail page) *}>
-<{* $Revision: 1.1.2.1.2.3 $ *}>
 <{* 
 
 // some codes are from lightbox v2.02

@@ -6,7 +6,6 @@
 
 <{*
 
-$Revision: 1.8.4.1.2.4 $
 
 $system_message	a string of error, warning, nottice messages
 

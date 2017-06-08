@@ -1,4 +1,3 @@
-<{* $Revision: 1.6.6.4 $ *}>
 <!-- begin of xnpstimulus_register_block.tpl -->
 
 <script type="text/javascript">

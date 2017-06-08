@@ -1,5 +1,4 @@
 <{* xnpurl register block *}>
-<{* $Revision: 1.4.8.3 $ *}>
 <table class="outer">
   <tr>
    <th align="left"><input type="checkbox" name="<{$module_name}>" value="on" onclick="showhide('<{$module_name}>_search_block');"/><{$module_display_name}></th>

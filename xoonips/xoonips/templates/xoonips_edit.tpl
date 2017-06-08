@@ -159,7 +159,6 @@ function(b){
 <{*
 template for display to edit items
 
-$Revision: 1.11.2.1.2.6 $
 
 $item_id: id of item to edit
 $body: HTML of form to edit item

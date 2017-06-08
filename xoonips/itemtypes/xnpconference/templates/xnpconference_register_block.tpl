@@ -1,5 +1,4 @@
 <{* xnpconference register block *}>
-<{* $Revision: 1.8.2.1.2.5 $ *}>
 
 <script type="text/javascript">
 <!--

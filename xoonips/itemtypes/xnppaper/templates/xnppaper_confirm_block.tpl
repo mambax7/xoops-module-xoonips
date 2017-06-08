@@ -1,5 +1,4 @@
 <{* xnppaper confirm block *}>
-<{* $Revision: 1.18.8.4 $ *}>
 <table class="outer">
   <tr>
     <td class="head"><{$basic.doi.name}></td>

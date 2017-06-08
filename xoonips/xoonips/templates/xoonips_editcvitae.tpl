@@ -1,5 +1,4 @@
 <{* Page of Edit Curriculum Vitae *}>
-<{* $Revision: 1.8.4.1.2.1 $ *}>
 
 <p>
 <a href="showusers.php"><{$smarty.const._MD_XOONIPS_SHOW_USER_TITLE}></a>

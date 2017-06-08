@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -23,28 +24,28 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-require_once __DIR__ . '/../../../include/cp_header.php';
+require_once __DIR__.'/../../../include/cp_header.php';
 
 // load common file.
-require __DIR__ . '/actions/common.inc.php';
+require __DIR__.'/actions/common.inc.php';
 
 // page definition
-$pages              = array();
-$pages['main']      = array();
-$pages['account']   = array(
+$pages = array();
+$pages['main'] = array();
+$pages['account'] = array(
     'post' => array(
         'rupdate',
         'iupdate',
         'vupdate',
     ),
 );
-$pages['group']     = array(
+$pages['group'] = array(
     'post' => array(
         'vupdate',
     ),
 );
-$pages['item']      = array(
-    'get'  => array(
+$pages['item'] = array(
+    'get' => array(
         'public',
         'type',
         'imexport',
@@ -64,14 +65,14 @@ $pages['moderator'] = array(
         'update',
     ),
 );
-$pages['position']  = array(
+$pages['position'] = array(
     'post' => array(
         'delete',
         'update',
         'add',
     ),
 );
-$pages['ranking']   = array(
+$pages['ranking'] = array(
     'post' => array(
         'update',
         'sort',

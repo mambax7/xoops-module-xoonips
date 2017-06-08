@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,39 +28,39 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // functions to display blocks and edit blocks.
 // load global definitions and functions
-require_once __DIR__ . '/../condefs.php';
-require_once __DIR__ . '/../include/functions.php';
+require_once __DIR__.'/../condefs.php';
+require_once __DIR__.'/../include/functions.php';
 
 // initialize xoonips session
-$uid             = is_object($GLOBALS['xoopsUser']) ? $GLOBALS['xoopsUser']->getVar('uid', 'n') : UID_GUEST;
+$uid = is_object($GLOBALS['xoopsUser']) ? $GLOBALS['xoopsUser']->getVar('uid', 'n') : UID_GUEST;
 $xsessionHandler = xoonips_getOrmHandler('xoonips', 'session');
 $xsessionHandler->initSession($uid);
 unset($uid);
 unset($xsessionHandler);
 
 // load xoonips login block
-require_once __DIR__ . '/xoonips_login.php';
+require_once __DIR__.'/xoonips_login.php';
 
 // load xoonips user menu block
-require_once __DIR__ . '/xoonips_usermenu.php';
+require_once __DIR__.'/xoonips_usermenu.php';
 
 // load xoonips group admin menu block
-require_once __DIR__ . '/xoonips_groupadmin.php';
+require_once __DIR__.'/xoonips_groupadmin.php';
 
 // load xoonips moderator menu block
-require_once __DIR__ . '/xoonips_moderator.php';
+require_once __DIR__.'/xoonips_moderator.php';
 
 // load index tree block
-require_once __DIR__ . '/xoonips_tree.php';
+require_once __DIR__.'/xoonips_tree.php';
 
 // load quick search block
-require_once __DIR__ . '/xoonips_quicksearch.php';
+require_once __DIR__.'/xoonips_quicksearch.php';
 
 // load item type list block
-require_once __DIR__ . '/xoonips_itemtypes.php';
+require_once __DIR__.'/xoonips_itemtypes.php';
 
 // load user list block
-require_once __DIR__ . '/xoonips_userlist.php';
+require_once __DIR__.'/xoonips_userlist.php';
 
 // load ranking block
-require_once __DIR__ . '/xoonips_ranking.php';
+require_once __DIR__.'/xoonips_ranking.php';

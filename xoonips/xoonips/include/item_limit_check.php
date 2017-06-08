@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -33,22 +34,26 @@ function filesize_private()
     if (xnp_get_private_item_id($_SESSION['XNPSID'], $_SESSION['xoopsUserId'], $iids) != RES_OK) {
         return 0;
     }
+
     return filesize_by_item_id($iids);
 }
 
 /**
  * @param $gid
+ *
  * @return float|int
  */
 function filesize_group($gid)
 {
     $xgroupHandler = xoonips_getHandler('xoonips', 'group');
-    $iids          = $xgroupHandler->getGroupItemIds($gid);
+    $iids = $xgroupHandler->getGroupItemIds($gid);
+
     return filesize_by_item_id($iids);
 }
 
 /**
  * @param $iids
+ *
  * @return float|int
  */
 function filesize_by_item_id($iids)
@@ -69,11 +74,11 @@ function filesize_by_item_id($iids)
         $modname = $i['name'];
         global $xoopsDB;
 
-        $table   = $xoopsDB->prefix("${modname}_item_detail");
-        $id_name = preg_replace('/^xnp/', '', $modname) . '_id';
+        $table = $xoopsDB->prefix("${modname}_item_detail");
+        $id_name = preg_replace('/^xnp/', '', $modname).'_id';
         $query
-                 = "SELECT ${id_name} FROM $table where ${id_name} IN (" . implode(', ', $iids) . ')';
-        $result  = $xoopsDB->query($query);
+                 = "SELECT ${id_name} FROM $table where ${id_name} IN (".implode(', ', $iids).')';
+        $result = $xoopsDB->query($query);
         if ($result) {
             $mod_iids = array();
             while (list($id) = $xoopsDB->fetchRow($result)) {
@@ -86,20 +91,19 @@ function filesize_by_item_id($iids)
             }
         }
     }
+
     return $ret;
 }
 
 /**
- *
  * how many items can be registered more to private index?
  *
  * @return available|int
- *
  */
 function available_space_of_private_item()
 {
-    $xnpsid  = $_SESSION['XNPSID'];
-    $uid     = $_SESSION['xoopsUserId'];
+    $xnpsid = $_SESSION['XNPSID'];
+    $uid = $_SESSION['xoopsUserId'];
     $account = array();
     if (xnp_get_account($xnpsid, $uid, $account) == RES_OK) {
         $iids = array();
@@ -107,33 +111,33 @@ function available_space_of_private_item()
             return max(0, $account['item_number_limit'] - count($iids));
         }
     }
+
     return 0;
 }
 
 /**
- *
  * private_item_storage_limit <= file size of all attachment files registered in private area(not public)
  * : return false.
- *
  */
 function check_private_item_storage_limit()
 {
-    $xnpsid  = $_SESSION['XNPSID'];
-    $uid     = $_SESSION['xoopsUserId'];
+    $xnpsid = $_SESSION['XNPSID'];
+    $uid = $_SESSION['xoopsUserId'];
     $account = array();
     if (xnp_get_account($xnpsid, $uid, $account) == RES_OK) {
         if (filesize_private() >= $account['item_storage_limit']) {
             return false;
         }
     }
+
     return true;
 }
 
 /**
- *
  * how many items can be registered more to group index ?
  *
  * @param id $gid
+ *
  * @return available|int
  *
  * @internal param id $gid of group to be checked
@@ -141,28 +145,30 @@ function check_private_item_storage_limit()
 function available_space_of_group_item($gid)
 {
     $xgroupHandler = xoonips_getHandler('xoonips', 'group');
-    $xgroup_obj    = $xgroupHandler->getGroupObject($gid);
+    $xgroup_obj = $xgroupHandler->getGroupObject($gid);
     if (!is_object($xgroup_obj)) {
         return 0;
     }
     $item_number_limit = $xgroup_obj->getVar('group_item_number_limit', 'n');
-    $iids              = $xgroupHandler->getGroupItemIds($gid);
+    $iids = $xgroupHandler->getGroupItemIds($gid);
+
     return max(0, $item_number_limit - count($iids));
 }
 
 /**
- *
  * groupde_item_storage_limit <= file size of all attachment files registered in group area
- * : return false
+ * : return false.
+ *
  * @param id $gid
- * @return true if available space is enough.
+ *
+ * @return true if available space is enough
  *
  * @internal param id $gid of group to be checked
  */
 function check_group_item_storage_limit($gid)
 {
     $xgroupHandler = xoonips_getHandler('xoonips', 'group');
-    $xgroup_obj    = $xgroupHandler->getGroupObject($gid);
+    $xgroup_obj = $xgroupHandler->getGroupObject($gid);
     if (!is_object($xgroup_obj)) {
         return false;
     }
@@ -170,5 +176,6 @@ function check_group_item_storage_limit($gid)
     if (filesize_group($gid) >= $item_storage_limit) {
         return false;
     }
+
     return true;
 }

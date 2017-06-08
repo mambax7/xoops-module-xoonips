@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -28,8 +29,8 @@ if (!defined('XOONIPS_PATH')) {
 }
 
 // class file
-require_once XOONIPS_PATH . '/class/base/JSON.php';
-require_once dirname(__DIR__) . '/class/pubmed.class.php';
+require_once XOONIPS_PATH.'/class/base/JSON.php';
+require_once dirname(__DIR__).'/class/pubmed.class.php';
 
 // change internal encoding to UTF-8
 if (extension_loaded('mbstring')) {
@@ -38,34 +39,35 @@ if (extension_loaded('mbstring')) {
     mb_http_output('pass');
 }
 
-$is_error      = false;
+$is_error = false;
 $error_message = '';
-if (!isset($_SERVER['HTTP_REFERER']) || preg_match('/' . preg_quote(XOOPS_URL, '/') . '/', $_SERVER['HTTP_REFERER']) == 0) {
-    $is_error      = true;
+if (!isset($_SERVER['HTTP_REFERER']) || preg_match('/'.preg_quote(XOOPS_URL, '/').'/', $_SERVER['HTTP_REFERER']) == 0) {
+    $is_error = true;
     $error_message = 'Turn REFERER on';
 }
 
 if (!$is_error && !isset($_GET['pmid'])) {
-    $is_error      = true;
+    $is_error = true;
     $error_message = 'pmid required';
 }
 
 if (!$is_error) {
     $pmid = trim($_GET['pmid']);
     if (!is_numeric($pmid)) {
-        $is_error      = true;
+        $is_error = true;
         $error_message = 'pmid has to be numeric character';
     }
-    $pmid = (int)$pmid;
+    $pmid = (int) $pmid;
 }
 
 /**
  * @param $pmid
+ *
  * @return array
  */
 function get_pubmed_data($pmid)
 {
-    $ret    = array();
+    $ret = array();
     $pubmed = new XooNIps_PubMed_ArticleSet();
     if (!$pubmed->set_pmid($pmid)) {
         return $ret;
@@ -110,7 +112,7 @@ function get_pubmed_data($pmid)
             if ($journal_esearch->fetch()) {
                 if ($journal_esearch->parse()) {
                     if (isset($journal_esearch->_data['id'])) {
-                        $jids             = $journal_esearch->_data['id'];
+                        $jids = $journal_esearch->_data['id'];
                         $journal_esummary = new XooNIps_PubMed_JournalEsummary();
                         foreach ($jids as $jid) {
                             $journal_esummary->set_journal_id($jid);
@@ -147,14 +149,14 @@ function get_pubmed_data($pmid)
     $ret['author'] = array();
     if (!empty($article['AuthorList'])) {
         foreach ($article['AuthorList'] as $author) {
-            $str = $author['LastName'] . ' ';
+            $str = $author['LastName'].' ';
             if ($author['Initials'] != '') {
                 $str .= $author['Initials'];
             } elseif ($author['ForeName'] != '') {
                 $str .= $author['ForeName'];
             } else {
                 if ($author['MiddleName'] != '') {
-                    $str .= $author['MiddleName'] . ' ';
+                    $str .= $author['MiddleName'].' ';
                 }
                 $str .= $author['FirstName'];
             }
@@ -168,11 +170,12 @@ function get_pubmed_data($pmid)
             $str = $meshheading['DescriptorName'];
             if (count($meshheading['QualifierName']) > 0) {
                 $tmpstr = implode(',', $meshheading['QualifierName']);
-                $str .= ',' . $tmpstr;
+                $str .= ','.$tmpstr;
             }
             $ret['keywords'][] = $str;
         }
     }
+
     return $ret;
 }
 
@@ -182,12 +185,12 @@ if (!$is_error) {
         $data['error'] = 'failed to get pubmed resources';
     }
 } else {
-    $data          = array();
+    $data = array();
     $data['error'] = $error_message;
 }
 
 // json
-$json   = new Services_JSON();
+$json = new Services_JSON();
 $encode = $json->encode($data);
 
 // output

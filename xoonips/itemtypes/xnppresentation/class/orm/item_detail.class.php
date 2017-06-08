@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -36,15 +37,15 @@ class XNPPresentationOrmItemDetail extends XooNIpsTableObject
     // for column length check
     public $lengths
         = array(
-            'presentation_id'      => 10,
-            'presentation_type'    => 30,
-            'use_cc'               => 3,
-            'cc_commercial_use'    => 3,
-            'cc_modification'      => 3,
-            'rights'               => 65535,
-            'readme'               => 65535,
-            'attachment_dl_limit'  => 1,
-            'attachment_dl_notify' => 1
+            'presentation_id' => 10,
+            'presentation_type' => 30,
+            'use_cc' => 3,
+            'cc_commercial_use' => 3,
+            'cc_modification' => 3,
+            'rights' => 65535,
+            'readme' => 65535,
+            'attachment_dl_limit' => 1,
+            'attachment_dl_notify' => 1,
         );
 
     /**
@@ -65,31 +66,32 @@ class XNPPresentationOrmItemDetail extends XooNIpsTableObject
     }
 
     /**
-     * get creator objects of this item
+     * get creator objects of this item.
+     *
      * @return XNPPresentationOrmCreator[]
      */
     public function getCreators()
     {
-        $handler  = xoonips_getOrmHandler('xnppresentation', 'creator');
+        $handler = xoonips_getOrmHandler('xnppresentation', 'creator');
         $criteria = new Criteria('presentation_id', $this->get('presentation_id'));
         $criteria->setSort('creator_order');
         $result = $handler->getObjects($criteria);
         if ($result) {
             return $result;
         }
+
         return array();
     }
 }
 
 /**
  * @brief Handler class that create, insert, update, get and delete detail information
- *
- *
  */
 class XNPPresentationOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XNPPresentationOrmItemDetailHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -101,6 +103,7 @@ class XNPPresentationOrmItemDetailHandler extends XooNIpsTableObjectHandler
     /**
      * @param XoopsObject $obj
      * @param bool        $force
+     *
      * @return bool
      */
     public function insert(XoopsObject $obj, $force = false)
@@ -122,6 +125,7 @@ class XNPPresentationOrmItemDetailHandler extends XooNIpsTableObjectHandler
 
     /**
      * @param $detail
+     *
      * @return bool|string
      */
     public function get_cc($detail)

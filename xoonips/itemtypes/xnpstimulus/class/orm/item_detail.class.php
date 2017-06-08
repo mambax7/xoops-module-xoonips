@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -36,14 +37,14 @@ class XNPStimulusOrmItemDetail extends XooNIpsTableObject
     // for column length check
     public $lengths
         = array(
-            'stimulus_id'          => 10,
-            'stimulus_type'        => 30,
-            'readme'               => 65535,
-            'rights'               => 65535,
-            'use_cc'               => 3,
-            'cc_commercial_use'    => 3,
-            'cc_modification'      => 3,
-            'attachment_dl_limit'  => 1,
+            'stimulus_id' => 10,
+            'stimulus_type' => 30,
+            'readme' => 65535,
+            'rights' => 65535,
+            'use_cc' => 3,
+            'cc_commercial_use' => 3,
+            'cc_modification' => 3,
+            'attachment_dl_limit' => 1,
             'attachment_dl_notify' => 1,
         );
 
@@ -65,31 +66,32 @@ class XNPStimulusOrmItemDetail extends XooNIpsTableObject
     }
 
     /**
-     * get developer objects of this item
+     * get developer objects of this item.
+     *
      * @return XnpstimulusOrmDeveloper[]
      */
     public function getDevelopers()
     {
-        $handler  = xoonips_getOrmHandler('xnpstimulus', 'developer');
+        $handler = xoonips_getOrmHandler('xnpstimulus', 'developer');
         $criteria = new Criteria('stimulus_id', $this->get('stimulus_id'));
         $criteria->setSort('developer_order');
         $result = $handler->getObjects($criteria);
         if ($result) {
             return $result;
         }
+
         return array();
     }
 }
 
 /**
  * @brief Handler class that create, insert, update, get and delete detail information
- *
- *
  */
 class XNPStimulusOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XNPStimulusOrmItemDetailHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -101,6 +103,7 @@ class XNPStimulusOrmItemDetailHandler extends XooNIpsTableObjectHandler
     /**
      * @param XoopsObject $obj
      * @param bool        $force
+     *
      * @return bool
      */
     public function insert(XoopsObject $obj, $force = false)
@@ -122,6 +125,7 @@ class XNPStimulusOrmItemDetailHandler extends XooNIpsTableObjectHandler
 
     /**
      * @param $detail
+     *
      * @return bool|string
      */
     public function get_cc($detail)

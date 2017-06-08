@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 $xoopsOption['pagetype'] = 'user';
-require __DIR__ . '/include/common.inc.php';
+require __DIR__.'/include/common.inc.php';
 
 $myuid = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
 
@@ -35,31 +36,31 @@ if ($myuid == UID_GUEST) {
 }
 
 $formdata = xoonips_getUtility('formdata');
-$uid      = $formdata->getValue('get', 'uid', 'i', false, $myuid);
+$uid = $formdata->getValue('get', 'uid', 'i', false, $myuid);
 
 // validate selected user
 $xmemberHandler = xoonips_getHandler('xoonips', 'member');
-$is_admin       = $xmemberHandler->isAdmin($myuid);
-$is_moderator   = $xmemberHandler->isModerator($myuid);
-$memberHandler  = xoops_getHandler('member');
-$thisUser       = $memberHandler->getUser($uid);
+$is_admin = $xmemberHandler->isAdmin($myuid);
+$is_moderator = $xmemberHandler->isModerator($myuid);
+$memberHandler = xoops_getHandler('member');
+$thisUser = $memberHandler->getUser($uid);
 if (!is_object($thisUser)) {
     // selected user not found
-    redirect_header(XOOPS_URL . '/', 3, _US_SELECTNG);
+    redirect_header(XOOPS_URL.'/', 3, _US_SELECTNG);
 } elseif (!$thisUser->isActive()) {
     // not activated user
     if ($is_admin) {
         // try activate using admin privilege
-        header('Location: admin/maintenance.php?page=account&action=modify&uid=' . $uid);
+        header('Location: admin/maintenance.php?page=account&action=modify&uid='.$uid);
         exit();
     } else {
         // deny access to selected user information
-        redirect_header(XOOPS_URL . '/', 3, _US_NOACTTPADM);
+        redirect_header(XOOPS_URL.'/', 3, _US_NOACTTPADM);
     }
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_userinfo.tpl';
-require XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH.'/header.php';
 if ($uid == $myuid || $is_admin) {
     $xoopsTpl->assign('user_ownpage', true);
     $xoopsTpl->assign('lang_editprofile', _US_EDITPROFILE);
@@ -78,7 +79,7 @@ if ($uid == $myuid || $is_admin) {
     $xoopsTpl->assign('user_candelete', false);
 }
 
-$myts     = MyTextSanitizer::getInstance();
+$myts = MyTextSanitizer::getInstance();
 $textutil = xoonips_getUtility('text');
 
 // assign basic user information
@@ -86,7 +87,7 @@ $xoopsTpl->assign('user_uid', $thisUser->getVar('uid', 's'));
 $xoopsTpl->assign('lang_basicInfo', _US_BASICINFO);
 $xoopsTpl->assign('lang_allaboutuser', sprintf(_US_ALLABOUT, $thisUser->getVar('uname', 's')));
 $xoopsTpl->assign('lang_avatar', _US_AVATAR);
-$xoopsTpl->assign('user_avatarurl', XOOPS_URL . '/uploads/' . $thisUser->getVar('user_avatar', 's'));
+$xoopsTpl->assign('user_avatarurl', XOOPS_URL.'/uploads/'.$thisUser->getVar('user_avatar', 's'));
 $xoopsTpl->assign('lang_realname', _US_REALNAME);
 $xoopsTpl->assign('user_realname', $thisUser->getVar('name', 's'));
 $xoopsTpl->assign('lang_website', _US_WEBSITE);
@@ -118,11 +119,11 @@ $tempTarea = $myts->displayTarea($tempUser, 0, 1, 1);
 $xoopsTpl->assign('user_extrainfo', $tempTarea);
 if ($myuid != UID_GUEST) {
     $xoopsTpl->assign('user_pmlink',
-                      '<a href="javascript:openWithSelfMain(\'' . XOOPS_URL . '/pmlite.php?send2=1&amp;to_userid=' . $thisUser->getVar('uid')
-                      . '\', \'pmlite\', 450, 380);"><img src="' . XOOPS_URL . '/images/icons/pm.gif" alt="' . sprintf(_SENDPMTO,
+                      '<a href="javascript:openWithSelfMain(\''.XOOPS_URL.'/pmlite.php?send2=1&amp;to_userid='.$thisUser->getVar('uid')
+                      .'\', \'pmlite\', 450, 380);"><img src="'.XOOPS_URL.'/images/icons/pm.gif" alt="'.sprintf(_SENDPMTO,
                                                                                                                        $thisUser->getVar('uname',
                                                                                                                                          'e'))
-                      . '"/></a>');
+                      .'"/></a>');
 } else {
     $xoopsTpl->assign('user_pmlink', '');
 }
@@ -134,7 +135,7 @@ $xoopsTpl->assign('user_joindate', formatTimestamp($thisUser->getVar('user_regda
 $xoopsTpl->assign('lang_rank', _US_RANK);
 $userrank = $thisUser->rank();
 if (isset($userrank['image']) && $userrank['image']) {
-    $xoopsTpl->assign('user_rankimage', '<img src="' . XOOPS_UPLOAD_URL . '/' . $userrank['image'] . '" alt=""/>');
+    $xoopsTpl->assign('user_rankimage', '<img src="'.XOOPS_UPLOAD_URL.'/'.$userrank['image'].'" alt=""/>');
 }
 $xoopsTpl->assign('user_ranktitle', $userrank['title']);
 $xoopsTpl->assign('lang_posts', _US_POSTS);
@@ -158,10 +159,10 @@ $xoopsTpl->assign('lang_myinfo', _US_MYINFO);
 
 // xoonips user information
 $xuHandler = xoonips_getOrmHandler('xoonips', 'users');
-$xu_obj    = $xuHandler->get($uid);
+$xu_obj = $xuHandler->get($uid);
 if (is_object($xu_obj)) {
     $xoopsTpl->assign('xnp_user_ownpage', true);
-    $xu_vars     = $xu_obj->getVarArray('s');
+    $xu_vars = $xu_obj->getVarArray('s');
     $posiHandler = xoonips_getOrmHandler('xoonips', 'positions');
     foreach ($xu_vars as $key => $val) {
         if ($key === 'posi') {
@@ -173,7 +174,7 @@ if (is_object($xu_obj)) {
                 }
             }
         } else {
-            $xoopsTpl->assign('xnp_user_' . $key, $val);
+            $xoopsTpl->assign('xnp_user_'.$key, $val);
         }
     }
 } else {
@@ -183,20 +184,20 @@ if (is_object($xu_obj)) {
 
 // curriculum vitae
 $cvHandler = xoonips_getOrmHandler('xoonips', 'cvitaes');
-$cv_objs   =  $cvHandler->getCVs($uid);
+$cv_objs = $cvHandler->getCVs($uid);
 foreach ($cv_objs as $cv_obj) {
     $cv = array();
     foreach (array(
                  'from',
-                 'to'
+                 'to',
              ) as $key_pre
     ) {
         foreach (array(
                      'month',
-                     'year'
+                     'year',
                  ) as $key_post
         ) {
-            $key = $key_pre . '_' . $key_post;
+            $key = $key_pre.'_'.$key_post;
             $val = $cv_obj->get($key);
             if ($val == 0) {
                 $str = '';
@@ -205,54 +206,54 @@ foreach ($cv_objs as $cv_obj) {
             } else {
                 $str = date('Y', mktime(0, 0, 0, 1, 1, $val));
             }
-            $cv['cvitae_' . $key] = $str;
+            $cv['cvitae_'.$key] = $str;
         }
     }
-    $from_year          = $cv_obj->get('from_year');
-    $to_year            = $cv_obj->get('to_year');
+    $from_year = $cv_obj->get('from_year');
+    $to_year = $cv_obj->get('to_year');
     $cv['cvitae_title'] = $cv_obj->get('cvitae_title', 's');
     $xoopsTpl->append('cv_array', $cv);
 }
 
 // posted message list
-$gpermHandler  = xoops_getHandler('groupperm');
-$groups        = ($uid != UID_GUEST) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+$gpermHandler = xoops_getHandler('groupperm');
+$groups = ($uid != UID_GUEST) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
 $moduleHandler = xoops_getHandler('module');
-$criteria      = new CriteriaCompo(new Criteria('hassearch', 1));
+$criteria = new CriteriaCompo(new Criteria('hassearch', 1));
 $criteria->add(new Criteria('isactive', 1));
-$mids =  array_keys($moduleHandler->getList($criteria));
+$mids = array_keys($moduleHandler->getList($criteria));
 foreach ($mids as $mid) {
     // Hack by marcan : only return results of modules for which user has access permission
     if ($gpermHandler->checkRight('module_read', $mid, $groups)) {
-        $module  = $moduleHandler->get($mid);
-        $results =  $module->search('', '', 5, 0, $uid);
-        $count   = count($results);
+        $module = $moduleHandler->get($mid);
+        $results = $module->search('', '', 5, 0, $uid);
+        $count = count($results);
         if (is_array($results) && $count > 0) {
             $dirname = $module->getVar('dirname', 's');
             $modname = $module->getVar('name', 's');
-            for ($i = 0; $i < $count; $i++) {
+            for ($i = 0; $i < $count; ++$i) {
                 if (isset($results[$i]['image']) && $results[$i]['image'] != '') {
-                    $results[$i]['image'] = '../' . $dirname . '/' . $results[$i]['image'];
+                    $results[$i]['image'] = '../'.$dirname.'/'.$results[$i]['image'];
                 } else {
                     $results[$i]['image'] = '../../images/icons/posticon2.gif';
                 }
-                $results[$i]['link']  = '../' . $dirname . '/' . $results[$i]['link'];
+                $results[$i]['link'] = '../'.$dirname.'/'.$results[$i]['link'];
                 $results[$i]['title'] = $myts->htmlSpecialChars($results[$i]['title']);
-                $results[$i]['time']  = $results[$i]['time'] ? formatTimestamp($results[$i]['time']) : '';
+                $results[$i]['time'] = $results[$i]['time'] ? formatTimestamp($results[$i]['time']) : '';
             }
             if ($count == 5) {
-                $showall_link = '<a href="../../search.php?action=showallbyuser&amp;mid=' . $mid . '&amp;uid=' . $thisUser->getVar('uid') . '">'
-                                . _US_SHOWALL . '</a>';
+                $showall_link = '<a href="../../search.php?action=showallbyuser&amp;mid='.$mid.'&amp;uid='.$thisUser->getVar('uid').'">'
+                                ._US_SHOWALL.'</a>';
             } else {
                 $showall_link = '';
             }
             $xoopsTpl->append('modules', array(
-                'name'         => $modname,
-                'results'      => $results,
-                'showall_link' => $showall_link
+                'name' => $modname,
+                'results' => $results,
+                'showall_link' => $showall_link,
             ));
         }
         unset($module);
     }
 }
-require XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH.'/footer.php';

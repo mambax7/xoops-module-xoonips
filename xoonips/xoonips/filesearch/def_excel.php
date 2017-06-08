@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,18 +25,18 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 /**
- * definition file of MS-Excel file search
+ * definition file of MS-Excel file search.
  */
 // php-indent: disable
-$module['class_name']    = 'XooNIpsFileSearchPluginEXCEL';
+$module['class_name'] = 'XooNIpsFileSearchPluginEXCEL';
 $module['php_file_name'] = 'excel.php';
-$module['name']          = 'excel';
-$module['display_name']  = 'MS-Excel 95/97/2000/XP/2003';
-$module['mime_type']     = array(
+$module['name'] = 'excel';
+$module['display_name'] = 'MS-Excel 95/97/2000/XP/2003';
+$module['mime_type'] = array(
     'application/vnd.ms-excel',
-    'application/msword'
+    'application/msword',
 );
-$module['extensions']    = array(
+$module['extensions'] = array(
     'xls',
     'xlt',
     'xlm',
@@ -43,6 +44,6 @@ $module['extensions']    = array(
     'xla',
     'xlc',
     'xlw',
-    'xll'
+    'xll',
 );
-$module['version']       = '2.0';// php-indent: enable
+$module['version'] = '2.0'; // php-indent: enable

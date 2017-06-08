@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -34,11 +35,11 @@ $get_keys = array(
     ),
 );
 $get_vals = xoonips_admin_get_requests('get', $get_keys);
-$uid      = $get_vals['uid'];
+$uid = $get_vals['uid'];
 
 // title
 $title = _AM_XOONIPS_MAINTENANCE_ACCOUNT_MODIFY_TITLE;
 
 // load edit form
-require __DIR__ . '/maintenance_account_edit.php';
+require __DIR__.'/maintenance_account_edit.php';
 exit();

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,26 +27,26 @@
 $mydirname = basename(dirname(__DIR__));
 
 // load mainfile.php
-require dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
+require dirname(dirname(dirname(__DIR__))).'/mainfile.php';
 
 // set other D3 variables
-$mod_path = XOOPS_ROOT_PATH . '/modules/' . $mydirname;
-$mod_url  = XOOPS_URL . '/modules/' . $mydirname;
-if (file_exists($mod_path . '/mytrustdirname.php')) {
-    require $mod_path . '/mytrustdirname.php';
+$mod_path = XOOPS_ROOT_PATH.'/modules/'.$mydirname;
+$mod_url = XOOPS_URL.'/modules/'.$mydirname;
+if (file_exists($mod_path.'/mytrustdirname.php')) {
+    require $mod_path.'/mytrustdirname.php';
 } else {
     $mytrustdirname = '';
 }
 
 // load condition definitions
-require $mod_path . '/condefs.php';
+require $mod_path.'/condefs.php';
 
 // load basic functions
-require $mod_path . '/include/functions.php';
+require $mod_path.'/include/functions.php';
 
 // initialize xoonips session
 $xsessionHandler = xoonips_getOrmHandler('xoonips', 'session');
-$uid             = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
+$uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
 $xsessionHandler->initSession($uid);
 $xsessionHandler->validateUser($uid, true);
 unset($xsessionHandler);

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -38,7 +39,6 @@ define('XNPERR_NUMBER_OF_ITEM_LIMIT_EXCEEDS', 111);
 define('XNPERR_STORAGE_OF_ITEM_LIMIT_EXCEEDS', 112);
 
 /**
- *
  * @brief Class that has error informations of logic
  *
  * @see   XooNIpsResponse
@@ -55,7 +55,6 @@ define('XNPERR_STORAGE_OF_ITEM_LIMIT_EXCEEDS', 112);
  * @li    108 invalid parameter(data type, value format)
  * @li    109 error in server
  * @li    110 no such method
- *
  */
 class XooNIpsError
 {
@@ -76,19 +75,21 @@ class XooNIpsError
 
     /**
      * @brief add error code and error message
+     *
      * @param int    $code  error code
      * @param string $extra extra information of err(null if omitted)
      */
     public function add($code, $extra = null)
     {
         $this->error[] = array(
-            'code'  => (int)$code,
-            'extra' => null === $extra ? '' : $extra
+            'code' => (int) $code,
+            'extra' => null === $extra ? '' : $extra,
         );
     }
 
     /**
      * @brief return error informations
+     *
      * @return array following associative array
      * @code
      * array( [0] => array( 'code' => CODE, 'extra' => EXTRA ),
@@ -103,16 +104,19 @@ class XooNIpsError
 
     /**
      * @brief  return error information
+     *
      * @param int index of error(>=0)
      * @retval array associative array( 'code' => CODE, 'extra' => EXTRA ) that correspond to $i
      * @retval false no errors correspond to $i
+     *
      * @return bool|mixed
      */
     public function get($i = 0)
     {
-        if (isset($this->error[(int)$i])) {
-            return $this->error[(int)$i];
+        if (isset($this->error[(int) $i])) {
+            return $this->error[(int) $i];
         }
+
         return false;
     }
 }

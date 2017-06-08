@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,9 +27,8 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * The XooNIps page navigation class
+ * The XooNIps page navigation class.
  *
- * @package   xoonips
  * @copyright copyright &copy; 2005-2011 RIKEN, Japan
  * @author    Yoshihiro OKUMURA <orrisroot@users.sourceforge.jp>
  */
@@ -40,10 +40,11 @@ class XooNIpsPageNavi
     public $_maxpage;
     public $_start;
     public $_order = null;
-    public $_sort  = null;
+    public $_sort = null;
 
     /**
      * XooNIpsPageNavi constructor.
+     *
      * @param $count
      * @param $limit
      * @param $page
@@ -59,15 +60,15 @@ class XooNIpsPageNavi
         if ($page <= 0) {
             $page = 1;
         }
-        $this->_count   = $count;
-        $this->_limit   = $limit;
-        $this->_maxpage = (int)ceil($count / $limit);
+        $this->_count = $count;
+        $this->_limit = $limit;
+        $this->_maxpage = (int) ceil($count / $limit);
         if ($this->_maxpage == 0) {
             $page = 1;
         } elseif ($this->_maxpage < $page) {
             $page = $this->_maxpage;
         }
-        $this->_page  = $page;
+        $this->_page = $page;
         $this->_start = ($page - 1) * $limit;
     }
 
@@ -111,17 +112,11 @@ class XooNIpsPageNavi
         return $this->_start;
     }
 
-    /**
-     * @return null
-     */
     public function getOrder()
     {
         return $this->_order;
     }
 
-    /**
-     * @return null
-     */
     public function getSort()
     {
         return $this->_sort;
@@ -160,33 +155,35 @@ class XooNIpsPageNavi
         }
         $criteria->setLimit($this->_limit);
         $criteria->setStart($this->_start);
+
         return $criteria;
     }
 
     /**
      * @param $show_cols
+     *
      * @return array
      */
     public function &getTemplateVars($show_cols)
     {
-        $vars            = array();
-        $vars['sort']    = $this->_sort;
-        $vars['order']   = $this->_order;
-        $vars['limit']   = $this->_limit;
-        $vars['page']    = $this->_page;
-        $vars['next']    = ($this->_page < $this->_maxpage) ? $this->_page + 1 : null;
-        $vars['prev']    = ($this->_page > 1) ? $this->_page - 1 : null;
+        $vars = array();
+        $vars['sort'] = $this->_sort;
+        $vars['order'] = $this->_order;
+        $vars['limit'] = $this->_limit;
+        $vars['page'] = $this->_page;
+        $vars['next'] = ($this->_page < $this->_maxpage) ? $this->_page + 1 : null;
+        $vars['prev'] = ($this->_page > 1) ? $this->_page - 1 : null;
         $vars['maxpage'] = $this->_maxpage;
         // counter
         $vars['total'] = $this->_count;
         $vars['start'] = $this->_start + 1;
-        $vars['end']   = $this->_start + $this->_limit;
+        $vars['end'] = $this->_start + $this->_limit;
         if ($vars['end'] > $vars['total']) {
             $vars['end'] = $vars['total'];
         }
         // navigation pages
-        $diff_max     = floor($show_cols / 2);
-        $diff_min     = $show_cols - $diff_max - 1;
+        $diff_max = floor($show_cols / 2);
+        $diff_min = $show_cols - $diff_max - 1;
         $show_minpage = $this->_page - $diff_min;
         $show_maxpage = $this->_page + $diff_max;
         if ($show_maxpage > $this->_maxpage) {
@@ -203,10 +200,11 @@ class XooNIpsPageNavi
             $show_minpage = 1;
         }
         $navi = array();
-        for ($ii = $show_minpage; $ii <= $show_maxpage; $ii++) {
+        for ($ii = $show_minpage; $ii <= $show_maxpage; ++$ii) {
             $navi[] = $ii;
         }
-        $vars['navi'] =  $navi;
+        $vars['navi'] = $navi;
+
         return $vars;
     }
 }

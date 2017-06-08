@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -29,48 +30,48 @@
 // This page can't be cached. Results of search(cached before login) don't display after login.
 session_cache_limiter('none');
 $xoopsOption['pagetype'] = 'user';
-require __DIR__ . '/include/common.inc.php';
+require __DIR__.'/include/common.inc.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
-require_once __DIR__ . '/include/lib.php';
-require_once __DIR__ . '/include/AL.php';
+require_once __DIR__.'/include/lib.php';
+require_once __DIR__.'/include/AL.php';
 
 // If not a user, redirect
 if (!is_object($xoopsUser)) {
     if (!xnp_is_valid_session_id($xnpsid)) {
         // User is guest group, and guest isn't admitted to access the page.
         // -> display login block.
-        redirect_header(XOOPS_URL . '/modules/xoonips/user.php', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
+        redirect_header(XOOPS_URL.'/modules/xoonips/user.php', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
     }
 }
 
 xnpEncodeMacSafariPost();
 xnpEncodeMacSafariGet();
 
-require_once __DIR__ . '/include/extra_param.inc.php';
+require_once __DIR__.'/include/extra_param.inc.php';
 
 $requested_vars = array(
-    'op'         => array(
+    'op' => array(
         's',
-        ''
+        '',
     ),
-    'print'      => array(
+    'print' => array(
         'b',
-        false
+        false,
     ),
     'submit_url' => array(
         's',
-        XOOPS_URL . '/modules/xoonips/itemselect.php'
+        XOOPS_URL.'/modules/xoonips/itemselect.php',
     ),
 );
-$formdata       = xoonips_getUtility('formdata');
+$formdata = xoonips_getUtility('formdata');
 foreach ($requested_vars as $key => $meta) {
     list($type, $default) = $meta;
     $$key = $formdata->getValue('both', $key, $type, false, $default);
 }
 
-$myxoopsConfig           = xoonips_get_xoops_configs(XOOPS_CONF);
+$myxoopsConfig = xoonips_get_xoops_configs(XOOPS_CONF);
 $myxoopsConfigMetaFooter = xoonips_get_xoops_configs(XOOPS_CONF_METAFOOTER);
 
 // disable to link index list in index tree block
@@ -93,15 +94,15 @@ if (in_array($op, $onclickidx_ops)) {
 }
 
 if ($print) {
-    require_once XOOPS_ROOT_PATH . '/class/template.php';
+    require_once XOOPS_ROOT_PATH.'/class/template.php';
     $xoopsTpl = new XoopsTpl();
     xoops_header(false);
     echo "</head><body onload='window.print();'>\n";
 } else {
-    require XOOPS_ROOT_PATH . '/header.php';
+    require XOOPS_ROOT_PATH.'/header.php';
 }
 
-require __DIR__ . '/include/itemselect.inc.php';
+require __DIR__.'/include/itemselect.inc.php';
 
 if (isset($search_itemtype)) {
     $xoopsTpl->assign('search_itemtype', $search_itemtype);
@@ -114,9 +115,9 @@ if ($print) {
 
     if ($op === 'quicksearch') {
         $search_itemtypes = array(
-            'all'      => _MD_XOONIPS_SEARCH_ALL,
-            'basic'    => _MD_XOONIPS_SEARCH_TITLE_AND_KEYWORD,
-            'metadata' => _MD_XOONIPS_SEARCH_METADATA
+            'all' => _MD_XOONIPS_SEARCH_ALL,
+            'basic' => _MD_XOONIPS_SEARCH_TITLE_AND_KEYWORD,
+            'metadata' => _MD_XOONIPS_SEARCH_METADATA,
         );
 
         $itemtypes = array();
@@ -137,11 +138,11 @@ if ($print) {
     $xoopsTpl->assign('title', _MD_XOONIPS_ITEM_SEARCH_RESULT);
     $xoopsTpl->assign('date', $textutil->html_special_chars(date(DATETIME_FORMAT, xoops_getUserTimestamp(time()))));
     $xoopsTpl->assign('order_by_select', array(
-        'title'            => _MD_XOONIPS_ITEM_TITLE_LABEL,
-        'doi'              => _MD_XOONIPS_ITEM_DOI_LABEL,
+        'title' => _MD_XOONIPS_ITEM_TITLE_LABEL,
+        'doi' => _MD_XOONIPS_ITEM_DOI_LABEL,
         'last_update_date' => _MD_XOONIPS_ITEM_LAST_UPDATE_DATE_LABEL,
-        'creation_date'    => _MD_XOONIPS_ITEM_CREATION_DATE_LABEL,
-        'publication_date' => _MD_XOONIPS_ITEM_PUBLICATION_DATE_LABEL
+        'creation_date' => _MD_XOONIPS_ITEM_CREATION_DATE_LABEL,
+        'publication_date' => _MD_XOONIPS_ITEM_PUBLICATION_DATE_LABEL,
     ));
     $xoopsTpl->assign('order_by', $textutil->html_special_chars($order_by));
 
@@ -149,5 +150,5 @@ if ($print) {
     xoops_footer();
     exit();
 } else {
-    require XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH.'/footer.php';
 }

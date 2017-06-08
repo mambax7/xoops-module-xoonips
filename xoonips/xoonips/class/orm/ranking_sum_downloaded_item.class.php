@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,17 +26,17 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/abstract_ranking.class.php';
-require_once __DIR__ . '/ranking_downloaded_item.class.php';
+require_once __DIR__.'/abstract_ranking.class.php';
+require_once __DIR__.'/ranking_downloaded_item.class.php';
 
 /**
  * @brief handler object of ranking sum downloaded item
- *
  */
 class XooNIpsOrmRankingSumDownloadedItemHandler extends XooNIpsOrmRankingDownloadedItemHandler
 {
     /**
      * XooNIpsOrmRankingSumDownloadedItemHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -44,7 +45,7 @@ class XooNIpsOrmRankingSumDownloadedItemHandler extends XooNIpsOrmRankingDownloa
         $this->__initHandler('XooNIpsOrmRankingDownloadedItem', 'xoonips_ranking_sum_downloaded_item', 'item_id', false);
         $this->_set_columns(array(
                                 'item_id',
-                                'count'
+                                'count',
                             ));
         $this->_set_sum_table();
     }

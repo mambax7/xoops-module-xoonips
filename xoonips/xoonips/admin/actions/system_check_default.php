@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,30 +27,30 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_SYSTEM_CHECK_TITLE;
+$title = _AM_XOONIPS_SYSTEM_CHECK_TITLE;
 $description = _AM_XOONIPS_SYSTEM_CHECK_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_check.tmpl.tpl');

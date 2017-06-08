@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,21 +27,21 @@
 
 //  advanced search form for register binder
 
-require __DIR__ . '/include/common.inc.php';
+require __DIR__.'/include/common.inc.php';
 
 // disable to link index tree
 $xoonipsURL = '';
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_advanced_search_itemselect.tpl';
 
-require XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH.'/header.php';
 
-require_once __DIR__ . '/include/extra_param.inc.php';
+require_once __DIR__.'/include/extra_param.inc.php';
 $formdata = xoonips_getUtility('formdata');
 $textutil = xoonips_getUtility('text');
 $xoopsTpl->assign('extra_param', $textutil->html_special_chars(serialize(xoonips_extra_param_restore())));
 $xoopsTpl->assign('submit_url', $textutil->html_special_chars($formdata->getValue('post', 'submit_url', 's', false)));
 $xoopsTpl->assign('selected_original', $formdata->getValueArray('post', 'selected_original', 'i', false));
-require __DIR__ . '/include/advanced_search.inc.php';
+require __DIR__.'/include/advanced_search.inc.php';
 
-require XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH.'/footer.php';

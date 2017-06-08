@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -37,7 +38,7 @@ function b_xoonips_tree_show()
     global $xoonipsCheckPrivateHandlerId, $xoonipsEditPublic;
     global $xoonipsTree;
 
-    $uid  = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
+    $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
     $puid = $uid;
 
     $textutil = xoonips_getUtility('text');
@@ -51,28 +52,28 @@ function b_xoonips_tree_show()
         //   -> http://foo.bar/modules/xoonips/userinfo.php
         // http://foo.bar/user.php
         //   -> http://foo.bar/modules/xoonips/user.php
-        $site_url      = XOOPS_URL . '/';
+        $site_url = XOOPS_URL.'/';
         $site_url_base = '/';
         if (preg_match('/^(\\S+):\\/\\/([^\\/]+)((\\/[^\\/]+)*\\/)$/', $site_url, $matches)) {
             $site_url_base = $matches[3];
         }
         $current_script = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
-        if ($current_script == $site_url_base . 'register.php') {
+        if ($current_script == $site_url_base.'register.php') {
             header('Location: modules/xoonips/registeruser.php');
             exit();
         }
-        if ($current_script == $site_url_base . 'userinfo.php') {
+        if ($current_script == $site_url_base.'userinfo.php') {
             $uid = $formdata->getValue('get', 'uid', 'i', false);
-            $uid = isset($uid) ? '?uid=' . $uid : '';
-            header('Location: modules/xoonips/userinfo.php' . $uid);
+            $uid = isset($uid) ? '?uid='.$uid : '';
+            header('Location: modules/xoonips/userinfo.php'.$uid);
             exit();
         }
-        if ($current_script == $site_url_base . 'user.php') {
+        if ($current_script == $site_url_base.'user.php') {
             $op = $formdata->getValue('both', 'op', 's', false);
             if (null === $op) {
                 $xoops_redirect = $formdata->getValue('get', 'xoops_redirect', 's', false);
-                $redirect       = !empty($xoops_redirect) ? '?xoops_redirect=' . urlencode($xoops_redirect) : '';
-                header('Location: modules/xoonips/user.php' . $redirect);
+                $redirect = !empty($xoops_redirect) ? '?xoops_redirect='.urlencode($xoops_redirect) : '';
+                header('Location: modules/xoonips/user.php'.$redirect);
                 exit();
             }
         }
@@ -90,14 +91,14 @@ function b_xoonips_tree_show()
 
     // load handlers
     $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-    $xuserHandler   = xoonips_getOrmHandler('xoonips', 'users');
-    $titleHandler   = xoonips_getOrmHandler('xoonips', 'title');
+    $xuserHandler = xoonips_getOrmHandler('xoonips', 'users');
+    $titleHandler = xoonips_getOrmHandler('xoonips', 'title');
     $xmemberHandler = xoonips_getHandler('xoonips', 'member');
-    $xgroupHandler  = xoonips_getHandler('xoonips', 'group');
+    $xgroupHandler = xoonips_getHandler('xoonips', 'group');
 
     // get configs
-    $tree_frame_width        = $xconfigHandler->getValue('tree_frame_width');
-    $tree_frame_height       = $xconfigHandler->getValue('tree_frame_height');
+    $tree_frame_width = $xconfigHandler->getValue('tree_frame_width');
+    $tree_frame_height = $xconfigHandler->getValue('tree_frame_height');
     $public_item_target_user = $xconfigHandler->getValue('public_item_target_user');
 
     // set query for tree.php of inline frame
@@ -109,24 +110,24 @@ function b_xoonips_tree_show()
         $query[] = 'edit=1';
     }
     if (!empty($xoonipsCheckPrivateHandlerId)) {
-        $query[] = 'on_check_privateHandler_id=' . $xoonipsCheckPrivateHandlerId;
+        $query[] = 'on_check_privateHandler_id='.$xoonipsCheckPrivateHandlerId;
     }
     if (isset($xoonipsURL)) {
-        $query[] = 'url=' . urlencode($xoonipsURL);
+        $query[] = 'url='.urlencode($xoonipsURL);
     }
     if (!empty($xoonipsSelectedTab)) {
-        $query[] = 'selected_tab=' . $xoonipsSelectedTab;
+        $query[] = 'selected_tab='.$xoonipsSelectedTab;
     }
     if (!empty($xoonipsEditPublic)) {
         $query[] = 'edit_public=1';
     }
     if (!empty($xoonipsTreePrivateUid)) {
-        $query[] = 'puid=' . $xoonipsTreePrivateUid;
-        $puid    = $xoonipsTreePrivateUid;
+        $query[] = 'puid='.$xoonipsTreePrivateUid;
+        $puid = $xoonipsTreePrivateUid;
     }
     if (!empty($xoonipsTree)) {
         if (isset($xoonipsTree['onclick_title'])) {
-            $query[] = 'onclick_title=' . $xoonipsTree['onclick_title'];
+            $query[] = 'onclick_title='.$xoonipsTree['onclick_title'];
         }
         if (isset($xoonipsTree['private_only']) && $xoonipsTree['private_only']) {
             $query[] = 'private_only=1';
@@ -159,7 +160,7 @@ function b_xoonips_tree_show()
             if ($is_moderator || !empty($xoonipsEditPublic) && !empty($_SESSION['xoonips_old_uid'])) {
                 $xids[] = IID_PUBLIC;
             }
-            $xids   = array_merge($xids, $xgroupHandler->getGroupRootIndexIds($puid, false));
+            $xids = array_merge($xids, $xgroupHandler->getGroupRootIndexIds($puid, false));
             $xids[] = $pxid;
         } elseif (isset($xoonipsTree['private_only']) && $xoonipsTree['private_only']) {
             // only private index only mode
@@ -168,7 +169,7 @@ function b_xoonips_tree_show()
             }
         } else {
             $xids[] = IID_PUBLIC;
-            $xids   = array_merge($xids, $xgroupHandler->getGroupRootIndexIds($puid, false));
+            $xids = array_merge($xids, $xgroupHandler->getGroupRootIndexIds($puid, false));
             if ($pxid != 0) {
                 $xids[] = $pxid;
             }
@@ -182,22 +183,22 @@ function b_xoonips_tree_show()
             $criteria = new CriteriaCompo(new Criteria('item_id', $xid));
             $criteria->add(new Criteria('title_id', DEFAULT_INDEX_TITLE_OFFSET));
             $title_objs = $titleHandler->getObjects($criteria);
-            $title      = $textutil->html_special_chars($title_objs[0]->get('title'));
+            $title = $textutil->html_special_chars($title_objs[0]->get('title'));
         }
         $indexes[] = array(
             'item_id' => $xid,
-            'title'   => $title,
+            'title' => $title,
         );
     }
 
     // assign block template variables
-    $block                      = array();
-    $block['tree_frame_width']  = $tree_frame_width;
+    $block = array();
+    $block['tree_frame_width'] = $tree_frame_width;
     $block['tree_frame_height'] = $tree_frame_height;
-    $block['query']             = implode('&amp;', $query);
-    $block['isKHTML']           = (strstr($_SERVER['HTTP_USER_AGENT'], 'KHTML') !== false);
-    $block['checkbox']          = !empty($xoonipsTreeCheckBox);
-    $block['indexes']           = $indexes;
+    $block['query'] = implode('&amp;', $query);
+    $block['isKHTML'] = (strstr($_SERVER['HTTP_USER_AGENT'], 'KHTML') !== false);
+    $block['checkbox'] = !empty($xoonipsTreeCheckBox);
+    $block['indexes'] = $indexes;
 
     return $block;
 }

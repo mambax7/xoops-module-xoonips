@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,7 +28,7 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * Class XNPConferenceXmlRpcItemViewGetItem
+ * Class XNPConferenceXmlRpcItemViewGetItem.
  */
 class XNPConferenceXmlRpcItemViewGetItem extends XooNIpsXmlRpcItemView
 {

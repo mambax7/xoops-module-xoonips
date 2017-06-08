@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,7 +27,7 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // check token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
+require_once __DIR__.'/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_system_xoops_item_rescue';
 if (!$xoopsGTicket->check(true, $ticket_area, false)) {
     redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
@@ -34,22 +35,22 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 
 // get form request
 $formdata = xoonips_getUtility('formdata');
-$uid      = $formdata->getValue('post', 'uid', 'i', true);
-$to_uid   = $formdata->getValue('post', 'tuid', 'i', true);
-$to_xid   = $formdata->getValue('post', 'txid', 'i', true);
+$uid = $formdata->getValue('post', 'uid', 'i', true);
+$to_uid = $formdata->getValue('post', 'tuid', 'i', true);
+$to_xid = $formdata->getValue('post', 'txid', 'i', true);
 
 // is uid really zombie user ?
 $xusersHandler = xoonips_getOrmHandler('xoonips', 'users');
-$usersHandler  = xoonips_getOrmHandler('xoonips', 'xoops_users');
-$xusers_obj    = $xusersHandler->get($uid);
-$users_obj     = $usersHandler->get($uid);
+$usersHandler = xoonips_getOrmHandler('xoonips', 'xoops_users');
+$xusers_obj = $xusersHandler->get($uid);
+$users_obj = $usersHandler->get($uid);
 if (!is_object($xusers_obj) || is_object($users_obj)) {
     die('illegal request');
 }
 
 // is to_uid really activated and certified user ?
 $to_xusers_obj = $xusersHandler->get($to_uid);
-$to_users_obj  = $usersHandler->get($to_uid);
+$to_users_obj = $usersHandler->get($to_uid);
 if (!is_object($to_xusers_obj) || !is_object($to_users_obj)) {
     die('illegal request');
 }
@@ -69,7 +70,7 @@ if ($to_index_obj->get('uid') != $to_uid || $to_index_obj->get('open_level') != 
 
 // get rescue and delete item ids
 $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-$item_ids               = $index_item_linkHandler->getNonPrivateItemIds($uid);
+$item_ids = $index_item_linkHandler->getNonPrivateItemIds($uid);
 // merge group and public item ids
 $item_ids = array_unique($item_ids);
 if (count($item_ids) == 0) {
@@ -77,15 +78,15 @@ if (count($item_ids) == 0) {
 }
 
 // handover of items
-$item_basicHandler   = xoonips_getOrmHandler('xoonips', 'item_basic');
+$item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
 $admin_xgroupHandler = xoonips_getHandler('xoonips', 'admin_group');
-$eventHandler        = xoonips_getOrmHandler('xoonips', 'event_log');
+$eventHandler = xoonips_getOrmHandler('xoonips', 'event_log');
 foreach ($item_ids as $item_id) {
-    $item_basic_obj       = $item_basicHandler->get($item_id);
+    $item_basic_obj = $item_basicHandler->get($item_id);
     $index_item_link_objs = $index_item_linkHandler->getByItemId($item_id);
     foreach ($index_item_link_objs as $index_item_link_obj) {
-        $xid        = $index_item_link_obj->get('index_id');
-        $index_obj  = $indexHandler->get($xid);
+        $xid = $index_item_link_obj->get('index_id');
+        $index_obj = $indexHandler->get($xid);
         $open_level = $index_obj->get('open_level');
         switch ($open_level) {
             case OL_PRIVATE:

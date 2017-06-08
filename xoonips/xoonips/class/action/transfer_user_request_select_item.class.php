@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,12 +25,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/transfer.class.php';
-require_once __DIR__ . '/../../include/transfer.inc.php';
-require_once __DIR__ . '/../../include/extra_param.inc.php';
+require_once __DIR__.'/transfer.class.php';
+require_once __DIR__.'/../../include/transfer.inc.php';
+require_once __DIR__.'/../../include/extra_param.inc.php';
 
 /**
- * Class XooNIpsActionTransferUserRequestSelectItem
+ * Class XooNIpsActionTransferUserRequestSelectItem.
  */
 class XooNIpsActionTransferUserRequestSelectItem extends XooNIpsActionTransfer
 {
@@ -41,9 +42,6 @@ class XooNIpsActionTransferUserRequestSelectItem extends XooNIpsActionTransfer
         parent::__construct();
     }
 
-    /**
-     * @return null
-     */
     public function _get_logic_name()
     {
         return null;
@@ -111,6 +109,7 @@ class XooNIpsActionTransferUserRequestSelectItem extends XooNIpsActionTransfer
     public function get_selected()
     {
         $result = $this->_formdata->getValueArray('post', 'selected', 'i', false);
+
         return is_array($result) ? $result : array();
     }
 
@@ -120,6 +119,7 @@ class XooNIpsActionTransferUserRequestSelectItem extends XooNIpsActionTransfer
     public function get_selected_hidden()
     {
         $result = $this->_formdata->getValueArray('post', 'selected_hidden', 'i', false);
+
         return is_array($result) ? $result : array();
     }
 }

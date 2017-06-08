@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,7 +27,7 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // check token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
+require_once __DIR__.'/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_policy_item_imexport';
 if (!$xoopsGTicket->check(true, $ticket_area, false)) {
     redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
@@ -34,7 +35,7 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 
 // get variables
 $post_keys = array(
-    'export_enabled'    => array(
+    'export_enabled' => array(
         's',
         false,
         true,
@@ -59,4 +60,4 @@ foreach ($config_keys as $key => $type) {
     xoonips_admin_set_config($key, $post_vals[$key], $type);
 }
 
-redirect_header($xoonips_admin['mypage_url'] . '&amp;action=imexport', 3, _AM_XOONIPS_MSG_DBUPDATED);
+redirect_header($xoonips_admin['mypage_url'].'&amp;action=imexport', 3, _AM_XOONIPS_MSG_DBUPDATED);

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,54 +27,52 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * Zip file extraction library
+ * Zip file extraction library.
  *
- * @package   xoonips_utility
  * @copyright copyright &copy; 2005-2008 RIKEN Japan
  */
 class XooNIpsUtilityUnzip extends XooNIpsUtility
 {
-
     /**
-     * zip file name
-     * @access private
+     * zip file name.
+     *
      * @var string
      */
     public $_zfname = '';
 
     /**
-     * zip file handle
-     * @access private
+     * zip file handle.
+     *
      * @var resource
      */
     public $_zfhandle = false;
 
     /**
-     * end of central directory
-     * @access private
+     * end of central directory.
+     *
      * @var array
      */
     public $_ecdirecty = array();
 
     /**
-     * central directories
-     * @access private
+     * central directories.
+     *
      * @var array
      */
     public $_cdirecties = array();
 
     /**
-     * zip file entries
-     * @access private
+     * zip file entries.
+     *
      * @var array
      */
     public $_entries = array();
 
     /**
-     * open zip file
+     * open zip file.
      *
-     * @access public
      * @param string $zip_filename extracting zip file name
+     *
      * @return bool false if failure
      */
     public function open($zip_filename)
@@ -86,20 +85,21 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
         if ($fh === false) {
             return false;
         }
-        $this->_zfname   = $zip_filename;
+        $this->_zfname = $zip_filename;
         $this->_zfhandle = $fh;
         if (!$this->_read_all_entries()) {
             // no entries found
             $this->close();
+
             return false;
         }
+
         return true;
     }
 
     /**
-     * close zip file
+     * close zip file.
      *
-     * @access public
      * @return bool false if failure
      */
     public function close()
@@ -110,19 +110,20 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
         }
         fclose($this->_zfhandle);
         // initialize local resouces
-        $this->_zfname       = '';
-        $this->_zfhandle     = false;
-        $this->_ecdirectory  = array();
+        $this->_zfname = '';
+        $this->_zfhandle = false;
+        $this->_ecdirectory = array();
         $this->_cdirectories = array();
-        $this->_entries      = array();
+        $this->_entries = array();
+
         return true;
     }
 
     /**
-     * get zip information
+     * get zip information.
      *
-     * @access public
      * @param string $key
+     *
      * @return mixed information
      */
     public function get_zip_information($key)
@@ -130,15 +131,16 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
         if (!isset($this->_ecdirectory[$key])) {
             return false;
         }
+
         return $this->_ecdirectory[$key];
     }
 
     /**
-     * get extra information of content file
+     * get extra information of content file.
      *
-     * @access public
      * @param string $fname file name
      * @param string $key
+     *
      * @return mixed information
      */
     public function get_extra_information($fname, $key)
@@ -146,15 +148,16 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
         if (!isset($this->_cdirectories[$fname]) || (!isset($this->_cdirectories[$fname][$key]))) {
             return false;
         }
+
         return $this->_cdirectories[$fname][$key];
     }
 
     /**
-     * get file information
+     * get file information.
      *
-     * @access public
      * @param string $fname file name
      * @param string $key
+     *
      * @return mixed information
      */
     public function get_file_information($fname, $key)
@@ -162,13 +165,13 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
         if (!isset($this->_entries[$fname]) || (!isset($this->_entries[$fname][$key]))) {
             return false;
         }
+
         return $this->_entries[$fname][$key];
     }
 
     /**
-     * get content file name list
+     * get content file name list.
      *
-     * @access public
      * @return array file name array
      */
     public function get_file_list()
@@ -177,11 +180,12 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
     }
 
     /**
-     * get file data
+     * get file data.
      *
-     * @access   public
      * @param $fname
+     *
      * @return string file data
+     *
      * @internal param string $filename
      */
     public function get_data($fname)
@@ -191,9 +195,9 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
             return $data;
         }
         if (isset($this->_cdirectories[$fname])) {
-            $entry =  $this->_cdirectories[$fname];
+            $entry = $this->_cdirectories[$fname];
         } else {
-            $entry =  $this->_entries[$fname];
+            $entry = $this->_entries[$fname];
         }
         $data_offset = $this->_entries[$fname]['data_offset'];
         if (substr($entry['filename'], -1) === '/') {
@@ -225,14 +229,16 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
                 // unsupported compression method
                 break;
         }
+
         return $data;
     }
 
     /**
-     * extract file
+     * extract file.
      *
      * @param string $fname   file name
      * @param string $basedir base directory
+     *
      * @return bool false if failure
      */
     public function extract_file($fname, $basedir)
@@ -241,9 +247,9 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
             return false;
         }
         if (isset($this->_cdirectories[$fname])) {
-            $entry =  $this->_cdirectories[$fname];
+            $entry = $this->_cdirectories[$fname];
         } else {
-            $entry =  $this->_entries[$fname];
+            $entry = $this->_entries[$fname];
         }
         $data_offset = $this->_entries[$fname]['data_offset'];
         // use unix path separator
@@ -252,7 +258,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
         if (substr($fname, 0, 1) === '/') {
             $fname = substr($fname, 1);
         }
-        $filepath = $basedir . '/' . $fname;
+        $filepath = $basedir.'/'.$fname;
         if (substr($entry['filename'], -1) === '/') {
             // this is directory
             return $this->_create_directory($filepath);
@@ -289,11 +295,13 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
                     if ($buf === false) {
                         fclose($ofh);
                         unlink($filepath);
+
                         return false;
                     }
                     if (false === fwrite($ofh, $buf)) {
                         fclose($ofh);
                         unlink($filepath);
+
                         return false;
                     }
                     $size -= $len;
@@ -307,6 +315,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
                 if ($tfh === false) {
                     fclose($ofh);
                     unlink($filepath);
+
                     return false;
                 }
                 // ID1
@@ -331,6 +340,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
                         unlink($tfn);
                         fclose($ofh);
                         unlink($filepath);
+
                         return false;
                     }
                     if (false === fwrite($tfh, $buf)) {
@@ -338,6 +348,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
                         unlink($tfn);
                         fclose($ofh);
                         unlink($filepath);
+
                         return false;
                     }
                     $size -= $len;
@@ -348,13 +359,14 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
                 fwrite($tfh, pack('V', $entry['uncompsize']));
                 fclose($tfh);
                 // read temporary file and write to $filepath
-                $size   = $entry['uncompsize'];
+                $size = $entry['uncompsize'];
                 $result = true;
-                $tfh    = gzopen($tfn, 'rb');
+                $tfh = gzopen($tfn, 'rb');
                 if ($tfh === false) {
                     unlink($tfn);
                     fclose($ofh);
                     unlink($filepath);
+
                     return false;
                 }
                 while (!gzeof($tfh) && $size > 0) {
@@ -366,6 +378,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
                         unlink($tfn);
                         fclose($ofh);
                         unlink($filepath);
+
                         return false;
                     }
                     $size -= $len;
@@ -380,15 +393,16 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
                 // unsupported compression method
                 fclose($ofh);
                 unlink($filepath);
+
                 return false;
         }
+
         return true;
     }
 
     /**
-     * read all entries
+     * read all entries.
      *
-     * @access private
      * @return bool false if failure
      */
     public function _read_all_entries()
@@ -409,15 +423,15 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
             // 'end of central directory' not found
             // read file entries from top of file pointer
             fseek($this->_zfhandle, 0, SEEK_SET);
-            while ($this->_read_local_file_header()) ;
+            while ($this->_read_local_file_header());
         }
+
         return !empty($this->_entries);
     }
 
     /**
-     * Search contents of 'end of central directory'
+     * Search contents of 'end of central directory'.
      *
-     * @access private
      * @return bool false if 'end of central directory' not found
      */
     public function _search_end_of_central_directory()
@@ -429,7 +443,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
             if (feof($this->_zfhandle)) {
                 return false;
             }
-            $sig = substr($sig, 1) . fread($this->_zfhandle, 1);
+            $sig = substr($sig, 1).fread($this->_zfhandle, 1);
         }
         $entry = array();
         // number of this disk
@@ -448,15 +462,15 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
         // .zip file comment length
         $entry['commentlen'] = $this->_fread_unpack('us');
         // .zip file comment
-        $entry['comment']   = ($entry['commentlen'] > 0) ? fread($this->_zfhandle, $entry['commentlen']) : '';
+        $entry['comment'] = ($entry['commentlen'] > 0) ? fread($this->_zfhandle, $entry['commentlen']) : '';
         $this->_ecdirectory = $entry;
+
         return true;
     }
 
     /**
-     * read 'central directory' information
+     * read 'central directory' information.
      *
-     * @access private
      * @return bool false if failure
      */
     public function _read_central_directory()
@@ -509,21 +523,21 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
         if ($cdir['filename'] != '') {
             $this->_cdirectories[$cdir['filename']] = $cdir;
         }
+
         return true;
     }
 
     /**
-     * read local file header
+     * read local file header.
      *
-     * @access private
      * @return array|bool
      */
     public function _read_local_file_header()
     {
         static $signature = "\x50\x4b\x03\x04";
-        $entry           = array();
+        $entry = array();
         $entry['offset'] = ftell($this->_zfhandle);
-        $sig             = fread($this->_zfhandle, 4);
+        $sig = fread($this->_zfhandle, 4);
         if ($sig != $signature) {
             fseek($this->_zfhandle, 0, SEEK_END);
             // move to the end of file
@@ -573,14 +587,15 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
         if ($entry['filename'] != '') {
             $this->_entries[$entry['filename']] = $entry;
         }
+
         return true;
     }
 
     /**
-     * read unpacked data from file
+     * read unpacked data from file.
      *
-     * @access private
      * @param $type
+     *
      * @return mixed data
      */
     public function _fread_unpack($type)
@@ -601,15 +616,16 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
             return false;
         }
         $data = fread($this->_zfhandle, $types[$type]['length']);
-        $arr  = unpack($types[$type]['format'], $data);
+        $arr = unpack($types[$type]['format'], $data);
+
         return $arr[1];
     }
 
     /**
-     * create directory
+     * create directory.
      *
-     * @access private
      * @param string $filepath
+     *
      * @return bool false if failure
      */
     public function _create_directory($filepath)
@@ -619,9 +635,9 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
             // $filepath doesn't contain directory path
             return true;
         }
-        $dirpath  = substr($filepath, 0, $pos);
+        $dirpath = substr($filepath, 0, $pos);
         $dirnames = explode('/', $dirpath);
-        $path     = '';
+        $path = '';
         foreach ($dirnames as $dirname) {
             if ($dirname == '') {
                 if ($path == '') {
@@ -633,7 +649,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
                 if ($path == '') {
                     $path = $dirname;
                 } else {
-                    $path .= '/' . $dirname;
+                    $path .= '/'.$dirname;
                 }
             }
             if (!is_dir($path)) {
@@ -643,6 +659,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
                 }
             }
         }
+
         return true;
     }
 }

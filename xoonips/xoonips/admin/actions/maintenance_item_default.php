@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,28 +27,28 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // class files
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 
 // title
-$title       = _AM_XOONIPS_MAINTENANCE_ITEM_TITLE;
+$title = _AM_XOONIPS_MAINTENANCE_ITEM_TITLE;
 $description = _AM_XOONIPS_MAINTENANCE_ITEM_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
@@ -55,15 +56,15 @@ $breadcrumbs = array(
 $menu = array(
     array(
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_WITHDRAW_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=item&amp;action=withdraw',
+        'url' => $xoonips_admin['myfile_url'].'?page=item&amp;action=withdraw',
     ),
     array(
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=item&amp;action=delete',
+        'url' => $xoonips_admin['myfile_url'].'?page=item&amp;action=delete',
     ),
     array(
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_TRANSFER_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=item&amp;action=transfer',
+        'url' => $xoonips_admin['myfile_url'].'?page=item&amp;action=transfer',
     ),
 );
 

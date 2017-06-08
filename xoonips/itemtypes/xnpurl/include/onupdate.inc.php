@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -29,6 +30,7 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 /**
  * @param $xoopsMod
  * @param $oldversion
+ *
  * @return bool
  */
 function xoops_module_update_xnpurl($xoopsMod, $oldversion)
@@ -39,10 +41,10 @@ function xoops_module_update_xnpurl($xoopsMod, $oldversion)
     switch ($oldversion) {
         case 200:
         case 310:
-            $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('xnpurl_item_detail') . ' TYPE = innodb';
+            $sql = 'ALTER TABLE '.$xoopsDB->prefix('xnpurl_item_detail').' TYPE = innodb';
             $result = $xoopsDB->query($sql);
             if (!$result) {
-                echo 'ERROR: line=' . __LINE__ . ' sql=' . $sql . ' ' . $xoopsDB->error();
+                echo 'ERROR: line='.__LINE__.' sql='.$sql.' '.$xoopsDB->error();
             }
         case 311:
         case 330:
@@ -59,13 +61,14 @@ function xoops_module_update_xnpurl($xoopsMod, $oldversion)
         case 337:
         case 338:
         case 339:
-            $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('xnpurl_item_detail') . ' ADD COLUMN (url_count int(10) unsigned NOT NULL default 0)';
+            $sql = 'ALTER TABLE '.$xoopsDB->prefix('xnpurl_item_detail').' ADD COLUMN (url_count int(10) unsigned NOT NULL default 0)';
             $result = $xoopsDB->query($sql);
             if (!$result) {
-                echo 'ERROR: line=' . __LINE__ . ' sql=' . $sql . ' ' . $xoopsDB->error();
+                echo 'ERROR: line='.__LINE__.' sql='.$sql.' '.$xoopsDB->error();
             }
         case 340:
         default:
     }
+
     return true;
 }

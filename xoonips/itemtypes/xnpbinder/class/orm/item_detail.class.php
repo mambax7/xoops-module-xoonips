@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -46,13 +47,12 @@ class XNPBinderOrmItemDetail extends XooNIpsTableObject
 
 /**
  * @brief Handler class that create, insert, update, get and delete detail information
- *
- *
  */
 class XNPBinderOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XNPBinderOrmItemDetailHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

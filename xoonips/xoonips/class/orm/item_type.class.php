@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -44,24 +45,25 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 class XooNIpsOrmItemType extends XooNIpsTableObject
 {
     public $fields;
-    public $description     = null;
-    public $mainFileName    = null;
+    public $description = null;
+    public $mainFileName = null;
     public $previewFileName = null;
 
     public $iteminfo = null;
 
     /**
      * XooNIpsOrmItemType constructor.
+     *
      * @param null $module
      */
     public function __construct($module = null)
     {
         parent::__construct();
         if (isset($module) && null === $this->iteminfo) {
-            require XOOPS_ROOT_PATH . '/modules/' . $module . '/iteminfo.php';
-            $this->iteminfo        =  $iteminfo;
-            $this->description     = $iteminfo['description'];
-            $this->mainFileName    = isset($iteminfo['files']['main']) ? $iteminfo['files']['main'] : null;
+            require XOOPS_ROOT_PATH.'/modules/'.$module.'/iteminfo.php';
+            $this->iteminfo = $iteminfo;
+            $this->description = $iteminfo['description'];
+            $this->mainFileName = isset($iteminfo['files']['main']) ? $iteminfo['files']['main'] : null;
             $this->previewFileName = isset($iteminfo['files']['preview']) ? $iteminfo['files']['preview'] : null;
         }
 
@@ -78,9 +80,11 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
     }
 
     /**
-     * get field information by name
+     * get field information by name.
+     *
      * @param $ormName   field name of orm
      * @param $fieldName field name
+     *
      * @return bool|field
      */
     public function getFieldByName($ormName, $fieldName)
@@ -95,6 +99,7 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
                 return $field;
             }
         }
+
         return false;
     }
 
@@ -123,7 +128,7 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
     }
 
     /**
-     * get iteminfo array
+     * get iteminfo array.
      */
     public function getIteminfo()
     {
@@ -131,7 +136,8 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
     }
 
     /**
-     * return names of all file type used in the item type
+     * return names of all file type used in the item type.
+     *
      * @return array array of file type name string
      */
     public function getFileTypeNames()
@@ -143,13 +149,16 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
         if (isset($this->iteminfo['files']['preview'])) {
             $ar[] = $this->iteminfo['files']['preview'];
         }
+
         return array_merge($ar, isset($this->iteminfo['files']['others']) ? $this->iteminfo['files']['others'] : array());
     }
 
     /**
      * return field has multiple value or not.
+     *
      * @param string field name of orm
-     * @return boolean true if the field can have multiple value
+     *
+     * @return bool true if the field can have multiple value
      */
     public function getMultiple($fieldname)
     {
@@ -158,13 +167,16 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
                 return isset($i['multiple']) ? $i['multiple'] : false;
             }
         }
+
         return false;
     }
 
     /**
      * return that field is required or not.
+     *
      * @param string field name of orm
-     * @return boolean true if the field is required
+     *
+     * @return bool true if the field is required
      */
     public function getRequired($fieldname)
     {
@@ -173,6 +185,7 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
                 return isset($i['required']) ? $i['required'] : false;
             }
         }
+
         return false;
     }
 }
@@ -181,12 +194,12 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
  * @brief data object of item type
  *
  * make subclass for each itemtype
- *
  */
 class XooNIpsOrmItemTypeHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmItemTypeHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -196,36 +209,36 @@ class XooNIpsOrmItemTypeHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * get item type objects sort by weight
+     * get item type objects sort by weight.
      *
-     * @access public
      * @return array objects
      */
     public function &getObjectsSortByWeight()
     {
         // TODO: xoonips_item_type table should have itemtype sort order.
-        $table    = $this->db->prefix($this->getTableName());
+        $table = $this->db->prefix($this->getTableName());
         $criteria = new Criteria('name', addslashes('xoonips_index'), '!=', $table);
         $criteria->setSort('weight');
         $criteria->setOrder('ASC');
-        $join   = new XooNIpsJoinCriteria('modules', 'mid', 'mid', 'INNER');
+        $join = new XooNIpsJoinCriteria('modules', 'mid', 'mid', 'INNER');
         $fields = sprintf('item_type_id, %s.name, %s.mid, display_name, viewphp, weight', $table, $table);
-        $objs   =&  $this->getObjects($criteria, false, $fields, false, $join);
+        $objs = &$this->getObjects($criteria, false, $fields, false, $join);
         if (count($objs) != 0) {
             usort($objs, array(
                 $this,
-                '_order_weight_cmp'
+                '_order_weight_cmp',
             ));
         }
+
         return $objs;
     }
 
     /**
-     * sort function for item type order
+     * sort function for item type order.
      *
-     * @access private
      * @param object $a
      * @param object $b
+     *
      * @return int|order
      */
     public function _order_weight_cmp($a, $b)
@@ -234,6 +247,7 @@ class XooNIpsOrmItemTypeHandler extends XooNIpsTableObjectHandler
             // mid must be uniq
             return ($a->get('mid') < $b->get('mid')) ? -1 : 1;
         }
+
         return ($a->getExtraVar('weight') < $b->getExtraVar('weight')) ? -1 : 1;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -48,7 +49,7 @@ function b_xoonips_group_show()
 
     // get administrable group ids
     $xgroupHandler = xoonips_getHandler('xoonips', 'group');
-    $admin_gids    = $xgroupHandler->getGroupIds($uid, true);
+    $admin_gids = $xgroupHandler->getGroupIds($uid, true);
     if (empty($admin_gids)) {
         // user is not group admin
         return false;
@@ -61,19 +62,19 @@ function b_xoonips_group_show()
 
     // count certification requested items
     $xilHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-    $join       = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'x');
-    $criteria   = new CriteriaCompo(new Criteria('certify_state', CERTIFY_REQUIRED));
+    $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'x');
+    $criteria = new CriteriaCompo(new Criteria('certify_state', CERTIFY_REQUIRED));
     $criteria->add(new Criteria('open_level', OL_GROUP_ONLY, '=', 'x'));
-    $criteria->add(new Criteria('gid', '(' . implode(',', $admin_gids) . ')', 'IN', 'x'));
+    $criteria->add(new Criteria('gid', '('.implode(',', $admin_gids).')', 'IN', 'x'));
     $ci_count = $xilHandler->getCount($criteria, $join);
 
     // assign block template variables
-    $block                                   = array();
-    $block['lang_edit_group']                = _MB_XOONIPS_GROUP_EDIT_GROUP_MEMBERS;
-    $block['lang_certify_group_items']       = _MB_XOONIPS_GROUP_CERTIFY_GROUP_ITEMS;
+    $block = array();
+    $block['lang_edit_group'] = _MB_XOONIPS_GROUP_EDIT_GROUP_MEMBERS;
+    $block['lang_certify_group_items'] = _MB_XOONIPS_GROUP_CERTIFY_GROUP_ITEMS;
     $block['lang_certify_group_items_count'] = $ci_count;
-    $block['lang_edit_group_index']          = _MB_XOONIPS_GROUP_EDIT_GROUP_INDEX;
-    $block['xid']                            = $group_index_id;
+    $block['lang_edit_group_index'] = _MB_XOONIPS_GROUP_EDIT_GROUP_INDEX;
+    $block['xid'] = $group_index_id;
 
     return $block;
 }

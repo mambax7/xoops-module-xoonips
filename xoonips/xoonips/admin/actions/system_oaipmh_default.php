@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,31 +27,31 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_SYSTEM_OAIPMH_TITLE;
+$title = _AM_XOONIPS_SYSTEM_OAIPMH_TITLE;
 $description = _AM_XOONIPS_SYSTEM_OAIPMH_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
-$ticket_area  = 'xoonips_admin_system_oaipmh';
+require_once __DIR__.'/../../class/base/gtickets.php';
+$ticket_area = 'xoonips_admin_system_oaipmh';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // repository
@@ -58,34 +59,34 @@ $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 $repository_title = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_TITLE;
 
 // get repository configs
-$config_keys   = array(
-    'repository_name'           => 's',
-    'repository_nijc_code'      => 's',
+$config_keys = array(
+    'repository_name' => 's',
+    'repository_nijc_code' => 's',
     'repository_deletion_track' => 'i',
-    'repository_institution'    => 's',
-    'repository_publisher'      => 's',
+    'repository_institution' => 's',
+    'repository_publisher' => 's',
 );
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 // >> repository instatution
 $repository_institution_title = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_INSTITUTION_TITLE;
-$repository_institution_desc  = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_INSTITUTION_DESC;
-$repository_institution       = $config_values['repository_institution'];
+$repository_institution_desc = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_INSTITUTION_DESC;
+$repository_institution = $config_values['repository_institution'];
 // >> repository publisher
 $repository_publisher_title = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_PUBLISHER_TITLE;
-$repository_publisher_desc  = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_PUBLISHER_DESC;
-$repository_publisher       = $config_values['repository_publisher'];
+$repository_publisher_desc = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_PUBLISHER_DESC;
+$repository_publisher = $config_values['repository_publisher'];
 // >> repository name
 $repository_name_title = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_NAME_TITLE;
-$repository_name_desc  = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_NAME_DESC;
-$repository_name       = $config_values['repository_name'];
+$repository_name_desc = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_NAME_DESC;
+$repository_name = $config_values['repository_name'];
 // >> repository nijc code
 $repository_nijc_code_title = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_NIJC_CODE_TITLE;
-$repository_nijc_code_desc  = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_NIJC_CODE_DESC;
-$repository_nijc_code       = $config_values['repository_nijc_code'];
+$repository_nijc_code_desc = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_NIJC_CODE_DESC;
+$repository_nijc_code = $config_values['repository_nijc_code'];
 // >> repository deletion track
 $repository_deletion_track_title = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_DELETION_TRACK_TITLE;
-$repository_deletion_track_desc  = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_DELETION_TRACK_DESC;
-$repository_deletion_track       = $config_values['repository_deletion_track'];
+$repository_deletion_track_desc = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_DELETION_TRACK_DESC;
+$repository_deletion_track = $config_values['repository_deletion_track'];
 
 // harvester
 $harvester_title = _AM_XOONIPS_SYSTEM_OAIPMH_HARVESTER_TITLE;
@@ -95,26 +96,27 @@ $harvester_title = _AM_XOONIPS_SYSTEM_OAIPMH_HARVESTER_TITLE;
 function &get_harvester_repositories()
 {
     $repositoriesHandler = xoonips_getOrmHandler('xoonips', 'oaipmh_repositories');
-    $urls                =  $repositoriesHandler->getRepositories('e');
-    $ret                 = '';
-    $is_first            = true;
+    $urls = $repositoriesHandler->getRepositories('e');
+    $ret = '';
+    $is_first = true;
     foreach ($urls as $url) {
         if ($is_first) {
-            $ret      = $url['URL'];
+            $ret = $url['URL'];
             $is_first = false;
         } else {
-            $ret .= "\n" . $url['URL'];
+            $ret .= "\n".$url['URL'];
         }
     }
+
     return $ret;
 }
 
 $harvester_repositories_title = _AM_XOONIPS_SYSTEM_OAIPMH_HARVESTER_REPOSITORIES_TITLE;
-$harvester_repositories_desc  = _AM_XOONIPS_SYSTEM_OAIPMH_HARVESTER_REPOSITORIES_DESC;
-$harvester_repositories       =&  get_harvester_repositories();
+$harvester_repositories_desc = _AM_XOONIPS_SYSTEM_OAIPMH_HARVESTER_REPOSITORIES_DESC;
+$harvester_repositories = &get_harvester_repositories();
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_oaipmh.tmpl.tpl');

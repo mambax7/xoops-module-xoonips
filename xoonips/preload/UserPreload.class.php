@@ -28,13 +28,12 @@ class Xoonips_UserPreload extends XCube_ActionFilter
 
 class XooNIps_UserPreloadFunctions
 {
-
-  /***********************/
+    /***********************/
   /** Public Functions  **/
   /***********************/
 
   /**
-   * custom 'Legacypage.Userinfo.Access' Delegate for XooNIps
+   * custom 'Legacypage.Userinfo.Access' Delegate for XooNIps.
    *
    * Note: this Delegate is conflicted with 'User_LegacypageFunctions::userinfo'
    */
@@ -49,7 +48,7 @@ class XooNIps_UserPreloadFunctions
   }
 
   /**
-   * custom 'Legacypage.Edituser.Access' Delegate for XooNIps
+   * custom 'Legacypage.Edituser.Access' Delegate for XooNIps.
    *
    * Note: this Delegate is conflicted with 'User_LegacypageFunctions::edituser'
    */
@@ -63,7 +62,7 @@ class XooNIps_UserPreloadFunctions
   }
 
   /**
-   * custom 'Legacypage.Register.Access' Delegate for XooNIps
+   * custom 'Legacypage.Register.Access' Delegate for XooNIps.
    *
    * Note: this Delegate is conflicted with 'User_LegacypageFunctions::register'
    */
@@ -74,7 +73,7 @@ class XooNIps_UserPreloadFunctions
   }
 
   /**
-   * custom 'Site.CheckLogin' Delegate for XooNIps
+   * custom 'Site.CheckLogin' Delegate for XooNIps.
    *
    * Note: this Delegate is conflicted with
    *       'User_LegacypageFunctions::checkLogin'
@@ -104,7 +103,7 @@ class XooNIps_UserPreloadFunctions
   }
 
   /**
-   * custom 'Site.CheckLogin.Success' Delegate for XooNIps
+   * custom 'Site.CheckLogin.Success' Delegate for XooNIps.
    *
    * Note: this Delegate is conflicted with
    *       'User_LegacypageFunctions::checkLoginSuccess'
@@ -126,7 +125,7 @@ class XooNIps_UserPreloadFunctions
   }
 
   /**
-   * custom 'Site.CheckLogin.Fail' Delegate for XooNIps
+   * custom 'Site.CheckLogin.Fail' Delegate for XooNIps.
    *
    * @param object $xoopsUser target user
    */
@@ -140,12 +139,12 @@ class XooNIps_UserPreloadFunctions
   }
 
   /**
-   * custom 'Site.Logout' Delegate for XooNIps
+   * custom 'Site.Logout' Delegate for XooNIps.
    *
    * Note: this Delegate is conflicted with 'User_LegacypageFunctions::logout'
    *
-   * @param bool $successFlag result, false if logout failure
-   * @param object $xoopsUser target user
+   * @param bool   $successFlag result, false if logout failure
+   * @param object $xoopsUser   target user
    */
   public static function logout($successFlag, $xoopsUser)
   {
@@ -160,7 +159,7 @@ class XooNIps_UserPreloadFunctions
   }
 
   /**
-   * custom 'Site.Logout.Success' Delegate for XooNIps
+   * custom 'Site.Logout.Success' Delegate for XooNIps.
    *
    * @param object $xoopsUser target user
    */
@@ -178,19 +177,20 @@ class XooNIps_UserPreloadFunctions
   /***********************/
 
   /**
-   * redirect to xoonips script url
+   * redirect to xoonips script url.
+   *
    * @param string $script
    */
   private static function _doRedirect($script)
   {
       $mydirname = basename(dirname(__DIR__));
       $url = sprintf('%s/modules/%s/%s', XOOPS_URL, $mydirname, $script);
-      $root =& XCube_Root::getSingleton();
+      $root = &XCube_Root::getSingleton();
       $root->mController->executeForward($url);
   }
 
   /**
-   * load xoonips features
+   * load xoonips features.
    */
   private static function _loadXooNIps()
   {

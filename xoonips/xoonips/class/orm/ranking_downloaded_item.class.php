@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/abstract_ranking.class.php';
+require_once __DIR__.'/abstract_ranking.class.php';
 
 /**
  * @brief data object of ranking downloaded item
@@ -48,12 +49,12 @@ class XooNIpsOrmRankingDownloadedItem extends XooNIpsTableObject
 
 /**
  * @brief handler object of ranking downloaded item
- *
  */
 class XooNIpsOrmRankingDownloadedItemHandler extends XooNIpsOrmAbstractRankingHandler
 {
     /**
      * XooNIpsOrmRankingDownloadedItemHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -62,16 +63,16 @@ class XooNIpsOrmRankingDownloadedItemHandler extends XooNIpsOrmAbstractRankingHa
         $this->__initHandler('XooNIpsOrmRankingDownloadedItem', 'xoonips_ranking_downloaded_item', 'item_id', false);
         $this->_set_columns(array(
                                 'item_id',
-                                'count'
+                                'count',
                             ));
     }
 
     /**
-     * insert/upldate/replace object
+     * insert/upldate/replace object.
      *
-     * @access public
      * @param XoopsObject $obj
      * @param bool        $force force operation
+     *
      * @return bool false if failed
      */
     public function insert(XoopsObject $obj, $force = false)
@@ -81,23 +82,25 @@ class XooNIpsOrmRankingDownloadedItemHandler extends XooNIpsOrmAbstractRankingHa
             // ignore if item id is zero
             return true;
         }
+
         return parent::insert($obj, $force);
     }
 
     /**
-     * increment item downloaded counter for updating/rebuilding rankings
+     * increment item downloaded counter for updating/rebuilding rankings.
      *
      * @param int $item_id item id
      * @param int $delta   counter delta
+     *
      * @return bool FALSE if failed
      */
     public function increment($item_id, $delta)
     {
-        $obj =  $this->get($item_id);
+        $obj = $this->get($item_id);
         if (is_object($obj)) {
             $delta += $obj->get('count');
         } else {
-            $obj =  $this->create();
+            $obj = $this->create();
             $obj->set('item_id', $item_id);
         }
         $obj->set('count', $delta);

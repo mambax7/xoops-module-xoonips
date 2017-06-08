@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,30 +27,30 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_SYSTEM_MODULE_TITLE;
+$title = _AM_XOONIPS_SYSTEM_MODULE_TITLE;
 $description = _AM_XOONIPS_SYSTEM_MODULE_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
+require_once __DIR__.'/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_system_module';
 
 // get module id
@@ -74,14 +75,14 @@ if (count($append_confnames) > 0) {
     $criteria->add($criteria_append);
 }
 $config = $configHandler->getConfigs($criteria);
-$count  = count($config);
+$count = count($config);
 if ($count < 1) {
     die('error : no config');
 }
-require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-$form          = new XoopsThemeForm($title, 'xoonips_admin_system_module', $xoonips_admin['mypage_url']);
+require_once XOOPS_ROOT_PATH.'/class/xoopsformloader.php';
+$form = new XoopsThemeForm($title, 'xoonips_admin_system_module', $xoonips_admin['mypage_url']);
 $moduleHandler = xoops_getHandler('module');
-$module        = $moduleHandler->get($module_id);
+$module = $moduleHandler->get($module_id);
 
 // if has comments feature, need comment lang file
 if ($module->getVar('hascomments') == 1) {
@@ -94,13 +95,13 @@ if ($module->getVar('hasnotification') == 1) {
 }
 
 $button_tray = new XoopsFormElementTray('');
-for ($i = 0; $i < $count; $i++) {
+for ($i = 0; $i < $count; ++$i) {
     $title4tray = (!defined($config[$i]->getVar('conf_desc'))
                    || constant($config[$i]->getVar('conf_desc'))
                       == '') ? constant($config[$i]->getVar('conf_title')) : constant($config[$i]->getVar('conf_title'))
-                                                                             . '<br><br><span style="font-weight:normal;">'
-                                                                             . constant($config[$i]->getVar('conf_desc')) . '</span>';
-    $eletitle   = '';
+                                                                             .'<br><br><span style="font-weight:normal;">'
+                                                                             .constant($config[$i]->getVar('conf_desc')).'</span>';
+    $eletitle = '';
     switch ($config[$i]->getVar('conf_formtype')) {
         case 'textarea':
             if ($config[$i]->getVar('conf_valuetype') === 'array') {
@@ -118,10 +119,10 @@ for ($i = 0; $i < $count; $i++) {
             }
             break;
         case 'select':
-            $ele     = new XoopsFormSelect($eletitle, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput());
+            $ele = new XoopsFormSelect($eletitle, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput());
             $options = $configHandler->getConfigOptions(new Criteria('conf_id', $config[$i]->getVar('conf_id')));
             $opcount = count($options);
-            for ($j = 0; $j < $opcount; $j++) {
+            for ($j = 0; $j < $opcount; ++$j) {
                 $optval
                     = defined($options[$j]->getVar('confop_value')) ? constant($options[$j]->getVar('confop_value')) : $options[$j]->getVar('confop_value');
                 $optkey
@@ -130,10 +131,10 @@ for ($i = 0; $i < $count; $i++) {
             }
             break;
         case 'select_multi':
-            $ele     = new XoopsFormSelect($eletitle, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput(), 5, true);
+            $ele = new XoopsFormSelect($eletitle, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput(), 5, true);
             $options = $configHandler->getConfigOptions(new Criteria('conf_id', $config[$i]->getVar('conf_id')));
             $opcount = count($options);
-            for ($j = 0; $j < $opcount; $j++) {
+            for ($j = 0; $j < $opcount; ++$j) {
                 $optval
                     = defined($options[$j]->getVar('confop_value')) ? constant($options[$j]->getVar('confop_value')) : $options[$j]->getVar('confop_value');
                 $optkey
@@ -145,20 +146,20 @@ for ($i = 0; $i < $count; $i++) {
             $ele = new XoopsFormRadioYN($eletitle, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput(), _YES, _NO);
             break;
         case 'group':
-            require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+            require_once XOOPS_ROOT_PATH.'/class/xoopslists.php';
             $ele = new XoopsFormSelectGroup($eletitle, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 1, false);
             break;
         case 'group_multi':
-            require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+            require_once XOOPS_ROOT_PATH.'/class/xoopslists.php';
             $ele = new XoopsFormSelectGroup($eletitle, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 5, true);
             break;
         // RMV-NOTIFY: added 'user' and 'user_multi'
         case 'user':
-            require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+            require_once XOOPS_ROOT_PATH.'/class/xoopslists.php';
             $ele = new XoopsFormSelectUser($eletitle, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 1, false);
             break;
         case 'user_multi':
-            require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
+            require_once XOOPS_ROOT_PATH.'/class/xoopslists.php';
             $ele = new XoopsFormSelectUser($eletitle, $config[$i]->getVar('conf_name'), false, $config[$i]->getConfValueForOutput(), 5, true);
             break;
         case 'password':
@@ -171,7 +172,7 @@ for ($i = 0; $i < $count; $i++) {
                                      $textutil->html_special_chars($config[$i]->getConfValueForOutput()));
             break;
     }
-    $hidden   = new XoopsFormHidden('conf_ids[]', $config[$i]->getVar('conf_id'));
+    $hidden = new XoopsFormHidden('conf_ids[]', $config[$i]->getVar('conf_id'));
     $ele_tray = new XoopsFormElementTray($title4tray, '');
     $ele_tray->addElement($ele);
     $ele_tray->addElement($hidden);
@@ -186,7 +187,7 @@ $button_tray->addElement(new XoopsFormButton('', 'button', _AM_XOONIPS_LABEL_UPD
 $form->addElement($button_tray);
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_module.tmpl.tpl');

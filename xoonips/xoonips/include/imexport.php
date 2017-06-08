@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -23,7 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-require_once __DIR__ . '/lib.php';
+require_once __DIR__.'/lib.php';
 
 /**
  * Return xml with Basic information.
@@ -42,28 +43,30 @@ require_once __DIR__ . '/lib.php';
  * @param folder    $export_path
  * @param item      $item_id
  * @param bool|true $attachment
- * @param           export_path   folder that export file is written to.
- * @param bool      $base_index_id
+ * @param           export_path   folder that export file is written to
+ * @param bool $base_index_id
+ *
  * @return bool|returns
- *                                'path' => folder that export files are written to.
- *                                'xml' => file path of xml(relative path of 'path')
- *                                'attachments' => arary( file path of attachment 1, file path of
- *                                attachment2, .... ) ) (relative path of 'path')
- *                                return false if failed.
+ *                      'path' => folder that export files are written to.
+ *                      'xml' => file path of xml(relative path of 'path')
+ *                      'attachments' => arary( file path of attachment 1, file path of
+ *                      attachment2, .... ) ) (relative path of 'path')
+ *                      return false if failed.
  */
 function xnpExportItem($export_path, $item_id, $attachment = false, $is_absolute, $base_index_id = false)
 {
     $filename = "${export_path}/${item_id}.xml";
-    $tmpfile  = tempnam('/tmp', 'XooNIps');
+    $tmpfile = tempnam('/tmp', 'XooNIps');
 
     $fhdl = fopen($tmpfile, 'w');
     if (!$fhdl) {
         xoonips_error("can't open file '${tmpfile}' for write.");
+
         return false;
     }
 
-    $xnpsid    = $_SESSION['XNPSID'];
-    $item      = array();
+    $xnpsid = $_SESSION['XNPSID'];
+    $item = array();
     $itemtypes = array();
 
     $res = xnp_get_item($xnpsid, $item_id, $item);
@@ -86,7 +89,7 @@ function xnpExportItem($export_path, $item_id, $attachment = false, $is_absolute
         return false;
     }
 
-    require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+    require_once XOOPS_ROOT_PATH.'/modules/'.$itemtype['viewphp'];
 
     if (!fwrite($fhdl, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<item version=\"1.00\">\n")) {
         return false;
@@ -131,6 +134,7 @@ function xnpExportItem($export_path, $item_id, $attachment = false, $is_absolute
         if ($fp_w) {
             fclose($fp_w);
         }
+
         return false;
     }
     $unicode = xoonips_getUtility('unicode');
@@ -142,22 +146,24 @@ function xnpExportItem($export_path, $item_id, $attachment = false, $is_absolute
     unlink($tmpfile);
 
     return array(
-        'path'        => $export_path,
-        'xml'         => "${item_id}.xml",
-        'attachments' => $attachment_files['attachments']
+        'path' => $export_path,
+        'xml' => "${item_id}.xml",
+        'attachments' => $attachment_files['attachments'],
     );
 }
 
 /**
- * export index
+ * export index.
  *
  * @param file $fhdl
  * @param id   $index_id
  * @param true $recurse
+ *
  * @return true :success, false:failure
- * @internal param file $fhdl handle that indexes are exported to.
+ *
+ * @internal param file $fhdl handle that indexes are exported to
  * @internal param id $index_id of index to display
- * @internal param true $recurse :export recursively index that hangs under index_id.
+ * @internal param true $recurse :export recursively index that hangs under index_id
  */
 function xnpExportIndex($fhdl, $index_id, $recurse)
 {
@@ -167,8 +173,8 @@ function xnpExportIndex($fhdl, $index_id, $recurse)
     $myts = MyTextSanitizer::getInstance();
 
     $xnpsid = $_SESSION['XNPSID'];
-    $index  = array();
-    $child  = array();
+    $index = array();
+    $child = array();
 
     $res = xnp_get_index($xnpsid, $index_id, $index);
     if ($res != RES_OK) {
@@ -180,8 +186,8 @@ function xnpExportIndex($fhdl, $index_id, $recurse)
         return false;
     }
 
-    if (!fwrite($fhdl, "<index parent_id=\"${index['parent_index_id']}\" id=\"${index_id}\">\n" . '<title>'
-                       . $myts->htmlSpecialChars($index['titles'][DEFAULT_INDEX_TITLE_OFFSET]) . "</title>\n" . "</index>\n")
+    if (!fwrite($fhdl, "<index parent_id=\"${index['parent_index_id']}\" id=\"${index_id}\">\n".'<title>'
+                       .$myts->htmlSpecialChars($index['titles'][DEFAULT_INDEX_TITLE_OFFSET])."</title>\n"."</index>\n")
     ) {
         return false;
     }
@@ -194,7 +200,7 @@ function xnpExportIndex($fhdl, $index_id, $recurse)
                     'sort_number',
                     0,
                 ),
-            )
+            ),
         ), $child);
         if ($res == RES_OK) {
             foreach ($child as $i) {
@@ -204,20 +210,21 @@ function xnpExportIndex($fhdl, $index_id, $recurse)
             }
         }
     }
+
     return true;
 }
 
 /**
- *
  * exporting attachment files related to item.
  *
  * @param string   $export_path storing directory name
- * @param resource $fhdl        file handle that items are exported to.
- * @param int      $item_id     id of item with attachment files to export.
+ * @param resource $fhdl        file handle that items are exported to
+ * @param int      $item_id     id of item with attachment files to export
+ *
  * @return array|bool
- *                              'attachments' => array( file path of attachment1, file path of attachment2, ... ) )
- *                              (relative path of $export_filepath)
- *                              returns false if it failed
+ *                    'attachments' => array( file path of attachment1, file path of attachment2, ... ) )
+ *                    (relative path of $export_filepath)
+ *                    returns false if it failed
  */
 function xnpExportFile($export_path, $fhdl, $item_id)
 {
@@ -230,10 +237,11 @@ function xnpExportFile($export_path, $fhdl, $item_id)
     }
 
     // create files directory under $export_path.
-    $dir = $export_path . '/files';
+    $dir = $export_path.'/files';
     if (!file_exists($dir)) {
         if (!mkdir($dir)) {
             xoonips_error("can't make directory '${dir}'");
+
             return false;
         }
     }
@@ -250,34 +258,37 @@ function xnpExportFile($export_path, $fhdl, $item_id)
         // output <file> to file handle $fhdl
         $hdl = fopen(xnpGetUploadFilePath($file['file_id']), 'rb');
         if (file_exists(xnpGetUploadFilePath($file['file_id']))) {
-            if (!copy(xnpGetUploadFilePath($file['file_id']), $dir . '/' . $file['file_id'])) {
-                xoonips_error('can\'t write a file \'' . $dir . '/' . $file['file_id'] . "' of the item(ID=${item_id})");
+            if (!copy(xnpGetUploadFilePath($file['file_id']), $dir.'/'.$file['file_id'])) {
+                xoonips_error('can\'t write a file \''.$dir.'/'.$file['file_id']."' of the item(ID=${item_id})");
+
                 return false;
             }
-            if (!fwrite($fhdl, '<file' . " item_id=\"${item_id}\"" . " file_type_name=\"${file['file_type_name']}\""
-                               . " original_file_name=\"${file['original_file_name']}\"" . " file_name=\"files/${file['file_id']}\""
-                               . " file_size=\"${file['file_size']}\"" . " mime_type=\"${file['mime_type']}\"" . ">\n"
-                               . (isset($file['thumbnail_file']) ? '<thumbnail>' . base64_encode($file['thumbnail_file']) . "</thumbnail>\n" : '')
-                               . '<caption>' . $file['caption'] . "</caption>\n" . "</file>\n")
+            if (!fwrite($fhdl, '<file'." item_id=\"${item_id}\""." file_type_name=\"${file['file_type_name']}\""
+                               ." original_file_name=\"${file['original_file_name']}\""." file_name=\"files/${file['file_id']}\""
+                               ." file_size=\"${file['file_size']}\""." mime_type=\"${file['mime_type']}\"".">\n"
+                               .(isset($file['thumbnail_file']) ? '<thumbnail>'.base64_encode($file['thumbnail_file'])."</thumbnail>\n" : '')
+                               .'<caption>'.$file['caption']."</caption>\n"."</file>\n")
             ) {
                 fclose($hdl);
                 xoonips_error("can't export <file> of the item(ID=${item_id})");
+
                 return false;
             }
             $files[] = "files/${file['file_id']}";
         }
     }
+
     return true;
 }
 
 /**
- *
- * export Basic information of item
+ * export Basic information of item.
  *
  * @param file $fhdl
  * @param id   $item_id
- * @param      fhdl    file handle that items are exported to.
+ * @param      fhdl    file handle that items are exported to
  * @param bool $base_index_id
+ *
  * @return true :success, false:failure
  */
 function xnpExportBasic($fhdl, $item_id, $is_absolute, $base_index_id = false)
@@ -286,23 +297,24 @@ function xnpExportBasic($fhdl, $item_id, $is_absolute, $base_index_id = false)
         return false;
     }
 
-    $xnpsid  = $_SESSION['XNPSID'];
-    $item    = array();
+    $xnpsid = $_SESSION['XNPSID'];
+    $item = array();
     $account = array();
 
     $res = xnp_get_item($xnpsid, $item_id, $item);
     if ($res != RES_OK) {
         return false;
     }
+
     return xnpBasicInformation2XML($fhdl, $item, $is_absolute, $base_index_id);
 }
 
 /**
- *
  * export ChangeLog of item.
  *
  * @param file $fhdl
- * @param      fhdl file handle that changelogs are exported to.
+ * @param      fhdl file handle that changelogs are exported to
+ *
  * @return true :success, false:failure
  */
 function xnpExportChangeLog($fhdl, $item_id)
@@ -313,9 +325,9 @@ function xnpExportChangeLog($fhdl, $item_id)
     $myts = MyTextSanitizer::getInstance();
 
     $xnpsid = $_SESSION['XNPSID'];
-    $xml    = array();
-    $logs   = array();
-    $res    = xnp_get_change_logs($xnpsid, $item_id, $logs);
+    $xml = array();
+    $logs = array();
+    $res = xnp_get_change_logs($xnpsid, $item_id, $logs);
     if ($res != RES_OK) {
         return false;
     }
@@ -324,7 +336,7 @@ function xnpExportChangeLog($fhdl, $item_id)
     }
     foreach ($logs as $l) {
         $log_date = gmdate('Y-m-d\\TH:i:s\\Z', $l['log_date']);
-        if (!fwrite($fhdl, "<changelog date='${log_date}'>" . $myts->htmlSpecialChars($l['log']) . "</changelog>\n")) {
+        if (!fwrite($fhdl, "<changelog date='${log_date}'>".$myts->htmlSpecialChars($l['log'])."</changelog>\n")) {
             return false;
         }
     }
@@ -336,17 +348,18 @@ function xnpExportChangeLog($fhdl, $item_id)
 }
 
 /**
- *
  * export 'Related to' information of an item.
  *
  * @param id $parent_id
+ *
  * @return generated|string
- * @internal param id $parent_id of the item to export.
+ *
+ * @internal param id $parent_id of the item to export
  */
 function xnpExportRelatedTo($parent_id)
 {
-    $xnpsid  = $_SESSION['XNPSID'];
-    $xml     = array();
+    $xnpsid = $_SESSION['XNPSID'];
+    $xml = array();
     $item_id = array();
     // Export item: only accesible item
     // ->export link information getted xnp_get_related_to.
@@ -358,6 +371,7 @@ function xnpExportRelatedTo($parent_id)
     foreach ($item_id as $i) {
         $xml .= "<related_to item_id='${i}'/>\n";
     }
+
     return $xml;
 }
 
@@ -370,7 +384,9 @@ $parser_hash = array();
  * @param           $parent_index_id
  * @param           $id_table
  * @param reference $errmsg
+ *
  * @return bool false if falure. refer $errmsg.
+ *
  * @internal param XML $str characters (UTF-8)
  * @internal param index_id $parent_id of import place
  * @internal param array $effected index ids
@@ -381,23 +397,24 @@ function xnpImportIndex($str, $parent_index_id, $id_table, $errmsg)
     global $parser_hash;
     $textutil = xoonips_getUtility('text');
 
-    $uid    = $_SESSION['xoopsUserId'];
+    $uid = $_SESSION['xoopsUserId'];
     $xnpsid = $_SESSION['XNPSID'];
-    $item   = array();
+    $item = array();
 
-    $str    = mb_decode_numericentity($str, xoonips_get_conversion_map(), 'UTF-8');
+    $str = mb_decode_numericentity($str, xoonips_get_conversion_map(), 'UTF-8');
     $parser = xml_parser_create('UTF-8');
     if (!$parser) {
         $errmsg .= "can't create parser\n";
+
         return false;
     }
     $parser_hash[$parser] = array(
-        'tagstack'        => array(),
-        'id_table'        => $id_table,
-        'errmsg'          => $errmsg,
-        'handler'         => array(),
-        'handlerstack'    => array(),
-        'indexes'         => array(),
+        'tagstack' => array(),
+        'id_table' => $id_table,
+        'errmsg' => $errmsg,
+        'handler' => array(),
+        'handlerstack' => array(),
+        'indexes' => array(),
         'parent_index_id' => $parent_index_id,
     );
 
@@ -412,20 +429,22 @@ function xnpImportIndex($str, $parent_index_id, $id_table, $errmsg)
 
     if (!xml_parse($parser, $str, true)) {
         $lines = preg_split("/[\r\n]+/", $str);
-        die(xml_error_string(xml_get_error_code($parser)) . ' at column ' . xml_get_current_column_number($parser) . ' of line '
-            . $textutil->html_special_chars($lines[xml_get_current_line_number($parser) - 1]));
+        die(xml_error_string(xml_get_error_code($parser)).' at column '.xml_get_current_column_number($parser).' of line '
+            .$textutil->html_special_chars($lines[xml_get_current_line_number($parser) - 1]));
     }
 
     xml_parser_free($parser);
 
-    $id_table             = $parser_hash[$parser]['id_table'];
+    $id_table = $parser_hash[$parser]['id_table'];
     $parser_hash[$parser] = null;
+
     return true;
 }
 
 /**
  * @param $str
  * @param $indexes
+ *
  * @return bool|null
  */
 function xnpImportIndexCheck($str, $indexes)
@@ -434,17 +453,17 @@ function xnpImportIndexCheck($str, $indexes)
     $textutil = xoonips_getUtility('text');
 
     $xnpsid = $_SESSION['XNPSID'];
-    $item   = array();
+    $item = array();
 
-    $str    = mb_decode_numericentity($str, xoonips_get_conversion_map(), 'UTF-8');
+    $str = mb_decode_numericentity($str, xoonips_get_conversion_map(), 'UTF-8');
     $parser = xml_parser_create('UTF-8');
     if (!$parser) {
         return null;
     }
     $parser_hash[$parser] = array(
-        'tagstack'     => array(),
-        'indexes'      => array(),
-        'handler'      => array(),
+        'tagstack' => array(),
+        'indexes' => array(),
+        'handler' => array(),
         'handlerstack' => array(),
     );
     // XooNIps processes following tags.
@@ -459,20 +478,22 @@ function xnpImportIndexCheck($str, $indexes)
 
     if (!xml_parse($parser, $str, true)) {
         $lines = preg_split("/[\r\n]+/", $str);
-        die(xml_error_string(xml_get_error_code($parser)) . ' at column ' . xml_get_current_column_number($parser) . ' of line '
-            . $textutil->html_special_chars($lines[xml_get_current_line_number($parser) - 1]));
+        die(xml_error_string(xml_get_error_code($parser)).' at column '.xml_get_current_column_number($parser).' of line '
+            .$textutil->html_special_chars($lines[xml_get_current_line_number($parser) - 1]));
     }
 
     xml_parser_free($parser);
 
-    $indexes              = $parser_hash[$parser]['indexes'];
+    $indexes = $parser_hash[$parser]['indexes'];
     $parser_hash[$parser] = null;
+
     return true;
 }
 
 /**
  * private functions
- * these functions will be called from this file
+ * these functions will be called from this file.
+ *
  * @param $parser
  * @param $name
  * @param $attribs
@@ -496,7 +517,7 @@ function _xoonips_import_startElement($parser, $name, $attribs)
 
     array_push($parser_hash[$parser]['tagstack'], $name);
 
-    $tags = '/' . implode('/', $parser_hash[$parser]['tagstack']);
+    $tags = '/'.implode('/', $parser_hash[$parser]['tagstack']);
     if (array_key_exists($tags, $parser_hash[$parser]['handler'])) {
         array_push($parser_hash[$parser]['handlerstack'], $parser_hash[$parser]['handler'][$tags]);
     }
@@ -506,6 +527,7 @@ function _xoonips_import_startElement($parser, $name, $attribs)
         if (function_exists($handler[0])) {
             $handler[0]($parser, $name, $attribs, $parser_hash[$parser]);
         }
+
         return;
     }
 }
@@ -532,14 +554,15 @@ function _xoonips_import_endElement($parser, $name)
             $handler[1]($parser, $name, $parser_hash[$parser]);
         }
         // TODO: compare with first value in 'handler' key.
-        if (array_key_exists('/' . implode('/', $parser_hash[$parser]['tagstack']), $parser_hash[$parser]['handler'])) {
+        if (array_key_exists('/'.implode('/', $parser_hash[$parser]['tagstack']), $parser_hash[$parser]['handler'])) {
             array_pop($parser_hash[$parser]['handlerstack']);
         }
         array_pop($parser_hash[$parser]['tagstack']);
+
         return;
     }
 
-    $currentTag     = '';
+    $currentTag = '';
     $currentAttribs = '';
 
     array_pop($parser_hash[$parser]['tagstack']);
@@ -561,13 +584,14 @@ function _xoonips_import_CharacterData($parser, $data)
         return;
     }
 
-    $tags = '/' . implode('/', $parser_hash[$parser]['tagstack']);
+    $tags = '/'.implode('/', $parser_hash[$parser]['tagstack']);
 
     if (count($parser_hash[$parser]['handlerstack']) > 0) {
         $handler = end($parser_hash[$parser]['handlerstack']);
         if (function_exists($handler[2])) {
             $handler[2]($parser, $data, $parser_hash[$parser]);
         }
+
         return;
     }
 }
@@ -583,7 +607,7 @@ function _xoonips_import_indexStartElement($parser, $name, $attribs, $parser_has
 {
     $xnpsid = $_SESSION['XNPSID'];
 
-    $tags = '/' . implode('/', $parser_hash['tagstack']);
+    $tags = '/'.implode('/', $parser_hash['tagstack']);
 
     switch ($tags) {
         case '/INDEXES/INDEX/TITLE':
@@ -593,8 +617,8 @@ function _xoonips_import_indexStartElement($parser, $name, $attribs, $parser_has
         case '/INDEXES/INDEX':
             $ar = array(
                 'parent_id' => $attribs['PARENT_ID'],
-                'index_id'  => $attribs['ID'],
-                'titles'    => array(),
+                'index_id' => $attribs['ID'],
+                'titles' => array(),
             );
             array_push($parser_hash['indexes'], $ar);
             break;
@@ -628,7 +652,7 @@ function _xoonips_import_indexEndElement($parser, $name, $parser_hash)
                 if (!isset($p2c[$i['parent_id']])) {
                     $p2c[$i['parent_id']] = array();
                 }
-                $p2c[$i['parent_id']][]      = $i['index_id'];
+                $p2c[$i['parent_id']][] = $i['index_id'];
                 $index_by_id[$i['index_id']] = $i;
             }
 
@@ -638,7 +662,7 @@ function _xoonips_import_indexEndElement($parser, $name, $parser_hash)
                 while (array_key_exists($parent, $c2p)) {
                     // track back to root
                     unset($c2p[$child]);
-                    $child  = $parent;
+                    $child = $parent;
                     $parent = $c2p[$parent];
                 }
 
@@ -678,7 +702,7 @@ function _xoonips_import_indexEndElement($parser, $name, $parser_hash)
  */
 function _xoonips_import_indexCharacterData($parser, $data, $parser_hash)
 {
-    $tags = '/' . implode('/', $parser_hash['tagstack']);
+    $tags = '/'.implode('/', $parser_hash['tagstack']);
 
     switch ($tags) {
         case '/INDEXES/INDEX/TITLE':
@@ -698,7 +722,7 @@ function _xoonips_import_indexCharacterData($parser, $data, $parser_hash)
  */
 function _xoonips_import_indexcheckStartElement($parser, $name, $attribs, $parser_hash)
 {
-    $tags = '/' . implode('/', $parser_hash['tagstack']);
+    $tags = '/'.implode('/', $parser_hash['tagstack']);
 
     switch ($tags) {
         case '/INDEXES':
@@ -707,8 +731,8 @@ function _xoonips_import_indexcheckStartElement($parser, $name, $attribs, $parse
         case '/INDEXES/INDEX':
             $ar = array(
                 'parent_id' => $attribs['PARENT_ID'],
-                'index_id'  => $attribs['ID'],
-                'titles'    => array(),
+                'index_id' => $attribs['ID'],
+                'titles' => array(),
             );
             array_push($parser_hash['indexes'], $ar);
             break;
@@ -725,14 +749,14 @@ function _xoonips_import_indexcheckStartElement($parser, $name, $attribs, $parse
  */
 function _xoonips_import_indexcheckEndElement($parser, $name, $parser_hash)
 {
-    $tags = '/' . implode('/', $parser_hash['tagstack']);
+    $tags = '/'.implode('/', $parser_hash['tagstack']);
 
     switch ($tags) {
         case '/INDEXES/INDEX/TITLE':
-            $title   =  $parser_hash['indexes'][count($parser_hash['indexes'])
+            $title = $parser_hash['indexes'][count($parser_hash['indexes'])
                                                 - 1]['titles'][count($parser_hash['indexes'][count($parser_hash['indexes']) - 1]['titles']) - 1];
             $unicode = xoonips_getUtility('unicode');
-            $title   = $unicode->decode_utf8($title, xoonips_get_server_charset(), 'h');
+            $title = $unicode->decode_utf8($title, xoonips_get_server_charset(), 'h');
             break;
     }
 }
@@ -744,7 +768,7 @@ function _xoonips_import_indexcheckEndElement($parser, $name, $parser_hash)
  */
 function _xoonips_import_indexcheckCharacterData($parser, $data, $parser_hash)
 {
-    $tags = '/' . implode('/', $parser_hash['tagstack']);
+    $tags = '/'.implode('/', $parser_hash['tagstack']);
 
     switch ($tags) {
         case '/INDEXES/INDEX/TITLE':
@@ -760,28 +784,30 @@ function _xoonips_import_indexcheckCharacterData($parser, $data, $parser_hash)
  * Associations of pseudo ID and Real index ID are sotred to $id_table.
  *
  * @param index_id  $parent_index_id
- * @param           $indexes                            array of index information to be imported.
- *                                                      $indexes = array(
- *                                                      array( 'titles' => array( TITLE1, TITLE2, ... )
- *                                                      'parent_id' => pseudo id of parent index
- *                                                      'item_id' => pseudo id of own index
- *                                                      'child' => array( [0] => array( 'titles' => ..., 'parent_id' => ..., 'child' => ....)
- *                                                      [1] => array( same above ),
- *                                                      ....
- *                                                      )
- *                                                      ),
- *                                                      array( 'titles' => array( TITLE1, TITLE2, ... )
- *                                                      same above ... ),
- *                                                      ...
- *                                                      );
+ * @param           $indexes         array of index information to be imported.
+ *                                   $indexes = array(
+ *                                   array( 'titles' => array( TITLE1, TITLE2, ... )
+ *                                   'parent_id' => pseudo id of parent index
+ *                                   'item_id' => pseudo id of own index
+ *                                   'child' => array( [0] => array( 'titles' => ..., 'parent_id' => ..., 'child' => ....)
+ *                                   [1] => array( same above ),
+ *                                   ....
+ *                                   )
+ *                                   ),
+ *                                   array( 'titles' => array( TITLE1, TITLE2, ... )
+ *                                   same above ... ),
+ *                                   ...
+ *                                   );
  * @param reference $id_table
- * @return no return value.
- * @internal param index_id $parent_index_id that indexes is imported to.
+ *
+ * @return no return value
+ *
+ * @internal param index_id $parent_index_id that indexes is imported to
  * @internal param reference $id_table of associative array for output( [pseudo id] => [real index id] )
  */
 function _xoonips_import_index($parent_index_id, $indexes, $id_table)
 {
-    $xnpsid  = $_SESSION['XNPSID'];
+    $xnpsid = $_SESSION['XNPSID'];
     $lengths = xnpGetColumnLengths('xoonips_item_title');
     $unicode = xoonips_getUtility('unicode');
     foreach ($indexes as $index) {
@@ -791,14 +817,14 @@ function _xoonips_import_index($parent_index_id, $indexes, $id_table)
         }
         $child = array();
         // numbers of same index name
-        $cnt      = 0;
+        $cnt = 0;
         $index_id = 0;
         if (xnp_get_indexes($xnpsid, $parent_index_id, array(), $child) == RES_OK) {
             foreach ($child as $i) {
                 $diff = array_diff($i['titles'], $index['titles']);
                 if (empty($diff)) {
                     // true if $index have only same names of $i ( $i['titles'] == $index['titles'] )
-                    $cnt++;
+                    ++$cnt;
                     $index_id = $i['item_id'];
                 }
             }
@@ -806,17 +832,17 @@ function _xoonips_import_index($parent_index_id, $indexes, $id_table)
         if ($cnt == 1) {
             $id_table[$index['index_id']] = $index_id;
         } else {
-            $insert_index                    = array();
-            $insert_index['titles']          = $index['titles'];
+            $insert_index = array();
+            $insert_index['titles'] = $index['titles'];
             $insert_index['parent_index_id'] = $parent_index_id;
-            $result                          = xnp_insert_index($xnpsid, $insert_index, $index_id);
+            $result = xnp_insert_index($xnpsid, $insert_index, $index_id);
             if ($result != RES_OK) {
                 break;
             }
             $id_table[$index['index_id']] = $index_id;
 
             // record event log
-            $mydirname    = basename(dirname(__DIR__));
+            $mydirname = basename(dirname(__DIR__));
             $eventHandler = xoonips_getOrmHandler('xoonips', 'event_log');
             $eventHandler->recordInsertIndexEvent($index_id);
         }
@@ -832,10 +858,12 @@ function _xoonips_import_index($parent_index_id, $indexes, $id_table)
  * Return value of this function has information of this index and the childs of this index.
  * This function is called recursive by own.
  *
- * @param p2c         $p2c [ Parent ID of the index ] = array( ID of child index of the index[0], ...[1], ...[2], .... )
+ * @param p2c         $p2c         [ Parent ID of the index ] = array( ID of child index of the index[0], ...[1], ...[2], .... )
  * @param assosiative $index_by_id
  * @param Index       $root_id
+ *
  * @return assosiative array of index tree
+ *
  * @internal param assosiative $index_by_id array of index( index information that is associated by own index ID )
  *                         $index_by_id[ ID of the index 'A' ] = array( information of the index 'A' )
  * @internal param Index $root_id ID of the root of the index tree structure that you want to get

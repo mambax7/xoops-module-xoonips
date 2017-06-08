@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -50,7 +51,7 @@ function b_xoonips_user_show()
 
     // get xoonips module id
     $moduleHandler = xoops_getHandler('module');
-    $module        = $moduleHandler->getByDirname('xoonips');
+    $module = $moduleHandler->getByDirname('xoonips');
     if (!is_object($module)) {
         exit('Access Denied');
     }
@@ -58,7 +59,7 @@ function b_xoonips_user_show()
 
     // get xoonips user information
     $xuserHandler = xoonips_getOrmHandler('xoonips', 'users');
-    $xuser_obj    = $xuserHandler->get($uid);
+    $xuser_obj = $xuserHandler->get($uid);
     if (!is_object($xuser_obj)) {
         // not xoonips user
         return false;
@@ -68,54 +69,54 @@ function b_xoonips_user_show()
         // user is not certified
         return false;
     }
-    $uname            = $xoopsUser->getVar('uname', 's');
+    $uname = $xoopsUser->getVar('uname', 's');
     $private_index_id = $xuser_obj->getVar('private_index_id', 's');
-    $is_admin         = $xoopsUser->isAdmin($mid);
+    $is_admin = $xoopsUser->isAdmin($mid);
 
     // get count of private messages
     $pmHandler = xoops_getHandler('privmessage');
-    $criteria  = new CriteriaCompo(new Criteria('read_msg', 0));
+    $criteria = new CriteriaCompo(new Criteria('read_msg', 0));
     $criteria->add(new Criteria('to_userid', $uid));
     $new_messages = $pmHandler->getCount($criteria);
 
     // get configuration value of 'private_import_enabled'
-    $xconfigHandler         = xoonips_getOrmHandler('xoonips', 'config');
+    $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
     $private_import_enabled = $xconfigHandler->getValue('private_import_enabled');
 
     // count transfer requested items
     if (xoonips_get_version() >= 340) {
         $trHandler = xoonips_getOrmHandler('xoonips', 'transfer_request');
-        $criteria  = new Criteria('to_uid', $uid);
-        $tr_count  = $trHandler->getCount($criteria);
+        $criteria = new Criteria('to_uid', $uid);
+        $tr_count = $trHandler->getCount($criteria);
     } else {
         $tr_count = 0;
     }
 
     // assign block template variables
     $block['private_index_id'] = $private_index_id;
-    $block['is_su']            = isset($_SESSION['xoonips_old_uid']);
-    $block['uid']              = $uid;
-    $block['new_messages']     = $new_messages;
+    $block['is_su'] = isset($_SESSION['xoonips_old_uid']);
+    $block['uid'] = $uid;
+    $block['new_messages'] = $new_messages;
 
-    $block['lang_youraccount']            = _MB_XOONIPS_USER_VIEW_ACCOUNT;
-    $block['lang_editaccount']            = _MB_XOONIPS_USER_EDIT_ACCOUNT;
-    $block['lang_register_item']          = _MB_XOONIPS_USER_REGISTER_ITEM;
-    $block['lang_showusers']              = _MB_XOONIPS_USER_SHOW_USERS;
-    $block['lang_grouplist']              = _MB_XOONIPS_USER_GROUP_LIST;
-    $block['lang_notifications']          = _MB_XOONIPS_USER_NOTIFICATION;
-    $block['lang_inbox']                  = _MB_XOONIPS_USER_INBOX;
-    $block['lang_listing_item']           = _MB_XOONIPS_USER_LISTING_ITEM;
-    $block['lang_edit_index']             = _MB_XOONIPS_USER_EDIT_PRIVATE_INDEX;
-    $block['lang_advanced_search']        = _MB_XOONIPS_USER_ADVANCED_SEARCH;
-    $block['lang_logout']                 = _MB_XOONIPS_USER_LOGOUT;
-    $block['lang_su_start']               = _MB_XOONIPS_USER_SU_START;
-    $block['lang_su_end']                 = sprintf(_MB_XOONIPS_USER_SU_END, $uname);
-    $block['lang_adminmenu']              = _MB_XOONIPS_USER_ADMINMENU;
-    $block['lang_transfer_request']       = _MB_XOONIPS_USER_TRANSFER_USER_REQUEST;
-    $block['lang_transfer_accept']        = _MB_XOONIPS_USER_TRANSFER_USER_ACCEPT;
+    $block['lang_youraccount'] = _MB_XOONIPS_USER_VIEW_ACCOUNT;
+    $block['lang_editaccount'] = _MB_XOONIPS_USER_EDIT_ACCOUNT;
+    $block['lang_register_item'] = _MB_XOONIPS_USER_REGISTER_ITEM;
+    $block['lang_showusers'] = _MB_XOONIPS_USER_SHOW_USERS;
+    $block['lang_grouplist'] = _MB_XOONIPS_USER_GROUP_LIST;
+    $block['lang_notifications'] = _MB_XOONIPS_USER_NOTIFICATION;
+    $block['lang_inbox'] = _MB_XOONIPS_USER_INBOX;
+    $block['lang_listing_item'] = _MB_XOONIPS_USER_LISTING_ITEM;
+    $block['lang_edit_index'] = _MB_XOONIPS_USER_EDIT_PRIVATE_INDEX;
+    $block['lang_advanced_search'] = _MB_XOONIPS_USER_ADVANCED_SEARCH;
+    $block['lang_logout'] = _MB_XOONIPS_USER_LOGOUT;
+    $block['lang_su_start'] = _MB_XOONIPS_USER_SU_START;
+    $block['lang_su_end'] = sprintf(_MB_XOONIPS_USER_SU_END, $uname);
+    $block['lang_adminmenu'] = _MB_XOONIPS_USER_ADMINMENU;
+    $block['lang_transfer_request'] = _MB_XOONIPS_USER_TRANSFER_USER_REQUEST;
+    $block['lang_transfer_accept'] = _MB_XOONIPS_USER_TRANSFER_USER_ACCEPT;
     $block['lang_transfer_request_count'] = $tr_count;
-    $block['lang_oaipmh_search']          = _MB_XOONIPS_USER_OAIPMH_SEARCH;
-    $block['xoonips_isadmin']             = $is_admin;
+    $block['lang_oaipmh_search'] = _MB_XOONIPS_USER_OAIPMH_SEARCH;
+    $block['xoonips_isadmin'] = $is_admin;
 
     if ($is_admin || $private_import_enabled === 'on') {
         // set to $block['lang_import'] if user is permitted to import.

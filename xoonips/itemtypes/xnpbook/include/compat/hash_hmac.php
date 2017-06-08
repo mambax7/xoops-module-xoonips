@@ -1,22 +1,27 @@
 <?php
 
-require_once __DIR__ . '/hash.php';
+require_once __DIR__.'/hash.php';
 
 /**
- * Replace hash_hmac()
+ * Replace hash_hmac().
  *
  * @category    PHP
- * @package     PHP_Compat
+ *
  * @license     LGPL - http://www.gnu.org/licenses/lgpl.html
  * @copyright   2004-2007 Aidan Lister <aidan@php.net>, Arpad Ray <arpad@php.net>
- * @link        http://php.net/function.hash_hmac
+ *
+ * @see        http://php.net/function.hash_hmac
+ *
  * @author      revulo <revulon@gmail.com>
+ *
  * @since       PHP 5.1.2
  * @require     PHP 4.0.1 (str_pad)
+ *
  * @param      $algo
  * @param      $data
  * @param      $key
  * @param bool $raw_output
+ *
  * @return bool|string
  */
 function php_compat_hash_hmac($algo, $data, $key, $raw_output = false)
@@ -36,7 +41,7 @@ function php_compat_hash_hmac($algo, $data, $key, $raw_output = false)
     $ipad ^= $key;
     $opad ^= $key;
 
-    return hash($algo, $opad . hash($algo, $ipad . $data, true), $raw_output);
+    return hash($algo, $opad.hash($algo, $ipad.$data, true), $raw_output);
 }
 
 // Define
@@ -46,6 +51,7 @@ if (!function_exists('hash_hmac')) {
      * @param      $data
      * @param      $key
      * @param bool $raw_output
+     *
      * @return bool|string
      */
     function hash_hmac($algo, $data, $key, $raw_output = false)

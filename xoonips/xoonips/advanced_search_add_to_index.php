@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,7 +27,7 @@
 
 // advanced search form for add to index
 
-require __DIR__ . '/include/common.inc.php';
+require __DIR__.'/include/common.inc.php';
 
 // access permission check
 if (!$xoopsUser) {
@@ -40,8 +41,8 @@ $xoonipsURL = '';
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_advanced_search_add_to_index.tpl';
 
-require XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH.'/header.php';
 
-require __DIR__ . '/include/advanced_search.inc.php';
+require __DIR__.'/include/advanced_search.inc.php';
 
-require XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH.'/footer.php';

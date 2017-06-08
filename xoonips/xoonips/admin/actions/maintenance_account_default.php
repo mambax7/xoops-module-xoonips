@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -36,28 +37,28 @@ $get_keys = array(
 $get_vals = xoonips_admin_get_requests('get', $get_keys);
 
 // class files
-require __DIR__ . '/../../class/base/pagenavi.class.php';
+require __DIR__.'/../../class/base/pagenavi.class.php';
 
 // title
-$title       = _AM_XOONIPS_MAINTENANCE_ACCOUNT_TITLE;
+$title = _AM_XOONIPS_MAINTENANCE_ACCOUNT_TITLE;
 $description = _AM_XOONIPS_MAINTENANCE_ACCOUNT_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
@@ -67,30 +68,32 @@ $breadcrumbs = array(
  * @param $limit
  * @param $start
  * @param $sort
+ *
  * @return mixed
  */
 function &account_get_userlist($limit, $start, $sort)
 {
     global $xoopsDB;
-    $usersHandler    = xoonips_getOrmHandler('xoonips', 'xoops_users');
+    $usersHandler = xoonips_getOrmHandler('xoonips', 'xoops_users');
     $tables['users'] = $xoopsDB->prefix('users');
-    $join_criteria   = new XooNIpsJoinCriteria('xoonips_users', 'uid', 'uid', 'INNER');
-    $criteria        = new CriteriaElement();
-    $sort_arr        = array();
+    $join_criteria = new XooNIpsJoinCriteria('xoonips_users', 'uid', 'uid', 'INNER');
+    $criteria = new CriteriaElement();
+    $sort_arr = array();
     foreach ($sort as $so) {
-        $sort_arr[] = $tables['users'] . '.' . $so;
+        $sort_arr[] = $tables['users'].'.'.$so;
     }
     if (!empty($sort_arr)) {
         $criteria->setSort($sort_arr);
     }
     $criteria->setLimit($limit);
     $criteria->setStart($start);
-    $fields     = array();
-    $fields[]   = $tables['users'] . '.uid';
-    $fields[]   = $tables['users'] . '.name';
-    $fields[]   = $tables['users'] . '.uname';
-    $fields[]   = $tables['users'] . '.email';
-    $users_objs =  $usersHandler->getObjects($criteria, false, implode(',', $fields), false, $join_criteria);
+    $fields = array();
+    $fields[] = $tables['users'].'.uid';
+    $fields[] = $tables['users'].'.name';
+    $fields[] = $tables['users'].'.uname';
+    $fields[] = $tables['users'].'.email';
+    $users_objs = $usersHandler->getObjects($criteria, false, implode(',', $fields), false, $join_criteria);
+
     return $users_objs;
 }
 
@@ -99,49 +102,50 @@ function &account_get_userlist($limit, $start, $sort)
  */
 function count_users()
 {
-    $usersHandler  = xoonips_getOrmHandler('xoonips', 'xoops_users');
+    $usersHandler = xoonips_getOrmHandler('xoonips', 'xoops_users');
     $join_criteria = new XooNIpsJoinCriteria('xoonips_users', 'uid', 'uid');
+
     return $usersHandler->getCount(null, $join_criteria);
 }
 
 // page navigation
-$page     = null === $get_vals['navi'] ? 1 : $get_vals['navi'];
-$limit    = 20;
+$page = null === $get_vals['navi'] ? 1 : $get_vals['navi'];
+$limit = 20;
 $pagenavi = new XooNIpsPageNavi(count_users(), $limit, $page);
 $pagenavi->setSort(array('uname'));
-$navi       =  $pagenavi->getTemplateVars(10);
+$navi = $pagenavi->getTemplateVars(10);
 $navi_title = sprintf(_AM_XOONIPS_MAINTENANCE_ACCOUNT_PAGENAVI_FORMAT, $navi['start'], $navi['end'], $navi['total']);
-$navi_body  = array();
+$navi_body = array();
 foreach ($navi['navi'] as $body) {
     $navi_body[] = array(
         'has_link' => ($navi['page'] == $body) ? 'no' : 'yes',
-        'link'     => $xoonips_admin['mypage_url'],
-        'page'     => $body,
+        'link' => $xoonips_admin['mypage_url'],
+        'page' => $body,
     );
 }
 
-$users_objs =&  account_get_userlist($limit, $pagenavi->getStart(), $pagenavi->getSort());
-$users      = array();
-$evenodd    = 'odd';
+$users_objs = &account_get_userlist($limit, $pagenavi->getStart(), $pagenavi->getSort());
+$users = array();
+$evenodd = 'odd';
 foreach ($users_objs as $users_obj) {
-    $uid     = $users_obj->getVar('uid', 'e');
-    $name    = $users_obj->getVar('name', 's');
-    $uname   = $users_obj->getVar('uname', 's');
-    $email   = $users_obj->getVar('email', 's');
+    $uid = $users_obj->getVar('uid', 'e');
+    $name = $users_obj->getVar('name', 's');
+    $uname = $users_obj->getVar('uname', 's');
+    $email = $users_obj->getVar('email', 's');
     $users[] = array(
-        'uid'     => $uid,
-        'name'    => $name,
-        'uname'   => $uname,
-        'email'   => $email,
+        'uid' => $uid,
+        'name' => $name,
+        'uname' => $uname,
+        'email' => $email,
         'evenodd' => $evenodd,
-        'modify'  => _AM_XOONIPS_LABEL_MODIFY,
-        'delete'  => _AM_XOONIPS_LABEL_DELETE,
+        'modify' => _AM_XOONIPS_LABEL_MODIFY,
+        'delete' => _AM_XOONIPS_LABEL_DELETE,
     );
     $evenodd = ($evenodd === 'even') ? 'odd' : 'even';
 }
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('maintenance_account.tmpl.tpl');

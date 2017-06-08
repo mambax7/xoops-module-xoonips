@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -414,7 +415,7 @@ define('_AM_XOONIPS_MAINTENANCE_TRANSFER_ADMIN_ITEM_SELECT_NO_ITEM', 'No items')
 
 define('_AM_XOONIPS_MAINTENANCE_TRANSFER_ADMIN_ITEM_LIST_PAGE_TITLE', 'Transfer confirmation');
 define('_AM_XOONIPS_MAINTENANCE_TRANSFER_ADMIN_ITEM_LIST_MESSAGE', 'Following items are transfered. Ready to proceed ?');
-define('_AM_XOONIPS_MAINTENANCE_TRANSFER_ADMIN_ITEM_LIST_SUBSCRIBE_USER_TO_GROUP', "Transferee %2\$s is subscribed to group %1\$s");
+define('_AM_XOONIPS_MAINTENANCE_TRANSFER_ADMIN_ITEM_LIST_SUBSCRIBE_USER_TO_GROUP', 'Transferee %2$s is subscribed to group %1$s');
 define('_AM_XOONIPS_MAINTENANCE_TRANSFER_ADMIN_ITEM_LIST_LIMIT_CHECK_OUT_OF_BOUNDS',
        'Can not transfer items because number of items or storage size of transferee is out of bounds.');
 define('_AM_XOONIPS_MAINTENANCE_TRANSFER_ADMIN_ITEM_LIST_FROM', 'From');

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,25 +27,25 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_MAINTENANCE_FILESEARCH_TITLE;
+$title = _AM_XOONIPS_MAINTENANCE_FILESEARCH_TITLE;
 $description = _AM_XOONIPS_MAINTENANCE_FILESEARCH_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
@@ -52,33 +53,34 @@ $textutil = xoonips_getUtility('text');
 
 /**
  * @param $str
+ *
  * @return string
  */
 function filesearch_adddot($str)
 {
-    return '.' . $str;
+    return '.'.$str;
 }
 
 $admin_fileHandler = xoonips_getHandler('xoonips', 'admin_file');
-$modules           = $admin_fileHandler->getFileSearchPlugins();
-$plugins           = array();
-$evenodd           = 'odd';
+$modules = $admin_fileHandler->getFileSearchPlugins();
+$plugins = array();
+$evenodd = 'odd';
 foreach ($modules as $module) {
-    $plugin['plugin']   = $textutil->html_special_chars($module['display_name']);
+    $plugin['plugin'] = $textutil->html_special_chars($module['display_name']);
     $plugin['mimetype'] = $textutil->html_special_chars(implode(', ', $module['mime_type']));
-    $extensions         = array_map('filesearch_adddot', $module['extensions']);
+    $extensions = array_map('filesearch_adddot', $module['extensions']);
     $plugin['suffixes'] = $textutil->html_special_chars(implode(', ', $extensions));
-    $plugin['version']  = $textutil->html_special_chars($module['version']);
-    $plugin['evenodd']  = $evenodd;
-    $evenodd            = ($evenodd === 'even') ? 'odd' : 'even';
-    $plugins[]          = $plugin;
+    $plugin['version'] = $textutil->html_special_chars($module['version']);
+    $plugin['evenodd'] = $evenodd;
+    $evenodd = ($evenodd === 'even') ? 'odd' : 'even';
+    $plugins[] = $plugin;
 }
 $has_plugins = (count($plugins) == 0) ? false : true;
 
 $file_count = $admin_fileHandler->getCountFiles();
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('maintenance_filesearch.tmpl.tpl');

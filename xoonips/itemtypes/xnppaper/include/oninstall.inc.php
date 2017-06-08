@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -28,6 +29,7 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 //  Install script for XooNIps Paper item type module
 /**
  * @param $xoopsMod
+ *
  * @return bool
  */
 function xoops_module_install_xnppaper($xoopsMod)
@@ -36,8 +38,8 @@ function xoops_module_install_xnppaper($xoopsMod)
 
     // register itemtype
     $table = $xoopsDB->prefix('xoonips_item_type');
-    $mid   = $xoopsMod->getVar('mid');
-    $sql   = "INSERT INTO $table ( name, display_name, mid, viewphp ) VALUES ( 'xnppaper', 'Paper', $mid, 'xnppaper/include/view.php' )";
+    $mid = $xoopsMod->getVar('mid');
+    $sql = "INSERT INTO $table ( name, display_name, mid, viewphp ) VALUES ( 'xnppaper', 'Paper', $mid, 'xnppaper/include/view.php' )";
     if ($xoopsDB->query($sql) == false) {
         // cannot register itemtype
         return false;
@@ -45,8 +47,8 @@ function xoops_module_install_xnppaper($xoopsMod)
 
     // register filetype
     $table = $xoopsDB->prefix('xoonips_file_type');
-    $mid   = $xoopsMod->getVar('mid');
-    $sql   = "INSERT INTO $table ( name, display_name, mid ) VALUES ( 'paper_pdf_reprint', 'PDF Reprint', $mid )";
+    $mid = $xoopsMod->getVar('mid');
+    $sql = "INSERT INTO $table ( name, display_name, mid ) VALUES ( 'paper_pdf_reprint', 'PDF Reprint', $mid )";
     if ($xoopsDB->query($sql) == false) {
         // cannot register itemtype
         return false;
@@ -55,8 +57,8 @@ function xoops_module_install_xnppaper($xoopsMod)
     // Delete 'Module Access Rights' from all groups
     // This allows to remove redundant module name in Main Menu
     $memberHandler = xoops_getHandler('member');
-    $gpermHandler  = xoops_getHandler('groupperm');
-    $groups        = $memberHandler->getGroupList();
+    $gpermHandler = xoops_getHandler('groupperm');
+    $groups = $memberHandler->getGroupList();
     foreach ($groups as $groupid2 => $groupname) {
         if ($gpermHandler->checkRight('module_read', $mid, $groupid2)) {
             $criteria = new CriteriaCompo();

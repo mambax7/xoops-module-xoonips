@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,12 +25,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/transfer.class.php';
-require_once __DIR__ . '/../../include/transfer.inc.php';
-require_once __DIR__ . '/../base/gtickets.php';
+require_once __DIR__.'/transfer.class.php';
+require_once __DIR__.'/../../include/transfer.inc.php';
+require_once __DIR__.'/../base/gtickets.php';
 
 /**
- * Class XooNIpsActionTransferUserReject
+ * Class XooNIpsActionTransferUserReject.
  */
 class XooNIpsActionTransferUserReject extends XooNIpsActionTransfer
 {
@@ -49,9 +50,6 @@ class XooNIpsActionTransferUserReject extends XooNIpsActionTransfer
         return 'TransferUserReject';
     }
 
-    /**
-     * @return null
-     */
     public function _get_view_name()
     {
         return null;
@@ -68,7 +66,7 @@ class XooNIpsActionTransferUserReject extends XooNIpsActionTransfer
 
         $item_ids = $this->get_item_ids_to_transfer();
         if (empty($item_ids)) {
-            redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_TRANSFER_USER_REJECT_ERROR_NO_ITEM);
+            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_TRANSFER_USER_REJECT_ERROR_NO_ITEM);
         }
 
         $this->_params[] = $this->_formdata->getValueArray('post', 'item_ids_to_transfer', 'i', false);
@@ -79,9 +77,9 @@ class XooNIpsActionTransferUserReject extends XooNIpsActionTransfer
         if ($this->_response->getResult()) {
             $this->notify_transfer_rejected();
 
-            redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_TRANSFER_USER_REJECT_COMPLETE);
+            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_TRANSFER_USER_REJECT_COMPLETE);
         } else {
-            redirect_header(XOOPS_URL . '/modules/xoonips/transfer_item.php' . '?action=list_item', 3, _MD_XOONIPS_TRANSFER_USER_REJECT_ERROR);
+            redirect_header(XOOPS_URL.'/modules/xoonips/transfer_item.php'.'?action=list_item', 3, _MD_XOONIPS_TRANSFER_USER_REJECT_ERROR);
         }
     }
 

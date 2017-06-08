@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,12 +25,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/transfer.class.php';
-require_once __DIR__ . '/../../include/transfer.inc.php';
-require_once __DIR__ . '/../base/gtickets.php';
+require_once __DIR__.'/transfer.class.php';
+require_once __DIR__.'/../../include/transfer.inc.php';
+require_once __DIR__.'/../base/gtickets.php';
 
 /**
- * Class XooNIpsActionTransferUserRequest
+ * Class XooNIpsActionTransferUserRequest.
  */
 class XooNIpsActionTransferUserRequest extends XooNIpsActionTransfer
 {
@@ -49,9 +50,6 @@ class XooNIpsActionTransferUserRequest extends XooNIpsActionTransfer
         return 'TransferUserRequest';
     }
 
-    /**
-     * @return null
-     */
     public function _get_view_name()
     {
         return null;
@@ -71,17 +69,17 @@ class XooNIpsActionTransferUserRequest extends XooNIpsActionTransfer
         $all_of_item_ids_to_transfer = array_unique(array_merge($this->get_item_ids_to_transfer(), $this->get_child_item_ids_to_transfer()));
 
         if (!xoonips_transfer_is_transferrable($xoopsUser->getVar('uid'), $this->get_to_uid(), $all_of_item_ids_to_transfer)) {
-            redirect_header(XOOPS_URL . '/modules/xoonips/transfer_item.php', 3, _MD_XOONIPS_TRANSFER_USER_REQUEST_ERROR);
+            redirect_header(XOOPS_URL.'/modules/xoonips/transfer_item.php', 3, _MD_XOONIPS_TRANSFER_USER_REQUEST_ERROR);
         }
 
         if (!$this->is_user_in_group_of_items($this->get_to_uid(), $all_of_item_ids_to_transfer)) {
-            redirect_header(XOOPS_URL . '/modules/xoonips/transfer_item.php', 3, _MD_XOONIPS_TRANSFER_USER_REQUEST_ERROR_BAD_SUBSCRIBE_GROUP);
+            redirect_header(XOOPS_URL.'/modules/xoonips/transfer_item.php', 3, _MD_XOONIPS_TRANSFER_USER_REQUEST_ERROR_BAD_SUBSCRIBE_GROUP);
         }
 
         $this->_params = array(
             $all_of_item_ids_to_transfer,
             $xoopsUser->getVar('uid'),
-            $this->get_to_uid()
+            $this->get_to_uid(),
         );
     }
 
@@ -89,9 +87,9 @@ class XooNIpsActionTransferUserRequest extends XooNIpsActionTransfer
     {
         xoonips_notification_user_item_transfer_request($this->get_to_uid());
         if ($this->_response->getResult()) {
-            redirect_header(XOOPS_URL . '/modules/xoonips/transfer_item.php', 3, _MD_XOONIPS_TRANSFER_USER_REQUEST_COMPLETE);
+            redirect_header(XOOPS_URL.'/modules/xoonips/transfer_item.php', 3, _MD_XOONIPS_TRANSFER_USER_REQUEST_COMPLETE);
         } else {
-            redirect_header(XOOPS_URL . '/modules/xoonips/transfer_item.php', 3, _MD_XOONIPS_TRANSFER_USER_REQUEST_ERROR);
+            redirect_header(XOOPS_URL.'/modules/xoonips/transfer_item.php', 3, _MD_XOONIPS_TRANSFER_USER_REQUEST_ERROR);
         }
     }
 
@@ -109,6 +107,7 @@ class XooNIpsActionTransferUserRequest extends XooNIpsActionTransfer
     public function get_item_ids_to_transfer()
     {
         $result = $this->_formdata->getValueArray('post', 'item_ids_to_transfer', 'i', false);
+
         return is_array($result) ? $result : array();
     }
 
@@ -118,6 +117,7 @@ class XooNIpsActionTransferUserRequest extends XooNIpsActionTransfer
     public function get_child_item_ids_to_transfer()
     {
         $result = $this->_formdata->getValueArray('post', 'child_item_ids_to_transfer', 'i', false);
+
         return is_array($result) ? $result : array();
     }
 }

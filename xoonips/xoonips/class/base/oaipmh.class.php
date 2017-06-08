@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -38,11 +39,11 @@ define('XOONIPS_METADATA_CATEGORY_DATE', 'DATE');
 
 // class files
 $xoonips_class_path = __DIR__;
-require_once $xoonips_class_path . '/oaipmh_base.class.php';
-require_once $xoonips_class_path . '/oaipmh_oaidc.class.php';
-require_once $xoonips_class_path . '/oaipmh_junii.class.php';
-require_once $xoonips_class_path . '/oaipmh_junii2.class.php';
-require_once $xoonips_class_path . '/oaipmh_handler.class.php';
-require_once $xoonips_class_path . '/oaipmh_identify_handler.class.php';
-require_once $xoonips_class_path . '/oaipmh_list_metadata_formats_handler.class.php';
-require_once $xoonips_class_path . '/oaipmh_list_records_handler.class.php';
+require_once $xoonips_class_path.'/oaipmh_base.class.php';
+require_once $xoonips_class_path.'/oaipmh_oaidc.class.php';
+require_once $xoonips_class_path.'/oaipmh_junii.class.php';
+require_once $xoonips_class_path.'/oaipmh_junii2.class.php';
+require_once $xoonips_class_path.'/oaipmh_handler.class.php';
+require_once $xoonips_class_path.'/oaipmh_identify_handler.class.php';
+require_once $xoonips_class_path.'/oaipmh_list_metadata_formats_handler.class.php';
+require_once $xoonips_class_path.'/oaipmh_list_records_handler.class.php';

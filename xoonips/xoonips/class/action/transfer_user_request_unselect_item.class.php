@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,12 +25,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/transfer.class.php';
-require_once __DIR__ . '/../../include/transfer.inc.php';
-require_once __DIR__ . '/../../include/extra_param.inc.php';
+require_once __DIR__.'/transfer.class.php';
+require_once __DIR__.'/../../include/transfer.inc.php';
+require_once __DIR__.'/../../include/extra_param.inc.php';
 
 /**
- * Class XooNIpsActionTransferUserRequestUnselectItem
+ * Class XooNIpsActionTransferUserRequestUnselectItem.
  */
 class XooNIpsActionTransferUserRequestUnselectItem extends XooNIpsActionTransfer
 {
@@ -41,9 +42,6 @@ class XooNIpsActionTransferUserRequestUnselectItem extends XooNIpsActionTransfer
         parent::__construct();
     }
 
-    /**
-     * @return null
-     */
     public function _get_logic_name()
     {
         return null;
@@ -95,9 +93,9 @@ class XooNIpsActionTransferUserRequestUnselectItem extends XooNIpsActionTransfer
      * Note: nothing to do if $item_id is not numeric
      *  or $item_ids is not an array.
      *
-     * @access private
-     * @param integer $item_id  item id to remove
-     * @param array   $item_ids array of item id
+     * @param int   $item_id  item id to remove
+     * @param array $item_ids array of item id
+     *
      * @return array array of item id
      */
     public function remove_item_id($item_id, $item_ids)
@@ -108,6 +106,7 @@ class XooNIpsActionTransferUserRequestUnselectItem extends XooNIpsActionTransfer
         if (!is_array($item_ids)) {
             return $item_ids;
         }
+
         return array_diff($item_ids, array($item_id));
     }
 }

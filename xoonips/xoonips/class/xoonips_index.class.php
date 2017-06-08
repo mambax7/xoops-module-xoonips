@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,7 +27,7 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * XooNIps Index Handler class
+ * XooNIps Index Handler class.
  */
 class XooNIpsIndexHandler
 {
@@ -34,35 +35,34 @@ class XooNIpsIndexHandler
     public $_xilHandler;
 
     /**
-     * constractor
-     *
-     * @access public
+     * constractor.
      */
     public function __construct()
     {
-        $this->_xHandler   = xoonips_getOrmHandler('xoonips', 'index');
+        $this->_xHandler = xoonips_getOrmHandler('xoonips', 'index');
         $this->_xilHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
     }
 
     /**
-     * get index title
+     * get index title.
      *
-     * @access public
      * @param int    $index_id index id
      * @param string $fmt      format
+     *
      * @return string title
      */
     public function getIndexTitle($index_id, $fmt)
     {
         $titles = $this->_get_index_titles_by_index_ids(array($index_id), $fmt);
+
         return $titles[$index_id];
     }
 
     /**
-     * get parent index id
+     * get parent index id.
      *
-     * @access public
      * @param int $index_id index id
+     *
      * @return int parent index id
      */
     public function getParentIndexId($index_id)
@@ -71,29 +71,31 @@ class XooNIpsIndexHandler
         if (!is_object($obj)) {
             $this->_fatal_error('index not found', __LINE__);
         }
+
         return $obj->get('parent_index_id');
     }
 
     /**
-     * get child index ids
+     * get child index ids.
      *
-     * @access public
      * @param int $index_id index id
+     *
      * @return array index ids
      */
     public function getChildIndexIds($index_id)
     {
         $mcxids = $this->_get_child_index_ids_by_index_ids(array($index_id));
+
         return $mcxids[$index_id];
     }
 
     /**
-     * get item ids under index
+     * get item ids under index.
      *
-     * @access public
      * @param int    $index_id index id
      * @param int    $uid      user id
      * @param string $perm     permission: 'read', 'write', 'delete' or 'export'
+     *
      * @return array item ids
      */
     public function getItemIds($index_id, $uid, $perm)
@@ -102,16 +104,17 @@ class XooNIpsIndexHandler
         $iid_perm_cache = array();
         // get item ids
         $miids = $this->_get_item_ids_by_index_ids(array($index_id), $uid, $perm, $iid_perm_cache);
+
         return $miids[$index_id];
     }
 
     /**
-     * get item count
+     * get item count.
      *
-     * @access public
      * @param int    $index_id index id
      * @param int    $uid      user id
      * @param string $perm     permission: 'read', 'write', 'delete' or 'export'
+     *
      * @return int number of items
      */
     public function getCountItems($index_id, $uid, $perm)
@@ -120,56 +123,57 @@ class XooNIpsIndexHandler
     }
 
     /**
-     * get index path array
+     * get index path array.
      *
-     * @access public
      * @param int    $index_id index id
      * @param string $fmt      format
+     *
      * @return array index path array
-     *                         array(
-     *                         array(
-     *                         'index_id' => $root_idx_id,
-     *                         'title' => $root_idx_title
-     *                         ),
-     *                         array(
-     *                         'index_id' => $child_idx_id1,
-     *                         'title' => $child_idx_title1
-     *                         ),...
-     *                         );
+     *               array(
+     *               array(
+     *               'index_id' => $root_idx_id,
+     *               'title' => $root_idx_title
+     *               ),
+     *               array(
+     *               'index_id' => $child_idx_id1,
+     *               'title' => $child_idx_title1
+     *               ),...
+     *               );
      */
     public function getIndexPathArray($index_id, $fmt)
     {
         if ($index_id == IID_ROOT) {
             return array();
         }
-        $pxid  = $this->getParentIndexId($index_id);
-        $ret   = $this->getIndexPathArray($pxid, $fmt);
+        $pxid = $this->getParentIndexId($index_id);
+        $ret = $this->getIndexPathArray($pxid, $fmt);
         $title = $this->getIndexTitle($index_id, $fmt);
         $ret[] = array(
             'index_id' => $index_id,
-            'title'    => $title,
+            'title' => $title,
         );
+
         return $ret;
     }
 
     /**
-     * get index structure array
+     * get index structure array.
      *
-     * @access public
      * @param int    $index_id root index id
      * @param string $fmt      format
      * @param int    $uid      user id
      * @param string $perm     permission: 'read', 'write', 'delete' or 'export'
+     *
      * @return array index structure
-     *                         array(
-     *                         array(
-     *                         'index_id' => $index_id,
-     *                         'title' => $title,
-     *                         'number_of_indexes' => $cxid_num,
-     *                         'number_of_items' => $ciid_num,
-     *                         'depth' => $depth,
-     *                         ),...
-     *                         )
+     *               array(
+     *               array(
+     *               'index_id' => $index_id,
+     *               'title' => $title,
+     *               'number_of_indexes' => $cxid_num,
+     *               'number_of_items' => $ciid_num,
+     *               'depth' => $depth,
+     *               ),...
+     *               )
      */
     public function getIndexStructure($index_id, $fmt, $uid, $perm)
     {
@@ -180,26 +184,27 @@ class XooNIpsIndexHandler
         // set empty item permission cache first
         $iid_perm_cache = array();
         // get current index information
-        $depth   = 0;
-        $mcxids  = $this->_get_child_index_ids_by_index_ids(array($index_id));
-        $mciids  = $this->_get_item_ids_by_index_ids(array($index_id), $uid, $perm, $iid_perm_cache);
-        $xinfo   = array();
+        $depth = 0;
+        $mcxids = $this->_get_child_index_ids_by_index_ids(array($index_id));
+        $mciids = $this->_get_item_ids_by_index_ids(array($index_id), $uid, $perm, $iid_perm_cache);
+        $xinfo = array();
         $xinfo[] = array(
-            'index_id'          => $index_id,
-            'title'             => $this->getIndexTitle($index_id, $fmt),
+            'index_id' => $index_id,
+            'title' => $this->getIndexTitle($index_id, $fmt),
             'number_of_indexes' => count($mcxids[$index_id]),
-            'number_of_items'   => count($mciids[$index_id]),
-            'depth'             => $depth,
+            'number_of_items' => count($mciids[$index_id]),
+            'depth' => $depth,
         );
-        $xinfo   = array_merge($xinfo, $this->_get_descendant_index_structure($mcxids[$index_id], $fmt, $depth, $uid, $perm, $iid_perm_cache));
+        $xinfo = array_merge($xinfo, $this->_get_descendant_index_structure($mcxids[$index_id], $fmt, $depth, $uid, $perm, $iid_perm_cache));
+
         return $xinfo;
     }
 
     /**
-     * get index object
+     * get index object.
      *
-     * @access public
      * @param int $index_id index id
+     *
      * @return object instance of XooNIpsOrmIndex
      */
     public function &getIndexObject($index_id)
@@ -208,22 +213,22 @@ class XooNIpsIndexHandler
     }
 
     /**
-     * get index titles by multiple index ids
+     * get index titles by multiple index ids.
      *
-     * @access private
      * @param array  $xids index ids
      * @param string $fmt  format
+     *
      * @return array multiple index title
-     *                     array(
-     *                     xid1 => $title1,
-     *                     xid2 => $title2,
-     *                     ...
-     *                     );
+     *               array(
+     *               xid1 => $title1,
+     *               xid2 => $title2,
+     *               ...
+     *               );
      */
     public function _get_index_titles_by_index_ids($xids, $fmt)
     {
         $tHandler = xoonips_getOrmHandler('xoonips', 'title');
-        $criteria = new CriteriaCompo(new Criteria('item_id', '(' . implode(',', $xids) . ')', 'IN'));
+        $criteria = new CriteriaCompo(new Criteria('item_id', '('.implode(',', $xids).')', 'IN'));
         $criteria->add(new Criteria('title_id', DEFAULT_INDEX_TITLE_OFFSET));
         // hold returning index order
         $mtitles = array();
@@ -232,28 +237,29 @@ class XooNIpsIndexHandler
         }
         $res = $tHandler->open($criteria, 'item_id, title');
         while ($t_obj = $tHandler->getNext($res)) {
-            $xid           = $t_obj->get('item_id');
-            $title         = $t_obj->getVar('title', $fmt);
+            $xid = $t_obj->get('item_id');
+            $title = $t_obj->getVar('title', $fmt);
             $mtitles[$xid] = $title;
         }
         $tHandler->close($res);
+
         return $mtitles;
     }
 
     /**
-     * get item ids by multiple index id
+     * get item ids by multiple index id.
      *
-     * @access public
      * @param array  $xids            index ids
      * @param int    $uid             user id
      * @param string $perm            permission: 'read', 'write', 'delete' or 'export'
      * @param array  &$iid_perm_cache item ids access permission cache
+     *
      * @return array multiple count items
-     *                                array(
-     *                                $xid1 => array( $iid1_1, $iid1_2,... ),
-     *                                $xid2 => array( $iid2_1,... ),
-     *                                ...
-     *                                );
+     *               array(
+     *               $xid1 => array( $iid1_1, $iid1_2,... ),
+     *               $xid2 => array( $iid2_1,... ),
+     *               ...
+     *               );
      */
     public function _get_item_ids_by_index_ids($xids, $uid, $perm, $iid_perm_cache)
     {
@@ -261,11 +267,11 @@ class XooNIpsIndexHandler
             $this->_fatal_error('invalid index ids', __LINE__);
         }
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $join                   = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'idx');
+        $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'idx');
         // ignore item id has not item basic table
         $tempXooNIpsJoinCriteria = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'ib');
         $join->cascade($tempXooNIpsJoinCriteria);
-        $criteria = new Criteria('index_id', '(' . implode(',', $xids) . ')', 'IN', 'idx');
+        $criteria = new Criteria('index_id', '('.implode(',', $xids).')', 'IN', 'idx');
         // hold returning index order
         $miids = array();
         foreach ($xids as $xid) {
@@ -273,7 +279,7 @@ class XooNIpsIndexHandler
         }
         // get child item ids
         $item_chandler = xoonips_getOrmCompoHandler('xoonips', 'item');
-        $res           = $index_item_linkHandler->open($criteria, null, false, $join);
+        $res = $index_item_linkHandler->open($criteria, null, false, $join);
         while ($xil_obj = $index_item_linkHandler->getNext($res)) {
             $xid = $xil_obj->get('index_id');
             $iid = $xil_obj->get('item_id');
@@ -286,27 +292,28 @@ class XooNIpsIndexHandler
             }
         }
         $index_item_linkHandler->close($res);
+
         return $miids;
     }
 
     /**
-     * get child index ids by multiple index ids
+     * get child index ids by multiple index ids.
      *
-     * @access private
      * @param array $xids index ids
+     *
      * @return array multiple index ids
-     *                    array(
-     *                    $xid1 => array( $cxid1_1, $cxid1_2,... ),
-     *                    $xid2 => array( $cxid2_1,... ),
-     *                    ...
-     *                    );
+     *               array(
+     *               $xid1 => array( $cxid1_1, $cxid1_2,... ),
+     *               $xid2 => array( $cxid2_1,... ),
+     *               ...
+     *               );
      */
     public function _get_child_index_ids_by_index_ids($xids)
     {
         if (!is_array($xids) || empty($xids)) {
             $this->_fatal_error('invalid index ids', __LINE__);
         }
-        $criteria = new Criteria('parent_index_id', '(' . implode(',', $xids) . ')', 'IN');
+        $criteria = new Criteria('parent_index_id', '('.implode(',', $xids).')', 'IN');
         $criteria->setSort('sort_number');
         // hold returning index order
         $mcxids = array();
@@ -316,62 +323,63 @@ class XooNIpsIndexHandler
         // get child index ids
         $res = $this->_xHandler->open($criteria, 'index_id, parent_index_id');
         while ($obj = $this->_xHandler->getNext($res)) {
-            $cpxid            = $obj->get('parent_index_id');
-            $cxid             = $obj->get('index_id');
+            $cpxid = $obj->get('parent_index_id');
+            $cxid = $obj->get('index_id');
             $mcxids[$cpxid][] = $cxid;
         }
         $this->_xHandler->close($res);
+
         return $mcxids;
     }
 
     /**
-     * get descendant index structure
+     * get descendant index structure.
      *
-     * @access private
-     * @param array  $xids            child index ids
-     * @param string $fmt             format
-     * @param int    $depth           current depth
-     * @param int    $uid             user id
-     * @param string $perm            permission: 'read', 'write', 'delete' or 'export'
+     * @param array  $xids           child index ids
+     * @param string $fmt            format
+     * @param int    $depth          current depth
+     * @param int    $uid            user id
+     * @param string $perm           permission: 'read', 'write', 'delete' or 'export'
      * @param array  $iid_perm_cache item ids access permission cache
+     *
      * @return array index structure
-     *                                array(
-     *                                array(
-     *                                'index_id' => $index_id,
-     *                                'title' => $title,
-     *                                'number_of_indexes' => $cxid_num,
-     *                                'number_of_items' => $ciid_num,
-     *                                'depth' => $depth,
-     *                                ),...
-     *                                )
+     *               array(
+     *               array(
+     *               'index_id' => $index_id,
+     *               'title' => $title,
+     *               'number_of_indexes' => $cxid_num,
+     *               'number_of_items' => $ciid_num,
+     *               'depth' => $depth,
+     *               ),...
+     *               )
      */
     public function _get_descendant_index_structure($xids, $fmt, $depth, $uid, $perm, $iid_perm_cache)
     {
         if (empty($xids)) {
             return array();
         }
-        $cdepth   = $depth + 1;
-        $mcxids   = $this->_get_child_index_ids_by_index_ids($xids);
-        $mciids   = $this->_get_item_ids_by_index_ids($xids, $uid, $perm, $iid_perm_cache);
+        $cdepth = $depth + 1;
+        $mcxids = $this->_get_child_index_ids_by_index_ids($xids);
+        $mciids = $this->_get_item_ids_by_index_ids($xids, $uid, $perm, $iid_perm_cache);
         $mctitles = $this->_get_index_titles_by_index_ids($xids, $fmt);
-        $cxinfo   = array();
+        $cxinfo = array();
         foreach ($xids as $xid) {
             $cxinfo[] = array(
-                'index_id'          => $xid,
-                'title'             => $mctitles[$xid],
+                'index_id' => $xid,
+                'title' => $mctitles[$xid],
                 'number_of_indexes' => count($mcxids[$xid]),
-                'number_of_items'   => count($mciids[$xid]),
-                'depth'             => $cdepth,
+                'number_of_items' => count($mciids[$xid]),
+                'depth' => $cdepth,
             );
-            $cxinfo   = array_merge($cxinfo, $this->_get_descendant_index_structure($mcxids[$xid], $fmt, $cdepth, $uid, $perm, $iid_perm_cache));
+            $cxinfo = array_merge($cxinfo, $this->_get_descendant_index_structure($mcxids[$xid], $fmt, $cdepth, $uid, $perm, $iid_perm_cache));
         }
+
         return $cxinfo;
     }
 
     /**
-     * fatal error
+     * fatal error.
      *
-     * @access private
      * @param string $msg  error message
      * @param int    $line line number
      */
@@ -382,6 +390,6 @@ class XooNIpsIndexHandler
             print_r(debug_backtrace());
             echo '</pre>';
         }
-        die('fatal error : ' . $msg . ' in ' . __FILE__ . ' at ' . $line);
+        die('fatal error : '.$msg.' in '.__FILE__.' at '.$line);
     }
 }

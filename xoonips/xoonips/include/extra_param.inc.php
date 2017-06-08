@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,14 +26,13 @@
 // ------------------------------------------------------------------------- //
 
 /**
- *
  * @return array associative array of extra parameters
  */
 function xoonips_extra_param_restore()
 {
-    $formdata         = xoonips_getUtility('formdata');
+    $formdata = xoonips_getUtility('formdata');
     $extra_param_name = $formdata->getValueArray('post', 'extra_param_name', 's', false);
-    $extra_params     = array();
+    $extra_params = array();
     foreach ($extra_param_name as $name) {
         if (!isset($_POST[$name])) {
             continue;
@@ -47,10 +47,11 @@ function xoonips_extra_param_restore()
         return $extra_params;
     }
     // try to get serialized extra_param request
-    $extra_param  = $formdata->getValue('post', 'extra_param', 's', false);
+    $extra_param = $formdata->getValue('post', 'extra_param', 's', false);
     $extra_params = @unserialize($extra_param);
     if (is_array($extra_params)) {
         return $extra_params;
     }
+
     return array();
 }

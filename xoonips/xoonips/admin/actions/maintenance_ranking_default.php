@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,57 +27,57 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_MAINTENANCE_RANKING_TITLE;
+$title = _AM_XOONIPS_MAINTENANCE_RANKING_TITLE;
 $description = _AM_XOONIPS_MAINTENANCE_RANKING_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
-$ticket_area  = 'xoonips_admin_maintenance_ranking';
+require_once __DIR__.'/../../class/base/gtickets.php';
+$ticket_area = 'xoonips_admin_maintenance_ranking';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // max file size
 $max_file_size = ini_get('upload_max_filesize');
 if (!is_numeric($max_file_size)) {
     if (strpos($max_file_size, 'M') !== false) {
-        $max_file_size = (int)$max_file_size * 1024 * 1024;
+        $max_file_size = (int) $max_file_size * 1024 * 1024;
     } elseif (strpos($max_file_size, 'K') !== false) {
-        $max_file_size = (int)$max_file_size * 1024;
+        $max_file_size = (int) $max_file_size * 1024;
     } elseif (strpos($max_file_size, 'G') !== false) {
-        $max_file_size = (int)$max_file_size * 1024 * 1024 * 1024;
+        $max_file_size = (int) $max_file_size * 1024 * 1024 * 1024;
     } else {
         exit();
     }
 }
 
 // download
-$download_fname = 'ranking' . date('YmdHis') . '.zip';
+$download_fname = 'ranking'.date('YmdHis').'.zip';
 // upload
 // clear
-$config_keys     = array(
-    'ranking_sum_start'       => 'i',
+$config_keys = array(
+    'ranking_sum_start' => 'i',
     'ranking_sum_last_update' => 'i',
 );
-$config_values   = xoonips_admin_get_configs($config_keys, 'n');
-$sum_start       = $config_values['ranking_sum_start'];
+$config_values = xoonips_admin_get_configs($config_keys, 'n');
+$sum_start = $config_values['ranking_sum_start'];
 $sum_last_update = $config_values['ranking_sum_last_update'];
 if ($sum_start != 0 && $sum_last_update != 0) {
     $clear_message = sprintf(_AM_XOONIPS_MAINTENANCE_RANKING_CLEAR_MESSAGE, date('Y/m/d', $sum_start), date('Y/m/d', $sum_last_update));
@@ -85,7 +86,7 @@ if ($sum_start != 0 && $sum_last_update != 0) {
 }
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('maintenance_ranking.tmpl.tpl');

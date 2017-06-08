@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -55,38 +56,38 @@ function b_xoonips_moderator_show()
 
     // count certification requested users
     $xu_ohandler = xoonips_getOrmHandler('xoonips', 'users');
-    $join        = new XooNIpsJoinCriteria('users', 'uid', 'uid', 'INNER', 'u');
-    $criteria    = new CriteriaCompo(new Criteria('activate', 0));
+    $join = new XooNIpsJoinCriteria('users', 'uid', 'uid', 'INNER', 'u');
+    $criteria = new CriteriaCompo(new Criteria('activate', 0));
     $criteria->add(new Criteria('level', 0, '>', 'u'));
     $cu_count = $xu_ohandler->getCount($criteria, $join);
 
     // count certification requested items
     $xilHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-    $join       = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'x');
-    $criteria   = new CriteriaCompo(new Criteria('certify_state', CERTIFY_REQUIRED));
+    $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'x');
+    $criteria = new CriteriaCompo(new Criteria('certify_state', CERTIFY_REQUIRED));
     $criteria->add(new Criteria('open_level', OL_PUBLIC, '=', 'x'));
     $ci_count = $xilHandler->getCount($criteria, $join);
 
     // count group items open to public certification requested indexes
     if (xoonips_get_version() >= 340) {
         $xgxlHandler = xoonips_getOrmHandler('xoonips', 'index_group_index_link');
-        $gi_count    = $xgxlHandler->getCount();
+        $gi_count = $xgxlHandler->getCount();
     } else {
         $gi_count = 0;
     }
 
     // assign block template variables
-    $block                                  = array();
-    $block['lang_edit_group']               = _MB_XOONIPS_MODERATOR_EDIT_GROUPS;
-    $block['lang_certify_users']            = _MB_XOONIPS_MODERATOR_CERTIFY_USERS;
-    $block['lang_certify_users_count']      = $cu_count;
-    $block['lang_certify_items']            = _MB_XOONIPS_MODERATOR_CERTIFY_PUBLIC_ITEMS;
-    $block['lang_certify_items_count']      = $ci_count;
-    $block['lang_groupcertify_items']       = _MB_XOONIPS_MODERATOR_GROUP_CERTIFY_PUBLIC_ITEMS;
+    $block = array();
+    $block['lang_edit_group'] = _MB_XOONIPS_MODERATOR_EDIT_GROUPS;
+    $block['lang_certify_users'] = _MB_XOONIPS_MODERATOR_CERTIFY_USERS;
+    $block['lang_certify_users_count'] = $cu_count;
+    $block['lang_certify_items'] = _MB_XOONIPS_MODERATOR_CERTIFY_PUBLIC_ITEMS;
+    $block['lang_certify_items_count'] = $ci_count;
+    $block['lang_groupcertify_items'] = _MB_XOONIPS_MODERATOR_GROUP_CERTIFY_PUBLIC_ITEMS;
     $block['lang_groupcertify_items_count'] = $gi_count;
-    $block['lang_edit_public_index']        = _MB_XOONIPS_MODERATOR_EDIT_PUBLIC_INDEX;
-    $block['lang_event_log']                = _MB_XOONIPS_MODERATOR_EVENT_LOG;
-    $block['xid']                           = IID_PUBLIC;
+    $block['lang_edit_public_index'] = _MB_XOONIPS_MODERATOR_EDIT_PUBLIC_INDEX;
+    $block['lang_event_log'] = _MB_XOONIPS_MODERATOR_EVENT_LOG;
+    $block['xid'] = IID_PUBLIC;
 
     return $block;
 }

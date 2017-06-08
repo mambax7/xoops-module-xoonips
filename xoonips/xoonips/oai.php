@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,31 +26,31 @@
 // ------------------------------------------------------------------------- //
 
 error_reporting(0);
-require __DIR__ . '/include/common.inc.php';
+require __DIR__.'/include/common.inc.php';
 
-$session     = session_id();
+$session = session_id();
 $sessHandler = xoops_getHandler('session');
 if ($sessHandler->write($session, session_encode())) {
     $_SESSION['XNPSID'] = $session;
 }
 
-require_once __DIR__ . '/include/lib.php';
-require_once __DIR__ . '/include/AL.php';
-require_once __DIR__ . '/class/base/oaipmh.class.php';
+require_once __DIR__.'/include/lib.php';
+require_once __DIR__.'/include/AL.php';
+require_once __DIR__.'/class/base/oaipmh.class.php';
 
 // retrieve admin's e-mail
-$emails        = array();
+$emails = array();
 $memberHandler = xoops_getHandler('member');
-$members       = $memberHandler->getUsersByGroup(XOOPS_GROUP_ADMIN, false);
+$members = $memberHandler->getUsersByGroup(XOOPS_GROUP_ADMIN, false);
 foreach ($members as $userid) {
-    $user     = $memberHandler->getUser($userid);
+    $user = $memberHandler->getUser($userid);
     $emails[] = $user->getVar('email');
 }
 
 $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
 $repositoryName = $xconfigHandler->getValue('repository_name');
 
-$pmh = new OAIPMH(XOOPS_URL . '/modules/xoonips/oai.php', $repositoryName, $emails);
+$pmh = new OAIPMH(XOOPS_URL.'/modules/xoonips/oai.php', $repositoryName, $emails);
 $pmh->addHandler(new JUNIIHandler());
 $pmh->addHandler(new JUNII2Handler());
 $pmh->addHandler(new OAI_DCHandler());
@@ -62,7 +63,7 @@ foreach (array(
              'from',
              'until',
              'identifier',
-             'resumptionToken'
+             'resumptionToken',
          ) as $k
 ) {
     if (isset($_GET[$k])) {
@@ -75,7 +76,7 @@ foreach (array(
 header('Content-Type: application/xml');
 
 if (!isset($args['verb'])) {
-    echo $pmh->header() . $pmh->request($args) . $pmh->error('badVerb', 'no verb') . $pmh->footer();
+    echo $pmh->header().$pmh->request($args).$pmh->error('badVerb', 'no verb').$pmh->footer();
     exit();
 }
 if ($args['verb'] === 'GetRecord') {
@@ -91,5 +92,5 @@ if ($args['verb'] === 'GetRecord') {
 } elseif ($args['verb'] === 'ListSets') {
     echo $pmh->ListSets($args);
 } else {
-    echo $pmh->header() . $pmh->request($args) . $pmh->error('badVerb', 'illegal verb') . $pmh->footer();
+    echo $pmh->header().$pmh->request($args).$pmh->error('badVerb', 'illegal verb').$pmh->footer();
 }

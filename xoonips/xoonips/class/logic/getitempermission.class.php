@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,18 +25,15 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/logic.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/logic.class.php';
 
 /**
- *
- * subclass of XooNIpsLogic(getItemPermission)
- *
+ * subclass of XooNIpsLogic(getItemPermission).
  */
 class XooNIpsLogicGetItemPermission extends XooNIpsLogic
 {
-
     /**
-     * execute getItemPermission
+     * execute getItemPermission.
      *
      * @param[in] $vars[0] sessionid
      * @param[in] $vars[1] id
@@ -43,12 +41,13 @@ class XooNIpsLogicGetItemPermission extends XooNIpsLogic
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response->success array item permission structure
+     *
      * @return false if fault
      */
     public function execute($vars, $response)
     {
         // parameter check
-        $error =  $response->getError();
+        $error = $response->getError();
         if (count($vars) > 3) {
             $error->add(XNPERR_EXTRA_PARAM);
         } elseif (count($vars) < 3) {
@@ -72,13 +71,14 @@ class XooNIpsLogicGetItemPermission extends XooNIpsLogic
         if ($error->get(0)) {
             // return if parameter error
             $response->setResult(false);
+
             return false;
         } else {
             $sessionid = $vars[0];
-            $id        = $vars[1];
-            $id_type   = $vars[2];
+            $id = $vars[1];
+            $id_type = $vars[2];
             if ($id_type === 'item_id') {
-                $id = (int)$id;
+                $id = (int) $id;
             }
         }
         // validate session
@@ -87,6 +87,7 @@ class XooNIpsLogicGetItemPermission extends XooNIpsLogic
             // error invalid session
             $error->add(XNPERR_INVALID_SESSION);
             $response->setResult(false);
+
             return false;
         }
 
@@ -99,24 +100,27 @@ class XooNIpsLogicGetItemPermission extends XooNIpsLogic
         } else {
             $error->add(XNPERR_INVALID_PARAM, "invalid id_type({$id_type})");
             $response->setResult(false);
+
             return false;
         }
         if ($item_compo == false) {
             $error->add(XNPERR_NOT_FOUND);
             $response->setResult(false);
+
             return false;
         }
         $item_basic = $item_compo->getVar('basic');
-        $item_id    = $item_basic->get('item_id');
+        $item_id = $item_basic->get('item_id');
 
         // get permission
         $result = array(
-            'read'   => $item_compoHandler->getPerm($item_id, $uid, 'read'),
-            'write'  => $item_compoHandler->getPerm($item_id, $uid, 'write'),
+            'read' => $item_compoHandler->getPerm($item_id, $uid, 'read'),
+            'write' => $item_compoHandler->getPerm($item_id, $uid, 'write'),
             'delete' => $item_compoHandler->getPerm($item_id, $uid, 'delete'),
         );
         $response->setSuccess($result);
         $response->setResult(true);
+
         return true;
     }
 }

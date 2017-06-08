@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,30 +25,28 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/logic.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/logic.class.php';
 
 /**
- *
- * subclass of XooNIpsLogic(getChildIndexes)
- *
+ * subclass of XooNIpsLogic(getChildIndexes).
  */
 class XooNIpsLogicGetChildIndexes extends XooNIpsLogic
 {
-
     /**
-     * execute getChildIndexes
+     * execute getChildIndexes.
      *
      * @param[in]  $vars[0] session ID
      * @param[in]  $vars[1] parent index ID
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response->success array of child indexes(XooNIpsIndexCompo[], empty if no child)
+     *
      * @return bool
      */
     public function execute($vars, $response)
     {
         // parameter check
-        $error =  $response->getError();
+        $error = $response->getError();
         if (count($vars) > 2) {
             $error->add(XNPERR_EXTRA_PARAM);
         } elseif (count($vars) < 2) {
@@ -63,53 +62,60 @@ class XooNIpsLogicGetChildIndexes extends XooNIpsLogic
         if ($error->get(0)) {
             // return if parameter error
             $response->setResult(false);
+
             return;
         } else {
             $sessionid = $vars[0];
-            $index_id  = $vars[1];
+            $index_id = $vars[1];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
+
             return false;
         }
-        //
-        $sessionid       = $vars[0];
+
+        $sessionid = $vars[0];
         $parent_index_id = $vars[1];
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
+
             return false;
         }
         // not found?
         $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-        $index        = $indexHandler->get($index_id);
+        $index = $indexHandler->get($index_id);
         if ($index == false) {
             $response->setResult(false);
             $response->error->add(XNPERR_NOT_FOUND);
+
             return false;
         }
         // check permission
         if (!$indexHandler->getPerm($parent_index_id, $uid, 'read')) {
             $response->setResult(false);
             $error->add(XNPERR_ACCESS_FORBIDDEN, 'no permission');
+
             return false;
         }
         // get child index_id from index_id
-        $join     = new XooNIpsJoinCriteria('xoonips_index', 'item_id', 'index_id');
+        $join = new XooNIpsJoinCriteria('xoonips_index', 'item_id', 'index_id');
         $criteria = new Criteria('parent_index_id', $parent_index_id);
         $criteria->setSort('sort_number');
         $index_compoHandler = xoonips_getOrmCompoHandler('xoonips', 'index');
-        $indexes            =  $index_compoHandler->getObjects($criteria, false, '', false, $join);
+        $indexes = $index_compoHandler->getObjects($criteria, false, '', false, $join);
         if (false === $indexes) {
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'cannot get child indexes');
+
             return false;
         }
         $response->setSuccess($indexes);
         $response->setResult(true);
+
         return true;
     }
 }

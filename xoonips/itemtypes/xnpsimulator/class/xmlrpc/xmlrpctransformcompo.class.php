@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,10 +28,7 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- *
- * XmlRpcTransform composer class for Simulator type
- *
- *
+ * XmlRpcTransform composer class for Simulator type.
  */
 class XNPSimulatorXmlRpcTransformCompo extends XooNIpsXmlRpcTransformCompo
 {
@@ -48,15 +46,17 @@ class XNPSimulatorXmlRpcTransformCompo extends XooNIpsXmlRpcTransformCompo
      * @see XooNIpsXmlRpcTransformCompo::getObject
      *
      * @param array associative array of XML-RPC argument
+     *
      * @return XNPSimulatorOrmDeveloper
      */
     public function getObject($in_array)
     {
-        $obj        = parent::getObject($in_array);
+        $obj = parent::getObject($in_array);
         $developers = $obj->getVar('developer');
-        for ($i = 0; $i < count($developers); $i++) {
+        for ($i = 0; $i < count($developers); ++$i) {
             $developers[$i]->set('developer_order', $i);
         }
+
         return $obj;
     }
 }

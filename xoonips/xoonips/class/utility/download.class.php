@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,46 +27,42 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * file download handling class
+ * file download handling class.
  *
- * @package   xoonips_utility
  * @copyright copyright &copy; 2008 RIKEN Japan
  */
 class XooNIpsUtilityDownload extends XooNIpsUtility
 {
-
     /**
-     * HTTP_USER_AGENT
-     * @access private
+     * HTTP_USER_AGENT.
+     *
      * @var string HTTP_USER_AGENT environment variable
      */
     public $ua;
 
     /**
-     * HTTP_ACCEPT_LANGUAGE
-     * @access private
+     * HTTP_ACCEPT_LANGUAGE.
+     *
      * @var string HTTP_ACCEPT_LANGUAGE environment variable
      */
     public $al;
 
     /**
-     * PATH_INFO
-     * @access private
+     * PATH_INFO.
+     *
      * @var string PATH_INFO environment variable
      */
     public $pi;
 
     /**
-     * client browser encoding
-     * @access private
+     * client browser encoding.
+     *
      * @var string client browser encoding
      */
     public $browser_encoding;
 
     /**
-     * constractor
-     *
-     * @access public
+     * constractor.
      */
     public function __construct()
     {
@@ -80,21 +77,22 @@ class XooNIpsUtilityDownload extends XooNIpsUtility
     }
 
     /**
-     * check PATH_INFO for file downloading
+     * check PATH_INFO for file downloading.
      *
-     * @access public
      * @param string $file_name downloading file name on server environment
-     * @return bool false if it will fail to get file name on client browser.
+     *
+     * @return bool false if it will fail to get file name on client browser
      */
     public function check_pathinfo($file_name)
     {
         if (strstr($this->ua, 'KHTML')) {
             // KHTML based browser require PATH_INFO for file downloading
             $file_name = $this->_encode_utf8($file_name);
-            if (urldecode($this->pi) != '/' . $file_name) {
+            if (urldecode($this->pi) != '/'.$file_name) {
                 // does not match file name.
                 return false;
             }
+
             return true;
         }
         // other browsers
@@ -102,44 +100,45 @@ class XooNIpsUtilityDownload extends XooNIpsUtility
     }
 
     /**
-     * append PATH_INFO to url string
+     * append PATH_INFO to url string.
      *
-     * @access public
      * @param string $url       url string
      * @param string $file_name file name on server environment
+     *
      * @return string appended url
      */
     public function append_pathinfo($url, $file_name)
     {
-        $pathinfo = '/' . urlencode($this->_encode_utf8($file_name));
+        $pathinfo = '/'.urlencode($this->_encode_utf8($file_name));
         if (preg_match('/^([^\\?]+)(\\?.*)$/', $url, $matches)) {
-            $result = $matches[1] . $pathinfo . $matches[2];
+            $result = $matches[1].$pathinfo.$matches[2];
         } else {
-            $result = $url . $pathinfo;
+            $result = $url.$pathinfo;
         }
+
         return $result;
     }
 
     /**
-     * convert encoding to client environment
+     * convert encoding to client environment.
      *
-     * @access public
      * @param string $text     source text
      * @param string $fallback unmapped character encoding method
      *                         'h' : encode to HTML numeric entities
      *                         'u' : encode to UTF-8 based url string
+     *
      * @return string appended url
      */
     public function convert_to_client($text, $fallback)
     {
         $result = $this->_convert_encoding($text, $this->browser_encoding, $fallback);
+
         return $result;
     }
 
     /**
-     * download file
+     * download file.
      *
-     * @access public
      * @param string $file_path downloading local file path
      * @param string $file_name file name on server environment
      * @param string $mime_type mime type of downloading file
@@ -160,7 +159,7 @@ class XooNIpsUtilityDownload extends XooNIpsUtility
         // output content body
         // readfile( $file_path );
         $chunksize = 1024 * 1024;
-        $fh        = fopen($file_path, 'rb');
+        $fh = fopen($file_path, 'rb');
         while (!feof($fh)) {
             echo fread($fh, $chunksize);
             flush();
@@ -169,9 +168,8 @@ class XooNIpsUtilityDownload extends XooNIpsUtility
     }
 
     /**
-     * download data
+     * download data.
      *
-     * @access public
      * @param string $str       downloading data
      * @param string $file_name file name on server environment
      * @param string $mime_type mime type
@@ -186,9 +184,8 @@ class XooNIpsUtilityDownload extends XooNIpsUtility
     }
 
     /**
-     * output header for file download
+     * output header for file download.
      *
-     * @access public
      * @param string     $file_name file name on server environment
      * @param string     $mime_type mime type
      * @param int|string $file_size file size
@@ -208,22 +205,21 @@ class XooNIpsUtilityDownload extends XooNIpsUtility
 
         // output header
         header('Expires: Sat, 01 Jan 2000 00:00:00 GMT');
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
         // Cache-Control: avoid IE bug - see http://support.microsoft/kb/436605/ja
         header('Cache-Control: none');
         if ($content_disposition) {
-            header('Content-Disposition: attachment; filename="' . $content_disposition . '"');
+            header('Content-Disposition: attachment; filename="'.$content_disposition.'"');
         }
         if (!empty($file_size)) {
-            header('Content-Length: ' . $file_size);
+            header('Content-Length: '.$file_size);
         }
-        header('Content-Type: ' . $mime_type);
+        header('Content-Type: '.$mime_type);
     }
 
     /**
-     * detect browser encoding
+     * detect browser encoding.
      *
-     * @access private
      * @return string detected encoding
      */
     public function _detect_browser_encoding()
@@ -251,15 +247,17 @@ class XooNIpsUtilityDownload extends XooNIpsUtility
                 }
             }
         }
+
         return $encoding;
     }
 
     /**
-     * generate file name for 'Content-Disposition:' header
+     * generate file name for 'Content-Disposition:' header.
      *
-     * @access   private
      * @param $file_name
+     *
      * @return string generated file name
+     *
      * @internal param string $filename file name on server environment
      */
     public function _content_disposition_filename($file_name)
@@ -267,8 +265,9 @@ class XooNIpsUtilityDownload extends XooNIpsUtility
         if (strstr($this->ua, 'MSIE') || strstr($this->ua, 'Trident')) {
             // Microsoft Internet Explorer
             // - utf8 + x-www-form-url
-            $client_filename      = $this->_convert_encoding($file_name, $this->browser_encoding, 'u');
+            $client_filename = $this->_convert_encoding($file_name, $this->browser_encoding, 'u');
             $utf8_client_filename = $this->_encode_utf8($client_filename, $this->browser_encoding);
+
             return urlencode($utf8_client_filename);
         } elseif (strstr($this->ua, 'KHTML')) {
             // KHTML based browser (e.g. Safari)
@@ -306,10 +305,11 @@ class XooNIpsUtilityDownload extends XooNIpsUtility
     }
 
     /**
-     * convert encoding to UTF-8
-     * @access private
+     * convert encoding to UTF-8.
+     *
      * @param string $text     input text
      * @param string $encoding text encoding
+     *
      * @return string 'UTF-8' encoded text string
      */
     public function _encode_utf8($text, $encoding = '')
@@ -324,26 +324,29 @@ class XooNIpsUtilityDownload extends XooNIpsUtility
             0,
             0x10ffff,
             0,
-            0x1fffff
+            0x1fffff,
         ), 'UTF-8');
+
         return $text;
     }
 
     /**
-     * convert encoding
-     * @access private
+     * convert encoding.
+     *
      * @param string $text     input text
      * @param string $encoding output text encoding
      * @param string $fallback unmapped character encoding method
      *                         'h' : encode to HTML numeric entities
      *                         'u' : encode to UTF-8 based url string
+     *
      * @return string encoding converted text string
      */
     public function _convert_encoding($text, $encoding, $fallback)
     {
         $unicode = xoonips_getUtility('unicode');
-        $text    = $this->_encode_utf8($text);
-        $text    = $unicode->decode_utf8($text, $encoding, $fallback);
+        $text = $this->_encode_utf8($text);
+        $text = $unicode->decode_utf8($text, $encoding, $fallback);
+
         return $text;
     }
 }

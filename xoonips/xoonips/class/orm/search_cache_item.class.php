@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -36,14 +37,14 @@ ALTER TABLE `x_xoonips_search_cache_item` ADD `matchfor_file`  TINYINT( 1 ) NOT 
 */
 
 /**
- * class of XooNIps Search Cache Item
+ * class of XooNIps Search Cache Item.
+ *
  * @li getVar( 'search_cache_item_id' ) : primary key
  * @li getVar( 'search_cache_id' ) :search cache ID
  * @li getVar( 'item_id' ) : item id
  * @li getVar( 'matchfor_index' ) : match for index
  * @li getVar( 'matchfor_item' )  : match for item
  * @li getVar( 'matchfor_file' )  : match for file
- *
  */
 class XooNIpsOrmSearchCacheItem extends XooNIpsTableObject
 {
@@ -63,14 +64,13 @@ class XooNIpsOrmSearchCacheItem extends XooNIpsTableObject
 }
 
 /**
- *
- * XooNIps search cache item Handler class
- *
+ * XooNIps search cache item Handler class.
  */
 class XooNIpsOrmSearchCacheItemHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmSearchCacheItemHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

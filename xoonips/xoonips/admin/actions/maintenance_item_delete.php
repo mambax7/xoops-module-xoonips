@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,7 +28,7 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // get requests
 $get_keys = array(
-    'uid'   => array(
+    'uid' => array(
         'i',
         false,
         false,
@@ -39,26 +40,26 @@ $get_keys = array(
     ),
 );
 $get_vals = xoonips_admin_get_requests('get', $get_keys);
-$uid      = $get_vals['uid'];
-$upage    = $get_vals['upage'];
+$uid = $get_vals['uid'];
+$upage = $get_vals['upage'];
 
 if (null === $uid) {
     // user select
-    $title      = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_TITLE;
+    $title = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_TITLE;
     $nextaction = 'delete';
-    require __DIR__ . '/maintenance_item_uselect.php';
+    require __DIR__.'/maintenance_item_uselect.php';
     exit();
 }
 
 // index select
-$title        = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_TITLE;
-$description  = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_DESC;
-$ticket_area  = 'xoonips_admin_maintenance_item_delete';
-$index_mode   = 'private';
-$has_back     = true;
+$title = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_TITLE;
+$description = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_DESC;
+$ticket_area = 'xoonips_admin_maintenance_item_delete';
+$index_mode = 'private';
+$has_back = true;
 $confirm_desc = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_CONFIRM;
-$confirm      = _AM_XOONIPS_MSG_DELETE_CONFIRM;
-$nextaction   = 'dupdate';
-$submit       = _AM_XOONIPS_LABEL_DELETE;
-require __DIR__ . '/maintenance_item_idxselect.php';
+$confirm = _AM_XOONIPS_MSG_DELETE_CONFIRM;
+$nextaction = 'dupdate';
+$submit = _AM_XOONIPS_LABEL_DELETE;
+require __DIR__.'/maintenance_item_idxselect.php';
 exit();

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,16 +25,16 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/../base/action.class.php';
-require_once __DIR__ . '/../base/logicfactory.class.php';
-require_once __DIR__ . '/../base/gtickets.php';
+require_once __DIR__.'/../base/action.class.php';
+require_once __DIR__.'/../base/logicfactory.class.php';
+require_once __DIR__.'/../base/gtickets.php';
 
 /**
- * Class XooNIpsActionImportImport
+ * Class XooNIpsActionImportImport.
  */
 class XooNIpsActionImportImport extends XooNIpsAction
 {
-    public $_view_name  = null;
+    public $_view_name = null;
     public $_collection = null;
 
     /**
@@ -77,16 +78,16 @@ class XooNIpsActionImportImport extends XooNIpsAction
             $handler = xoonips_getHandler($itemtype->get('name'), 'import_item');
             $handler->create();
         }
-        $sessHandler       = xoonips_getOrmHandler('xoonips', 'session');
-        $sess              = $sessHandler->get(session_id());
-        $session           = unserialize($sess->get('sess_data'));
+        $sessHandler = xoonips_getOrmHandler('xoonips', 'session');
+        $sess = $sessHandler->get(session_id());
+        $session = unserialize($sess->get('sess_data'));
         $this->_collection = unserialize(gzuncompress(base64_decode($session['xoonips_import_items'])));
         xoonips_validate_request($this->_collection);
 
         $this->_make_clone_of_update_item($this->_collection);
 
         $this->_begin_time = time();
-        $this->_params[]   =  $this->_collection->getItems();
+        $this->_params[] = $this->_collection->getItems();
     }
 
     public function postAction()
@@ -98,32 +99,32 @@ class XooNIpsActionImportImport extends XooNIpsAction
                     if ($code != E_XOONIPS_UPDATE_CERTIFY_REQUEST_LOCKED) {
                         continue;
                     }
-                    $titles =  $item->getVar('titles');
+                    $titles = $item->getVar('titles');
                     $item_lockHandler
                             = xoonips_getOrmHandler('xoonips', 'item_lock');
-                    redirect_header(XOOPS_URL . '/modules/xoonips/import.php?action=default', 5,
+                    redirect_header(XOOPS_URL.'/modules/xoonips/import.php?action=default', 5,
                                     sprintf(_MD_XOONIPS_ERROR_CANNOT_OVERWRITE_LOCKED_ITEM, $titles[0]->get('title'),
                                             xoonips_get_lock_type_string($item_lockHandler->getLockType($item->getUpdateItemId()))));
                 }
             }
         }
 
-        $this->_finish_time                 = time();
-        $success                            = $this->_response->getSuccess();
-        $this->_view_params['result']       = $this->_response->getResult();
+        $this->_finish_time = time();
+        $success = $this->_response->getSuccess();
+        $this->_view_params['result'] = $this->_response->getResult();
         $this->_view_params['import_items'] = $success['import_items'];
-        $this->_view_params['begin_time']   = $this->_begin_time;
-        $this->_view_params['finish_time']  = $this->_finish_time;
+        $this->_view_params['begin_time'] = $this->_begin_time;
+        $this->_view_params['finish_time'] = $this->_finish_time;
         $this->_view_params['filename']
                                             = $this->_collection->getImportFileName();
-        $this->_view_params['uname']        = $xoopsUser->getVar('uname');
-        $this->_view_params['errors']       = array();
+        $this->_view_params['uname'] = $xoopsUser->getVar('uname');
+        $this->_view_params['errors'] = array();
         foreach ($success['import_items'] as $item) {
             foreach (array_unique($item->getErrorCodes()) as $code) {
                 $this->_view_params['errors'][]
                     = array(
-                    'code'  => $code,
-                    'extra' => $item->getPseudoId()
+                    'code' => $code,
+                    'extra' => $item->getPseudoId(),
                 );
             }
         }
@@ -134,7 +135,7 @@ class XooNIpsActionImportImport extends XooNIpsAction
      */
     public function _make_clone_of_update_item($collection)
     {
-        $items =  $collection->getItems();
+        $items = $collection->getItems();
         foreach (array_keys($items) as $key) {
             if (!$items[$key]->getUpdateFlag()) {
                 continue;

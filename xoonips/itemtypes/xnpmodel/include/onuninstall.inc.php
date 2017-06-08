@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,6 +28,7 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @param $xoopsMod
+ *
  * @return bool
  */
 function xoops_module_uninstall_xnpmodel($xoopsMod)
@@ -34,25 +36,27 @@ function xoops_module_uninstall_xnpmodel($xoopsMod)
     global $xoopsDB;
 
     $item_type_id = -1;
-    $table        = $xoopsDB->prefix('xoonips_item_type');
-    $mid          = $xoopsMod->getVar('mid');
-    $sql          = "SELECT item_type_id FROM $table where mid = $mid";
-    $result       = $xoopsDB->query($sql);
+    $table = $xoopsDB->prefix('xoonips_item_type');
+    $mid = $xoopsMod->getVar('mid');
+    $sql = "SELECT item_type_id FROM $table where mid = $mid";
+    $result = $xoopsDB->query($sql);
     if ($result) {
         list($item_type_id) = $xoopsDB->fetchRow($result);
     } else {
         echo $GLOBALS['xoopsDB']->error();
         echo $sql;
+
         return false;
     }
 
     // set Deleted state to repository item_status table.
-    $table  = $xoopsDB->prefix('xoonips_item_basic');
-    $sql    = "SELECT item_id from ${table} WHERE item_type_id = $item_type_id";
+    $table = $xoopsDB->prefix('xoonips_item_basic');
+    $sql = "SELECT item_id from ${table} WHERE item_type_id = $item_type_id";
     $result = $xoopsDB->query($sql);
     if (!$result) {
         echo $GLOBALS['xoopsDB']->error();
         echo $sql;
+
         return false;
     }
     $ids = array();
@@ -61,36 +65,39 @@ function xoops_module_uninstall_xnpmodel($xoopsMod)
     }
     if (count($ids) > 0) {
         $table = $xoopsDB->prefix('xoonips_item_status');
-        $sql   = "UPDATE ${table} SET deleted_timestamp=UNIX_TIMESTAMP(NOW()), is_deleted=1 WHERE item_id in ( " . implode(',', $ids) . ')';
+        $sql = "UPDATE ${table} SET deleted_timestamp=UNIX_TIMESTAMP(NOW()), is_deleted=1 WHERE item_id in ( ".implode(',', $ids).')';
         if ($xoopsDB->query($sql) == false) {
             echo $GLOBALS['xoopsDB']->error();
             echo $sql;
+
             return false;
         }
     }
 
     // remove basic information
     $table = $xoopsDB->prefix('xoonips_item_basic');
-    $sql   = "DELETE FROM $table where item_type_id = $item_type_id";
+    $sql = "DELETE FROM $table where item_type_id = $item_type_id";
     if ($xoopsDB->query($sql) == false) {
         echo $GLOBALS['xoopsDB']->error();
         echo $sql;
+
         return false;
     }
 
     // unregister itemtype
     $table = $xoopsDB->prefix('xoonips_item_type');
-    $mid   = $xoopsMod->getVar('mid');
-    $sql   = "DELETE FROM $table where mid = $mid";
+    $mid = $xoopsMod->getVar('mid');
+    $sql = "DELETE FROM $table where mid = $mid";
     if ($xoopsDB->query($sql) == false) {
         // cannot unregister itemtype
         return false;
     }
     $table = $xoopsDB->prefix('xoonips_file_type');
-    $sql   = "DELETE FROM $table where mid = $mid";
+    $sql = "DELETE FROM $table where mid = $mid";
     if ($xoopsDB->query($sql) == false) {
         // cannot unregister filetype
         return false;
     }
+
     return true;
 }

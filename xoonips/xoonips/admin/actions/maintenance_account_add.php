@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,9 +26,9 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-$uid   = 0;
+$uid = 0;
 $title = _AM_XOONIPS_MAINTENANCE_ACCOUNT_ADD_TITLE;
 
 // load edit form
-require __DIR__ . '/maintenance_account_edit.php';
+require __DIR__.'/maintenance_account_edit.php';
 exit();

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,18 +25,15 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/logic.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/logic.class.php';
 
 /**
- *
- * subclass of XooNIpsLogic(getSimpleItems)
- *
+ * subclass of XooNIpsLogic(getSimpleItems).
  */
 class XooNIpsLogicGetSimpleItems extends XooNIpsLogic
 {
-
     /**
-     * execute getSimpleItems
+     * execute getSimpleItems.
      *
      * @param[in] $vars[0] sessionid
      * @param[in] $vars[1] array of id
@@ -43,11 +41,12 @@ class XooNIpsLogicGetSimpleItems extends XooNIpsLogic
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response->success XooNIpsItem retrieved item object
+     *
      * @return false|void
      */
     public function execute($vars, $response)
     {
-        $error =  $response->getError();
+        $error = $response->getError();
         $response->setResult(false);
         //
         // parameter check
@@ -63,15 +62,16 @@ class XooNIpsLogicGetSimpleItems extends XooNIpsLogic
                 $error->add(XNPERR_INVALID_PARAM, 'invalid parameter 3');
             }
         }
-        //
+
         if ($error->get(0)) {
             // return if parameter error
             $response->setResult(false);
+
             return false;
         } else {
             $sessionid = $vars[0];
-            $ids       = $vars[1];
-            $id_type   = $vars[2];
+            $ids = $vars[1];
+            $id_type = $vars[2];
         }
         //
         // validate session
@@ -79,45 +79,45 @@ class XooNIpsLogicGetSimpleItems extends XooNIpsLogic
         if (!$result) {
             $error->add(XNPERR_INVALID_SESSION);
         }
-        //
+
         if ($error->get(0)) {
             // return if parameter error
             $response->setResult(false);
+
             return;
         } else {
             $response->setResult(false);
             $sessionid = $vars[0];
-            $item      = $vars[1];
-            $files     = $vars[2];
+            $item = $vars[1];
+            $files = $vars[2];
         }
         //
         // escape each id
         $esc_ids = array();
         foreach ($ids as $id) {
             if ($id_type === 'item_id') {
-                $esc_ids[] = (int)$id;
+                $esc_ids[] = (int) $id;
             } elseif ($id_type === 'ext_id') {
                 $esc_ids[] = $GLOBALS['xoopsDB']->quoteString($id);
             }
         }
-        //
-        //
+
         if ($id_type === 'item_id') {
-            $criteria = new Criteria('item_id', '(' . implode(', ', $esc_ids) . ')', 'IN');
+            $criteria = new Criteria('item_id', '('.implode(', ', $esc_ids).')', 'IN');
         } elseif ($id_type === 'ext_id') {
-            $criteria = new Criteria('doi', '(' . implode(', ', $esc_ids) . ')', 'IN');
+            $criteria = new Criteria('doi', '('.implode(', ', $esc_ids).')', 'IN');
         }
 
         // retrieve each item
         $xoonipsitemHandler = xoonips_getOrmCompoHandler('xoonips', 'item');
-        $items              =  $xoonipsitemHandler->getObjects($criteria);
-        //
+        $items = $xoonipsitemHandler->getObjects($criteria);
+
         $ret = array(); // return array of items
         if ($items) {
             //
             // creat mapping of ext_id or item_id => item object
             $map = array();
-            for ($i = 0, $iMax = count($items); $i < $iMax; $i++) {
+            for ($i = 0, $iMax = count($items); $i < $iMax; ++$i) {
                 $basic = $items[$i]->getVar('basic');
                 if ($id_type === 'item_id') {
                     $map[$basic->get('item_id')] = $items[$i];
@@ -125,7 +125,7 @@ class XooNIpsLogicGetSimpleItems extends XooNIpsLogic
                     $map[$basic->get('doi')] = $items[$i];
                 }
             }
-            //
+
             $itemtypeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
             foreach ($ids as $id) {
                 if (!isset($map[$id])) {
@@ -133,9 +133,9 @@ class XooNIpsLogicGetSimpleItems extends XooNIpsLogic
                 }// can't retrieve an item that is identified by $id.
 
                 // check access permission
-                $item  = $map[$id];
+                $item = $map[$id];
                 $basic = $item->getVar('basic');
-                $perm  = $xoonipsitemHandler->getPerm($basic->get('item_id'), $uid, 'read');
+                $perm = $xoonipsitemHandler->getPerm($basic->get('item_id'), $uid, 'read');
                 if (!$perm) {
                     continue;
                 } // skip access forbidden item
@@ -156,6 +156,7 @@ class XooNIpsLogicGetSimpleItems extends XooNIpsLogic
         }
         $response->setSuccess($ret);
         $response->setResult(true);
+
         return true;
     }
 }

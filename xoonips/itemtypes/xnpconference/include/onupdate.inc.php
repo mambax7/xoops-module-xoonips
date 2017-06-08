@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -29,6 +30,7 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 /**
  * @param $xoopsMod
  * @param $oldversion
+ *
  * @return bool
  */
 function xoops_module_update_xnpconference($xoopsMod, $oldversion)
@@ -42,7 +44,8 @@ function xoops_module_update_xnpconference($xoopsMod, $oldversion)
         case 201:
             $result = $xoopsDB->query("alter table $table add column attachment_dl_limit int(1) unsigned default '1'");
             if ($result == false) {
-                echo '&nbsp;&nbsp;' . $xoopsDB->error() . '<br />';
+                echo '&nbsp;&nbsp;'.$xoopsDB->error().'<br />';
+
                 return false;
             }
 
@@ -55,63 +58,71 @@ function xoops_module_update_xnpconference($xoopsMod, $oldversion)
             // - update xoopnips_files.file_type_id by the (*)
             //
             $moduleHandler = xoops_getHandler('module');
-            $module        = $moduleHandler->getByDirname('xnpconference');
-            $result        = $xoopsDB->query('update ' . $xoopsDB->prefix('xoonips_file_type')
-                                             . ' set name=\'conference_file\', display_name=\'Presentation file of Conference\' where name=\'presentation_file\' and mid='
-                                             . $module->mid());
+            $module = $moduleHandler->getByDirname('xnpconference');
+            $result = $xoopsDB->query('update '.$xoopsDB->prefix('xoonips_file_type')
+                                             .' set name=\'conference_file\', display_name=\'Presentation file of Conference\' where name=\'presentation_file\' and mid='
+                                             .$module->mid());
             if ($result == false) {
-                echo '&nbsp;&nbsp;' . $xoopsDB->error() . '<br />';
+                echo '&nbsp;&nbsp;'.$xoopsDB->error().'<br />';
+
                 return false;
             }
 
-            $result = $xoopsDB->query('select file_type_id from ' . $xoopsDB->prefix('xoonips_file_type') . ' where mid=' . $module->mid());
+            $result = $xoopsDB->query('select file_type_id from '.$xoopsDB->prefix('xoonips_file_type').' where mid='.$module->mid());
             if ($result == false) {
-                echo '&nbsp;&nbsp;' . $xoopsDB->error() . '<br />';
+                echo '&nbsp;&nbsp;'.$xoopsDB->error().'<br />';
+
                 return false;
             } elseif ($xoopsDB->getRowsNum($result) == 0) {
                 echo '&nbsp;&nbsp;can\'t find row of file_type_id<br />';
+
                 return false;
             }
             list($file_type_id) = $xoopsDB->fetchRow($result);
 
-            $result = $xoopsDB->query('select item_type_id from ' . $xoopsDB->prefix('xoonips_item_type') . ' where mid=' . $module->mid());
+            $result = $xoopsDB->query('select item_type_id from '.$xoopsDB->prefix('xoonips_item_type').' where mid='.$module->mid());
             if ($result == false) {
-                echo '&nbsp;&nbsp;' . $xoopsDB->error() . '<br />';
+                echo '&nbsp;&nbsp;'.$xoopsDB->error().'<br />';
+
                 return false;
             } elseif ($xoopsDB->getRowsNum($result) == 0) {
-                echo '&nbsp;&nbsp;' . $xoopsDB->error() . '<br />';
+                echo '&nbsp;&nbsp;'.$xoopsDB->error().'<br />';
+
                 return false;
             }
             list($item_type_id) = $xoopsDB->fetchRow($result);
 
             $update_ids = array();
             // Item id that is updated.
-            $result = $xoopsDB->query('select item_id from ' . $xoopsDB->prefix('xoonips_item_basic') . " where item_type_id=${item_type_id}");
+            $result = $xoopsDB->query('select item_id from '.$xoopsDB->prefix('xoonips_item_basic')." where item_type_id=${item_type_id}");
             while (list($id) = $xoopsDB->fetchRow($result)) {
                 if ($id) {
                     $update_ids[] = $id;
                 }
             }
             if (count($update_ids) > 0) {
-                $result = $xoopsDB->query('update ' . $xoopsDB->prefix('xoonips_file') . " set file_type_id=${file_type_id} where item_id in ("
-                                          . implode(', ', $update_ids) . ')');
+                $result = $xoopsDB->query('update '.$xoopsDB->prefix('xoonips_file')." set file_type_id=${file_type_id} where item_id in ("
+                                          .implode(', ', $update_ids).')');
                 if ($result == false) {
-                    echo '&nbsp;&nbsp;' . $xoopsDB->error() . '<br />';
+                    echo '&nbsp;&nbsp;'.$xoopsDB->error().'<br />';
+
                     return false;
                 }
             }
 
-            $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('xnpconference_item_detail') . ' TYPE = innodb';
+            $sql = 'ALTER TABLE '.$xoopsDB->prefix('xnpconference_item_detail').' TYPE = innodb';
             $result = $xoopsDB->query($sql);
             if (!$result) {
-                echo '&nbsp;&nbsp;' . $xoopsDB->error() . '<br />';
+                echo '&nbsp;&nbsp;'.$xoopsDB->error().'<br />';
+
                 return false;
             }
         case 313:
-            $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('xnpconference_item_detail') . ' ADD COLUMN attachment_dl_notify int(1) unsigned default 0 ';
+            $sql = 'ALTER TABLE '.$xoopsDB->prefix('xnpconference_item_detail').' ADD COLUMN attachment_dl_notify int(1) unsigned default 0 ';
             $result = $xoopsDB->query($sql);
             if (!$result) {
-                echo '&nbsp;&nbsp;' . $xoopsDB->error() . '<br />';
+                echo '&nbsp;&nbsp;'.$xoopsDB->error().'<br />';
+
                 return false;
             }
         case 330:
@@ -125,11 +136,11 @@ function xoops_module_update_xnpconference($xoopsMod, $oldversion)
         case 338:
         case 339:
             // support authors
-            $key_name     = 'conference_id';
+            $key_name = 'conference_id';
             $table_detail = 'xnpconference_item_detail';
             $table_author = 'xnpconference_author';
 
-            $sql = 'CREATE TABLE ' . $xoopsDB->prefix($table_author) . ' (';
+            $sql = 'CREATE TABLE '.$xoopsDB->prefix($table_author).' (';
             $sql .= '`conference_author_id` int(10) unsigned NOT NULL auto_increment,';
             $sql .= '`conference_id` int(10) unsigned NOT NULL,';
             $sql .= '`author` varchar(255) NOT NULL,';
@@ -138,37 +149,41 @@ function xoops_module_update_xnpconference($xoopsMod, $oldversion)
             $sql .= ') TYPE=InnoDB';
             $result = $xoopsDB->query($sql);
             if (!$result) {
-                echo '&nbsp;&nbsp;' . $xoopsDB->error() . '<br />';
+                echo '&nbsp;&nbsp;'.$xoopsDB->error().'<br />';
+
                 return false;
             }
 
-            $result = $xoopsDB->query('select ' . $key_name . ',author from ' . $xoopsDB->prefix($table_detail) . ' where author!=\'\'');
+            $result = $xoopsDB->query('select '.$key_name.',author from '.$xoopsDB->prefix($table_detail).' where author!=\'\'');
             while (list($id, $author) = $xoopsDB->fetchRow($result)) {
                 $author_array = array_map('trim', explode("\n", $author));
-                $i            = 0;
+                $i = 0;
                 foreach ($author_array as $val) {
                     if (empty($val)) {
                         continue;
                     }
-                    $sql = 'insert into ' . $xoopsDB->prefix($table_author);
-                    $sql .= '(' . $key_name . ',author,author_order) values (';
-                    $sql .= $id . ',' . $xoopsDB->quoteString($val) . ',' . $i . ')';
+                    $sql = 'insert into '.$xoopsDB->prefix($table_author);
+                    $sql .= '('.$key_name.',author,author_order) values (';
+                    $sql .= $id.','.$xoopsDB->quoteString($val).','.$i.')';
                     if ($xoopsDB->queryF($sql) == false) {
-                        echo '&nbsp;&nbsp;' . $xoopsDB->error() . '<br />';
+                        echo '&nbsp;&nbsp;'.$xoopsDB->error().'<br />';
+
                         return false;
                     }
-                    $i++;
+                    ++$i;
                 }
             }
 
-            $sql    = 'ALTER TABLE ' . $xoopsDB->prefix($table_detail) . ' DROP COLUMN author';
+            $sql = 'ALTER TABLE '.$xoopsDB->prefix($table_detail).' DROP COLUMN author';
             $result = $xoopsDB->query($sql);
             if (!$result) {
-                echo '&nbsp;&nbsp;' . $xoopsDB->error() . '<br />';
+                echo '&nbsp;&nbsp;'.$xoopsDB->error().'<br />';
+
                 return false;
             }
         case 340:
         default:
     }
+
     return true;
 }

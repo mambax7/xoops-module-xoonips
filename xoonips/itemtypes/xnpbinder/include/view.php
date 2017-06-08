@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2013 RIKEN, Japan All rights reserved.                //
@@ -25,16 +26,16 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-$itemtype_path    = dirname(__DIR__);
+$itemtype_path = dirname(__DIR__);
 $itemtype_dirname = basename($itemtype_path);
-$xoonips_path     = dirname($itemtype_path) . '/xoonips';
+$xoonips_path = dirname($itemtype_path).'/xoonips';
 
 $langman = xoonips_getUtility('languagemanager');
 $langman->read('main.php', $itemtype_dirname);
 
-require_once $xoonips_path . '/include/extra_param.inc.php';
-require_once $xoonips_path . '/class/xoonips_item_event_dispatcher.class.php';
-require_once dirname(__DIR__) . '/class/item_event_listener.class.php';
+require_once $xoonips_path.'/include/extra_param.inc.php';
+require_once $xoonips_path.'/class/xoonips_item_event_dispatcher.class.php';
+require_once dirname(__DIR__).'/class/item_event_listener.class.php';
 
 $dispatcher = XooNIpsItemEventDispatcher::getInstance();
 $dispatcher->registerEvent(new XNPBinderItemEventListener());
@@ -43,14 +44,16 @@ $dispatcher->registerEvent(new XNPBinderItemEventListener());
  * Get DetailInformation from item_id.
  *
  * Return item's array registered in binder specified by $item_id.
+ *
  * @param $item_id
+ *
  * @return array|bool Execution result or False
  */
 function xnpbinderGetDetailInformation($item_id)
 {
     global $xoopsDB;
-    $result = $xoopsDB->query('select item_id from ' . $xoopsDB->prefix('xnpbinder_binder_item_link')
-                              . " where binder_id=$item_id order by sort_num");
+    $result = $xoopsDB->query('select item_id from '.$xoopsDB->prefix('xnpbinder_binder_item_link')
+                              ." where binder_id=$item_id order by sort_num");
     if ($result == false) {
         return false;
     }
@@ -61,7 +64,7 @@ function xnpbinderGetDetailInformation($item_id)
     }
 
     $items = array();
-    $cri   = array();
+    $cri = array();
     if (xnp_get_items($_SESSION['XNPSID'], $ids, $cri, $items) != RES_OK) {
         // can't retrieve items
         return false;
@@ -72,6 +75,7 @@ function xnpbinderGetDetailInformation($item_id)
 
 /**
  * @param $item_basic
+ *
  * @return mixed|string|void
  */
 function xnpbinderGetListBlock($item_basic)
@@ -95,14 +99,14 @@ function xnpbinderGetListBlock($item_basic)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpbinderGetDetailBlock($item_id)
 {
-
     // Get Block of BasicInformation / RegisteredItem.
-    $basic  = xnpGetBasicInformationDetailBlock($item_id);
-    $index  = xnpGetIndexDetailBlock($item_id);
+    $basic = xnpGetBasicInformationDetailBlock($item_id);
+    $index = xnpGetIndexDetailBlock($item_id);
     $detail = xnpbinder_get_registered_items($item_id);
 
     // Variables are set to template.
@@ -122,14 +126,14 @@ function xnpbinderGetDetailBlock($item_id)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpbinderGetPrinterFriendlyDetailBlock($item_id)
 {
-
     // Get Block of BasicInformation / RegisteredItem.
-    $basic  = xnpGetBasicInformationPrinterFriendlyBlock($item_id);
-    $index  = xnpGetIndexPrinterFriendlyBlock($item_id);
+    $basic = xnpGetBasicInformationPrinterFriendlyBlock($item_id);
+    $index = xnpGetIndexPrinterFriendlyBlock($item_id);
     $detail = xnpbinder_get_registered_items($item_id);
 
     // Variables are set to template.
@@ -153,10 +157,10 @@ function xnpbinderGetRegisterBlock()
 {
     $extra_param = xoonips_extra_param_restore();
     if ($extra_param) {
-        $_POST['title']             = $extra_param['title'];
-        $_POST['keywords']          = $extra_param['keywords'];
-        $_POST['description']       = $extra_param['description'];
-        $_POST['doi']               = $extra_param['doi'];
+        $_POST['title'] = $extra_param['title'];
+        $_POST['keywords'] = $extra_param['keywords'];
+        $_POST['description'] = $extra_param['description'];
+        $_POST['doi'] = $extra_param['doi'];
         $_POST['xoonipsCheckedXID'] = $extra_param['xoonipsCheckedXID'];
     }
 
@@ -182,6 +186,7 @@ function xnpbinderGetRegisterBlock()
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpbinderGetEditBlock($item_id)
@@ -190,20 +195,20 @@ function xnpbinderGetEditBlock($item_id)
 
     $extra_param = xoonips_extra_param_restore();
     if ($extra_param) {
-        $_POST['item_id']           = $extra_param['item_id'];
-        $_POST['title']             = $extra_param['title'];
-        $_POST['keywords']          = $extra_param['keywords'];
-        $_POST['description']       = $extra_param['description'];
-        $_POST['doi']               = $extra_param['doi'];
-        $_POST['change_log']        = $extra_param['change_log'];
+        $_POST['item_id'] = $extra_param['item_id'];
+        $_POST['title'] = $extra_param['title'];
+        $_POST['keywords'] = $extra_param['keywords'];
+        $_POST['description'] = $extra_param['description'];
+        $_POST['doi'] = $extra_param['doi'];
+        $_POST['change_log'] = $extra_param['change_log'];
         $_POST['xoonipsCheckedXID'] = $extra_param['xoonipsCheckedXID'];
     }
 
     // Get block of BasicInformation / Preview / index
-    $basic                = xnpGetBasicInformationEditBlock($item_id);
-    $index                = xnpGetIndexEditBlock($item_id);
-    $formdata             = xoonips_getUtility('formdata');
-    $op_post              = $formdata->getValue('post', 'op', 's', false);
+    $basic = xnpGetBasicInformationEditBlock($item_id);
+    $index = xnpGetIndexEditBlock($item_id);
+    $formdata = xoonips_getUtility('formdata');
+    $op_post = $formdata->getValue('post', 'op', 's', false);
     $xoonips_item_id_post = $formdata->getValueArray('post', 'xoonips_item_id', 'i', false);
 
     if (isset($op_post) && ($op_post === 'add_selected_item' || $op_post === 'delete' || $op_post == '')) {
@@ -230,6 +235,7 @@ function xnpbinderGetEditBlock($item_id)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpbinderGetConfirmBlock($item_id)
@@ -242,7 +248,7 @@ function xnpbinderGetConfirmBlock($item_id)
         if (is_array($val1)) {
             $post_vars[$key1] = array_map(array(
                                               $textutil,
-                                              'html_special_chars'
+                                              'html_special_chars',
                                           ), $val1);
         } else {
             $post_vars[$key1] = $textutil->html_special_chars($val1);
@@ -258,6 +264,7 @@ function xnpbinderGetConfirmBlock($item_id)
         $tpl->assign('message', sprintf(_MD_XNPBINDER_REMOVE_NONPUBLIC_ITEM,
                                         number_of_nonpublic_item($formdata->getValueArray('post', 'xoonips_item_id', 'i', false))));
         $tpl->assign('form_data_name_yes', 'delete_nonpublic_yes');
+
         return $tpl->fetch('db:xnpbinder_confirm_block2.tpl');
     } elseif (xnpbinder_group_binder_has_private_item($formdata->getValueArray('post', 'xoonips_item_id', 'i', false),
                                                       xnpbinder_get_add_to_index_id_form_data())) {
@@ -268,6 +275,7 @@ function xnpbinderGetConfirmBlock($item_id)
         $tpl->assign('message', sprintf(_MD_XNPBINDER_REMOVE_PRIVATE_ITEM,
                                         number_of_private_item($formdata->getValueArray('post', 'xoonips_item_id', 'i', false))));
         $tpl->assign('form_data_name_yes', 'delete_private_yes');
+
         return $tpl->fetch('db:xnpbinder_confirm_block2.tpl');
     } else {
         // Get block of BasicInformation / Preview / index
@@ -277,7 +285,7 @@ function xnpbinderGetConfirmBlock($item_id)
 
         if (xnpHasWithout($basic)) {
             global $system_message;
-            $system_message = $system_message . "\n<br /><font color='#ff0000'>" . _MD_XOONIPS_ITEM_WARNING_FIELD_TRIM . '</font><br />';
+            $system_message = $system_message."\n<br /><font color='#ff0000'>"._MD_XOONIPS_ITEM_WARNING_FIELD_TRIM.'</font><br />';
         }
 
         // Variables are set to template.
@@ -297,6 +305,7 @@ function xnpbinderGetConfirmBlock($item_id)
 
 /**
  * @param $binder_id
+ *
  * @return bool
  */
 function xnpbinderInsertItem($binder_id)
@@ -305,7 +314,7 @@ function xnpbinderInsertItem($binder_id)
 
     // Insert BasicInformation, Index, Preview, Attachment
     $binder_id = 0;
-    $result    = xnpInsertBasicInformation($binder_id);
+    $result = xnpInsertBasicInformation($binder_id);
     if ($result) {
         $result = xnpUpdateIndex($binder_id);
         if (!$result) {
@@ -318,26 +327,30 @@ function xnpbinderInsertItem($binder_id)
 
     // Insert DetailInformation
     $detailHandler = xoonips_getOrmHandler('xnpbinder', 'item_detail');
-    $detail        = $detailHandler->create();
+    $detail = $detailHandler->create();
     $detail->setVar('binder_id', $binder_id, true);
     if (!$detailHandler->insert($detail)) {
         echo 'cannot insert item_detail';
+
         return false;
     }
     $xoonips_item_id = xnpbinder_get_xoonips_item_id();
     foreach ($xoonips_item_id as $iid) {
-        $result = $xoopsDB->queryF('insert into ' . $xoopsDB->prefix('xnpbinder_binder_item_link')
-                                   . " ( binder_id, item_id ) values ( $binder_id, $iid )");
+        $result = $xoopsDB->queryF('insert into '.$xoopsDB->prefix('xnpbinder_binder_item_link')
+                                   ." ( binder_id, item_id ) values ( $binder_id, $iid )");
         if ($result == false) {
             echo 'cannot insert item_detail';
+
             return false;
         }
     }
+
     return true;
 }
 
 /**
  * @param $binder_id
+ *
  * @return bool
  */
 function xnpbinderUpdateItem($binder_id)
@@ -367,16 +380,18 @@ function xnpbinderUpdateItem($binder_id)
     }
 
     // Insert DetailInformation
-    $result          = $xoopsDB->queryF('delete from ' . $xoopsDB->prefix('xnpbinder_binder_item_link') . " where binder_id=$binder_id");
+    $result = $xoopsDB->queryF('delete from '.$xoopsDB->prefix('xnpbinder_binder_item_link')." where binder_id=$binder_id");
     $xoonips_item_id = xnpbinder_get_xoonips_item_id();
     foreach ($xoonips_item_id as $iid) {
-        $result = $xoopsDB->queryF('insert into ' . $xoopsDB->prefix('xnpbinder_binder_item_link')
-                                   . " ( binder_id, item_id ) values ( $binder_id, $iid )");
+        $result = $xoopsDB->queryF('insert into '.$xoopsDB->prefix('xnpbinder_binder_item_link')
+                                   ." ( binder_id, item_id ) values ( $binder_id, $iid )");
         if ($result == false) {
             echo 'cannot insert item_detail';
+
             return false;
         }
     }
+
     return true;
 }
 
@@ -390,13 +405,13 @@ function xnpbinderGetSearchBlock($item_id)
 
 function xnpbinderCorrectRegisterParameters()
 {
-    $formdata             = xoonips_getUtility('formdata');
-    $delete_private_no    = $formdata->getValue('post', 'delete_private_no', 's', false);
-    $delete_private_yes   = $formdata->getValue('post', 'delete_private_yes', 's', false);
-    $delete_nonpublic_no  = $formdata->getValue('post', 'delete_nonpublic_no', 's', false);
+    $formdata = xoonips_getUtility('formdata');
+    $delete_private_no = $formdata->getValue('post', 'delete_private_no', 's', false);
+    $delete_private_yes = $formdata->getValue('post', 'delete_private_yes', 's', false);
+    $delete_nonpublic_no = $formdata->getValue('post', 'delete_nonpublic_no', 's', false);
     $delete_nonpublic_yes = $formdata->getValue('post', 'delete_nonpublic_yes', 's', false);
-    $xoonips_item_id      = $formdata->getValueArray('post', 'xoonips_item_id', 'i', false);
-    $xoonipsCheckedXID    = $formdata->getValue('post', 'xoonipsCheckedXID', 's', false);
+    $xoonips_item_id = $formdata->getValueArray('post', 'xoonips_item_id', 'i', false);
+    $xoonipsCheckedXID = $formdata->getValue('post', 'xoonipsCheckedXID', 's', false);
     if (isset($delete_nonpublic_yes) && isset($xoonips_item_id)) {
         // delete non-public items in binder
         $public_item_id = array();
@@ -409,34 +424,34 @@ function xnpbinderCorrectRegisterParameters()
         // remove public index id from $_POST['xoonipsCheckedXID'];
         $ids = array();
         foreach (explode(',', $xoonipsCheckedXID) as $i) {
-            $ids[] = (int)$i;
+            $ids[] = (int) $i;
         }
 
         $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-        $criteria     = new CriteriaCompo(new Criteria('open_level', OL_PUBLIC, '!='));
+        $criteria = new CriteriaCompo(new Criteria('open_level', OL_PUBLIC, '!='));
         $criteria->add(xnpbinder_criteria_where_in('index_id', $ids));
         // new Criteria( 'index_id', '(' . implode( ',', $ids ) . ')' , 'IN' ) );
-        $indexes                    = $indexHandler->getObjects($criteria, true);
+        $indexes = $indexHandler->getObjects($criteria, true);
         $_POST['xoonipsCheckedXID'] = implode(',', array_keys($indexes));
     }
     if (isset($delete_private_yes) && isset($xoonips_item_id)) {
         // delete private items in binder
-        $private_ids              = xnpbinder_extract_private_item_id($xoonips_item_id);
+        $private_ids = xnpbinder_extract_private_item_id($xoonips_item_id);
         $_POST['xoonips_item_id'] = $xoonips_item_id = array_diff($xoonips_item_id, $private_ids);
     }
     if (isset($delete_private_no) && isset($xoonipsCheckedXID)) {
         // remove public & group index from $_POST['xoonipsCheckedXID'];
         $ids = array();
         foreach (explode(',', $xoonipsCheckedXID) as $i) {
-            $index_ids[] = (int)$i;
+            $index_ids[] = (int) $i;
         }
 
         $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-        $criteria     = new CriteriaCompo(new Criteria('open_level', OL_PUBLIC, '!='));
+        $criteria = new CriteriaCompo(new Criteria('open_level', OL_PUBLIC, '!='));
         $criteria->add(new Criteria('open_level', OL_GROUP_ONLY, '!='));
         $criteria->add(xnpbinder_criteria_where_in('index_id', $index_ids));
         // new Criteria( 'index_id', '(' . implode( ',', $index_ids ) . ')' , 'IN' ) );
-        $private_indexes   = $indexHandler->getObjects($criteria, true);
+        $private_indexes = $indexHandler->getObjects($criteria, true);
         $private_index_ids = array();
         foreach ($private_indexes as $index) {
             $private_index_ids[] = $index->get('index_id');
@@ -447,31 +462,34 @@ function xnpbinderCorrectRegisterParameters()
 
 /**
  * @param $msg
+ *
  * @return bool
  */
 function xnpbinderCheckRegisterParameters($msg)
 {
-    $message  = '';
+    $message = '';
     $formdata = xoonips_getUtility('formdata');
     if (xnpbinder_no_binder_item($formdata->getValueArray('post', 'xoonips_item_id', 'i', false))) {
-        $message = $message . '<br /><span style="color: red;">' . _MD_XNPBINDER_ITEM_REQUIRED . '</span>';
+        $message = $message.'<br /><span style="color: red;">'._MD_XNPBINDER_ITEM_REQUIRED.'</span>';
     }
 
     if (xnpbinder_public_binder_has_not_public_item($formdata->getValueArray('post', 'xoonips_item_id', 'i', false),
                                                     xnpbinder_get_add_to_index_id_form_data())) {
-        $message = $message . '<br /><span style="color: red;">' . _MD_XNPBINDER_PUBLIC_BINDER_HAS_NOT_PUBLIC_ITEM . '</span>';
+        $message = $message.'<br /><span style="color: red;">'._MD_XNPBINDER_PUBLIC_BINDER_HAS_NOT_PUBLIC_ITEM.'</span>';
     }
 
     if (xnpbinder_group_binder_has_private_item($formdata->getValueArray('post', 'xoonips_item_id', 'i', false),
                                                 xnpbinder_get_add_to_index_id_form_data())) {
-        $message = $message . '<br /><span style="color: red;">' . _MD_XNPBINDER_GROUP_BINDER_HAS_PRIVATE_ITEM . '</span>';
+        $message = $message.'<br /><span style="color: red;">'._MD_XNPBINDER_GROUP_BINDER_HAS_PRIVATE_ITEM.'</span>';
     }
     $msg .= $message;
+
     return empty($message);
 }
 
 /**
  * @param $msg
+ *
  * @return bool
  */
 function xnpbinderCheckEditParameters($msg)
@@ -486,6 +504,7 @@ function xnpbinderCorrectEditParameters()
 
 /**
  * @param $search_var
+ *
  * @return mixed|string|void
  */
 function xnpbinderGetAdvancedSearchBlock($search_var)
@@ -511,29 +530,32 @@ function xnpbinderGetAdvancedSearchQuery(&$where, &$join)
     // global $xoopsDB;
     // $binder_table = $xoopsDB->prefix('xnpbinder_binder_item_link');
     $wheres = array();
-    $w      = xnpGetBasicInformationAdvancedSearchQuery('xnpbinder');
+    $w = xnpGetBasicInformationAdvancedSearchQuery('xnpbinder');
     if ($w) {
         $wheres[] = $w;
     }
     // $w = xnpGetKeywordQuery($binder_table.'.item_link', 'xnpbinder_item_link'); if( $w ) $wheres[] = $w;
     $where = implode(' and ', $wheres);
-    $join  = '';
+    $join = '';
 }
 
 /**
  * @param $wheres
  * @param $join
  * @param $keywords
+ *
  * @return bool
  */
 function xnpbinderGetDetailInformationQuickSearchQuery(&$wheres, &$join, $keywords)
 {
     $wheres = $join = '';
+
     return true;
 }
 
 /**
  * @param $item_id
+ *
  * @return array
  */
 function xnpbinderGetMetaInformation($item_id)
@@ -544,16 +566,17 @@ function xnpbinderGetMetaInformation($item_id)
 
 /**
  * @param $item_id
+ *
  * @return array
  */
 function xnpbinderGetModifiedFields($item_id)
 {
-    $ret      = array();
+    $ret = array();
     $formdata = xoonips_getUtility('formdata');
     $new_iids = is_array($formdata->getValueArray('post', 'xoonips_item_id', 'i', false)) ? $formdata->getValueArray('post', 'xoonips_item_id', 'i',
                                                                                                                      false) : array();
     $old_iids = array();
-    $result   = xnp_get_item_id_by_binder_id($_SESSION['XNPSID'], $item_id, array(), $old_iids);
+    $result = xnp_get_item_id_by_binder_id($_SESSION['XNPSID'], $item_id, array(), $old_iids);
     if ($result == RES_OK) {
         $diff = array_diff($new_iids, $old_iids) + array_diff($old_iids, $new_iids);
         if (count($diff)) {
@@ -566,6 +589,7 @@ function xnpbinderGetModifiedFields($item_id)
 
 /**
  * @param $itemtype
+ *
  * @return mixed|string|void
  */
 function xnpbinderGetTopBlock($itemtype)
@@ -575,18 +599,21 @@ function xnpbinderGetTopBlock($itemtype)
 
 /**
  * create XML for exporting detail information
- * see xnpExportItem for detail
+ * see xnpExportItem for detail.
+ *
  * @see      xnpExportItem
  *
  * @param folder $export_path
  * @param file   $fhdl
  * @param item   $item_id
  * @param true   $attachment
+ *
  * @return true : success
- * @internal param folder $export_path that export file is written to.
- * @internal param file $fhdl handle that items are exported to.
+ *
+ * @internal param folder $export_path that export file is written to
+ * @internal param file $fhdl handle that items are exported to
  * @internal param item $item_id id that is exported
- * @internal param true $attachment if attachment files are exported, else false.
+ * @internal param true $attachment if attachment files are exported, else false
  */
 function xnpbinderExportItem($export_path, $fhdl, $item_id, $attachment)
 {
@@ -595,8 +622,8 @@ function xnpbinderExportItem($export_path, $fhdl, $item_id, $attachment)
     }
 
     $linkHandler = xoonips_getOrmHandler('xnpbinder', 'binder_item_link');
-    $criteria    = new Criteria('binder_id', (int)$item_id);
-    $links       = $linkHandler->getObjects($criteria);
+    $criteria = new Criteria('binder_id', (int) $item_id);
+    $links = $linkHandler->getObjects($criteria);
     if (!$links) {
         return false;
     }
@@ -604,7 +631,7 @@ function xnpbinderExportItem($export_path, $fhdl, $item_id, $attachment)
         return false;
     }
     foreach ($links as $link) {
-        if (!fwrite($fhdl, '<binder_item_link>' . $link->get('item_id') . "</binder_item_link>\n")) {
+        if (!fwrite($fhdl, '<binder_item_link>'.$link->get('item_id')."</binder_item_link>\n")) {
             return false;
         }
     }
@@ -619,15 +646,17 @@ function xnpbinderExportItem($export_path, $fhdl, $item_id, $attachment)
  * get item ids must be exported with other item.
  *
  * return id of child items of a binder(its id is $item_id)
+ *
  * @param $item_id integer item id to export
+ *
  * @return array|bool
  */
 function xnpbinderGetExportItemId($item_id)
 {
-    $result      = array();
+    $result = array();
     $linkHandler = xoonips_getOrmHandler('xnpbinder', 'binder_item_link');
-    $criteria    = new Criteria('binder_id', (int)$item_id);
-    $links       = $linkHandler->getObjects($criteria);
+    $criteria = new Criteria('binder_id', (int) $item_id);
+    $links = $linkHandler->getObjects($criteria);
     if (!$links) {
         return false;
     }
@@ -639,12 +668,14 @@ function xnpbinderGetExportItemId($item_id)
         }
         $result[] = $link->get('item_id');
     }
+
     return $result;
 }
 
 /**
  * @param $metadataPrefix
  * @param $item_id
+ *
  * @return bool
  */
 function xnpbinderSupportMetadataFormat($metadataPrefix, $item_id)
@@ -652,12 +683,14 @@ function xnpbinderSupportMetadataFormat($metadataPrefix, $item_id)
     if ($metadataPrefix === 'oai_dc' || $metadataPrefix === 'junii2') {
         return true;
     }
+
     return false;
 }
 
 /**
  * @param $prefix
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpbinderGetMetadata($prefix, $item_id)
@@ -666,21 +699,21 @@ function xnpbinderGetMetadata($prefix, $item_id)
     $mydirname = basename($mydirpath);
     if (!in_array($prefix, array(
         'oai_dc',
-        'junii2'
+        'junii2',
     ))
     ) {
         return false;
     }
     // detail information
     $detailHandler = xoonips_getOrmHandler($mydirname, 'item_detail');
-    $detail_obj    = $detailHandler->get($item_id);
+    $detail_obj = $detailHandler->get($item_id);
     if (empty($detail_obj)) {
         return false;
     }
-    $detail          = $detail_obj->getArray();
+    $detail = $detail_obj->getArray();
     $detail['links'] = xnpbidner_get_child_item_urls($item_id);
     // basic information
-    $basic                             = xnpGetBasicInformationArray($item_id);
+    $basic = xnpGetBasicInformationArray($item_id);
     $basic['publication_date_iso8601'] = xnpISO8601($basic['publication_year'], $basic['publication_month'], $basic['publication_mday']);
     // indexes
     $indexes = array();
@@ -692,43 +725,46 @@ function xnpbinderGetMetadata($prefix, $item_id)
         }
     }
     // repository configs
-    $xconfigHandler          = xoonips_getOrmHandler('xoonips', 'config');
+    $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
     $myxoopsConfigMetaFooter = xoonips_get_xoops_configs(XOOPS_CONF_METAFOOTER);
-    $repository              = array(
+    $repository = array(
         'download_file_compression' => $xconfigHandler->getValue('download_file_compression'),
-        'nijc_code'                 => $xconfigHandler->getValue('repository_nijc_code'),
-        'publisher'                 => $xconfigHandler->getValue('repository_publisher'),
-        'institution'               => $xconfigHandler->getValue('repository_institution'),
-        'meta_author'               => $myxoopsConfigMetaFooter['meta_author']
+        'nijc_code' => $xconfigHandler->getValue('repository_nijc_code'),
+        'publisher' => $xconfigHandler->getValue('repository_publisher'),
+        'institution' => $xconfigHandler->getValue('repository_institution'),
+        'meta_author' => $myxoopsConfigMetaFooter['meta_author'],
     );
     // assign template
     global $xoopsTpl;
-    $tpl                = new XoopsTpl();
-    $tpl->plugins_dir[] = XOONIPS_PATH . '/class/smarty/plugins';
+    $tpl = new XoopsTpl();
+    $tpl->plugins_dir[] = XOONIPS_PATH.'/class/smarty/plugins';
     $tpl->assign($xoopsTpl->get_template_vars());
     $tpl->assign('basic', $basic);
     $tpl->assign('detail', $detail);
     $tpl->assign('indexes', $indexes);
     $tpl->assign('repository', $repository);
-    $xml = $tpl->fetch('db:' . $mydirname . '_oaipmh_' . $prefix . '.xml');
+    $xml = $tpl->fetch('db:'.$mydirname.'_oaipmh_'.$prefix.'.xml');
+
     return $xml;
 }
 
 /**
- * return url of child items of a binder
+ * return url of child items of a binder.
  *
  * @param $binder_item_id
+ *
  * @return array
+ *
  * @internal param int $item_id item id of binder
  * @reutrn   array string of URL of child items
  */
 function xnpbidner_get_child_item_urls($binder_item_id)
 {
-    require_once dirname(dirname(__DIR__)) . '/xoonips/include/lib.php';
+    require_once dirname(dirname(__DIR__)).'/xoonips/include/lib.php';
 
     $binder_item_linkHandler = xoonips_getOrmHandler('xnpbinder', 'binder_item_link');
-    $criteria                = new Criteria('binder_id', $binder_item_id);
-    $links                   = $binder_item_linkHandler->getObjects($criteria);
+    $criteria = new Criteria('binder_id', $binder_item_id);
+    $links = $binder_item_linkHandler->getObjects($criteria);
     if (!$links) {
         return array();
     }
@@ -736,10 +772,11 @@ function xnpbidner_get_child_item_urls($binder_item_id)
     $result = array();
     foreach ($links as $child) {
         $basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $basic        = $basicHandler->get($child->get('item_id'));
-        $doi          = $basic->get('doi');
-        $result[]     = xnpGetItemDetailURL($basic->get('item_id'));
+        $basic = $basicHandler->get($child->get('item_id'));
+        $doi = $basic->get('doi');
+        $result[] = xnpGetItemDetailURL($basic->get('item_id'));
     }
+
     return $result;
 }
 
@@ -748,6 +785,7 @@ function xnpbidner_get_child_item_urls($binder_item_id)
  *
  * If extra_param is given in form data, it returns extra_param['xoonips_item_id'].
  * Otherwise returns $_POST['xoonips_item_id'].
+ *
  * @return array of integer(item id of binder's item)
  */
 function xnpbinder_get_xoonips_item_id()
@@ -757,34 +795,36 @@ function xnpbinder_get_xoonips_item_id()
         return is_array(@$extra_param['xoonips_item_id']) ? $extra_param['xoonips_item_id'] : array();
     }
     $formdata = xoonips_getUtility('formdata');
-    $result   = $formdata->getValueArray('post', 'xoonips_item_id', 'i', false, array());
+    $result = $formdata->getValueArray('post', 'xoonips_item_id', 'i', false, array());
+
     return $result;
 }
 
 /**
- * get an array of item id(s) that is in a binder
+ * get an array of item id(s) that is in a binder.
  *
  * @param string $sess_id
  * @param int    $binder_id
  * @param        sess_id string session id
- * @param array  $iids
+ * @param array $iids
+ *
  * @return int|RES_OK
  */
 function xnp_get_item_id_by_binder_id($sess_id, $binder_id, $cri, &$iids)
 {
-    $binder_id = (int)$binder_id;
-    $iids      = array();
+    $binder_id = (int) $binder_id;
+    $iids = array();
 
     global $xoopsDB;
     if (!xnp_is_valid_session_id($sess_id)) {
         return RES_NO_SUCH_SESSION;
     }
 
-    $sql = 'SELECT t1.item_id FROM ' . $xoopsDB->prefix('xoonips_item_basic') . ' as t1, ' . $xoopsDB->prefix('xnpbinder_binder_item_link')
-           . ' as t2, ' . $xoopsDB->prefix('xoonips_item_title') . ' as t3 ';
+    $sql = 'SELECT t1.item_id FROM '.$xoopsDB->prefix('xoonips_item_basic').' as t1, '.$xoopsDB->prefix('xnpbinder_binder_item_link')
+           .' as t2, '.$xoopsDB->prefix('xoonips_item_title').' as t3 ';
     $sql .= ' WHERE t1.item_id = t2.item_id';
     $sql .= " AND t2.binder_id=$binder_id";
-    $sql .= ' AND t3.title_id=' . DEFAULT_ORDER_TITLE_OFFSET . ' AND t3.item_id=t1.item_id';
+    $sql .= ' AND t3.title_id='.DEFAULT_ORDER_TITLE_OFFSET.' AND t3.item_id=t1.item_id';
     $sql .= xnp_criteria2str($cri);
     $result = $xoopsDB->query($sql);
     if (!$result) {
@@ -798,17 +838,18 @@ function xnp_get_item_id_by_binder_id($sess_id, $binder_id, $cri, &$iids)
 }
 
 /**
- * select items from given items by specified open_level
+ * select items from given items by specified open_level.
  *
  * @param       $open_level integer OL_PUBLIC|OL_GROUP_ONLY|OL_PRIVATE
  * @param array $item_ids
+ *
  * @return array of item id
  */
 function xnpbinder_get_item_id_by_open_level($open_level, $item_ids = array())
 {
     $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-    $join                   = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
-    $criteria               = new CriteriaCompo(new Criteria('open_level', $open_level));
+    $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
+    $criteria = new CriteriaCompo(new Criteria('open_level', $open_level));
     $criteria->add(new Criteria('certify_state', CERTIFIED));
     if (count($item_ids) > 0) {
         $criteria->add(xnpbinder_criteria_where_in('item_id', $item_ids));
@@ -820,6 +861,7 @@ function xnpbinder_get_item_id_by_open_level($open_level, $item_ids = array())
     foreach ($index_item_links as $link) {
         $selected_ids[] = $link->get('item_id');
     }
+
     return $selected_ids;
 }
 
@@ -827,7 +869,8 @@ function xnpbinder_get_item_id_by_open_level($open_level, $item_ids = array())
  * count a number of non public items of given item id array.
  *
  * @param $item_ids
- * @return integer number of non public items
+ *
+ * @return int number of non public items
  */
 function number_of_nonpublic_item($item_ids)
 {
@@ -835,6 +878,7 @@ function number_of_nonpublic_item($item_ids)
     if (xnp_extract_public_item_id($_SESSION['XNPSID'], $item_ids, $public_item_id) != RES_OK) {
         return 0;
     }
+
     return count($item_ids) - count($public_item_id);
 }
 
@@ -842,13 +886,15 @@ function number_of_nonpublic_item($item_ids)
  * count a number of private items of given item id array.
  *
  * @param $item_ids
- * @return integer number of private items
+ *
+ * @return int number of private items
  */
 function number_of_private_item($item_ids)
 {
-    $public_id     = xnpbinder_get_item_id_by_open_level(OL_PUBLIC, $item_ids);
+    $public_id = xnpbinder_get_item_id_by_open_level(OL_PUBLIC, $item_ids);
     $group_only_id = xnpbinder_get_item_id_by_open_level(OL_GROUP_ONLY, $item_ids);
-    $private_id    = xnpbinder_get_item_id_by_open_level(OL_PRIVATE, $item_ids);
+    $private_id = xnpbinder_get_item_id_by_open_level(OL_PRIVATE, $item_ids);
+
     return count(array_diff($item_ids, $public_id, $group_only_id));
 }
 
@@ -859,22 +905,21 @@ function number_of_private_item($item_ids)
  *
  * Structure of association_array
  *   array( 'html' => HTML of item's information, 'item_id' => number of item_id )
- *
  */
 function xnpbinder_get_to_be_registered_items()
 {
-    $items                        = array();
-    $cri                          = array();
-    $item_id                      = array();
-    $formdata                     = xoonips_getUtility('formdata');
+    $items = array();
+    $cri = array();
+    $item_id = array();
+    $formdata = xoonips_getUtility('formdata');
     $xnpbinder_selected_to_delete = $formdata->getValueArray('post', 'xnpbinder_selected_to_delete', 'i', false);
     if (!$xnpbinder_selected_to_delete) {
         $xnpbinder_selected_to_delete = array();
     }
-    $selected        = $formdata->getValueArray('post', 'selected', 'i', false);
+    $selected = $formdata->getValueArray('post', 'selected', 'i', false);
     $selected_hidden = $formdata->getValueArray('post', 'selected_hidden', 'i', false);
     $xoonips_item_id = xnpbinder_get_xoonips_item_id();
-    $op              = $formdata->getValue('both', 'op', 's', false, '');
+    $op = $formdata->getValue('both', 'op', 's', false, '');
     if ($op === 'delete') {
         $xoonips_item_id = array_diff(xnpbinder_get_xoonips_item_id(), $xnpbinder_selected_to_delete);
         // delete selected items from item_id
@@ -883,7 +928,7 @@ function xnpbinder_get_to_be_registered_items()
         $xoonips_item_id = xnpbinder_get_xoonips_item_id() ? xnpbinder_get_xoonips_item_id() : array();
         $xoonips_item_id = array_unique(array_merge(array_diff(array_merge($selected, $selected_hidden), $xoonips_item_id),
                                                     array_intersect($xoonips_item_id, array_merge($selected, $selected_hidden))));
-        $selected        = array();
+        $selected = array();
     } else {
         // default: restore previous binder child items
         $xoonips_item_id = xnpbinder_get_xoonips_item_id() ? xnpbinder_get_xoonips_item_id() : array();
@@ -894,7 +939,7 @@ function xnpbinder_get_to_be_registered_items()
     // $itemtypes[<item_type_id>]=array( detail of an itemtype );
     $tmp = array();
     if (xnp_get_item_types($tmp) != RES_OK) {
-        redirect_header(XOOPS_URL . '/modules/xoonips/index.php', 3, 'ERROR xnp_get_item_types ');
+        redirect_header(XOOPS_URL.'/modules/xoonips/index.php', 3, 'ERROR xnp_get_item_types ');
     } else {
         foreach ($tmp as $i) {
             $itemtypes[$i['item_type_id']] = $i;
@@ -905,14 +950,15 @@ function xnpbinder_get_to_be_registered_items()
     foreach ($items as $i) {
         if (array_key_exists($i['item_type_id'], $itemtypes)) {
             $itemtype = $itemtypes[$i['item_type_id']];
-            require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
-            eval("\$body = " . $itemtype['name'] . "GetListBlock( \$i );");
+            require_once XOOPS_ROOT_PATH.'/modules/'.$itemtype['viewphp'];
+            eval('$body = '.$itemtype['name'].'GetListBlock( $i );');
             $item_details[] = array(
                 'item_id' => $i['item_id'],
-                'html'    => $body,
+                'html' => $body,
             );
         }
     }
+
     return $item_details;
 }
 
@@ -924,14 +970,14 @@ function xnpbinder_get_to_be_registered_items()
  *   array( 'html' => HTML of item's information, 'item_id' => number of item_id )
  *
  * @param binder_id "ID of the binder for processing"
- * @return array|bool
- * @return false => Miss
  *
+ * @return array|bool
+ * @return false      => Miss
  */
 function xnpbinder_get_registered_items($binder_id)
 {
-    $items   = array();
-    $cri     = array();
+    $items = array();
+    $cri = array();
     $item_id = array();
 
     if (xnp_get_item_id_by_binder_id($_SESSION['XNPSID'], $binder_id, $cri, $item_id) != RES_OK) {
@@ -946,7 +992,7 @@ function xnpbinder_get_registered_items($binder_id)
     // $itemtypes[<item_type_id>]=array( detail of an itemtype );
     $tmp = array();
     if (xnp_get_item_types($tmp) != RES_OK) {
-        redirect_header(XOOPS_URL . '/modules/xoonips/index.php', 3, 'ERROR xnp_get_item_types ');
+        redirect_header(XOOPS_URL.'/modules/xoonips/index.php', 3, 'ERROR xnp_get_item_types ');
     } else {
         foreach ($tmp as $i) {
             $itemtypes[$i['item_type_id']] = $i;
@@ -957,14 +1003,15 @@ function xnpbinder_get_registered_items($binder_id)
     foreach ($items as $i) {
         if (array_key_exists($i['item_type_id'], $itemtypes)) {
             $itemtype = $itemtypes[$i['item_type_id']];
-            require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
-            eval("\$body = " . $itemtype['name'] . "GetListBlock( \$i );");
+            require_once XOOPS_ROOT_PATH.'/modules/'.$itemtype['viewphp'];
+            eval('$body = '.$itemtype['name'].'GetListBlock( $i );');
             $item_details[] = array(
                 'item_id' => $i['item_id'],
-                'html'    => $body,
+                'html' => $body,
             );
         }
     }
+
     return $item_details;
 }
 
@@ -972,6 +1019,7 @@ function xnpbinder_get_registered_items($binder_id)
  * return id of items that is registerd to ONLY private index.
  *
  * @param $item_ids array integer item id
+ *
  * @return array integer
  */
 function xnpbinder_extract_private_item_id($item_ids)
@@ -981,9 +1029,10 @@ function xnpbinder_extract_private_item_id($item_ids)
 }
 
 /**
- * return id of items that is registerd to public index
+ * return id of items that is registerd to public index.
  *
  * @param $item_ids array integer item id
+ *
  * @return array integer
  */
 function xnpbinder_extract_public_item_id($item_ids)
@@ -996,14 +1045,15 @@ function xnpbinder_extract_public_item_id($item_ids)
  *
  * @param $item_ids   array integer item id
  * @param $open_level integer OL_PUBLIC, OL_GROUP_ONLY, OL_PRIVATE
+ *
  * @return array integer
  */
 function xnpbinder_extract_item_id($item_ids, $open_level)
 {
-    $ids                    = array();
+    $ids = array();
     $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-    $join                   = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
-    $criteria               = new CriteriaCompo(new Criteria('open_level', (int)$open_level));
+    $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
+    $criteria = new CriteriaCompo(new Criteria('open_level', (int) $open_level));
     $criteria->add(xnpbinder_criteria_where_in('item_id', $item_ids));
     $rows = $index_item_linkHandler->getObjects($criteria, false, 'distinct(item_id) as item_id', false, $join);
     foreach ($rows as $row) {
@@ -1014,29 +1064,32 @@ function xnpbinder_extract_item_id($item_ids, $open_level)
 }
 
 /**
- * create 'WHERE IN' Criteria from INTEGER ARRAY
+ * create 'WHERE IN' Criteria from INTEGER ARRAY.
  *
  * @param            $column   see Criteria
  * @param            $vars     array of integer
  * @param see|string $operator see Criteria
  * @param see|string $prefix   see Criteria
  * @param see|string $function see Criteria
+ *
  * @return Criteria
  */
 function xnpbinder_criteria_where_in($column, $vars, $operator = '=', $prefix = '', $function = '')
 {
     $int_vars = array();
     foreach ($vars as $v) {
-        $int_vars[] = (int)$v;
+        $int_vars[] = (int) $v;
     }
-    return new Criteria($column, '(' . implode(',', $int_vars) . ')', 'IN', $prefix, $function);
+
+    return new Criteria($column, '('.implode(',', $int_vars).')', 'IN', $prefix, $function);
 }
 
 /**
- * check that binder has one or more items
+ * check that binder has one or more items.
  *
  * @param array $child_item_ids integer item id of child item of binder
- * @return boolean true(binder has no items) or false(binder has some items)
+ *
+ * @return bool true(binder has no items) or false(binder has some items)
  */
 function xnpbinder_no_binder_item($child_item_ids)
 {
@@ -1044,27 +1097,30 @@ function xnpbinder_no_binder_item($child_item_ids)
 }
 
 /**
- * check that binder has one or more items
+ * check that binder has one or more items.
  *
  * @param array $child_item_ids integer item id of child item of binder
  * @param array $index_ids      integer index id that binder is registerd to
- * @return boolean true() or false(has no items)
+ *
+ * @return bool true() or false(has no items)
  */
 function xnpbinder_public_binder_has_not_public_item($child_item_ids, $index_ids)
 {
     if (count($child_item_ids) == 0) {
         return false;
     }
-    $itemHandler   = xoonips_getOrmCompoHandler('xoonips', 'item');
+    $itemHandler = xoonips_getOrmCompoHandler('xoonips', 'item');
     $binderHandler = xoonips_getOrmCompoHandler('xnpbinder', 'item');
-    $criteria      = xnpbinder_criteria_where_in('item_id', $child_item_ids);
-    $child_items   = $itemHandler->getObjects($criteria);
+    $criteria = xnpbinder_criteria_where_in('item_id', $child_item_ids);
+    $child_items = $itemHandler->getObjects($criteria);
+
     return $binderHandler->publicBinderHasNotPublicItems($child_items, $index_ids);
 }
 
 /**
  * @param $child_item_ids
  * @param $index_ids
+ *
  * @return bool
  */
 function xnpbinder_group_binder_has_private_item($child_item_ids, $index_ids)
@@ -1072,10 +1128,11 @@ function xnpbinder_group_binder_has_private_item($child_item_ids, $index_ids)
     if (count($child_item_ids) == 0) {
         return false;
     }
-    $itemHandler   = xoonips_getOrmCompoHandler('xoonips', 'item');
+    $itemHandler = xoonips_getOrmCompoHandler('xoonips', 'item');
     $binderHandler = xoonips_getOrmCompoHandler('xnpbinder', 'item');
-    $criteria      = xnpbinder_criteria_where_in('item_id', $child_item_ids);
-    $child_items   = $itemHandler->getObjects($criteria);
+    $criteria = xnpbinder_criteria_where_in('item_id', $child_item_ids);
+    $child_items = $itemHandler->getObjects($criteria);
+
     return $binderHandler->groupBinderHasPrivateItems($child_items, $index_ids);
 }
 
@@ -1084,8 +1141,9 @@ function xnpbinder_group_binder_has_private_item($child_item_ids, $index_ids)
  */
 function xnpbinder_get_add_to_index_id_form_data()
 {
-    $formdata        = xoonips_getUtility('formdata');
+    $formdata = xoonips_getUtility('formdata');
     $add_to_index_id = $formdata->getValue('post', 'add_to_index_id', 'i', false);
+
     return array_unique(array_merge(null === $add_to_index_id ? array() : array($add_to_index_id),
                                     explode(',', $formdata->getValue('post', 'xoonipsCheckedXID', 's', false))));
 }

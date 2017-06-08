@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,23 +27,23 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // class files
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 
 // title
-$title       = _AM_XOONIPS_MAINTENANCE_TITLE;
+$title = _AM_XOONIPS_MAINTENANCE_TITLE;
 $description = _AM_XOONIPS_MAINTENANCE_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
@@ -50,27 +51,27 @@ $breadcrumbs = array(
 $menu = array(
     array(
         'label' => _AM_XOONIPS_MAINTENANCE_ACCOUNT_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=account',
+        'url' => $xoonips_admin['myfile_url'].'?page=account',
     ),
     array(
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=item',
+        'url' => $xoonips_admin['myfile_url'].'?page=item',
     ),
     array(
         'label' => _AM_XOONIPS_MAINTENANCE_POSITION_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=position',
+        'url' => $xoonips_admin['myfile_url'].'?page=position',
     ),
     array(
         'label' => _AM_XOONIPS_MAINTENANCE_RANKING_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=ranking',
+        'url' => $xoonips_admin['myfile_url'].'?page=ranking',
     ),
     array(
         'label' => _AM_XOONIPS_MAINTENANCE_FILESEARCH_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=filesearch',
+        'url' => $xoonips_admin['myfile_url'].'?page=filesearch',
     ),
     array(
         'label' => _AM_XOONIPS_MAINTENANCE_OAIPMH_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=oaipmh',
+        'url' => $xoonips_admin['myfile_url'].'?page=oaipmh',
     ),
 );
 

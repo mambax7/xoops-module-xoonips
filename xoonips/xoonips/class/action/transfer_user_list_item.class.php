@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,11 +25,11 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/transfer.class.php';
-require_once __DIR__ . '/../../include/transfer.inc.php';
+require_once __DIR__.'/transfer.class.php';
+require_once __DIR__.'/../../include/transfer.inc.php';
 
 /**
- * Class XooNIpsActionTransferUserListItem
+ * Class XooNIpsActionTransferUserListItem.
  */
 class XooNIpsActionTransferUserListItem extends XooNIpsActionTransfer
 {
@@ -40,9 +41,6 @@ class XooNIpsActionTransferUserListItem extends XooNIpsActionTransfer
         parent::__construct();
     }
 
-    /**
-     * @return null
-     */
     public function _get_logic_name()
     {
         return null;
@@ -73,8 +71,8 @@ class XooNIpsActionTransferUserListItem extends XooNIpsActionTransfer
 
         if (!$this->is_user_in_group_of_items($xoopsUser->getVar('uid'), $item_ids_to_transfer)) {
             $gnames = $this->get_unsubscribed_group_names($xoopsUser->getVar('uid'), $item_ids_to_transfer);
-            $msg    = sprintf(_MD_XOONIPS_TRANSFER_USER_LIST_ITEM_ERROR_BAD_SUBSCRIBE_GROUP_NAME, $gnames[0]);
-            redirect_header(XOOPS_URL . '/', 3, $msg);
+            $msg = sprintf(_MD_XOONIPS_TRANSFER_USER_LIST_ITEM_ERROR_BAD_SUBSCRIBE_GROUP_NAME, $gnames[0]);
+            redirect_header(XOOPS_URL.'/', 3, $msg);
         }
 
         $this->_view_params['item_ids_to_transfer']
@@ -83,23 +81,23 @@ class XooNIpsActionTransferUserListItem extends XooNIpsActionTransfer
         $this->_view_params['limit_check_result']
             = $this->get_limit_check_result($xoopsUser->getVar('uid'), $item_ids_to_transfer);
 
-        $userHandler                         = xoonips_getOrmHandler('xoonips', 'users');
-        $user                                = $userHandler->get($xoopsUser->getVar('uid'));
+        $userHandler = xoonips_getOrmHandler('xoonips', 'users');
+        $user = $userHandler->get($xoopsUser->getVar('uid'));
         $this->_view_params['index_options'] = $this->getIndexOptionsTemplateVar($user->get('private_index_id'));
     }
 
     /**
+     * get array of item id to transfer to user($uid).
      *
-     * get array of item id to transfer to user($uid)
+     * @param int $uid transferee's uid
      *
-     * @param integer $uid transferee's uid
      * @return array integer array of item id to be transfered
      */
     public function get_transfer_request_item_ids($uid)
     {
         $transferHandler = xoonips_getOrmHandler('xoonips', 'transfer_request');
 
-        $transfers =  $transferHandler->getObjects(new Criteria('to_uid', $uid));
+        $transfers = $transferHandler->getObjects(new Criteria('to_uid', $uid));
         if (false === $transfers) {
             return array();
         }
@@ -108,30 +106,32 @@ class XooNIpsActionTransferUserListItem extends XooNIpsActionTransfer
         foreach ($transfers as $t) {
             $result[] = $t->get('item_id');
         }
+
         return $result;
     }
 
     /**
      * return array of group name that user is not subscribed.
      *
-     * @param integer $uid      user id
-     * @param array   $item_ids array of integer of item id
-     * @return array of group name string
+     * @param int   $uid      user id
+     * @param array $item_ids array of integer of item id
      *
+     * @return array of group name string
      */
     public function get_unsubscribed_group_names($uid, $item_ids)
     {
         $item_group_ids = xoonips_transfer_get_group_ids_of_items($item_ids);
 
         $xgroupHandler = xoonips_getHandler('xoonips', 'group');
-        $gids          = $xgroupHandler->getGroupIds($uid);
-        $result        = array();
+        $gids = $xgroupHandler->getGroupIds($uid);
+        $result = array();
         foreach ($item_group_ids as $gid) {
             if (!in_array($gid, $gids)) {
-                $xg_obj   = $xgroupHandler->getGroupObject($gid);
+                $xg_obj = $xgroupHandler->getGroupObject($gid);
                 $result[] = $xg_obj->get('gname');
             }
         }
+
         return $result;
     }
 }

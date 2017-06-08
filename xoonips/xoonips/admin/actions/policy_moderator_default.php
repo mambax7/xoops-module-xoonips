@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,50 +27,50 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_POLICY_MODERATOR_TITLE;
+$title = _AM_XOONIPS_POLICY_MODERATOR_TITLE;
 $description = _AM_XOONIPS_POLICY_MODERATOR_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
-$ticket_area  = 'xoonips_admin_policy_moderator';
+require_once __DIR__.'/../../class/base/gtickets.php';
+$ticket_area = 'xoonips_admin_policy_moderator';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys   = array(
+$config_keys = array(
     'moderator_modify_any_items' => 's',
 );
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 
 // >> moderator modify nay items
-$moderator_modify   = array();
-$key                = 'moderator_modify_any_items';
-$mm['name']         = $key;
-$mm['yes']          = _AM_XOONIPS_LABEL_YES;
-$mm['no']           = _AM_XOONIPS_LABEL_NO;
-$mm['checked']      = $config_values[$key];
+$moderator_modify = array();
+$key = 'moderator_modify_any_items';
+$mm['name'] = $key;
+$mm['yes'] = _AM_XOONIPS_LABEL_YES;
+$mm['no'] = _AM_XOONIPS_LABEL_NO;
+$mm['checked'] = $config_values[$key];
 $moderator_modify[] = $mm;
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('policy_moderator.tmpl.tpl');

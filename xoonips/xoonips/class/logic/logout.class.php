@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,43 +25,42 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/logic.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/logic.class.php';
 
 /**
- *
- * subclass of XooNIpsLogic(logout)
- *
+ * subclass of XooNIpsLogic(logout).
  */
 class XooNIpsLogicLogout extends XooNIpsLogic
 {
-
     /**
-     * execute logout
+     * execute logout.
      *
      * @param[in] $vars[0] sessionid
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error error information
+     *
      * @return true|void
-     * @return false if error
+     * @return false     if error
      */
     public function execute($vars, $response)
     {
         // parameter check
-        $error =  $response->getError();
+        $error = $response->getError();
         if (count($vars) > 1) {
             $error->add(XNPERR_EXTRA_PARAM);
         }
         if (count($vars) < 1) {
             $error->add(XNPERR_MISSING_PARAM);
         }
-        //
+
         if (isset($vars[0]) && strlen($vars[0]) > 32) {
             $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
         }
-        //
+
         if ($error->get(0)) {
             // return if parameter error
             $response->setResult(false);
+
             return;
         } else {
             $sessionid = $vars[0];
@@ -69,6 +69,7 @@ class XooNIpsLogicLogout extends XooNIpsLogic
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
+
             return false;
         }
         if ($uid != UID_GUEST) {
@@ -83,6 +84,7 @@ class XooNIpsLogicLogout extends XooNIpsLogic
         $_SESSION = array();
         session_destroy();
         $response->setResult(true);
+
         return true;
     }
 }

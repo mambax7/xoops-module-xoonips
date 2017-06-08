@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2013 RIKEN, Japan All rights reserved.                //
@@ -25,9 +26,9 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-$itemtype_path    = dirname(__DIR__);
+$itemtype_path = dirname(__DIR__);
 $itemtype_dirname = basename($itemtype_path);
-$xoonips_path     = dirname($itemtype_path) . '/xoonips';
+$xoonips_path = dirname($itemtype_path).'/xoonips';
 
 $langman = xoonips_getUtility('languagemanager');
 $langman->read('main.php', $itemtype_dirname);
@@ -39,16 +40,17 @@ function xnppresentationGetTypes()
 {
     return array(
         'powerpoint' => 'PowerPoint',
-        'lotus'      => 'Lotus',
+        'lotus' => 'Lotus',
         'justsystem' => 'JustSystem',
-        'html'       => 'HTML',
-        'pdf'        => 'PDF',
-        'other'      => 'Other'
+        'html' => 'HTML',
+        'pdf' => 'PDF',
+        'other' => 'Other',
     );
 }
 
 /** retrieve Detail Information that specified by item_id
  * @param $item_id
+ *
  * @return array|bool
  */
 function xnppresentationGetDetailInformation($item_id)
@@ -56,47 +58,50 @@ function xnppresentationGetDetailInformation($item_id)
     global $xoopsDB;
     if (empty($item_id)) {
         return array(
-            'presentation_type'    => '',
-            'attachment_dl_limit'  => '',
+            'presentation_type' => '',
+            'attachment_dl_limit' => '',
             'attachment_dl_notify' => '',
-            'rights'               => '',
-            'readme'               => '',
-            'use_cc'               => '',
-            'cc_commercial_use'    => '',
-            'cc_modification'      => ''
+            'rights' => '',
+            'readme' => '',
+            'use_cc' => '',
+            'cc_commercial_use' => '',
+            'cc_modification' => '',
         );
     }
 
-    $sql    = 'select * from ' . $xoopsDB->prefix('xnppresentation_item_detail') . " where presentation_id=$item_id";
+    $sql = 'select * from '.$xoopsDB->prefix('xnppresentation_item_detail')." where presentation_id=$item_id";
     $result = $xoopsDB->query($sql);
     if ($result == false) {
-        echo " $sql " . $GLOBALS['xoopsDB']->error();
+        echo " $sql ".$GLOBALS['xoopsDB']->error();
+
         return false;
     }
-    $types                           = xnppresentationGetTypes();
-    $detail                          = $xoopsDB->fetchArray($result);
+    $types = xnppresentationGetTypes();
+    $detail = $xoopsDB->fetchArray($result);
     $detail['presentation_type_str'] = $types[$detail['presentation_type']];
+
     return $detail;
 }
 
 /**
  * @param $item_id
+ *
  * @return array
  */
 function xnppresentationGetMetaInformation($item_id)
 {
-    $ret           = array();
+    $ret = array();
     $creator_array = array();
 
-    $basic  = xnpGetBasicInformationArray($item_id);
+    $basic = xnpGetBasicInformationArray($item_id);
     $detail = xnppresentationGetDetailInformation($item_id);
     if (!empty($basic)) {
-        $ret[_MD_XOONIPS_ITEM_TITLE_LABEL]            = implode("\n", $basic['titles']);
-        $ret[_MD_XOONIPS_ITEM_CONTRIBUTOR_LABEL]      = $basic['contributor'];
-        $ret[_MD_XOONIPS_ITEM_KEYWORDS_LABEL]         = implode("\n", $basic['keywords']);
-        $ret[_MD_XOONIPS_ITEM_DESCRIPTION_LABEL]      = $basic['description'];
-        $ret[_MD_XOONIPS_ITEM_DOI_LABEL]              = $basic['doi'];
-        $ret[_MD_XOONIPS_ITEM_CREATION_DATE_LABEL]    = $basic['creation_date'];
+        $ret[_MD_XOONIPS_ITEM_TITLE_LABEL] = implode("\n", $basic['titles']);
+        $ret[_MD_XOONIPS_ITEM_CONTRIBUTOR_LABEL] = $basic['contributor'];
+        $ret[_MD_XOONIPS_ITEM_KEYWORDS_LABEL] = implode("\n", $basic['keywords']);
+        $ret[_MD_XOONIPS_ITEM_DESCRIPTION_LABEL] = $basic['description'];
+        $ret[_MD_XOONIPS_ITEM_DOI_LABEL] = $basic['doi'];
+        $ret[_MD_XOONIPS_ITEM_CREATION_DATE_LABEL] = $basic['creation_date'];
         $ret[_MD_XOONIPS_ITEM_LAST_UPDATE_DATE_LABEL] = $basic['last_update_date'];
     }
     if (!empty($detail)) {
@@ -110,7 +115,7 @@ function xnppresentationGetMetaInformation($item_id)
         $ret[_MD_XOONIPS_ITEM_RIGHTS_LABEL] = $detail['rights'];
     }
     $xnppresentationHandler = xoonips_getOrmCompoHandler('xnppresentation', 'item');
-    $xnppresentation        = $xnppresentationHandler->get($item_id);
+    $xnppresentation = $xnppresentationHandler->get($item_id);
     foreach ($xnppresentation->getVar('creator') as $creator) {
         $creator_array[] = $creator->getVar('creator', 'n');
     }
@@ -121,6 +126,7 @@ function xnppresentationGetMetaInformation($item_id)
 
 /**
  * @param $item_basic
+ *
  * @return mixed|string|void
  */
 function xnppresentationGetListBlock($item_basic)
@@ -145,6 +151,7 @@ function xnppresentationGetListBlock($item_basic)
 
 /**
  * @param $item_basic
+ *
  * @return mixed|string|void
  */
 function xnppresentationGetPrinterFriendlyListBlock($item_basic)
@@ -154,6 +161,7 @@ function xnppresentationGetPrinterFriendlyListBlock($item_basic)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnppresentationGetDetailBlock($item_id)
@@ -166,7 +174,7 @@ function xnppresentationGetDetailBlock($item_id)
 
     // get DetailInformation
     $detailHandler = xoonips_getOrmHandler('xnppresentation', 'item_detail');
-    $detail_orm    = $detailHandler->get($item_id);
+    $detail_orm = $detailHandler->get($item_id);
     if (!$detail_orm) {
         return '';
     }
@@ -195,16 +203,19 @@ function xnppresentationGetDetailBlock($item_id)
 /**
  * @param $item_id
  * @param $download_file_id
+ *
  * @return mixed|string|void
  */
 function xnppresentationGetDownloadConfirmationBlock($item_id, $download_file_id)
 {
     $detail = xnppresentationGetDetailInformation($item_id);
+
     return xnpGetDownloadConfirmationBlock($item_id, $download_file_id, $detail['attachment_dl_notify'], true, $detail['use_cc'], $detail['rights']);
 }
 
 /**
  * @param $item_id
+ *
  * @return bool
  */
 function xnppresentationGetDownloadConfirmationRequired($item_id)
@@ -214,6 +225,7 @@ function xnppresentationGetDownloadConfirmationRequired($item_id)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnppresentationGetPrinterFriendlyDetailBlock($item_id)
@@ -226,7 +238,7 @@ function xnppresentationGetPrinterFriendlyDetailBlock($item_id)
 
     // get DetailInformation
     $detailHandler = xoonips_getOrmHandler('xnppresentation', 'item_detail');
-    $detail_orm    = $detailHandler->get($item_id);
+    $detail_orm = $detailHandler->get($item_id);
     if (!$detail_orm) {
         return '';
     }
@@ -274,12 +286,12 @@ function xnppresentationGetRegisterBlock()
     }
 
     // retrieve blocks of BasicInformation / Preview / index block
-    $basic             = xnpGetBasicInformationRegisterBlock();
-    $preview           = xnpGetPreviewRegisterBlock();
-    $index             = xnpGetIndexRegisterBlock();
+    $basic = xnpGetBasicInformationRegisterBlock();
+    $preview = xnpGetPreviewRegisterBlock();
+    $index = xnpGetIndexRegisterBlock();
     $presentation_file = xnpGetAttachmentRegisterBlock('presentation_file');
-    $readme            = xnpGetTextFileRegisterBlock('readme');
-    $rights            = xnpGetRightsRegisterBlock();
+    $readme = xnpGetTextFileRegisterBlock('readme');
+    $rights = xnpGetRightsRegisterBlock();
 
     // assign to template
     global $xoopsTpl;
@@ -306,16 +318,17 @@ function xnppresentationGetRegisterBlock()
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnppresentationGetEditBlock($item_id)
 {
     global $xoopsDB;
-    $myts     = MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
     $formdata = xoonips_getUtility('formdata');
 
     // get DetailInformation
-    $result = $xoopsDB->query('select * from ' . $xoopsDB->prefix('xnppresentation_item_detail') . " where presentation_id=$item_id");
+    $result = $xoopsDB->query('select * from '.$xoopsDB->prefix('xnppresentation_item_detail')." where presentation_id=$item_id");
     foreach ($model = $xoopsDB->fetchArray($result) as $k => $v) {
         $$k = $v;
     }
@@ -324,7 +337,7 @@ function xnppresentationGetEditBlock($item_id)
                  'presentation_type',
                  'creator',
                  'readme',
-                 'rights'
+                 'rights',
              ) as $k
     ) {
         if (array_key_exists($k, $_GET)) {
@@ -335,21 +348,21 @@ function xnppresentationGetEditBlock($item_id)
     }
 
     // retrieve blocks of BasicInformation / Preview / index block
-    $basic             = xnpGetBasicInformationEditBlock($item_id);
-    $preview           = xnpGetPreviewEditBlock($item_id);
-    $index             = xnpGetIndexEditBlock($item_id);
+    $basic = xnpGetBasicInformationEditBlock($item_id);
+    $preview = xnpGetPreviewEditBlock($item_id);
+    $index = xnpGetIndexEditBlock($item_id);
     $presentation_file = xnpGetAttachmentEditBlock($item_id, 'presentation_file');
 
     // retrieve detail information
     if (null !== $formdata->getValue('get', 'post_id', 's', false)) {
-        $myts   = MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         $detail = array(
             'presentation_type' => $formdata->getValue('post', 'presentation_type', 's', true),
-            'readme'            => '',
-            'rights'            => '',
-            'use_cc'            => '',
+            'readme' => '',
+            'rights' => '',
+            'use_cc' => '',
             'cc_commercial_use' => '',
-            'cc_modification'   => '',
+            'cc_modification' => '',
         );
     } elseif (!empty($item_id)) {
         $detail = xnppresentationGetDetailInformation($item_id);
@@ -381,7 +394,7 @@ function xnppresentationGetEditBlock($item_id)
 
     if (!$formdata->getValue('get', 'post_id', 's', false)) {
         $detailHandler = xoonips_getOrmHandler('xnppresentation', 'item_detail');
-        $detail_orm    = $detailHandler->get($item_id);
+        $detail_orm = $detailHandler->get($item_id);
         $tpl->assign('xnppresentation_creator', xoonips_get_multiple_field_template_vars($detail_orm->getCreators(), 'xnppresentation', 'creator'));
     } else {
         $tpl->assign('xnppresentation_creator',
@@ -394,22 +407,23 @@ function xnppresentationGetEditBlock($item_id)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnppresentationGetConfirmBlock($item_id)
 {
-    $formdata       = xoonips_getUtility('formdata');
+    $formdata = xoonips_getUtility('formdata');
     $creatorHandler = xoonips_getOrmHandler('xnppresentation', 'creator');
-    $creator_objs   = $formdata->getObjectArray('post', $creatorHandler->getTableName(), $creatorHandler, false);
+    $creator_objs = $formdata->getObjectArray('post', $creatorHandler->getTableName(), $creatorHandler, false);
 
     // retrieve blocks of BasicInformation / Preview / index block
-    $basic             = xnpGetBasicInformationConfirmBlock($item_id);
-    $preview           = xnpGetPreviewConfirmBlock($item_id);
-    $index             = xnpGetIndexConfirmBlock($item_id);
+    $basic = xnpGetBasicInformationConfirmBlock($item_id);
+    $preview = xnpGetPreviewConfirmBlock($item_id);
+    $index = xnpGetIndexConfirmBlock($item_id);
     $presentation_file = xnpGetAttachmentConfirmBlock($item_id, 'presentation_file');
-    $lengths           = xnpGetColumnLengths('xnppresentation_item_detail');
-    $readme            = xnpGetTextFileConfirmBlock($item_id, 'readme', $lengths['readme']);
-    $rights            = xnpGetRightsConfirmBlock($item_id, $lengths['rights']);
+    $lengths = xnpGetColumnLengths('xnppresentation_item_detail');
+    $readme = xnpGetTextFileConfirmBlock($item_id, 'readme', $lengths['readme']);
+    $rights = xnpGetRightsConfirmBlock($item_id, $lengths['rights']);
     // retrieve detail information
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $detail = array(
@@ -418,7 +432,7 @@ function xnppresentationGetConfirmBlock($item_id)
             ),
         );
         xnpConfirmHtml($detail, 'xnppresentation_item_detail', array_keys($detail), _CHARSET);
-        $types                           = xnppresentationGetTypes();
+        $types = xnppresentationGetTypes();
         $detail['presentation_type_str'] = array(
             'value' => htmlspecialchars($types[$detail['presentation_type']['value']], ENT_QUOTES),
         );
@@ -432,7 +446,7 @@ function xnppresentationGetConfirmBlock($item_id)
         || xoonips_is_multiple_field_too_long($creator_objs, 'xnppresentation', 'creator')
     ) {
         global $system_message;
-        $system_message = $system_message . "\n<br /><font color='#ff0000'>" . _MD_XOONIPS_ITEM_WARNING_FIELD_TRIM . '</font><br />';
+        $system_message = $system_message."\n<br /><font color='#ff0000'>"._MD_XOONIPS_ITEM_WARNING_FIELD_TRIM.'</font><br />';
     }
 
     // assign to template
@@ -456,19 +470,21 @@ function xnppresentationGetConfirmBlock($item_id)
 }
 
 /** make sure that enterd detail information is correctly or not.
- * called from register confirmation and edit confirmation
+ * called from register confirmation and edit confirmation.
+ *
  * @param $message
+ *
  * @return bool
  */
 function xnppresentationCheckRegisterParameters($message)
 {
-    $xnpsid                  = $_SESSION['XNPSID'];
-    $messages                = array();
-    $formdata                = xoonips_getUtility('formdata');
-    $creator                 = xoonips_get_multi_field_array_from_post('xnppresentation', 'creator');
+    $xnpsid = $_SESSION['XNPSID'];
+    $messages = array();
+    $formdata = xoonips_getUtility('formdata');
+    $creator = xoonips_get_multi_field_array_from_post('xnppresentation', 'creator');
     $presentation_fileFileID = $formdata->getValue('post', 'presentation_fileFileID', 'i', true);
-    $presentation_file       = $formdata->getFile('presentation_file', false);
-    $xoonipsCheckedXID       = $formdata->getValue('post', 'xoonipsCheckedXID', 's', true);
+    $presentation_file = $formdata->getFile('presentation_file', false);
+    $xoonipsCheckedXID = $formdata->getValue('post', 'xoonipsCheckedXID', 's', true);
 
     if (empty($creator)) {
         $messages[] = _MD_XNPPRESENTATION_CREATOR_REQUIRED;
@@ -478,7 +494,7 @@ function xnppresentationCheckRegisterParameters($message)
     }
 
     // notify that license statement is required when register into public indexes.
-    $xids    = explode(',', $xoonipsCheckedXID);
+    $xids = explode(',', $xoonipsCheckedXID);
     $indexes = array();
     if ($xids[0] != $xoonipsCheckedXID) {
         foreach ($xids as $i) {
@@ -486,8 +502,8 @@ function xnppresentationCheckRegisterParameters($message)
             if (xnp_get_index($xnpsid, $i, $index) == RES_OK) {
                 $indexes[] = $index;
             } else {
-                $messages[] = '<font color=\'#ff0000\'>' . xnp_get_last_error_string() . '</font>';
-                $result     = false;
+                $messages[] = '<font color=\'#ff0000\'>'.xnp_get_last_error_string().'</font>';
+                $result = false;
                 break;
             }
         }
@@ -497,14 +513,14 @@ function xnppresentationCheckRegisterParameters($message)
             if ($i['open_level'] <= OL_GROUP_ONLY) {
                 $readmeEncText = $formdata->getValue('post', 'readmeEncText', 's', true);
                 $rightsEncText = $formdata->getValue('post', 'rightsEncText', 's', true);
-                $rightsUseCC   = $formdata->getValue('post', 'rightsUseCC', 'i', true);
+                $rightsUseCC = $formdata->getValue('post', 'rightsUseCC', 'i', true);
                 if ($readmeEncText == '') {
                     // readme is not filled
-                    $messages[] = '<font color=\'#ff0000\'>' . _MD_XNPPRESENTATION_README_REQUIRED . '</font>';
+                    $messages[] = '<font color=\'#ff0000\'>'._MD_XNPPRESENTATION_README_REQUIRED.'</font>';
                 }
                 if ($rightsEncText == '' && $rightsUseCC == '0') {
                     // license is not filled
-                    $messages[] = '<font color=\'#ff0000\'>' . _MD_XNPPRESENTATION_RIGHTS_REQUIRED . '</font>';
+                    $messages[] = '<font color=\'#ff0000\'>'._MD_XNPPRESENTATION_RIGHTS_REQUIRED.'</font>';
                 }
                 break;
             }
@@ -514,12 +530,14 @@ function xnppresentationCheckRegisterParameters($message)
     if (count($messages) == 0) {
         return true;
     }
-    $message = "<br />\n" . implode("<br />\n", $messages);
+    $message = "<br />\n".implode("<br />\n", $messages);
+
     return false;
 }
 
 /** make sure that enterd detail information is correctly or not.
  * @param $message
+ *
  * @return bool
  */
 function xnppresentationCheckEditParameters($message)
@@ -529,17 +547,18 @@ function xnppresentationCheckEditParameters($message)
 
 /**
  * @param $item_id
+ *
  * @return bool
  */
 function xnppresentationInsertItem($item_id)
 {
     global $xoopsDB;
-    $xnpsid   = $_SESSION['XNPSID'];
+    $xnpsid = $_SESSION['XNPSID'];
     $formdata = xoonips_getUtility('formdata');
 
     // retister BasicInformation, Index and Attachment
     $item_id = 0;
-    $result  = xnpInsertBasicInformation($item_id);
+    $result = xnpInsertBasicInformation($item_id);
     if ($result) {
         $result = xnpUpdateIndex($item_id);
         if ($result) {
@@ -565,13 +584,13 @@ function xnppresentationInsertItem($item_id)
     // it makes string with constant length
     $ar = array(
         'presentation_type' => $formdata->getValue('post', 'presentation_type', 's', true),
-        'readme'            => xnpGetTextFile('readme'),
-        'rights'            => $rights,
+        'readme' => xnpGetTextFile('readme'),
+        'rights' => $rights,
     );
     xnpTrimColumn($ar, 'xnppresentation_item_detail', array_keys($ar), _CHARSET);
 
-    $myts                 = MyTextSanitizer::getInstance();
-    $keys                 = implode(',', array(
+    $myts = MyTextSanitizer::getInstance();
+    $keys = implode(',', array(
         'attachment_dl_limit',
         'attachment_dl_notify',
         'presentation_type',
@@ -579,11 +598,11 @@ function xnppresentationInsertItem($item_id)
         'rights',
         'use_cc',
         'cc_commercial_use',
-        'cc_modification'
+        'cc_modification',
     ));
-    $attachment_dl_limit  = $formdata->getValue('post', 'attachment_dl_limit', 'i', true);
+    $attachment_dl_limit = $formdata->getValue('post', 'attachment_dl_limit', 'i', true);
     $attachment_dl_notify = $formdata->getValue('post', 'attachment_dl_notify', 'i', true);
-    $vals                 = implode('\',\'', array(
+    $vals = implode('\',\'', array(
         $attachment_dl_limit,
         $attachment_dl_limit ? $attachment_dl_notify : 0,
         addslashes($ar['presentation_type']),
@@ -591,35 +610,38 @@ function xnppresentationInsertItem($item_id)
         addslashes($ar['rights']),
         $use_cc,
         $cc_commercial_use,
-        $cc_modification
+        $cc_modification,
     ));
 
-    $sql    = 'insert into ' . $xoopsDB->prefix('xnppresentation_item_detail') . " ( presentation_id, $keys ) values ( $item_id, '$vals' ) ";
+    $sql = 'insert into '.$xoopsDB->prefix('xnppresentation_item_detail')." ( presentation_id, $keys ) values ( $item_id, '$vals' ) ";
     $result = $xoopsDB->queryF($sql);
     if ($result == false) {
         echo 'cannot insert item_detail';
+
         return false;
     }
 
     // insert creator
     $creatorHandler = xoonips_getOrmHandler('xnppresentation', 'creator');
-    $creator_objs   = $formdata->getObjectArray('post', $creatorHandler->getTableName(), $creatorHandler, false);
+    $creator_objs = $formdata->getObjectArray('post', $creatorHandler->getTableName(), $creatorHandler, false);
     if (!$creatorHandler->updateAllObjectsByForeignKey('presentation_id', $item_id, $creator_objs)) {
         return false;
     }
+
     return true;
 }
 
 /**
  * @param $item_id
+ *
  * @return bool
  */
 function xnppresentationUpdateItem($item_id)
 {
     global $xoopsDB;
-    $xnpsid   = $_SESSION['XNPSID'];
+    $xnpsid = $_SESSION['XNPSID'];
     $formdata = xoonips_getUtility('formdata');
-    $myts     = MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
 
     // modify BasicInformation, Index, Preview and Attachment.
     $result = xnpUpdateBasicInformation($item_id);
@@ -655,37 +677,38 @@ function xnppresentationUpdateItem($item_id)
     // trim strings
     $ar = array(
         'presentation_type' => $formdata->getValue('post', 'presentation_type', 's', true),
-        'readme'            => xnpGetTextFile('readme'),
-        'rights'            => $rights,
+        'readme' => xnpGetTextFile('readme'),
+        'rights' => $rights,
     );
     xnpTrimColumn($ar, 'xnppresentation_item_detail', array_keys($ar), _CHARSET);
 
     // register detail information
-    $attachment_dl_limit  = $formdata->getValue('post', 'attachment_dl_limit', 'i', true);
+    $attachment_dl_limit = $formdata->getValue('post', 'attachment_dl_limit', 'i', true);
     $attachment_dl_notify = $formdata->getValue('post', 'attachment_dl_notify', 'i', true);
-    $sql                  = implode(',', array(
-        'attachment_dl_limit' . '=\'' . $attachment_dl_limit . '\'',
-        'attachment_dl_notify' . '=\'' . ($attachment_dl_limit ? $attachment_dl_notify : 0) . '\'',
-        'presentation_type' . '=\'' . addslashes($ar['presentation_type']) . '\'',
-        'readme' . '=\'' . addslashes($ar['readme']) . '\'',
-        'rights' . '=\'' . addslashes($ar['rights']) . '\'',
-        'use_cc' . '=\'' . $use_cc . '\'',
-        'cc_commercial_use' . '=\'' . $cc_commercial_use . '\'',
-        'cc_modification' . '=\'' . $cc_modification . '\''
+    $sql = implode(',', array(
+        'attachment_dl_limit'.'=\''.$attachment_dl_limit.'\'',
+        'attachment_dl_notify'.'=\''.($attachment_dl_limit ? $attachment_dl_notify : 0).'\'',
+        'presentation_type'.'=\''.addslashes($ar['presentation_type']).'\'',
+        'readme'.'=\''.addslashes($ar['readme']).'\'',
+        'rights'.'=\''.addslashes($ar['rights']).'\'',
+        'use_cc'.'=\''.$use_cc.'\'',
+        'cc_commercial_use'.'=\''.$cc_commercial_use.'\'',
+        'cc_modification'.'=\''.$cc_modification.'\'',
     ));
-    $result               = $xoopsDB->queryF('update ' . $xoopsDB->prefix('xnppresentation_item_detail')
-                                             . " set $sql where presentation_id = $item_id ");
+    $result = $xoopsDB->queryF('update '.$xoopsDB->prefix('xnppresentation_item_detail')
+                                             ." set $sql where presentation_id = $item_id ");
     if ($result == false) {
         return false;
     }
 
     // insert/update creator
-    $formdata       = xoonips_getUtility('formdata');
+    $formdata = xoonips_getUtility('formdata');
     $creatorHandler = xoonips_getOrmHandler('xnppresentation', 'creator');
-    $creator_objs   = $formdata->getObjectArray('post', $creatorHandler->getTableName(), $creatorHandler, false);
+    $creator_objs = $formdata->getObjectArray('post', $creatorHandler->getTableName(), $creatorHandler, false);
     if (!$creatorHandler->updateAllObjectsByForeignKey('presentation_id', $item_id, $creator_objs)) {
         return false;
     }
+
     return true;
 }
 
@@ -693,21 +716,23 @@ function xnppresentationUpdateItem($item_id)
  * @param $wheres
  * @param $join
  * @param $keywords
+ *
  * @return bool
  */
 function xnppresentationGetDetailInformationQuickSearchQuery(&$wheres, &$join, $keywords)
 {
     global $xoopsDB;
-    $presentation_table         = $xoopsDB->prefix('xnppresentation_item_detail');
+    $presentation_table = $xoopsDB->prefix('xnppresentation_item_detail');
     $presentation_creator_table = $xoopsDB->prefix('xnppresentation_creator');
-    $file_table                 = $xoopsDB->prefix('xoonips_file');
+    $file_table = $xoopsDB->prefix('xoonips_file');
 
-    $join   = " INNER JOIN $presentation_creator_table ON " . $presentation_creator_table . '.presentation_id  = '
-              . $xoopsDB->prefix('xoonips_item_basic') . '.item_id ';
+    $join = " INNER JOIN $presentation_creator_table ON ".$presentation_creator_table.'.presentation_id  = '
+              .$xoopsDB->prefix('xoonips_item_basic').'.item_id ';
     $wheres = xnpGetKeywordsQueries(array(
                                         "$presentation_creator_table.creator",
-                                        "$file_table.caption"
+                                        "$file_table.caption",
                                     ), $keywords);
+
     return true;
 }
 
@@ -718,40 +743,40 @@ function xnppresentationGetDetailInformationQuickSearchQuery(&$wheres, &$join, $
 function xnppresentationGetAdvancedSearchQuery(&$where, &$join)
 {
     global $xoopsDB;
-    $formdata                   = xoonips_getUtility('formdata');
-    $basic_table                = $xoopsDB->prefix('xoonips_item_basic');
-    $presentation_table         = $xoopsDB->prefix('xnppresentation_item_detail');
+    $formdata = xoonips_getUtility('formdata');
+    $basic_table = $xoopsDB->prefix('xoonips_item_basic');
+    $presentation_table = $xoopsDB->prefix('xnppresentation_item_detail');
     $presentation_creator_table = $xoopsDB->prefix('xnppresentation_creator');
-    $file_table                 = $xoopsDB->prefix('xoonips_file');
-    $search_text_table          = $xoopsDB->prefix('xoonips_search_text');
+    $file_table = $xoopsDB->prefix('xoonips_file');
+    $search_text_table = $xoopsDB->prefix('xoonips_search_text');
 
     $wheres = array();
-    $joins  = array();
+    $joins = array();
 
     $xnppresentation_presentation_type = $formdata->getValue('post', 'xnppresentation_presentation_type', 's', false);
     $xnppresentation_presentation_file = $formdata->getValue('post', 'xnppresentation_presentation_file', 's', false);
-    $w                                 = xnpGetBasicInformationAdvancedSearchQuery('xnppresentation');
+    $w = xnpGetBasicInformationAdvancedSearchQuery('xnppresentation');
     if ($w) {
         $wheres[] = $w;
     }
     if (!empty($xnppresentation_presentation_type)) {
-        $myts     = MyTextSanitizer::getInstance();
-        $wheres[] = $presentation_table . '.presentation_type = \'' . addslashes($xnppresentation_presentation_type) . '\'';
+        $myts = MyTextSanitizer::getInstance();
+        $wheres[] = $presentation_table.'.presentation_type = \''.addslashes($xnppresentation_presentation_type).'\'';
     }
-    $w = xnpGetKeywordQuery($presentation_creator_table . '.creator', 'xnppresentation_creator');
+    $w = xnpGetKeywordQuery($presentation_creator_table.'.creator', 'xnppresentation_creator');
     if ($w) {
         $wheres[] = $w;
     }
-    $w = xnpGetKeywordQuery($file_table . '.caption', 'xnppresentation_caption');
+    $w = xnpGetKeywordQuery($file_table.'.caption', 'xnppresentation_caption');
     if ($w) {
         $wheres[] = $w;
         $wheres[] = " $file_table.file_type_id = 1";
     }
     if (!empty($xnppresentation_presentation_file)) {
         $search_text_table = $xoopsDB->prefix('xoonips_search_text');
-        $file_table        = $xoopsDB->prefix('xoonips_file');
-        $searchutil        = xoonips_getUtility('search');
-        $fulltext_query    = $xnppresentation_presentation_file;
+        $file_table = $xoopsDB->prefix('xoonips_file');
+        $searchutil = xoonips_getUtility('search');
+        $fulltext_query = $xnppresentation_presentation_file;
         $fulltext_encoding = mb_detect_encoding($fulltext_query);
         $fulltext_criteria = new CriteriaCompo($searchutil->getFulltextSearchCriteria('search_text', $fulltext_query, $fulltext_encoding,
                                                                                       $search_text_table));
@@ -760,18 +785,19 @@ function xnppresentationGetAdvancedSearchQuery(&$where, &$join)
     }
 
     $where = implode(' AND ', $wheres);
-    $join  = " INNER JOIN $presentation_creator_table ON " . $presentation_creator_table . '.presentation_id  = '
-             . $xoopsDB->prefix('xoonips_item_basic') . '.item_id ';
+    $join = " INNER JOIN $presentation_creator_table ON ".$presentation_creator_table.'.presentation_id  = '
+             .$xoopsDB->prefix('xoonips_item_basic').'.item_id ';
 }
 
 /**
  * @param $search_var
+ *
  * @return mixed|string|void
  */
 function xnppresentationGetAdvancedSearchBlock($search_var)
 {
     // retrieve blocks of BasicInformation / Preview / IndexKeywords
-    $basic        = xnpGetBasicInformationAdvancedSearchBlock('xnppresentation', $search_var);
+    $basic = xnpGetBasicInformationAdvancedSearchBlock('xnppresentation', $search_var);
     $search_var[] = 'xnppresentation_presentation_type';
     $search_var[] = 'xnppresentation_creator';
     $search_var[] = 'xnppresentation_presentation_file';
@@ -793,6 +819,7 @@ function xnppresentationGetAdvancedSearchBlock($search_var)
 
 /**
  * @param $iids
+ *
  * @return float|sum
  */
 function xnppresentationGetDetailInformationTotalSize($iids)
@@ -802,6 +829,7 @@ function xnppresentationGetDetailInformationTotalSize($iids)
 
 /**
  * @param $item_id
+ *
  * @return bool|null
  */
 function xnppresentationGetLicenseRequired($item_id)
@@ -809,16 +837,18 @@ function xnppresentationGetLicenseRequired($item_id)
     global $xoopsDB;
 
     // retrieve detail information
-    $result = $xoopsDB->query('select * from ' . $xoopsDB->prefix('xnppresentation_item_detail') . " where presentation_id=$item_id");
+    $result = $xoopsDB->query('select * from '.$xoopsDB->prefix('xnppresentation_item_detail')." where presentation_id=$item_id");
     if (!$result) {
         return null;
     }
     $detail = $xoopsDB->fetchArray($result);
+
     return isset($detail['rights']) && $detail['rights'] != '';
 }
 
 /**
  * @param $item_id
+ *
  * @return array|null
  */
 function xnppresentationGetLicenseStatement($item_id)
@@ -826,32 +856,35 @@ function xnppresentationGetLicenseStatement($item_id)
     global $xoopsDB;
 
     // retrieve detail information
-    $result = $xoopsDB->query('select * from ' . $xoopsDB->prefix('xnppresentation_item_detail') . " where presentation_id=$item_id");
+    $result = $xoopsDB->query('select * from '.$xoopsDB->prefix('xnppresentation_item_detail')." where presentation_id=$item_id");
     if (!$result) {
         return null;
     }
     $detail = $xoopsDB->fetchArray($result);
+
     return array(
         isset($detail['rights']) ? $detail['rights'] : '',
-        $detail['use_cc']
+        $detail['use_cc'],
     );
 }
 
 /**
- *
  * create XML for exporting detail information
- * see xnpExportItem for detail
+ * see xnpExportItem for detail.
+ *
  * @see      xnpExportItem
  *
  * @param folder $export_path
  * @param file   $fhdl
  * @param item   $item_id
  * @param true   $attachment
+ *
  * @return true : success
- * @internal param folder $export_path that export file is written to.
- * @internal param file $fhdl handle that items are exported to.
+ *
+ * @internal param folder $export_path that export file is written to
+ * @internal param file $fhdl handle that items are exported to
  * @internal param item $item_id id that is exported
- * @internal param true $attachment if attachment files are exported, else false.
+ * @internal param true $attachment if attachment files are exported, else false
  */
 function xnppresentationExportItem($export_path, $fhdl, $item_id, $attachment)
 {
@@ -861,23 +894,23 @@ function xnppresentationExportItem($export_path, $fhdl, $item_id, $attachment)
     }
 
     $handler = xoonips_getOrmHandler('xnppresentation', 'item_detail');
-    $detail  = $handler->get($item_id);
+    $detail = $handler->get($item_id);
     if (!$detail) {
         return false;
     }
 
     $creators = '';
     foreach ($detail->getCreators() as $creator) {
-        $creators .= '<creator>' . $creator->getVar('creator', 's') . '</creator>';
+        $creators .= '<creator>'.$creator->getVar('creator', 's').'</creator>';
     }
 
-    if (!fwrite($fhdl, "<detail id=\"${item_id}\" version=\"1.03\">\n" . '<presentation_type>' . $detail->getVar('presentation_type', 's')
-                       . "</presentation_type>\n" . "<creators>{$creators}</creators>\n" . '<readme>' . $detail->getVar('readme', 's') . "</readme>\n"
-                       . '<rights>' . $detail->getVar('rights', 's') . "</rights>\n" . '<use_cc>' . (int)$detail->get('use_cc', 's') . "</use_cc>\n"
-                       . '<cc_commercial_use>' . (int)$detail->get('cc_commercial_use') . "</cc_commercial_use>\n" . '<cc_modification>'
-                       . (int)$detail->get('cc_modification') . "</cc_modification>\n" . '<attachment_dl_limit>'
-                       . (int)$detail->get('attachment_dl_limit') . "</attachment_dl_limit>\n" . '<attachment_dl_notify>'
-                       . (int)$detail->get('attachment_dl_notify') . "</attachment_dl_notify>\n")
+    if (!fwrite($fhdl, "<detail id=\"${item_id}\" version=\"1.03\">\n".'<presentation_type>'.$detail->getVar('presentation_type', 's')
+                       ."</presentation_type>\n"."<creators>{$creators}</creators>\n".'<readme>'.$detail->getVar('readme', 's')."</readme>\n"
+                       .'<rights>'.$detail->getVar('rights', 's')."</rights>\n".'<use_cc>'.(int) $detail->get('use_cc', 's')."</use_cc>\n"
+                       .'<cc_commercial_use>'.(int) $detail->get('cc_commercial_use')."</cc_commercial_use>\n".'<cc_modification>'
+                       .(int) $detail->get('cc_modification')."</cc_modification>\n".'<attachment_dl_limit>'
+                       .(int) $detail->get('attachment_dl_limit')."</attachment_dl_limit>\n".'<attachment_dl_notify>'
+                       .(int) $detail->get('attachment_dl_notify')."</attachment_dl_notify>\n")
     ) {
         return false;
     }
@@ -893,19 +926,20 @@ function xnppresentationExportItem($export_path, $fhdl, $item_id, $attachment)
 
 /**
  * @param $item_id
+ *
  * @return array
  */
 function xnppresentationGetModifiedFields($item_id)
 {
     $formdata = xoonips_getUtility('formdata');
-    $ret      = array();
-    $basic    = xnpGetBasicInformationArray($item_id);
+    $ret = array();
+    $basic = xnpGetBasicInformationArray($item_id);
     if ($basic) {
         $publicationDateMonth = $formdata->getValue('post', 'publicationDateMonth', 'i', true);
-        $publicationDateDay   = $formdata->getValue('post', 'publicationDateDay', 'i', true);
-        $publicationDateYear  = $formdata->getValue('post', 'publicationDateYear', 'i', true);
-        if ((int)$basic['publication_month'] != (int)$publicationDateMonth || (int)$basic['publication_mday'] != (int)$publicationDateDay
-            || (int)$basic['publication_year'] != (int)$publicationDateYear
+        $publicationDateDay = $formdata->getValue('post', 'publicationDateDay', 'i', true);
+        $publicationDateYear = $formdata->getValue('post', 'publicationDateYear', 'i', true);
+        if ((int) $basic['publication_month'] != (int) $publicationDateMonth || (int) $basic['publication_mday'] != (int) $publicationDateDay
+            || (int) $basic['publication_year'] != (int) $publicationDateYear
         ) {
             array_push($ret, _MD_XNPPRESENTATION_DATE_LABEL);
         }
@@ -933,7 +967,7 @@ function xnppresentationGetModifiedFields($item_id)
         }
 
         // is rights modified ?
-        $rightsUseCC   = $formdata->getValue('post', 'rightsUseCC', 'i', true);
+        $rightsUseCC = $formdata->getValue('post', 'rightsUseCC', 'i', true);
         $rightsEncText = $formdata->getValue('post', 'rightsEncText', 's', true);
         if ($rightsUseCC !== null) {
             if ($rightsUseCC == 0) {
@@ -943,7 +977,7 @@ function xnppresentationGetModifiedFields($item_id)
             } elseif ($rightsUseCC == 1) {
                 foreach (array(
                              'rightsCCCommercialUse' => 'cc_commercial_use',
-                             'rightsCCModification'  => 'cc_modification'
+                             'rightsCCModification' => 'cc_modification',
                          ) as $k => $v
                 ) {
                     $tmp = $formdata->getValue('post', $k, 'i', true);
@@ -963,20 +997,22 @@ function xnppresentationGetModifiedFields($item_id)
             array_push($ret, _MD_XNPPRESENTATION_PRESENTATION_FILE_LABEL);
         }
 
-        $creatorHandler   = xoonips_getOrmHandler('xnppresentation', 'creator');
-        $creator_objs     = $formdata->getObjectArray('post', $creatorHandler->getTableName(), $creatorHandler, false);
-        $detailHandler    = xoonips_getOrmHandler('xnppresentation', 'item_detail');
-        $detail_orm       = $detailHandler->get($item_id);
+        $creatorHandler = xoonips_getOrmHandler('xnppresentation', 'creator');
+        $creator_objs = $formdata->getObjectArray('post', $creatorHandler->getTableName(), $creatorHandler, false);
+        $detailHandler = xoonips_getOrmHandler('xnppresentation', 'item_detail');
+        $detail_orm = $detailHandler->get($item_id);
         $creator_old_objs = $detail_orm->getCreators();
         if (!xoonips_is_same_objects($creator_old_objs, $creator_objs)) {
             array_push($ret, _MD_XNPPRESENTATION_CREATOR_LABEL);
         }
     }
+
     return $ret;
 }
 
 /**
  * @param $itemtype
+ *
  * @return mixed|string|void
  */
 function xnppresentationGetTopBlock($itemtype)
@@ -989,17 +1025,20 @@ function xnppresentationGetTopBlock($itemtype)
 // return 0 if downloadable for everyone
 /**
  * @param $item_id
+ *
  * @return int
  */
 function xnppresentationGetAttachmentDownloadLimitOption($item_id)
 {
     global $xoopsDB;
-    $sql    = 'select attachment_dl_limit from ' . $xoopsDB->prefix('xnppresentation_item_detail') . " where presentation_id=${item_id}";
+    $sql = 'select attachment_dl_limit from '.$xoopsDB->prefix('xnppresentation_item_detail')." where presentation_id=${item_id}";
     $result = $xoopsDB->query($sql);
     if ($result) {
         list($option) = $xoopsDB->fetchRow($result);
+
         return $option;
     }
+
     return 0;
 }
 
@@ -1007,23 +1046,27 @@ function xnppresentationGetAttachmentDownloadLimitOption($item_id)
 // return 0 if downloading is not notified
 /**
  * @param $item_id
+ *
  * @return int
  */
 function xnppresentationGetAttachmentDownloadNotifyOption($item_id)
 {
     global $xoopsDB;
-    $sql    = 'select attachment_dl_notify from ' . $xoopsDB->prefix('xnppresentation_item_detail') . " where presentation_id=${item_id}";
+    $sql = 'select attachment_dl_notify from '.$xoopsDB->prefix('xnppresentation_item_detail')." where presentation_id=${item_id}";
     $result = $xoopsDB->query($sql);
     if ($result) {
         list($notify) = $xoopsDB->fetchRow($result);
+
         return $notify;
     }
+
     return 0;
 }
 
 /**
  * @param $metadataPrefix
  * @param $item_id
+ *
  * @return bool
  */
 function xnppresentationSupportMetadataFormat($metadataPrefix, $item_id)
@@ -1031,12 +1074,14 @@ function xnppresentationSupportMetadataFormat($metadataPrefix, $item_id)
     if ($metadataPrefix === 'oai_dc' || $metadataPrefix === 'junii2') {
         return true;
     }
+
     return false;
 }
 
 /**
  * @param $prefix
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnppresentationGetMetadata($prefix, $item_id)
@@ -1045,30 +1090,30 @@ function xnppresentationGetMetadata($prefix, $item_id)
     $mydirname = basename($mydirpath);
     if (!in_array($prefix, array(
         'oai_dc',
-        'junii2'
+        'junii2',
     ))
     ) {
         return false;
     }
     // detail information
-    $detailHandler  = xoonips_getOrmHandler($mydirname, 'item_detail');
+    $detailHandler = xoonips_getOrmHandler($mydirname, 'item_detail');
     $creatorHandler = xoonips_getOrmHandler($mydirname, 'creator');
-    $detail_obj     = $detailHandler->get($item_id);
+    $detail_obj = $detailHandler->get($item_id);
     if (empty($detail_obj)) {
         return false;
     }
-    $detail   = $detail_obj->getArray();
+    $detail = $detail_obj->getArray();
     $criteria = new Criteria('presentation_id', $item_id);
     $criteria->setSort('creator_order');
-    $creator_objs       = $creatorHandler->getObjects($criteria);
+    $creator_objs = $creatorHandler->getObjects($criteria);
     $detail['creators'] = array();
     foreach ($creator_objs as $creator_obj) {
         $detail['creators'][] = $creator_obj->get('creator');
     }
-    $types                               = xnppresentationGetTypes();
+    $types = xnppresentationGetTypes();
     $detail['presentation_type_display'] = $types[$detail['presentation_type']];
     // basic information
-    $basic                             = xnpGetBasicInformationArray($item_id);
+    $basic = xnpGetBasicInformationArray($item_id);
     $basic['publication_date_iso8601'] = xnpISO8601($basic['publication_year'], $basic['publication_month'], $basic['publication_mday']);
     // indexes
     $indexes = array();
@@ -1080,8 +1125,8 @@ function xnppresentationGetMetadata($prefix, $item_id)
         }
     }
     // files
-    $files       = array();
-    $mimetypes   = array();
+    $files = array();
+    $mimetypes = array();
     $fileHandler = xoonips_gethandler('xoonips', 'file');
     if ($detail['attachment_dl_limit'] == 0) {
         $files = $fileHandler->getFilesInfo($item_id, 'presentation_file');
@@ -1108,28 +1153,28 @@ function xnppresentationGetMetadata($prefix, $item_id)
     }
     // related to
     $related_toHandler = xoonips_getOrmHandler('xoonips', 'related_to');
-    $related_to_ids    = $related_toHandler->getChildItemIds($item_id);
-    $related_tos       = array();
+    $related_to_ids = $related_toHandler->getChildItemIds($item_id);
+    $related_tos = array();
     foreach ($related_to_ids as $related_to_id) {
         $related_tos[] = array(
-            'item_id'  => $related_to_id,
-            'item_url' => XOOPS_URL . '/modules/xoonips/detail.php?item_id=' . $related_to_id
+            'item_id' => $related_to_id,
+            'item_url' => XOOPS_URL.'/modules/xoonips/detail.php?item_id='.$related_to_id,
         );
     }
     // repository configs
-    $xconfigHandler          = xoonips_getOrmHandler('xoonips', 'config');
+    $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
     $myxoopsConfigMetaFooter = xoonips_get_xoops_configs(XOOPS_CONF_METAFOOTER);
-    $repository              = array(
+    $repository = array(
         'download_file_compression' => $xconfigHandler->getValue('download_file_compression'),
-        'nijc_code'                 => $xconfigHandler->getValue('repository_nijc_code'),
-        'publisher'                 => $xconfigHandler->getValue('repository_publisher'),
-        'institution'               => $xconfigHandler->getValue('repository_institution'),
-        'meta_author'               => $myxoopsConfigMetaFooter['meta_author']
+        'nijc_code' => $xconfigHandler->getValue('repository_nijc_code'),
+        'publisher' => $xconfigHandler->getValue('repository_publisher'),
+        'institution' => $xconfigHandler->getValue('repository_institution'),
+        'meta_author' => $myxoopsConfigMetaFooter['meta_author'],
     );
     // assign template
     global $xoopsTpl;
-    $tpl                = new XoopsTpl();
-    $tpl->plugins_dir[] = XOONIPS_PATH . '/class/smarty/plugins';
+    $tpl = new XoopsTpl();
+    $tpl->plugins_dir[] = XOONIPS_PATH.'/class/smarty/plugins';
     $tpl->assign($xoopsTpl->get_template_vars());
     $tpl->assign('basic', $basic);
     $tpl->assign('detail', $detail);
@@ -1139,6 +1184,7 @@ function xnppresentationGetMetadata($prefix, $item_id)
     $tpl->assign('previews', $previews);
     $tpl->assign('related_tos', $related_tos);
     $tpl->assign('repository', $repository);
-    $xml = $tpl->fetch('db:' . $mydirname . '_oaipmh_' . $prefix . '.xml');
+    $xml = $tpl->fetch('db:'.$mydirname.'_oaipmh_'.$prefix.'.xml');
+
     return $xml;
 }

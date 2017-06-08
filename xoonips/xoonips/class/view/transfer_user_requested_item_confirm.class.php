@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,21 +25,16 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/transfer.class.php';
-require_once __DIR__ . '/../base/gtickets.php';
+require_once __DIR__.'/transfer.class.php';
+require_once __DIR__.'/../base/gtickets.php';
 
 /**
- *
  * HTML view to make sure transfer items for a transferee user.
- *
- *
- *
- *
  */
 class XooNIpsViewTransferUserRequestedItemConfirm extends XooNIpsViewTransfer
 {
     /**
-     * create view
+     * create view.
      *
      * @param arrray $params associative array of view
      *                       - $params['item_ids_to_transfer']:
@@ -52,22 +48,19 @@ class XooNIpsViewTransferUserRequestedItemConfirm extends XooNIpsViewTransfer
      *                       - $params['index_options'][]['item_count']:
      *                       integer number of items in the index
      *                       - $params['limit_check_result']:
-     *                       boolean true if number of item or storage is out of bounds.
+     *                       boolean true if number of item or storage is out of bounds
      */
     public function __construct($params)
     {
         parent::__construct($params);
     }
 
-    /**
-     *
-     */
     public function render()
     {
         global $xoopsOption, $xoopsConfig, $xoopsUser, $xoopsConfig, $xoopsUserIsAdmin, $xoopsLogger, $xoopsTpl;
 
         $xoopsOption['template_main'] = 'xoonips_transfer_user_requested_item_confirm.tpl';
-        require XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH.'/header.php';
         $this->setXooNIpsStyleSheet($xoopsTpl);
 
         $xoopsTpl->assign('token_hidden', $GLOBALS['xoopsGTicket']->getTicketHtml(__LINE__, 600, 'xoonips_transfer_user_requested_item_confirm'));
@@ -75,7 +68,7 @@ class XooNIpsViewTransferUserRequestedItemConfirm extends XooNIpsViewTransfer
         foreach ($this->_params as $key => $val) {
             $xoopsTpl->assign($key, $val);
         }
-        require XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH.'/footer.php';
     }
 
     /**
@@ -91,27 +84,31 @@ class XooNIpsViewTransferUserRequestedItemConfirm extends XooNIpsViewTransfer
         foreach ($item_ids as $item_id) {
             $result[] = $this->get_item_template_vars($item_id);
         }
+
         return $result;
     }
 
     /**
-     * get array of item for template vars
-     * @param integer $item_id
+     * get array of item for template vars.
+     *
+     * @param int $item_id
+     *
      * @return array
      */
     public function get_item_template_vars($item_id)
     {
-        $textutil         = xoonips_getUtility('text');
-        $itemHandler      = xoonips_getOrmCompoHandler('xoonips', 'item');
+        $textutil = xoonips_getUtility('text');
+        $itemHandler = xoonips_getOrmCompoHandler('xoonips', 'item');
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $item             = $itemHandler->get($item_id);
-        $basic            = $item->getVar('basic');
+        $item = $itemHandler->get($item_id);
+        $basic = $item->getVar('basic');
         $itemtype = $item_typeHandler->get($basic->get('item_type_id'));
+
         return array(
-            'item_id'        => $item_id,
+            'item_id' => $item_id,
             'item_type_name' => $itemtype->getVar('display_name', 's'),
-            'owner_uname'    => $textutil->html_special_chars($this->get_uname_by_uid($basic->get('uid'))),
-            'title'          => $this->concatenate_titles($item->getVar('titles'))
+            'owner_uname' => $textutil->html_special_chars($this->get_uname_by_uid($basic->get('uid'))),
+            'title' => $this->concatenate_titles($item->getVar('titles')),
         );
     }
 }

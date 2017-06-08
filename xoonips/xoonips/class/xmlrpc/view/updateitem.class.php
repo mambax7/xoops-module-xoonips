@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,19 +25,14 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/view/xmlrpcview.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xmlrpc/view/xmlrpcview.class.php';
 
 /**
- *
  * @brief Class that generate response of XML-RPC updateItem request
- *
- *
  */
 class XooNIpsXmlRpcViewUpdateItem extends XooNIpsXmlRpcViewElement
 {
-
     /**
-     *
      * @brief return XoopsXmlRpcTag that has response of this request
      *
      * @return XoopsXmlRpcTag

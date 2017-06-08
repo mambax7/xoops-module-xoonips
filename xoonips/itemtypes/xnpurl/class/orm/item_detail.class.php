@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -36,9 +37,9 @@ class XNPUrlOrmItemDetail extends XooNIpsTableObject
     // for column length check
     public $lengths
         = array(
-            'url_id'    => 10,
-            'url'       => 255,
-            'url_count' => 10
+            'url_id' => 10,
+            'url' => 255,
+            'url_count' => 10,
         );
 
     /**
@@ -55,13 +56,12 @@ class XNPUrlOrmItemDetail extends XooNIpsTableObject
 
 /**
  * @brief Handler class that create, insert, update, get and delete detail information
- *
- *
  */
 class XNPUrlOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XNPUrlOrmItemDetailHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

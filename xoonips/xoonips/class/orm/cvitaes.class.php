@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,7 +28,6 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief data object of cvitaes
- *
  */
 class XooNIpsOrmCvitaes extends XooNIpsTableObject
 {
@@ -49,13 +49,12 @@ class XooNIpsOrmCvitaes extends XooNIpsTableObject
 
 /**
  * @brief handler class of cvitaes
- *
- *
  */
 class XooNIpsOrmCvitaesHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmCvitaesHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -65,20 +64,20 @@ class XooNIpsOrmCvitaesHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * insert/update/replace object
+     * insert/update/replace object.
      *
-     * @access public
      * @param XoopsObject $obj
      * @param bool        $force force operation
+     *
      * @return bool FALSE if failed
      */
     public function insert(XoopsObject $obj, $force = false)
     {
         if ($obj->isNew() && !$obj->doReplace()) {
             // set cvitae_order
-            $uid      = $obj->get('uid');
+            $uid = $obj->get('uid');
             $criteria = new Criteria('uid', $uid);
-            $tmp      =&  $this->getObjects($criteria, false, 'MAX(`cvitae_order`) AS `max`');
+            $tmp = &$this->getObjects($criteria, false, 'MAX(`cvitae_order`) AS `max`');
             if (is_object($tmp)) {
                 $max = $tmp->getExtraVar('max');
             } else {
@@ -86,14 +85,15 @@ class XooNIpsOrmCvitaesHandler extends XooNIpsTableObjectHandler
             }
             $obj->set('cvitae_order', $max + 1);
         }
+
         return parent::insert($obj, $force);
     }
 
     /**
-     * get curriculum vitae list
+     * get curriculum vitae list.
      *
-     * @access public
      * @param int $uid user id
+     *
      * @return array object instance array
      */
     public function &getCVs($uid)
@@ -101,6 +101,7 @@ class XooNIpsOrmCvitaesHandler extends XooNIpsTableObjectHandler
         $criteria = new Criteria('uid', $uid);
         $criteria->setSort('cvitae_order');
         $criteria->setOrder('ASC');
+
         return $this->getObjects($criteria);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2013 RIKEN, Japan All rights reserved.                //
@@ -24,29 +25,29 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require __DIR__ . '/../../../include/cp_header.php';
+require __DIR__.'/../../../include/cp_header.php';
 
 $title = _AM_XNPPRESENTATION_TITLE;
 
 $mid = $xoopsModule->getVar('mid');
 if (defined('XOOPS_CUBE_LEGACY')) {
     // for XOOPS Cube 2.1 Legacy
-    $pref_url = XOOPS_URL . '/modules/legacy/admin/index.php?action=PreferenceEdit&confmod_id=' . $mid;
+    $pref_url = XOOPS_URL.'/modules/legacy/admin/index.php?action=PreferenceEdit&confmod_id='.$mid;
 } else {
     // for XOOPS 2.0
-    $pref_url = XOOPS_URL . '/modules/system/admin.php?fct=preferences&op=showmod&mod=' . $mid;
+    $pref_url = XOOPS_URL.'/modules/system/admin.php?fct=preferences&op=showmod&mod='.$mid;
 }
 $pref_title = _PREFERENCES;
-$pref_url   = htmlspecialchars($pref_url, ENT_QUOTES);
+$pref_url = htmlspecialchars($pref_url, ENT_QUOTES);
 
 xoops_cp_header();
 
-echo '<h3>' . $title . '</h3>';
+echo '<h3>'.$title.'</h3>';
 echo '<table width="100%" border="0" cellspacing="1" class="outer">';
 echo '<tr class="odd"><td>';
 echo '<ul style="margin: 5px;">';
 echo '<li style="padding: 5px;">';
-echo '<a href="' . $pref_url . '">' . $pref_title . '</a>' . "\n";
+echo '<a href="'.$pref_url.'">'.$pref_title.'</a>'."\n";
 echo '</li>';
 echo '</ul>';
 echo '</td></tr>';

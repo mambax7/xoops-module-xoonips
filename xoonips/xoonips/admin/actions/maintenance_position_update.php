@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,7 +27,7 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // check token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
+require_once __DIR__.'/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_maintenance_position';
 if (!$xoopsGTicket->check(true, $ticket_area, false)) {
     redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
@@ -46,7 +47,7 @@ $post_vals = xoonips_admin_get_requests('post', $post_keys);
 $xusersHandler = xoonips_getOrmHandler('xoonips', 'users');
 foreach ($post_vals['order'] as $uid => $order) {
     $xusers_obj = $xusersHandler->get($uid);
-    $old_order  = (int)$xusers_obj->getVar('user_order', 'n');
+    $old_order = (int) $xusers_obj->getVar('user_order', 'n');
     if ($order != $old_order) {
         $xusers_obj->set('user_order', $order);
         $xusersHandler->insert($xusers_obj);

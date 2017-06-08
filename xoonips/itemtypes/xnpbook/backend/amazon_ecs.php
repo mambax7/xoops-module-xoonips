@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2013 RIKEN, Japan All rights reserved.                //
@@ -28,8 +29,8 @@ if (!defined('XOONIPS_PATH')) {
 }
 
 // class file
-require_once XOONIPS_PATH . '/class/base/JSON.php';
-require_once dirname(__DIR__) . '/class/amazon.class.php';
+require_once XOONIPS_PATH.'/class/base/JSON.php';
+require_once dirname(__DIR__).'/class/amazon.class.php';
 
 // change internal encoding to UTF-8
 if (extension_loaded('mbstring')) {
@@ -38,15 +39,15 @@ if (extension_loaded('mbstring')) {
     mb_http_output('pass');
 }
 
-$is_error      = false;
+$is_error = false;
 $error_message = '';
 if (!isset($_SERVER['HTTP_REFERER']) || preg_match('/\\/modules\\/xoonips\\//', $_SERVER['HTTP_REFERER']) == 0) {
-    $is_error      = true;
+    $is_error = true;
     $error_message = 'Turn REFERER on';
 }
 
 if (!$is_error && !isset($_GET['asin'])) {
-    $is_error      = true;
+    $is_error = true;
     $error_message = 'asin required';
 }
 
@@ -56,12 +57,13 @@ if (!$is_error) {
 
 /**
  * @param $url
+ *
  * @return string
  */
 function get_simplified_url($url)
 {
     $durl = urldecode($url);
-    $ret  = parse_url($durl);
+    $ret = parse_url($durl);
     if ($ret === false) {
         return $url;
     }
@@ -86,16 +88,18 @@ function get_simplified_url($url)
     if ($asin !== false) {
         return sprintf('%s://%s/dp/%s', $ret['scheme'], $host, $asin);
     }
+
     return $url;
 }
 
 /**
  * @param $asin
+ *
  * @return array
  */
 function get_amazon_data($asin)
 {
-    $ret    = array();
+    $ret = array();
     $amazon = new XooNIps_Amazon_ECS40();
     if (!$amazon->set_isbn($asin)) {
         return $ret;
@@ -123,7 +127,7 @@ function get_amazon_data($asin)
     // year
     $ret['year'] = '';
     // - PublicationDate is yyyy-mm-dd or yyyy-mm form
-    $pdate       = explode('-', $item['PublicationDate']);
+    $pdate = explode('-', $item['PublicationDate']);
     $pdate_count = count($pdate);
     if ($pdate_count == 2 || $pdate_count == 3) {
         $ret['year'] = sscanf($pdate[0], '%d');
@@ -142,12 +146,12 @@ if (!$is_error) {
         $data['error'] = 'failed to get amazon resources';
     }
 } else {
-    $data          = array();
+    $data = array();
     $data['error'] = $error_message;
 }
 
 // json
-$json   = new Services_JSON();
+$json = new Services_JSON();
 $encode = $json->encode($data);
 
 // output

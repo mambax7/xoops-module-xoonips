@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -40,7 +41,6 @@ ALTER TABLE `x_xoonips_item_keyword` ADD UNIQUE (`item_id` ,`keyword_id` );
  * @li    getVar('item_id') :
  * @li    getVar('keyword_id') :
  * @li    getVar('keyword') :
- *
  */
 class XooNIpsOrmKeyword extends XooNIpsTableObject
 {
@@ -58,13 +58,12 @@ class XooNIpsOrmKeyword extends XooNIpsTableObject
 
 /**
  * @brief handler object of keyword
- *
- *
  */
 class XooNIpsOrmKeywordHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmKeywordHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -74,10 +73,10 @@ class XooNIpsOrmKeywordHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * get keywords
+     * get keywords.
      *
-     * @access public
      * @param int $item_id
+     *
      * @return array object array
      */
     public function &getKeywords($item_id)
@@ -85,6 +84,7 @@ class XooNIpsOrmKeywordHandler extends XooNIpsTableObjectHandler
         $criteria = new Criteria('item_id', $item_id);
         $criteria->setSort('keyword_id');
         $criteria->setOrder('ASC');
+
         return $this->getObjects($criteria);
     }
 }

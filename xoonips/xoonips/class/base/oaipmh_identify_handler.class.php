@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 /**
- * Class IdentifyHandler
+ * Class IdentifyHandler.
  */
 class IdentifyHandler extends HarvesterHandler
 {
@@ -36,15 +37,16 @@ class IdentifyHandler extends HarvesterHandler
 
     /**
      * IdentifyHandler constructor.
+     *
      * @param $_parser
      */
     public function __construct($_parser)
     {
         parent::__construct($_parser);
         $this->_earliestDatestamp = null;
-        $this->_dateFormat        = null;
-        $this->_tagstack          = array();
-        $this->_repositoryName    = '';
+        $this->_dateFormat = null;
+        $this->_tagstack = array();
+        $this->_repositoryName = '';
     }
 
     /**
@@ -87,17 +89,11 @@ class IdentifyHandler extends HarvesterHandler
         }
     }
 
-    /**
-     * @return null
-     */
     public function getDateFormat()
     {
         return $this->_dateFormat;
     }
 
-    /**
-     * @return null
-     */
     public function getEarliestDatestamp()
     {
         return $this->_earliestDatestamp;

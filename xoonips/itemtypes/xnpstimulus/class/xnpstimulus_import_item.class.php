@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,22 +25,22 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once dirname(dirname(__DIR__)) . '/xoonips/class/xoonips_import_item.class.php';
+require_once dirname(dirname(__DIR__)).'/xoonips/class/xoonips_import_item.class.php';
 
 /**
- * Class XNPStimulusImportItem
+ * Class XNPStimulusImportItem.
  */
 class XNPStimulusImportItem extends XooNIpsImportItem
 {
     public $_has_stimulus_data = false;
-    public $_has_preview       = false;
+    public $_has_preview = false;
 
     /**
      * XNPStimulusImportItem constructor.
      */
     public function __construct()
     {
-        $handler     = xoonips_getOrmCompoHandler('xnpstimulus', 'item');
+        $handler = xoonips_getOrmCompoHandler('xnpstimulus', 'item');
         $this->_item = $handler->create();
     }
 
@@ -80,12 +81,13 @@ class XNPStimulusImportItem extends XooNIpsImportItem
     }
 
     /**
-     * get total file size(bytes) of this item
-     * @return integer file size in bytes.
+     * get total file size(bytes) of this item.
+     *
+     * @return int file size in bytes
      */
     public function getTotalFileSize()
     {
-        $size     = 0;
+        $size = 0;
         $mainfile = $this->getVar('stimulus_data');
         if (!$mainfile) {
             return 0;
@@ -94,6 +96,7 @@ class XNPStimulusImportItem extends XooNIpsImportItem
         foreach ($this->getVar('preview') as $preview) {
             $size += $preview->get('file_size');
         }
+
         return $size;
     }
 
@@ -102,62 +105,62 @@ class XNPStimulusImportItem extends XooNIpsImportItem
      */
     public function getClone()
     {
-        $clone                     = parent::getClone();
+        $clone = parent::getClone();
         $clone->_has_stimulus_data = $this->_has_stimulus_data;
-        $clone->_has_preview       = $this->_has_preview;
+        $clone->_has_preview = $this->_has_preview;
+
         return $clone;
     }
 }
 
 /**
- * Class XNPStimulusImportItemHandler
+ * Class XNPStimulusImportItemHandler.
  */
 class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
 {
-
     /**
-     * array of supported version of import file
+     * array of supported version of import file.
      */
     public $_import_file_version
         = array(
             '1.00',
             '1.01',
             '1.02',
-            '1.03'
+            '1.03',
         );
 
     /**
-     * version string of detail information
+     * version string of detail information.
      */
     public $_detail_version = null;
 
     /**
-     * attachment file object(XooNIpsFile)
+     * attachment file object(XooNIpsFile).
      */
     public $_stimulus_data = null;
 
     /**
-     * flag of attachment file parsed
+     * flag of attachment file parsed.
      */
     public $_stimulus_data_flag = false;
 
     /**
-     * attachment file object(XooNIpsFile)
+     * attachment file object(XooNIpsFile).
      */
     public $_preview = null;
 
     /**
-     * flag of attachment file parsed
+     * flag of attachment file parsed.
      */
     public $_preview_flag = false;
 
     /**
-     * attachment_dl_limit flag
+     * attachment_dl_limit flag.
      */
     public $_attachment_dl_limit_flag = false;
 
     /**
-     * attachment_dl__notify_limit flag
+     * attachment_dl__notify_limit flag.
      */
     public $_attachment_dl_notify_limit_flag = false;
 
@@ -178,10 +181,10 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
     }
 
     /**
-     *
      * @param $parser
      * @param $name
      * @param $attribs
+     *
      * @internal param $
      */
     public function xmlStartElementHandler($parser, $name, $attribs)
@@ -199,7 +202,7 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
                         $this->_detail_version = $attribs['VERSION'];
                     } else {
                         $this->_import_item->setErrors(E_XOONIPS_INVALID_VALUE,
-                                                       'unsupported version(' . $attribs['VERSION'] . ') ' . $this->_get_parser_error_at());
+                                                       'unsupported version('.$attribs['VERSION'].') '.$this->_get_parser_error_at());
                     }
                 } else {
                     $this->_detail_version = '1.00';
@@ -209,12 +212,12 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
                 $this->_file_type_attribute = $attribs['FILE_TYPE_NAME'];
 
                 $file_typeHandler = xoonips_getOrmHandler('xoonips', 'file_type');
-                $fileHandler      = xoonips_getOrmHandler('xoonips', 'file');
-                $criteria         = new Criteria('name', addslashes($attribs['FILE_TYPE_NAME']));
-                $file_type        = $file_typeHandler->getObjects($criteria);
+                $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
+                $criteria = new Criteria('name', addslashes($attribs['FILE_TYPE_NAME']));
+                $file_type = $file_typeHandler->getObjects($criteria);
                 if (count($file_type) == 0) {
                     $this->_import_item->setErrors(E_XOONIPS_ATTR_NOT_FOUND,
-                                                   'file_type_id is not found:' . $attribs['FILE_TYPE_NAME'] . $this->_get_parser_error_at());
+                                                   'file_type_id is not found:'.$attribs['FILE_TYPE_NAME'].$this->_get_parser_error_at());
                     break;
                 }
 
@@ -222,11 +225,11 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
                 if ($this->_file_type_attribute === 'stimulus_data') {
                     if ($this->_stimulus_data_flag) {
                         $this->_import_item->setErrors(E_XOONIPS_ATTACHMENT_HAS_REDUNDANT,
-                                                       "multiple $name attachments is not allowed" . $this->_get_parser_error_at());
+                                                       "multiple $name attachments is not allowed".$this->_get_parser_error_at());
                         break;
                     }
                     $this->_stimulus_data = $fileHandler->create();
-                    $this->_stimulus_data->setFilepath($this->_attachment_dir . '/' . $attribs['FILE_NAME']);
+                    $this->_stimulus_data->setFilepath($this->_attachment_dir.'/'.$attribs['FILE_NAME']);
                     $this->_stimulus_data->set('original_file_name',
                                                $unicode->decode_utf8($attribs['ORIGINAL_FILE_NAME'], xoonips_get_server_charset(), 'h'));
                     $this->_stimulus_data->set('mime_type', $attribs['MIME_TYPE']);
@@ -235,7 +238,7 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
                     $this->_stimulus_data->set('file_type_id', $file_type[0]->get('file_type_id'));
                 } elseif ($this->_file_type_attribute === 'preview') {
                     $this->_preview = $fileHandler->create();
-                    $this->_preview->setFilepath($this->_attachment_dir . '/' . $attribs['FILE_NAME']);
+                    $this->_preview->setFilepath($this->_attachment_dir.'/'.$attribs['FILE_NAME']);
                     $this->_preview->set('original_file_name',
                                          $unicode->decode_utf8($attribs['ORIGINAL_FILE_NAME'], xoonips_get_server_charset(), 'h'));
                     $this->_preview->set('mime_type', $attribs['MIME_TYPE']);
@@ -244,7 +247,7 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
                     $this->_preview->set('file_type_id', $file_type[0]->get('file_type_id'));
                 } else {
                     $this->_import_item->setErrors(E_XOONIPS_ATTR_NOT_FOUND,
-                                                   'file_type_id is not found:' . $attribs['FILE_TYPE_NAME'] . $this->_get_parser_error_at());
+                                                   'file_type_id is not found:'.$attribs['FILE_TYPE_NAME'].$this->_get_parser_error_at());
                     break;
                 }
                 break;
@@ -255,15 +258,15 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
     }
 
     /**
-     *
      * @param $parser
      * @param $name
+     *
      * @internal param $
      */
     public function xmlEndElementHandler($parser, $name)
     {
         global $xoopsDB;
-        $detail  = $this->_import_item->getVar('detail');
+        $detail = $this->_import_item->getVar('detail');
         $unicode = xoonips_getUtility('unicode');
 
         switch (implode('/', $this->_tag_stack)) {
@@ -281,16 +284,16 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
                              'readme',
                              'use_cc',
                              'cc_commercial_use',
-                             'cc_modification'
+                             'cc_modification',
                          ) as $key
                 ) {
                     if (null === $detail->get($key, 'n')) {
-                        $this->_import_item->setErrors(E_XOONIPS_TAG_NOT_FOUND, " no $key" . $this->_get_parser_error_at());
+                        $this->_import_item->setErrors(E_XOONIPS_TAG_NOT_FOUND, " no $key".$this->_get_parser_error_at());
                     }
                 }
                 //error if no developers
                 if (count($this->_import_item->getVar('developer')) == 0) {
-                    $this->_import_item->setErrors(E_XOONIPS_TAG_NOT_FOUND, ' no developer' . $this->_get_parser_error_at());
+                    $this->_import_item->setErrors(E_XOONIPS_TAG_NOT_FOUND, ' no developer'.$this->_get_parser_error_at());
                 }
                 break;
             case 'ITEM/DETAIL/STIMULUS_TYPE':
@@ -308,7 +311,7 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
                 $developers = $this->_import_item->getVar('developer');
 
                 $developerHandler = xoonips_getOrmHandler('xnpstimulus', 'developer');
-                $developer        = $developerHandler->create();
+                $developer = $developerHandler->create();
 
                 $developer->set('developer', $unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h'));
                 $developer->set('developer_order', count($developers));
@@ -324,32 +327,32 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
                     break;
                 }
                 $developerHandler = xoonips_getOrmHandler('xnpstimulus', 'developer');
-                $developers       = $this->_import_item->getVar('developer');
-                $developer        = $developerHandler->create();
+                $developers = $this->_import_item->getVar('developer');
+                $developer = $developerHandler->create();
                 $developer->set('developer', trim($unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h')));
                 $developer->set('developer_order', 0);
                 $developers[0] = $developer;
                 break;
             case 'ITEM/DETAIL/ATTACHMENT_DL_LIMIT':
                 if ($this->_attachment_dl_limit_flag) {
-                    $this->_import_item->setErrors(E_XOONIPS_TAG_REDUNDANT, 'attachment_dl_limit is redundant' . $this->_get_parser_error_at());
+                    $this->_import_item->setErrors(E_XOONIPS_TAG_REDUNDANT, 'attachment_dl_limit is redundant'.$this->_get_parser_error_at());
                 } elseif (ctype_digit($this->_cdata)) {
-                    $detail->set('attachment_dl_limit', (int)$this->_cdata);
+                    $detail->set('attachment_dl_limit', (int) $this->_cdata);
                     $this->_attachment_dl_limit_flag = true;
                 } else {
                     $this->_import_item->setErrors(E_XOONIPS_INVALID_VALUE,
-                                                   'invalid value(' . $this->_cdata . ') of attachment_dl_limit' . $this->_get_parser_error_at());
+                                                   'invalid value('.$this->_cdata.') of attachment_dl_limit'.$this->_get_parser_error_at());
                 }
                 break;
             case 'ITEM/DETAIL/ATTACHMENT_DL_NOTIFY':
                 if ($this->_attachment_dl_notify_limit_flag) {
-                    $this->_import_item->setErrors(E_XOONIPS_TAG_REDUNDANT, 'attachment_dl_notify is redundant' . $this->_get_parser_error_at());
+                    $this->_import_item->setErrors(E_XOONIPS_TAG_REDUNDANT, 'attachment_dl_notify is redundant'.$this->_get_parser_error_at());
                 } elseif (ctype_digit($this->_cdata)) {
-                    $detail->set('attachment_dl_notify', (int)$this->_cdata);
+                    $detail->set('attachment_dl_notify', (int) $this->_cdata);
                     $this->_attachment_dl_notify_limit_flag = true;
                 } else {
                     $this->_import_item->setErrors(E_XOONIPS_INVALID_VALUE,
-                                                   'invalid value(' . $this->_cdata . ') of attachment_dl_notify' . $this->_get_parser_error_at());
+                                                   'invalid value('.$this->_cdata.') of attachment_dl_notify'.$this->_get_parser_error_at());
                 }
                 break;
             case 'ITEM/DETAIL/FILE':
@@ -358,8 +361,8 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
                     $this->_stimulus_data_flag = true;
                     if (!$fileHandler->insert($this->_stimulus_data)) {
                         $this->_import_item->setErrors(E_XOONIPS_DB_QUERY,
-                                                       "can't insert attachment file:" . $this->_stimulus_data->get('original_file_name')
-                                                       . $this->_get_parser_error_at());
+                                                       "can't insert attachment file:".$this->_stimulus_data->get('original_file_name')
+                                                       .$this->_get_parser_error_at());
                     }
                     $this->_stimulus_data = $fileHandler->get($this->_stimulus_data->get('file_id'));
                     $this->_import_item->setVar('stimulus_data', $this->_stimulus_data);
@@ -369,16 +372,16 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
                     $this->_preview_flag = true;
                     if (!$fileHandler->insert($this->_preview)) {
                         $this->_import_item->setErrors(E_XOONIPS_DB_QUERY,
-                                                       "can't insert attachment file:" . $this->_preview->get('original_file_name')
-                                                       . $this->_get_parser_error_at());
+                                                       "can't insert attachment file:".$this->_preview->get('original_file_name')
+                                                       .$this->_get_parser_error_at());
                     }
                     $this->_preview = $fileHandler->get($this->_preview->get('file_id'));
-                    $previews       = $this->_import_item->getVar('preview');
-                    $previews[]     = $this->_preview;
+                    $previews = $this->_import_item->getVar('preview');
+                    $previews[] = $this->_preview;
                     $this->_import_item->setHasPreview();
                     $this->_file_type_attribute = null;
                 } else {
-                    die('unknown file type:' . $this->_file_type_attribute);
+                    die('unknown file type:'.$this->_file_type_attribute);
                 }
                 break;
             case 'ITEM/DETAIL/FILE/CAPTION':
@@ -402,10 +405,9 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
     }
 
     /**
-     *
      * Update item_id and sess_id of xoonips_file.
      *
-     * @param $item         XooNIpsImportItem that is imported.
+     * @param $item         xooNIpsImportItem that is imported
      * @param $import_items array of all of XooNIpsImportItems
      */
     public function onImportFinished($item, $import_items)
@@ -436,11 +438,13 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
 
     /**
      * @param $item
+     *
      * @return bool
      */
     public function insert($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpstimulus', 'item');
+
         return $handler->insert($item);
     }
 
@@ -450,6 +454,7 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
     public function setNew($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpstimulus', 'item');
+
         return $handler->setNew($item);
     }
 
@@ -459,6 +464,7 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
     public function unsetNew($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpstimulus', 'item');
+
         return $handler->unsetNew($item);
     }
 
@@ -468,6 +474,7 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
     public function setDirty($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpstimulus', 'item');
+
         return $handler->setDirty($item);
     }
 
@@ -477,30 +484,33 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
     public function unsetDirty($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpstimulus', 'item');
+
         return $handler->unsetDirty($item);
     }
 
     /**
      * reeturn import log text of import item.
+     *
      * @param $import_item reference of XooNIpsImportItem object
+     *
      * @return string import log text
      */
     public function getImportLog($import_item)
     {
-        $text   = parent::getImportLog($import_item);
+        $text = parent::getImportLog($import_item);
         $detail = $import_item->getVar('detail');
 
-        $text .= "\ndetail.stimulus_type " . $detail->get('stimulus_type');
+        $text .= "\ndetail.stimulus_type ".$detail->get('stimulus_type');
         foreach ($import_item->getVar('developer') as $developer) {
-            $text .= "\ndetail.developer " . $developer->get('developer');
+            $text .= "\ndetail.developer ".$developer->get('developer');
         }
-        $text .= "\ndetail.rights " . mb_ereg_replace('\n', '\n', mb_ereg_replace('\\\\', '\\\\', $detail->get('rights', 'n')));
-        $text .= "\ndetail.readme " . mb_ereg_replace('\n', '\n', mb_ereg_replace('\\\\', '\\\\', $detail->get('readme', 'n')));
-        $text .= "\ndetail.use_cc " . $detail->get('use_cc');
-        $text .= "\ndetail.cc_commercial_use " . $detail->get('cc_commercial_use');
-        $text .= "\ndetail.cc_modification " . $detail->get('cc_modification');
-        $text .= "\ndetail.attachment_dl_limit " . $detail->get('attachment_dl_limit');
-        $text .= "\ndetail.attachment_dl_notify " . $detail->get('attachment_dl_notify');
+        $text .= "\ndetail.rights ".mb_ereg_replace('\n', '\n', mb_ereg_replace('\\\\', '\\\\', $detail->get('rights', 'n')));
+        $text .= "\ndetail.readme ".mb_ereg_replace('\n', '\n', mb_ereg_replace('\\\\', '\\\\', $detail->get('readme', 'n')));
+        $text .= "\ndetail.use_cc ".$detail->get('use_cc');
+        $text .= "\ndetail.cc_commercial_use ".$detail->get('cc_commercial_use');
+        $text .= "\ndetail.cc_modification ".$detail->get('cc_modification');
+        $text .= "\ndetail.attachment_dl_limit ".$detail->get('attachment_dl_limit');
+        $text .= "\ndetail.attachment_dl_notify ".$detail->get('attachment_dl_notify');
 
         return $text;
     }
@@ -519,7 +529,7 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
             $stimulus_data = $item->getVar('stimulus_data');
             if ($item->hasStimulusData()) {
                 $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
-                $clonefile   = $fileHandler->fileClone($stimulus_data);
+                $clonefile = $fileHandler->fileClone($stimulus_data);
                 $clonefile->setDirty();
                 $item->setVar('stimulus_data', $clonefile);
 
@@ -527,7 +537,7 @@ class XNPStimulusImportItemHandler extends XooNIpsImportItemHandler
             }
             if ($item->hasPreview()) {
                 $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
-                $previews    = array();
+                $previews = array();
                 foreach ($item->getVar('preview') as $preview) {
                     $clonefile = $fileHandler->fileClone($preview);
                     $clonefile->setDirty();

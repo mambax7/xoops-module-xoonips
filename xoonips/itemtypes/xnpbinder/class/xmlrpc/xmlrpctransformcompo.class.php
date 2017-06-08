@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,13 +27,10 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once dirname(dirname(__DIR__)) . '/include/view.php';
+require_once dirname(dirname(__DIR__)).'/include/view.php';
 
 /**
- *
- * XmlRpcTransform composer class for Binder type
- *
- *
+ * XmlRpcTransform composer class for Binder type.
  */
 class XNPBinderXmlRpcTransformCompo extends XooNIpsXmlRpcTransformCompo
 {
@@ -47,26 +45,27 @@ class XNPBinderXmlRpcTransformCompo extends XooNIpsXmlRpcTransformCompo
     /**
      * @brief  check that each field has valid value.
      *
-     * @param  [in] $in_array associative array of item
-     * @param  [out] $error XooNIpsError to add error
+     * @param [in]  $in_array associative array of item
+     * @param [out] $error    XooNIpsError to add error
      * @retval ture valid
      * @retval false some invalid fields
+     *
      * @return bool
      */
     public function checkFields($in_array, $error)
     {
         parent::checkFields($in_array, $fields);
-        $result = true;//set false if error
+        $result = true; //set false if error
 
         $basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $item_ids     = array();
+        $item_ids = array();
         foreach ($in_array['detail_field'] as $field) {
             if (trim($field['name']) !== 'item_id') {
                 continue;
             }
             $basic = $basicHandler->get($field['value']);
             if (!$basic) {
-                $error->add(XNPERR_INVALID_PARAM, 'item(' . $field['value'] . ') is not exists');
+                $error->add(XNPERR_INVALID_PARAM, 'item('.$field['value'].') is not exists');
                 $result = false;
                 continue;
             }
@@ -93,6 +92,7 @@ class XNPBinderXmlRpcTransformCompo extends XooNIpsXmlRpcTransformCompo
             $error->add(XNPERR_INVALID_PARAM, 'group binder cannot have private item ');
             $result = false;
         }
+
         return $result;
     }
 }

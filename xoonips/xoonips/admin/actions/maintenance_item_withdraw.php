@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,13 +27,13 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // index select
-$title        = _AM_XOONIPS_MAINTENANCE_ITEM_WITHDRAW_TITLE;
-$description  = _AM_XOONIPS_MAINTENANCE_ITEM_WITHDRAW_DESC;
-$ticket_area  = 'xoonips_admin_maintenance_item_withdraw';
-$index_mode   = 'public';
-$has_back     = false;
+$title = _AM_XOONIPS_MAINTENANCE_ITEM_WITHDRAW_TITLE;
+$description = _AM_XOONIPS_MAINTENANCE_ITEM_WITHDRAW_DESC;
+$ticket_area = 'xoonips_admin_maintenance_item_withdraw';
+$index_mode = 'public';
+$has_back = false;
 $confirm_desc = _AM_XOONIPS_MAINTENANCE_ITEM_WITHDRAW_CONFIRM;
-$confirm      = _AM_XOONIPS_MSG_EXECUTE_CONFIRM;
-$nextaction   = 'wupdate';
-$submit       = _AM_XOONIPS_MAINTENANCE_ITEM_WITHDRAW_LABEL_WITHDRAW;
-require __DIR__ . '/maintenance_item_idxselect.php';
+$confirm = _AM_XOONIPS_MSG_EXECUTE_CONFIRM;
+$nextaction = 'wupdate';
+$submit = _AM_XOONIPS_MAINTENANCE_ITEM_WITHDRAW_LABEL_WITHDRAW;
+require __DIR__.'/maintenance_item_idxselect.php';

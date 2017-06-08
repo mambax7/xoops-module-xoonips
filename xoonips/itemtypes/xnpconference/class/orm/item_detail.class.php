@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -36,19 +37,19 @@ class XNPConferenceOrmItemDetail extends XooNIpsTableObject
     // for column length check
     public $lengths
         = array(
-            'conference_id'         => 10,
-            'presentation_type'     => 30,
-            'conference_title'      => 255,
-            'place'                 => 255,
-            'abstract'              => 65535,
-            'conference_from_year'  => 10,
+            'conference_id' => 10,
+            'presentation_type' => 30,
+            'conference_title' => 255,
+            'place' => 255,
+            'abstract' => 65535,
+            'conference_from_year' => 10,
             'conference_from_month' => 10,
-            'conference_from_mday'  => 10,
-            'conference_to_year'    => 10,
-            'conference_to_month'   => 10,
-            'conference_to_mday'    => 10,
-            'attachment_dl_limit'   => 1,
-            'attachment_dl_notify'  => 1
+            'conference_from_mday' => 10,
+            'conference_to_year' => 10,
+            'conference_to_month' => 10,
+            'conference_to_mday' => 10,
+            'attachment_dl_limit' => 1,
+            'attachment_dl_notify' => 1,
         );
 
     /**
@@ -73,31 +74,32 @@ class XNPConferenceOrmItemDetail extends XooNIpsTableObject
     }
 
     /**
-     * get author objects of this item
+     * get author objects of this item.
+     *
      * @return XNPConferenceOrmAuthor[]
      */
     public function getAuthors()
     {
-        $handler  = xoonips_getOrmHandler('xnpconference', 'author');
+        $handler = xoonips_getOrmHandler('xnpconference', 'author');
         $criteria = new Criteria('conference_id', $this->get('conference_id'));
         $criteria->setSort('author_order');
         $result = $handler->getObjects($criteria);
         if ($result) {
             return $result;
         }
+
         return array();
     }
 }
 
 /**
  * @brief Handler class that create, insert, update, get and delete detail information
- *
- *
  */
 class XNPConferenceOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XNPConferenceOrmItemDetailHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

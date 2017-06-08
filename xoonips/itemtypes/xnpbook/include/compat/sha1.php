@@ -1,27 +1,32 @@
 <?php
 
 /**
- * Replace sha1()
+ * Replace sha1().
  *
  * @category    PHP
- * @package     PHP_Compat
+ *
  * @license     LGPL - http://www.gnu.org/licenses/lgpl.html
  * @copyright   2004-2007 Aidan Lister <aidan@php.net>, Arpad Ray <arpad@php.net>
- * @link        http://php.net/function.sha1
+ *
+ * @see        http://php.net/function.sha1
+ *
  * @author      revulo <revulon@gmail.com>
+ *
  * @since       PHP 4.3.0
  * @require     PHP 4.0.0
+ *
  * @param      $str
  * @param bool $raw_output
+ *
  * @return string
  */
 function php_compat_sha1($str, $raw_output = false)
 {
-    $h0 = (int)0x67452301;
-    $h1 = (int)0xefcdab89;
-    $h2 = (int)0x98badcfe;
-    $h3 = (int)0x10325476;
-    $h4 = (int)0xc3d2e1f0;
+    $h0 = (int) 0x67452301;
+    $h1 = (int) 0xefcdab89;
+    $h2 = (int) 0x98badcfe;
+    $h3 = (int) 0x10325476;
+    $h4 = (int) 0xc3d2e1f0;
 
     $len = strlen($str);
 
@@ -48,16 +53,16 @@ function php_compat_sha1($str, $raw_output = false)
         for ($j = 0; $j < 80; ++$j) {
             if ($j < 20) {
                 $f = ($b & $c) | (~$b & $d);
-                $k = (int)0x5a827999;
+                $k = (int) 0x5a827999;
             } elseif ($j < 40) {
                 $f = $b ^ $c ^ $d;
-                $k = (int)0x6ed9eba1;
+                $k = (int) 0x6ed9eba1;
             } elseif ($j < 60) {
                 $f = ($b & $c) | ($b & $d) | ($c & $d);
-                $k = (int)0x8f1bbcdc;
+                $k = (int) 0x8f1bbcdc;
             } else {
                 $f = $b ^ $c ^ $d;
-                $k = (int)0xca62c1d6;
+                $k = (int) 0xca62c1d6;
             }
 
             $t
@@ -80,11 +85,11 @@ function php_compat_sha1($str, $raw_output = false)
         $h4 = php_compat_sha1_add32_helper($h4, $e);
     }
 
-    $h0 &= (int)0xffffffff;
-    $h1 &= (int)0xffffffff;
-    $h2 &= (int)0xffffffff;
-    $h3 &= (int)0xffffffff;
-    $h4 &= (int)0xffffffff;
+    $h0 &= (int) 0xffffffff;
+    $h1 &= (int) 0xffffffff;
+    $h2 &= (int) 0xffffffff;
+    $h3 &= (int) 0xffffffff;
+    $h4 &= (int) 0xffffffff;
 
     $hash = sprintf('%08x%08x%08x%08x%08x', $h0, $h1, $h2, $h3, $h4);
 
@@ -98,18 +103,21 @@ function php_compat_sha1($str, $raw_output = false)
 /**
  * @param $x
  * @param $y
+ *
  * @return int
  */
 function php_compat_sha1_add32_helper($x, $y)
 {
     $lsw = ($x & 0xffff) + ($y & 0xffff);
     $msw = ($x >> 16) + ($y >> 16) + ($lsw >> 16);
+
     return ($msw << 16) | ($lsw & 0xffff);
 }
 
 /**
  * @param $x
  * @param $n
+ *
  * @return int
  */
 function php_compat_sha1_rotl_helper($x, $n)
@@ -122,6 +130,7 @@ if (!function_exists('sha1')) {
     /**
      * @param      $str
      * @param bool $raw_output
+     *
      * @return string
      */
     function sha1($str, $raw_output = false)

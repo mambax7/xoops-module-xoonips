@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,35 +25,35 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 /**
- * file search plugin class for PDF
+ * file search plugin class for PDF.
  */
 class XooNIpsFileSearchPluginPDF extends XooNIpsFileSearchPlugin
 {
-
     /**
-     * constractor
+     * constractor.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->is_xml  = false;
+        $this->is_xml = false;
         $this->is_utf8 = true;
     }
 
     /**
-     * open file resource
+     * open file resource.
      *
      * @acccess protected
+     *
      * @param string $filename file name
      */
     public function _open_file($filename)
     {
-        $cmd          = sprintf('pdftotext -q -enc UTF-8 %s -', escapeshellarg($filename));
+        $cmd = sprintf('pdftotext -q -enc UTF-8 %s -', escapeshellarg($filename));
         $this->handle = @popen($cmd, 'rb');
     }
 
     /**
-     * close file resource
+     * close file resource.
      *
      * @acccess protected
      */

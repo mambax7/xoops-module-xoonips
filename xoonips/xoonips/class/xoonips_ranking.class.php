@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,32 +26,29 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/base/transaction.class.php';
+require_once __DIR__.'/base/transaction.class.php';
 
 /**
- * Class XooNIpsRankingHandler
+ * Class XooNIpsRankingHandler.
  */
 class XooNIpsRankingHandler
 {
-
     /**
-     * ranking orm object handlers
-     * @access protected
+     * ranking orm object handlers.
+     *
      * @var array
      */
     public $handlers = array();
 
     /**
-     * ranking table base names
-     * @access protected
+     * ranking table base names.
+     *
      * @var array
      */
     public $basenames;
 
     /**
-     * constractor
-     *
-     * @access public
+     * constractor.
      */
     public function __construct()
     {
@@ -75,19 +73,18 @@ class XooNIpsRankingHandler
         );
         // load object handlers
         foreach ($this->basenames as $basename) {
-            $name                  = $basename;
-            $this->handlers[$name] = xoonips_getOrmHandler('xoonips', 'ranking_' . $name);
-            $name                  = 'sum_' . $basename;
-            $this->handlers[$name] = xoonips_getOrmHandler('xoonips', 'ranking_' . $name);
+            $name = $basename;
+            $this->handlers[$name] = xoonips_getOrmHandler('xoonips', 'ranking_'.$name);
+            $name = 'sum_'.$basename;
+            $this->handlers[$name] = xoonips_getOrmHandler('xoonips', 'ranking_'.$name);
         }
         $this->handlers['event_log'] = xoonips_getOrmHandler('xoonips', 'event_log');
-        $this->handlers['config']    = xoonips_getOrmHandler('xoonips', 'config');
+        $this->handlers['config'] = xoonips_getOrmHandler('xoonips', 'config');
     }
 
     /**
-     * update rankings
+     * update rankings.
      *
-     * @access public
      * @return bool false if failure
      */
     public function update()
@@ -101,28 +98,30 @@ class XooNIpsRankingHandler
         $ret = $this->_recalc(true);
         // unlock ranking data
         $this->_unlock($h);
+
         return $ret;
     }
 
     /**
-     * get item viewed count
+     * get item viewed count.
      *
-     * @access public
      * @param int $item_id item id
+     *
      * @return int viewed count
      */
     public function get_count_viewed_item($item_id)
     {
         $obj = $this->handlers['viewed_item']->get($item_id);
         $res = is_object($obj) ? $obj->getVar('count', 'n') : 0;
+
         return $res;
     }
 
     /**
-     * recalc rankings
+     * recalc rankings.
      *
-     * @access protected
      * @param bool $is_update flag for update mode
+     *
      * @return bool false if failure
      */
     public function _recalc($is_update)
@@ -185,7 +184,7 @@ class XooNIpsRankingHandler
                     // copy data of ranking_sum_* table into ranking_* table.
                     foreach ($this->basenames as $basename) {
                         if (!$this->handlers[$basename]->copy_from_sum_table()) {
-                            die('fatal error in ' . __FILE__ . ' at ' . __LINE__);
+                            die('fatal error in '.__FILE__.' at '.__LINE__);
                         }
                     }
                 }
@@ -193,16 +192,17 @@ class XooNIpsRankingHandler
         }
         $this->_recalc_sql($add_days_criteria, $sub_days_criteria, false);
         $this->_set_config('last_update', $now);
+
         return true;
     }
 
     /**
-     * recalc rankings of sql body part
+     * recalc rankings of sql body part.
      *
-     * @access protected
      * @param object $add_days_criteria
      * @param object $sub_days_criteria
-     * @param bool   $update_sum flag for update sum tables
+     * @param bool   $update_sum        flag for update sum tables
+     *
      * @return bool false if failure
      */
     public function _recalc_sql($add_days_criteria, $sub_days_criteria, $update_sum)
@@ -214,11 +214,11 @@ class XooNIpsRankingHandler
             'num_rows',
             'new_num_rows',
         );
-        $config       = array();
+        $config = array();
         foreach ($config_names as $name) {
             $config[$name] = $this->_get_config($name);
         }
-        $config['visible']     = explode(',', $config['visible']);
+        $config['visible'] = explode(',', $config['visible']);
         $config['new_visible'] = explode(',', $config['new_visible']);
 
         // days criteria
@@ -262,13 +262,13 @@ class XooNIpsRankingHandler
         }
         $sum = $update_sum ? 'sum_' : '';
 
-        $log_table       = $xoopsDB->prefix('xoonips_event_log');
-        $new_group_table = $xoopsDB->prefix('xoonips_ranking_' . $sum . 'new_group');
-        $new_item_table  = $xoopsDB->prefix('xoonips_ranking_' . $sum . 'new_item');
+        $log_table = $xoopsDB->prefix('xoonips_event_log');
+        $new_group_table = $xoopsDB->prefix('xoonips_ranking_'.$sum.'new_group');
+        $new_item_table = $xoopsDB->prefix('xoonips_ranking_'.$sum.'new_item');
 
         if (count($etids)) {
-            $etids_str = '(' . implode(',', $etids) . ')';
-            $criteria  = new CriteriaCompo();
+            $etids_str = '('.implode(',', $etids).')';
+            $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('event_type_id', $etids_str, 'IN'));
             $criteria->add($days_criteria);
             $cnt = $this->handlers['event_log']->getCount($criteria);
@@ -276,20 +276,20 @@ class XooNIpsRankingHandler
                 // log changed. need recalc.
                 // ranking viewed item
                 if ($config['visible'][0] || $update_sum) {
-                    $etid     = ETID_VIEW_ITEM;
-                    $basename = $sum . 'viewed_item';
-                    $fields   = 'tb.item_id, SUM(' . $add_days_sql . ') - SUM(' . $sub_days_sql . ') AS count';
+                    $etid = ETID_VIEW_ITEM;
+                    $basename = $sum.'viewed_item';
+                    $fields = 'tb.item_id, SUM('.$add_days_sql.') - SUM('.$sub_days_sql.') AS count';
                     $criteria = new CriteriaCompo();
                     $criteria->add(new Criteria('event_type_id', $etid));
                     $criteria->add($days_criteria);
                     $criteria->setGroupBy('tb.item_id');
                     $join_criteria = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'tb');
-                    $res           =  $this->handlers['event_log']->open($criteria, $fields, false, $join_criteria);
+                    $res = $this->handlers['event_log']->open($criteria, $fields, false, $join_criteria);
                     while ($obj = $this->handlers['event_log']->getNext($res)) {
                         $item_id = $obj->getVar('item_id', 'n');
-                        $delta   = $obj->getExtraVar('count');
+                        $delta = $obj->getExtraVar('count');
                         if (!$this->handlers[$basename]->increment($item_id, $delta)) {
-                            die('fatal error in ' . __FILE__ . ' at ' . __LINE__);
+                            die('fatal error in '.__FILE__.' at '.__LINE__);
                         }
                     }
                     $this->handlers['event_log']->close($res);
@@ -297,20 +297,20 @@ class XooNIpsRankingHandler
 
                 // ranking downloaded item
                 if ($config['visible'][1] || $update_sum) {
-                    $etid     = ETID_DOWNLOAD_FILE;
-                    $basename = $sum . 'downloaded_item';
-                    $fields   = 'tb.item_id, SUM(' . $add_days_sql . ') - SUM(' . $sub_days_sql . ') AS count';
+                    $etid = ETID_DOWNLOAD_FILE;
+                    $basename = $sum.'downloaded_item';
+                    $fields = 'tb.item_id, SUM('.$add_days_sql.') - SUM('.$sub_days_sql.') AS count';
                     $criteria = new CriteriaCompo();
                     $criteria->add(new Criteria('event_type_id', $etid));
                     $criteria->add($days_criteria);
                     $criteria->setGroupBy('tb.item_id');
                     $join_criteria = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'tb');
-                    $res           =  $this->handlers['event_log']->open($criteria, $fields, false, $join_criteria);
+                    $res = $this->handlers['event_log']->open($criteria, $fields, false, $join_criteria);
                     while ($obj = $this->handlers['event_log']->getNext($res)) {
                         $item_id = $obj->getVar('item_id', 'n');
-                        $delta   = $obj->getExtraVar('count');
+                        $delta = $obj->getExtraVar('count');
                         if (!$this->handlers[$basename]->increment($item_id, $delta)) {
-                            die('fatal error in ' . __FILE__ . ' at ' . __LINE__);
+                            die('fatal error in '.__FILE__.' at '.__LINE__);
                         }
                     }
                     $this->handlers['event_log']->close($res);
@@ -318,41 +318,41 @@ class XooNIpsRankingHandler
 
                 // ranking contributing user
                 if ($config['visible'][2] || $update_sum) {
-                    $etid     = ETID_CERTIFY_ITEM;
-                    $basename = $sum . 'contributing_user';
-                    $fields   = 'tb.item_id, tb.uid, timestamp';
+                    $etid = ETID_CERTIFY_ITEM;
+                    $basename = $sum.'contributing_user';
+                    $fields = 'tb.item_id, tb.uid, timestamp';
                     $criteria = new CriteriaCompo();
                     $criteria->add(new Criteria('event_type_id', $etid));
                     $criteria->add($add_days_criteria);
                     $join_criteria = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'tb');
-                    $res           =  $this->handlers['event_log']->open($criteria, $fields, false, $join_criteria);
+                    $res = $this->handlers['event_log']->open($criteria, $fields, false, $join_criteria);
                     while ($obj = $this->handlers['event_log']->getNext($res)) {
-                        $item_id   = $obj->getVar('item_id', 'n');
-                        $uid       = $obj->getVar('uid', 'n');
+                        $item_id = $obj->getVar('item_id', 'n');
+                        $uid = $obj->getVar('uid', 'n');
                         $timestamp = $obj->getVar('timestamp', 'n');
                         if (!$this->handlers[$basename]->replace($item_id, $uid, $timestamp)) {
-                            die('fatal error in ' . __FILE__ . ' at ' . __LINE__);
+                            die('fatal error in '.__FILE__.' at '.__LINE__);
                         }
                     }
                     $this->handlers['event_log']->close($res);
                     // TODO: slow if $contributing_user_table.timestamp is not indexed.
                     //       use event_log.timestamp instead?
-                    $table = $xoopsDB->prefix('xoonips_ranking_' . $basename);
-                    $xoopsDB->queryF('DELETE FROM ' . $table . ' WHERE ' . str_replace('timestamp', 'UNIX_TIMESTAMP(timestamp)', $sub_days_sql));
+                    $table = $xoopsDB->prefix('xoonips_ranking_'.$basename);
+                    $xoopsDB->queryF('DELETE FROM '.$table.' WHERE '.str_replace('timestamp', 'UNIX_TIMESTAMP(timestamp)', $sub_days_sql));
                 }
 
                 // ranking searched keyword
                 if ($config['visible'][3] || $update_sum) {
-                    $etid     = '(' . ETID_QUICK_SEARCH . ',' . ETID_ADVANCED_SEARCH . ')';
-                    $basename = $sum . 'searched_keyword';
-                    $fields   = 'search_keyword, IF(' . $add_days_sql . ',1,-1) AS count';
+                    $etid = '('.ETID_QUICK_SEARCH.','.ETID_ADVANCED_SEARCH.')';
+                    $basename = $sum.'searched_keyword';
+                    $fields = 'search_keyword, IF('.$add_days_sql.',1,-1) AS count';
                     $criteria = new CriteriaCompo();
                     $criteria->add(new Criteria('event_type_id', $etid, 'IN'));
                     $criteria->add($days_criteria);
-                    $res =  $this->handlers['event_log']->open($criteria, $fields);
+                    $res = $this->handlers['event_log']->open($criteria, $fields);
                     while ($obj = $this->handlers['event_log']->getNext($res)) {
                         $keyword = $obj->getVar('search_keyword', 'n');
-                        $delta   = $obj->getExtraVar('count');
+                        $delta = $obj->getExtraVar('count');
                         // extract keywords from log
                         $matches = array();
                         if (0 == preg_match('/(?:^|&)keyword=([^&]*)(?:&|$)/', $keyword, $matches)) {
@@ -361,7 +361,7 @@ class XooNIpsRankingHandler
                         $keyword = urldecode($matches[1]);
                         preg_match_all('/([^ "()]+)|(\\()|(\\))|"([^"]+)"/', $keyword, $match, PREG_SET_ORDER);
                         $len = count($match);
-                        for ($i = 0; $i < $len; $i++) {
+                        for ($i = 0; $i < $len; ++$i) {
                             if (isset($match[$i][1])) {
                                 $keyword = $match[$i][1];
                             } elseif (isset($match[$i][4])) {
@@ -375,7 +375,7 @@ class XooNIpsRankingHandler
                             }
                             if (strlen($keyword) > 2) {
                                 if (!$this->handlers[$basename]->increment($keyword, $delta)) {
-                                    die('fatal error in ' . __FILE__ . ' at ' . __LINE__);
+                                    die('fatal error in '.__FILE__.' at '.__LINE__);
                                 }
                             }
                         }
@@ -385,24 +385,24 @@ class XooNIpsRankingHandler
 
                 // ranking active group
                 if ($config['visible'][4] || $update_sum) {
-                    $etid     = ETID_REQUEST_CERTIFY_ITEM;
-                    $basename = $sum . 'active_group';
-                    $fields   = 'tx.gid, IF(' . $add_days_sql . ',1,-1) AS dir, COUNT( DISTINCT timestamp, item_id, tx.gid ) AS count';
+                    $etid = ETID_REQUEST_CERTIFY_ITEM;
+                    $basename = $sum.'active_group';
+                    $fields = 'tx.gid, IF('.$add_days_sql.',1,-1) AS dir, COUNT( DISTINCT timestamp, item_id, tx.gid ) AS count';
                     $criteria = new CriteriaCompo();
                     $criteria->add(new Criteria('event_type_id', $etid));
                     $criteria->add($days_criteria);
                     $criteria->add(new Criteria('ISNULL(tx.gid)', '0', '='));
                     $criteria->setGroupBy('timestamp, item_id, tx.gid');
                     $join_criteria = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'tx');
-                    $res           =  $this->handlers['event_log']->open($criteria, $fields, false, $join_criteria);
-                    while ($obj =  $this->handlers['event_log']->getNext($res)) {
-                        $gid   = $obj->getVar('gid', 'n');
-                        $dir   = $obj->getExtraVar('dir');
+                    $res = $this->handlers['event_log']->open($criteria, $fields, false, $join_criteria);
+                    while ($obj = $this->handlers['event_log']->getNext($res)) {
+                        $gid = $obj->getVar('gid', 'n');
+                        $dir = $obj->getExtraVar('dir');
                         $delta = $obj->getExtraVar('count');
                         $delta *= $dir;
                         if (!$this->handlers[$basename]->increment($gid, $delta)) {
                             echo $this->handlers[$basename]->getLastSQL();
-                            die('fatal error in ' . __FILE__ . ' at ' . __LINE__);
+                            die('fatal error in '.__FILE__.' at '.__LINE__);
                         }
                     }
                     $this->handlers['event_log']->close($res);
@@ -411,8 +411,8 @@ class XooNIpsRankingHandler
         }
 
         if (count($new_etids)) {
-            $new_etids_str = '(' . implode(',', $new_etids) . ')';
-            $criteria      = new CriteriaCompo();
+            $new_etids_str = '('.implode(',', $new_etids).')';
+            $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('event_type_id', $new_etids_str, 'IN'));
             $criteria->add($days_criteria);
             $cnt = $this->handlers['event_log']->getCount($criteria);
@@ -422,18 +422,18 @@ class XooNIpsRankingHandler
                 if ($config['new_visible'][0] || $update_sum) {
                     // TODO: support 'REPLACE INTO ... (...) SELECT ...' query by object
                     //       handler
-                    $sql    = 'REPLACE INTO ' . $new_item_table . ' ( item_id, timestamp ) SELECT t.item_id, FROM_UNIXTIME(timestamp) FROM '
-                              . $log_table . ' AS t INNER JOIN ' . $xoopsDB->prefix('xoonips_index_item_link')
-                              . ' AS txil ON t.item_id=txil.item_id INNER JOIN ' . $xoopsDB->prefix('xoonips_index')
-                              . ' AS tx ON txil.index_id=tx.index_id WHERE tx.open_level=' . OL_PUBLIC . ' AND event_type_id=' . ETID_CERTIFY_ITEM
-                              . ' AND ( ' . $add_days_sql . ' ) GROUP BY t.item_id ORDER BY timestamp DESC LIMIT ' . $config['new_num_rows'];
+                    $sql = 'REPLACE INTO '.$new_item_table.' ( item_id, timestamp ) SELECT t.item_id, FROM_UNIXTIME(timestamp) FROM '
+                              .$log_table.' AS t INNER JOIN '.$xoopsDB->prefix('xoonips_index_item_link')
+                              .' AS txil ON t.item_id=txil.item_id INNER JOIN '.$xoopsDB->prefix('xoonips_index')
+                              .' AS tx ON txil.index_id=tx.index_id WHERE tx.open_level='.OL_PUBLIC.' AND event_type_id='.ETID_CERTIFY_ITEM
+                              .' AND ( '.$add_days_sql.' ) GROUP BY t.item_id ORDER BY timestamp DESC LIMIT '.$config['new_num_rows'];
                     $result = $xoopsDB->queryF($sql);
                     if ($result == false) {
-                        die('fatal error in ' . __FILE__ . ' at ' . __LINE__);
+                        die('fatal error in '.__FILE__.' at '.__LINE__);
                     }
                     // remove old entry
-                    if (!$this->handlers[$sum . 'new_item']->trim($config['new_num_rows'])) {
-                        die('fatal error in ' . __FILE__ . ' at ' . __LINE__);
+                    if (!$this->handlers[$sum.'new_item']->trim($config['new_num_rows'])) {
+                        die('fatal error in '.__FILE__.' at '.__LINE__);
                     }
                 }
 
@@ -441,17 +441,17 @@ class XooNIpsRankingHandler
                 if ($config['new_visible'][1] || $update_sum) {
                     // TODO: support 'REPLACE INTO ... (...) SELECT ...' query by object
                     //       handler
-                    $sql    = 'REPLACE INTO ' . $new_group_table . ' ( gid, timestamp ) SELECT t.gid, FROM_UNIXTIME(timestamp) FROM ' . $log_table
-                              . ' AS t INNER JOIN ' . $xoopsDB->prefix('xoonips_groups')
-                              . ' AS tg ON t.gid=tg.gid WHERE tg.gid IS NOT NULL AND event_type_id=' . ETID_INSERT_GROUP . ' AND ( ' . $add_days_sql
-                              . ' ) ORDER BY timestamp DESC LIMIT ' . $config['new_num_rows'];
+                    $sql = 'REPLACE INTO '.$new_group_table.' ( gid, timestamp ) SELECT t.gid, FROM_UNIXTIME(timestamp) FROM '.$log_table
+                              .' AS t INNER JOIN '.$xoopsDB->prefix('xoonips_groups')
+                              .' AS tg ON t.gid=tg.gid WHERE tg.gid IS NOT NULL AND event_type_id='.ETID_INSERT_GROUP.' AND ( '.$add_days_sql
+                              .' ) ORDER BY timestamp DESC LIMIT '.$config['new_num_rows'];
                     $result = $xoopsDB->queryF($sql);
                     if ($result == false) {
-                        die('fatal error in ' . __FILE__ . ' at ' . __LINE__);
+                        die('fatal error in '.__FILE__.' at '.__LINE__);
                     }
                     // remove old entry
-                    if (!$this->handlers[$sum . 'new_group']->trim($config['new_num_rows'])) {
-                        die('fatal error in ' . __FILE__ . ' at ' . __LINE__);
+                    if (!$this->handlers[$sum.'new_group']->trim($config['new_num_rows'])) {
+                        die('fatal error in '.__FILE__.' at '.__LINE__);
                     }
                 }
             }
@@ -459,76 +459,79 @@ class XooNIpsRankingHandler
     }
 
     /**
-     * lock rankings table for update
+     * lock rankings table for update.
      *
-     * @access protected
      * @return int timeout time
      */
     public function _lock()
     {
         global $xoopsDB;
-        $table   = $xoopsDB->prefix('xoonips_config');
-        $now     = time();
+        $table = $xoopsDB->prefix('xoonips_config');
+        $now = time();
         $timeout = $now + 180;
-        $result  = $xoopsDB->queryF('UPDATE ' . $table . ' SET value=' . $timeout . ' WHERE name=\'ranking_lock_timeout\' AND value < ' . $now);
+        $result = $xoopsDB->queryF('UPDATE '.$table.' SET value='.$timeout.' WHERE name=\'ranking_lock_timeout\' AND value < '.$now);
         if ($result != false && $xoopsDB->getAffectedRows()) {
             // transaction
-            $transaction =  XooNIpsTransaction::getInstance();
+            $transaction = XooNIpsTransaction::getInstance();
             $transaction->start();
             // lock exclusively
-            $xoopsDB->queryF('SELECT value FROM ' . $table . ' WHERE name=\'ranking_last_update\' FOR UPDATE');
+            $xoopsDB->queryF('SELECT value FROM '.$table.' WHERE name=\'ranking_last_update\' FOR UPDATE');
+
             return $timeout;
         }
+
         return false;
     }
 
     /**
-     * unlock rankings table for update
+     * unlock rankings table for update.
      *
-     * @access protected
      * @param int $timeout timeout time
+     *
      * @return bool false if failure
      */
     public function _unlock($timeout)
     {
         // transaction
-        $transaction =  XooNIpsTransaction::getInstance();
+        $transaction = XooNIpsTransaction::getInstance();
         $transaction->commit();
         $old_timeout = $this->_get_config('lock_timeout');
         if ($old_timeout != $timeout) {
             return false;
         }
         $this->_set_config('lock_timeout', 0);
+
         return true;
     }
 
     /**
-     * get ranking configuration
+     * get ranking configuration.
      *
-     * @access protected
      * @param string $key ranking configuration key
+     *
      * @return mixed configuration value
      */
     public function _get_config($key)
     {
-        $val = $this->handlers['config']->getValue('ranking_' . $key);
+        $val = $this->handlers['config']->getValue('ranking_'.$key);
         if (null === $val) {
-            die('fatal error in ' . __FILE__ . ' at ' . __LINE__);
+            die('fatal error in '.__FILE__.' at '.__LINE__);
         }
+
         return $val;
     }
 
     /**
-     * set ranking configuration
+     * set ranking configuration.
      *
-     * @access protected
      * @param string $key ranking configuration key
      * @param mixed  $val ranking configuration value
+     *
      * @return bool false if failure
      */
     public function _set_config($key, $val)
     {
         // force insertion
-        return $this->handlers['config']->setValue('ranking_' . $key, $val, true);
+        return $this->handlers['config']->setValue('ranking_'.$key, $val, true);
     }
 }

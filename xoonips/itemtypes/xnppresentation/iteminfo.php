@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,19 +27,17 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require XOOPS_ROOT_PATH . '/modules/xoonips/include/iteminfo.inc.php';
+require XOOPS_ROOT_PATH.'/modules/xoonips/include/iteminfo.inc.php';
 
-//
-//
-$iteminfo['description']      = 'XooNIps Presentation Item Type';
-$iteminfo['files']['main']    = 'presentation_file';
+$iteminfo['description'] = 'XooNIps Presentation Item Type';
+$iteminfo['files']['main'] = 'presentation_file';
 $iteminfo['files']['preview'] = 'preview';
-$iteminfo['files']['others']  = array();
+$iteminfo['files']['others'] = array();
 
 //
 // define compo
-$iteminfo['ormcompo']['module']      = 'xnppresentation';
-$iteminfo['ormcompo']['name']        = 'item';
+$iteminfo['ormcompo']['module'] = 'xnppresentation';
+$iteminfo['ormcompo']['name'] = 'item';
 $iteminfo['ormcompo']['primary_orm'] = 'basic';
 $iteminfo['ormcompo']['primary_key'] = 'item_id';
 
@@ -47,104 +46,104 @@ $iteminfo['ormcompo']['primary_key'] = 'item_id';
 $creator_order_criteria = new Criteria(1, 1);
 $creator_order_criteria->setSort('creator_order');
 $iteminfo['orm'][] = array(
-    'module'      => 'xnppresentation',
-    'name'        => 'item_detail',
-    'field'       => 'detail',
+    'module' => 'xnppresentation',
+    'name' => 'item_detail',
+    'field' => 'detail',
     'foreign_key' => 'presentation_id',
-    'multiple'    => false,
-    'required'    => true
+    'multiple' => false,
+    'required' => true,
 );
 $iteminfo['orm'][] = array(
-    'module'      => 'xnppresentation',
-    'name'        => 'creator',
-    'field'       => 'creator',
+    'module' => 'xnppresentation',
+    'name' => 'creator',
+    'field' => 'creator',
     'foreign_key' => 'presentation_id',
-    'multiple'    => true,
-    'criteria'    => $creator_order_criteria
+    'multiple' => true,
+    'criteria' => $creator_order_criteria,
 );
 $iteminfo['orm'][] = array(
-    'module'      => 'xoonips',
-    'name'        => 'file',
-    'field'       => 'presentation_file',
+    'module' => 'xoonips',
+    'name' => 'file',
+    'field' => 'presentation_file',
     'foreign_key' => 'item_id',
-    'criteria'    => iteminfo_file_criteria('presentation_file'),
-    'multiple'    => false
+    'criteria' => iteminfo_file_criteria('presentation_file'),
+    'multiple' => false,
 );
 $iteminfo['orm'][] = array(
-    'module'      => 'xoonips',
-    'name'        => 'file',
-    'field'       => 'preview',
+    'module' => 'xoonips',
+    'name' => 'file',
+    'field' => 'preview',
     'foreign_key' => 'item_id',
-    'criteria'    => iteminfo_file_criteria('preview'),
-    'multiple'    => true
+    'criteria' => iteminfo_file_criteria('preview'),
+    'multiple' => true,
 );
 
 //
 // define database table information
 $iteminfo['ormfield']['detail'] = array(
     array(
-        'name'     => 'presentation_id',
-        'type'     => 'int',
-        'required' => ' false'
+        'name' => 'presentation_id',
+        'type' => 'int',
+        'required' => ' false',
     ),
     array(
-        'name'     => 'presentation_type',
-        'type'     => 'string',
-        'required' => ' false'
+        'name' => 'presentation_type',
+        'type' => 'string',
+        'required' => ' false',
     ),
     array(
-        'name'     => 'creator',
-        'type'     => 'string',
-        'required' => ' true'
+        'name' => 'creator',
+        'type' => 'string',
+        'required' => ' true',
     ),
     array(
-        'name'     => 'use_cc',
-        'type'     => 'int',
-        'required' => ' false'
+        'name' => 'use_cc',
+        'type' => 'int',
+        'required' => ' false',
     ),
     array(
-        'name'     => 'cc_commercial_use',
-        'type'     => 'int',
-        'required' => ' false'
+        'name' => 'cc_commercial_use',
+        'type' => 'int',
+        'required' => ' false',
     ),
     array(
-        'name'     => 'cc_modification',
-        'type'     => 'int',
-        'required' => ' false'
+        'name' => 'cc_modification',
+        'type' => 'int',
+        'required' => ' false',
     ),
     array(
-        'name'     => 'rights',
-        'type'     => 'string',
-        'required' => ' false'
+        'name' => 'rights',
+        'type' => 'string',
+        'required' => ' false',
     ),
     array(
-        'name'     => 'readme',
-        'type'     => 'string',
-        'required' => ' false'
+        'name' => 'readme',
+        'type' => 'string',
+        'required' => ' false',
     ),
     array(
-        'name'     => 'attachment_dl_limit',
-        'type'     => 'int',
-        'required' => ' false'
+        'name' => 'attachment_dl_limit',
+        'type' => 'int',
+        'required' => ' false',
     ),
     array(
-        'name'     => 'attachment_dl_notify',
-        'type'     => 'int',
-        'required' => ' false'
-    )
+        'name' => 'attachment_dl_notify',
+        'type' => 'int',
+        'required' => ' false',
+    ),
 );
 
 $iteminfo['ormfield']['creator'] = array(
     array(
-        'name'     => 'creator',
-        'type'     => 'string',
-        'required' => true
+        'name' => 'creator',
+        'type' => 'string',
+        'required' => true,
     ),
     array(
-        'name'     => 'creator_order',
-        'type'     => 'int',
-        'required' => true
-    )
+        'name' => 'creator_order',
+        'type' => 'int',
+        'required' => true,
+    ),
 );
 
 //
@@ -153,7 +152,7 @@ foreach ($iteminfo['io']['xmlrpc']['item'] as $key => $val) {
     if (in_array($val['xmlrpc']['field'][0], array(
         'creation_year',
         'creation_month',
-        'creation_mday'
+        'creation_mday',
     ))) {
         $iteminfo['io']['xmlrpc']['item'][$key]['xmlrpc']['required'] = true;
     }
@@ -161,384 +160,384 @@ foreach ($iteminfo['io']['xmlrpc']['item'] as $key => $val) {
 //
 // detail information (modify below for each item types)
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'detail',
-                'field' => 'presentation_id'
-            )
-        )
+                'orm' => 'detail',
+                'field' => 'presentation_id',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'presentation_id'
+            'presentation_id',
         ),
         'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_ID',
-        'type'         => 'string',
-        'multiple'     => false,
-        'readonly'     => true
-    )
+        'type' => 'string',
+        'multiple' => false,
+        'readonly' => true,
+    ),
 );
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'detail',
-                'field' => 'presentation_type'
-            )
-        )
+                'orm' => 'detail',
+                'field' => 'presentation_type',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'presentation_type'
+            'presentation_type',
         ),
         'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_TYPE',
-        'type'         => 'string',
-        'options'      => array(
+        'type' => 'string',
+        'options' => array(
             array(
-                'option'       => 'powerpoint',
-                'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_TYPE_POWERPOINT'
+                'option' => 'powerpoint',
+                'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_TYPE_POWERPOINT',
             ),
             array(
-                'option'       => 'lotus',
-                'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_TYPE_LOTUS'
+                'option' => 'lotus',
+                'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_TYPE_LOTUS',
             ),
             array(
-                'option'       => 'justsystem',
-                'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_TYPE_JUSTSYSTEM'
+                'option' => 'justsystem',
+                'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_TYPE_JUSTSYSTEM',
             ),
             array(
-                'option'       => 'html',
-                'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_TYPE_HTML'
+                'option' => 'html',
+                'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_TYPE_HTML',
             ),
             array(
-                'option'       => 'pdf',
-                'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_TYPE_PDF'
+                'option' => 'pdf',
+                'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_TYPE_PDF',
             ),
             array(
-                'option'       => 'other',
-                'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_TYPE_OTHER'
+                'option' => 'other',
+                'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_TYPE_OTHER',
             ),
         ),
-        'multiple'     => false,
-        'required'     => true
-    )
+        'multiple' => false,
+        'required' => true,
+    ),
 );
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'creator',
-                'field' => 'creator'
-            )
-        )
+                'orm' => 'creator',
+                'field' => 'creator',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'creator'
+            'creator',
         ),
         'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_CREATOR',
-        'type'         => 'string',
-        'multiple'     => true,
-        'required'     => true
-    )
+        'type' => 'string',
+        'multiple' => true,
+        'required' => true,
+    ),
 );
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'detail',
-                'field' => 'use_cc'
-            )
-        )
+                'orm' => 'detail',
+                'field' => 'use_cc',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'use_cc'
+            'use_cc',
         ),
         'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_USE_CC',
-        'type'         => 'string',
-        'multiple'     => false
-    )
+        'type' => 'string',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'detail',
-                'field' => 'cc_commercial_use'
-            )
-        )
+                'orm' => 'detail',
+                'field' => 'cc_commercial_use',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'cc_commercial_use'
+            'cc_commercial_use',
         ),
         'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_CC_COMMERCIAL_USE',
-        'type'         => 'string',
-        'multiple'     => false
-    )
+        'type' => 'string',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'detail',
-                'field' => 'cc_modification'
-            )
-        )
+                'orm' => 'detail',
+                'field' => 'cc_modification',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'cc_modification'
+            'cc_modification',
         ),
         'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_CC_MODIFICATION',
-        'type'         => 'string',
-        'multiple'     => false
-    )
+        'type' => 'string',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'detail',
-                'field' => 'rights'
-            )
-        )
+                'orm' => 'detail',
+                'field' => 'rights',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'rights'
+            'rights',
         ),
         'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_RIGHTS',
-        'type'         => 'string',
-        'multiple'     => false
-    )
+        'type' => 'string',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'detail',
-                'field' => 'readme'
-            )
-        )
+                'orm' => 'detail',
+                'field' => 'readme',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'readme'
+            'readme',
         ),
         'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_README',
-        'type'         => 'string',
-        'multiple'     => false
-    )
+        'type' => 'string',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'detail',
-                'field' => 'attachment_dl_limit'
-            )
-        )
+                'orm' => 'detail',
+                'field' => 'attachment_dl_limit',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'attachment_dl_limit'
+            'attachment_dl_limit',
         ),
         'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_LIMIT',
-        'type'         => 'string',
-        'multiple'     => false
-    )
+        'type' => 'string',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'detail',
-                'field' => 'attachment_dl_notify'
-            )
-        )
+                'orm' => 'detail',
+                'field' => 'attachment_dl_notify',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'attachment_dl_notify'
+            'attachment_dl_notify',
         ),
         'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_ATTACHMENT_DL_NOTIFY',
-        'type'         => 'string',
-        'multiple'     => false
-    )
+        'type' => 'string',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'presentation_file',
-                'field' => 'file_id'
-            )
-        )
+                'orm' => 'presentation_file',
+                'field' => 'file_id',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'presentation_file'
+            'presentation_file',
         ),
         'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PRESENTATION_FILE',
-        'type'         => 'int',
-        'multiple'     => false,
-        'required'     => true
-    )
+        'type' => 'int',
+        'multiple' => false,
+        'required' => true,
+    ),
 );
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'preview',
-                'field' => 'file_id'
-            )
-        )
+                'orm' => 'preview',
+                'field' => 'file_id',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'preview'
+            'preview',
         ),
         'display_name' => '_MD_XNPPRESENTATION_XMLRPC_DISPLAY_NAME_PREVIEW',
-        'type'         => 'int',
-        'multiple'     => true
-    )
+        'type' => 'int',
+        'multiple' => true,
+    ),
 );
 
 //-------------------------
 // SimpleItem
 //-------------------------
 $iteminfo['io']['xmlrpc']['simpleitem'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'basic',
-                'field' => 'item_id'
-            )
-        )
+                'orm' => 'basic',
+                'field' => 'item_id',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'    => array('item_id'),
-        'type'     => 'int',
-        'multiple' => false
-    )
+        'field' => array('item_id'),
+        'type' => 'int',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['simpleitem'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'basic',
-                'field' => 'item_type_id'
-            )
-        )
+                'orm' => 'basic',
+                'field' => 'item_type_id',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'    => array('itemtypeid'),
-        'type'     => 'int',
-        'multiple' => false
-    )
+        'field' => array('itemtypeid'),
+        'type' => 'int',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['simpleitem'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'basic',
-                'field' => 'uid'
-            )
-        )
+                'orm' => 'basic',
+                'field' => 'uid',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'    => array('username'),
-        'type'     => 'string',
-        'multiple' => false
+        'field' => array('username'),
+        'type' => 'string',
+        'multiple' => false,
     ),
-    'eval'   => array(
+    'eval' => array(
         'orm2xmlrpc' => '$uHandler= xoops_getHandler("user"); $user=$uHandler->get($in_var[0]); $out_var[0]=$user->getVar("uname");',
-        'xmlrpc2orm' => ';'
-    )
+        'xmlrpc2orm' => ';',
+    ),
 );
 $iteminfo['io']['xmlrpc']['simpleitem'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'titles',
-                'field' => 'title'
-            )
-        )
+                'orm' => 'titles',
+                'field' => 'title',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'    => array('titles'),
-        'type'     => 'string',
-        'multiple' => true
-    )
+        'field' => array('titles'),
+        'type' => 'string',
+        'multiple' => true,
+    ),
 );
 $iteminfo['io']['xmlrpc']['simpleitem'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'basic',
-                'field' => 'last_update_date'
-            )
-        )
+                'orm' => 'basic',
+                'field' => 'last_update_date',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'    => array('last_modified_date'),
-        'type'     => 'dateTime.iso8601',
-        'multiple' => false
-    )
+        'field' => array('last_modified_date'),
+        'type' => 'dateTime.iso8601',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['simpleitem'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'basic',
-                'field' => 'creation_date'
-            )
-        )
+                'orm' => 'basic',
+                'field' => 'creation_date',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'    => array('registration_date'),
-        'type'     => 'dateTime.iso8601',
-        'multiple' => false
-    )
+        'field' => array('registration_date'),
+        'type' => 'dateTime.iso8601',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['simpleitem'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'titles',
-                'field' => 'title'
+                'orm' => 'titles',
+                'field' => 'title',
             ),
             array(
-                'orm'   => 'detail',
-                'field' => 'presentation_type'
+                'orm' => 'detail',
+                'field' => 'presentation_type',
             ),
             array(
-                'orm'   => 'creator',
-                'field' => 'creator'
-            )
-        )
+                'orm' => 'creator',
+                'field' => 'creator',
+            ),
+        ),
     ),
     'xmlrpc' => array(
         'field' => array('text'),
-        'type'  => 'string'
+        'type' => 'string',
     ),
-    'eval'   => array(
+    'eval' => array(
         'orm2xmlrpc' => '$in_var[0] = implode( ";", $in_var[0] ); $out_var[0] = implode( "/", $in_var );',
-        'xmlrpc2orm' => ';'
-    )
+        'xmlrpc2orm' => ';',
+    ),
 );

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,10 +28,8 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- *
  * @brief class that transform a detail information of XML-RPC argument to XNPBinderItemDetail
  * implement code here if item type specific transform is needed
- *
  */
 class XNPBinderXmlRpcTransformItemDetail extends XooNIpsXmlRpcTransformElement
 {

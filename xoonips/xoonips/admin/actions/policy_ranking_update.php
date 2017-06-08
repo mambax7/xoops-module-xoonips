@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,7 +27,7 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // check token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
+require_once __DIR__.'/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_policy_ranking';
 if (!$xoopsGTicket->check(true, $ticket_area, false)) {
     redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
@@ -34,7 +35,7 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 
 // get requests
 $post_keys = array(
-    'ranking_num_rows'     => array(
+    'ranking_num_rows' => array(
         'i',
         false,
         true,
@@ -44,7 +45,7 @@ $post_keys = array(
         false,
         true,
     ),
-    'ranking_days'         => array(
+    'ranking_days' => array(
         'i',
         false,
         true,
@@ -55,13 +56,13 @@ $post_keys = array(
         false,
     ),
     // checkbox
-    'ranking_visible'      => array(
+    'ranking_visible' => array(
         'i',
         true,
         false,
     ),
     // checkbox
-    'ranking_new_visible'  => array(
+    'ranking_new_visible' => array(
         'i',
         true,
         false,
@@ -83,18 +84,18 @@ if (null === $post_vals['ranking_days_enabled']) {
 }
 // >> visible
 $post_array_keys = array(
-    'ranking_visible'     => 5,
+    'ranking_visible' => 5,
     'ranking_new_visible' => 2,
 );
 foreach ($post_array_keys as $key => $max_num) {
     $val = $post_vals[$key];
-    for ($i = 0; $i < $max_num; $i++) {
+    for ($i = 0; $i < $max_num; ++$i) {
         if (!isset($val[$i])) {
             $val[$i] = 0;
         }
     }
     ksort($val);
-    $post_vals[$key]   = implode(',', $val);
+    $post_vals[$key] = implode(',', $val);
     $config_keys[$key] = 's';
 }
 

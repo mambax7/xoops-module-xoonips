@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,10 +25,10 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/../base/logic.class.php';
+require_once __DIR__.'/../base/logic.class.php';
 
 /**
- * Class XooNIpsLogicImportCheckImport
+ * Class XooNIpsLogicImportCheckImport.
  */
 class XooNIpsLogicImportCheckImport extends XooNIpsLogic
 {
@@ -40,9 +41,9 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
     }
 
     /**
-     *
      * @param $vars [2] boolean import as new flag
      * @param $response
+     *
      * @return success ['import_items']
      */
     public function execute($vars, $response)
@@ -72,9 +73,9 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
         }
 
         $success = array(
-            'import_items'                    => $vars[0],
-            'private_item_number_limit_over'  => $this->_is_private_item_number_limit_over($vars[0], $vars[1]),
-            'private_item_storage_limit_over' => $this->_is_private_item_storage_limit_over($vars[0], $vars[1])
+            'import_items' => $vars[0],
+            'private_item_number_limit_over' => $this->_is_private_item_number_limit_over($vars[0], $vars[1]),
+            'private_item_storage_limit_over' => $this->_is_private_item_storage_limit_over($vars[0], $vars[1]),
         );
         $response->setResult(true);
         $response->setSuccess($success);
@@ -83,6 +84,7 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
     /**
      * @param $import_items
      * @param $uid
+     *
      * @return bool
      */
     public function _is_private_item_number_limit_over($import_items, $uid)
@@ -90,58 +92,64 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
         $import_item_count = 0;
         foreach ($import_items as $item) {
             if ($item->getImportAsNewFlag()) {
-                $import_item_count++;
+                ++$import_item_count;
             }
         }
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $userHandler            = xoonips_getOrmHandler('xoonips', 'users');
-        $user                   = $userHandler->get($uid);
+        $userHandler = xoonips_getOrmHandler('xoonips', 'users');
+        $user = $userHandler->get($uid);
         if (!$user) {
             return true;
         }
+
         return $import_item_count + count($index_item_linkHandler->getAllPrivateOnlyItemId($uid)) > $user->get('private_item_number_limit');
     }
 
     /**
      * @param array $import_items
-     * @param int $uid
+     * @param int   $uid
+     *
      * @return bool
      */
     public function _is_private_item_storage_limit_over($import_items, $uid)
     {
         $import_item_filesize = $this->_get_total_file_size_of_import_items($import_items);
-        $remove_filesize      = $this->_get_total_file_size_of_update_items($import_items);
-        $userHandler          = xoonips_getOrmHandler('xoonips', 'users');
-        $user                 = $userHandler->get($uid);
+        $remove_filesize = $this->_get_total_file_size_of_update_items($import_items);
+        $userHandler = xoonips_getOrmHandler('xoonips', 'users');
+        $user = $userHandler->get($uid);
         if (!$user) {
             return true;
         }
+
         return $import_item_filesize - $remove_filesize + $this->_filesize_private() > $user->get('private_item_storage_limit');
     }
 
     /**
      * @param $item_id
+     *
      * @return int
      */
     public function _get_toal_file_size_of_item($item_id)
     {
-        $size     = 0;
-        $handler  = xoonips_getOrmHandler('xoonips', 'file');
-        $join     = new XooNIpsJoinCriteria('xoonips_index_item_link', 'item_id', 'item_id', 'LEFT', 'tlink');
+        $size = 0;
+        $handler = xoonips_getOrmHandler('xoonips', 'file');
+        $join = new XooNIpsJoinCriteria('xoonips_index_item_link', 'item_id', 'item_id', 'LEFT', 'tlink');
         $criteria = new CriteriaCompo(new Criteria('tlink.item_id', $item_id));
         $criteria->add(new Criteria('certify_state', CERTIFIED, '!='));
-        $files =  $handler->getObjects($criteria, '', false, '', $join);
+        $files = $handler->getObjects($criteria, '', false, '', $join);
         if (!$files || count($files) == 0) {
             return 0;
         }
         foreach ($files as $f) {
             $size += $f->get('file_size');
         }
+
         return $size;
     }
 
     /**
      * @param $import_items
+     *
      * @return int
      */
     public function _get_total_file_size_of_update_items($import_items)
@@ -156,11 +164,13 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
                 }
             }
         }
+
         return $remove_filesize;
     }
 
     /**
      * @param $import_items
+     *
      * @return int
      */
     public function _get_total_file_size_of_import_items($import_items)
@@ -169,6 +179,7 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
         foreach ($import_items as $item) {
             $filesize += $item->getTotalFileSize();
         }
+
         return $filesize;
     }
 
@@ -181,11 +192,13 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
         if (xnp_get_private_item_id($_SESSION['XNPSID'], $_SESSION['xoopsUserId'], $iids) != RES_OK) {
             return 0;
         }
+
         return $this->_filesize_by_item_id($iids);
     }
 
     /**
      * @param $iids
+     *
      * @return float|int
      */
     public function _filesize_by_item_id($iids)
@@ -206,11 +219,11 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
             $modname = $i['name'];
             global $xoopsDB;
 
-            $table   = $xoopsDB->prefix("${modname}_item_detail");
-            $id_name = preg_replace('/^xnp/', '', $modname) . '_id';
+            $table = $xoopsDB->prefix("${modname}_item_detail");
+            $id_name = preg_replace('/^xnp/', '', $modname).'_id';
             $query
-                     = "SELECT ${id_name} FROM $table where ${id_name} IN (" . implode(', ', $iids) . ')';
-            $result  = $xoopsDB->query($query);
+                     = "SELECT ${id_name} FROM $table where ${id_name} IN (".implode(', ', $iids).')';
+            $result = $xoopsDB->query($query);
             if ($result) {
                 $mod_iids = array();
                 while (list($id) = $xoopsDB->fetchRow($result)) {
@@ -223,6 +236,7 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
                 }
             }
         }
+
         return $ret;
     }
 }

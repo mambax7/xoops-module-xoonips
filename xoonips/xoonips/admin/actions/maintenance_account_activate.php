@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,7 +27,7 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // check token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
+require_once __DIR__.'/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_maintenance_account_aconfirm';
 if (!$xoopsGTicket->check(true, $ticket_area, false)) {
     redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
@@ -49,10 +50,10 @@ function user_reactivate($uid)
 {
     global $xoonips_admin;
     // get user information
-    $uHandler  = xoonips_getOrmHandler('xoonips', 'xoops_users');
+    $uHandler = xoonips_getOrmHandler('xoonips', 'xoops_users');
     $xuHandler = xoonips_getOrmHandler('xoonips', 'users');
-    $u_obj     = $uHandler->get($uid);
-    $xu_obj    = $xuHandler->get($uid);
+    $u_obj = $uHandler->get($uid);
+    $xu_obj = $xuHandler->get($uid);
     if (!is_object($u_obj) || !is_object($xu_obj)) {
         redirect_header($xoonips_admin['mypage_url'], 3, _AM_XOONIPS_MSG_ILLACCESS);
     }
@@ -68,4 +69,4 @@ user_reactivate($vals['uid']);
 
 // load modify panel.
 $_GET['uid'] = $_POST['uid'];
-require __DIR__ . '/maintenance_account_modify.php';
+require __DIR__.'/maintenance_account_modify.php';

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -29,17 +30,17 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 $title = _AM_XOONIPS_TITLE;
 
 // load menu
-require __DIR__ . '/../menu.php';
+require __DIR__.'/../menu.php';
 $menu = array();
 foreach ($adminmenu as $item) {
     $menu[] = array(
         'label' => $item['title'],
-        'url'   => $xoonips_admin['mod_url'] . '/' . $item['link'],
+        'url' => $xoonips_admin['mod_url'].'/'.$item['link'],
     );
 }
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('adminmenu.tmpl.tpl');

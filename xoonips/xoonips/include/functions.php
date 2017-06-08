@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,33 +27,33 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/../class/base/tableobject.class.php';
-require_once __DIR__ . '/../class/base/criteria.class.php';
+require_once __DIR__.'/../class/base/tableobject.class.php';
+require_once __DIR__.'/../class/base/criteria.class.php';
 
 /**
- * get xoonips version
+ * get xoonips version.
  *
- * @access public
  * @return int version
  */
 function xoonips_get_version()
 {
-    $mydirname     = basename(dirname(__DIR__));
+    $mydirname = basename(dirname(__DIR__));
     $moduleHandler = xoops_getHandler('module');
-    $module_obj    = $moduleHandler->getByDirname($mydirname);
+    $module_obj = $moduleHandler->getByDirname($mydirname);
     if (!is_object($module_obj)) {
         return 0;
     }
-    $version = (int)$module_obj->getVar('version', 'n');
+    $version = (int) $module_obj->getVar('version', 'n');
+
     return $version;
 }
 
 /**
- *
  * @brief get reference of handler of xoonips
  *
  * @param [in] $module string module name
- * @param [in] $name string handler name
+ * @param [in] $name   string handler name
+ *
  * @return bool|reference
  */
 function xoonips_getHandler($module, $name)
@@ -61,24 +62,25 @@ function xoonips_getHandler($module, $name)
     static $handlers;
 
     if (!isset($handlers["${module}_${name}"])) {
-        $include_file = XOOPS_ROOT_PATH . "/modules/${module}/class/${module}_{$name}.class.php";
+        $include_file = XOOPS_ROOT_PATH."/modules/${module}/class/${module}_{$name}.class.php";
         if (file_exists($include_file)) {
             require_once $include_file;
         } else {
-            trigger_error('file not found: ' . $include_file, E_USER_ERROR);
+            trigger_error('file not found: '.$include_file, E_USER_ERROR);
+
             return $falseVar;
         }
         if ($module === 'xoonips') {
-            $class = 'XooNIps' . str_replace(' ', '', ucwords(str_replace('_', ' ', $name))) . 'Handler';
+            $class = 'XooNIps'.str_replace(' ', '', ucwords(str_replace('_', ' ', $name))).'Handler';
         } else {
-            $class = 'XNP' . str_replace(' ', '', ucwords(str_replace('_', ' ', substr($module, 3) . '_' . $name))) . 'Handler';
+            $class = 'XNP'.str_replace(' ', '', ucwords(str_replace('_', ' ', substr($module, 3).'_'.$name))).'Handler';
         }
         if (class_exists($class)) {
             $handlers[$name] = new $class($GLOBALS['xoopsDB']);
         }
     }
     if (!isset($handlers[$name])) {
-        trigger_error('Handler does not exist. Name: ' . $name, E_USER_ERROR);
+        trigger_error('Handler does not exist. Name: '.$name, E_USER_ERROR);
     }
     // return result
     $falseVar = false;
@@ -90,12 +92,13 @@ function xoonips_getHandler($module, $name)
 }
 
 /**
- *
  * @brief    get handler of xoonips
  *
  * @param $module
  * @param $name
+ *
  * @return bool|XoopsTableObjectHandler
+ *
  * @internal param $ [in] $name handler name
  * @retval   false
  */
@@ -103,41 +106,41 @@ function xoonips_getOrmHandler($module, $name)
 {
     static $falseVar = false;
     static $handlers;
-    //
-    if (!isset($handlers[$module . $name])) {
-        $include_file = XOOPS_ROOT_PATH . "/modules/${module}/class/orm/${name}.class.php";
+
+    if (!isset($handlers[$module.$name])) {
+        $include_file = XOOPS_ROOT_PATH."/modules/${module}/class/orm/${name}.class.php";
         if (file_exists($include_file)) {
             require_once $include_file;
         } else {
             return $falseVar;
         }
         if (strncmp('xnp', $module, 3) == 0) {
-            $tok   = substr($module, 3);
-            $class = 'XNP' . ucfirst($tok) . 'Orm' . str_replace(' ', '', ucwords(str_replace('_', ' ', $name))) . 'Handler';
+            $tok = substr($module, 3);
+            $class = 'XNP'.ucfirst($tok).'Orm'.str_replace(' ', '', ucwords(str_replace('_', ' ', $name))).'Handler';
         } else {
-            $class = 'XooNIpsOrm' . str_replace(' ', '', ucwords(str_replace('_', ' ', $name))) . 'Handler';
+            $class = 'XooNIpsOrm'.str_replace(' ', '', ucwords(str_replace('_', ' ', $name))).'Handler';
         }
         if (class_exists($class)) {
-            $handlers[$module . $name] = new $class($GLOBALS['xoopsDB']);
+            $handlers[$module.$name] = new $class($GLOBALS['xoopsDB']);
         }
     }
-    if (!isset($handlers[$module . $name])) {
-        trigger_error('Handler does not exist. Class: ' . $class, E_USER_ERROR);
+    if (!isset($handlers[$module.$name])) {
+        trigger_error('Handler does not exist. Class: '.$class, E_USER_ERROR);
     }
     // return result
-    if (isset($handlers[$module . $name])) {
-        return $handlers[$module . $name];
+    if (isset($handlers[$module.$name])) {
+        return $handlers[$module.$name];
     } else {
         return $falseVar;
     }
 }
 
 /**
+ * get XooNIpsItemHandler of specified itemtype.
  *
- * get XooNIpsItemHandler of specified itemtype
+ * @param [in] $module module name
+ * @param [in] $name   handler name
  *
- * @param  [in] $module module name
- * @param  [in] $name handler name
  * @return bool|XooNIpsItemCompoHandler
  * @retval false
  */
@@ -145,40 +148,40 @@ function &xoonips_getOrmCompoHandler($module, $name)
 {
     static $falseVar = false;
     static $handlers;
-    //
-    if (!isset($handlers[$module . $name])) {
-        $include_file = XOOPS_ROOT_PATH . "/modules/${module}/class/${module}_compo_${name}.class.php";
+
+    if (!isset($handlers[$module.$name])) {
+        $include_file = XOOPS_ROOT_PATH."/modules/${module}/class/${module}_compo_${name}.class.php";
         if (file_exists($include_file)) {
             require_once $include_file;
         } else {
             return $falseVar;
         }
         if (strncmp('xnp', $module, 3) == 0) {
-            $tok   = substr($module, 3);
-            $class = 'XNP' . ucfirst($tok) . 'CompoHandler';
+            $tok = substr($module, 3);
+            $class = 'XNP'.ucfirst($tok).'CompoHandler';
         } else {
-            $class = 'XooNIps' . ucfirst($name) . 'CompoHandler';
+            $class = 'XooNIps'.ucfirst($name).'CompoHandler';
         }
         if (class_exists($class)) {
-            $handlers[$module . $name] = new $class($GLOBALS['xoopsDB']);
+            $handlers[$module.$name] = new $class($GLOBALS['xoopsDB']);
         }
     }
-    if (!isset($handlers[$module . $name])) {
-        trigger_error('Handler does not exist. Name: ' . $module . ' ' . $name, E_USER_ERROR);
+    if (!isset($handlers[$module.$name])) {
+        trigger_error('Handler does not exist. Name: '.$module.' '.$name, E_USER_ERROR);
     }
     // return result
-    if (isset($handlers[$module . $name])) {
-        return $handlers[$module . $name];
+    if (isset($handlers[$module.$name])) {
+        return $handlers[$module.$name];
     } else {
         return $falseVar;
     }
 }
 
 /**
- * get utility instance
+ * get utility instance.
  *
- * @access public
  * @param string $name
+ *
  * @return object class instance
  */
 function xoonips_getUtility($name)
@@ -188,26 +191,28 @@ function xoonips_getUtility($name)
         return $instances[$name];
     }
     // load class file
-    $cname = 'XooNIpsUtility' . ucfirst($name);
+    $cname = 'XooNIpsUtility'.ucfirst($name);
     if (!class_exists($cname)) {
-        $cpath = __DIR__ . '/../class';
+        $cpath = __DIR__.'/../class';
         if (!class_exists('XooNIpsUtility')) {
-            require_once $cpath . '/base/utility.class.php';
+            require_once $cpath.'/base/utility.class.php';
         }
-        $path = $cpath . '/utility/' . $name . '.class.php';
+        $path = $cpath.'/utility/'.$name.'.class.php';
         require_once $path;
     }
     $instance = new $cname();
     if ($instance->isSingleton()) {
         $instances[$name] = $instance;
     }
+
     return $instance;
 }
 
 /**
- * get xoops configs for compatibility with XOOPS Cube Legacy 2.1
- * @access public
+ * get xoops configs for compatibility with XOOPS Cube Legacy 2.1.
+ *
  * @param $category
+ *
  * @return array xoops configs
  */
 function &xoonips_get_xoops_configs($category)
@@ -217,7 +222,7 @@ function &xoonips_get_xoops_configs($category)
         return $cache_configs[$category];
     }
     $configHandler = xoops_getHandler('config');
-    $configs       = $configHandler->getConfigsByCat($category); // copy
+    $configs = $configHandler->getConfigsByCat($category); // copy
     if (defined('XOOPS_CUBE_LEGACY')) {
         // for XOOPS Cube Legacy 2.1
         switch ($category) {
@@ -230,12 +235,12 @@ function &xoonips_get_xoops_configs($category)
                 // -----------------------------------------------------------------
                 // 'xoops_url' and 'root_path' are DEPRECATED since 2.0.
                 $configs['xoops_url'] = XOOPS_URL;
-                $configs['root_path'] = XOOPS_ROOT_PATH . '/';
+                $configs['root_path'] = XOOPS_ROOT_PATH.'/';
                 // 'banners' found in 'legacyRender' module
-                $tmp                = $configHandler->getConfigsByDirname('legacyRender');
+                $tmp = $configHandler->getConfigsByDirname('legacyRender');
                 $configs['banners'] = $tmp['banners'];
                 // 'usercookie' found in 'user' module
-                $tmp                   = $configHandler->getConfigsByDirname('user');
+                $tmp = $configHandler->getConfigsByDirname('user');
                 $configs['usercookie'] = $tmp['usercookie'];
                 // override duplicated configs in 'user' module
                 $keys = array(
@@ -243,7 +248,7 @@ function &xoonips_get_xoops_configs($category)
                     'maxuname',
                     'sslloginlink',
                     'sslpost_name',
-                    'use_ssl'
+                    'use_ssl',
                 );
                 foreach ($keys as $key) {
                     $configs[$key] = $tmp[$key];
@@ -273,11 +278,13 @@ function &xoonips_get_xoops_configs($category)
         }
     }
     $cache_configs[$category] = $configs;
+
     return $cache_configs[$category];
 }
 
 /**
  * @param $str
+ *
  * @return bool|int
  */
 function ISO8601toUnixTimestamp($str)
@@ -332,7 +339,7 @@ function ISO8601toUnixTimestamp($str)
             return false;
         }
         // mm and dd must not overflow
-        if (gmdate('Ymd', gmmktime(0, 0, 0, $match[3], $match[5], $match[1])) != $match[1] . $match[3] . $match[5]) {
+        if (gmdate('Ymd', gmmktime(0, 0, 0, $match[3], $match[5], $match[1])) != $match[1].$match[3].$match[5]) {
             return false;
         }
         //correct a time difference to GMT
@@ -345,9 +352,9 @@ function ISO8601toUnixTimestamp($str)
         }
     } elseif (preg_match('/^([0-9]{4})(-W([0-5][0-9]))(-([1-7]))$/', $str, $match) == 1) {
         // Week dates format
-        $y  = $match[1];
-        $w  = $match[3];
-        $d  = $match[5];
+        $y = $match[1];
+        $w = $match[3];
+        $d = $match[5];
         $tm = gmmktime(0, 0, 0, 1, 1, $match[1]) + (($w - 1) * 7 + $d - getDayOfWeek($y, 1, 1)) * 86400;
     } elseif (preg_match('/^([0-9]{4})(-?([0-3][0-9]{2}))$/', $str, $match) == 1) {
         // Ordinal dates format
@@ -355,6 +362,7 @@ function ISO8601toUnixTimestamp($str)
     } else {
         return false;
     }
+
     return $tm;
 }
 
@@ -362,6 +370,7 @@ function ISO8601toUnixTimestamp($str)
  * @param $year
  * @param $month
  * @param $day
+ *
  * @return false|string
  */
 function getDayOfWeek($year, $month, $day)
@@ -372,6 +381,7 @@ function getDayOfWeek($year, $month, $day)
 /**
  * get server character set.
  * XOOPS character set 'ISO-8859-1' is treated as Windows-1252.
+ *
  * @return character|string
  */
 function xoonips_get_server_charset()
@@ -385,6 +395,7 @@ function xoonips_get_server_charset()
 
 /**
  * get unicode character conversion map.
+ *
  * @return array|conversion
  */
 function xoonips_get_conversion_map()
@@ -393,13 +404,14 @@ function xoonips_get_conversion_map()
         0,
         0x10ffff,
         0,
-        0x1fffff
+        0x1fffff,
     );
 }
 
 /**
  * get unicode character conversion map to ascii.
  * useful to convert UTF-8 to ASCII + numeric character entity.
+ *
  * @return array|conversion
  */
 function xoonips_get_conversion_map_to_ascii()
@@ -408,13 +420,12 @@ function xoonips_get_conversion_map_to_ascii()
         0x80,
         0x10ffff,
         0,
-        0x1fffff
+        0x1fffff,
     );
 }
 
 /**
- *
- * deny guest access and redirect
+ * deny guest access and redirect.
  *
  * @param $url string redurect URL(default is modules/xoonips/user.php)
  * @param $msg string message of redirect(default is _MD_XOONIPS_ITEM_FORBIDDEN)
@@ -423,15 +434,15 @@ function xoonips_deny_guest_access($url = null, $msg = _MD_XOONIPS_ITEM_FORBIDDE
 {
     global $xoopsUser;
     if (!$xoopsUser) {
-        redirect_header(null === $url ? XOOPS_URL . '/modules/xoonips/user.php' : $url, 3, $msg);
+        redirect_header(null === $url ? XOOPS_URL.'/modules/xoonips/user.php' : $url, 3, $msg);
     }
 }
 
 /**
- *
  * @brief convert lock type to string
  *
  * @param [in] $lock_type return value of XooNIpsItemLock::getLockType()
+ *
  * @return string represents lock type
  */
 function xoonips_get_lock_type_string($lock_type)
@@ -446,6 +457,7 @@ function xoonips_get_lock_type_string($lock_type)
         case XOONIPS_LOCK_TYPE_PUBLICATION_GROUP_INDEX:
             return _MD_XOONIPS_LOCK_TYPE_STRING_PUBLICATION_GROUP_INDEX;
     }
+
     return "(internal error: unsupported lock type. lock_type=$lock_type)";
 }
 
@@ -453,6 +465,7 @@ function xoonips_get_lock_type_string($lock_type)
  * @param $uid
  * @param $item_id
  * @param $index_id
+ *
  * @return bool
  */
 function xoonips_certify_item($uid, $item_id, $index_id)
@@ -481,6 +494,7 @@ function xoonips_certify_item($uid, $item_id, $index_id)
  * @param $uid
  * @param $item_id
  * @param $index_id
+ *
  * @return bool
  */
 function xoonips_reject_item($uid, $item_id, $index_id)
@@ -508,6 +522,7 @@ function xoonips_reject_item($uid, $item_id, $index_id)
  * @param $uid
  * @param $item_id
  * @param $index_id
+ *
  * @return bool
  */
 function xoonips_withdraw_item($uid, $item_id, $index_id)
@@ -534,17 +549,16 @@ function xoonips_withdraw_item($uid, $item_id, $index_id)
 
 /**
  * @param $item_id
+ *
  * @return string
  */
 function xoonips_get_transfer_request_item_detail_url($item_id)
 {
-    return XOOPS_URL . '/modules/xoonips/transfer_item.php?' . 'action=detail_item&item_id=' . (int)$item_id;
+    return XOOPS_URL.'/modules/xoonips/transfer_item.php?'.'action=detail_item&item_id='.(int) $item_id;
 }
 
 /**
- *
- * allow only post method access
- *
+ * allow only post method access.
  */
 function xoonips_allow_post_method()
 {
@@ -552,9 +566,7 @@ function xoonips_allow_post_method()
 }
 
 /**
- *
- * allow only get method access
- *
+ * allow only get method access.
  */
 function xoonips_allow_get_method()
 {
@@ -562,9 +574,7 @@ function xoonips_allow_get_method()
 }
 
 /**
- *
- * allow only post and get method access
- *
+ * allow only post and get method access.
  */
 function xoonips_allow_both_method()
 {
@@ -573,8 +583,8 @@ function xoonips_allow_both_method()
 }
 
 /**
+ * die if given false.
  *
- * die if given false
  * @param $bool
  */
 function xoonips_validate_request($bool)
@@ -587,19 +597,19 @@ function xoonips_validate_request($bool)
 /**
  * Finds whether a USER can export.
  * It regards $xoopsUser as USER.
- * @return bool true if export is permitted for USER.
  *
+ * @return bool true if export is permitted for USER
  */
 function xoonips_is_user_export_enabled()
 {
     global $xoopsUser;
 
     if (!$xoopsUser) {
-        return false;//guest can not export
+        return false; //guest can not export
     }
 
     if ($xoopsUser->isAdmin()) {
-        return true;//admin can always export
+        return true; //admin can always export
     }
 
     $xmemberHandler = xoonips_getHandler('xoonips', 'member');
@@ -608,7 +618,7 @@ function xoonips_is_user_export_enabled()
     }
 
     $xoonips_configHandler = xoonips_getOrmHandler('xoonips', 'config');
-    $export_enabled        = $xoonips_configHandler->getValue('export_enabled');
+    $export_enabled = $xoonips_configHandler->getValue('export_enabled');
     if (null === $export_enabled) {
         return false;
     }
@@ -622,21 +632,20 @@ function xoonips_is_user_export_enabled()
  * - table name must be "{$module}_{$name}"
  * - table must have columns "{$name}" and "{$name}_order"
  * - e.g. when 'xnpmodel_creator' table has columns 'creator' and 'creator_order',
- * $module is 'xnpmodel', $name is 'creator'
+ * $module is 'xnpmodel', $name is 'creator'.
  *
- * @access public
  * @param string $module module name of field
  * @param string $name   handler name
- * @return array
  *
+ * @return array
  */
 function xoonips_get_multi_field_array_from_post($module, $name)
 {
     $formdata = xoonips_getUtility('formdata');
-    $result   = array();
+    $result = array();
 
     $fieldHandler = xoonips_getOrmHandler($module, $name);
-    $objs         = $formdata->getObjectArray('post', $fieldHandler->getTableName(), $fieldHandler, false);
+    $objs = $formdata->getObjectArray('post', $fieldHandler->getTableName(), $fieldHandler, false);
 
     foreach ($objs as $field) {
         $result[] = $field->getVarArray('s');
@@ -649,91 +658,101 @@ function xoonips_get_multi_field_array_from_post($module, $name)
  * find that whether the length of field value of ormObjects is longer than DB column length.
  * - return true when at least one field value is too long
  * - regards $name as field name of ormObjects.
+ *
  * @param XooNIpsTableObject[] orm     to get template vars
- * @param string               $module module name for xoonips_getOrmHandler
- * @param string               $name   name for xoonips_getOrmHandler
+ * @param string $module module name for xoonips_getOrmHandler
+ * @param string $name   name for xoonips_getOrmHandler
+ *
  * @see xoonips_getOrmHandler
+ *
  * @return bool
  */
 function xoonips_is_multiple_field_too_long($ormObjects, $module, $name)
 {
     $fieldHandler = xoonips_getOrmHandler($module, $name);
-    $lengths      = xnpGetColumnLengths($fieldHandler->getTableName());
+    $lengths = xnpGetColumnLengths($fieldHandler->getTableName());
     foreach ($ormObjects as $orm) {
         list($within, $without) = xnpTrimString($orm->get($name), $lengths[$name], _CHARSET);
         if ($without) {
             return true;
         }
     }
+
     return false;
 }
 
 /**
- * return template variables for 'xoonips_multiple_filed_confirm' template
+ * return template variables for 'xoonips_multiple_filed_confirm' template.
+ *
  * @param $ormObjects
  * @param $module
  * @param $name
+ *
  * @return array
+ *
  * @internal param XooNIpsTableObject[] $orm to get template vars
- * @internal param string $field_name orm field name that is used as value to show.
+ * @internal param string $field_name orm field name that is used as value to show
  */
 function xoonips_get_multiple_field_template_vars($ormObjects, $module, $name)
 {
     $fieldHandler = xoonips_getOrmHandler($module, $name);
-    $lengths      = xnpGetColumnLengths($fieldHandler->getTableName());
+    $lengths = xnpGetColumnLengths($fieldHandler->getTableName());
 
     $vars = array(
         'table_name' => $fieldHandler->getTableName(),
-        'name'       => array(
+        'name' => array(
             'primary_key' => $fieldHandler->getKeyName(),
-            'text'        => $name,
-            'order'       => $name . '_order',
+            'text' => $name,
+            'order' => $name.'_order',
         ),
-        'objects'    => array()
+        'objects' => array(),
     );
     foreach ($ormObjects as $orm) {
         list($within, $without) = xnpTrimString($orm->getVar($name, 's'), $lengths[$name], _CHARSET);
         $vars['objects'][] = array(
             'primary_key' => array(
-                'name'  => $fieldHandler->getKeyName(),
-                'value' => $orm->getVar($fieldHandler->getKeyName(), 's')
+                'name' => $fieldHandler->getKeyName(),
+                'value' => $orm->getVar($fieldHandler->getKeyName(), 's'),
             ),
-            'text'        => array(
-                'name'    => $name,
-                'within'  => empty($within) ? '' : $within,
+            'text' => array(
+                'name' => $name,
+                'within' => empty($within) ? '' : $within,
                 'without' => empty($without) ? '' : $without,
-                'value'   => $orm->getVar($name, 's')
+                'value' => $orm->getVar($name, 's'),
             ),
-            'order'       => array(
-                'name'  => "{$name}_order",
-                'value' => $orm->get("{$name}_order")
-            )
+            'order' => array(
+                'name' => "{$name}_order",
+                'value' => $orm->get("{$name}_order"),
+            ),
         );
     }
     $vars['num'] = count($vars['objects']);
+
     return $vars;
 }
 
 /**
  * @param $module
  * @param $name
+ *
  * @return mixed
  */
 function xoonips_get_orm_from_post($module, $name)
 {
-    $formdata     = xoonips_getUtility('formdata');
-    $result       = array();
+    $formdata = xoonips_getUtility('formdata');
+    $result = array();
     $fieldHandler = xoonips_getOrmHandler($module, $name);
-    $objs         = $formdata->getObjectArray('post', $fieldHandler->getTableName(), $fieldHandler, false);
+    $objs = $formdata->getObjectArray('post', $fieldHandler->getTableName(), $fieldHandler, false);
 
     return $objs;
 }
 
 /**
- * compare objects
+ * compare objects.
  *
  * @param array $objs1
  * @param array $objs2
+ *
  * @return bool true if $objs1 and $objs2 are all same objects
  */
 function xoonips_is_same_objects(&$objs1, &$objs2)
@@ -743,7 +762,7 @@ function xoonips_is_same_objects(&$objs1, &$objs2)
     }
     $sorted_objs1 = array();
     $sorted_objs2 = array();
-    $matches      = array();
+    $matches = array();
     foreach ($objs1 as $num1 => $obj1) {
         $found = false;
         foreach ($objs2 as $num2 => $obj2) {
@@ -752,7 +771,7 @@ function xoonips_is_same_objects(&$objs1, &$objs2)
             }
             if ($obj1->equals($obj2)) {
                 $matches[] = $num2;
-                $found     = true;
+                $found = true;
                 break;
             }
         }
@@ -760,17 +779,18 @@ function xoonips_is_same_objects(&$objs1, &$objs2)
             return false;
         }
     }
+
     return true;
 }
 
 /**
- * get creative commons license
+ * get creative commons license.
  *
- * @access public
  * @param int    $cc_commercial_use
  * @param int    $cc_modification
  * @param float  $version
  * @param string $region
+ *
  * @return string rendlerd creative commons licnese
  */
 function xoonips_get_cc_license($cc_commercial_use, $cc_modification, $version, $region)
@@ -790,8 +810,8 @@ function xoonips_get_cc_license($cc_commercial_use, $cc_modification, $version, 
     );
     static $cc_cache = array();
     $condtion = sprintf('%u%u', $cc_commercial_use, $cc_modification);
-    $region   = strtoupper($region);
-    $version  = sprintf('%u', $version * 10);
+    $region = strtoupper($region);
+    $version = sprintf('%u', $version * 10);
     if (!isset($cc_condition_map[$condtion])) {
         // unknown condtion
         return false;
@@ -809,7 +829,7 @@ function xoonips_get_cc_license($cc_commercial_use, $cc_modification, $version, 
         return $cc_cache[$region][$version][$condtion];
     }
     $fname = sprintf('CC-%s-%s-%s.tpl', $condtion, $version, $region);
-    $fpath = __DIR__ . '/creativecommons/' . $fname;
+    $fpath = __DIR__.'/creativecommons/'.$fname;
     if (!file_exists($fpath)) {
         // file not found
         return false;
@@ -820,5 +840,6 @@ function xoonips_get_cc_license($cc_commercial_use, $cc_modification, $version, 
         return false;
     }
     $cc_cache[$region][$version][$condtion] = $cc_html;
+
     return $cc_html;
 }

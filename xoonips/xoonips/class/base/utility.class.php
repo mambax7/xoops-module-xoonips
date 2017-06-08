@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,21 +27,19 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * abstract class for xoonips utility classes
+ * abstract class for xoonips utility classes.
  */
 class XooNIpsUtility
 {
-
     /**
-     * singleton class flag. true if class is singleton
-     * @access private
+     * singleton class flag. true if class is singleton.
+     *
      * @var bool
      */
     public $_is_singleton = false;
 
     /**
-     * set flag for singleton class
-     * @access protected
+     * set flag for singleton class.
      */
     public function setSingleton()
     {
@@ -48,8 +47,7 @@ class XooNIpsUtility
     }
 
     /**
-     * unset flag for non-singleton class
-     * @access protected
+     * unset flag for non-singleton class.
      */
     public function unsetSingleton()
     {
@@ -57,8 +55,8 @@ class XooNIpsUtility
     }
 
     /**
-     * unset flag for non-singleton class
-     * @access public
+     * unset flag for non-singleton class.
+     *
      * @return bool true if class is singleton
      */
     public function isSingleton()

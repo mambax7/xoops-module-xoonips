@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -32,7 +33,6 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
  * @li    getVar('binder_item_link_id') :
  * @li    getVar('binder_id') :
  * @li    getVar('item_id') :
- *
  */
 class XNPBinderOrmBinderItemLink extends XooNIpsTableObject
 {
@@ -50,13 +50,12 @@ class XNPBinderOrmBinderItemLink extends XooNIpsTableObject
 
 /**
  * @brief handler object of binder item link
- *
- *
  */
 class XNPBinderOrmBinderItemLinkHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XNPBinderOrmBinderItemLinkHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

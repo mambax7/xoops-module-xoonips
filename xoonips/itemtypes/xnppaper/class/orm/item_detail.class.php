@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -36,11 +37,11 @@ class XNPPaperOrmItemDetail extends XooNIpsTableObject
     // for column length check
     public $lengths
         = array(
-            'paper_id'  => 10,
-            'journal'   => 255,
-            'page'      => 30,
-            'abstract'  => 65535,
-            'pubmed_id' => 30
+            'paper_id' => 10,
+            'journal' => 255,
+            'page' => 30,
+            'abstract' => 65535,
+            'pubmed_id' => 30,
         );
 
     /**
@@ -60,31 +61,32 @@ class XNPPaperOrmItemDetail extends XooNIpsTableObject
     }
 
     /**
-     * get author objects of this item
+     * get author objects of this item.
+     *
      * @return XNPPaperOrmAuthor[]
      */
     public function getAuthors()
     {
-        $handler  = xoonips_getOrmHandler('xnppaper', 'author');
+        $handler = xoonips_getOrmHandler('xnppaper', 'author');
         $criteria = new Criteria('paper_id', $this->get('paper_id'));
         $criteria->setSort('author_order');
         $result = $handler->getObjects($criteria);
         if ($result) {
             return $result;
         }
+
         return array();
     }
 }
 
 /**
  * @brief Handler class that create, insert, update, get and delete detail information
- *
- *
  */
 class XNPPaperOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XNPPaperOrmItemDetailHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,19 +27,18 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
-require_once XOOPS_ROOT_PATH . '/modules/xnppaper/iteminfo.php';
-require_once XOOPS_ROOT_PATH . '/modules/xnppaper/include/view.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xoonips_compo_item.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xnppaper/iteminfo.php';
+require_once XOOPS_ROOT_PATH.'/modules/xnppaper/include/view.php';
 
 /**
- *
  * @brief Handler object that create,insert,update,get,delete XNPPaperCompo object.
- *
  */
 class XNPPaperCompoHandler extends XooNIpsItemInfoCompoHandler
 {
     /**
      * XNPPaperCompoHandler constructor.
+     *
      * @param $db
      */
     public function __construct($db)
@@ -52,15 +52,17 @@ class XNPPaperCompoHandler extends XooNIpsItemInfoCompoHandler
     public function create()
     {
         $paper = new XNPPaperCompo();
+
         return $paper;
     }
 
     /**
-     * return template filename
+     * return template filename.
      *
      * @param string $type defined symbol
      *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
      *                     or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
+     *
      * @return string|template
      */
     public function getTemplateFileName($type)
@@ -76,15 +78,16 @@ class XNPPaperCompoHandler extends XooNIpsItemInfoCompoHandler
     }
 
     /**
-     * return template variables of item
+     * return template variables of item.
      *
-     * @param string $type defined symbol
-     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *                     , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
-     *                     , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
-     *                     or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
+     * @param string $type    defined symbol
+     *                        XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                        , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
+     *                        , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
+     *                        or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
      * @param int    $item_id
-     * @param int    $uid  user id who get item
+     * @param int    $uid     user id who get item
+     *
      * @return array of template variables
      */
     public function getTemplateVar($type, $item_id, $uid)
@@ -95,8 +98,8 @@ class XNPPaperCompoHandler extends XooNIpsItemInfoCompoHandler
         }
         $result = $this->getBasicTemplateVar($type, $paper, $uid);
 
-        $detail                          = $paper->getVar('detail');
-        $result['detail']                = $detail->getVarArray('s');
+        $detail = $paper->getVar('detail');
+        $result['detail'] = $detail->getVarArray('s');
         $result['detail']['pubmed_link'] = xnppaper_create_pubmed_link($detail->getVar('pubmed_id', 'n'));
 
         switch ($type) {
@@ -106,6 +109,7 @@ class XNPPaperCompoHandler extends XooNIpsItemInfoCompoHandler
                 foreach ($paper->getVar('author') as $author) {
                     $result['author'][] = $author->getVarArray('s');
                 }
+
                 return $result;
             case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
             case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
@@ -118,19 +122,22 @@ class XNPPaperCompoHandler extends XooNIpsItemInfoCompoHandler
 
                 return $result;
         }
+
         return $result;
     }
 
     /**
-     * return true if user has permission to download file
+     * return true if user has permission to download file.
+     *
      * @param int uid user id
      * @param int file_id file id
+     *
      * @return bool
      */
     public function hasDownloadPermission($uid, $file_id)
     {
         $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
-        $file        = $fileHandler->get($file_id);
+        $file = $fileHandler->get($file_id);
         if (!$file) {
             return false;
         } // no such file
@@ -155,10 +162,10 @@ class XNPPaperCompoHandler extends XooNIpsItemInfoCompoHandler
         } // no permission
 
         // retrieve config of pdf and abstract
-        $mhandler          = xoops_getHandler('module');
-        $module            = $mhandler->getByDirname('xnppaper');
-        $chandler          = xoops_getHandler('config');
-        $assoc             = $chandler->getConfigsByCat(false, $module->mid());
+        $mhandler = xoops_getHandler('module');
+        $module = $mhandler->getByDirname('xnppaper');
+        $chandler = xoops_getHandler('config');
+        $assoc = $chandler->getConfigsByCat(false, $module->mid());
         $pdf_access_rights = $assoc['pdf_access_rights']; // 1:public, 2:group, 3:private
 
         if ($pdf_access_rights == 1) { // 1:public
@@ -173,8 +180,8 @@ class XNPPaperCompoHandler extends XooNIpsItemInfoCompoHandler
 
         if ($pdf_access_rights == 2) { // 2:group
             $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-            $indexHandler           = xoonips_getOrmHandler('xoonips', 'index');
-            $index_item_links       = $index_item_linkHandler->getByItemId($item_id, array(OL_GROUP_ONLY));
+            $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
+            $index_item_links = $index_item_linkHandler->getByItemId($item_id, array(OL_GROUP_ONLY));
             foreach ($index_item_links as $index_item_link) {
                 if ($index_item_link->get('certify_state') == CERTIFIED) {
                     if ($indexHandler->getPerm($index_item_link->get('index_id'), $uid, 'read')) {
@@ -198,9 +205,7 @@ class XNPPaperCompoHandler extends XooNIpsItemInfoCompoHandler
 }
 
 /**
- *
  * @brief Data object that have one ore more XooNIpsTableObject for Paper type.
- *
  */
 class XNPPaperCompo extends XooNIpsItemInfoCompo
 {

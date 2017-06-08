@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,34 +25,29 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/view/xmlrpcview.class.php';
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/xmlrpcfault.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xmlrpc/view/xmlrpcview.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xmlrpc/xmlrpcfault.class.php';
 
 /**
- *
  * @brief Class that generate response of XML-RPC getFile request
- *
- *
  */
 class XooNIpsXmlRpcViewGetFile extends XooNIpsXmlRpcViewElement
 {
-
     /**
-     *
      * @brief return XoopsXmlRpcTag that has response of this request
      *
      * @return XoopsXmlRpcTag
      */
     public function render()
     {
-        $file            = $this->response->getSuccess();
+        $file = $this->response->getSuccess();
         $filetypeHandler = xoonips_getOrmHandler('xoonips', 'file_type');
-        $filetype        = $filetypeHandler->get($file->get('file_type_id'));
+        $filetype = $filetypeHandler->get($file->get('file_type_id'));
         if (!$filetype) {
-            return new XooNIpsXmlRpcFault(106, 'file_type not found: id=' . $file->get('file_type_id'));
+            return new XooNIpsXmlRpcFault(106, 'file_type not found: id='.$file->get('file_type_id'));
         }
         if (!file_exists($file->getFilepath())) {
-            return new XooNIpsXmlRpcFault(106, 'file not found: id=' . $file->get('file_type_id'));
+            return new XooNIpsXmlRpcFault(106, 'file not found: id='.$file->get('file_type_id'));
         }
         $resp = new XoopsXmlRpcStruct();
         $resp->add('id', new XoopsXmlRpcInt($file->get('file_id')));
@@ -67,6 +63,7 @@ class XooNIpsXmlRpcViewGetFile extends XooNIpsXmlRpcViewElement
                                                           'UTF-8')));
         $resp->add('thumbnail', new XoopsXmlRpcBase64($file->get('thumbnail_file')));
         $resp->add('data', new XoopsXmlRpcBase64(file_get_contents($file->getFilepath())));
+
         return $resp;
     }
 }

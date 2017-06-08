@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 /**
- * Class XooNIpsItemEventDispatcher
+ * Class XooNIpsItemEventDispatcher.
  */
 class XooNIpsItemEventDispatcher
 {
@@ -38,8 +39,9 @@ class XooNIpsItemEventDispatcher
     {
         static $singleton_;
         if ($singleton_ == null) {
-            $singleton_ = new XooNIpsItemEventDispatcher();
+            $singleton_ = new self();
         }
+
         return $singleton_;
     }
 

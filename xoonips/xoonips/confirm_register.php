@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,22 +28,22 @@
 //  page for confirm to register items
 
 $xoopsOption['pagetype'] = 'user';
-require __DIR__ . '/include/common.inc.php';
+require __DIR__.'/include/common.inc.php';
 
-require_once __DIR__ . '/include/item_limit_check.php';
-require_once __DIR__ . '/include/lib.php';
-require_once __DIR__ . '/include/AL.php';
-require_once __DIR__ . '/class/base/gtickets.php';
+require_once __DIR__.'/include/item_limit_check.php';
+require_once __DIR__.'/include/lib.php';
+require_once __DIR__.'/include/AL.php';
+require_once __DIR__.'/class/base/gtickets.php';
 
-$xgroupHandler  = xoonips_getHandler('xoonips', 'group');
-$xnpsid         = $_SESSION['XNPSID'];
+$xgroupHandler = xoonips_getHandler('xoonips', 'group');
+$xnpsid = $_SESSION['XNPSID'];
 $system_message = '';
 
 $textutil = xoonips_getUtility('text');
 $formdata = xoonips_getUtility('formdata');
 
 $xoonipsCheckedXID = $formdata->getValue('post', 'xoonipsCheckedXID', 's', true);
-$checked_xids      = explode(',', $xoonipsCheckedXID);
+$checked_xids = explode(',', $xoonipsCheckedXID);
 
 $xoonipsURL = ''; // disable to link for index tree
 
@@ -50,13 +51,13 @@ foreach (array(
              'item_type_id' => array(
                  'i',
                  true,
-                 0
+                 0,
              ),
-             'op'           => array(
+             'op' => array(
                  's',
                  false,
-                 ''
-             )
+                 '',
+             ),
          ) as $k => $meta
 ) {
     list($type, $is_required, $default) = $meta;
@@ -70,50 +71,50 @@ $uid = $_SESSION['xoopsUserId'];
 //retrive module name to $modname
 $itemtypes = array();
 if (xnp_get_item_types($itemtypes) != RES_OK) {
-    redirect_header(XOOPS_URL . '/', 3, 'ERROR xnp_get_item_types');
+    redirect_header(XOOPS_URL.'/', 3, 'ERROR xnp_get_item_types');
 } else {
     foreach ($itemtypes as $i) {
         if ($i['item_type_id'] == $item_type_id) {
-            $modname  = $i['name'];
+            $modname = $i['name'];
             $itemtype = $i;
             break;
         }
     }
 }
 if (!isset($itemtype)) {
-    redirect_header(XOOPS_URL . '/', 3, 'ERROR item type not detected');
+    redirect_header(XOOPS_URL.'/', 3, 'ERROR item type not detected');
 }
 
 //include view.php
-require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+require_once XOOPS_ROOT_PATH.'/modules/'.$itemtype['viewphp'];
 
 //check required field
 $title = $formdata->getValue('post', 'title', 's', false);
 if ($title == '') {
     //title is not filled
-    $op             = '';
-    $system_message = '<span style="color: red;">' . _MD_XOONIPS_ITEM_TITLE_REQUIRED . '</span>';
+    $op = '';
+    $system_message = '<span style="color: red;">'._MD_XOONIPS_ITEM_TITLE_REQUIRED.'</span>';
 }
 
 //check private_item_number_limit
 if (available_space_of_private_item() == 0) {
     // warning, if not enough to store items
     $op = '';
-    $system_message .= '<span style="color: red;">' . _MD_XOONIPS_ITEM_WARNING_ITEM_NUMBER_LIMIT . '</span><br>';
+    $system_message .= '<span style="color: red;">'._MD_XOONIPS_ITEM_WARNING_ITEM_NUMBER_LIMIT.'</span><br>';
 }
 
 //check private_item_storage_limit
 if (!check_private_item_storage_limit()) {
     $op = '';
-    $system_message .= '<span style="color: red;">' . _MD_XOONIPS_ITEM_WARNING_ITEM_STORAGE_LIMIT . '</span><br>';
+    $system_message .= '<span style="color: red;">'._MD_XOONIPS_ITEM_WARNING_ITEM_STORAGE_LIMIT.'</span><br>';
 }
 
 //check group_item_number_limit
 //check group_item_storage_limit
 $gids = array();
 foreach ($checked_xids as $xid) {
-    $index  = array();
-    $result = xnp_get_index($xnpsid, (int)$xid, $index);
+    $index = array();
+    $result = xnp_get_index($xnpsid, (int) $xid, $index);
     if ($result == RES_OK && $index['open_level'] == OL_GROUP_ONLY) {
         $gids[] = $index['owner_gid'];
     }
@@ -121,36 +122,36 @@ foreach ($checked_xids as $xid) {
 foreach (array_unique($gids) as $gid) {
     if (available_space_of_group_item($gid) == 0) {
         // warning, if not enough to store items
-        $op     = '';
+        $op = '';
         $xg_obj = $xgroupHandler->getGroupObject($gid);
         if (is_object($xg_obj)) {
-            $system_message .= '<span style="color: red;">' . _MD_XOONIPS_ITEM_WARNING_ITEM_NUMBER_LIMIT . '(group=' . $xg_obj->getVar('gname', 's')
-                               . ')</span><br>';
+            $system_message .= '<span style="color: red;">'._MD_XOONIPS_ITEM_WARNING_ITEM_NUMBER_LIMIT.'(group='.$xg_obj->getVar('gname', 's')
+                               .')</span><br>';
         } else {
-            $system_message .= '<span style="color: red;">' . _MD_XOONIPS_ITEM_WARNING_ITEM_NUMBER_LIMIT . "(gid=${gid})</span><br>";
+            $system_message .= '<span style="color: red;">'._MD_XOONIPS_ITEM_WARNING_ITEM_NUMBER_LIMIT."(gid=${gid})</span><br>";
         }
     }
     if (!check_group_item_storage_limit($gid)) {
-        $op     = '';
+        $op = '';
         $xg_obj = $xgroupHandler->getGroupObject($gid);
         if (is_object($xg_obj)) {
-            $system_message .= '<span style="color: red;">' . _MD_XOONIPS_ITEM_WARNING_ITEM_STORAGE_LIMIT . '(group=' . $xg_obj->getVar('gname', 's')
-                               . ')</span><br>';
+            $system_message .= '<span style="color: red;">'._MD_XOONIPS_ITEM_WARNING_ITEM_STORAGE_LIMIT.'(group='.$xg_obj->getVar('gname', 's')
+                               .')</span><br>';
         } else {
-            $system_message .= '<span style="color: red;">' . _MD_XOONIPS_ITEM_WARNING_ITEM_STORAGE_LIMIT . "(gid=${gid})</span><br>";
+            $system_message .= '<span style="color: red;">'._MD_XOONIPS_ITEM_WARNING_ITEM_STORAGE_LIMIT."(gid=${gid})</span><br>";
         }
     }
 }
 
 //check registration to Private Index
 //if there is no registration, registration of items are forbidden.
-$user               = array();
-$private_index_flag = false;// true if private index is selected
-$public_index_flag  = false;// true if public index is selected
-$group_index_flag   = false;// true if group index is selected
+$user = array();
+$private_index_flag = false; // true if private index is selected
+$public_index_flag = false; // true if public index is selected
+$group_index_flag = false; // true if group index is selected
 foreach ($checked_xids as $xid) {
-    $index  = array();
-    $result = xnp_get_index($xnpsid, (int)$xid, $index);
+    $index = array();
+    $result = xnp_get_index($xnpsid, (int) $xid, $index);
     if ($result == RES_OK) {
         if ($index['open_level'] == OL_PRIVATE) {
             $private_index_flag = true;
@@ -170,25 +171,25 @@ if (XNP_CONFIG_DOI_FIELD_PARAM_NAME != '') {
     $doi = $formdata->getValue('post', 'doi', 's', false);
     if ($doi != '') {
         $matches = array();
-        $res     = preg_match('/' . XNP_CONFIG_DOI_FIELD_PARAM_PATTERN . '/', $doi, $matches);
+        $res = preg_match('/'.XNP_CONFIG_DOI_FIELD_PARAM_PATTERN.'/', $doi, $matches);
         if (strlen($doi) > XNP_CONFIG_DOI_FIELD_PARAM_MAXLEN
             || $res == 0
             || $matches[0] != $doi
         ) {
             $op = '';
-            $system_message .= "\n" . '<br><span style="color: red;">' . sprintf(_MD_XOONIPS_ITEM_DOI_INVALID_ID, XNP_CONFIG_DOI_FIELD_PARAM_MAXLEN)
-                               . '</span><br>';
+            $system_message .= "\n".'<br><span style="color: red;">'.sprintf(_MD_XOONIPS_ITEM_DOI_INVALID_ID, XNP_CONFIG_DOI_FIELD_PARAM_MAXLEN)
+                               .'</span><br>';
         }
         //check doi duplication
         if (xnpIsDoiExists($doi)) {
             $op = '';
-            $system_message .= "\n" . '<br><span style="color: red;">' . _MD_XOONIPS_ITEM_DOI_DUPLICATE_ID . '</span><br>';
+            $system_message .= "\n".'<br><span style="color: red;">'._MD_XOONIPS_ITEM_DOI_DUPLICATE_ID.'</span><br>';
         }
     }
 }
 //check required field(detail information)
 $msg = '';
-eval("\$param_check_result = " . $modname . "CheckRegisterParameters( \$msg );");
+eval('$param_check_result = '.$modname.'CheckRegisterParameters( $msg );');
 if (!$param_check_result) {
     $op = '';
 }
@@ -202,14 +203,14 @@ if (isset($op) && $op === 'register') {
     xnpEncodeMacSafariGet();
 
     $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-    $item_type        = $item_typeHandler->get($_POST['item_type_id']);
+    $item_type = $item_typeHandler->get($_POST['item_type_id']);
     if (!$item_type) {
-        trigger_error('invalid item_type_id:' . $_POST['item_type_id']);
+        trigger_error('invalid item_type_id:'.$_POST['item_type_id']);
         exit();
     }
     $modname = $item_type->get('name');
 
-    eval("\$result = " . $modname . "CheckRegisterParameters( \$msg );");
+    eval('$result = '.$modname.'CheckRegisterParameters( $msg );');
     if (!$result) {
         trigger_error('incomplete parameters');
         exit();
@@ -217,20 +218,20 @@ if (isset($op) && $op === 'register') {
 
     //register item
     $item_id = 0;
-    eval("\$result = " . $modname . "InsertItem( \$item_id );");
+    eval('$result = '.$modname.'InsertItem( $item_id );');
     if (!$result) {
-        redirect_header(XOOPS_URL . '/', 3, 'ERROR in ' . $modname . 'InsertItem( )');
+        redirect_header(XOOPS_URL.'/', 3, 'ERROR in '.$modname.'InsertItem( )');
     } else {
         // lock item and indexes if certify required
-        $item_basicHandler      = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $indexHandler           = xoonips_getOrmHandler('xoonips', 'index');
+        $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $index_item_links       =  $index_item_linkHandler->getObjects(new Criteria('item_id', $item_id));
-        $certify_required       = false;
+        $index_item_links = $index_item_linkHandler->getObjects(new Criteria('item_id', $item_id));
+        $certify_required = false;
         foreach ($index_item_links as $index_item_link) {
             if ($index_item_link->get('certify_state') == CERTIFY_REQUIRED) {
                 $index_id = $index_item_link->get('index_id');
-                $index    = $indexHandler->get($index_id);
+                $index = $indexHandler->get($index_id);
                 if ($index->get('open_level') == OL_PUBLIC
                     || $index->get('open_level') == OL_GROUP_ONLY
                 ) {
@@ -240,7 +241,7 @@ if (isset($op) && $op === 'register') {
             }
         }
         if ($certify_required) {
-            redirect_header('register.php', 5, "Succeed\n<br>" . _MD_XOONIPS_ITEM_NEED_TO_BE_CERTIFIED);
+            redirect_header('register.php', 5, "Succeed\n<br>"._MD_XOONIPS_ITEM_NEED_TO_BE_CERTIFIED);
         } else {
             redirect_header('register.php', 3, 'Succeed');
         }
@@ -248,12 +249,12 @@ if (isset($op) && $op === 'register') {
     exit();
 } else {
     if (!$param_check_result) {
-        if (function_exists($modname . 'CorrectRegisterParameters')) {
-            eval($modname . 'CorrectRegisterParameters();');
+        if (function_exists($modname.'CorrectRegisterParameters')) {
+            eval($modname.'CorrectRegisterParameters();');
         }
 
         $msg = '';
-        eval("\$param_check_result = " . $modname . "CheckRegisterParameters( \$msg );");
+        eval('$param_check_result = '.$modname.'CheckRegisterParameters( $msg );');
         $system_message .= $msg;
     }
 
@@ -266,7 +267,7 @@ if (isset($op) && $op === 'register') {
     //prepare template
     $GLOBALS['xoopsOption']['template_main'] = 'xoonips_confirm_register.tpl';
 
-    require XOOPS_ROOT_PATH . '/header.php';
+    require XOOPS_ROOT_PATH.'/header.php';
 
     if ($param_check_result) {
         // select /Private and notice
@@ -274,7 +275,7 @@ if (isset($op) && $op === 'register') {
         // if any private indexes are not selected.
         $account = array();
         if (RES_OK != xnp_get_account($xnpsid, $uid, $account)) {
-            redirect_header(XOOPS_URL . '/', 3, 'ERROR xnp_get_account. ' . xnp_get_last_error_string());
+            redirect_header(XOOPS_URL.'/', 3, 'ERROR xnp_get_account. '.xnp_get_last_error_string());
         }
         if (!$private_index_flag) {
             //select /Private
@@ -290,9 +291,9 @@ if (isset($op) && $op === 'register') {
     $xoopsTpl->assign('token_hidden', $token_ticket);
 
     $select_item_type = array();
-    $itemtypes        = array();
+    $itemtypes = array();
     if (xnp_get_item_types($itemtypes) != RES_OK) {
-        redirect_header(XOOPS_URL . '/', 3, 'ERROR xnp_get_item_types');
+        redirect_header(XOOPS_URL.'/', 3, 'ERROR xnp_get_item_types');
     } else {
         foreach ($itemtypes as $i) {
             if ($i['item_type_id'] > 2) {
@@ -302,15 +303,15 @@ if (isset($op) && $op === 'register') {
                 }
                 if ($i['item_type_id'] == $item_type_id) {
                     $itemtype = $i;
-                    $modname  = $i['name'];
+                    $modname = $i['name'];
                 }
                 $select_item_type[$i['display_name']] = $i['item_type_id'];
             }
         }
     }
 
-    require_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
-    eval("\$body = " . $modname . 'GetConfirmBlock(false);');
+    require_once XOOPS_ROOT_PATH.'/modules/'.$itemtype['viewphp'];
+    eval('$body = '.$modname.'GetConfirmBlock(false);');
     $xoopsTpl->assign('body', $body);
     ////send basic information using hidden to next(before)page.
     $http_vars = array();
@@ -326,7 +327,7 @@ if (isset($op) && $op === 'register') {
                  'change_log',
                  'xoonipsCheckedXID',
                  'lang',
-                 'related_to'
+                 'related_to',
              ) as $k
     ) {
         $tmp = $formdata->getValue('post', $k, 'n', false);
@@ -346,5 +347,5 @@ if (isset($op) && $op === 'register') {
         $xoopsTpl->assign('register_button_visible', false);
     }
 
-    require XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH.'/footer.php';
 }

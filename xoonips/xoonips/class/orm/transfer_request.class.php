@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -46,12 +47,12 @@ class XooNIpsOrmTransferRequest extends XooNIpsTableObject
 
 /**
  * @brief Handler object of XooNIps Item Lock
- *
  */
 class XooNIpsOrmTransferRequestHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmTransferRequestHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

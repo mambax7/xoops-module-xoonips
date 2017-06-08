@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,20 +25,17 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/logic.class.php';
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/transaction.class.php';
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_item_event_dispatcher.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/logic.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/transaction.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xoonips_item_event_dispatcher.class.php';
 
 /**
- *
- * subclass of XooNIpsLogic(removeItem)
- *
+ * subclass of XooNIpsLogic(removeItem).
  */
 class XooNIpsLogicRemoveItem extends XooNIpsLogic
 {
-
     /**
-     * execute removeItem
+     * execute removeItem.
      *
      * @param[in]  $vars[0] session ID
      * @param[in]  $vars[1] item identifier
@@ -45,6 +43,7 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response->success item id of deleted item
+     *
      * @return bool
      */
     public function execute($vars, $response)
@@ -67,7 +66,7 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
         update item_status
         */
         // parameter check
-        $error =  $response->getError();
+        $error = $response->getError();
         if (count($vars) > 3) {
             $error->add(XNPERR_EXTRA_PARAM);
         } elseif (count($vars) < 3) {
@@ -89,20 +88,22 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
         if ($error->get(0)) {
             // return if parameter error
             $response->setResult(false);
+
             return;
         } else {
             $sessionid = $vars[0];
-            $id        = $vars[1];
-            $id_type   = $vars[2];
+            $id = $vars[1];
+            $id_type = $vars[2];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
+
             return false;
         }
         // get item and item_id
-        $itemHandler       = xoonips_getOrmCompoHandler('xoonips', 'item');
+        $itemHandler = xoonips_getOrmCompoHandler('xoonips', 'item');
         $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
         if ($id_type === 'item_id') {
             $item = $itemHandler->get($id);
@@ -110,16 +111,19 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
             if (strlen($id) == 0) {
                 $response->setResult(false);
                 $error->add(XNPERR_INVALID_PARAM, 'ext_id is empty');
+
                 return false;
             } else {
-                $basics =  $item_basicHandler->getObjects(new Criteria('doi', addslashes($id)));
+                $basics = $item_basicHandler->getObjects(new Criteria('doi', addslashes($id)));
                 if (false === $basics) {
                     $response->setResult(false);
                     $error->add(XNPERR_SERVER_ERROR, 'cannot get basic information');
+
                     return false;
                 } elseif (count($basics) >= 2) {
                     $response->setResult(false);
                     $error->add(XNPERR_SERVER_ERROR, 'ext_id is duplicated');
+
                     return false;
                 } elseif (count($basics) == 1) {
                     $item = $itemHandler->get($basics[0]->get('item_id'));
@@ -130,14 +134,16 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
         } else {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_PARAM, "bad id_type($id_type)");
+
             return false;
         }
         if (!$item) {
             $response->setResult(false);
             $error->add(XNPERR_NOT_FOUND);
+
             return false;
         }
-        $basic   = $item->getVar('basic');
+        $basic = $item->getVar('basic');
         $item_id = $basic->get('item_id');
         // can delete?
         if (!$itemHandler->getPerm($item_id, $uid, 'delete')) {
@@ -145,44 +151,48 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
             $response->setResult(false);
             if ($item_lockHandler->isLocked($item_id)) {
                 $error->add(XNPERR_ACCESS_FORBIDDEN,
-                            'cannot remove item because item is ' . $this->getLockTypeString($item_lockHandler->getLockType($item_id)));
+                            'cannot remove item because item is '.$this->getLockTypeString($item_lockHandler->getLockType($item_id)));
             } else {
                 $error->add(XNPERR_ACCESS_FORBIDDEN);
             }
+
             return false;
         }
         // item -> detail_item
-        $item_type_id     = $basic->get('item_type_id');
+        $item_type_id = $basic->get('item_type_id');
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $item_type        = $item_typeHandler->get($item_type_id);
+        $item_type = $item_typeHandler->get($item_type_id);
         if (!$item_type) {
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, "cannot get itemtype(item_type_id=$item_type_id)");
+
             return false;
         }
-        $item_type_name     = $item_type->get('name');
+        $item_type_name = $item_type->get('name');
         $detail_itemHandler = xoonips_getOrmCompoHandler($item_type_name, 'item');
         if (!$detail_itemHandler) {
             $response->setResult(false);
             $error->add(XNPERR_ERROR, "unsupported itemtype($item_type_id)");
+
             return false;
         }
         $detail_item = $detail_itemHandler->get($item_id);
         if (!$detail_item) {
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'cannot get item');
+
             return false;
         }
         // get files
-        $delete_later            = array();
+        $delete_later = array();
         $detail_item_typeHandler = xoonips_getOrmHandler($item_type_name, 'item_type');
-        $detail_item_type        = $detail_item_typeHandler->get($item_type_id);
+        $detail_item_type = $detail_item_typeHandler->get($item_type_id);
         foreach ($detail_item_type->getFileTypeNames() as $field_name) {
             $files = $detail_item->getVar($field_name);
             if ($files) {
                 if (!$detail_item_type->getMultiple($field_name)) {
                     $files = array(
-                        $files
+                        $files,
                     );
                 }
                 foreach ($files as $file) {
@@ -199,6 +209,7 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
             $transaction->rollback();
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'cannot delete item');
+
             return false;
         }
         // delete item from related_to
@@ -207,11 +218,12 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
             $transaction->rollback();
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'cannot delete item_id in the related_tos');
+
             return false;
         }
         // update item_status
         $item_statusHandler = xoonips_getOrmHandler('xoonips', 'item_status');
-        $item_status        = $item_statusHandler->get($item_id);
+        $item_status = $item_statusHandler->get($item_id);
         if ($item_status && $item_status->get('is_deleted') == 0) {
             $item_status->setVar('is_deleted', 1, true);
             $item_status->setVar('deleted_timestamp', time(), true);
@@ -219,6 +231,7 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
                 $transaction->rollback();
                 $response->setResult(false);
                 $error->add(XNPERR_SERVER_ERROR, 'cannot update item_status');
+
                 return false;
             }
         }
@@ -228,6 +241,7 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
             $transaction->rollback();
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'cannot insert event');
+
             return false;
         }
         // commit
@@ -235,7 +249,7 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
         // unlink files. cannot rollback
         // delete search_text. cannot rollback because search_text contains fulltext column(MyISAM).
         $search_textHandler = xoonips_getOrmHandler('xoonips', 'search_text');
-        $fileHandler        = xoonips_getOrmHandler('xoonips', 'file');
+        $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
         foreach ($delete_later as $file) {
             if ($file->isNew()) {
                 continue;
@@ -251,15 +265,17 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
         }
         if ($error->get()) {
             $response->setResult(false);
+
             return false;
         }
         // call item event listener
         $this->_include_view_php();
-        $dispatcher =  XooNIpsItemEventDispatcher::getInstance();
+        $dispatcher = XooNIpsItemEventDispatcher::getInstance();
         $dispatcher->onDelete($item_id);
 
         $response->setSuccess($item_id);
         $response->setResult(true);
+
         return true;
     }
 
@@ -267,14 +283,14 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
     {
         $handler = xoonips_getOrmHandler('xoonips', 'item_type');
         foreach ($handler->getObjects() as $item_type) {
-            $path = XOOPS_ROOT_PATH . '/modules/' . $item_type->get('viewphp');
+            $path = XOOPS_ROOT_PATH.'/modules/'.$item_type->get('viewphp');
             if (!file_exists($path)) {
                 continue;
             }
             if (!is_file($path)) {
                 continue;
             }
-            require_once XOOPS_ROOT_PATH . '/modules/' . $item_type->get('viewphp');
+            require_once XOOPS_ROOT_PATH.'/modules/'.$item_type->get('viewphp');
         }
     }
 }

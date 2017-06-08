@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,10 +26,10 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/../../class/base/actionfactory.class.php';
+require_once __DIR__.'/../../class/base/actionfactory.class.php';
 
 $factory = XooNIpsActionFactory::getInstance();
-$action  = $factory->create('transfer_admin_check');
+$action = $factory->create('transfer_admin_check');
 if (!is_object($action)) {
     die('unexpected error');
 }

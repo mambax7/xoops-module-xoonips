@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -29,6 +30,7 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 /**
  * @param $a
  * @param $b
+ *
  * @return int
  */
 function _xoonips_helper_quick_search_cmp($a, $b)
@@ -37,6 +39,7 @@ function _xoonips_helper_quick_search_cmp($a, $b)
         return ($a['mid'] < $b['mid']) ? -1 : 1;
         // mid must be uniq
     }
+
     return ($a['weight'] < $b['weight']) ? -1 : 1;
 }
 
@@ -54,7 +57,7 @@ function b_xoonips_quick_search_show()
     // policy is 'platform'.
     if (!is_object($xoopsUser)) {
         $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-        $target_user    = $xconfigHandler->getValue('public_item_target_user');
+        $target_user = $xconfigHandler->getValue('public_item_target_user');
         if ($target_user !== 'all') {
             // 'platform'
             return false;
@@ -70,32 +73,32 @@ function b_xoonips_quick_search_show()
     }
 
     $search_itemtypes = array(
-        'all'      => _MB_XOONIPS_SEARCH_ALL,
-        'basic'    => _MB_XOONIPS_SEARCH_TITLE_AND_KEYWORD,
+        'all' => _MB_XOONIPS_SEARCH_ALL,
+        'basic' => _MB_XOONIPS_SEARCH_TITLE_AND_KEYWORD,
         'metadata' => _MB_XOONIPS_SEARCH_METADATA,
     );
 
     // get installed itemtypes
     // TODO: xoonips_item_type table should have itemtype sort order.
-    $moduleHandler   = xoops_getHandler('module');
+    $moduleHandler = xoops_getHandler('module');
     $itemtypeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-    $itemtype_objs   =  $itemtypeHandler->getObjects();
-    $itemtypes       = array();
+    $itemtype_objs = $itemtypeHandler->getObjects();
+    $itemtypes = array();
     foreach ($itemtype_objs as $itemtype_obj) {
         $name = $itemtype_obj->getVar('name', 'e');
         if (!in_array($name, array('xoonips_index'))) {
-            $mid          = $itemtype_obj->getVar('mid', 'n');
+            $mid = $itemtype_obj->getVar('mid', 'n');
             $display_name = $itemtype_obj->getVar('display_name', 'e');
-            $module       = $moduleHandler->get($mid);
+            $module = $moduleHandler->get($mid);
             if (!$module) {
                 continue;
             }
-            $weight      = $module->getVar('weight', 'n');
+            $weight = $module->getVar('weight', 'n');
             $itemtypes[] = array(
-                'mid'          => $mid,
-                'name'         => $name,
+                'mid' => $mid,
+                'name' => $name,
                 'display_name' => $display_name,
-                'weight'       => $weight,
+                'weight' => $weight,
             );
         }
     }
@@ -111,7 +114,7 @@ function b_xoonips_quick_search_show()
     // fetch previous query conditions
     // - keyword
     $formdata = xoonips_getUtility('formdata');
-    $keyword  = $formdata->getValue('both', 'keyword', 'n', false, '');
+    $keyword = $formdata->getValue('both', 'keyword', 'n', false, '');
     // - search_itemtype
     $selected = $formdata->getValue('both', 'search_itemtype', 's', false);
     if (null !== $selected && !in_array($selected, array_keys($search_itemtypes))) {
@@ -119,14 +122,14 @@ function b_xoonips_quick_search_show()
     }
 
     // assign block template variables
-    $block                              = array();
-    $block['lang_search']               = _MB_XOONIPS_SEARCH_QUICK;
-    $block['lang_advanced_search']      = _MB_XOONIPS_SEARCH_ADVANCED;
-    $block['search_itemtypes']          = $search_itemtypes;
-    $block['keyword']                   = $textutil->html_special_chars($keyword);
+    $block = array();
+    $block['lang_search'] = _MB_XOONIPS_SEARCH_QUICK;
+    $block['lang_advanced_search'] = _MB_XOONIPS_SEARCH_ADVANCED;
+    $block['search_itemtypes'] = $search_itemtypes;
+    $block['keyword'] = $textutil->html_special_chars($keyword);
     $block['search_itemtypes_selected'] = $textutil->html_special_chars($selected);
-    $block['op']                        = 'quicksearch';
-    $block['submit_url']                = XOOPS_URL . '/modules/xoonips/itemselect.php';
+    $block['op'] = 'quicksearch';
+    $block['submit_url'] = XOOPS_URL.'/modules/xoonips/itemselect.php';
 
     return $block;
 }

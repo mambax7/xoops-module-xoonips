@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,18 +27,17 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
-require_once XOOPS_ROOT_PATH . '/modules/xnpmemo/iteminfo.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xoonips_compo_item.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xnpmemo/iteminfo.php';
 
 /**
- *
  * @brief Handler object that create,insert,update,get,delete XNPMemoCompo object.
- *
  */
 class XNPMemoCompoHandler extends XooNIpsItemInfoCompoHandler
 {
     /**
      * XNPMemoCompoHandler constructor.
+     *
      * @param $db
      */
     public function __construct($db)
@@ -51,15 +51,17 @@ class XNPMemoCompoHandler extends XooNIpsItemInfoCompoHandler
     public function create()
     {
         $memo = new XNPMemoCompo();
+
         return $memo;
     }
 
     /**
-     * return template filename
+     * return template filename.
      *
      * @param string $type defined symbol
      *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
      *                     or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
+     *
      * @return string|template
      */
     public function getTemplateFileName($type)
@@ -75,14 +77,15 @@ class XNPMemoCompoHandler extends XooNIpsItemInfoCompoHandler
     }
 
     /**
-     * return template variables of item
+     * return template variables of item.
      *
-     * @param string $type defined symbol
-     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *                     , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
-     *                     or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
+     * @param string $type    defined symbol
+     *                        XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                        , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
+     *                        or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
      * @param int    $item_id
-     * @param int    $uid  user id who get item
+     * @param int    $uid     user id who get item
+     *
      * @return array of template variables
      */
     public function getTemplateVar($type, $item_id, $uid)
@@ -96,10 +99,11 @@ class XNPMemoCompoHandler extends XooNIpsItemInfoCompoHandler
         $detail = $memo->getVar('detail');
         switch ($type) {
             case XOONIPS_TEMPLATE_TYPE_ITEM_LIST:
-                $result['detail']                   = $detail->getVarArray('s');
-                $result['detail']['item_link']      = $detail->getVar('item_link', 's');
+                $result['detail'] = $detail->getVarArray('s');
+                $result['detail']['item_link'] = $detail->getVar('item_link', 's');
                 $result['detail']['item_link_href'] = preg_replace('/javascript:/i', '',
                                                                    preg_replace('/[\\x00-\\x20\\x22\\x27]/', '', $detail->getVar('item_link', 'n')));
+
                 return $result;
             case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
             case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
@@ -107,20 +111,20 @@ class XNPMemoCompoHandler extends XooNIpsItemInfoCompoHandler
                 $result['detail'] = array(
                     'item_link' => $detail->getVar('item_link', 's'),
                 );
-                $memo_file        = $memo->getVar('memo_file');
+                $memo_file = $memo->getVar('memo_file');
                 if ($memo_file->get('item_id') == $item_id) {
                     $result['detail']['memo_file'] = $this->getAttachmentTemplateVar($memo->getVar('memo_file'));
                 }
+
                 return $result;
         }
+
         return $result;
     }
 }
 
 /**
- *
  * @brief Data object that have one ore more XooNIpsTableObject for Memo type.
- *
  */
 class XNPMemoCompo extends XooNIpsItemInfoCompo
 {

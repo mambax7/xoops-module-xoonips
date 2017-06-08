@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,12 +26,13 @@
 // ------------------------------------------------------------------------- //
 
 /**
- * Class OaidcListRecordsHandler
+ * Class OaidcListRecordsHandler.
  */
 class OaidcListRecordsHandler extends ListRecordsHandler
 {
     /**
      * OaidcListRecordsHandler constructor.
+     *
      * @param $_parser
      * @param $_baseURL
      */
@@ -73,7 +75,7 @@ class OaidcListRecordsHandler extends ListRecordsHandler
             'LANGUAGE',
             'RELATION',
             'COVERAGE',
-            'RIGHTS'
+            'RIGHTS',
         );
         if (isset($this->tagstack[3])
             && $this->getElementName($this->tagstack[3]) === 'HEADER'
@@ -82,11 +84,11 @@ class OaidcListRecordsHandler extends ListRecordsHandler
             parent::endElementHandler($parser, $name);
         } elseif ($this->getElementName(end($this->tagstack)) === 'DATE') {
             $this->_creation_date = $this->_cdata_buf;
-            $this->search_text[]  = $this->_cdata_buf;
+            $this->search_text[] = $this->_cdata_buf;
             $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_CREATION_DATE);
             array_pop($this->tagstack);
         } elseif ($this->getElementName(end($this->tagstack)) === 'IDENTIFIER') {
-            $result = preg_match("/^(s?https?:\\/\\/" . "[-_.!~*'\\(\\)a-zA-Z0-9;\\/?:\\@&=+\$,%#]+)/", $this->_cdata_buf);
+            $result = preg_match('/^(s?https?:\\/\\/'."[-_.!~*'\\(\\)a-zA-Z0-9;\\/?:\\@&=+\$,%#]+)/", $this->_cdata_buf);
             if (1 == $result) {
                 $this->_resource_url[] = $this->_cdata_buf;
                 $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_RESOURCE_LINK);

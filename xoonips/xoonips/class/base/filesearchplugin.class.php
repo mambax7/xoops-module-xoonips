@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,51 +27,50 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * abstract class for file search plugin 2.0
+ * abstract class for file search plugin 2.0.
  */
 class XooNIpsFileSearchPlugin
 {
-
     /**
-     * file handle
-     * @access private
+     * file handle.
+     *
      * @var resource
      */
     public $handle = false;
 
     /**
-     * is xml data
-     * @access private
+     * is xml data.
+     *
      * @var bool
      */
     public $is_xml = false;
 
     /**
-     * is UTF-8 data
-     * @access private
+     * is UTF-8 data.
+     *
      * @var bool
      */
     public $is_utf8 = true;
 
     /**
-     * log for last operation
-     * @access private
+     * log for last operation.
+     *
      * @var resource
      */
     public $lastlog = '';
 
     /**
-     * constractor
+     * constractor.
      */
     public function __construct()
     {
     }
 
     /**
-     * open file
+     * open file.
      *
-     * @access public
      * @param string $filename file name
+     *
      * @return bool false if failure
      */
     public function open($filename)
@@ -78,20 +78,22 @@ class XooNIpsFileSearchPlugin
         $this->lastlog = '';
         if ($this->handle !== false) {
             $this->lastlog = 'FILE ALREADY OPENED';
+
             return false;
         }
         $this->_open_file($filename);
         if ($this->handle === false) {
             $this->lastlog = 'FAILED TO OPEN FILE';
+
             return false;
         }
+
         return true;
     }
 
     /**
-     * close file
+     * close file.
      *
-     * @access public
      * @return bool false if failure
      */
     public function close()
@@ -99,16 +101,17 @@ class XooNIpsFileSearchPlugin
         $this->lastlog = '';
         if ($this->handle == false) {
             $this->lastlog = 'FILE NOT OPENED';
+
             return false;
         }
         $this->_close_file();
+
         return true;
     }
 
     /**
-     * fetch 'UTF-8' text from file
+     * fetch 'UTF-8' text from file.
      *
-     * @access public
      * @return string fetched data if false returned an error occured
      */
     public function fetch()
@@ -116,6 +119,7 @@ class XooNIpsFileSearchPlugin
         $this->lastlog = '';
         if ($this->handle == false) {
             $this->lastlog = 'FILE NOT OPENED';
+
             return false;
         }
         $text = '';
@@ -128,19 +132,18 @@ class XooNIpsFileSearchPlugin
         if (!$this->is_utf8) {
             // convert encoding to utf8
             $unicode = xoonips_getUtility('unicode');
-            $text    = $unicode->encode_utf8($text);
+            $text = $unicode->encode_utf8($text);
         }
         if ($this->is_xml) {
             // convert html or xml entities to utf8 character
             $textutil = xoonips_getUtility('text');
-            $text     = $textutil->html_numeric_entities($text);
+            $text = $textutil->html_numeric_entities($text);
 
 //          $text     = preg_replace('/&#x([0-9a-f]+);/ie', 'chr(hexdec("\\1"))', $text);
             $text = preg_replace_callback('/&#x([0-9a-f]+);/i', function ($m) { return chr(hexdec($m[1])); }, $text);
 
 //          $text     = preg_replace('/&#([0-9]+);/e', 'chr("\\1")', $text);
             $text = preg_replace_callback('/&#(\d+);/', function ($m) { return chr($m[1]); }, $text);
-
         }
         // chop non printable characters
         $text = preg_replace('/[\\x00-\\x1f\\x7f]/', ' ', $text);
@@ -153,9 +156,8 @@ class XooNIpsFileSearchPlugin
     }
 
     /**
-     * get last log
+     * get last log.
      *
-     * @access public
      * @return string last log
      */
     public function getLastLog()
@@ -164,9 +166,10 @@ class XooNIpsFileSearchPlugin
     }
 
     /**
-     * abstract function to open file resource
+     * abstract function to open file resource.
      *
      * @acccess protected
+     *
      * @param string $file_path file path
      */
     public function _open_file($file_path)
@@ -176,7 +179,7 @@ class XooNIpsFileSearchPlugin
     }
 
     /**
-     * abstract function to close file resource
+     * abstract function to close file resource.
      *
      * @acccess protected
      */
@@ -187,9 +190,10 @@ class XooNIpsFileSearchPlugin
     }
 
     /**
-     * abstract function to check end of file resource
+     * abstract function to check end of file resource.
      *
      * @acccess protected
+     *
      * @return bool true if end of file
      */
     public function _is_eof()
@@ -199,9 +203,10 @@ class XooNIpsFileSearchPlugin
     }
 
     /**
-     * abstract function to fetch data in file
+     * abstract function to fetch data in file.
      *
      * @acccess protected
+     *
      * @return string fetched data if false returned it was terminated
      */
     public function _fetch_data()
@@ -211,9 +216,8 @@ class XooNIpsFileSearchPlugin
     }
 
     /**
-     * fetch from text
+     * fetch from text.
      *
-     * @access protected
      * @return string fetched data if false returned it was terminated
      */
     public function _fetch_from_text()
@@ -222,9 +226,8 @@ class XooNIpsFileSearchPlugin
     }
 
     /**
-     * fetch from xml
+     * fetch from xml.
      *
-     * @access protected
      * @return string fetched data if false returned it was terminated
      */
     public function _fetch_from_xml()

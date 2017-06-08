@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,10 +25,10 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once dirname(dirname(__DIR__)) . '/xoonips/class/xoonips_import_item.class.php';
+require_once dirname(dirname(__DIR__)).'/xoonips/class/xoonips_import_item.class.php';
 
 /**
- * Class XNPBinderImportItem
+ * Class XNPBinderImportItem.
  */
 class XNPBinderImportItem extends XooNIpsImportItem
 {
@@ -36,13 +37,13 @@ class XNPBinderImportItem extends XooNIpsImportItem
      */
     public function __construct()
     {
-        $handler     = xoonips_getOrmCompoHandler('xnpbinder', 'item');
+        $handler = xoonips_getOrmCompoHandler('xnpbinder', 'item');
         $this->_item = $handler->create();
     }
 }
 
 /**
- * Class XNPBinderImportItemHandler
+ * Class XNPBinderImportItemHandler.
  */
 class XNPBinderImportItemHandler extends XooNIpsImportItemHandler
 {
@@ -63,27 +64,27 @@ class XNPBinderImportItemHandler extends XooNIpsImportItemHandler
     }
 
     /**
-     *
      * @param $parser
      * @param $name
+     *
      * @internal param $
      */
     public function xmlEndElementHandler($parser, $name)
     {
         global $xoopsDB;
         $binder_item_links = $this->_import_item->getVar('binder_item_links');
-        $unicode           = xoonips_getUtility('unicode');
+        $unicode = xoonips_getUtility('unicode');
 
         switch (implode('/', $this->_tag_stack)) {
             case 'ITEM/DETAIL':
                 if (count($binder_item_links) == 0) {
-                    $this->_import_item->setErrors(E_XOONIPS_TAG_NOT_FOUND, ' no binder_item_link' . $this->_get_parser_error_at());
+                    $this->_import_item->setErrors(E_XOONIPS_TAG_NOT_FOUND, ' no binder_item_link'.$this->_get_parser_error_at());
                 }
                 break;
             case 'ITEM/DETAIL/BINDER_ITEM_LINK':
                 $handler = xoonips_getOrmHandler('xnpbinder', 'binder_item_link');
-                $link    = $handler->create();
-                $link->set('item_id', (int)$unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h'));
+                $link = $handler->create();
+                $link->set('item_id', (int) $unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h'));
                 $binder_item_links[] = $link;
                 break;
         }
@@ -132,10 +133,9 @@ class XNPBinderImportItemHandler extends XooNIpsImportItemHandler
     }
 
     /**
+     * Update item_id of xnpbinder_binder_item_link.
      *
-     * Update item_id of xnpbinder_binder_item_link
-     *
-     * @param $item         XooNIpsImportItem that is imported.
+     * @param $item         xooNIpsImportItem that is imported
      * @param $import_items array of all of XooNIpsImportItems
      */
     public function onImportFinished($item, $import_items)
@@ -166,8 +166,8 @@ class XNPBinderImportItemHandler extends XooNIpsImportItemHandler
 
         // update xnpbinder_binder_item_link.item_id from pseudo
         //  item id to item id
-        $handler   = xoonips_getOrmHandler('xnpbinder', 'binder_item_link');
-        $links     = $item->getVar('binder_item_links');
+        $handler = xoonips_getOrmHandler('xnpbinder', 'binder_item_link');
+        $links = $item->getVar('binder_item_links');
         $new_links = array();
         foreach (array_keys($links) as $key) {
             if (!array_key_exists($links[$key]->get('item_id'), $pseudo_id2id)) {
@@ -189,11 +189,13 @@ class XNPBinderImportItemHandler extends XooNIpsImportItemHandler
 
     /**
      * @param $item
+     *
      * @return bool
      */
     public function insert($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpbinder', 'item');
+
         return $handler->insert($item);
     }
 
@@ -203,6 +205,7 @@ class XNPBinderImportItemHandler extends XooNIpsImportItemHandler
     public function setNew($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpbinder', 'item');
+
         return $handler->setNew($item);
     }
 
@@ -212,6 +215,7 @@ class XNPBinderImportItemHandler extends XooNIpsImportItemHandler
     public function unsetNew($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpbinder', 'item');
+
         return $handler->unsetNew($item);
     }
 
@@ -221,6 +225,7 @@ class XNPBinderImportItemHandler extends XooNIpsImportItemHandler
     public function setDirty($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpbinder', 'item');
+
         return $handler->setDirty($item);
     }
 
@@ -230,19 +235,22 @@ class XNPBinderImportItemHandler extends XooNIpsImportItemHandler
     public function unsetDirty($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpbinder', 'item');
+
         return $handler->unsetDirty($item);
     }
 
     /**
      * reeturn import log text of import item.
+     *
      * @param $import_item reference of XooNIpsImportItem object
+     *
      * @return string import log text
      */
     public function getImportLog($import_item)
     {
         $text = parent::getImportLog($import_item);
         foreach ($import_item->getVar('binder_item_links') as $link) {
-            $text .= "\ndetail.binder_item_link " . $link->get('item_id');
+            $text .= "\ndetail.binder_item_link ".$link->get('item_id');
         }
 
         return $text;
@@ -266,9 +274,9 @@ class XNPBinderImportItemHandler extends XooNIpsImportItemHandler
     }
 
     /**
-     *
      * @param array $child_items array of XooNIpsImportItem of child item
      * @param array $index_ids   array of integer of index id of binder
+     *
      * @return true(has private and group items) or false(doesn't have)
      */
     public function publicBinderHasNotPublicItems($child_items, $index_ids)
@@ -303,17 +311,20 @@ class XNPBinderImportItemHandler extends XooNIpsImportItemHandler
                         continue 2;
                     }
                 }
-                return true;//one child item is not public
+
+                return true; //one child item is not public
             }
+
             return false;
         }
+
         return false;
     }
 
     /**
-     *
      * @param array $child_items array of XooNIpsImportItem of child item
      * @param array $index_ids   array of integer of index id of binder
+     *
      * @return true(has private items) or false(doesn't have private items)
      */
     public function groupBinderHasPrivateItems($child_items, $index_ids)
@@ -350,10 +361,13 @@ class XNPBinderImportItemHandler extends XooNIpsImportItemHandler
                         continue 2;
                     }
                 }
-                return true;//one child item is private public
+
+                return true; //one child item is private public
             }
+
             return false;
         }
+
         return false;
     }
 }

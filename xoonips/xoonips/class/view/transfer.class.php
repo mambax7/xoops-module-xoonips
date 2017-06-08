@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,18 +25,16 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/../base/view.class.php';
+require_once __DIR__.'/../base/view.class.php';
 
 /**
- *
  * base class of transfer view.
- *
- *
  */
 class XooNIpsViewTransfer extends XooNIpsView
 {
     /**
-     * create view
+     * create view.
+     *
      * @param associative $params
      */
     public function __construct($params)
@@ -44,11 +43,9 @@ class XooNIpsViewTransfer extends XooNIpsView
     }
 
     /**
-     *
      * add link element to smarty template
-     *  to $xoopsTpl to include style.css
+     *  to $xoopsTpl to include style.css.
      *
-     * @access protected
      * @param $xoopsTpl
      */
     public function setXooNIpsStyleSheet($xoopsTpl)
@@ -64,8 +61,10 @@ class XooNIpsViewTransfer extends XooNIpsView
 
     /**
      * get concatenated title string.
+     *
      * @param array  $titles    array of XooNIpsTitle
      * @param string $delimiter delimieter string of each titles
+     *
      * @return string
      */
     public function concatenate_titles($titles, $delimiter = '/')
@@ -74,27 +73,33 @@ class XooNIpsViewTransfer extends XooNIpsView
         foreach ($titles as $t) {
             $result[] = $t->getVar('title', 's');
         }
+
         return implode($delimiter, $result);
     }
 
     /**
-     * get uname by uid
-     * @param integer $uid
+     * get uname by uid.
+     *
+     * @param int $uid
+     *
      * @return string|user
      */
     public function get_uname_by_uid($uid)
     {
         $handler = xoops_getHandler('user');
-        $user    = $handler->get($uid);
+        $user = $handler->get($uid);
         if (false === $user) {
             return '';
         }
+
         return $user->getVar('uname');
     }
 
     /**
-     * get index path string
-     * @param integer $index_id
+     * get index path string.
+     *
+     * @param int $index_id
+     *
      * @return index|string
      */
     public function get_index_path_by_index_id($index_id)
@@ -102,14 +107,15 @@ class XooNIpsViewTransfer extends XooNIpsView
         $userHandler = xoonips_getOrmHandler('xoonips', 'users');
 
         $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-        $index        = $indexHandler->get($index_id);
+        $index = $indexHandler->get($index_id);
         if ($index == false) {
             return '';
         }
         $user = $userHandler->get($index->get('uid'));
 
-        $handler     = xoonips_getOrmCompoHandler('xoonips', 'index');
+        $handler = xoonips_getOrmCompoHandler('xoonips', 'index');
         $index_names = $handler->getIndexPathNames($index_id, $user->get('private_index_id'), 's');
-        return '/' . implode('/', $index_names);
+
+        return '/'.implode('/', $index_names);
     }
 }

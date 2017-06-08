@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -35,9 +36,8 @@ class XooNIpsTransaction
     public $db;
 
     /**
-     * constractor
+     * constractor.
      *
-     * @access public
      * @param object $db XoopsDatabase
      */
     public function __construct($db)
@@ -46,9 +46,7 @@ class XooNIpsTransaction
     }
 
     /**
-     * start transaction
-     *
-     * @access public
+     * start transaction.
      */
     public function start()
     {
@@ -56,9 +54,7 @@ class XooNIpsTransaction
     }
 
     /**
-     * commit
-     *
-     * @access public
+     * commit.
      */
     public function commit()
     {
@@ -66,9 +62,7 @@ class XooNIpsTransaction
     }
 
     /**
-     * rollback
-     *
-     * @access public
+     * rollback.
      */
     public function rollback()
     {
@@ -76,17 +70,17 @@ class XooNIpsTransaction
     }
 
     /**
-     * get object instance
+     * get object instance.
      *
-     * @access public
      * @return object instance of XooNIpsTransaction
      */
     public static function getInstance()
     {
         static $singleton = null;
         if (!isset($singleton)) {
-            $singleton = new XooNIpsTransaction($GLOBALS['xoopsDB']);
+            $singleton = new self($GLOBALS['xoopsDB']);
         }
+
         return $singleton;
     }
 }

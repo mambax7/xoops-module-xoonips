@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,12 +25,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/../base/action.class.php';
-require_once __DIR__ . '/../base/logicfactory.class.php';
-require_once __DIR__ . '/../base/gtickets.php';
+require_once __DIR__.'/../base/action.class.php';
+require_once __DIR__.'/../base/logicfactory.class.php';
+require_once __DIR__.'/../base/gtickets.php';
 
 /**
- * Class XooNIpsActionImportResolveConflict
+ * Class XooNIpsActionImportResolveConflict.
  */
 class XooNIpsActionImportResolveConflict extends XooNIpsAction
 {
@@ -53,9 +54,6 @@ class XooNIpsActionImportResolveConflict extends XooNIpsAction
         return 'importCheckImport';
     }
 
-    /**
-     * @return null
-     */
     public function _get_view_name()
     {
         return $this->_view_name;
@@ -83,14 +81,14 @@ class XooNIpsActionImportResolveConflict extends XooNIpsAction
             $handler->create();
         }
 
-        $sess_hander       = xoonips_getOrmHandler('xoonips', 'session');
-        $sess              = $sess_hander->get(session_id());
-        $session           = unserialize($sess->get('sess_data'));
+        $sess_hander = xoonips_getOrmHandler('xoonips', 'session');
+        $sess = $sess_hander->get(session_id());
+        $session = unserialize($sess->get('sess_data'));
         $this->_collection = unserialize(gzuncompress(base64_decode($session['xoonips_import_items'])));
         xoonips_validate_request($this->_collection);
 
         $this->_collection->setImportAsNewOption(null !== $this->_formdata->getValue('post', 'import_as_new', 'i', false));
-        $items =  $this->_collection->getItems();
+        $items = $this->_collection->getItems();
         foreach (array_keys($items) as $key) {
             if (in_array($items[$key]->getPseudoId(), $this->getUpdatablePseudoId())) {
                 // set update flag of displayed item
@@ -113,11 +111,11 @@ class XooNIpsActionImportResolveConflict extends XooNIpsAction
 
     public function postAction()
     {
-        $success =  $this->_response->getSuccess();
+        $success = $this->_response->getSuccess();
 
         $sessHandler = xoonips_getOrmHandler('xoonips', 'session');
-        $sess        = $sessHandler->get(session_id());
-        $session     = unserialize($sess->get('sess_data'));
+        $sess = $sessHandler->get(session_id());
+        $session = unserialize($sess->get('sess_data'));
         $session['xoonips_import_items']
                      = base64_encode(gzcompress(serialize($this->_collection)));
         $sess->set('sess_data', serialize($session));
@@ -141,12 +139,13 @@ class XooNIpsActionImportResolveConflict extends XooNIpsAction
                                         = $success['private_item_number_limit_over'];
             $this->_view_params['private_item_storage_limit_over']
                                         = $success['private_item_storage_limit_over'];
-            $this->_view_name           = 'import_conflict';
+            $this->_view_name = 'import_conflict';
         }
     }
 
     /**
-     * get array of updatable_pseudo_id from POST form data
+     * get array of updatable_pseudo_id from POST form data.
+     *
      * @return array updatable pseudo ids or empty array
      */
     public function getUpdatablePseudoId()
@@ -157,11 +156,13 @@ class XooNIpsActionImportResolveConflict extends XooNIpsAction
         ) {
             return array();
         }
+
         return $updatable_pseudo_id;
     }
 
     /**
-     * get array of update_pseudo_id from POST form data
+     * get array of update_pseudo_id from POST form data.
+     *
      * @return array update pseudo ids or empty array
      */
     public function getUpdatePseudoId()
@@ -172,6 +173,7 @@ class XooNIpsActionImportResolveConflict extends XooNIpsAction
         ) {
             return array();
         }
+
         return $update_pseudo_id;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -71,13 +72,12 @@ class XooNIpsOrmOaipmhMetadata extends XooNIpsTableObject
 
 /**
  * @brief handler object of OAI-PMH metadata
- *
- *
  */
 class XooNIpsOrmOaipmhMetadataHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmOaipmhMetadataHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -87,18 +87,18 @@ class XooNIpsOrmOaipmhMetadataHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     *
-     * @access public
      * @param string $identifier identifier string of OAI-PMH
+     *
      * @return bool|XooNIpsOrmOaipmhMetadata
      */
     public function getByIdentifier($identifier)
     {
         $criteria = new Criteria('identifier', $identifier);
-        $result   =&  $this->getObjects($criteria);
+        $result = &$this->getObjects($criteria);
         if (!$result) {
             return false;
         }
+
         return $result[0];
     }
 }

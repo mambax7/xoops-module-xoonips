@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,11 +25,11 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/../base/logic.class.php';
-require_once __DIR__ . '/transfer.class.php';
+require_once __DIR__.'/../base/logic.class.php';
+require_once __DIR__.'/transfer.class.php';
 
 /**
- * Class XooNIpsLogicTransferUserReject
+ * Class XooNIpsLogicTransferUserReject.
  */
 class XooNIpsLogicTransferUserReject extends XooNIpsLogicTransfer
 {
@@ -41,10 +42,11 @@ class XooNIpsLogicTransferUserReject extends XooNIpsLogicTransfer
     }
 
     /**
-     * user rejected transfer request
+     * user rejected transfer request.
      *
      * @param[in]  $vars[0] array of item_id
      * @param[out] XooNIpsError error
+     *
      * @return bool true if succeeded
      */
     public function execute_without_transaction($vars, $error)
@@ -57,6 +59,7 @@ class XooNIpsLogicTransferUserReject extends XooNIpsLogicTransfer
             $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
             if (!$eventlogHandler->recordRejectTransferItemEvent($item_id)) {
                 $error->add(XNPERR_SERVER_ERROR, 'cannot insert event');
+
                 return false;
             }
 
@@ -67,9 +70,11 @@ class XooNIpsLogicTransferUserReject extends XooNIpsLogicTransfer
             $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
             if (false == $item_lockHandler->unlock($item_id)) {
                 $error->add(XNPERR_SERVER_ERROR, 'cannot unlock item');
+
                 return false;
             }
         }
+
         return true;
     }
 }

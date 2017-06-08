@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,18 +27,14 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * requested form data handling class
+ * requested form data handling class.
  *
- * @package   xoonips_utility
  * @copyright copyright &copy; 2008 RIKEN Japan
  */
 class XooNIpsUtilityFormdata extends XooNIpsUtility
 {
-
     /**
-     * constructor
-     *
-     * @access public
+     * constructor.
      */
     public function __construct()
     {
@@ -45,15 +42,15 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
     }
 
     /**
-     * get value from requested form data
+     * get value from requested form data.
      *
-     * @access public
      * @param string $method        'get', 'post', 'both'
      * @param string $name          data name
      * @param string $type          data type
      *                              s:string, i:integer, f:float, n:none, b:boolean
      * @param bool   $is_required   true if form must be requested data
      * @param mixed  $default_value set default value if request is null
+     *
      * @return mixed requested form data
      */
     public function getValue($method, $name, $type, $is_required, $default_value = null)
@@ -69,23 +66,24 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
         if (is_array($val)) {
             $this->_form_error(__LINE__);
         }
+
         return $this->_sanitize($val, $type);
     }
 
     /**
-     * get values array from requested form data
+     * get values array from requested form data.
      *
-     * @access public
      * @param string $method      'get', 'post', 'both'
      * @param string $name        data name
      * @param string $type        data type
      *                            s:string, i:integer, f:float, n:none, b:boolean
      * @param bool   $is_required true if form must be requested data
+     *
      * @return array requested form data
      */
     public function getValueArray($method, $name, $type, $is_required)
     {
-        $ret  = array();
+        $ret = array();
         $vals = $this->_get_request_data($method, $name, $is_required);
         if (null === $vals) {
             return $ret;
@@ -96,15 +94,16 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
         foreach ($vals as $num => $val) {
             $ret[$num] = $this->_sanitize($val, $type);
         }
+
         return $ret;
     }
 
     /**
-     * get file from requested form data
+     * get file from requested form data.
      *
-     * @access public
      * @param string $name        data name
      * @param bool   $is_required true if form must be requested data
+     *
      * @return array requested form data
      */
     public function getFile($name, $is_required)
@@ -114,6 +113,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
             if ($is_required) {
                 $this->_form_error(__LINE__);
             }
+
             return null;
         }
         if (get_magic_quotes_gpc()) {
@@ -127,22 +127,23 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
             return null;
         }
         $val['name'] = $this->_convert_to_numeric_entities($val['name']);
-        $fileutil    = xoonips_getUtility('file');
+        $fileutil = xoonips_getUtility('file');
         $val['type'] = $fileutil->get_mimetype($val['tmp_name'], $val['name']);
         if ($val['type'] === false) {
             return null;
         }
+
         return $val;
     }
 
     /**
-     * get object from requested form data
+     * get object from requested form data.
      *
-     * @access public
      * @param string $method      'get', 'post', 'both'
      * @param string $name        data name
-     * @param object $handler    orm object handler
+     * @param object $handler     orm object handler
      * @param bool   $is_required true if form must be requested data
+     *
      * @return bool|object
      */
     public function getObject($method, $name, $handler, $is_required)
@@ -155,23 +156,24 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
         if (is_array($val)) {
             $this->_form_error(__LINE__);
         }
-        $ret =  $this->_createObject($val, $handler);
+        $ret = $this->_createObject($val, $handler);
+
         return $ret;
     }
 
     /**
-     * get object array from requested form data
+     * get object array from requested form data.
      *
-     * @access public
      * @param string $method      'get', 'post', 'both'
      * @param string $name        data name
-     * @param object $handler    orm object handler
+     * @param object $handler     orm object handler
      * @param bool   $is_required true if form must be requested data
+     *
      * @return array object array of requested form data
      */
     public function &getObjectArray($method, $name, $handler, $is_required)
     {
-        $ret  = array();
+        $ret = array();
         $vals = $this->_get_request_data($method, $name, $is_required);
         if (null === $vals) {
             return $ret;
@@ -180,15 +182,15 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
             $this->_form_error(__LINE__);
         }
         foreach ($vals as $num => $val) {
-            $ret[$num] =  $this->_createObject($val, $handler);
+            $ret[$num] = $this->_createObject($val, $handler);
         }
+
         return $ret;
     }
 
     /**
-     * set requested form data
+     * set requested form data.
      *
-     * @access public
      * @param string $method 'get', 'post', 'both'
      * @param string $name   data name
      * @param string $val    value
@@ -215,7 +217,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
             } elseif ($method === 'post') {
                 $_POST[$name] = $val;
             } elseif ($method === 'both') {
-                $_GET[$name]  = $val;
+                $_GET[$name] = $val;
                 $_POST[$name] = $val;
             } else {
                 $this->_form_error(__LINE__);
@@ -224,9 +226,8 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
     }
 
     /**
-     * copy requested form data
+     * copy requested form data.
      *
-     * @access public
      * @param string $src_method 'get', 'post'
      * @param string $dst_method 'get', 'post'
      */
@@ -253,9 +254,8 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
     }
 
     /**
-     * get request method
+     * get request method.
      *
-     * @access public
      * @return string request method 'POST' or 'GET'
      */
     public function getRequestMethod()
@@ -264,12 +264,12 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
     }
 
     /**
-     * get requested data
+     * get requested data.
      *
-     * @access private
      * @param string $method      'get', 'post', 'both'
      * @param string $name        data name
      * @param bool   $is_required true if form must be requested data
+     *
      * @return array requested form data
      */
     public function _get_request_data($method, $name, $is_required)
@@ -296,16 +296,17 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
         if ($is_required && null === $val) {
             $this->_form_error(__LINE__);
         }
+
         return $val;
     }
 
     /**
-     * sanitize value
+     * sanitize value.
      *
-     * @access private
      * @param mixed  $val  value
      * @param string $type data type
      *                     s:string, i:integer, f:float, n:none, b:boolean
+     *
      * @return mixed sanitized value
      */
     public function _sanitize($val, $type)
@@ -323,7 +324,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
                 break;
             case 'b':
                 // boolean
-                $val = ((int)$val != 0);
+                $val = ((int) $val != 0);
                 break;
             case 'i':
                 // integer
@@ -332,7 +333,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
                         $this->_form_error(__LINE__);
                     }
                 }
-                $val = (int)$val;
+                $val = (int) $val;
                 break;
             case 'f':
                 // float
@@ -341,7 +342,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
                         $this->_form_error(__LINE__);
                     }
                 }
-                $val = (float)$val;
+                $val = (float) $val;
                 break;
             case 'n':
                 // none
@@ -349,20 +350,21 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
             default:
                 $this->_form_error(__LINE__);
         }
+
         return $val;
     }
 
     /**
-     * create object from values
+     * create object from values.
      *
-     * @access private
-     * @param array  $val      values
+     * @param array  $val     values
      * @param object $handler orm object handler
+     *
      * @return object created object
      */
     public function _createObject($val, $handler)
     {
-        $pkey        = $handler->getKeyName();
+        $pkey = $handler->getKeyName();
         $is_str_pkey = $handler->isStringPrimaryKey();
         if (isset($val[$pkey])) {
             $pkey_val = $this->_sanitize($val[$pkey], ($is_str_pkey ? 's' : 'i'));
@@ -408,6 +410,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
             $obj->setVar($key, $val[$key], true);
             // not gpc
         }
+
         return $obj;
     }
 
@@ -415,10 +418,10 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
      * convert string to numeric entities
      *  - html entities => numeric entities
      *  - 3 byte EUC => numeric entities
-     *  - strip unknown character
+     *  - strip unknown character.
      *
-     * @access private
      * @param string $val
+     *
      * @return string converted string
      */
     public function _convert_to_numeric_entities($val)
@@ -429,20 +432,20 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
 
         // convert JIS X 0212 to numeric character reference
         if (_CHARSET === 'EUC-JP') {
-            $len     = strlen($val);
-            $chars   = array();
+            $len = strlen($val);
+            $chars = array();
             $convmap = array(
                 0x0,
                 0xffff,
                 0,
                 0xffff,
             );
-            for ($i = 0; $i < $len; $i++) {
+            for ($i = 0; $i < $len; ++$i) {
                 if (ord($val[$i]) <= 127) {
                     $chars[] = $val[$i];
                 } elseif (ord($val[$i]) != 0x8f) {
                     $chars[] = substr($val, $i, 2);
-                    $i++;
+                    ++$i;
                 } else {
                     $chars[] = mb_encode_numericentity(substr($val, $i, 3), $convmap, 'EUC-JP');
                     $i += 2;
@@ -458,24 +461,24 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
             $val = mb_convert_encoding(mb_convert_encoding($val, 'UTF-8', _CHARSET), _CHARSET, 'UTF-8');
             mb_substitute_character($substitute_char);
         }
+
         return $val;
     }
 
     /**
-     * output error message and die script
+     * output error message and die script.
      *
-     * @access private
      * @param int $line line
      */
     public function _form_error($line)
     {
         if (XOONIPS_DEBUG_MODE) {
             echo '<pre>';
-            echo 'FILE: ' . __FILE__ . ', LINE: ' . $line . '<br>';
+            echo 'FILE: '.__FILE__.', LINE: '.$line.'<br>';
             print_r(debug_backtrace());
             echo '</pre>';
             die('illegal request');
         }
-        redirect_header(XOOPS_URL . '/', 3, 'illegal request');
+        redirect_header(XOOPS_URL.'/', 3, 'illegal request');
     }
 }

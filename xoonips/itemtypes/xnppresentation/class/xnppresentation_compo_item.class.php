@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,19 +27,18 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
-require_once XOOPS_ROOT_PATH . '/modules/xnppresentation/include/view.php';
-require_once XOOPS_ROOT_PATH . '/modules/xnppresentation/iteminfo.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xoonips_compo_item.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xnppresentation/include/view.php';
+require_once XOOPS_ROOT_PATH.'/modules/xnppresentation/iteminfo.php';
 
 /**
- *
  * @brief Handler object that create,insert,update,get,delete XNPPresentationCompo object.
- *
  */
 class XNPPresentationCompoHandler extends XooNIpsItemInfoCompoHandler
 {
     /**
      * XNPPresentationCompoHandler constructor.
+     *
      * @param $db
      */
     public function __construct($db)
@@ -52,15 +52,17 @@ class XNPPresentationCompoHandler extends XooNIpsItemInfoCompoHandler
     public function create()
     {
         $presentation = new XNPPresentationCompo();
+
         return $presentation;
     }
 
     /**
-     * return template filename
+     * return template filename.
      *
      * @param string $type defined symbol
      *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
      *                     or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
+     *
      * @return string|template
      */
     public function getTemplateFileName($type)
@@ -76,15 +78,16 @@ class XNPPresentationCompoHandler extends XooNIpsItemInfoCompoHandler
     }
 
     /**
-     * return template variables of item
+     * return template variables of item.
      *
-     * @param string $type defined symbol
-     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *                     , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
-     *                     , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
-     *                     or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
+     * @param string $type    defined symbol
+     *                        XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                        , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
+     *                        , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
+     *                        or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
      * @param int    $item_id
-     * @param int    $uid  user id who get item
+     * @param int    $uid     user id who get item
+     *
      * @return array of template variables
      */
     public function getTemplateVar($type, $item_id, $uid)
@@ -95,9 +98,9 @@ class XNPPresentationCompoHandler extends XooNIpsItemInfoCompoHandler
         }
         $result = $this->getBasicTemplateVar($type, $presentation, $uid);
 
-        $textutil                                    = xoonips_getUtility('text');
-        $detail                                      = $presentation->getVar('detail');
-        $result['detail']                            = $detail->getVarArray('s');
+        $textutil = xoonips_getUtility('text');
+        $detail = $presentation->getVar('detail');
+        $result['detail'] = $detail->getVarArray('s');
         $result['detail']['presentation_type']
                                                      = $textutil->html_special_chars($this->get_presentation_type_label($detail->get('presentation_type')));
         $result['detail']['presentation_type_value'] = $detail->getVar('presentation_type', 's');
@@ -112,6 +115,7 @@ class XNPPresentationCompoHandler extends XooNIpsItemInfoCompoHandler
                 foreach ($presentation->getVar('creator') as $creator) {
                     $result['creator'][] = $creator->getVarArray('s');
                 }
+
                 return $result;
             case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
             case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
@@ -130,26 +134,28 @@ class XNPPresentationCompoHandler extends XooNIpsItemInfoCompoHandler
                 if ($presentation_file->get('item_id') == $item_id) {
                     $result['detail']['presentation_file'] = $this->getAttachmentTemplateVar($presentation->getVar('presentation_file'));
                 }
+
                 return $result;
         }
+
         return $result;
     }
 
     /**
      * @param $type
+     *
      * @return mixed
      */
     public function get_presentation_type_label($type)
     {
         $keyval = xnppresentationGetTypes();
-        return $keyval[$type];//"TODO convert type name '{$type}' to display name";
+
+        return $keyval[$type]; //"TODO convert type name '{$type}' to display name";
     }
 }
 
 /**
- *
  * @brief Data object that have one ore more XooNIpsTableObject for Presentation type.
- *
  */
 class XNPPresentationCompo extends XooNIpsItemInfoCompo
 {

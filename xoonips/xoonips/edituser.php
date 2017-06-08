@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,12 +26,12 @@
 // ------------------------------------------------------------------------- //
 
 $xoopsOption['pagetype'] = 'user';
-require __DIR__ . '/include/common.inc.php';
-require __DIR__ . '/class/base/gtickets.php';
-require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+require __DIR__.'/include/common.inc.php';
+require __DIR__.'/class/base/gtickets.php';
+require_once XOOPS_ROOT_PATH.'/class/xoopsformloader.php';
 
-require_once __DIR__ . '/include/lib.php';
-require_once __DIR__ . '/include/AL.php';
+require_once __DIR__.'/include/lib.php';
+require_once __DIR__.'/include/AL.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
@@ -39,15 +40,15 @@ xoonips_deny_guest_access();
 $myuid = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
 
 $formdata = xoonips_getUtility('formdata');
-$uid      = $formdata->getValue('both', 'uid', 'i', false, $myuid);
+$uid = $formdata->getValue('both', 'uid', 'i', false, $myuid);
 if ($myuid == UID_GUEST) {
     // user id not selected
-    redirect_header(XOOPS_URL . '/', 3, _US_SELECTNG);
+    redirect_header(XOOPS_URL.'/', 3, _US_SELECTNG);
 }
 
 //Uncertified user can't access
 if (!xnp_is_activated($xnpsid, $uid)) {
-    redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_ACCOUNT_NOT_ACTIVATED);
+    redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ACCOUNT_NOT_ACTIVATED);
 }
 
 // private function
@@ -57,16 +58,17 @@ if (!xnp_is_activated($xnpsid, $uid)) {
 function getUserPosiList()
 {
     $posiHandler = xoonips_getOrmHandler('xoonips', 'positions');
-    $criteria    = new CriteriaElement();
+    $criteria = new CriteriaElement();
     $criteria->setSort('posi_order');
     $criteria->setOrder(ASC);
-    $posi_objs =  $posiHandler->getObjects($criteria, false, 'posi_id, posi_title');
-    $ret       = array();
+    $posi_objs = $posiHandler->getObjects($criteria, false, 'posi_id, posi_title');
+    $ret = array();
     foreach ($posi_objs as $posi_obj) {
-        $posi_id       = $posi_obj->getVar('posi_id', 's');
-        $posi_title    = $posi_obj->getVar('posi_title', 'e');
+        $posi_id = $posi_obj->getVar('posi_id', 's');
+        $posi_title = $posi_obj->getVar('posi_title', 'e');
         $ret[$posi_id] = $posi_title;
     }
+
     return $ret;
 }
 
@@ -74,155 +76,155 @@ function getUserPosiList()
 $op = $formdata->getValue('both', 'op', 's', false, 'editprofile');
 
 $xmemberHandler = xoonips_getHandler('xoonips', 'member');
-$is_admin       = $xmemberHandler->isAdmin($myuid);
-$is_moderator   = $xmemberHandler->isModerator($myuid);
+$is_admin = $xmemberHandler->isAdmin($myuid);
+$is_moderator = $xmemberHandler->isModerator($myuid);
 
 if (!$is_admin && !$is_moderator && $myuid != $uid) {
-    redirect_header(XOOPS_URL . '/', 3, _US_NOEDITRIGHT);
+    redirect_header(XOOPS_URL.'/', 3, _US_NOEDITRIGHT);
 }
 
-$myxoopsConfig     = xoonips_get_xoops_configs(XOOPS_CONF);
+$myxoopsConfig = xoonips_get_xoops_configs(XOOPS_CONF);
 $myxoopsConfigUser = xoonips_get_xoops_configs(XOOPS_CONF_USER);
 
 $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-$xconfig_keys   = array(
-    'realname'     => _US_REALNAME,
-    'address'      => _MD_XOONIPS_ACCOUNT_ADDRESS,
+$xconfig_keys = array(
+    'realname' => _US_REALNAME,
+    'address' => _MD_XOONIPS_ACCOUNT_ADDRESS,
     'company_name' => _MD_XOONIPS_ACCOUNT_COMPANY_NAME,
-    'division'     => _MD_XOONIPS_ACCOUNT_DIVISION,
-    'tel'          => _MD_XOONIPS_ACCOUNT_TEL,
-    'country'      => _MD_XOONIPS_ACCOUNT_COUNTRY,
-    'zipcode'      => _MD_XOONIPS_ACCOUNT_ZIPCODE,
-    'fax'          => _MD_XOONIPS_ACCOUNT_FAX
+    'division' => _MD_XOONIPS_ACCOUNT_DIVISION,
+    'tel' => _MD_XOONIPS_ACCOUNT_TEL,
+    'country' => _MD_XOONIPS_ACCOUNT_COUNTRY,
+    'zipcode' => _MD_XOONIPS_ACCOUNT_ZIPCODE,
+    'fax' => _MD_XOONIPS_ACCOUNT_FAX,
 );
-$xconfig_vars   = array();
+$xconfig_vars = array();
 foreach ($xconfig_keys as $key => $label) {
-    $xconfig_vars[$key] = $xconfigHandler->getValue('account_' . $key . '_optional');
+    $xconfig_vars[$key] = $xconfigHandler->getValue('account_'.$key.'_optional');
 }
 
-$uHandler  = xoonips_getOrmHandler('xoonips', 'xoops_users');
+$uHandler = xoonips_getOrmHandler('xoonips', 'xoops_users');
 $xuHandler = xoonips_getOrmHandler('xoonips', 'users');
-$u_obj     = $uHandler->get($uid);
-$xu_obj    = $xuHandler->get($uid);
+$u_obj = $uHandler->get($uid);
+$xu_obj = $xuHandler->get($uid);
 if (!is_object($u_obj) || !is_object($xu_obj)) {
     // user not found
-    redirect_header(XOOPS_URL . '/', 3, _US_SELECTNG);
+    redirect_header(XOOPS_URL.'/', 3, _US_SELECTNG);
 }
 
 $errors = array();
 
 if ($op === 'saveuser') {
     if (!$xoopsGTicket->check(true, 'saveuser', false)) {
-        redirect_header(XOOPS_URL . '/', 3, $xoopsGTiket->getErrors());
+        redirect_header(XOOPS_URL.'/', 3, $xoopsGTiket->getErrors());
     }
 
     $request_vars = array(
         // xoops user information
-        'realname'        => array(
+        'realname' => array(
             's',
-            true
+            true,
         ),
-        'email'           => array(
+        'email' => array(
             's',
-            false
+            false,
         ),
-        'url'             => array(
+        'url' => array(
             's',
-            true
+            true,
         ),
-        'user_sig'        => array(
+        'user_sig' => array(
             's',
-            true
+            true,
         ),
-        'user_viewemail'  => array(
+        'user_viewemail' => array(
             'i',
-            false
+            false,
         ),
-        'password'        => array(
+        'password' => array(
             's',
-            true
+            true,
         ),
-        'vpass'           => array(
+        'vpass' => array(
             's',
-            true
+            true,
         ),
-        'attachsig'       => array(
+        'attachsig' => array(
             'i',
-            false
+            false,
         ),
         'timezone_offset' => array(
             'f',
-            true
+            true,
         ),
-        'umode'           => array(
+        'umode' => array(
             's',
-            true
+            true,
         ),
-        'uorder'          => array(
+        'uorder' => array(
             'i',
-            true
+            true,
         ),
-        'notify_method'   => array(
+        'notify_method' => array(
             'i',
-            true
+            true,
         ),
-        'notify_mode'     => array(
+        'notify_mode' => array(
             'i',
-            true
+            true,
         ),
-        'user_intrest'    => array(
+        'user_intrest' => array(
             's',
-            true
+            true,
         ),
-        'user_mailok'     => array(
+        'user_mailok' => array(
             'i',
-            true
+            true,
         ),
         // xoonips user information
-        'address'         => array(
+        'address' => array(
             's',
-            true
+            true,
         ),
-        'company_name'    => array(
+        'company_name' => array(
             's',
-            true
+            true,
         ),
-        'division'        => array(
+        'division' => array(
             's',
-            true
+            true,
         ),
-        'tel'             => array(
+        'tel' => array(
             's',
-            true
+            true,
         ),
-        'country'         => array(
+        'country' => array(
             's',
-            true
+            true,
         ),
-        'zipcode'         => array(
+        'zipcode' => array(
             's',
-            true
+            true,
         ),
-        'fax'             => array(
+        'fax' => array(
             's',
-            true
+            true,
         ),
-        'notice_mail'     => array(
+        'notice_mail' => array(
             'i',
-            true
+            true,
         ),
-        'posi'            => array(
+        'posi' => array(
             'i',
-            true
+            true,
         ),
-        'appeal'          => array(
+        'appeal' => array(
             's',
-            true
+            true,
         ),
         // others
-        'usecookie'       => array(
+        'usecookie' => array(
             'i',
-            false
+            false,
         ),
     );
     foreach ($request_vars as $key => $meta) {
@@ -246,7 +248,7 @@ if ($op === 'saveuser') {
     }
 
     // acquire required flags of XooNIps user information
-    $val      = '';
+    $val = '';
     $required = array();
     foreach ($xconfig_keys as $key => $label) {
         if ($xconfig_vars[$key] !== 'on' && ${$key} == '') {
@@ -257,7 +259,6 @@ if ($op === 'saveuser') {
     if (count($errors) > 0) {
         $op = 'editprofile'; // TODO: check here
     } else {
-
         // set new values
         // - xoops user information
         $u_obj->setVar('name', $realname, true); // not gpc
@@ -310,24 +311,24 @@ if ($op === 'saveuser') {
             $error .= $xu_obj->getHtmlErrors();
         }
         if (empty($error)) {
-            redirect_header('showusers.php?uid=' . $uid, 0, _US_PROFUPDATED);
+            redirect_header('showusers.php?uid='.$uid, 0, _US_PROFUPDATED);
         } else {
-            require XOOPS_ROOT_PATH . '/header.php';
+            require XOOPS_ROOT_PATH.'/header.php';
             echo $error;
-            require XOOPS_ROOT_PATH . '/footer.php';
+            require XOOPS_ROOT_PATH.'/footer.php';
         }
         exit();
     }
 }
 
 if ($op === 'editprofile') {
-    require_once XOOPS_ROOT_PATH . '/header.php';
-    require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
-    require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
+    require_once XOOPS_ROOT_PATH.'/header.php';
+    require_once XOOPS_ROOT_PATH.'/include/xoopscodes.php';
+    require_once XOOPS_ROOT_PATH.'/include/comment_constants.php';
     // RMV-NOTIFY
     $langman = xoonips_getUtility('languagemanager');
     $langman->read_pagetype('notification.php');
-    require_once XOOPS_ROOT_PATH . '/include/notification_constants.php';
+    require_once XOOPS_ROOT_PATH.'/include/notification_constants.php';
 
     // required mark, and required flag
     $required = array();
@@ -343,29 +344,29 @@ if ($op === 'editprofile') {
 
     // TODO: check pankuzu
     echo '<p>';
-    echo '<a href="showusers.php?uid=' . $uid . '">' . _MD_XOONIPS_SHOW_USER_TITLE . '</a>';
-    echo _MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR . _US_EDITPROFILE;
+    echo '<a href="showusers.php?uid='.$uid.'">'._MD_XOONIPS_SHOW_USER_TITLE.'</a>';
+    echo _MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR._US_EDITPROFILE;
     echo '</p><br>';
 
     // show error message if error occured in $op = 'saveuser'
     if (count($errors) > 0) {
         echo '<div style="margin: 10px;">';
         foreach ($errors as $err) {
-            echo '<div style="color: #ff0000; font-weight: bold;">' . $err . '</div>';
+            echo '<div style="color: #ff0000; font-weight: bold;">'.$err.'</div>';
         }
         echo '</div>';
     }
 
     $form = new XoopsThemeForm(_US_EDITPROFILE, 'userinfo', 'edituser.php');
     // uname
-    $uname_label = new XoopsFormLabel(_US_NICKNAME . _MD_XOONIPS_ACCOUNT_REQUIRED_MARK, $u_obj->getVar('uname', 's'));
+    $uname_label = new XoopsFormLabel(_US_NICKNAME._MD_XOONIPS_ACCOUNT_REQUIRED_MARK, $u_obj->getVar('uname', 's'));
     $form->addElement($uname_label);
     // name
-    $name_text = new XoopsFormText(_US_REALNAME . $required['realname']['mark'], 'realname', 30, 60, $u_obj->getVar('name', 'e'));
+    $name_text = new XoopsFormText(_US_REALNAME.$required['realname']['mark'], 'realname', 30, 60, $u_obj->getVar('name', 'e'));
     $form->addElement($name_text, $required['realname']['flag']);
 
     // email
-    $email_tray = new XoopsFormElementTray(_US_EMAIL . _MD_XOONIPS_ACCOUNT_REQUIRED_MARK, '<br>');
+    $email_tray = new XoopsFormElementTray(_US_EMAIL._MD_XOONIPS_ACCOUNT_REQUIRED_MARK, '<br>');
     if ($myxoopsConfigUser['allow_chgmail'] == 1) {
         $email_text = new XoopsFormText('', 'email', 30, 60, $u_obj->getVar('email', 's'));
     } else {
@@ -373,7 +374,7 @@ if ($op === 'editprofile') {
     }
     $email_tray->addElement($email_text);
     $email_cbox_value = $u_obj->getVar('user_viewemail', 's') ? 1 : 0;
-    $email_cbox       = new XoopsFormCheckBox('', 'user_viewemail', $email_cbox_value);
+    $email_cbox = new XoopsFormCheckBox('', 'user_viewemail', $email_cbox_value);
     $email_cbox->addOption(1, _US_ALLOWVIEWEMAIL);
     $email_tray->addElement($email_cbox);
     $form->addElement($email_tray);
@@ -387,7 +388,7 @@ if ($op === 'editprofile') {
 
     // posi
     $posi_select = new XoopsFormSelect(_MD_XOONIPS_ACCOUNT_POSITION, 'posi', $xu_obj->getVar('posi', 'e'));
-    $posi_list   = getUserPosiList();
+    $posi_list = getUserPosiList();
     $posi_select->addOption(0, '--------------');
     if (count($posi_list) > 0) {
         $posi_select->addOptionArray($posi_list);
@@ -395,35 +396,35 @@ if ($op === 'editprofile') {
     $form->addElement($posi_select);
 
     // company_name
-    $company_text = new XoopsFormText(_MD_XOONIPS_ACCOUNT_COMPANY_NAME . $required['company_name']['mark'], 'company_name', 50, 255,
+    $company_text = new XoopsFormText(_MD_XOONIPS_ACCOUNT_COMPANY_NAME.$required['company_name']['mark'], 'company_name', 50, 255,
                                       $xu_obj->getVar('company_name', 'e'));
     $form->addElement($company_text, $required['company_name']['flag']);
 
     // division
-    $division_text = new XoopsFormText(_MD_XOONIPS_ACCOUNT_DIVISION . $required['division']['mark'], 'division', 50, 255,
+    $division_text = new XoopsFormText(_MD_XOONIPS_ACCOUNT_DIVISION.$required['division']['mark'], 'division', 50, 255,
                                        $xu_obj->getVar('division', 'e'));
     $form->addElement($division_text, $required['division']['flag']);
 
     // tel
-    $tel_text = new XoopsFormText(_MD_XOONIPS_ACCOUNT_TEL . $required['tel']['mark'], 'tel', 25, 32, $xu_obj->getVar('tel', 'e'));
+    $tel_text = new XoopsFormText(_MD_XOONIPS_ACCOUNT_TEL.$required['tel']['mark'], 'tel', 25, 32, $xu_obj->getVar('tel', 'e'));
     $form->addElement($tel_text, $required['tel']['flag']);
 
     // fax
-    $fax_text = new XoopsFormText(_MD_XOONIPS_ACCOUNT_FAX . $required['fax']['mark'], 'fax', 25, 32, $xu_obj->getVar('fax', 'e'));
+    $fax_text = new XoopsFormText(_MD_XOONIPS_ACCOUNT_FAX.$required['fax']['mark'], 'fax', 25, 32, $xu_obj->getVar('fax', 'e'));
     $form->addElement($fax_text, $required['fax']['flag']);
 
     // address
-    $address_text = new XoopsFormText(_MD_XOONIPS_ACCOUNT_ADDRESS . $required['address']['mark'], 'address', 50, 255,
+    $address_text = new XoopsFormText(_MD_XOONIPS_ACCOUNT_ADDRESS.$required['address']['mark'], 'address', 50, 255,
                                       $xu_obj->getVar('address', 'e'));
     $form->addElement($address_text, $required['address']['flag']);
 
     // country
-    $country_text = new XoopsFormText(_MD_XOONIPS_ACCOUNT_COUNTRY . $required['country']['mark'], 'country', 25, 255,
+    $country_text = new XoopsFormText(_MD_XOONIPS_ACCOUNT_COUNTRY.$required['country']['mark'], 'country', 25, 255,
                                       $xu_obj->getVar('country', 'e'));
     $form->addElement($country_text, $required['country']['flag']);
 
     // zipcode
-    $zipcode_text = new XoopsFormText(_MD_XOONIPS_ACCOUNT_ZIPCODE . $required['zipcode']['mark'], 'zipcode', 20, 32, $xu_obj->getVar('zipcode', 'e'));
+    $zipcode_text = new XoopsFormText(_MD_XOONIPS_ACCOUNT_ZIPCODE.$required['zipcode']['mark'], 'zipcode', 20, 32, $xu_obj->getVar('zipcode', 'e'));
     $form->addElement($zipcode_text, $required['zipcode']['flag']);
 
     // timezone_offset
@@ -435,25 +436,25 @@ if ($op === 'editprofile') {
     $form->addElement($interest_text);
 
     // appeal
-    $app_tray  = new XoopsFormElementTray(_MD_XOONIPS_ACCOUNT_APPEAL, '<br>');
+    $app_tray = new XoopsFormElementTray(_MD_XOONIPS_ACCOUNT_APPEAL, '<br>');
     $app_tarea = new XoopsFormTextArea('', 'appeal', $xu_obj->getVar('appeal', 'e'), 5, 50, 'u_appeal');
     $app_tray->addElement($app_tarea);
     $form->addElement($app_tray);
 
     // user_sig
-    $sig_tray  = new XoopsFormElementTray(_US_SIGNATURE, '<br>');
+    $sig_tray = new XoopsFormElementTray(_US_SIGNATURE, '<br>');
     $sig_tarea = new XoopsFormTextArea('', 'user_sig', $u_obj->getVar('user_sig', 'e'));
     $sig_tray->addElement($sig_tarea);
     $sig_cbox_value = $u_obj->getVar('attachsig', 's') ? 1 : 0;
-    $sig_cbox       = new XoopsFormCheckBox('', 'attachsig', $sig_cbox_value);
+    $sig_cbox = new XoopsFormCheckBox('', 'attachsig', $sig_cbox_value);
     $sig_cbox->addOption(1, _US_SHOWSIG);
     $sig_tray->addElement($sig_cbox);
     $form->addElement($sig_tray);
 
     // password & vpass
-    $pwd_text  = new XoopsFormPassword('', 'password', 10, 32);
+    $pwd_text = new XoopsFormPassword('', 'password', 10, 32);
     $pwd_text2 = new XoopsFormPassword('', 'vpass', 10, 32);
-    $pwd_tray  = new XoopsFormElementTray(_US_PASSWORD . '<br>' . _US_TYPEPASSTWICE);
+    $pwd_tray = new XoopsFormElementTray(_US_PASSWORD.'<br>'._US_TYPEPASSTWICE);
     $pwd_tray->addElement($pwd_text);
     $pwd_tray->addElement($pwd_text2);
     $form->addElement($pwd_tray);
@@ -465,7 +466,7 @@ if ($op === 'editprofile') {
     // usercookie
     if ($uid == $myuid) {
         $cookie_radio_value = empty($_COOKIE[$myxoopsConfig['usercookie']]) ? 0 : 1;
-        $cookie_radio       = new XoopsFormRadioYN(_US_USECOOKIE, 'usecookie', $cookie_radio_value, _YES, _NO);
+        $cookie_radio = new XoopsFormRadioYN(_US_USECOOKIE, 'usecookie', $cookie_radio_value, _YES, _NO);
         $form->addElement($cookie_radio);
     }
 
@@ -476,9 +477,9 @@ if ($op === 'editprofile') {
     // umode
     $umode_select = new XoopsFormSelect(_US_CDISPLAYMODE, 'umode', $u_obj->getVar('umode', 'e'));
     $umode_select->addOptionArray(array(
-                                      'nest'   => _NESTED,
-                                      'flat'   => _FLAT,
-                                      'thread' => _THREADED
+                                      'nest' => _NESTED,
+                                      'flat' => _FLAT,
+                                      'thread' => _THREADED,
                                   ));
     $form->addElement($umode_select);
 
@@ -486,7 +487,7 @@ if ($op === 'editprofile') {
     $uorder_select = new XoopsFormSelect(_US_CSORTORDER, 'uorder', $u_obj->getVar('uorder', 'e'));
     $uorder_select->addOptionArray(array(
                                        XOOPS_COMMENT_OLD1ST => _OLDESTFIRST,
-                                       XOOPS_COMMENT_NEW1ST => _NEWESTFIRST
+                                       XOOPS_COMMENT_NEW1ST => _NEWESTFIRST,
                                    ));
     $form->addElement($uorder_select);
 
@@ -494,17 +495,17 @@ if ($op === 'editprofile') {
     $notify_method_select = new XoopsFormSelect(_NOT_NOTIFYMETHOD, 'notify_method', $u_obj->getVar('notify_method', 'e'));
     $notify_method_select->addOptionArray(array(
                                               XOOPS_NOTIFICATION_METHOD_DISABLE => _NOT_METHOD_DISABLE,
-                                              XOOPS_NOTIFICATION_METHOD_PM      => _NOT_METHOD_PM,
-                                              XOOPS_NOTIFICATION_METHOD_EMAIL   => _NOT_METHOD_EMAIL
+                                              XOOPS_NOTIFICATION_METHOD_PM => _NOT_METHOD_PM,
+                                              XOOPS_NOTIFICATION_METHOD_EMAIL => _NOT_METHOD_EMAIL,
                                           ));
     $form->addElement($notify_method_select);
 
     // notify mode
     $notify_mode_select = new XoopsFormSelect(_NOT_NOTIFYMODE, 'notify_mode', $u_obj->getVar('notify_mode', 'e'));
     $notify_mode_select->addOptionArray(array(
-                                            XOOPS_NOTIFICATION_MODE_SENDALWAYS         => _NOT_MODE_SENDALWAYS,
+                                            XOOPS_NOTIFICATION_MODE_SENDALWAYS => _NOT_MODE_SENDALWAYS,
                                             XOOPS_NOTIFICATION_MODE_SENDONCETHENDELETE => _NOT_MODE_SENDONCE,
-                                            XOOPS_NOTIFICATION_MODE_SENDONCETHENWAIT   => _NOT_MODE_SENDONCEPERLOGIN
+                                            XOOPS_NOTIFICATION_MODE_SENDONCETHENWAIT => _NOT_MODE_SENDONCEPERLOGIN,
                                         ));
     $form->addElement($notify_mode_select);
 
@@ -529,23 +530,23 @@ if ($op === 'editprofile') {
     // show form
     $form->display();
 
-    require XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH.'/footer.php';
     exit();
 }
 
 if ($op === 'avatarform') {
-    require XOOPS_ROOT_PATH . '/header.php';
-    echo '<a href="showusers.php?uid=' . $uid . '">' . _MD_XOONIPS_SHOW_USER_TITLE
-         . '</a>&nbsp;<span style="font-weight:bold;">&raquo;&raquo;</span>&nbsp;' . _US_UPLOADMYAVATAR . '<br><br>';
+    require XOOPS_ROOT_PATH.'/header.php';
+    echo '<a href="showusers.php?uid='.$uid.'">'._MD_XOONIPS_SHOW_USER_TITLE
+         .'</a>&nbsp;<span style="font-weight:bold;">&raquo;&raquo;</span>&nbsp;'._US_UPLOADMYAVATAR.'<br><br>';
     $oldavatar = $u_obj->getVar('user_avatar', 's');
     if (!empty($oldavatar) && $oldavatar !== 'blank.gif') {
-        echo '<div style="text-align:center;"><h4 style="color:#ff0000; font-weight:bold;">' . _US_OLDDELETED . '</h4>';
-        echo '<img src="' . XOOPS_UPLOAD_URL . '/' . $oldavatar . '" alt="oldavatar" /></div>';
+        echo '<div style="text-align:center;"><h4 style="color:#ff0000; font-weight:bold;">'._US_OLDDELETED.'</h4>';
+        echo '<img src="'.XOOPS_UPLOAD_URL.'/'.$oldavatar.'" alt="oldavatar" /></div>';
     }
     if ($myxoopsConfigUser['avatar_allow_upload'] == 1 && $u_obj->getVar('posts', 's') >= $myxoopsConfigUser['avatar_minposts']) {
         $form = new XoopsThemeForm(_US_UPLOADMYAVATAR, 'uploadavatar', 'edituser.php');
         $form->setExtra('enctype="multipart/form-data"');
-        $form->addElement(new XoopsFormLabel(_US_MAXPIXEL, $myxoopsConfigUser['avatar_width'] . ' x ' . $myxoopsConfigUser['avatar_height']));
+        $form->addElement(new XoopsFormLabel(_US_MAXPIXEL, $myxoopsConfigUser['avatar_width'].' x '.$myxoopsConfigUser['avatar_height']));
         $form->addElement(new XoopsFormLabel(_US_MAXIMGSZ, $myxoopsConfigUser['avatar_maxsize']));
         $form->addElement(new XoopsFormFile(_US_SELFILE, 'avatarfile', $myxoopsConfigUser['avatar_maxsize']), true);
         $form->addElement(new XoopsFormHidden('op', 'avatarupload'));
@@ -556,50 +557,50 @@ if ($op === 'avatarform') {
     }
 
     $avatarHandler = xoops_getHandler('avatar');
-    $form2         = new XoopsThemeForm(_US_CHOOSEAVT, 'uploadavatar', 'edituser.php');
+    $form2 = new XoopsThemeForm(_US_CHOOSEAVT, 'uploadavatar', 'edituser.php');
     $avatar_select = new XoopsFormSelect('', 'user_avatar', $xoopsUser->getVar('user_avatar'));
     $avatar_select->addOptionArray($avatarHandler->getList('S'));
-    $avatar_select->setExtra('onchange="showImgSelected( \'avatar\', \'user_avatar\', \'uploads\', \'\', \'' . XOOPS_URL . '\')"');
+    $avatar_select->setExtra('onchange="showImgSelected( \'avatar\', \'user_avatar\', \'uploads\', \'\', \''.XOOPS_URL.'\')"');
     $avatar_tray = new XoopsFormElementTray(_US_AVATAR, '&nbsp;');
     $avatar_tray->addElement($avatar_select);
-    $avatar_tray->addElement(new XoopsFormLabel('', '<img src="' . XOOPS_UPLOAD_URL . '/' . $u_obj->getVar('user_avatar', 'e')
-                                                    . '" name="avatar" id="avatar" alt="avatar"/><a href="javascript:openWithSelfMain(\'' . XOOPS_URL
-                                                    . '/misc.php?action=showpopups&amp;type=avatars\',\'avatars\',600,400);">' . _LIST . '</a>'));
+    $avatar_tray->addElement(new XoopsFormLabel('', '<img src="'.XOOPS_UPLOAD_URL.'/'.$u_obj->getVar('user_avatar', 'e')
+                                                    .'" name="avatar" id="avatar" alt="avatar"/><a href="javascript:openWithSelfMain(\''.XOOPS_URL
+                                                    .'/misc.php?action=showpopups&amp;type=avatars\',\'avatars\',600,400);">'._LIST.'</a>'));
     $form2->addElement($avatar_tray);
     $form2->addElement(new XoopsFormHidden('uid', $uid));
     $form2->addElement(new XoopsFormHidden('op', 'avatarchoose'));
     $xoopsGTicket->addTicketXoopsFormElement($form2, __LINE__, 1800, 'avatarchoose');
     $form2->addElement(new XoopsFormButton('', 'submit2', _SUBMIT, 'submit'));
     $form2->display();
-    require XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH.'/footer.php';
     exit();
 }
 
 if ($op === 'avatarupload') {
     if (!$xoopsGTicket->check(true, 'avatarupload', false)) {
-        redirect_header(XOOPS_URL . '/', 3, $xoopsGTiket->getErrors());
+        redirect_header(XOOPS_URL.'/', 3, $xoopsGTiket->getErrors());
     }
     if ($myxoopsConfigUser['avatar_allow_upload'] == 1 && $u_obj->getVar('posts', 's') >= $myxoopsConfigUser['avatar_minposts']) {
-        require_once XOOPS_ROOT_PATH . '/class/uploader.php';
+        require_once XOOPS_ROOT_PATH.'/class/uploader.php';
         $uploader = new XoopsMediaUploader(XOOPS_UPLOAD_PATH, array(
             'image/gif',
             'image/jpeg',
             'image/pjpeg',
             'image/x-png',
-            'image/png'
+            'image/png',
         ), $myxoopsConfigUser['avatar_maxsize'], $myxoopsConfigUser['avatar_width'], $myxoopsConfigUser['avatar_height']);
         $uploader->setAllowedExtensions(array(
                                             'gif',
                                             'jpeg',
                                             'jpg',
-                                            'png'
+                                            'png',
                                         ));
         $xoops_upload_file = $formdata->getValueArray('post', 'xoops_upload_file', 's', true);
         if ($uploader->fetchMedia($xoops_upload_file[0])) {
             $uploader->setPrefix('cavt');
             if ($uploader->upload()) {
                 $avtHandler = xoops_getHandler('avatar');
-                $avatar     = $avtHandler->create();
+                $avatar = $avtHandler->create();
                 $avatar->setVar('avatar_file', $uploader->getSavedFileName());
                 $avatar->setVar('avatar_name', $u_obj->getVar('uname', 'n'), true); // not gpc
                 $avatar->setVar('avatar_mimetype', $uploader->getMediaType());
@@ -610,9 +611,9 @@ if ($op === 'avatarupload') {
                 } else {
                     $oldavatar = $u_obj->getVar('user_avatar', 's');
                     if (!empty($oldavatar) && $oldavatar !== 'blank.gif' && !preg_match('/^savt/', strtolower($oldavatar))) {
-                        $avatars =  $avtHandler->getObjects(new Criteria('avatar_file', $oldavatar));
+                        $avatars = $avtHandler->getObjects(new Criteria('avatar_file', $oldavatar));
                         $avtHandler->delete($avatars[0]);
-                        $oldavatar_path = str_replace("\\", '/', realpath(XOOPS_UPLOAD_PATH . '/' . $oldavatar));
+                        $oldavatar_path = str_replace('\\', '/', realpath(XOOPS_UPLOAD_PATH.'/'.$oldavatar));
                         if (0 === strpos($oldavatar_path, XOOPS_UPLOAD_PATH) && is_file($oldavatar_path)) {
                             unlink($oldavatar_path);
                         }
@@ -624,41 +625,41 @@ if ($op === 'avatarupload') {
                 }
             }
         }
-        require XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH.'/header.php';
         echo $uploader->getErrors();
-        require XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH.'/footer.php';
         exit();
     }
 }
 
 if ($op === 'avatarchoose') {
     if (!$xoopsGTicket->check(true, 'avatarchoose', false)) {
-        redirect_header(XOOPS_URL . '/', 3, $xoopsGTicket->getErrors());
+        redirect_header(XOOPS_URL.'/', 3, $xoopsGTicket->getErrors());
     }
-    $user_avatar     = $formdata->getValue('post', 'user_avatar', 's', true);
-    $user_avatarpath = str_replace("\\", '/', realpath(XOOPS_UPLOAD_PATH . '/' . $user_avatar));
+    $user_avatar = $formdata->getValue('post', 'user_avatar', 's', true);
+    $user_avatarpath = str_replace('\\', '/', realpath(XOOPS_UPLOAD_PATH.'/'.$user_avatar));
     if (0 === strpos($user_avatarpath, XOOPS_UPLOAD_PATH) && is_file($user_avatarpath)) {
         $oldavatar = $u_obj->getVar('user_avatar', 's');
         $u_obj->setVar('user_avatar', $user_avatar, true);
         if (!$uHandler->insert($u_obj)) {
-            require XOOPS_ROOT_PATH . '/header.php';
+            require XOOPS_ROOT_PATH.'/header.php';
             echo $u_obj->getHtmlErrors();
-            require XOOPS_ROOT_PATH . '/footer.php';
+            require XOOPS_ROOT_PATH.'/footer.php';
             exit();
         }
         $avtHandler = xoops_getHandler('avatar');
         if ($oldavatar && $oldavatar !== 'blank.gif' && !preg_match('/^savt/', strtolower($oldavatar))) {
-            $avatars =  $avtHandler->getObjects(new Criteria('avatar_file', $oldavatar));
+            $avatars = $avtHandler->getObjects(new Criteria('avatar_file', $oldavatar));
             if (is_object($avatars[0])) {
                 $avtHandler->delete($avatars[0]);
             }
-            $oldavatar_path = str_replace("\\", '/', realpath(XOOPS_UPLOAD_PATH . '/' . $oldavatar));
+            $oldavatar_path = str_replace('\\', '/', realpath(XOOPS_UPLOAD_PATH.'/'.$oldavatar));
             if (0 === strpos($oldavatar_path, XOOPS_UPLOAD_PATH) && is_file($oldavatar_path)) {
                 unlink($oldavatar_path);
             }
         }
         if ($user_avatar !== 'blank.gif') {
-            $avatars =  $avtHandler->getObjects(new Criteria('avatar_file', $user_avatar));
+            $avatars = $avtHandler->getObjects(new Criteria('avatar_file', $user_avatar));
             if (is_object($avatars[0])) {
                 $avtHandler->addUser($avatars[0]->getVar('avatar_id'), $uid);
             }

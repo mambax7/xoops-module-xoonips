@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,13 +25,14 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 /**
- * select index page
+ * select index page.
  *
  * this file will include from 'maintenance_item_withdraw.php' or
  * 'maintenance_item_delete.php'
  *
  * requrement variables
- * @var string $title        page title
+ *
+ * @var string page title
  * @var string $description  page description
  * @var string $ticket_area  area name of token ticket
  * @var string $index_mode   index mode
@@ -43,11 +45,10 @@
  * @var string $nextaction   next action
  * @var string $submit       submit button label
  */
-
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // load libraries
-require_once __DIR__ . '/../../include/libitem.php';
+require_once __DIR__.'/../../include/libitem.php';
 
 $treelist = array();
 switch ($index_mode) {
@@ -63,35 +64,35 @@ if (empty($treelist)) {
 }
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
+require_once __DIR__.'/../../class/base/gtickets.php';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_TITLE,
-        'url'   => $xoonips_admin['mypage_url'],
+        'url' => $xoonips_admin['mypage_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('maintenance_item_idxselect.tmpl.tpl');

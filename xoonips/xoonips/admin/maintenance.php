@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -23,16 +24,16 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-require_once __DIR__ . '/../../../include/cp_header.php';
+require_once __DIR__.'/../../../include/cp_header.php';
 
 // load common file.
-require __DIR__ . '/actions/common.inc.php';
+require __DIR__.'/actions/common.inc.php';
 
 // page definition
-$pages               = array();
-$pages['main']       = array();
-$pages['account']    = array(
-    'get'  => array(
+$pages = array();
+$pages['main'] = array();
+$pages['account'] = array(
+    'get' => array(
         'modify',
         'add',
         'dconfirm',
@@ -43,8 +44,8 @@ $pages['account']    = array(
         'delete',
     ),
 );
-$pages['item']       = array(
-    'get'  => array(
+$pages['item'] = array(
+    'get' => array(
         'withdraw',
         'delete',
         'transfer',
@@ -57,8 +58,8 @@ $pages['item']       = array(
         'tupdate',
     ),
 );
-$pages['ranking']    = array(
-    'get'  => array(
+$pages['ranking'] = array(
+    'get' => array(
         'download',
     ),
     'post' => array(
@@ -67,7 +68,7 @@ $pages['ranking']    = array(
         'clear',
     ),
 );
-$pages['position']   = array(
+$pages['position'] = array(
     'post' => array(
         'update',
     ),
@@ -77,7 +78,7 @@ $pages['filesearch'] = array(
         'rescan',
     ),
 );
-$pages['oaipmh']     = array();
+$pages['oaipmh'] = array();
 
 // initialize
 xoonips_admin_initialize(__FILE__, 'maintenance', $pages);

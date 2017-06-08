@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -23,11 +24,11 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-require __DIR__ . '/include/common.inc.php';
-require_once __DIR__ . '/include/lib.php';
-require __DIR__ . '/class/base/gtickets.php';
+require __DIR__.'/include/common.inc.php';
+require_once __DIR__.'/include/lib.php';
+require __DIR__.'/class/base/gtickets.php';
 
-$xnpsid   = $_SESSION['XNPSID'];
+$xnpsid = $_SESSION['XNPSID'];
 $formdata = xoonips_getUtility('formdata');
 $textutil = xoonips_getUtility('text');
 
@@ -41,13 +42,13 @@ $uid = $_SESSION['xoopsUserId'];
 // Only Moderator can access this page.
 $memberHandler = xoonips_getHandler('xoonips', 'member');
 if (!$memberHandler->isModerator($uid)) {
-    redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
+    redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
 }
 
 // get requests
 $op = $formdata->getValue('post', 'op', 's', false, '');
 
-$index_ids      = $formdata->getValueArray('post', 'index_ids', 'i', false);
+$index_ids = $formdata->getValueArray('post', 'index_ids', 'i', false);
 $group_index_id = $formdata->getValue('post', 'group_index_id', 'i', false);
 // check request variables
 if ($op === 'certify' || $op === 'uncertify') {
@@ -59,7 +60,7 @@ if ($op === 'certify' || $op === 'uncertify') {
 }
 
 // pankuzu for administrator
-$pankuzu = _MI_XOONIPS_ACCOUNT_PANKUZU_MODERATOR . _MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR . _MI_XOONIPS_ITEM_PANKUZU_CERTIFY_GROUP_PUBLIC_ITEMS;
+$pankuzu = _MI_XOONIPS_ACCOUNT_PANKUZU_MODERATOR._MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR._MI_XOONIPS_ITEM_PANKUZU_CERTIFY_GROUP_PUBLIC_ITEMS;
 
 if ($op === 'certify') {
     if (!$xoopsGTicket->check(true, 'xoonips_group_certify_index')) {
@@ -77,8 +78,8 @@ if ($op === 'certify') {
     exit();
 }
 
-$group_indexes                 = array();
-$index_compoHandler            = xoonips_getOrmCompoHandler('xoonips', 'index');
+$group_indexes = array();
+$index_compoHandler = xoonips_getOrmCompoHandler('xoonips', 'index');
 $index_group_index_linkHandler = xoonips_getOrmHandler('xoonips', 'index_group_index_link');
 foreach ($index_group_index_linkHandler->getObjects() as $link) {
     if (!array_key_exists($link->get('group_index_id'), $group_indexes)) {
@@ -87,19 +88,19 @@ foreach ($index_group_index_linkHandler->getObjects() as $link) {
             continue;
         }
         $group_indexes[$link->get('group_index_id')] = array(
-            'group_index_id'   => $link->get('group_index_id'),
-            'indexes'          => array(),
-            'group_index_path' => $textutil->html_special_chars('/' . implode('/', $group_index_path)),
+            'group_index_id' => $link->get('group_index_id'),
+            'indexes' => array(),
+            'group_index_path' => $textutil->html_special_chars('/'.implode('/', $group_index_path)),
         );
     }
     array_push($group_indexes[$link->get('group_index_id')]['indexes'], array(
-        'id'   => $link->get('index_id'),
-        'path' => $textutil->html_special_chars('/' . implode('/', $index_compoHandler->getIndexPathNames($link->get('index_id'))))
+        'id' => $link->get('index_id'),
+        'path' => $textutil->html_special_chars('/'.implode('/', $index_compoHandler->getIndexPathNames($link->get('index_id')))),
     ));
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_groupcertify.tpl';
-require XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH.'/header.php';
 
 $xoopsTpl->assign('pankuzu', $pankuzu);
 $xoopsTpl->assign('certify_button_label', _MD_XOONIPS_ITEM_CERTIFY_BUTTON_LABEL);
@@ -109,12 +110,12 @@ $xoopsTpl->assign('index_label', _MD_XOONIPS_ITEM_INDEX_LABEL);
 if (count($group_indexes) > 0) {
     $xoopsTpl->assign('group_indexes', $group_indexes);
 }
-$xoopsTpl->assign('xoonips_editprofile_url', XOOPS_URL . '/modules/xoonips/edituser.php?uid=' . $uid);
+$xoopsTpl->assign('xoonips_editprofile_url', XOOPS_URL.'/modules/xoonips/edituser.php?uid='.$uid);
 // token ticket
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, 'xoonips_group_certify_index');
 $xoopsTpl->assign('token_ticket', $token_ticket);
 
-require XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH.'/footer.php';
 
 /**
  * @param $to_index_ids
@@ -123,7 +124,7 @@ require XOOPS_ROOT_PATH . '/footer.php';
 function certify($to_index_ids, $group_index_id)
 {
     // transaction
-    require_once __DIR__ . '/class/base/transaction.class.php';
+    require_once __DIR__.'/class/base/transaction.class.php';
     $transaction = XooNIpsTransaction::getInstance();
     $transaction->start();
 
@@ -131,7 +132,7 @@ function certify($to_index_ids, $group_index_id)
     foreach ($to_index_ids as $to_index_id) {
         if (!$index_group_index_linkHandler->makePublic($to_index_id, array($group_index_id))) {
             $transaction->rollback();
-            redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_GROUP_TREE_TO_PUBLIC_INDEX_TREE_FAILED);
+            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_GROUP_TREE_TO_PUBLIC_INDEX_TREE_FAILED);
             exit();
         }
     }
@@ -140,7 +141,7 @@ function certify($to_index_ids, $group_index_id)
 
     $transaction->commit();
     $index_group_index_linkHandler->notifyMakePublicGroupIndex($to_index_ids, array($group_index_id), 'group_item_certified');
-    redirect_header(XOOPS_URL . '/modules/xoonips/groupcertify.php', 3, 'Succeed');
+    redirect_header(XOOPS_URL.'/modules/xoonips/groupcertify.php', 3, 'Succeed');
 }
 
 /**
@@ -150,7 +151,7 @@ function certify($to_index_ids, $group_index_id)
 function uncertify($to_index_ids, $group_index_id)
 {
     // transaction
-    require_once __DIR__ . '/class/base/transaction.class.php';
+    require_once __DIR__.'/class/base/transaction.class.php';
     $transaction = XooNIpsTransaction::getInstance();
     $transaction->start();
 
@@ -158,7 +159,7 @@ function uncertify($to_index_ids, $group_index_id)
     foreach ($to_index_ids as $to_index_id) {
         if (!$index_group_index_linkHandler->rejectMakePublic($to_index_id, array($group_index_id))) {
             $transaction->rollback();
-            redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_GROUP_TREE_TO_PUBLIC_INDEX_TREE_FAILED);
+            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_GROUP_TREE_TO_PUBLIC_INDEX_TREE_FAILED);
         }
     }
     $index_group_index_linkHandler->notifyMakePublicGroupIndex($to_index_ids, array($group_index_id), 'group_item_rejected');
@@ -167,5 +168,5 @@ function uncertify($to_index_ids, $group_index_id)
     $eventlogHandler->recordRejectGroupIndexEvent($group_index_id);
 
     $transaction->commit();
-    redirect_header(XOOPS_URL . '/modules/xoonips/groupcertify.php', 3, 'Succeed');
+    redirect_header(XOOPS_URL.'/modules/xoonips/groupcertify.php', 3, 'Succeed');
 }

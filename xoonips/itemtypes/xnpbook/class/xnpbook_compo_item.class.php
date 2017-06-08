@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,11 +27,10 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
-require_once XOOPS_ROOT_PATH . '/modules/xnpbook/iteminfo.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xoonips_compo_item.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xnpbook/iteminfo.php';
 
 /**
- *
  * @brief Handler object that create,insert,update,get,delete
  * XNPBookCompo object.
  */
@@ -38,6 +38,7 @@ class XNPBookCompoHandler extends XooNIpsItemInfoCompoHandler
 {
     /**
      * XNPBookCompoHandler constructor.
+     *
      * @param $db
      */
     public function __construct($db)
@@ -51,15 +52,17 @@ class XNPBookCompoHandler extends XooNIpsItemInfoCompoHandler
     public function create()
     {
         $book = new XNPBookCompo();
+
         return $book;
     }
 
     /**
-     * return template filename
+     * return template filename.
      *
      * @param string $type defined symbol
      *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
      *                     or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
+     *
      * @return string|template
      */
     public function getTemplateFileName($type)
@@ -75,14 +78,15 @@ class XNPBookCompoHandler extends XooNIpsItemInfoCompoHandler
     }
 
     /**
-     * return template variables of item
+     * return template variables of item.
      *
-     * @param string $type defined symbol
-     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *                     , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
-     *                     or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
+     * @param string $type    defined symbol
+     *                        XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                        , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
+     *                        or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
      * @param int    $item_id
-     * @param int    $uid  user id who get item
+     * @param int    $uid     user id who get item
+     *
      * @return array of template variables
      */
     public function getTemplateVar($type, $item_id, $uid)
@@ -100,6 +104,7 @@ class XNPBookCompoHandler extends XooNIpsItemInfoCompoHandler
                 foreach ($book->getVar('author') as $author) {
                     $result['author'][] = $author->getVarArray('s');
                 }
+
                 return $result;
             case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
             case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
@@ -108,27 +113,26 @@ class XNPBookCompoHandler extends XooNIpsItemInfoCompoHandler
                           = xoonips_get_multiple_field_template_vars($detail->getAuthors(), 'xnpbook', 'author');
                 $result['detail']
                           = array(
-                    'editor'               => $detail->getVar('editor', 's'),
-                    'publisher'            => $detail->getVar('publisher', 's'),
-                    'isbn'                 => $detail->getVar('isbn', 's'),
-                    'url'                  => $detail->getVar('url', 's'),
-                    'attachment_dl_limit'  => $detail->get('attachment_dl_limit'),
-                    'attachment_dl_notify' => $detail->get('attachment_dl_notify')
+                    'editor' => $detail->getVar('editor', 's'),
+                    'publisher' => $detail->getVar('publisher', 's'),
+                    'isbn' => $detail->getVar('isbn', 's'),
+                    'url' => $detail->getVar('url', 's'),
+                    'attachment_dl_limit' => $detail->get('attachment_dl_limit'),
+                    'attachment_dl_notify' => $detail->get('attachment_dl_notify'),
                 );
                 $book_pdf = $book->getVar('book_pdf');
                 if ($book_pdf->get('item_id') == $item_id) {
                     $result['detail']['book_pdf']
                         = $this->getAttachmentTemplateVar($book->getVar('book_pdf'));
                 }
+
                 return $result;
         }
     }
 }
 
 /**
- *
  * @brief Data object that have one ore more XooNIpsTableObject for Book type.
- *
  */
 class XNPBookCompo extends XooNIpsItemInfoCompo
 {

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,60 +27,56 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * search utilities
+ * search utilities.
  *
- * @package   xoonips_utility
  * @copyright copyright &copy; 2005-2009 RIKEN Japan
  */
 class XooNIpsUtilitySearch extends XooNIpsUtility
 {
-
     /**
-     * constant value for search query operator 'AND'
+     * constant value for search query operator 'AND'.
+     *
      * @var string
-     * @access private
      */
     public $OP_AND = 'AND';
 
     /**
-     * constant value for search query operator 'AND'
+     * constant value for search query operator 'AND'.
+     *
      * @var string
-     * @access private
      */
     public $OP_OR = 'OR';
 
     /**
-     * constant value for search text encoding
+     * constant value for search text encoding.
+     *
      * @var string
-     * @access private
      */
     public $ENCODING = XOONIPS_SEARCH_TEXT_ENCODING;
 
     /**
-     * constant value for fulltext search data
+     * constant value for fulltext search data.
+     *
      * @var string
-     * @access private
      */
     public $WINDOW_SIZE = XOONIPS_WINDOW_SIZE;
 
     /**
-     * stop words
+     * stop words.
+     *
      * @var array
-     * @access private
      */
     public $_stop_words;
 
     /**
-     * regex patterns
+     * regex patterns.
+     *
      * @var array
-     * @access private
      */
     public $_regex_pattens;
 
     /**
-     * constractor
-     *
-     * @access public
+     * constractor.
      */
     public function __construct()
     {
@@ -89,13 +86,13 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
     }
 
     /**
-     * get keyword search criteria by query string
+     * get keyword search criteria by query string.
      *
-     * @access public
      * @param string $field    field part in SQL
      * @param string $query    search query
      * @param string $encoding text encoding of search query
      * @param string $prefix   table prefix in SQL
+     *
      * @return object object instance of keyword search criteria
      */
     public function getKeywordSearchCriteria($field, $query, $encoding, $prefix = '')
@@ -123,7 +120,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
         $tokens = $this->_reverse_polish_notation($tokens);
 
         // create keyword search criteria
-        $criteria =  $this->_make_keyword_search_criteria($field, $tokens, $encoding, $prefix);
+        $criteria = $this->_make_keyword_search_criteria($field, $tokens, $encoding, $prefix);
 
         // restore original multi byte regex encoding
         mb_regex_encoding($regex_encoding);
@@ -132,13 +129,13 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
     }
 
     /**
-     * get fulltext search criteria by query string
+     * get fulltext search criteria by query string.
      *
-     * @access public
      * @param string $field    field part in SQL
      * @param string $query    search query
      * @param string $encoding text encoding of search query
      * @param string $prefix   table prefix in SQL
+     *
      * @return object object instance of fulltext search criteria
      */
     public function &getFulltextSearchCriteria($field, $query, $encoding, $prefix = '')
@@ -166,7 +163,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
         $tokens = $this->_reverse_polish_notation($tokens);
 
         // create fulltext search expression part of SQL
-        $criteria =  $this->_make_fulltext_search_criteria($field, $tokens, $prefix);
+        $criteria = $this->_make_fulltext_search_criteria($field, $tokens, $prefix);
 
         // restore original multi byte regex encoding
         mb_regex_encoding($regex_encoding);
@@ -175,10 +172,10 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
     }
 
     /**
-     * get fulltext data for storing into database
+     * get fulltext data for storing into database.
      *
-     * @access public
      * @param string $text 'UTF-8' encoded text
+     *
      * @return string $this->ENCODING encoded fulltext data
      */
     public function getFulltextData($text)
@@ -204,12 +201,13 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
     }
 
     /**
-     * make keyword search criteria
-     * @access private
+     * make keyword search criteria.
+     *
      * @param string $field    field part in SQL
      * @param array  $tokens   'UTF-8' encoded RPN applied tokens
      * @param string $encoding text encoding for creating criteria
      * @param string $prefix   table prefix in SQL
+     *
      * @return object created criteria
      */
     public function _make_keyword_search_criteria($field, $tokens, $encoding, $prefix)
@@ -219,7 +217,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
             return $this->_make_force_unmatch_criteria($field, $prefix);
         }
         $is_utf8 = ($encoding === 'UTF-8');
-        $stack   = array();
+        $stack = array();
         foreach ($tokens as $token) {
             if ($this->_is_operator($token)) {
                 if (count($stack) < 2) {
@@ -239,30 +237,30 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
                     $val = new CriteriaCompo($val2);
                     $val->add($val1);
                 } elseif ($op1 == false) {
-                    $val =  $val2;
+                    $val = $val2;
                     $val->add($val1, $op);
                 } else {
-                    $val =  $val1;
+                    $val = $val1;
                     $val->add($val2, $op);
                 }
                 unset($val1, $val2, $op1, $op2);
             } else {
                 $is_phrase = $this->_strip_double_quote($token);
-                $token     = ($is_utf8 ? $token : mb_convert_encoding($token, $encoding, 'UTF-8'));
-                $token     = addslashes($token);
+                $token = ($is_utf8 ? $token : mb_convert_encoding($token, $encoding, 'UTF-8'));
+                $token = addslashes($token);
                 if ($is_phrase) {
                     $cr_op = '=';
                 } else {
                     $cr_op = 'LIKE';
-                    $token = '%' . preg_replace('/([%_])/', '\\\\\\1', $token) . '%';
+                    $token = '%'.preg_replace('/([%_])/', '\\\\\\1', $token).'%';
                 }
-                $op  = false;
+                $op = false;
                 $val = new Criteria($field, $token, $cr_op, $prefix);
             }
             // php-indent: disable
             $stack[] = array(
                 $op,
-                $val
+                $val,
             );
             // php-indent: enable
             unset($op, $val);
@@ -271,21 +269,24 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
         if ($cnt == 0) {
             // no search query found
             $criteria = new CriteriaCompo();
+
             return $criteria;
         } elseif ($cnt > 1) {
             // fatal error : invalid RPN data found
             return $this->_make_force_unmatch_criteria($field, $prefix);
         }
         list($op, $val) = array_pop($stack);
+
         return $val;
     }
 
     /**
-     * make fulltext search criteria
-     * @access private
+     * make fulltext search criteria.
+     *
      * @param string $field  field part in SQL
      * @param array  $tokens 'UTF-8' encoded RPN applied tokens
      * @param string $prefix table prefix in SQL
+     *
      * @return object object instance of fulltext search criteria
      */
     public function _make_fulltext_search_criteria($field, $tokens, $prefix)
@@ -295,7 +296,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
             return $this->_make_force_unmatch_criteria($field, $prefix);
         }
         $is_utf8 = ($this->ENCODING === 'UTF-8');
-        $stack   = array();
+        $stack = array();
         foreach ($tokens as $token) {
             if ($this->_is_operator($token)) {
                 if (count($stack) < 2) {
@@ -306,16 +307,16 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
                 list($op2, $val2) = array_pop($stack);
                 if ($this->_is_and_op($token)) {
                     // 'AND' operator
-                    $op   = $this->OP_AND;
+                    $op = $this->OP_AND;
                     $fmt1 = ($op1 === false ? '+%s' : ($this->_is_or_op($op1) ? '+( %s )' : '%s'));
                     $fmt2 = ($op2 === false ? '+%s' : ($this->_is_or_op($op2) ? '+( %s )' : '%s'));
                 } else {
                     // 'OR' operator
                     $fmt1 = ($this->_is_and_op($op1) ? '( %s )' : '%s');
                     $fmt2 = ($this->_is_and_op($op2) ? '( %s )' : '%s');
-                    $op   = $this->OP_OR;
+                    $op = $this->OP_OR;
                 }
-                $val = sprintf($fmt2 . ' ' . $fmt1, $val2, $val1);
+                $val = sprintf($fmt2.' '.$fmt1, $val2, $val1);
             } else {
                 $is_phrase = $this->_strip_double_quote($token);
                 if (!$this->_is_multibyte_word($token)) {
@@ -323,7 +324,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
                     $token = ($is_utf8 ? $token : mb_convert_encoding($token, $this->ENCODING, 'UTF-8'));
                 } else {
                     // multi byte token
-                    $token    = ($is_utf8 ? $token : mb_convert_encoding($token, $this->ENCODING, 'UTF-8'));
+                    $token = ($is_utf8 ? $token : mb_convert_encoding($token, $this->ENCODING, 'UTF-8'));
                     $mbtokens = $this->_ngram($token, XOONIPS_WINDOW_SIZE, $this->ENCODING, false, false);
                     if (count($mbtokens) > 1) {
                         $is_phrase = true;
@@ -331,13 +332,13 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
                     $token = implode(' ', array_map('bin2hex', $mbtokens));
                 }
                 $fmt = $is_phrase ? '"%s"' : '%s*';
-                $op  = false;
+                $op = false;
                 $val = sprintf($fmt, addslashes($token));
             }
             // php-indent: disable
             $stack[] = array(
                 $op,
-                $val
+                $val,
             );
             // php-indent: enable
         }
@@ -345,6 +346,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
         if ($cnt == 0) {
             // no search query found
             $criteria = new CriteriaCompo();
+
             return $criteria;
         } elseif ($cnt > 1) {
             // fatal error : invalid RPN data found
@@ -352,14 +354,16 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
         }
         list($op, $expr) = array_pop($stack);
         $criteria = new XooNIpsFulltextCriteria($field, $expr, true, $prefix);
+
         return $criteria;
     }
 
     /**
-     * make force unmatch criteria for fatal error
-     * @access private
+     * make force unmatch criteria for fatal error.
+     *
      * @param string $field
      * @param        $prefix
+     *
      * @return CriteriaCompo
      */
     public function &_make_force_unmatch_criteria($field, $prefix)
@@ -367,18 +371,20 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria($field, '', '=', $prefix));
         $criteria->add(new Criteria($field, '', '!=', $prefix));
+
         return $criteria;
     }
 
     /**
-     * make fulltext search data
-     * @access private
+     * make fulltext search data.
+     *
      * @param array $tokens 'UTF-8' encoded fulltext search tokens
+     *
      * @return string $this->ENCODING encoded fulltext search data
      */
     public function _make_fulltext_search_data($tokens)
     {
-        $is_utf8  = ($this->ENCODING === 'UTF-8');
+        $is_utf8 = ($this->ENCODING === 'UTF-8');
         $trailing = ($this->WINDOW_SIZE > 2);
         $windowed = array();
         foreach ($tokens as $token) {
@@ -388,21 +394,22 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
                 $windowed[] = ($is_utf8 ? $token : mb_convert_encoding($token, $this->ENCODING, 'UTF-8'));
             } else {
                 // multi byte token
-                $token    = ($is_utf8 ? $token : mb_convert_encoding($token, $this->ENCODING, 'UTF-8'));
+                $token = ($is_utf8 ? $token : mb_convert_encoding($token, $this->ENCODING, 'UTF-8'));
                 $mbtokens = $this->_ngram($token, $this->WINDOW_SIZE, $this->ENCODING, false, $trailing);
                 foreach ($mbtokens as $mbtoken) {
                     $windowed[] = bin2hex($mbtoken);
                 }
             }
         }
+
         return implode(' ', $windowed);
     }
 
     /**
-     * split text to search tokens
+     * split text to search tokens.
      *
-     * @access private
      * @param string $text 'UTF-8' encoded search text
+     *
      * @return array array of search text token
      */
     public function _split_to_tokens($text)
@@ -433,17 +440,19 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
     }
 
     /**
-     * normalize keyword search string
-     * @access   private
+     * normalize keyword search string.
+     *
      * @param string $text 'UTF-8' encoded input text
+     *
      * @return bool false if empty query
+     *
      * @internal param string $encoding input text encoding
      */
     public function _normalize_keyword_search_string($text)
     {
         // sanitize non printable characters
         $pattern = sprintf('%s+', $this->_regex_patterns['noprint']);
-        $text    = mb_ereg_replace($pattern, ' ', $text);
+        $text = mb_ereg_replace($pattern, ' ', $text);
 
         // trim string
         $text = trim($text);
@@ -452,28 +461,29 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
     }
 
     /**
-     * normalize fulltext search string
-     * @access private
+     * normalize fulltext search string.
+     *
      * @param string $text 'UTF-8' encoded input text
+     *
      * @return string normalized string
      */
     public function _normalize_fulltext_search_string($text)
     {
         // convert html character entities to numeric entities
         $textutil = xoonips_getUtility('text');
-        $text     = $textutil->html_numeric_entities($text);
+        $text = $textutil->html_numeric_entities($text);
 
         // convert all html numeric entities to UTF-8 character
         $text = mb_decode_numericentity($text, array(
             0x0,
             0xffff,
             0,
-            0xffff
+            0xffff,
         ), 'UTF-8');
 
         // sanitize non printable characters
         $pattern = sprintf('%s+', $this->_regex_patterns['noprint']);
-        $text    = mb_ereg_replace($pattern, ' ', $text);
+        $text = mb_ereg_replace($pattern, ' ', $text);
 
         // normalize Japanese characters
         // 1. 'a'  - zenkaku alpha and number chars to hankaku chars
@@ -486,7 +496,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
             0x0080,
             0x00ff,
             0,
-            0xffff
+            0xffff,
         ), 'UTF-8');
 
         // trim string
@@ -500,14 +510,15 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
      *  - remove single character
      *  - remove stopwords
      *  - remove invalid operators and parentheses
-     *  - insert AND operator between operands or right parenthesis ')'
-     * @access private
+     *  - insert AND operator between operands or right parenthesis ')'.
+     *
      * @param array $tokens 'UTF-8' encoded search query tokens
+     *
      * @return array|bool
      */
     public function _normalize_search_tokens($tokens)
     {
-        $tmp    = array();
+        $tmp = array();
         $ptoken = false;
         $pdepth = 0;
         foreach ($tokens as $token) {
@@ -545,17 +556,17 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
                     // remove empty parenthesis
                     array_pop($tmp);
                     $ptoken = empty($tmp) ? false : $tmp[count($tmp) - 1];
-                    $pdepth--;
+                    --$pdepth;
                     continue;
                 }
-                $pdepth--;
+                --$pdepth;
             } elseif ($token === '(') {
                 // left parenthesis token
                 if ($ptoken !== false && !$this->_is_operator($ptoken) && $ptoken !== '(') {
                     // insert AND operator between operands and left parenthesis '('
                     $tmp[] = $this->OP_AND;
                 }
-                $pdepth++;
+                ++$pdepth;
             } else {
                 // normal token
                 if ($ptoken !== false && !$this->_is_operator($ptoken) && $ptoken !== '(') {
@@ -563,7 +574,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
                     $tmp[] = $this->OP_AND;
                 }
             }
-            $tmp[]  = $token;
+            $tmp[] = $token;
             $ptoken = $token;
         }
         if ($ptoken !== false && $this->_is_operator($ptoken)) {
@@ -575,13 +586,15 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
             return false;
         }
         $tokens = $tmp;
+
         return $tokens;
     }
 
     /**
-     * get reverse polish notation tokens
-     * @access private
+     * get reverse polish notation tokens.
+     *
      * @param array $tokens 'UTF-8' encoded search query tokens
+     *
      * @return array|bool
      */
     public function _reverse_polish_notation($tokens)
@@ -591,7 +604,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
             return false;
         }
         // get reverse polish notation from expression tokens
-        $operands  = array();
+        $operands = array();
         $operators = array();
         foreach ($tokens as $token) {
             if ($token === '(') {
@@ -627,54 +640,57 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
         while (!empty($operators)) {
             $operands[] = array_pop($operators);
         }
+
         return $operands;
     }
 
     /**
-     * get array of N-gram applied window string
+     * get array of N-gram applied window string.
      *
-     * @access private
      * @param string $word     input string
      * @param int    $n        window size
      * @param string $encoding input string encoding
      * @param bool   $leading  flag for output leading
      * @param bool   $trailing flag for output trailing
+     *
      * @return array array of window string
      */
     public function _ngram($word, $n, $encoding, $leading, $trailing)
     {
         $words = array();
-        $word  = trim($word);
+        $word = trim($word);
         if (empty($word) || $n < 1) {
             return $words;
         }
-        $len   = mb_strlen($word, $encoding);
+        $len = mb_strlen($word, $encoding);
         $wsize = min($len, $n);
         $lsize = $wsize - 1;
         $bsize = $len - $lsize;
         // leading
         if ($leading) {
-            for ($i = 1; $i <= $lsize; $i++) {
+            for ($i = 1; $i <= $lsize; ++$i) {
                 $words[] = mb_substr($word, 0, $i, $encoding);
             }
         }
         // body
-        for ($i = 0; $i < $bsize; $i++) {
+        for ($i = 0; $i < $bsize; ++$i) {
             $words[] = mb_substr($word, $i, $wsize, $encoding);
         }
         // trailing
         if ($trailing) {
-            for ($i = $lsize; $i > 0; $i--) {
+            for ($i = $lsize; $i > 0; --$i) {
                 $words[] = mb_substr($word, $bsize + $lsize - $i, $i, $encoding);
             }
         }
+
         return $words;
     }
 
     /**
-     * return true if operator is AND or OR
-     * @access private
+     * return true if operator is AND or OR.
+     *
      * @param string $token 'UTF-8' encoded input text
+     *
      * @return bool true if operator token
      */
     public function _is_operator($token)
@@ -683,9 +699,10 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
     }
 
     /**
-     * return true if operator is AND
-     * @access private
+     * return true if operator is AND.
+     *
      * @param string $token 'UTF-8' encoded input text
+     *
      * @return bool true if 'AND' token
      */
     public function _is_and_op($token)
@@ -694,9 +711,10 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
     }
 
     /**
-     * return true if operator is OR
-     * @access private
+     * return true if operator is OR.
+     *
      * @param string $token 'UTF-8' encoded input text
+     *
      * @return bool true if 'OR' token
      */
     public function _is_or_op($token)
@@ -705,22 +723,26 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
     }
 
     /**
-     * return true if multibyte word
-     * @access private
+     * return true if multibyte word.
+     *
      * @param string $token 'UTF-8' encoded word
+     *
      * @return bool true if multibyte word
      */
     public function _is_multibyte_word($token)
     {
         $result = mb_ereg($this->_regex_patterns['mbword'], $token);
+
         return $result !== false;
     }
 
     /**
-     * strip double quote from token
-     * @access   private
+     * strip double quote from token.
+     *
      * @param string $token 'UTF-8' encoded input text
+     *
      * @return bool true if unquoted
+     *
      * @internal param string $encoding text encoding of $token
      */
     public function _strip_double_quote($token)
@@ -729,53 +751,54 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
         if (preg_match('/^"(.*)"$/', $token, $matches)) {
             // remove escape symbol in quoted string '\'
             $token = mb_ereg_replace('\\x5c([\\x22\\x27\\x5c])', '\\1', $matches[1]);
+
             return true;
         }
+
         return false;
     }
 
     /**
-     * initialize multi byte regex patterns
-     * @access private
+     * initialize multi byte regex patterns.
      */
     public function _initialize_regex_patterns()
     {
         // latin1 character codes - http://en.wikipedia.org/wiki/Latin-1
         // php-indent: disable
         $latin1 = array();
-        $ascii  = array(
-            'letter'  => '0-9a-zA-Z',
-            'symbol'  => '\\x21\\x23-\\x2f\\x3a-\\x40\\x5b-\\x60\\x7b-\\x7e',
+        $ascii = array(
+            'letter' => '0-9a-zA-Z',
+            'symbol' => '\\x21\\x23-\\x2f\\x3a-\\x40\\x5b-\\x60\\x7b-\\x7e',
             'noprint' => '\\x00-\\x1f\\x7f',
         );
         $ranges = array(
-            'letter'  => array(
+            'letter' => array(
                 array(
                     0xc0,
-                    0xd6
+                    0xd6,
                 ),
                 array(
                     0xd8,
-                    0xf6
+                    0xf6,
                 ),
                 array(
                     0xf8,
-                    0xff
-                )
+                    0xff,
+                ),
             ),
-            'symbol'  => array(
+            'symbol' => array(
                 array(
                     0xa0,
-                    0xbf
+                    0xbf,
                 ),
                 0xd7,
-                0xf7
+                0xf7,
             ),
             'noprint' => array(
                 array(
                     0x80,
-                    0x9f
-                )
+                    0x9f,
+                ),
             ),
         );
         // php-indent: enable
@@ -784,14 +807,14 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
             foreach ($range as $code) {
                 if (is_array($code)) {
                     list($from, $to) = $code;
-                    for ($i = $from; $i <= $to; $i++) {
+                    for ($i = $from; $i <= $to; ++$i) {
                         $chars[] = chr($i);
                     }
                 } else {
                     $chars[] = chr($code);
                 }
             }
-            $latin1[$name] = $ascii[$name] . mb_convert_encoding(implode('', $chars), 'UTF-8', 'ISO-8859-1');
+            $latin1[$name] = $ascii[$name].mb_convert_encoding(implode('', $chars), 'UTF-8', 'ISO-8859-1');
         }
 
         // non printable characters
@@ -813,8 +836,8 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
     }
 
     /**
-     * load stop words
-     * @access private
+     * load stop words.
+     *
      * @return bool false if faiure
      */
     public function _load_stopwords()

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,13 +27,13 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/../class/base/gtickets.php';
+require_once __DIR__.'/../class/base/gtickets.php';
 
 /**
- * convert text to csv string
+ * convert text to csv string.
  *
- * @access private
  * @param string $text input string
+ *
  * @return string converted csv string
  */
 function _xoonips_eventlog_text2csv($text)
@@ -62,11 +63,11 @@ function _xoonips_eventlog_text2csv($text)
     // - The first record in a csv file may contain column names in each of the
     //   fields.
     $escape_dquote = false;
-    $use_dquote    = false;
+    $use_dquote = false;
     if (strstr($text, '"')) {
         // contain double-quote character
         $escape_dquote = true;
-        $use_dquote    = true;
+        $use_dquote = true;
     } elseif (strstr($text, ',')) {
         // contain commas
         $use_dquote = true;
@@ -84,56 +85,59 @@ function _xoonips_eventlog_text2csv($text)
         $text = str_replace('"', '""', $text);
     }
     if ($use_dquote) {
-        $text = '"' . $text . '"';
+        $text = '"'.$text.'"';
     }
+
     return $text;
 }
 
 /**
- * convert text array to csv line
+ * convert text array to csv line.
  *
- * @access   private
  * @param object $download XooNIpsDownload instance
  * @param        $oneline
+ *
  * @return string one line of csv text
+ *
  * @internal param array $online input text array
  */
 function _xoonips_eventlog_array2csv($download, $oneline)
 {
-    $text      = '';
+    $text = '';
     $fieldsize = count($oneline);
-    for ($i = 0; $i < $fieldsize; $i++) {
+    for ($i = 0; $i < $fieldsize; ++$i) {
         if ($i != 0) {
             $text .= ',';
         }
         $field = $download->convert_to_client($oneline[$i], 'h');
         $text .= _xoonips_eventlog_text2csv($field);
     }
-    return $text . "\r\n";
+
+    return $text."\r\n";
 }
 
 /**
- * convert date (year, month, day) range to unix timestamp
+ * convert date (year, month, day) range to unix timestamp.
  *
- * @access private
  * @param bool $is_from true if input date is beginning date
  * @param int  $year    year
  * @param int  $month   month
  * @param int  $day     day
+ *
  * @return int converted timestamp
  */
 function _xoonips_eventlog_date2time($is_from, $year, $month, $day = 0)
 {
-    $year  = (int)$year;
-    $month = (int)$month;
-    $day   = (int)$day;
+    $year = (int) $year;
+    $month = (int) $month;
+    $day = (int) $day;
     if ($is_from) {
         if ($day == 0) {
             $day = 1;
         }
         $hour = 0;
-        $min  = 0;
-        $sec  = 0;
+        $min = 0;
+        $sec = 0;
     } else {
         if ($day == 0) {
             $no31days = array(
@@ -141,7 +145,7 @@ function _xoonips_eventlog_date2time($is_from, $year, $month, $day = 0)
                 4,
                 6,
                 9,
-                11
+                11,
             );
             if (in_array($month, $no31days)) {
                 if ($month == 2) {
@@ -158,17 +162,18 @@ function _xoonips_eventlog_date2time($is_from, $year, $month, $day = 0)
             }
         }
         $hour = 23;
-        $min  = 59;
-        $sec  = 59;
+        $min = 59;
+        $sec = 59;
     }
+
     return mktime($hour, $min, $sec, $month, $day, $year);
 }
 
 /**
- * resolve host name from ip address
+ * resolve host name from ip address.
  *
- * @access private
  * @param string $remote_host ip address
+ *
  * @return string resolved host name
  */
 function _xoonips_eventlog_resolve_host($remote_host)
@@ -178,14 +183,15 @@ function _xoonips_eventlog_resolve_host($remote_host)
             $remote_host = gethostbyaddr($remote_host);
         }
     }
+
     return $remote_host;
 }
 
 /**
- * convert domain from host name or ip address
+ * convert domain from host name or ip address.
  *
- * @access private
  * @param string $remote_host host name or ip address
+ *
  * @return string last domain, 'unkown' returned if could not resolve host name
  */
 function _xoonips_eventlog_get_domain($remote_host)
@@ -194,16 +200,16 @@ function _xoonips_eventlog_get_domain($remote_host)
     if (preg_match('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/', $remote_host)) {
         $domain = 'unknown';
     } else {
-        $tmp    = explode('.', $remote_host);
+        $tmp = explode('.', $remote_host);
         $domain = end($tmp);
     }
+
     return $domain;
 }
 
 /**
- * get event logs from database
+ * get event logs from database.
  *
- * @access private
  * @param int    $start_time    start time of time range
  * @param int    $end_time      end time of time range
  * @param int    $event_type_id event type id
@@ -224,9 +230,9 @@ function _xoonips_eventlog_get_domain($remote_host)
 function &_xoonips_eventlog_get($start_time, $end_time, $event_type_id, $query_type)
 {
     $tables['event_log'] = $GLOBALS['xoopsDB']->prefix('xoonips_event_log');
-    $eventlogHandler     = xoonips_getOrmHandler('xoonips', 'event_log');
-    $criteria            = new CriteriaCompo(new Criteria($tables['event_log'] . '.timestamp', $start_time, '>='));
-    $criteria->add(new Criteria($tables['event_log'] . '.timestamp', $end_time, '<='));
+    $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
+    $criteria = new CriteriaCompo(new Criteria($tables['event_log'].'.timestamp', $start_time, '>='));
+    $criteria->add(new Criteria($tables['event_log'].'.timestamp', $end_time, '<='));
     if ($event_type_id != 0) {
         $criteria->add(new Criteria('event_type_id', $event_type_id));
     }
@@ -272,8 +278,8 @@ function &_xoonips_eventlog_get($start_time, $end_time, $event_type_id, $query_t
             $join_criteria->cascade(new XooNIpsJoinCriteria('xoonips_item_type', 'item_type_id', 'item_type_id', 'INNER', 'itemtype'), 'basic', true);
             $join_criteria->cascade(new XooNIpsJoinCriteria('users', 'uid', 'uid', 'INNER', 'users'), 'basic', true);
             $join_criteria->cascade(new XooNIpsJoinCriteria('xoonips_file', 'file_id', 'file_id', 'INNER', 'file'), 'xoonips_event_log');
-            $objs = $eventlogHandler->getObjects($criteria, false, 'FROM_UNIXTIME(' . $tables['event_log']
-                                                                    . '.timestamp, \'%Y-%m\') AS event_month, basic.item_id, file.file_id, file.original_file_name AS fname, users.uname AS uname, users.name AS name, itemtype.display_name as itemtype_name, COUNT(event_type_id) AS cnt',
+            $objs = $eventlogHandler->getObjects($criteria, false, 'FROM_UNIXTIME('.$tables['event_log']
+                                                                    .'.timestamp, \'%Y-%m\') AS event_month, basic.item_id, file.file_id, file.original_file_name AS fname, users.uname AS uname, users.name AS name, itemtype.display_name as itemtype_name, COUNT(event_type_id) AS cnt',
                                                   false, $join_criteria);
             break;
         case 'user':
@@ -320,35 +326,36 @@ function &_xoonips_eventlog_get($start_time, $end_time, $event_type_id, $query_t
                                                   false, $join_criteria);
             break;
     }
+
     return $objs;
 }
 
 /**
- * get user's names from database
+ * get user's names from database.
  *
- * @access private
  * @return array user's names(uname)
  */
 function _xoonips_eventlog_get_usermap()
 {
     $uhandler = xoonips_getOrmHandler('xoonips', 'xoops_users');
-    $uobjs    = $uhandler->getObjects(null, 'uid, uname');
-    $users    = array();
+    $uobjs = $uhandler->getObjects(null, 'uid, uname');
+    $users = array();
     foreach ($uobjs as $uobj) {
-        $uid         = $uobj->getVar('uid', 'n');
-        $uname       = $uobj->getVar('uname', 'n');
+        $uid = $uobj->getVar('uid', 'n');
+        $uname = $uobj->getVar('uname', 'n');
         $users[$uid] = $uname;
     }
     // append guest
     $users[UID_GUEST] = 'guest';
+
     return $users;
 }
 
 /**
- * get item title from database
+ * get item title from database.
  *
- * @access public
  * @param int $item_id item id
+ *
  * @return string title
  */
 function xoonips_eventlog_get_item_title($item_id)
@@ -356,77 +363,79 @@ function xoonips_eventlog_get_item_title($item_id)
     $thandler = xoonips_getOrmHandler('xoonips', 'title');
     $criteria = new Criteria('item_id', $item_id);
     $criteria->setSort('title_id');
-    $objs =&  $thandler->getObjects($criteria);
+    $objs = &$thandler->getObjects($criteria);
     foreach ($objs as $obj) {
-        $title  = $obj->getVar('title', 'n');
-        $titles = isset($titles) ? $titles . "\r\n" . $title : $title;
+        $title = $obj->getVar('title', 'n');
+        $titles = isset($titles) ? $titles."\r\n".$title : $title;
     }
+
     return $titles;
 }
 
 /**
- * count users on the database
+ * count users on the database.
  *
- * @access public
  * @return int number of users
  */
 function xoonips_eventlog_count_users()
 {
-    $xuhandler     = xoonips_getOrmHandler('xoonips', 'users');
+    $xuhandler = xoonips_getOrmHandler('xoonips', 'users');
     $join_criteria = new XooNIpsJoinCriteria('users', 'uid', 'uid', 'INNER', 'users');
+
     return $xuhandler->getCount(null, $join_criteria);
 }
 
 /**
- * get user objects from database
+ * get user objects from database.
  *
- * @access public
  * @param int $start number of skip results
  * @param int $limit number of results, zero means unlimit
+ *
  * @return array object instance
  */
 function &xoonips_eventlog_get_users($start, $limit)
 {
-    $xuhandler     = xoonips_getOrmHandler('xoonips', 'users');
+    $xuhandler = xoonips_getOrmHandler('xoonips', 'users');
     $join_criteria = new XooNIpsJoinCriteria('users', 'uid', 'uid', 'INNER', 'users');
-    $criteria      = new CriteriaElement();
+    $criteria = new CriteriaElement();
     $criteria->setSort('uname');
     $criteria->setStart($start);
     if ($limit > 0) {
         $criteria->setLimit($limit);
     }
-    $objs =&  $xuhandler->getObjects($criteria, false, '', false, $join_criteria);
+    $objs = &$xuhandler->getObjects($criteria, false, '', false, $join_criteria);
+
     return $objs;
 }
 
 /**
- * count items on the database
+ * count items on the database.
  *
- * @access public
  * @return int number of items
  */
 function xoonips_eventlog_count_items()
 {
     $ibHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-    $criteria  = new Criteria('item_type_id', ITID_INDEX, '>');
+    $criteria = new Criteria('item_type_id', ITID_INDEX, '>');
+
     return $ibHandler->getCount($criteria);
 }
 
 /**
- * get item_basic objects from database
+ * get item_basic objects from database.
  *
- * @access public
  * @param int $start number of skip results
  * @param int $limit number of results, zero means unlimit
+ *
  * @return array object instance
  */
 function &xoonips_eventlog_get_items($start, $limit)
 {
     global $xoopsDB;
     $tables['item_basic'] = $xoopsDB->prefix('xoonips_item_basic');
-    $ibHandler            = xoonips_getOrmHandler('xoonips', 'item_basic');
-    $criteria             = new Criteria($tables['item_basic'] . '.item_type_id', ITID_INDEX, '>');
-    $criteria->setSort($tables['item_basic'] . '.item_id');
+    $ibHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
+    $criteria = new Criteria($tables['item_basic'].'.item_type_id', ITID_INDEX, '>');
+    $criteria->setSort($tables['item_basic'].'.item_id');
     $criteria->setStart($start);
     if ($limit > 0) {
         $criteria->setLimit($limit);
@@ -434,13 +443,15 @@ function &xoonips_eventlog_get_items($start, $limit)
     $join_criteria = new XooNIpsJoinCriteria('xoonips_item_type', 'item_type_id', 'item_type_id', 'INNER');
     $join_criteria->cascade(new XooNIpsJoinCriteria('users', 'uid', 'uid', 'INNER'), 'xoonips_item_basic');
     $objs = $ibHandler->getObjects($criteria, false, '', false, $join_criteria);
+
     return $objs;
 }
 
 /**
- * get operating conditions from log type id
+ * get operating conditions from log type id.
  *
  * @param int $log_type_id id of log type
+ *
  * @return array conditions
  */
 function _xoonips_eventlog_logtype2vars($log_type_id)
@@ -448,76 +459,76 @@ function _xoonips_eventlog_logtype2vars($log_type_id)
     static $typemap = array(
         // log_type_id => array( 'filename suffix', 'event type id', 'query type', 'csv title', 'graph title' )
         // - all event logs
-        0  => array(
+        0 => array(
             '',
             0,
             'all',
             '',
-            ''
+            '',
         ),
         // - number of top page access (day)
-        1  => array(
+        1 => array(
             'top',
             ETID_VIEW_TOP_PAGE,
             'day',
             _MD_XOONIPS_EVENTLOG_ACCESS_TOP_DAYS_LABEL,
-            _MD_XOONIPS_EVENTLOG_ACCESS_TOP_DAYS_TITLE
+            _MD_XOONIPS_EVENTLOG_ACCESS_TOP_DAYS_TITLE,
         ),
         // - number of top page access (month)
-        2  => array(
+        2 => array(
             'topmon',
             ETID_VIEW_TOP_PAGE,
             'month',
             _MD_XOONIPS_EVENTLOG_ACCESS_TOP_MONTHS_LABEL,
-            _MD_XOONIPS_EVENTLOG_ACCESS_TOP_MONTHS_TITLE
+            _MD_XOONIPS_EVENTLOG_ACCESS_TOP_MONTHS_TITLE,
         ),
         // - number of top page access (total)
-        3  => array(
+        3 => array(
             'toptotal',
             ETID_VIEW_TOP_PAGE,
             'total',
             _MD_XOONIPS_EVENTLOG_ACCESS_TOP_TOTAL_LABEL,
-            _MD_XOONIPS_EVENTLOG_ACCESS_TOP_DAYS_TOTAL_TITLE
+            _MD_XOONIPS_EVENTLOG_ACCESS_TOP_DAYS_TOTAL_TITLE,
         ),
         // - number of top page access (domain)
-        4  => array(
+        4 => array(
             'topdom',
             ETID_VIEW_TOP_PAGE,
             'domain',
             _MD_XOONIPS_EVENTLOG_ACCESS_TOP_DOMAINS_LABEL,
-            _MD_XOONIPS_EVENTLOG_ACCESS_TOP_DOMAINS_TITLE
+            _MD_XOONIPS_EVENTLOG_ACCESS_TOP_DOMAINS_TITLE,
         ),
         // - number of item detail page access (day)
-        5  => array(
+        5 => array(
             'item',
             ETID_VIEW_ITEM,
             'day',
             _MD_XOONIPS_EVENTLOG_ACCESS_ITEM_DAYS_LABEL,
-            _MD_XOONIPS_EVENTLOG_ACCESS_ITEM_DAYS_TITLE
+            _MD_XOONIPS_EVENTLOG_ACCESS_ITEM_DAYS_TITLE,
         ),
         // - number of item detail page access (month)
-        6  => array(
+        6 => array(
             'itemmon',
             ETID_VIEW_ITEM,
             'month',
             _MD_XOONIPS_EVENTLOG_ACCESS_ITEM_MONTHS_LABEL,
-            _MD_XOONIPS_EVENTLOG_ACCESS_ITEM_MONTHS_TITLE
+            _MD_XOONIPS_EVENTLOG_ACCESS_ITEM_MONTHS_TITLE,
         ),
         // - number of item detail page access (total)
-        7  => array(
+        7 => array(
             'itemtotal',
             ETID_VIEW_ITEM,
             'total',
             _MD_XOONIPS_EVENTLOG_ACCESS_ITEM_TOTAL_LABEL,
-            _MD_XOONIPS_EVENTLOG_ACCESS_ITEM_DAYS_TOTAL_TITLE
+            _MD_XOONIPS_EVENTLOG_ACCESS_ITEM_DAYS_TOTAL_TITLE,
         ),
         // - number of item detail page access (domain)
-        8  => array(
+        8 => array(
             'itemdom',
             ETID_VIEW_ITEM,
             'domain',
             _MD_XOONIPS_EVENTLOG_ACCESS_ITEM_DOMAINS_LABEL,
-            _MD_XOONIPS_EVENTLOG_ACCESS_ITEM_DOMAINS_TITLE
+            _MD_XOONIPS_EVENTLOG_ACCESS_ITEM_DOMAINS_TITLE,
         ),
         // - number of item detail page access (per item)
         18 => array(
@@ -525,7 +536,7 @@ function _xoonips_eventlog_logtype2vars($log_type_id)
             ETID_VIEW_ITEM,
             'item',
             _MD_XOONIPS_EVENTLOG_ACCESS_ITEM_PER_ITEM_LABEL,
-            ''
+            '',
         ),
         // - number of item detail page access (per user)
         19 => array(
@@ -533,15 +544,15 @@ function _xoonips_eventlog_logtype2vars($log_type_id)
             ETID_VIEW_ITEM,
             'user_item',
             _MD_XOONIPS_EVENTLOG_ACCESS_ITEM_PER_USER_LABEL,
-            ''
+            '',
         ),
         // - number of item attachment file download (day)
-        9  => array(
+        9 => array(
             'dl',
             ETID_DOWNLOAD_FILE,
             'day',
             _MD_XOONIPS_EVENTLOG_DL_ITEM_DAYS_LABEL,
-            _MD_XOONIPS_EVENTLOG_DL_ITEM_DAYS_TITLE
+            _MD_XOONIPS_EVENTLOG_DL_ITEM_DAYS_TITLE,
         ),
         // - number of item attachment file download (month)
         10 => array(
@@ -549,7 +560,7 @@ function _xoonips_eventlog_logtype2vars($log_type_id)
             ETID_DOWNLOAD_FILE,
             'month',
             _MD_XOONIPS_EVENTLOG_DL_ITEM_MONTHS_LABEL,
-            _MD_XOONIPS_EVENTLOG_DL_ITEM_MONTHS_TITLE
+            _MD_XOONIPS_EVENTLOG_DL_ITEM_MONTHS_TITLE,
         ),
         // - number of item attachment file download (total)
         11 => array(
@@ -557,7 +568,7 @@ function _xoonips_eventlog_logtype2vars($log_type_id)
             ETID_DOWNLOAD_FILE,
             'total',
             _MD_XOONIPS_EVENTLOG_DL_ITEM_TOTAL_LABEL,
-            _MD_XOONIPS_EVENTLOG_DL_ITEM_DAYS_TOTAL_TITLE
+            _MD_XOONIPS_EVENTLOG_DL_ITEM_DAYS_TOTAL_TITLE,
         ),
         // - number of item attachment file download (domain)
         12 => array(
@@ -565,7 +576,7 @@ function _xoonips_eventlog_logtype2vars($log_type_id)
             ETID_DOWNLOAD_FILE,
             'domain',
             _MD_XOONIPS_EVENTLOG_DL_ITEM_DOMAINS_LABEL,
-            _MD_XOONIPS_EVENTLOG_DL_ITEM_DOMAINS_TITLE
+            _MD_XOONIPS_EVENTLOG_DL_ITEM_DOMAINS_TITLE,
         ),
         // - number of item attachment file download (per item)
         15 => array(
@@ -573,7 +584,7 @@ function _xoonips_eventlog_logtype2vars($log_type_id)
             ETID_DOWNLOAD_FILE,
             'item',
             _MD_XOONIPS_EVENTLOG_DL_ITEM_PER_ITEM_LABEL,
-            ''
+            '',
         ),
         // - number of item attachment file download (per file)
         16 => array(
@@ -581,7 +592,7 @@ function _xoonips_eventlog_logtype2vars($log_type_id)
             ETID_DOWNLOAD_FILE,
             'file',
             _MD_XOONIPS_EVENTLOG_DL_ITEM_PER_FILE_LABEL,
-            ''
+            '',
         ),
         // - number of item attachment file download (per user)
         17 => array(
@@ -589,7 +600,7 @@ function _xoonips_eventlog_logtype2vars($log_type_id)
             ETID_DOWNLOAD_FILE,
             'user',
             _MD_XOONIPS_EVENTLOG_DL_ITEM_PER_USER_LABEL,
-            ''
+            '',
         ),
         // - number of newly registered users and items (user)
         13 => array(
@@ -597,7 +608,7 @@ function _xoonips_eventlog_logtype2vars($log_type_id)
             ETID_CERTIFY_ACCOUNT,
             'month',
             _MD_XOONIPS_EVENTLOG_NEW_USERS_LABEL,
-            _MD_XOONIPS_EVENTLOG_NEW_USER_MONTHS_TITLE
+            _MD_XOONIPS_EVENTLOG_NEW_USER_MONTHS_TITLE,
         ),
         // - number of newly registered users and items (item)
         14 => array(
@@ -605,25 +616,26 @@ function _xoonips_eventlog_logtype2vars($log_type_id)
             ETID_INSERT_ITEM,
             'month',
             _MD_XOONIPS_EVENTLOG_NEW_ITEMS_LABEL,
-            _MD_XOONIPS_EVENTLOG_NEW_ITEM_MONTHS_TITLE
+            _MD_XOONIPS_EVENTLOG_NEW_ITEM_MONTHS_TITLE,
         ),
     );
+
     return $typemap[$log_type_id];
 }
 
 /**
- * create month labels from time range
+ * create month labels from time range.
  *
- * @access private
  * @param int $start_time start time of time range
  * @param int $end_time   end time of time range
+ *
  * @return array array of month label
  */
 function _xoonips_eventlog_make_month_labels($start_time, $end_time)
 {
-    $start_label  = date('Y-m', $start_time);
-    $end_label    = date('Y-m', $end_time);
-    $label        = $start_label;
+    $start_label = date('Y-m', $start_time);
+    $end_label = date('Y-m', $end_time);
+    $label = $start_label;
     $month_labels = array();
     while (1) {
         $month_labels[] = $label;
@@ -632,33 +644,34 @@ function _xoonips_eventlog_make_month_labels($start_time, $end_time)
         }
         list($year, $month) = array_map('intval', explode('-', $label));
         if ($month == 12) {
-            $year++;
+            ++$year;
             $month = 1;
         } else {
-            $month++;
+            ++$month;
         }
         $label = sprintf('%04d-%02d', $year, $month);
     }
+
     return $month_labels;
 }
 
 /**
- * get header line of csv
+ * get header line of csv.
  *
- * @access private
  * @param int    $start_time  start time of time range
  * @param int    $end_time    end time of time range
  * @param int    $log_type_id id of log type
  * @param string $query_type  type of query
+ *
  * @return string header line of csv
  */
 function _xoonips_eventlog_get_csvheader($start_time, $end_time, $log_type_id, $query_type)
 {
-    $query_map   = array(
-        'all'    => _MD_XOONIPS_EVENTLOG_EVENT_COLUMNS,
-        'day'    => _MD_XOONIPS_EVENTLOG_EVENT_COLUMNS_DATE,
-        'month'  => _MD_XOONIPS_EVENTLOG_EVENT_COLUMNS_DATE,
-        'total'  => _MD_XOONIPS_EVENTLOG_EVENT_COLUMNS_DATE,
+    $query_map = array(
+        'all' => _MD_XOONIPS_EVENTLOG_EVENT_COLUMNS,
+        'day' => _MD_XOONIPS_EVENTLOG_EVENT_COLUMNS_DATE,
+        'month' => _MD_XOONIPS_EVENTLOG_EVENT_COLUMNS_DATE,
+        'total' => _MD_XOONIPS_EVENTLOG_EVENT_COLUMNS_DATE,
         'domain' => _MD_XOONIPS_EVENTLOG_EVENT_COLUMNS_DOMAINS,
     );
     $logtype_map = array(
@@ -672,40 +685,41 @@ function _xoonips_eventlog_get_csvheader($start_time, $end_time, $log_type_id, $
         $header = $query_map[$query_type];
     } elseif (isset($logtype_map[$log_type_id])) {
         $month_labels = _xoonips_eventlog_make_month_labels($start_time, $end_time);
-        $header       = $logtype_map[$log_type_id];
+        $header = $logtype_map[$log_type_id];
         $header .= implode(',', $month_labels);
-        $header .= ',' . _MD_XOONIPS_EVENTLOG_EVENT_COLUMNS_TOTAL;
+        $header .= ','._MD_XOONIPS_EVENTLOG_EVENT_COLUMNS_TOTAL;
     } else {
         $header = '';
     }
+
     return $header;
 }
 
 /**
- * get date from page request
+ * get date from page request.
  *
- * @access public
  * @param bool $is_post true if request method is 'POST'
  * @param bool $has_day true if request has 'day' information
+ *
  * @return array date variables
  */
 function xoonips_eventlog_get_request_date($is_post, $has_day)
 {
-    $prefix   = array(
+    $prefix = array(
         'StartDate',
-        'EndDate'
+        'EndDate',
     );
-    $postfix  = array(
+    $postfix = array(
         'Year',
         'Month',
-        'Day'
+        'Day',
     );
-    $result   = array();
+    $result = array();
     $formdata = xoonips_getUtility('formdata');
     foreach ($prefix as $pre) {
         if ($is_post) {
             foreach ($postfix as $post) {
-                $var         = $pre . $post;
+                $var = $pre.$post;
                 $data[$post] = $formdata->getValue('post', $var, 'i', false, 0);
             }
             if (!$has_day) {
@@ -721,33 +735,33 @@ function xoonips_eventlog_get_request_date($is_post, $has_day)
             'value' => $parsed_time,
         );
     }
+
     return $result;
 }
 
 /**
- * download event log
+ * download event log.
  *
- * @access public
  * @param bool $is_post     true if request method is 'POST'
  * @param int  $log_type_id id of log type
  */
 function xoonips_eventlog_download($is_post, $log_type_id)
 {
     $ticket_area = 'xoonips_eventlog_download';
-    $mimetype    = 'text/csv';
-    $url         = XOOPS_URL . '/modules/xoonips/event_log.php';
+    $mimetype = 'text/csv';
+    $url = XOOPS_URL.'/modules/xoonips/event_log.php';
 
     // get operating conditions
     list($suffix, $event_type_id, $query_type, $csv_title, $graph_title) = _xoonips_eventlog_logtype2vars($log_type_id);
 
     // get request
-    $has_days    = ($log_type_id == 0);
-    $time_range  = xoonips_eventlog_get_request_date($is_post, $has_days);
-    $start_time  = $time_range['StartDate']['value'];
-    $end_time    = $time_range['EndDate']['value'];
+    $has_days = ($log_type_id == 0);
+    $time_range = xoonips_eventlog_get_request_date($is_post, $has_days);
+    $start_time = $time_range['StartDate']['value'];
+    $end_time = $time_range['EndDate']['value'];
     $start_label = $time_range['StartDate']['label'];
-    $end_label   = $time_range['EndDate']['label'];
-    $filename    = $start_label . '-' . $end_label . (($suffix == '') ? '' : '-' . $suffix) . '.csv';
+    $end_label = $time_range['EndDate']['label'];
+    $filename = $start_label.'-'.$end_label.(($suffix == '') ? '' : '-'.$suffix).'.csv';
 
     // check time range
     if ($start_time > $end_time) {
@@ -766,24 +780,24 @@ function xoonips_eventlog_download($is_post, $log_type_id)
     if (!$download->check_pathinfo($filename)) {
         // require PATH_INFO on KHTML browser (Safari)
         $token_ticket = $GLOBALS['xoopsGTicket']->getTicketParamString(__LINE__, true, 1800, $ticket_area);
-        $reload_url   = $download->append_pathinfo($url, $filename);
-        $reload_url .= '?mode=download&log_type_id=' . $log_type_id . '&StartDate=' . $start_time . '&EndDate=' . $end_time . '&' . $token_ticket;
-        header('Location: ' . $reload_url);
+        $reload_url = $download->append_pathinfo($url, $filename);
+        $reload_url .= '?mode=download&log_type_id='.$log_type_id.'&StartDate='.$start_time.'&EndDate='.$end_time.'&'.$token_ticket;
+        header('Location: '.$reload_url);
         exit();
     }
 
     // begin to create and output csv data
     $csv_header = _xoonips_eventlog_get_csvheader($start_time, $end_time, $log_type_id, $query_type);
-    $objs       =&  _xoonips_eventlog_get($start_time, $end_time, $event_type_id, $query_type);
+    $objs = &_xoonips_eventlog_get($start_time, $end_time, $event_type_id, $query_type);
 
     // output HTTP headers
     $download->output_header($filename, $mimetype, 0);
 
     // output csv title and header
     if ($csv_title != '') {
-        echo $csv_title . "\r\n";
+        echo $csv_title."\r\n";
     }
-    echo $csv_header . "\r\n";
+    echo $csv_header."\r\n";
 
     // output body
     switch ($query_type) {
@@ -791,20 +805,20 @@ function xoonips_eventlog_download($is_post, $log_type_id)
             $uid2uname = _xoonips_eventlog_get_usermap();
             $etype2str = explode(',', _MD_XOONIPS_EVENTLOG_EVENT_TYPES);
             foreach ($objs as $obj) {
-                $line     = array();
-                $line[]   = $etype2str[$obj->getVar('event_type_id', 'n')];
-                $line[]   = date(DATETIME_FORMAT, $obj->getVar('timestamp', 'n'));
+                $line = array();
+                $line[] = $etype2str[$obj->getVar('event_type_id', 'n')];
+                $line[] = date(DATETIME_FORMAT, $obj->getVar('timestamp', 'n'));
                 $exec_uid = $obj->getVar('exec_uid', 'n');
-                $line[]   = $exec_uid;
-                $line[]   = $obj->getVar('remote_host', 'n');
-                $line[]   = $obj->getVar('index_id', 'n');
-                $line[]   = $obj->getVar('item_id', 'n');
-                $line[]   = $obj->getVar('file_id', 'n');
-                $line[]   = $obj->getVar('uid', 'n');
-                $line[]   = $obj->getVar('gid', 'n');
-                $line[]   = $obj->getVar('search_keyword', 'n');
-                $line[]   = isset($uid2uname[$exec_uid]) ? $uid2uname[$exec_uid] : '';
-                $line[]   = $obj->getVar('additional_info', 'n');
+                $line[] = $exec_uid;
+                $line[] = $obj->getVar('remote_host', 'n');
+                $line[] = $obj->getVar('index_id', 'n');
+                $line[] = $obj->getVar('item_id', 'n');
+                $line[] = $obj->getVar('file_id', 'n');
+                $line[] = $obj->getVar('uid', 'n');
+                $line[] = $obj->getVar('gid', 'n');
+                $line[] = $obj->getVar('search_keyword', 'n');
+                $line[] = isset($uid2uname[$exec_uid]) ? $uid2uname[$exec_uid] : '';
+                $line[] = $obj->getVar('additional_info', 'n');
                 echo _xoonips_eventlog_array2csv($download, $line);
             }
             break;
@@ -812,28 +826,28 @@ function xoonips_eventlog_download($is_post, $log_type_id)
         case 'total':
             $logs = array();
             foreach ($objs as $obj) {
-                $event_date        = $obj->getExtraVar('event_date');
-                $event_count       = $obj->getExtraVar('cnt');
+                $event_date = $obj->getExtraVar('event_date');
+                $event_count = $obj->getExtraVar('cnt');
                 $logs[$event_date] = $event_count;
             }
-            $days  = (int)($end_time - $start_time);
+            $days = (int) ($end_time - $start_time);
             $total = 0;
-            for ($i = 0; $i < $days; $i++) {
+            for ($i = 0; $i < $days; ++$i) {
                 $label = date('Y-m-d', $start_time + 86400 * $i);
                 $count = array_key_exists($label, $logs) ? $logs[$label] : 0;
                 $total += $count;
                 $num = ($query_type === 'total') ? $total : $count;
                 echo _xoonips_eventlog_array2csv($download, array(
                     $label,
-                    $num
+                    $num,
                 ));
             }
             break;
         case 'month':
             $logs = array();
             foreach ($objs as $obj) {
-                $event_month        = $obj->getExtraVar('event_month');
-                $event_count        = $obj->getExtraVar('cnt');
+                $event_month = $obj->getExtraVar('event_month');
+                $event_count = $obj->getExtraVar('cnt');
                 $logs[$event_month] = $event_count;
             }
             $month_labels = _xoonips_eventlog_make_month_labels($start_time, $end_time);
@@ -841,15 +855,15 @@ function xoonips_eventlog_download($is_post, $log_type_id)
                 $count = array_key_exists($label, $logs) ? $logs[$label] : 0;
                 echo _xoonips_eventlog_array2csv($download, array(
                     $label,
-                    $count
+                    $count,
                 ));
             }
             break;
         case 'domain':
             $logs = array();
             foreach ($objs as $obj) {
-                $remote_host  = $obj->getVar('remote_host', 'n');
-                $event_count  = $obj->getExtraVar('cnt');
+                $remote_host = $obj->getVar('remote_host', 'n');
+                $event_count = $obj->getExtraVar('cnt');
                 $event_domain = _xoonips_eventlog_get_domain($remote_host);
                 if (isset($logs[$event_domain])) {
                     $logs[$event_domain] += $event_count;
@@ -863,36 +877,36 @@ function xoonips_eventlog_download($is_post, $log_type_id)
             foreach ($logs as $domain => $cnt) {
                 echo _xoonips_eventlog_array2csv($download, array(
                     $domain,
-                    $cnt
+                    $cnt,
                 ));
             }
             break;
         case 'item':
-            $logs  = array();
+            $logs = array();
             $names = array();
             foreach ($objs as $obj) {
-                $item_id                      = $obj->getVar('item_id', 'n');
-                $event_month                  = $obj->getExtraVar('event_month');
-                $uname                        = $obj->getExtraVar('uname');
-                $name                         = $obj->getExtraVar('name');
-                $itemtype_name                = $obj->getExtraVar('itemtype_name');
-                $cnt                          = $obj->getExtraVar('cnt');
+                $item_id = $obj->getVar('item_id', 'n');
+                $event_month = $obj->getExtraVar('event_month');
+                $uname = $obj->getExtraVar('uname');
+                $name = $obj->getExtraVar('name');
+                $itemtype_name = $obj->getExtraVar('itemtype_name');
+                $cnt = $obj->getExtraVar('cnt');
                 $logs[$item_id][$event_month] = $cnt;
                 if (!isset($names[$item_id])) {
-                    $names[$item_id]['name']      = ($name != '') ? $name : $uname;
+                    $names[$item_id]['name'] = ($name != '') ? $name : $uname;
                     $names[$item_id]['item_type'] = $itemtype_name;
-                    $names[$item_id]['title']     = xoonips_eventlog_get_item_title($item_id);
+                    $names[$item_id]['title'] = xoonips_eventlog_get_item_title($item_id);
                 }
             }
-            $objs         =&  _xoonips_eventlog_get($start_time, $end_time, $event_type_id, 'item_sort');
+            $objs = &_xoonips_eventlog_get($start_time, $end_time, $event_type_id, 'item_sort');
             $month_labels = _xoonips_eventlog_make_month_labels($start_time, $end_time);
             foreach ($objs as $obj) {
-                $line    = array();
+                $line = array();
                 $item_id = $obj->getVar('item_id', 'n');
-                $line[]  = $item_id;
-                $line[]  = $names[$item_id]['title'];
-                $line[]  = $names[$item_id]['name'];
-                $line[]  = $names[$item_id]['item_type'];
+                $line[] = $item_id;
+                $line[] = $names[$item_id]['title'];
+                $line[] = $names[$item_id]['name'];
+                $line[] = $names[$item_id]['item_type'];
                 foreach ($month_labels as $label) {
                     $line[] = isset($logs[$item_id][$label]) ? $logs[$item_id][$label] : '';
                 }
@@ -902,33 +916,33 @@ function xoonips_eventlog_download($is_post, $log_type_id)
             break;
         case 'file':
             $month_labels = _xoonips_eventlog_make_month_labels($start_time, $end_time);
-            $file_info    = array();
+            $file_info = array();
             foreach ($objs as $obj) {
-                $file_id                             = $obj->getVar('file_id', 'n');
-                $item_id                             = $obj->getVar('item_id', 'n');
-                $event_month                         = $obj->getExtraVar('event_month');
-                $uname                               = $obj->getExtraVar('uname');
-                $name                                = $obj->getExtraVar('name');
-                $cnt                                 = $obj->getExtraVar('cnt');
+                $file_id = $obj->getVar('file_id', 'n');
+                $item_id = $obj->getVar('item_id', 'n');
+                $event_month = $obj->getExtraVar('event_month');
+                $uname = $obj->getExtraVar('uname');
+                $name = $obj->getExtraVar('name');
+                $cnt = $obj->getExtraVar('cnt');
                 $file_months[$file_id][$event_month] = $cnt;
                 if (!isset($file_info[$file_id])) {
-                    $file_info[$file_id]['fname']    = $obj->getExtraVar('fname');
-                    $file_info[$file_id]['title']    = xoonips_eventlog_get_item_title($item_id);
-                    $file_info[$file_id]['uname']    = ($name == '') ? $uname : $uname;
+                    $file_info[$file_id]['fname'] = $obj->getExtraVar('fname');
+                    $file_info[$file_id]['title'] = xoonips_eventlog_get_item_title($item_id);
+                    $file_info[$file_id]['uname'] = ($name == '') ? $uname : $uname;
                     $file_info[$file_id]['itemtype'] = $obj->getExtraVar('itemtype_name');
                 }
             }
             // sort seed
             $file_total = array();
-            $objs       =&  _xoonips_eventlog_get($start_time, $end_time, $event_type_id, 'file_sort');
+            $objs = &_xoonips_eventlog_get($start_time, $end_time, $event_type_id, 'file_sort');
             foreach ($objs as $obj) {
-                $file_id              = $obj->getVar('file_id', '');
-                $cnt                  = $obj->getExtraVar('cnt');
+                $file_id = $obj->getVar('file_id', '');
+                $cnt = $obj->getExtraVar('cnt');
                 $file_total[$file_id] = $cnt;
             }
             // output logs
             foreach ($file_total as $file_id => $total) {
-                $line   = array();
+                $line = array();
                 $line[] = $file_id;
                 $line[] = $file_info[$file_id]['fname'];
                 $line[] = $file_info[$file_id]['title'];
@@ -943,17 +957,17 @@ function xoonips_eventlog_download($is_post, $log_type_id)
             break;
         case 'user':
             $month_labels = _xoonips_eventlog_make_month_labels($start_time, $end_time);
-            $uname_total  = array();
+            $uname_total = array();
             foreach ($objs as $obj) {
-                $myuname                             = $obj->getExtraVar('myuname');
-                $event_month                         = $obj->getExtraVar('event_month');
-                $cnt                                 = $obj->getExtraVar('cnt');
+                $myuname = $obj->getExtraVar('myuname');
+                $event_month = $obj->getExtraVar('event_month');
+                $cnt = $obj->getExtraVar('cnt');
                 $uname_total[$myuname][$event_month] = $cnt;
             }
             foreach ($uname_total as $myuname => $months) {
-                $line   = array();
+                $line = array();
                 $line[] = $myuname;
-                $total  = 0;
+                $total = 0;
                 foreach ($month_labels as $label) {
                     if (isset($months[$label])) {
                         $line[] = $months[$label];
@@ -967,44 +981,44 @@ function xoonips_eventlog_download($is_post, $log_type_id)
             }
             break;
         case 'user_item':
-            $logs         = array();
-            $names        = array();
+            $logs = array();
+            $names = array();
             $month_labels = _xoonips_eventlog_make_month_labels($start_time, $end_time);
             foreach ($objs as $obj) {
-                $item_id                                = $obj->getVar('item_id', 'n');
-                $event_month                            = $obj->getExtraVar('event_month');
-                $myuname                                = $obj->getExtraVar('myuname');
-                $itemtype_name                          = $obj->getExtraVar('itemtype_name');
-                $cnt                                    = $obj->getExtraVar('cnt');
+                $item_id = $obj->getVar('item_id', 'n');
+                $event_month = $obj->getExtraVar('event_month');
+                $myuname = $obj->getExtraVar('myuname');
+                $itemtype_name = $obj->getExtraVar('itemtype_name');
+                $cnt = $obj->getExtraVar('cnt');
                 $logs[$myuname][$item_id][$event_month] = $cnt;
                 if (!isset($names[$item_id])) {
                     $names[$item_id]['item_type'] = $itemtype_name;
-                    $names[$item_id]['title']     = xoonips_eventlog_get_item_title($item_id);
+                    $names[$item_id]['title'] = xoonips_eventlog_get_item_title($item_id);
                 }
             }
             // sort seed
             $uname_total = array();
-            $objs        =&  _xoonips_eventlog_get($start_time, $end_time, $event_type_id, 'user');
+            $objs = &_xoonips_eventlog_get($start_time, $end_time, $event_type_id, 'user');
             foreach ($objs as $obj) {
-                $myuname                             = $obj->getExtraVar('myuname');
-                $event_month                         = $obj->getExtraVar('event_month');
-                $cnt                                 = $obj->getExtraVar('cnt');
+                $myuname = $obj->getExtraVar('myuname');
+                $event_month = $obj->getExtraVar('event_month');
+                $cnt = $obj->getExtraVar('cnt');
                 $uname_total[$myuname][$event_month] = $cnt;
             }
             $myuname_sort = array();
-            $objs         =&  _xoonips_eventlog_get($start_time, $end_time, $event_type_id, 'user_item_sort');
+            $objs = &_xoonips_eventlog_get($start_time, $end_time, $event_type_id, 'user_item_sort');
             foreach ($objs as $obj) {
-                $myuname                          = $obj->getExtraVar('myuname');
-                $cnt                              = $obj->getExtraVar('cnt');
-                $item_id                          = $obj->getVar('item_id', 'n');
+                $myuname = $obj->getExtraVar('myuname');
+                $cnt = $obj->getExtraVar('cnt');
+                $item_id = $obj->getVar('item_id', 'n');
                 $myuname_sort[$myuname][$item_id] = $cnt;
             }
             foreach ($uname_total as $myuname => $months) {
-                $line   = array();
+                $line = array();
                 $line[] = $myuname;
                 $line[] = ''; // title
                 $line[] = ''; // item type
-                $total  = 0;
+                $total = 0;
                 foreach ($month_labels as $label) {
                     if (isset($months[$label])) {
                         $line[] = $months[$label];
@@ -1017,10 +1031,10 @@ function xoonips_eventlog_download($is_post, $log_type_id)
                 echo _xoonips_eventlog_array2csv($download, $line);
                 foreach ($myuname_sort[$myuname] as $item_id => $total) {
                     $item_months = $logs[$myuname][$item_id];
-                    $line        = array();
-                    $line[]      = ''; // uname
-                    $line[]      = $names[$item_id]['title'];
-                    $line[]      = $names[$item_id]['item_type'];
+                    $line = array();
+                    $line[] = ''; // uname
+                    $line[] = $names[$item_id]['title'];
+                    $line[] = $names[$item_id]['item_type'];
                     foreach ($month_labels as $label) {
                         $line[] = isset($item_months[$label]) ? $item_months[$label] : '';
                     }
@@ -1034,11 +1048,10 @@ function xoonips_eventlog_download($is_post, $log_type_id)
 }
 
 /**
- * draw graph (private)
+ * draw graph (private).
  *
- * @access private
- * @param array  $xdata X data
- * @param array  $ydata Y data
+ * @param array  $xdata  X data
+ * @param array  $ydata  Y data
  * @param string $title  graph title
  * @param string $xlabel X label
  * @param string $mode   query type
@@ -1046,7 +1059,7 @@ function xoonips_eventlog_download($is_post, $log_type_id)
 function _xoonips_eventlog_graph_draw(&$xdata, &$ydata, $title, $xlabel, $mode)
 {
     // load graph library
-    require_once __DIR__ . '/../class/base/graph.class.php';
+    require_once __DIR__.'/../class/base/graph.class.php';
     $unicode = xoonips_getUtility('unicode');
 
     // count number of data
@@ -1132,9 +1145,8 @@ function _xoonips_eventlog_graph_draw(&$xdata, &$ydata, $title, $xlabel, $mode)
 }
 
 /**
- * draw graph
+ * draw graph.
  *
- * @access public
  * @param int $log_type_id log type id
  */
 function xoonips_eventlog_graph($log_type_id)
@@ -1142,17 +1154,17 @@ function xoonips_eventlog_graph($log_type_id)
     if ($log_type_id < 1 || $log_type_id > 14) {
         die('invalid log type id');
     }
-    $time_range  = xoonips_eventlog_get_request_date(false, false);
-    $start_time  = $time_range['StartDate']['value'];
-    $end_time    = $time_range['EndDate']['value'];
+    $time_range = xoonips_eventlog_get_request_date(false, false);
+    $start_time = $time_range['StartDate']['value'];
+    $end_time = $time_range['EndDate']['value'];
     $start_label = $time_range['StartDate']['label'];
-    $end_label   = $time_range['EndDate']['label'];
+    $end_label = $time_range['EndDate']['label'];
     if ($start_time > $end_time) {
         die('invalid time range');
     }
-    $st_year  = date('Y', $start_time);
+    $st_year = date('Y', $start_time);
     $st_month = date('m', $start_time);
-    $en_year  = date('Y', $end_time);
+    $en_year = date('Y', $end_time);
     $en_month = date('m', $end_time);
     if ($st_year == $en_year && $st_month == $en_month) {
         $xlabel = sprintf('%04d.%02d', $st_year, $st_month);
@@ -1160,16 +1172,16 @@ function xoonips_eventlog_graph($log_type_id)
         $xlabel = sprintf('%04d.%02d-%04d.%02d', $st_year, $st_month, $en_year, $en_month);
     }
     $xlabel_sub = array(
-        'day'    => _MD_XOONIPS_EVENTLOG_DAYS_LABEL,
-        'total'  => _MD_XOONIPS_EVENTLOG_DAYS_LABEL,
-        'month'  => _MD_XOONIPS_EVENTLOG_MONTHS_LABEL,
+        'day' => _MD_XOONIPS_EVENTLOG_DAYS_LABEL,
+        'total' => _MD_XOONIPS_EVENTLOG_DAYS_LABEL,
+        'month' => _MD_XOONIPS_EVENTLOG_MONTHS_LABEL,
         'domain' => _MD_XOONIPS_EVENTLOG_DOMAINS_LABEL,
     );
     // get operating conditions
     list($suffix, $event_type_id, $query_type, $csv_title, $title) = _xoonips_eventlog_logtype2vars($log_type_id);
-    $xlabel .= '[' . $xlabel_sub[$query_type] . ']';
+    $xlabel .= '['.$xlabel_sub[$query_type].']';
     // create data
-    $objs  =&  _xoonips_eventlog_get($start_time, $end_time, $event_type_id, $query_type);
+    $objs = &_xoonips_eventlog_get($start_time, $end_time, $event_type_id, $query_type);
     $ydata = array();
     $xdata = array();
     switch ($query_type) {
@@ -1177,32 +1189,32 @@ function xoonips_eventlog_graph($log_type_id)
         case 'total':
             $logs = array();
             foreach ($objs as $obj) {
-                $event_date        = $obj->getExtraVar('event_date');
-                $event_count       = $obj->getExtraVar('cnt');
+                $event_date = $obj->getExtraVar('event_date');
+                $event_count = $obj->getExtraVar('cnt');
                 $logs[$event_date] = $event_count;
             }
             // prepare for days
-            $days = (int)($end_time - $start_time);
+            $days = (int) ($end_time - $start_time);
             // create access log of all days from $arr variable
             $amount = 0;
-            for ($i = 0; $i < $days; $i++) {
+            for ($i = 0; $i < $days; ++$i) {
                 $label = date('Y-m-d', $start_time + 86400 * $i);
                 list($year, $month, $day) = explode('-', $label);
                 // get access count if given.
                 $count = array_key_exists($label, $logs) ? $logs[$label] : 0;
-                $amount += (int)$count;
+                $amount += (int) $count;
                 // create x label
                 if ($days < 70) {
-                    $day_label = (string)((int)$day);
+                    $day_label = (string) ((int) $day);
                 } elseif ($days < 190) {
                     if ($day == '01') {
-                        $day_label = $year . '.' . $month;
+                        $day_label = $year.'.'.$month;
                     } else {
                         $day_label = '';
                     }
                 } else {
-                    if ($day == '01' && (int)$month % 3 == 1) {
-                        $day_label = $year . '.' . $month;
+                    if ($day == '01' && (int) $month % 3 == 1) {
+                        $day_label = $year.'.'.$month;
                     } else {
                         $day_label = '';
                     }
@@ -1215,8 +1227,8 @@ function xoonips_eventlog_graph($log_type_id)
         case 'month':
             $logs = array();
             foreach ($objs as $obj) {
-                $event_month        = $obj->getExtraVar('event_month');
-                $event_count        = $obj->getExtraVar('cnt');
+                $event_month = $obj->getExtraVar('event_month');
+                $event_count = $obj->getExtraVar('cnt');
                 $logs[$event_month] = $event_count;
             }
             // get each day, month, year
@@ -1232,22 +1244,22 @@ function xoonips_eventlog_graph($log_type_id)
                 '09',
                 '10',
                 '11',
-                '12'
+                '12',
             );
             // calc months
-            $years = (int)$en_year - (int)$st_year;
+            $years = (int) $en_year - (int) $st_year;
             if ($years <= 0) {
-                $months = (int)$en_month - (int)$st_month + 1;
+                $months = (int) $en_month - (int) $st_month + 1;
             } else {
-                $months = (int)$en_month - (int)$st_month + 1 + $years * 12;
+                $months = (int) $en_month - (int) $st_month + 1 + $years * 12;
             }
             $amount = 0;
-            for ($i = 0; $i < $months; $i++) {
-                $tmp   = $st_month + $i - 1;
+            for ($i = 0; $i < $months; ++$i) {
+                $tmp = $st_month + $i - 1;
                 $month = ($tmp % 12) + 1;
-                $year  = $st_year + (int)($tmp / 12);
+                $year = $st_year + (int) ($tmp / 12);
                 // create x label
-                $month_label = $year . '-' . $month_arr[$month - 1];
+                $month_label = $year.'-'.$month_arr[$month - 1];
                 // get access count if given.
                 if (array_key_exists($month_label, $logs)) {
                     $count = $logs[$month_label];
@@ -1262,8 +1274,8 @@ function xoonips_eventlog_graph($log_type_id)
         case 'domain':
             $logs = array();
             foreach ($objs as $obj) {
-                $remote_host  = $obj->getVar('remote_host', 'n');
-                $event_count  = $obj->getExtraVar('cnt');
+                $remote_host = $obj->getVar('remote_host', 'n');
+                $event_count = $obj->getExtraVar('cnt');
                 $event_domain = _xoonips_eventlog_get_domain($remote_host);
                 if (isset($logs[$event_domain])) {
                     $logs[$event_domain] += $event_count;
@@ -1284,28 +1296,27 @@ function xoonips_eventlog_graph($log_type_id)
 }
 
 /**
- * download list of registered users or items
+ * download list of registered users or items.
  *
- * @access public
  * @param bool $is_post     true if request method is 'POST'
  * @param int  $log_type_id id of log type
  */
 function xoonips_eventlog_download_registered_list($is_post, $log_type_id)
 {
-    $ticket_area   = 'xoonips_eventlog_download';
-    $mimetype      = 'text/csv';
-    $url           = XOOPS_URL . '/modules/xoonips/event_log.php';
+    $ticket_area = 'xoonips_eventlog_download';
+    $mimetype = 'text/csv';
+    $url = XOOPS_URL.'/modules/xoonips/event_log.php';
     $condition_map = array(
         // $log_type_id => array( 'mode', 'csv title format', 'csv header ),
         20 => array(
             'user',
             'User List,,%s users',
-            'Name,Company,Division,Email'
+            'Name,Company,Division,Email',
         ),
         21 => array(
             'item',
             'Item List,,%s items',
-            'Item ID,Title,Item Type,Contributor'
+            'Item ID,Title,Item Type,Contributor',
         ),
     );
 
@@ -1314,7 +1325,7 @@ function xoonips_eventlog_download_registered_list($is_post, $log_type_id)
         die('invalid log type id ');
     }
     list($mode, $csv_title_fmt, $csv_header) = $condition_map[$log_type_id];
-    $filename = date('Y') . '-' . $mode . '.csv';
+    $filename = date('Y').'-'.$mode.'.csv';
 
     // check token ticket for get request
     if (!$is_post) {
@@ -1328,9 +1339,9 @@ function xoonips_eventlog_download_registered_list($is_post, $log_type_id)
     if (!$download->check_pathinfo($filename)) {
         // require PATH_INFO on KHTML browser (Safari)
         $token_ticket = $GLOBALS['xoopsGTicket']->getTicketParamString(__LINE__, true, 1800, $ticket_area);
-        $reload_url   = $download->append_pathinfo($url, $filename);
-        $reload_url .= '?mode=download&log_type_id=' . $log_type_id . '&' . $token_ticket;
-        header('Location: ' . $reload_url);
+        $reload_url = $download->append_pathinfo($url, $filename);
+        $reload_url .= '?mode=download&log_type_id='.$log_type_id.'&'.$token_ticket;
+        header('Location: '.$reload_url);
         exit();
     }
 
@@ -1339,14 +1350,14 @@ function xoonips_eventlog_download_registered_list($is_post, $log_type_id)
 
     switch ($mode) {
         case 'user':
-            $objs =&  xoonips_eventlog_get_users(0, 0);
+            $objs = &xoonips_eventlog_get_users(0, 0);
             // output csv header
-            $cnt       = count($objs);
+            $cnt = count($objs);
             $csv_title = sprintf($csv_title_fmt, $cnt);
-            echo $csv_title . "\r\n";
-            echo $csv_header . "\r\n";
+            echo $csv_title."\r\n";
+            echo $csv_header."\r\n";
             foreach ($objs as $obj) {
-                $line   = array();
+                $line = array();
                 $line[] = $obj->getExtraVar('uname');
                 $line[] = $obj->getVar('company_name', 'n');
                 $line[] = $obj->getVar('division', 'n');
@@ -1355,19 +1366,19 @@ function xoonips_eventlog_download_registered_list($is_post, $log_type_id)
             }
             break;
         case 'item':
-            $objs =&  xoonips_eventlog_get_items(0, 0);
+            $objs = &xoonips_eventlog_get_items(0, 0);
             // output csv header
-            $cnt       = count($objs);
+            $cnt = count($objs);
             $csv_title = sprintf($csv_title_fmt, $cnt);
-            echo $csv_title . "\r\n";
-            echo $csv_header . "\r\n";
+            echo $csv_title."\r\n";
+            echo $csv_header."\r\n";
             foreach ($objs as $obj) {
-                $line    = array();
+                $line = array();
                 $item_id = $obj->getVar('item_id', 'n');
-                $line[]  = $item_id;
-                $line[]  = xoonips_eventlog_get_item_title($item_id);
-                $line[]  = $obj->getExtraVar('display_name');
-                $line[]  = $obj->getExtraVar('uname');
+                $line[] = $item_id;
+                $line[] = xoonips_eventlog_get_item_title($item_id);
+                $line[] = $obj->getExtraVar('display_name');
+                $line[] = $obj->getExtraVar('uname');
                 echo _xoonips_eventlog_array2csv($download, $line);
             }
             break;

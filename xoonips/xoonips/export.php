@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -55,11 +56,11 @@
 //   Undefine .... No
 session_cache_limiter('none'); // Escape IE's Bug 1 -> http://jp2.php.net/header  Harry 10-Dec-2004 03:26
 $xoopsOption['pagetype'] = 'user';
-require __DIR__ . '/include/common.inc.php';
+require __DIR__.'/include/common.inc.php';
 
-require_once __DIR__ . '/include/lib.php';
-require_once __DIR__ . '/include/AL.php';
-require_once __DIR__ . '/include/imexport.php';
+require_once __DIR__.'/include/lib.php';
+require_once __DIR__.'/include/AL.php';
+require_once __DIR__.'/include/imexport.php';
 
 xoonips_deny_guest_access();
 
@@ -70,29 +71,29 @@ $formdata = xoonips_getUtility('formdata');
 $textutil = xoonips_getUtility('text');
 
 $request_vars = array(
-    'op'              => array(
+    'op' => array(
         's',
-        ''
+        '',
     ),
-    'index_id'        => array(
+    'index_id' => array(
         'i',
-        ''
+        '',
     ),
-    'export_type'     => array(
+    'export_type' => array(
         's',
-        ''
+        '',
     ),
-    'recursive_item'  => array(
+    'recursive_item' => array(
         'i',
-        0
+        0,
     ),
     'recursive_index' => array(
         'i',
-        0
+        0,
     ),
-    'attachment'      => array(
+    'attachment' => array(
         'i',
-        0
+        0,
     ),
 );
 foreach ($request_vars as $key => $meta) {
@@ -117,7 +118,7 @@ if ($op === 'export') {
         $export_dir = xoonips_create_temporary_dir();
         if (!$export_dir) {
             $system_message = "can't make directory '${export_dir}'";
-            $op             = 'list';
+            $op = 'list';
             break;
         }
 
@@ -127,27 +128,27 @@ if ($op === 'export') {
             // exprot index tree structure only
             //
             $index = array();
-            $res   = xnp_get_index($_SESSION['XNPSID'], (int)$index_id, $index);
+            $res = xnp_get_index($_SESSION['XNPSID'], (int) $index_id, $index);
             if ($res != RES_OK) {
                 $system_message = "can't get indexes";
-                $op             = 'list';
+                $op = 'list';
                 break;
             }
 
-            $tmpfile  = tempnam('/tmp', 'XNP');
+            $tmpfile = tempnam('/tmp', 'XNP');
             $filename = "${export_dir}/index.xml";
 
             $fp = fopen($tmpfile, 'w');
             if (!$fp) {
                 $system_message = "can't open file '${tmpfile}' for write.";
-                $op             = 'list';
+                $op = 'list';
                 break;
             }
 
             if (xoonips_export_index_xml($fp, $index_id, $recursive_index == 1)) {
                 fclose($fp);
                 if (!xoonips_convert_file_encoding_to_utf8($tmpfile, $filename)) {
-                    $op             = 'list';
+                    $op = 'list';
                     $system_message = 'error in create file.';
                     break;
                 }
@@ -156,7 +157,7 @@ if ($op === 'export') {
                 $system_message = "error in writing to '${filename}'";
                 fclose($fp);
                 unlink($filename);
-                $op = 'list';//return to previous page(list of export item)
+                $op = 'list'; //return to previous page(list of export item)
                 break;
             }
         } elseif ($export_type === 'item') {
@@ -168,8 +169,8 @@ if ($op === 'export') {
                 if (!$result) {
                     //error: can't export.
                     $system_message = 'error in exporting items';
-                    $op             = 'list'; //return to previous page(list of export item)
-                    break 2;//exit from foreach and outer while loop
+                    $op = 'list'; //return to previous page(list of export item)
+                    break 2; //exit from foreach and outer while loop
                 } else {
                     $zippedFiles[] = $result['xml'];
                     $removeFiles[] = "${export_dir}/${result['xml']}";
@@ -196,7 +197,7 @@ if ($op === 'export') {
             }
             closedir($dh);
         }
-        if ($dh = @opendir($export_dir . '/files')) {
+        if ($dh = @opendir($export_dir.'/files')) {
             while (false !== ($f = readdir($dh))) {
                 if ($f === '.' || $f === '..' || $f === 'files') {
                     continue;
@@ -208,56 +209,56 @@ if ($op === 'export') {
         }
         if (count($zippedFiles) == 0) {
             $system_message = _MD_XOONIPS_EXPORT_EXPORT_ITEMS_EMPTY;
-            $op             = 'list'; //return to previous page(list of export item)
+            $op = 'list'; //return to previous page(list of export item)
             break;
         }
 
         // do ZIP
         $zipFile = tempnam('/tmp', 'FOO');
         unlink($zipFile);
-        $removeFiles[] = $zipFile . '.zip';
-        $zip           = xoonips_getUtility('zip');
-        $zip->open($zipFile . '.zip');
+        $removeFiles[] = $zipFile.'.zip';
+        $zip = xoonips_getUtility('zip');
+        $zip->open($zipFile.'.zip');
         foreach ($zippedFiles as $fname) {
-            $zip->add($export_dir . '/' . $fname, $fname);
+            $zip->add($export_dir.'/'.$fname, $fname);
         }
         $result = $zip->close();
 
         if (!$result) {
             $system_message = _MD_XOONIPS_ITEM_CANNOT_CREATE_ZIP;
-            $op             = 'list'; //return to previous page(list of export item)
+            $op = 'list'; //return to previous page(list of export item)
             break;
         }
-        $size = filesize($zipFile . '.zip');
+        $size = filesize($zipFile.'.zip');
 
         header('Cache-Control: none');  // To escape a IE's BUG(2)
 
-        header("Content-Disposition: attachment; filename=\"export.zip\"");
+        header('Content-Disposition: attachment; filename="export.zip"');
         header('Content-Type: application/zip');
         if ($size != false) {
             header("Content-Length: $size");
         }
 
-        readfile($zipFile . '.zip');
+        readfile($zipFile.'.zip');
 
         foreach ($removeFiles as $f) {
             unlink($f);
         }
-        @rmdir($export_dir . '/files');//remove files/ folder(xnpExportFile makes this dir. see also imexport.php.)
+        @rmdir($export_dir.'/files'); //remove files/ folder(xnpExportFile makes this dir. see also imexport.php.)
         rmdir($export_dir);
         exit();
     } while (false);
 } elseif ($op === 'list') {
     if ($export_type === 'index') {
-        $indexpath        = xnpGetIndexPathString($_SESSION['XNPSID'], $index_id);
-        $export_index     = _MD_XOONIPS_ITEM_INDEX_LABEL;
-        $yesno            = ($recursive_index == 1) ? _YES : _NO;
+        $indexpath = xnpGetIndexPathString($_SESSION['XNPSID'], $index_id);
+        $export_index = _MD_XOONIPS_ITEM_INDEX_LABEL;
+        $yesno = ($recursive_index == 1) ? _YES : _NO;
         $export_recursive = _MD_XOONIPS_EXPORT_RECURSIVE;
-        $submit           = _MD_XOONIPS_EXPORT_LICENSE_AGREEMENT_SUBMIT;
-        $pankuzu          = _MD_XOONIPS_EXPORT_PANKUZU_EXPORT . _MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR . _MD_XOONIPS_EXPORT_PANKUZU_EXPORT_INDEX;
-        $message          = _MD_XOONIPS_EXPORT_EXPORT_INDEX;
+        $submit = _MD_XOONIPS_EXPORT_LICENSE_AGREEMENT_SUBMIT;
+        $pankuzu = _MD_XOONIPS_EXPORT_PANKUZU_EXPORT._MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR._MD_XOONIPS_EXPORT_PANKUZU_EXPORT_INDEX;
+        $message = _MD_XOONIPS_EXPORT_EXPORT_INDEX;
 
-        require XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH.'/header.php';
         echo <<<EOT
             <p>
             $pankuzu
@@ -277,20 +278,20 @@ if ($op === 'export') {
             <input type='hidden' name='recursive_index' value='$recursive_index' />
             </form>
 EOT;
-        require XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH.'/footer.php';
     } elseif ($export_type === 'item') {
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_export_license.tpl';
 
-        require XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH.'/header.php';
 
         if ($index_id != '') {
             $ids = xoonips_get_all_item_ids_to_export($index_id, $xoopsUser->getVar('uid'), $recursive_item);
         }
 
-        $ids       = array_unique($ids);
-        $tmp       = array();
+        $ids = array_unique($ids);
+        $tmp = array();
         $itemtypes = array();
-        $res       = xnp_get_item_types($tmp);
+        $res = xnp_get_item_types($tmp);
         foreach ($tmp as $i) {
             $itemtypes[$i['item_type_id']] = $i;
         }
@@ -301,19 +302,19 @@ EOT;
         $items = array();
         foreach ($ids as $i) {
             $item_basic = array();
-            $res        = xnp_get_item($_SESSION['XNPSID'], $i, $item_basic);//TODO TO FIX THAT XNP_GET_ITEM CAN'T GET ITEM
+            $res = xnp_get_item($_SESSION['XNPSID'], $i, $item_basic); //TODO TO FIX THAT XNP_GET_ITEM CAN'T GET ITEM
             if ($res == RES_OK
                 && array_key_exists($item_basic['item_type_id'], $itemtypes)
             ) {
-                $func_license_required = $itemtypes[$item_basic['item_type_id']]['name'] . 'GetLicenseRequired';
-                $func_license          = $itemtypes[$item_basic['item_type_id']]['name'] . 'GetLicenseStatement';
-                $func_html             = $itemtypes[$item_basic['item_type_id']]['name'] . 'GetListBlock';
-                $func_export           = $itemtypes[$item_basic['item_type_id']]['name'] . 'ExportItem';
-                require_once XOOPS_ROOT_PATH . '/modules/' . $itemtypes[$item_basic['item_type_id']]['viewphp'];
+                $func_license_required = $itemtypes[$item_basic['item_type_id']]['name'].'GetLicenseRequired';
+                $func_license = $itemtypes[$item_basic['item_type_id']]['name'].'GetLicenseStatement';
+                $func_html = $itemtypes[$item_basic['item_type_id']]['name'].'GetListBlock';
+                $func_export = $itemtypes[$item_basic['item_type_id']]['name'].'ExportItem';
+                require_once XOOPS_ROOT_PATH.'/modules/'.$itemtypes[$item_basic['item_type_id']]['viewphp'];
                 $license_required = function_exists($func_license_required) ? $func_license_required($i) : false;
                 list($license, $use_cc) = function_exists($func_license) ? $func_license($i) : array(
                     '',
-                    false
+                    false,
                 );
                 $html = function_exists($func_html) ? $func_html($item_basic) : '';
                 if (!function_exists($func_export) || !export_item_enable($i)) {
@@ -327,10 +328,10 @@ EOT;
                     $items[$key] = array();
                 }
                 $items[$key][] = array(
-                    'item_id'     => $i,
+                    'item_id' => $i,
                     //'license_required' => $license_required,
-                    'license'     => $use_cc ? $license : $textutil->html_special_chars($license),
-                    'use_cc'      => $use_cc,
+                    'license' => $use_cc ? $license : $textutil->html_special_chars($license),
+                    'use_cc' => $use_cc,
                     'detail_html' => $html,
                     //'export_flag' => function_exists( $func_export )
                 );
@@ -340,7 +341,7 @@ EOT;
             $xoopsTpl->assign('index_id', $index_id);
         }
         if (isset($system_message)) {
-            $xoopsTpl->assign('system_message', '<span style="color: red;">' . $system_message . '</span>');
+            $xoopsTpl->assign('system_message', '<span style="color: red;">'.$system_message.'</span>');
         }
 
         $xoopsTpl->assign('export_type', $export_type);
@@ -351,12 +352,12 @@ EOT;
         } elseif ($export_type === 'index') {
             $xoopsTpl->assign('recursive_index', $recursive_index);
         }
-        require XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH.'/footer.php';
     } else {
         die('unknown export_type');
     }
 } elseif ($op === 'config') {
-    require XOOPS_ROOT_PATH . '/header.php';
+    require XOOPS_ROOT_PATH.'/header.php';
 
     echo _MD_XOONIPS_EXPORT_PANKUZU_EXPORT;
     echo _MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR;
@@ -371,12 +372,12 @@ EOT;
     // done
     $add_export_ids = array();
     foreach ($ids as $id) {
-        $basicHandler     = xoonips_getOrmHandler('xoonips', 'item_basic');
+        $basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $basic            = $basicHandler->get($id);
-        $itemtype         = $item_typeHandler->get($basic->get('item_type_id'));
-        require_once __DIR__ . '/../' . $itemtype->get('name') . '/include/view.php';
-        $func = $itemtype->get('name') . 'GetExportItemId';
+        $basic = $basicHandler->get($id);
+        $itemtype = $item_typeHandler->get($basic->get('item_type_id'));
+        require_once __DIR__.'/../'.$itemtype->get('name').'/include/view.php';
+        $func = $itemtype->get('name').'GetExportItemId';
         if (!function_exists($func)) {
             continue;
         }
@@ -384,14 +385,14 @@ EOT;
     }
     $ids = array_unique(array_merge($ids, $add_export_ids));
 
-    $yes                   = _YES;
-    $no                    = _NO;
+    $yes = _YES;
+    $no = _NO;
     $export_type_item_type = $index_id != '' ? 'radio' : 'hidden';
-    $export_type_item      = _MD_XOONIPS_EXPORT_TYPE_ITEM;
-    $export_type_index     = _MD_XOONIPS_EXPORT_TYPE_INDEX;
-    $export_recursive      = _MD_XOONIPS_EXPORT_RECURSIVE;
-    $export_attachment     = _MD_XOONIPS_EXPORT_ATTACHMENT;
-    $submit                = _SUBMIT;
+    $export_type_item = _MD_XOONIPS_EXPORT_TYPE_ITEM;
+    $export_type_index = _MD_XOONIPS_EXPORT_TYPE_INDEX;
+    $export_recursive = _MD_XOONIPS_EXPORT_RECURSIVE;
+    $export_attachment = _MD_XOONIPS_EXPORT_ATTACHMENT;
+    $submit = _SUBMIT;
 
     echo <<<EOT
         <form id="export_config" action="export.php" method="post">
@@ -472,37 +473,39 @@ EOT;
 EOT;
 
     if ($index_id != '') {
-        echo '<input type="hidden" name="index_id" value="' . $index_id . '"/>' . "\n";
+        echo '<input type="hidden" name="index_id" value="'.$index_id.'"/>'."\n";
     }
 
     foreach ($ids as $i) {
-        echo '<input type="hidden" name="ids[]" value="' . $i . '"/>' . "\n";
+        echo '<input type="hidden" name="ids[]" value="'.$i.'"/>'."\n";
     }
 
     echo <<<EOT
         <input type="hidden" name="op" value="list" />
         </form>
 EOT;
-    require XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH.'/footer.php';
 } else {
     die('unknown op');
 }
 
 /**
  * xoopsUser has item export permission or not.
- * @param integer $item_id id of item to check
- * @return boolean true(permitted), false(forbidden)
+ *
+ * @param int $item_id id of item to check
+ *
+ * @return bool true(permitted), false(forbidden)
  */
 function export_item_enable($item_id)
 {
     global $xoopsUser;
     $handler = xoonips_getOrmCompoHandler('xoonips', 'item');
+
     return $handler->getPerm($item_id, $xoopsUser ? $xoopsUser->getVar('uid') : UID_GUEST, 'export');
 }
 
 /**
- *
- * create temporary dir and return its path
+ * create temporary dir and return its path.
  *
  * @return string temprary dir path or false(if failed)
  */
@@ -510,19 +513,20 @@ function xoonips_create_temporary_dir()
 {
     $tmpfile = tempnam('/tmp', 'XNP');
     unlink($tmpfile);
-    $tmpdir = $tmpfile . 'D';//folder zipped files to be stored.
+    $tmpdir = $tmpfile.'D'; //folder zipped files to be stored.
     if (!mkdir($tmpdir)) {
         return false;
     }
+
     return $tmpdir;
 }
 
 /**
- *
- * convert file encoding
+ * convert file encoding.
  *
  * @param $tmpfile
  * @param $filename
+ *
  * @return bool true(succeed) or false(failed)
  *
  * @internal param input $infile file path(any encoindg)
@@ -540,6 +544,7 @@ function xoonips_convert_file_encoding_to_utf8($tmpfile, $filename)
         if ($fp_w) {
             fclose($fp_w);
         }
+
         return false;
     }
     while (!feof($fp_r)) {
@@ -553,8 +558,8 @@ function xoonips_convert_file_encoding_to_utf8($tmpfile, $filename)
 }
 
 /**
+ * export index tree XML to file.
  *
- * export index tree XML to file
  * @param $fp        file handle
  * @param $index_id  integer index id to export
  * @param $recursive bool true if recursive export
@@ -572,20 +577,22 @@ function xoonips_export_index_xml($fp, $index_id, $recursive)
 /**
  * find all item ids in the index of $index_id.
  * if $recursive_item is given.
- * @param integer $index_id       user id to export
- * @param         $uid
- * @param boolean $recursive_item true(recursive) or false(not recursive)
+ *
+ * @param int  $index_id       user id to export
+ * @param      $uid
+ * @param bool $recursive_item true(recursive) or false(not recursive)
+ *
  * @return array integer item id(s)
  */
 function xoonips_get_all_item_ids_to_export($index_id, $uid, $recursive_item = false)
 {
-    $ids     = array();
+    $ids = array();
     $tmp_idx = array($index_id);
     while (count($tmp_idx) > 0) {
         $i = array_shift($tmp_idx);
 
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $index_item_links       = $index_item_linkHandler->getByIndexId($i, $uid);
+        $index_item_links = $index_item_linkHandler->getByIndexId($i, $uid);
         foreach ($index_item_links as $link) {
             $ids[] = $link->get('item_id');
         }
@@ -595,12 +602,13 @@ function xoonips_get_all_item_ids_to_export($index_id, $uid, $recursive_item = f
         }
 
         $child = array();
-        $res   = xnp_get_indexes($_SESSION['XNPSID'], $i, array(), $child);
+        $res = xnp_get_indexes($_SESSION['XNPSID'], $i, array(), $child);
         if ($res == RES_OK) {
             foreach ($child as $c) {
                 array_push($tmp_idx, $c['item_id']);
             }
         }
     }
+
     return $ids;
 }

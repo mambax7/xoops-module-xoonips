@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,12 +25,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/transfer.class.php';
-require_once __DIR__ . '/../../include/transfer.inc.php';
-require_once __DIR__ . '/../base/gtickets.php';
+require_once __DIR__.'/transfer.class.php';
+require_once __DIR__.'/../../include/transfer.inc.php';
+require_once __DIR__.'/../base/gtickets.php';
 
 /**
- * Class XooNIpsActionTransferAdminTransfer
+ * Class XooNIpsActionTransferAdminTransfer.
  */
 class XooNIpsActionTransferAdminTransfer extends XooNIpsActionTransfer
 {
@@ -49,9 +50,6 @@ class XooNIpsActionTransferAdminTransfer extends XooNIpsActionTransfer
         return 'transferAdminTransfer';
     }
 
-    /**
-     * @return null
-     */
     public function _get_view_name()
     {
         return null;
@@ -67,29 +65,29 @@ class XooNIpsActionTransferAdminTransfer extends XooNIpsActionTransfer
 
         global $xoopsUser;
 
-        $from_uid    = $this->_formdata->getValue('post', 'from_uid', 'i', true);
-        $to_uid      = $this->_formdata->getValue('post', 'to_uid', 'i', true);
+        $from_uid = $this->_formdata->getValue('post', 'from_uid', 'i', true);
+        $to_uid = $this->_formdata->getValue('post', 'to_uid', 'i', true);
         $to_index_id = $this->_formdata->getValue('post', 'to_index_id', 'i', true);
 
         $transfer_item_ids = array_merge($this->get_item_ids_to_transfer(), $this->get_child_item_ids_to_transfer());
 
         if (!xoonips_transfer_is_transferrable($from_uid, $to_uid, $transfer_item_ids)) {
-            redirect_header(XOOPS_URL . '/modules/xoonips/admin/maintenance.php?' . 'page=item&action=transfer_admin_initialize', 3,
+            redirect_header(XOOPS_URL.'/modules/xoonips/admin/maintenance.php?'.'page=item&action=transfer_admin_initialize', 3,
                             _AM_XOONIPS_MAINTENANCE_TRANSFER_ITEM_ERROR);
         }
         if (xoonips_transfer_is_private_item_number_exceeds_if_transfer($to_uid, $transfer_item_ids)) {
-            redirect_header(XOOPS_URL . '/modules/xoonips/admin/maintenance.php?' . 'page=item&action=transfer_admin_initialize', 3,
+            redirect_header(XOOPS_URL.'/modules/xoonips/admin/maintenance.php?'.'page=item&action=transfer_admin_initialize', 3,
                             _AM_XOONIPS_MAINTENANCE_TRANSFER_ITEM_ERROR_ITEM_NUMBER_EXCEEDS);
         }
         if (xoonips_transfer_is_private_item_storage_exceeds_if_transfer($to_uid, $transfer_item_ids)) {
-            redirect_header(XOOPS_URL . '/modules/xoonips/admin/maintenance.php?' . 'page=item&action=transfer_admin_initialize', 3,
+            redirect_header(XOOPS_URL.'/modules/xoonips/admin/maintenance.php?'.'page=item&action=transfer_admin_initialize', 3,
                             _AM_XOONIPS_MAINTENANCE_TRANSFER_ITEM_ERROR_ITEM_STORAGE_EXCEEDS);
         }
 
         if (!$this->is_equals_group_ids(xoonips_transfer_get_group_ids_of_items($transfer_item_ids),
                                         $this->_formdata->getValueArray('post', 'group_ids_to_subscribe', 'i', false))
         ) {
-            redirect_header(XOOPS_URL . '/modules/xoonips/admin/maintenance.php' . '?page=item', 3,
+            redirect_header(XOOPS_URL.'/modules/xoonips/admin/maintenance.php'.'?page=item', 3,
                             _AM_XOONIPS_MAINTENANCE_TRANSFER_ITEM_ERROR_BAD_SUBSCRIBE_GROUP);
         }
 
@@ -103,21 +101,23 @@ class XooNIpsActionTransferAdminTransfer extends XooNIpsActionTransfer
     public function postAction()
     {
         if ($this->_response->getResult()) {
-            redirect_header(XOOPS_URL . '/modules/xoonips/admin/maintenance.php' . '?page=item', 3, _AM_XOONIPS_MAINTENANCE_TRANSFER_ITEM_COMPLETE);
+            redirect_header(XOOPS_URL.'/modules/xoonips/admin/maintenance.php'.'?page=item', 3, _AM_XOONIPS_MAINTENANCE_TRANSFER_ITEM_COMPLETE);
         } else {
-            redirect_header(XOOPS_URL . '/modules/xoonips/admin/maintenance.php' . '?page=item', 3, _AM_XOONIPS_MAINTENANCE_TRANSFER_ITEM_ERROR);
+            redirect_header(XOOPS_URL.'/modules/xoonips/admin/maintenance.php'.'?page=item', 3, _AM_XOONIPS_MAINTENANCE_TRANSFER_ITEM_ERROR);
         }
     }
 
     /**
      * @param $gids1
      * @param $gids2
+     *
      * @return bool
      */
     public function is_equals_group_ids($gids1, $gids2)
     {
         $a = is_array($gids1) ? $gids1 : array();
         $b = is_array($gids2) ? $gids2 : array();
+
         return count(array_diff($a, $b)) == 0
                && count(array_diff($b, $a)) == 0;
     }
@@ -128,6 +128,7 @@ class XooNIpsActionTransferAdminTransfer extends XooNIpsActionTransfer
     public function get_item_ids_to_transfer()
     {
         $result = $this->_formdata->getValueArray('post', 'item_ids_to_transfer', 'i', false);
+
         return is_array($result) ? $result : array();
     }
 
@@ -137,6 +138,7 @@ class XooNIpsActionTransferAdminTransfer extends XooNIpsActionTransfer
     public function get_child_item_ids_to_transfer()
     {
         $result = $this->_formdata->getValueArray('post', 'child_item_ids_to_transfer', 'i', false);
+
         return is_array($result) ? $result : array();
     }
 }

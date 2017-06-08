@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,7 +27,7 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // check token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
+require_once __DIR__.'/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_maintenance_ranking';
 if (!$xoopsGTicket->check(true, $ticket_area, false)) {
     redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
@@ -47,7 +48,7 @@ if ($uploaded_file['name'] == '' || $uploaded_file['size'] == 0) {
 }
 
 // extract sum
-$file_path            = $uploaded_file['tmp_name'];
+$file_path = $uploaded_file['tmp_name'];
 $admin_rankingHandler = xoonips_getHandler('xoonips', 'admin_ranking');
 if (!$admin_rankingHandler->load_sum_file($file_path)) {
     redirect_header($xoonips_admin['mypage_url'], 3, _AM_XOONIPS_MAINTENANCE_RANKING_LOCKED);

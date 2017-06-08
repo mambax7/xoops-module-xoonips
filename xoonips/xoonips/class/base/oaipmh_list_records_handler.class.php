@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 /**
- * Class ListRecordsHandler
+ * Class ListRecordsHandler.
  */
 class ListRecordsHandler extends HarvesterHandler
 {
@@ -48,6 +49,7 @@ class ListRecordsHandler extends HarvesterHandler
 
     /**
      * ListRecordsHandler constructor.
+     *
      * @param $_parser
      * @param $_baseURL
      * @param $_metadataPrefix
@@ -56,23 +58,23 @@ class ListRecordsHandler extends HarvesterHandler
     {
         parent::__construct($_parser);
 
-        $this->resumptionToken   = null;
-        $this->identifier        = null;
-        $this->title             = array();
-        $this->metadataPrefix    = $_metadataPrefix;
-        $this->search_text       = array();
-        $this->tagstack          = array();
-        $this->baseURL           = $_baseURL;
-        $this->delete_flag       = false;
-        $this->_creator          = array();
+        $this->resumptionToken = null;
+        $this->identifier = null;
+        $this->title = array();
+        $this->metadataPrefix = $_metadataPrefix;
+        $this->search_text = array();
+        $this->tagstack = array();
+        $this->baseURL = $_baseURL;
+        $this->delete_flag = false;
+        $this->_creator = array();
         $this->_last_update_date = '';
-        $this->_creation_date    = '';
-        $this->_date             = '';
-        $this->_resource_url     = array();
-        $this->_namespaces       = array();
-        $this->_metadata         = array();
-        $this->_cdata_buf        = '';
-        $this->_datestamp        = '';
+        $this->_creation_date = '';
+        $this->_date = '';
+        $this->_resource_url = array();
+        $this->_namespaces = array();
+        $this->_metadata = array();
+        $this->_cdata_buf = '';
+        $this->_datestamp = '';
     }
 
     /**
@@ -89,7 +91,7 @@ class ListRecordsHandler extends HarvesterHandler
             $xoopsDB->setLogger(new XoopsLogger());
 
             // initialize following value for each records
-            $this->title       = null;
+            $this->title = null;
             $this->search_text = array();
         }
         if ($name === 'HEADER') {
@@ -113,6 +115,7 @@ class ListRecordsHandler extends HarvesterHandler
         if (end($this->tagstack) === 'RESUMPTIONTOKEN') {
             $this->resumptionToken = $this->_cdata_buf;
             array_pop($this->tagstack);
+
             return;
         } elseif (end($this->tagstack) === 'IDENTIFIER'
                   && prev($this->tagstack) === 'HEADER'
@@ -120,42 +123,48 @@ class ListRecordsHandler extends HarvesterHandler
             $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_ID);
             $this->identifier = $this->_cdata_buf;
             array_pop($this->tagstack);
+
             return;
         } elseif (end($this->tagstack) === 'DATESTAMP'
                   && prev($this->tagstack) === 'HEADER'
         ) {
             $this->_datestamp = $this->_cdata_buf;
             array_pop($this->tagstack);
+
             return;
         } elseif ($this->getElementName(end($this->tagstack)) === 'TITLE') {
             $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_TITLE);
             $this->title[] = $this->_cdata_buf;
             array_pop($this->tagstack);
+
             return;
         } elseif ($this->getElementName(end($this->tagstack)) === 'CREATOR') {
             $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_CREATOR);
             $this->_creator[] = $this->_cdata_buf;
             array_pop($this->tagstack);
+
             return;
         } elseif ($name === 'RECORD') {
             $repositoryHandler = xoonips_getOrmHandler('xoonips', 'oaipmh_repositories');
-            $metadataHandler   = xoonips_getOrmHandler('xoonips', 'oaipmh_metadata');
-            $unicode           = xoonips_getUtility('unicode');
+            $metadataHandler = xoonips_getOrmHandler('xoonips', 'oaipmh_metadata');
+            $unicode = xoonips_getUtility('unicode');
 
-            $criteria     = new Criteria('URL', $this->baseURL);
-            $repositories =  $repositoryHandler->getObjects($criteria);
+            $criteria = new Criteria('URL', $this->baseURL);
+            $repositories = $repositoryHandler->getObjects($criteria);
             if (!$repositories) {
                 $this->search_text = array();
                 array_pop($this->tagstack);
+
                 return;
             }
 
-            $metadata =  $metadataHandler->getByIdentifier($this->identifier);
+            $metadata = $metadataHandler->getByIdentifier($this->identifier);
             if ($metadata && $this->delete_flag) {
                 $this->deleteMetadataFields($metadata->get('metadata_id'));
                 $metadataHandler->delete($metadata);
                 $this->search_text = array();
                 array_pop($this->tagstack);
+
                 return;
             }
 
@@ -164,9 +173,9 @@ class ListRecordsHandler extends HarvesterHandler
             }
 
             $searchutil = xoonips_getUtility('search');
-            $str        = implode(' ', $this->search_text);
-            $str        = mb_convert_encoding($str, 'UTF-8', mb_detect_encoding($str));
-            $str        = $searchutil->getFulltextData($str);
+            $str = implode(' ', $this->search_text);
+            $str = mb_convert_encoding($str, 'UTF-8', mb_detect_encoding($str));
+            $str = $searchutil->getFulltextData($str);
 
             $metadata->set('repository_id', $repositories[0]->get('repository_id'));
             $metadata->set('identifier', mb_strcut($unicode->decode_utf8($this->identifier, xoonips_get_server_charset(), 'h'), 0, 255));
@@ -193,18 +202,18 @@ class ListRecordsHandler extends HarvesterHandler
             $this->insertMetadataFeilds($metadata->get('metadata_id'));
 
             // cleanup members
-            $this->identifier        = null;
-            $this->title             = array();
-            $this->search_text       = array();
-            $this->delete_flag       = false;
-            $this->_creator          = array();
+            $this->identifier = null;
+            $this->title = array();
+            $this->search_text = array();
+            $this->delete_flag = false;
+            $this->_creator = array();
             $this->_last_update_date = '';
-            $this->_creation_date    = '';
-            $this->_date             = '';
-            $this->_resource_url     = array();
-            $this->_metadata         = array();
-            $this->_cdata_buf        = '';
-            $this->_datestamp        = '';
+            $this->_creation_date = '';
+            $this->_date = '';
+            $this->_resource_url = array();
+            $this->_metadata = array();
+            $this->_cdata_buf = '';
+            $this->_datestamp = '';
 
             array_pop($this->tagstack);
         } else {
@@ -222,17 +231,11 @@ class ListRecordsHandler extends HarvesterHandler
         $this->_cdata_buf .= $data;
     }
 
-    /**
-     * @return null
-     */
     public function getResumptionToken()
     {
         return $this->resumptionToken;
     }
 
-    /**
-     * @return null
-     */
     public function getIdentifier()
     {
         return $this->identifier;
@@ -240,19 +243,22 @@ class ListRecordsHandler extends HarvesterHandler
 
     /**
      * @param $dateString
+     *
      * @return string
      */
     public function dateForSort($dateString)
     {
         $textutil = xoonips_getUtility('text');
+
         return gmstrftime('%Y-%m-%d %T', $textutil->iso8601_to_timestamp($dateString));
     }
 
     /**
      * Get namespace prefix and namespace URI from attributes.
-     * @access private
+     *
      * @param array attrs array of associative array of attributes
      *              ( key => value )
+     *
      * @return array array of namespace array(namespace prefix => URI)
      */
     public function getNamespaceArray($attrs)
@@ -272,14 +278,16 @@ class ListRecordsHandler extends HarvesterHandler
                 $result[$tmp[1]] = $val;
             }
         }
+
         return $result;
     }
 
     /**
      * Get namespace prefix from element name.
      * Empty string if no namespace prefix.
-     * @access private
+     *
      * @param string $elementname element name(including namespace prefix)
+     *
      * @return string namespace prefix
      */
     public function getNamespacePrefix($elementname)
@@ -288,13 +296,15 @@ class ListRecordsHandler extends HarvesterHandler
         if (count($tmp) == 1) {
             return '';
         }
+
         return $tmp[0];
     }
 
     /**
-     * Get element name without namespace prefix
-     * @access private
+     * Get element name without namespace prefix.
+     *
      * @param string $elementname element name(including namespace prefix)
+     *
      * @return string element name
      */
     public function getElementName($elementname)
@@ -305,12 +315,13 @@ class ListRecordsHandler extends HarvesterHandler
         } elseif (count($tmp) == 2) {
             return $tmp[1];
         }
+
         return '';
     }
 
     /**
-     * add metadta field to _metadata member
-     * @access private
+     * add metadta field to _metadata member.
+     *
      * @param string $elementname  element name(includeing namespace prefix)
      * @param string $value
      * @param string $categoryname (default is '')
@@ -318,16 +329,17 @@ class ListRecordsHandler extends HarvesterHandler
     public function addMetadataField($elementname, $value, $categoryname = '')
     {
         $this->_metadata[] = array(
-            'name'          => $this->getElementName($elementname),
+            'name' => $this->getElementName($elementname),
             'category_name' => $categoryname,
-            'value'         => $value,
-            'namespace'     => $this->getNamespacePrefix($elementname),
-            'namespace_uri' => $this->getNamespaceUri($this->getNamespacePrefix($elementname))
+            'value' => $value,
+            'namespace' => $this->getNamespacePrefix($elementname),
+            'namespace_uri' => $this->getNamespaceUri($this->getNamespacePrefix($elementname)),
         );
     }
 
     /**
      * @param $namespacePrefix
+     *
      * @return mixed|string
      */
     public function getNamespaceUri($namespacePrefix)
@@ -340,9 +352,9 @@ class ListRecordsHandler extends HarvesterHandler
     }
 
     /**
-     * insert metadata fields
-     * @access private
-     * @param integer metadata id of metadata fields
+     * insert metadata fields.
+     *
+     * @param int metadata id of metadata fields
      */
     public function insertMetadataFeilds($metadata_id)
     {
@@ -357,7 +369,7 @@ class ListRecordsHandler extends HarvesterHandler
             $orm->set('format', $this->metadataPrefix);
             $orm->set('category_name', $field['category_name']);
             $orm->set('value', $unicode->decode_utf8($field['value'], xoonips_get_server_charset(), 'h'));
-            $orm->set('ordernum', (int)$key + 1);
+            $orm->set('ordernum', (int) $key + 1);
             $orm->set('namespace', $field['namespace']);
             $orm->set('namespace_uri', $field['namespace_uri']);
             $result = $handler->insert($orm, true);
@@ -365,14 +377,14 @@ class ListRecordsHandler extends HarvesterHandler
     }
 
     /**
-     * delete all metadata field of metadata
-     * @access private
-     * @param integer metadata id to delete
+     * delete all metadata field of metadata.
+     *
+     * @param int metadata id to delete
      */
     public function deleteMetadataFields($metadata_id)
     {
-        $handler  = xoonips_getOrmHandler('xoonips', 'oaipmh_metadata_field');
-        $criteria = new Criteria('metadata_id', (int)$metadata_id);
+        $handler = xoonips_getOrmHandler('xoonips', 'oaipmh_metadata_field');
+        $criteria = new Criteria('metadata_id', (int) $metadata_id);
         $handler->deleteAll($criteria, true);
     }
 }

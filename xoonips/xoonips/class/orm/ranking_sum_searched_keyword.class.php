@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,17 +26,17 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/abstract_ranking.class.php';
-require_once __DIR__ . '/ranking_searched_keyword.class.php';
+require_once __DIR__.'/abstract_ranking.class.php';
+require_once __DIR__.'/ranking_searched_keyword.class.php';
 
 /**
  * @brief handler object of ranking sum searched keyword
- *
  */
 class XooNIpsOrmRankingSumSearchedKeywordHandler extends XooNIpsOrmRankingSearchedKeywordHandler
 {
     /**
      * XooNIpsOrmRankingSumSearchedKeywordHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -44,7 +45,7 @@ class XooNIpsOrmRankingSumSearchedKeywordHandler extends XooNIpsOrmRankingSearch
         $this->__initHandler('XooNIpsOrmRankingSearchedKeyword', 'xoonips_ranking_sum_searched_keyword', 'keyword', false, true);
         $this->_set_columns(array(
                                 'keyword',
-                                'count'
+                                'count',
                             ));
         $this->_set_sum_table();
     }

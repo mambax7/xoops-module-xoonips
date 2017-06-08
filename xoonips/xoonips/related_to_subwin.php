@@ -24,14 +24,14 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require __DIR__ . '/include/common.inc.php';
+require __DIR__.'/include/common.inc.php';
 
-require_once __DIR__ . '/include/lib.php';
-require_once __DIR__ . '/include/AL.php';
+require_once __DIR__.'/include/lib.php';
+require_once __DIR__.'/include/AL.php';
 
 // If not a user, redirect
 if (!$xoopsUser) {
-    redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
+    redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
 }
 
 xoops_header(false);
@@ -44,10 +44,10 @@ xoops_header(false);
         <td id="leftcolumn">
             <?php
             $xoopsConfig['nocommon'] = '';
-            require XOOPS_ROOT_PATH . '/header.php';
+            require XOOPS_ROOT_PATH.'/header.php';
 
-            require_once __DIR__ . '/../../class/template.php';
-            require_once __DIR__ . '/blocks/xoonips_blocks.php';
+            require_once __DIR__.'/../../class/template.php';
+            require_once __DIR__.'/blocks/xoonips_blocks.php';
 
             $xoopsModule = XoopsModule::getByDirname('xoonips');
             //print_r($xoopsModule);
@@ -74,8 +74,8 @@ xoops_header(false);
                         <td>
                             <?php
 
-                            $tpl            = new XoopsTpl();
-                            $block          = $blocks['b_xoonips_tree_show']->buildBlock();
+                            $tpl = new XoopsTpl();
+                            $block = $blocks['b_xoonips_tree_show']->buildBlock();
                             $block['query'] = 'url=related_to_subwin.php';
                             $tpl->assign('block', $block);
                             echo $tpl->fetch('db:xoonips_block_tree.tpl');
@@ -91,15 +91,15 @@ xoops_header(false);
                     <tr>
                         <td>
                             <?php
-                            $tpl                          = new XoopsTpl();
-                            $bl                           = $blocks['b_xoonips_quick_search_show']->buildBlock();
-                            $bl['submit_url']             = XOOPS_URL . '/modules/xoonips/related_to_subwin.php';
+                            $tpl = new XoopsTpl();
+                            $bl = $blocks['b_xoonips_quick_search_show']->buildBlock();
+                            $bl['submit_url'] = XOOPS_URL.'/modules/xoonips/related_to_subwin.php';
                             $bl['advanced_search_enable'] = false;
-                            $bl['search_itemtypes']       = array(
-                                'all'   => _MD_XOONIPS_SEARCH_ALL,
-                                'basic' => _MD_XOONIPS_SEARCH_TITLE_AND_KEYWORD
+                            $bl['search_itemtypes'] = array(
+                                'all' => _MD_XOONIPS_SEARCH_ALL,
+                                'basic' => _MD_XOONIPS_SEARCH_TITLE_AND_KEYWORD,
                             );
-                            $itemtypeHandler              = xoonips_getOrmHandler('xoonips', 'item_type');
+                            $itemtypeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
                             foreach ($itemtypeHandler->getObjects(new Criteria('item_type_id', ITID_INDEX, '!=')) as $itemtype) {
                                 if ($itemtype->getVar('item_type_id', 'n') != ITID_INDEX) {
                                     $bl['search_itemtypes'][$itemtype->getVar('name', 's')]
@@ -118,13 +118,13 @@ xoops_header(false);
             <?php
 
             $formdata = xoonips_getUtility('formdata');
-            $op       = $formdata->getValue('post', 'op', 'n', false);
+            $op = $formdata->getValue('post', 'op', 'n', false);
             if (!isset($op) || empty($op)) {
                 $formdata->set('post', 'op', 'related_to_from_index');
             }
             $formdata->set('post', 'index_id', $formdata->getValue('both', 'index_id', 'i', false));
 
-            require __DIR__ . '/include/itemselect.inc.php';
+            require __DIR__.'/include/itemselect.inc.php';
             $xoopsTpl->display('db:xoonips_related_to_itemselect.tpl');
 
             ?>

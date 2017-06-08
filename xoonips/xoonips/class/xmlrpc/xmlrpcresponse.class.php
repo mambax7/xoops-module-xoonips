@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,7 +26,6 @@
 // ------------------------------------------------------------------------- //
 
 /**
- *
  * @see   XooNIpsApi
  *
  * @brief Class that has result of logic
@@ -34,11 +34,9 @@
  * @li    set/get error information using get/setError
  * @li    set/get result of logic using set/getSuccess
  * @li    content of setError��setSuccess is not defined here(depends each logics)
- *
  */
 class XooNIpsXmlRpcResponse
 {
-
     /**
      * @protected
      */
@@ -58,7 +56,6 @@ class XooNIpsXmlRpcResponse
      * @brief set success or failure
      *
      * @param [in] result true:success, false:failure
-     *
      */
     public function setResult($result)
     {
@@ -78,6 +75,7 @@ class XooNIpsXmlRpcResponse
 
     /**
      * @brief set error information
+     *
      * @param XooNIpsError error
      */
     public function setError($error)
@@ -87,6 +85,7 @@ class XooNIpsXmlRpcResponse
 
     /**
      * @brief get error infomation
+     *
      * @return XooNIpsError
      */
     public function &getError()
@@ -96,6 +95,7 @@ class XooNIpsXmlRpcResponse
 
     /**
      * @brief set result of logic
+     *
      * @param $success
      */
     public function setSuccess($success)
@@ -105,7 +105,6 @@ class XooNIpsXmlRpcResponse
 
     /**
      * @brief get result of logic
-     *
      */
     public function &getSuccess()
     {
@@ -113,9 +112,8 @@ class XooNIpsXmlRpcResponse
     }
 
     /**
-     *
-     * @access protected
      * @param $key
+     *
      * @return mixed
      */
     public function &get($key)
@@ -124,9 +122,6 @@ class XooNIpsXmlRpcResponse
     }
 
     /**
-     *
-     *
-     * @access protected
      * @param $key
      * @param $value
      */
@@ -138,6 +133,6 @@ class XooNIpsXmlRpcResponse
         if (!isset($value)) {
             return;
         }
-        $this->vars[$key] =  $value;
+        $this->vars[$key] = $value;
     }
 }

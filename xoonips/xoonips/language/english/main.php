@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 /**
- * constant strings
+ * constant strings.
  */
 
 // _MD_<MODULENAME>_<STRINGNAME>
@@ -128,7 +129,7 @@ define('_MD_XOONIPS_ITEM_TO_LABEL', 'To');
 define('_MD_XOONIPS_ITEM_TITLE_REQUIRED', "Please enter 'Title'");
 define('_MD_XOONIPS_ITEM_UPLOAD_PREVIEW', "preview file '%s' will not be uploaded. \\npush Upload button first");
 
-define('_MD_XOONIPS_ITEM_REQUIRED_MARK', "<span style=\"color: red;\">*</span>");
+define('_MD_XOONIPS_ITEM_REQUIRED_MARK', '<span style="color: red;">*</span>');
 define('_MD_XOONIPS_ITEM_DOWNLOAD_CONFIRMATION', 'Do you accept the License Agreement of this file ?');
 
 define('_MD_XOONIPS_ADD_TO_PUBLIC_EXPLANATION', 'Add to public index<br>');
@@ -276,32 +277,32 @@ define('_MD_XOONIPS_INDEX_NUMBER_OF_GROUP_INDEX_LABEL', 'Number of Group Indexes
 define('_MD_XOONIPS_INDEX_TOO_MANY_INDEXES', "Too Many Indexes. Can't register more index.");
 define('_MD_XOONIPS_INDEX_NO_INDEX', 'No Subindex Keyword');
 
-define('_MD_XOONIPS_INDEX_BUTTON_REGISTER', 'register');//
-define('_MD_XOONIPS_INDEX_TITLE_EDIT', 'Edit Index Keyword');//
-define('_MD_XOONIPS_INDEX_TITLE_ADD', 'Add');//
-define('_MD_XOONIPS_INDEX_TITLE_NEW_INDEX_KEYWORD', 'New Index Keyword');//
-define('_MD_XOONIPS_INDEX_TITLE_MODIFY', 'Modify');//
-define('_MD_XOONIPS_INDEX_INDEX_KEYWORD', 'Index Keyword');//
-define('_MD_XOONIPS_INDEX_RENAME_TO', 'Rename to');//
-define('_MD_XOONIPS_INDEX_LABEL_UPDOWN', 'Up/Down');//
-define('_MD_XOONIPS_INDEX_LABEL_UP', 'Up');//
-define('_MD_XOONIPS_INDEX_LABEL_DOWN', 'Down');//
-define('_MD_XOONIPS_INDEX_BUTTON_RENAME', 'rename');//
-define('_MD_XOONIPS_INDEX_BUTTON_DELETE', 'delete');//
-define('_MD_XOONIPS_INDEX_BUTTON_MOVETO', 'move to');//
-define('_MD_XOONIPS_INDEX_LABEL_WITH_SELECTED', 'With selected:');//
+define('_MD_XOONIPS_INDEX_BUTTON_REGISTER', 'register');
+define('_MD_XOONIPS_INDEX_TITLE_EDIT', 'Edit Index Keyword');
+define('_MD_XOONIPS_INDEX_TITLE_ADD', 'Add');
+define('_MD_XOONIPS_INDEX_TITLE_NEW_INDEX_KEYWORD', 'New Index Keyword');
+define('_MD_XOONIPS_INDEX_TITLE_MODIFY', 'Modify');
+define('_MD_XOONIPS_INDEX_INDEX_KEYWORD', 'Index Keyword');
+define('_MD_XOONIPS_INDEX_RENAME_TO', 'Rename to');
+define('_MD_XOONIPS_INDEX_LABEL_UPDOWN', 'Up/Down');
+define('_MD_XOONIPS_INDEX_LABEL_UP', 'Up');
+define('_MD_XOONIPS_INDEX_LABEL_DOWN', 'Down');
+define('_MD_XOONIPS_INDEX_BUTTON_RENAME', 'rename');
+define('_MD_XOONIPS_INDEX_BUTTON_DELETE', 'delete');
+define('_MD_XOONIPS_INDEX_BUTTON_MOVETO', 'move to');
+define('_MD_XOONIPS_INDEX_LABEL_WITH_SELECTED', 'With selected:');
 
-define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_PUBLIC_INDEX_KEYWORD', 'Edit Public Tree');//
-define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_GROUP_INDEX_KEYWORD', 'Edit Group Tree');//
-define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_PRIVATE_INDEX_KEYWORD', 'Edit Private Tree');//
-define('_MD_XOONIPS_INDEX_NAME_CANNOT_BE_EMPTY', 'index keyword name cannot be empty');//
-define('_MD_XOONIPS_INDEX_DESTINATION_HAS_TOO_MANY_INDEXES', 'ERROR: destination has too many indexes');//
+define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_PUBLIC_INDEX_KEYWORD', 'Edit Public Tree');
+define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_GROUP_INDEX_KEYWORD', 'Edit Group Tree');
+define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_PRIVATE_INDEX_KEYWORD', 'Edit Private Tree');
+define('_MD_XOONIPS_INDEX_NAME_CANNOT_BE_EMPTY', 'index keyword name cannot be empty');
+define('_MD_XOONIPS_INDEX_DESTINATION_HAS_TOO_MANY_INDEXES', 'ERROR: destination has too many indexes');
 
-define('_MD_XOONIPS_INDEX_RENAME_MESSAGE', 'Index keyword %s was renamed to %s. The following items were affected:');//
+define('_MD_XOONIPS_INDEX_RENAME_MESSAGE', 'Index keyword %s was renamed to %s. The following items were affected:');
 define('_MD_XOONIPS_INDEX_RENAME_MAIL_SUBJECT', 'Index keyword has been renamed.');
-define('_MD_XOONIPS_INDEX_DELETE_MESSAGE', 'Index keyword %s was deleted. The following items were affected:');//
+define('_MD_XOONIPS_INDEX_DELETE_MESSAGE', 'Index keyword %s was deleted. The following items were affected:');
 define('_MD_XOONIPS_INDEX_DELETE_MAIL_SUBJECT', 'Index keyword has been deleted.');
-define('_MD_XOONIPS_INDEX_MOVETO_MESSAGE', 'Index keyword %s was moved to %s. The following items were affected:');//
+define('_MD_XOONIPS_INDEX_MOVETO_MESSAGE', 'Index keyword %s was moved to %s. The following items were affected:');
 define('_MD_XOONIPS_INDEX_MOVETO_MAIL_SUBJECT', 'Index keyword has been moved.');
 define('_MD_XOONIPS_INDEX_TITLE_CONFLICT', "index name '%s' conflicts");
 define('_MD_XOONIPS_INDEX_TITLE_EXCEEDS', 'index name is too long.');
@@ -345,13 +346,13 @@ define('_MD_XOONIPS_ACCOUNT_NOTREGISTERED2', 'here.');
 define('_MD_XOONIPS_ACCOUNT_NOTIFICATIONS', 'Notifications');
 
 // registeruser.php errormessage
-define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_ADDRESS', 'Address' . ' is too long. It must be less than 127 characters.');
-define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_DIVISION', 'Division' . ' is too long. It must be less than 127 characters.');
-define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_TEL', 'Phone No' . ' is too long. It must be less than 32 characters.');
-define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_COMPANY_NAME', 'Fax No' . ' is too long. It must be less than 32 characters.');
-define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_ZIPCODE', 'Zip Code' . ' is too long. It must be less than 127 characters.');
-define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_COUNTRY', 'Institute / University / Company Name' . ' is too long. It must be less than 127 characters.');
-define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_FAX', 'Country' . ' is too long. It must be less than 32 characters.');
+define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_ADDRESS', 'Address'.' is too long. It must be less than 127 characters.');
+define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_DIVISION', 'Division'.' is too long. It must be less than 127 characters.');
+define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_TEL', 'Phone No'.' is too long. It must be less than 32 characters.');
+define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_COMPANY_NAME', 'Fax No'.' is too long. It must be less than 32 characters.');
+define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_ZIPCODE', 'Zip Code'.' is too long. It must be less than 127 characters.');
+define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_COUNTRY', 'Institute / University / Company Name'.' is too long. It must be less than 127 characters.');
+define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_FAX', 'Country'.' is too long. It must be less than 32 characters.');
 define('_MD_XOONIPS_ACCOUNT_MUST_BE_FILLED_IN', "'%s' must be filled in.");
 
 define('_MD_XOONIPS_ACCOUNT_INVITE_USER', 'Invite User');
@@ -744,9 +745,9 @@ define('_MD_XOONIPS_LOCK_TYPE_STRING_CERTIFY_REQUEST', 'requested to certify');
 define('_MD_XOONIPS_LOCK_TYPE_STRING_TRANSFER_REQUEST', 'requested to transfer');
 define('_MD_XOONIPS_LOCK_TYPE_STRING_PUBLICATION_GROUP_INDEX', 'requested to certify');
 define('_MD_XOONIPS_IMPORT_CONFLICT_ITEMS_LOCKED_CERTIFY_REQUEST',
-       'In the same index, following items conflict.(not updated because they are ' . _MD_XOONIPS_LOCK_TYPE_STRING_CERTIFY_REQUEST . ')');
+       'In the same index, following items conflict.(not updated because they are '._MD_XOONIPS_LOCK_TYPE_STRING_CERTIFY_REQUEST.')');
 define('_MD_XOONIPS_IMPORT_CONFLICT_ITEMS_LOCKED_TRANSFER_REQUEST',
-       'In the same index, following items conflict.(not updated because they are ' . _MD_XOONIPS_LOCK_TYPE_STRING_TRANSFER_REQUEST . ')');
+       'In the same index, following items conflict.(not updated because they are '._MD_XOONIPS_LOCK_TYPE_STRING_TRANSFER_REQUEST.')');
 
 define('_MD_XOONIPS_ITEM_TRANSFER_NOTIFYSBJ', 'Item has been transferred');
 define('_MD_XOONIPS_ACCOUNT_CERTIFY_REQUEST_NOTIFYSBJ', 'New account has been registered');

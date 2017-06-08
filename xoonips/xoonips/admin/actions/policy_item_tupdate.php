@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,7 +27,7 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // check token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
+require_once __DIR__.'/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_policy_item_type';
 if (!$xoopsGTicket->check(true, $ticket_area, false)) {
     redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
@@ -34,7 +35,7 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 
 // get variables
 $post_keys = array(
-    'weight'       => array(
+    'weight' => array(
         'i',
         true,
         false,
@@ -50,7 +51,7 @@ $post_vals = xoonips_admin_get_requests('post', $post_keys);
 // update db values
 $moduleHandler = xoops_getHandler('module');
 foreach ($post_vals['weight'] as $mid => $w) {
-    $module      = $moduleHandler->get($mid);
+    $module = $moduleHandler->get($mid);
     $weight_orig = $module->getVar('weight', 'n');
     if ($w != $weight_orig) {
         $module->setVar('weight', $w, true);
@@ -59,7 +60,7 @@ foreach ($post_vals['weight'] as $mid => $w) {
 }
 $itemtypeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
 foreach ($post_vals['display_name'] as $itid => $display_name) {
-    $itemtype          = $itemtypeHandler->get($itid);
+    $itemtype = $itemtypeHandler->get($itid);
     $display_name_orig = $itemtype->getVar('display_name', 'n');
     if ($display_name != $display_name_orig) {
         $itemtype->set('display_name', $display_name);
@@ -67,4 +68,4 @@ foreach ($post_vals['display_name'] as $itid => $display_name) {
     }
 }
 
-redirect_header($xoonips_admin['mypage_url'] . '&amp;action=type', 3, _AM_XOONIPS_MSG_DBUPDATED);
+redirect_header($xoonips_admin['mypage_url'].'&amp;action=type', 3, _AM_XOONIPS_MSG_DBUPDATED);

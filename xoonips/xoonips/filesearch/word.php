@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,39 +25,38 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 /**
- * Class XooNIpsFileSearchPluginWORD
+ * Class XooNIpsFileSearchPluginWORD.
  */
 class XooNIpsFileSearchPluginWORD extends XooNIpsFileSearchPlugin
 {
-
     /**
-     * temporary file path for wv output data
-     * @access private
+     * temporary file path for wv output data.
+     *
      * @var string temporary file path
      */
     public $tmpfile = '';
 
     /**
-     * flag to use antiword for file reader
-     * @access private
+     * flag to use antiword for file reader.
+     *
      * @var bool true if use antiword
      */
     public $use_antiword = false;
 
     /**
-     * environemnt variable for antword 'ANTIWORDHOME'
-     * @access private
+     * environemnt variable for antword 'ANTIWORDHOME'.
+     *
      * @var string
      */
     public $antiwordhome = '/usr/local/antiword';
 
     /**
-     * constractor
+     * constractor.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->is_xml  = false;
+        $this->is_xml = false;
         $this->is_utf8 = true;
         // for antiword
         // $this->use_antiword = true;
@@ -64,36 +64,37 @@ class XooNIpsFileSearchPluginWORD extends XooNIpsFileSearchPlugin
     }
 
     /**
-     * open file resource
+     * open file resource.
      *
      * @acccess protected
+     *
      * @param string $filename file name
      */
     public function _open_file($filename)
     {
         if ($this->use_antiword) {
             // for antiword
-            putenv('ANTIWORDHOME=' . $this->antiwordhome);
-            $cmd          = sprintf('antiword -t -m UTF-8.txt %s', $filename);
+            putenv('ANTIWORDHOME='.$this->antiwordhome);
+            $cmd = sprintf('antiword -t -m UTF-8.txt %s', $filename);
             $this->handle = @popen($cmd, 'rb');
         } else {
             // for wv
-            $dirutil       = xoonips_getUtility('directory');
+            $dirutil = xoonips_getUtility('directory');
             $this->tmpfile = $dirutil->tempnam($dirutil->get_tempdir(), 'XooNIpsFileSearchPluginWord');
-            $cmd           = sprintf('wvText %s %s', escapeshellarg($filename), escapeshellarg($this->tmpfile));
+            $cmd = sprintf('wvText %s %s', escapeshellarg($filename), escapeshellarg($this->tmpfile));
             // set LANG to UTF-8 for wvText(elinks)
             $lang = getenv('LANG');
             putenv('LANG=en_US.UTF-8');
             // execute wvText command
             @system($cmd);
             // restore original lang
-            putenv('LANG=' . (($lang === false) ? '' : $lang));
+            putenv('LANG='.(($lang === false) ? '' : $lang));
             $this->handle = @fopen($this->tmpfile, 'rb');
         }
     }
 
     /**
-     * close file resource
+     * close file resource.
      *
      * @acccess protected
      */

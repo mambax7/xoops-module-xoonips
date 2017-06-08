@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -28,37 +29,35 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 define('XOBJ_DTYPE_BINARY', 201);
 
 /**
- * The basic object class for the XooNIps
- *
+ * The basic object class for the XooNIps.
  */
 class XooNIpsTableObject extends XoopsObject
 {
-
     /**
-     * extra vars holder for the joining tables
+     * extra vars holder for the joining tables.
+     *
      * @var array
-     * @access private
      */
     public $_extra_vars = array();
 
     /**
-     * default vars holder
+     * default vars holder.
+     *
      * @var array
-     * @access private
      */
     public $_default_vars = array();
 
     /**
      * do you want to replace object?
+     *
      * @var bool
-     * @access private
      */
     public $_do_replace = false;
 
     /**
-     * acceptable data types
+     * acceptable data types.
+     *
      * @var array
-     * @access protected
      */
     public $_data_types
         = array(
@@ -71,19 +70,16 @@ class XooNIpsTableObject extends XoopsObject
         );
 
     /**
-     * constructor
+     * constructor.
      *
      * normally, this is called from child classes only
-     * @access public
      */
     public function __construct()
     {
     }
 
     /**
-     * set replace mark for replace object
-     *
-     * @access public
+     * set replace mark for replace object.
      */
     public function setReplace()
     {
@@ -91,9 +87,7 @@ class XooNIpsTableObject extends XoopsObject
     }
 
     /**
-     * unset replace mark for replace object
-     *
-     * @access public
+     * unset replace mark for replace object.
      */
     public function unsetReplace()
     {
@@ -101,9 +95,8 @@ class XooNIpsTableObject extends XoopsObject
     }
 
     /**
-     * check replace mark for replace object
+     * check replace mark for replace object.
      *
-     * @access public
      * @return bool status
      */
     public function doReplace()
@@ -112,10 +105,10 @@ class XooNIpsTableObject extends XoopsObject
     }
 
     /**
-     * get data type
+     * get data type.
      *
-     * @access public
      * @param string $key
+     *
      * @return int data type: XOBJ_DTYPE_XXXX
      */
     public function getDataType($key)
@@ -124,13 +117,13 @@ class XooNIpsTableObject extends XoopsObject
     }
 
     /**
-     * set text area display attributes
+     * set text area display attributes.
      *
-     * @access public
      * @parem  bool $dohtml use raw html
      * @parem  bool $doxcode use xcode
      * @parem  bool $dosmiley use smiley marks
      * @parem  bool $dobr use <br> new line
+     *
      * @param $dohtml
      * @param $doxcode
      * @param $dosmiley
@@ -138,56 +131,55 @@ class XooNIpsTableObject extends XoopsObject
      */
     public function setTextAreaDisplayAttributes($dohtml, $doxcode, $dosmiley, $dobr)
     {
-        $this->vars['dohtml']['value']     = ($dohtml === true) ? 1 : 0;
-        $this->vars['dohtml']['changed']   = false;
-        $this->vars['doxcode']['value']    = ($doxcode === true) ? 1 : 0;
-        $this->vars['doxcode']['changed']  = false;
-        $this->vars['dosmiley']['value']   = ($dosmiley === true) ? 1 : 0;
+        $this->vars['dohtml']['value'] = ($dohtml === true) ? 1 : 0;
+        $this->vars['dohtml']['changed'] = false;
+        $this->vars['doxcode']['value'] = ($doxcode === true) ? 1 : 0;
+        $this->vars['doxcode']['changed'] = false;
+        $this->vars['dosmiley']['value'] = ($dosmiley === true) ? 1 : 0;
         $this->vars['dosmiley']['changed'] = false;
-        $this->vars['dobr']['value']       = ($dobr === true) ? 1 : 0;
-        $this->vars['dobr']['changed']     = false;
+        $this->vars['dobr']['value'] = ($dobr === true) ? 1 : 0;
+        $this->vars['dobr']['changed'] = false;
     }
 
     /**
-     * initialize variables for the object
+     * initialize variables for the object.
      *
-     * @access   public
      * @param string $key
-     * @param int    $data_type set to one of XOBJ_DTYPE_XXX constants (set to XOBJ_DTYPE_OTHER if no data type ckecking nor text sanitizing is required)
+     * @param int    $data_type    set to one of XOBJ_DTYPE_XXX constants (set to XOBJ_DTYPE_OTHER if no data type ckecking nor text sanitizing is required)
      * @param null   $value
-     * @param bool   $required  require html form input?
-     * @param int    $maxlength for XOBJ_DTYPE_TXTBOX type only
+     * @param bool   $required     require html form input?
+     * @param int    $maxlength    for XOBJ_DTYPE_TXTBOX type only
      * @param string $options
      * @param string $enumerations
+     *
      * @internal param $mixed
      * @internal param string $option does this data have any select options?
      */
-
     public function initVar($key, $data_type, $value = null, $required = false, $maxlength = null, $options = '', $enumerations = '')
     {
         if (XOONIPS_DEBUG_MODE) {
             if (!in_array($data_type, $this->_data_types)) {
-                die('fatal error : you should not use data_type ' . $data_type);
+                die('fatal error : you should not use data_type '.$data_type);
             }
         }
-        $this->vars[$key]          = array(
-            'value'     => $value,
-            'required'  => $required,
+        $this->vars[$key] = array(
+            'value' => $value,
+            'required' => $required,
             'data_type' => $data_type,
             'maxlength' => $maxlength,
-            'changed'   => false,
-            'options'   => $options,
+            'changed' => false,
+            'options' => $options,
         );
         $this->_default_vars[$key] = $value;
     }
 
     /**
-     * set a value to a variable
+     * set a value to a variable.
      *
-     * @access public
-     * @param string $key   name of the variable to assign
-     * @param mixed  $value value to assign
+     * @param string $key     name of the variable to assign
+     * @param mixed  $value   value to assign
      * @param bool   $not_gpc
+     *
      * @return bool false if failed
      */
     public function setVar($key, $value, $not_gpc = false)
@@ -202,21 +194,22 @@ class XooNIpsTableObject extends XoopsObject
             }
         }
         $value = $not_gpc ? $value : $this->_stripSlashesGPC($value);
+
         return $this->set($key, $value);
     }
 
     /**
-     * returns a specific variable for the object in a proper format
+     * returns a specific variable for the object in a proper format.
      *
-     * @access public
      * @param string $key    key of the object's variable to be returned
      * @param string $format format to use for the output
+     *
      * @return mixed formatted value of the variable
      */
     public function &getVar($key, $format = null)
     {
-        $ret      = $this->vars[$key]['value'];
-        $ts       = MyTextSanitizer::getInstance();
+        $ret = $this->vars[$key]['value'];
+        $ts = MyTextSanitizer::getInstance();
         $textutil = xoonips_getUtility('text');
 
         if (XOONIPS_DEBUG_MODE) {
@@ -234,7 +227,7 @@ class XooNIpsTableObject extends XoopsObject
                 echo '<pre>';
                 print_r(debug_backtrace());
                 echo '</pre>';
-                die('fatal error: you should not use ' . $cname . '->getVar( $k, \'' . $format . '\' ) in XooNIps');
+                die('fatal error: you should not use '.$cname.'->getVar( $k, \''.$format.'\' ) in XooNIps');
             }
         }
 
@@ -246,6 +239,7 @@ class XooNIpsTableObject extends XoopsObject
                     case 'e':
                     case 'edit':
                         $ret = $textutil->html_special_chars($ret);
+
                         return $ret;
                         break 1;
                     case 'n':
@@ -258,17 +252,19 @@ class XooNIpsTableObject extends XoopsObject
                 switch ($format) {
                     case 's':
                     case 'show':
-                        $html   = (isset($this->vars['dohtml']['value']) && $this->vars['dohtml']['value'] == 1);
-                        $xcode  = (isset($this->vars['doxcode']['value']) && $this->vars['doxcode']['value'] == 1);
+                        $html = (isset($this->vars['dohtml']['value']) && $this->vars['dohtml']['value'] == 1);
+                        $xcode = (isset($this->vars['doxcode']['value']) && $this->vars['doxcode']['value'] == 1);
                         $smiley = (isset($this->vars['dosmiley']['value']) && $this->vars['dosmiley']['value'] == 1);
-                        $image  = (isset($this->vars['doimage']['value']) && $this->vars['doimage']['value'] == 1);
-                        $br     = (isset($this->vars['dobr']['value']) && $this->vars['dobr']['value'] == 1);
-                        $ret    = $textutil->display_text_area($ret, $html, $smiley, $xcode, $image, $br);
+                        $image = (isset($this->vars['doimage']['value']) && $this->vars['doimage']['value'] == 1);
+                        $br = (isset($this->vars['dobr']['value']) && $this->vars['dobr']['value'] == 1);
+                        $ret = $textutil->display_text_area($ret, $html, $smiley, $xcode, $image, $br);
+
                         return $ret;
                         break 1;
                     case 'e':
                     case 'edit':
                         $ret = $textutil->html_special_chars($ret);
+
                         return $ret;
                         break 1;
                     case 'n':
@@ -288,6 +284,7 @@ class XooNIpsTableObject extends XoopsObject
                     case 'e':
                     case 'edit':
                         $ret = $textutil->html_special_chars($ret);
+
                         return $ret;
                         break 1;
                     case 'n':
@@ -302,16 +299,17 @@ class XooNIpsTableObject extends XoopsObject
                         case 's':
                         case 'show':
                             $selected = explode('|', $ret);
-                            $options  = explode('|', $this->vars[$key]['options']);
-                            $i        = 1;
-                            $ret      = array();
+                            $options = explode('|', $this->vars[$key]['options']);
+                            $i = 1;
+                            $ret = array();
                             foreach ($options as $op) {
                                 if (in_array($i, $selected)) {
                                     $ret[] = $op;
                                 }
-                                $i++;
+                                ++$i;
                             }
                             $ret = implode(', ', $ret);
+
                             return $ret;
                         case 'e':
                         case 'edit':
@@ -323,30 +321,31 @@ class XooNIpsTableObject extends XoopsObject
                 }
                 break;
         }
+
         return $ret;
     }
 
     /**
-     * get all variables as array
+     * get all variables as array.
      *
-     * @access public
      * @param string $format format to use for the output
+     *
      * @return array reference to the variables array
      */
     public function getVarArray($format)
     {
         $vars_array = array();
-        $keys_array =&  $this->getKeysArray();
+        $keys_array = &$this->getKeysArray();
         foreach ($keys_array as $k) {
-            $vars_array[$k] =& $this->getVar($k, $format);
+            $vars_array[$k] = &$this->getVar($k, $format);
         }
+
         return $vars_array;
     }
 
     /**
-     * get all keys as array
+     * get all keys as array.
      *
-     * @access public
      * @return array keys array
      */
     public function &getKeysArray()
@@ -357,15 +356,16 @@ class XooNIpsTableObject extends XoopsObject
             'dosmiley',
             'dobr',
         );
-        $keys_array  = array_diff(array_keys($this->vars), $ignore_keys);
+        $keys_array = array_diff(array_keys($this->vars), $ignore_keys);
+
         return $keys_array;
     }
 
     /**
-     * strip slashes when magic quota gpc is on
+     * strip slashes when magic quota gpc is on.
      *
-     * @access private
      * @param mixed $value
+     *
      * @return mixed slashes striped value
      */
     public function _stripSlashesGPC($value)
@@ -375,10 +375,10 @@ class XooNIpsTableObject extends XoopsObject
 
     /**
      * check that required fields are filled.
-     * it refers $vars[$key]['required']
+     * it refers $vars[$key]['required'].
      *
-     * @access public
      * @param string &$missing array of string of missing field name
+     *
      * @return bool false if not filled
      */
     public function isFilledRequired($missing)
@@ -388,17 +388,20 @@ class XooNIpsTableObject extends XoopsObject
             if (!$this->vars[$field]['required']) {
                 continue;
             }
-            $var =  $this->get($field);
+            $var = $this->get($field);
             if (is_array($var) && 0 == count($var) || !is_array($var) && empty($var)) {
                 $missing[] = $field;
             }
         }
+
         return 0 == count($missing);
     }
 
     /**
      * @brief get a value of variable without any sanitizing
+     *
      * @param string $key name of the variable to get
+     *
      * @return mixed value of variable
      */
     public function get($key)
@@ -408,8 +411,10 @@ class XooNIpsTableObject extends XoopsObject
 
     /**
      * @brief set a sanitized value
-     * @param string $key  name of the variable to assign
+     *
+     * @param string $key name of the variable to assign
      * @param        mixed value of variable to assin
+     *
      * @return bool false if failed
      */
     public function set($key, $value)
@@ -420,13 +425,16 @@ class XooNIpsTableObject extends XoopsObject
             $this->vars[$key]['not_gpc'] = true;
             $this->vars[$key]['changed'] = true;
             $this->setDirty();
+
             return true;
         }
+
         return false;
     }
 
     /**
-     * get all variables(no format conversions)
+     * get all variables(no format conversions).
+     *
      * @return array associative array of key->value pairs
      */
     public function getArray()
@@ -436,8 +444,11 @@ class XooNIpsTableObject extends XoopsObject
 
     /**
      * @brief    compare to another object
+     *
      * @param XooNIpsTableObject $obj
+     *
      * @return true if all vars equal to obj vars
+     *
      * @internal param XooNIpsTableObject $obj or empty value
      */
     public function equals($obj)
@@ -450,14 +461,14 @@ class XooNIpsTableObject extends XoopsObject
                 return false;
             }
         }
+
         return true;
     }
 
     /**
      * clean values of all variables of the object for storage.
-     * also add slashes whereever needed
+     * also add slashes whereever needed.
      *
-     * @access public
      * @return bool true if successful
      */
     public function cleanVars()
@@ -474,8 +485,8 @@ class XooNIpsTableObject extends XoopsObject
                             continue;
                         }
                         $cleanv = $ts->censorString($cleanv);
-                        if (isset($v['maxlength']) && mb_strlen($cleanv, _CHARSET) > (int)$v['maxlength']) {
-                            $this->setErrors("$k must be shorter than " . (int)$v['maxlength'] . ' characters.');
+                        if (isset($v['maxlength']) && mb_strlen($cleanv, _CHARSET) > (int) $v['maxlength']) {
+                            $this->setErrors("$k must be shorter than ".(int) $v['maxlength'].' characters.');
                             continue;
                         }
                         break;
@@ -491,7 +502,7 @@ class XooNIpsTableObject extends XoopsObject
                         break;
                     case XOBJ_DTYPE_INT:
                         if (null !== $cleanv) {
-                            $cleanv = (int)$cleanv;
+                            $cleanv = (int) $cleanv;
                         }
                         break;
                     case XOBJ_DTYPE_EMAIL:
@@ -510,7 +521,7 @@ class XooNIpsTableObject extends XoopsObject
                             continue;
                         }
                         if ($cleanv != '' && !preg_match("/^http[s]*:\/\//i", $cleanv)) {
-                            $cleanv = 'http://' . $cleanv;
+                            $cleanv = 'http://'.$cleanv;
                         }
                         break;
                     case XOBJ_DTYPE_ARRAY:
@@ -519,16 +530,16 @@ class XooNIpsTableObject extends XoopsObject
                     case XOBJ_DTYPE_STIME:
                     case XOBJ_DTYPE_MTIME:
                     case XOBJ_DTYPE_LTIME:
-                        $cleanv = !is_string($cleanv) ? (int)$cleanv : strtotime($cleanv);
+                        $cleanv = !is_string($cleanv) ? (int) $cleanv : strtotime($cleanv);
                         break;
                     case XOBJ_DTYPE_BINARY:
                         $cleanv = $v['value'];
                         if ($v['required'] && (null === $cleanv || $cleanv === '')) {
-                            $this->setErrors($k . ' is required.');
+                            $this->setErrors($k.' is required.');
                             continue;
                         }
-                        if (isset($v['maxlength']) && strlen($cleanv) > (int)$v['maxlength']) {
-                            $this->setErrors("$k must be shorter than " . (int)$v['maxlength'] . ' characters.');
+                        if (isset($v['maxlength']) && strlen($cleanv) > (int) $v['maxlength']) {
+                            $this->setErrors("$k must be shorter than ".(int) $v['maxlength'].' characters.');
                             continue;
                         }
                         break;
@@ -536,22 +547,24 @@ class XooNIpsTableObject extends XoopsObject
                         break;
                 }
             }
-            $this->cleanVars[$k] =  $cleanv;
+            $this->cleanVars[$k] = $cleanv;
             unset($cleanv);
         }
         if (count($this->_errors) > 0) {
             return false;
         }
         $this->unsetDirty();
+
         return true;
     }
 
     /**
-     * assign values to multiple variables in a batch
+     * assign values to multiple variables in a batch.
      *
-     * @access   public
      * @param $var_arr
+     *
      * @return bool false if failed
+     *
      * @internal param array $var_array ssociative array of values to assign
      */
     public function assignVars($var_arr)
@@ -559,46 +572,49 @@ class XooNIpsTableObject extends XoopsObject
         foreach ($var_arr as $key => $value) {
             $this->assignVar($key, $value);
         }
+
         return true;
     }
 
     /**
-     * assign a value to a variable
+     * assign a value to a variable.
      *
-     * @access public
      * @param string $key
      * @param string $value
+     *
      * @return bool false if failed
      */
     public function assignVar($key, $value)
     {
         if (!empty($key) && isset($value) && isset($this->vars[$key])) {
-            $this->vars[$key]['value'] =  $value;
+            $this->vars[$key]['value'] = $value;
         } else {
             $this->setExtraVar($key, $value);
         }
+
         return true;
     }
 
     /**
-     * set extra var
+     * set extra var.
      *
-     * @access public
      * @param string $key
      * @param string $value
+     *
      * @return bool false if failed
      */
     public function setExtraVar($key, $value)
     {
         $this->_extra_vars[$key] = $value;
+
         return true;
     }
 
     /**
-     * get extra var
+     * get extra var.
      *
-     * @access public
      * @param object $key
+     *
      * @return string extra var
      */
     public function &getExtraVar($key)
@@ -607,29 +623,31 @@ class XooNIpsTableObject extends XoopsObject
     }
 
     /**
-     * set default value to a variable
+     * set default value to a variable.
      *
-     * @access public
      * @param string $key name of the variable
+     *
      * @return bool false if faiure
      */
     public function setDefault($key)
     {
         if (!empty($key) && isset($this->vars[$key])) {
-            $this->vars[$key]['value']   = $this->_default_vars[$key];
+            $this->vars[$key]['value'] = $this->_default_vars[$key];
             $this->vars[$key]['not_gpc'] = true;
             $this->vars[$key]['changed'] = true;
             $this->setDirty();
+
             return true;
         }
+
         return false;
     }
 
     /**
-     * get maximum field length
+     * get maximum field length.
      *
-     * @access public
      * @param string $key
+     *
      * @return int
      */
     public function getMaxLength($key)
@@ -644,63 +662,63 @@ class XooNIpsTableObject extends XoopsObject
         if (isset($this->vars[$key]['maxlength'])) {
             return $this->vars[$key]['maxlength'];
         }
+
         return false;
     }
 }
 
 /**
- * The basic object handler class for the XooNIps
+ * The basic object handler class for the XooNIps.
  */
 class XooNIpsTableObjectHandler extends XoopsObjectHandler
 {
-
     /**
-     * class name of handling object
+     * class name of handling object.
+     *
      * @var string
-     * @access private
      */
     public $__class_name;
 
     /**
-     * database table name for object mapping
+     * database table name for object mapping.
+     *
      * @var string
-     * @access private
      */
     public $__table_name;
 
     /**
-     * primary key name of database table
+     * primary key name of database table.
+     *
      * @var string
-     * @access private
      */
     public $__key_name;
 
     /**
-     * flag for primary key is auto increment
+     * flag for primary key is auto increment.
+     *
      * @var bool
-     * @access private
      */
     public $__is_autoincrement = true;
 
     /**
-     * flag for primary key is string
+     * flag for primary key is string.
+     *
      * @var bool
-     * @access private
      */
     public $__is_string_primary_key = true;
 
     /**
-     * last sql query string
+     * last sql query string.
+     *
      * @var string
-     * @access private
      */
     public $__last_sql = '';
 
     /**
-     * constructor
+     * constructor.
      *
      * normally, this is called from child classes only
-     * @access public
+     *
      * @param XoopsDatabase $db XoopsDatabase instance
      */
     public function __construct($db)
@@ -709,9 +727,8 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
     }
 
     /**
-     * initilizing function, this is called from child class only
+     * initilizing function, this is called from child class only.
      *
-     * @access protected
      * @param string $cname                 class name
      * @param string $tname                 database table name for object mapping
      * @param string $key                   primary key name of database table
@@ -720,17 +737,16 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
      */
     public function __initHandler($cname, $tname, $key, $is_autoincrement = true, $is_string_primary_key = false)
     {
-        $this->__class_name            = $cname;
-        $this->__table_name            = $tname;
-        $this->__key_name              = $key;
-        $this->__is_autoincrement      = $is_autoincrement;
+        $this->__class_name = $cname;
+        $this->__table_name = $tname;
+        $this->__key_name = $key;
+        $this->__is_autoincrement = $is_autoincrement;
         $this->__is_string_primary_key = $is_string_primary_key;
     }
 
     /**
-     * return non prefixed table name
+     * return non prefixed table name.
      *
-     * @access public
      * @return string table name
      */
     public function getTableName()
@@ -739,9 +755,8 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
     }
 
     /**
-     * return primary key name
+     * return primary key name.
      *
-     * @access public
      * @return string primary key name
      */
     public function getKeyName()
@@ -750,9 +765,8 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
     }
 
     /**
-     * check is string primary key
+     * check is string primary key.
      *
-     * @access public
      * @return bool true if primary key is string
      */
     public function isStringPrimaryKey()
@@ -761,9 +775,8 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
     }
 
     /**
-     * get last sql query string
+     * get last sql query string.
      *
-     * @access public
      * @return string sql
      */
     public function getLastSQL()
@@ -772,10 +785,10 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
     }
 
     /**
-     * create a new object
+     * create a new object.
      *
-     * @access public
      * @param bool isNew mark the new object as 'new'?
+     *
      * @return object XooNIpsTableObject reference to the new object
      */
     public function create($isNew = true)
@@ -784,27 +797,28 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
         if ($isNew) {
             $obj->setNew();
         }
+
         return $obj;
     }
 
     /**
-     * gets a value object
+     * gets a value object.
      *
-     * @access public
      * @param mixed(int/string) $id
+     *
      * @return bool|object
      */
     public function get($id)
     {
         $ret = false;
-        if ((int)$id > 0 || $this->__is_string_primary_key) {
+        if ((int) $id > 0 || $this->__is_string_primary_key) {
             if ($this->__is_string_primary_key) {
                 $id_str = $this->db->quoteString($id);
             } else {
                 $id_str = sprintf('%u', $id);
             }
             $sql = sprintf('SELECT * FROM `%s` WHERE `%s`=%s', $this->db->prefix($this->__table_name), $this->__key_name, $id_str);
-            if ($result =& $this->_query($sql)) {
+            if ($result = &$this->_query($sql)) {
                 $numrows = $this->db->getRowsNum($result);
                 if ($numrows == 1) {
                     $obj = new $this->__class_name();
@@ -814,15 +828,16 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
                 $this->db->freeRecordSet($result);
             }
         }
+
         return $ret;
     }
 
     /**
-     * insert/update/replace object
+     * insert/update/replace object.
      *
-     * @access public
      * @param XoopsObject $obj
      * @param bool        $force force operation
+     *
      * @return bool false if failed
      */
     public function insert(XoopsObject $obj, $force = false)
@@ -837,16 +852,16 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
             return false;
         }
         if ($obj->isNew() || $obj->doReplace()) {
-            $sql_arr =  $this->_makeVarsArray4SQL($obj, $obj->cleanVars);
+            $sql_arr = $this->_makeVarsArray4SQL($obj, $obj->cleanVars);
             if ($this->__is_autoincrement && !$obj->doReplace()) {
-                $myid = $this->db->genId($this->__table_name . '_' . $this->__key_name . '_seq');
+                $myid = $this->db->genId($this->__table_name.'_'.$this->__key_name.'_seq');
             } else {
                 $myid = $sql_arr[$this->__key_name];
             }
             $sql_fields = array();
             $sql_values = array();
             foreach (array_keys($sql_arr) as $name) {
-                $sql_fields[] = '`' . $name . '`';
+                $sql_fields[] = '`'.$name.'`';
                 if ($name == $this->__key_name) {
                     $sql_values[] = $myid;
                 } else {
@@ -861,21 +876,21 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
             $sql = sprintf('%s INTO `%s` ( %s ) VALUES ( %s )', $sql_cmd, $this->db->prefix($this->__table_name), implode(',', $sql_fields),
                            implode(',', $sql_values));
         } else {
-            $sql_arr  =  $this->_makeVarsArray4SQL($obj, $obj->cleanVars);
-            $myid     = $sql_arr[$this->__key_name];
+            $sql_arr = $this->_makeVarsArray4SQL($obj, $obj->cleanVars);
+            $myid = $sql_arr[$this->__key_name];
             $sql_keyl = array();
             $sql_setl = array();
             foreach (array_keys($sql_arr) as $name) {
                 if ($name == $this->__key_name) {
-                    $sql_keyl[] = '`' . $name . '`=' . $sql_arr[$name];
+                    $sql_keyl[] = '`'.$name.'`='.$sql_arr[$name];
                 } else {
-                    $sql_setl[] = '`' . $name . '`=' . (null === $sql_arr[$name] ? 'NULL' : $sql_arr[$name]);
+                    $sql_setl[] = '`'.$name.'`='.(null === $sql_arr[$name] ? 'NULL' : $sql_arr[$name]);
                 }
             }
             $sql = sprintf('UPDATE `%s` SET %s WHERE %s', $this->db->prefix($this->__table_name), implode(', ', $sql_setl),
                            implode(' AND ', $sql_keyl));
         }
-        if (!$result =& $this->_query($sql, $force)) {
+        if (!$result = &$this->_query($sql, $force)) {
             return false;
         }
         if (!$this->__is_string_primary_key) {
@@ -887,15 +902,16 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
             // update primary key id
             $obj->assignVar($this->__key_name, $myid);
         }
+
         return true;
     }
 
     /**
-     * delete object
+     * delete object.
      *
-     * @access public
      * @param XoopsObject $obj
      * @param bool        $force force operation
+     *
      * @return bool false if failed
      */
     public function delete(XoopsObject $obj, $force = false)
@@ -909,27 +925,28 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
             $id_str = sprintf('%u', $obj->get($this->__key_name));
         }
         $sql = sprintf('DELETE FROM `%s` WHERE `%s` = %s', $this->db->prefix($this->__table_name), $this->__key_name, $id_str);
-        if (!$result =& $this->_query($sql, $force)) {
+        if (!$result = &$this->_query($sql, $force)) {
             return false;
         }
+
         return true;
     }
 
     /**
-     * gets objects
+     * gets objects.
      *
-     * @access public
      * @param object            $criteria
      * @param bool              $id_as_key
      * @param string            $fieldlist fieldlist for distinct select
      * @param bool              $distinct
      * @param XoopsJoinCriteria $joindef   join criteria object
+     *
      * @return array objects
      */
     public function &getObjects($criteria = null, $id_as_key = false, $fieldlist = '', $distinct = false, $joindef = null)
     {
-        $ret    = array();
-        $result =& $this->open($criteria, $fieldlist, $distinct, $joindef);
+        $ret = array();
+        $result = &$this->open($criteria, $fieldlist, $distinct, $joindef);
         if (!$result) {
             return $ret;
         }
@@ -937,23 +954,24 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
             if (!$id_as_key) {
                 $ret[] = $obj;
             } else {
-                $key_id       = $obj->get($this->__key_name);
+                $key_id = $obj->get($this->__key_name);
                 $ret[$key_id] = $obj;
             }
             unset($obj);
         }
         $this->close($result);
+
         return $ret;
     }
 
     /**
-     * open select query
+     * open select query.
      *
-     * @access public
      * @param object            $criteria
      * @param string            $fieldlist fieldlist for distinct select
      * @param bool              $distinct
      * @param XoopsJoinCriteria $joindef   join criteria object
+     *
      * @return resource
      */
     public function &open($criteria = null, $fieldlist = '', $distinct = false, $joindef = null)
@@ -964,32 +982,35 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
             $start = $criteria->getStart();
         }
         $sql = $this->_makeSQL($criteria, $fieldlist, $distinct, $joindef);
+
         return $this->_query($sql, false, $limit, $start);
     }
 
     /**
-     * get next object
+     * get next object.
      *
-     * @access public
      * @param resource $result mysql result
+     *
      * @return bool|object
      */
     public function getNext($result)
     {
         if (!$myrow = $this->db->fetchArray($result)) {
             $ret = false;
+
             return $ret;
         }
         $obj = new $this->__class_name();
         $obj->assignVars($myrow);
+
         return $obj;
     }
 
     /**
-     * close select query
+     * close select query.
      *
-     * @access public
      * @param resource $result mysql result
+     *
      * @return bool false if failed
      */
     public function close($result)
@@ -997,15 +1018,16 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
         if (!$result) {
             return false;
         }
+
         return $this->db->freeRecordSet($result);
     }
 
     /**
-     * count how many rows in tables
+     * count how many rows in tables.
      *
-     * @access public
      * @param object $criteria
-     * @param object $joindef join criteria
+     * @param object $joindef  join criteria
+     *
      * @return int number of rows
      */
     public function getCount($criteria = null, $joindef = null)
@@ -1015,57 +1037,60 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
             $sql .= $joindef->render($this->db, $this->__table_name, false);
         }
         if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
-            $sql .= ' ' . $criteria->renderWhere();
+            $sql .= ' '.$criteria->renderWhere();
         }
-        if (!$result =& $this->_query($sql)) {
+        if (!$result = &$this->_query($sql)) {
             return 0;
         }
         list($count) = $this->db->fetchRow($result);
         $this->db->freeRecordSet($result);
+
         return $count;
     }
 
     /**
-     * delete objects using criteria
+     * delete objects using criteria.
      *
-     * @access public
      * @param object $criteria
-     * @param bool   $force force operation
+     * @param bool   $force    force operation
+     *
      * @return bool false if failed
      */
     public function deleteAll($criteria = null, $force = false)
     {
         $sql = sprintf('DELETE FROM `%s`', $this->db->prefix($this->__table_name));
         if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
-            $sql .= ' ' . $criteria->renderWhere();
+            $sql .= ' '.$criteria->renderWhere();
         }
-        if (!$result =& $this->_query($sql, $force)) {
+        if (!$result = &$this->_query($sql, $force)) {
             return false;
         }
+
         return true;
     }
 
     /**
-     * gets union objects
+     * gets union objects.
      *
-     * @access   public
      * @param array  $vars
      * @param bool   $id_as_key
-     * @param bool   $unionall true if use UNION ALL(default is UNION)
+     * @param bool   $unionall      true if use UNION ALL(default is UNION)
      * @param object $unionCriteria
+     *
      * @return array objects
+     *
      * @internal param bool $id_bas_key
      */
     public function &getUnionObjects($vars, $id_as_key = false, $unionall = false, $unionCriteria = null)
     {
         $ret = array();
         foreach ($vars as $var) {
-            $criteria  = isset($var[0]) ? $var[0] : null;
+            $criteria = isset($var[0]) ? $var[0] : null;
             $fieldlist = isset($var[1]) ? $var[1] : '';
-            $distinct  = isset($var[2]) ? $var[2] : false;
-            $joindef   = isset($var[3]) ? $var[3] : null;
+            $distinct = isset($var[2]) ? $var[2] : false;
+            $joindef = isset($var[3]) ? $var[3] : null;
         }
-        $result =& $this->openUnion($vars, $unionall, $unionCriteria);
+        $result = &$this->openUnion($vars, $unionall, $unionCriteria);
         if (!$result) {
             return $ret;
         }
@@ -1073,39 +1098,40 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
             if (!$id_as_key) {
                 $ret[] = $obj;
             } else {
-                $key_id       = $obj->get($this->__key_name);
+                $key_id = $obj->get($this->__key_name);
                 $ret[$key_id] = $obj;
             }
             unset($obj);
         }
         $this->close($result);
+
         return $ret;
     }
 
     /**
-     * open union select query
+     * open union select query.
      *
-     * @access public
      * @param array  $vars
      * @param object $unionCriteria
-     * @param bool   $unionall true if use UNION ALL(default is UNION)
+     * @param bool   $unionall      true if use UNION ALL(default is UNION)
+     *
      * @return resource
      */
     public function &openUnion($vars, $unionall = false, $unionCriteria = null)
     {
-        $limit    = $start = 0;
+        $limit = $start = 0;
         $order_by = '';
-        $sqls     = array();
+        $sqls = array();
         foreach ($vars as $var) {
-            $criteria  = isset($var[0]) ? $var[0] : null;
+            $criteria = isset($var[0]) ? $var[0] : null;
             $fieldlist = isset($var[1]) ? $var[1] : '';
-            $distinct  = isset($var[2]) ? $var[2] : false;
-            $joindef   = isset($var[3]) ? $var[3] : null;
-            $sqls[]    = $this->_makeSQL($criteria, $fieldlist, $distinct, $joindef);
+            $distinct = isset($var[2]) ? $var[2] : false;
+            $joindef = isset($var[3]) ? $var[3] : null;
+            $sqls[] = $this->_makeSQL($criteria, $fieldlist, $distinct, $joindef);
         }
         if (count($sqls) > 1) {
             // last query must be enclosed last select query by () for order by
-            $sqls[count($sqls) - 1] = '(' . $sqls[count($sqls) - 1] . ')';
+            $sqls[count($sqls) - 1] = '('.$sqls[count($sqls) - 1].')';
         }
 
         $sql = '';
@@ -1114,24 +1140,25 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
                 || strtolower(get_class($unionCriteria)) === 'CriteriaElement')
         ) {
             if ($unionCriteria->getGroupby() !== ' GROUP BY ') {
-                $sql .= ' ' . $unionCriteria->getGroupby();
+                $sql .= ' '.$unionCriteria->getGroupby();
             }
             if (is_array($unionCriteria->getSort()) && count($unionCriteria->getSort()) > 0) {
-                $orderStr   = 'ORDER BY ';
+                $orderStr = 'ORDER BY ';
                 $orderDelim = '';
                 foreach ($unionCriteria->getSort() as $sortVar) {
-                    $orderStr .= $orderDelim . $sortVar . ' ' . $unionCriteria->getOrder();
+                    $orderStr .= $orderDelim.$sortVar.' '.$unionCriteria->getOrder();
                     $orderDelim = ',';
                 }
-                $sql .= ' ' . $orderStr;
+                $sql .= ' '.$orderStr;
             } elseif ($unionCriteria->getSort() != '') {
-                $orderStr = 'ORDER BY ' . $unionCriteria->getSort() . ' ' . $unionCriteria->getOrder();
-                $sql .= ' ' . $orderStr;
+                $orderStr = 'ORDER BY '.$unionCriteria->getSort().' '.$unionCriteria->getOrder();
+                $sql .= ' '.$orderStr;
             }
             $limit = $unionCriteria->getLimit();
             $start = $unionCriteria->getStart();
         }
-        $sql = implode($unionall ? ' UNION ALL ' : ' UNION ', $sqls) . $sql;
+        $sql = implode($unionall ? ' UNION ALL ' : ' UNION ', $sqls).$sql;
+
         return $this->_query($sql, false, $limit, $start);
     }
 
@@ -1139,10 +1166,12 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
      * update foreign key related objects
      * - insert new object
      * - update modified object
-     * - delete object not in $objects from DB
+     * - delete object not in $objects from DB.
+     *
      * @param string               $foreign_key   key name of ORM
      * @param string               $foreign_value value of foreign key
      * @param XooNIpsTableObject[] $objects
+     *
      * @return bool
      */
     public function updateAllObjectsByForeignKey($foreign_key, $foreign_value, $objects)
@@ -1152,7 +1181,8 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
         foreach ($objects as $obj) {
             $obj->set($foreign_key, $foreign_value);
             if (!$this->insert($obj)) {
-                trigger_error('cannot insert ' . get_class($obj) . ': ' . serialize($obj->getArray()));
+                trigger_error('cannot insert '.get_class($obj).': '.serialize($obj->getArray()));
+
                 return false;
             }
             $inserted_primary_ids[] = $obj->get($this->getKeyName());
@@ -1161,27 +1191,29 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria($foreign_key, $foreign_value));
         if (!empty($inserted_primary_ids)) {
-            $criteria->add(new Criteria($this->getKeyName(), '(' . implode(',', $inserted_primary_ids) . ')', 'NOT IN'));
+            $criteria->add(new Criteria($this->getKeyName(), '('.implode(',', $inserted_primary_ids).')', 'NOT IN'));
         }
         if (!$this->deleteAll($criteria)) {
-            trigger_error('cannot delete redundant ' . get_class($obj));
+            trigger_error('cannot delete redundant '.get_class($obj));
+
             return false;
         }
+
         return true;
     }
 
     /**
-     * helper function for sql string creation
+     * helper function for sql string creation.
      *
-     * @access private
      * @param object $obj
      * @param array  $vars array of variables
+     *
      * @return array quoted strings
      */
     public function _makeVarsArray4SQL($obj, $vars)
     {
-        $ret        = array();
-        $keys_array =  $obj->getKeysArray();
+        $ret = array();
+        $keys_array = $obj->getKeysArray();
         foreach ($keys_array as $k) {
             switch ($obj->vars[$k]['data_type']) {
                 case XOBJ_DTYPE_TXTBOX:
@@ -1210,60 +1242,62 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
                     }
             }
         }
+
         return $ret;
     }
 
     /**
-     * make SQL statement
+     * make SQL statement.
      *
-     * @access private
      * @param object            $criteria
      * @param string            $fieldlist fieldlist for distinct select
      * @param bool              $distinct
      * @param XoopsJoinCriteria $joindef   join criteria object
+     *
      * @return string SQL
      */
     public function _makeSQL($criteria = null, $fieldlist = '', $distinct = false, $joindef = null)
     {
-        $distinct  = $distinct ? 'DISTINCT ' : '';
+        $distinct = $distinct ? 'DISTINCT ' : '';
         $fieldlist = ($fieldlist == '') ? '*' : $fieldlist;
-        $sql       = sprintf('SELECT %s%s FROM `%s`', $distinct, $fieldlist, $this->db->prefix($this->__table_name));
+        $sql = sprintf('SELECT %s%s FROM `%s`', $distinct, $fieldlist, $this->db->prefix($this->__table_name));
         if ($joindef) {
             if (strtolower(get_class($joindef)) === 'xoonipsjoincriteria') {
                 $sql .= $joindef->render($this->db, $this->__table_name, false);
             }
         }
         if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
-            $sql .= ' ' . $criteria->renderWhere();
+            $sql .= ' '.$criteria->renderWhere();
         }
         if (isset($criteria) && (is_subclass_of($criteria, 'CriteriaElement') || strtolower(get_class($criteria)) === 'CriteriaElement')) {
             if ($criteria->getGroupby() !== ' GROUP BY ') {
-                $sql .= ' ' . $criteria->getGroupby();
+                $sql .= ' '.$criteria->getGroupby();
             }
             if (is_array($criteria->getSort()) && count($criteria->getSort()) > 0) {
-                $orderStr   = 'ORDER BY ';
+                $orderStr = 'ORDER BY ';
                 $orderDelim = '';
                 foreach ($criteria->getSort() as $sortVar) {
-                    $orderStr .= $orderDelim . $sortVar . ' ' . $criteria->getOrder();
+                    $orderStr .= $orderDelim.$sortVar.' '.$criteria->getOrder();
                     $orderDelim = ',';
                 }
-                $sql .= ' ' . $orderStr;
+                $sql .= ' '.$orderStr;
             } elseif ($criteria->getSort() != '') {
-                $orderStr = 'ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
-                $sql .= ' ' . $orderStr;
+                $orderStr = 'ORDER BY '.$criteria->getSort().' '.$criteria->getOrder();
+                $sql .= ' '.$orderStr;
             }
         }
+
         return $sql;
     }
 
     /**
-     * query sql
+     * query sql.
      *
-     * @access private
      * @param string $sql   sql query string
      * @param bool   $force force operation
      * @param int    $limit
      * @param int    $start
+     *
      * @return resource
      */
     public function &_query($sql, $force = false, $limit = 0, $start = 0)
@@ -1271,7 +1305,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
         if (empty($limit)) {
             $this->__last_sql = $sql;
         } else {
-            $this->__last_sql = $sql . ' LIMIT ' . (int)$start . ', ' . (int)$limit;
+            $this->__last_sql = $sql.' LIMIT '.(int) $start.', '.(int) $limit;
         }
         if ($force) {
             $result = $this->db->queryF($sql, $limit, $start);
@@ -1283,10 +1317,11 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
                 echo '<pre>';
                 print_r(debug_backtrace());
                 echo '</pre>';
-                die('fatal error: on SQL query - ' . $this->db->error());
+                die('fatal error: on SQL query - '.$this->db->error());
             }
             trigger_error($this->db->error());
         }
+
         return $result;
     }
 }

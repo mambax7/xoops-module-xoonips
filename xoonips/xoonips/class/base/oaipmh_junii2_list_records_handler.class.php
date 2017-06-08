@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 /**
- * Class Junii2ListRecordsHandler
+ * Class Junii2ListRecordsHandler.
  */
 class Junii2ListRecordsHandler extends ListRecordsHandler
 {
@@ -84,11 +85,12 @@ class Junii2ListRecordsHandler extends ListRecordsHandler
             'TEMPORAL',
             'NIITEMPORAL',
             'RIGHTS',
-            'TEXTVERSION'
+            'TEXTVERSION',
         );
 
     /**
      * Junii2ListRecordsHandler constructor.
+     *
      * @param $_parser
      * @param $_baseURL
      */
@@ -125,17 +127,17 @@ class Junii2ListRecordsHandler extends ListRecordsHandler
             parent::endElementHandler($parser, $name);
         } elseif ($this->getElementName(end($this->tagstack)) === 'DATE') {
             $this->_creation_date = $this->_cdata_buf;
-            $this->search_text[]  = $this->_cdata_buf;
+            $this->search_text[] = $this->_cdata_buf;
             $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_DATE);
             array_pop($this->tagstack);
         } elseif ($this->getElementName(end($this->tagstack)) === 'DATEOFISSUED') {
-            $this->_date         = $this->_cdata_buf;
+            $this->_date = $this->_cdata_buf;
             $this->search_text[] = $this->_cdata_buf;
             $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_CREATION_DATE);
             array_pop($this->tagstack);
         } elseif ($this->getElementName(end($this->tagstack)) === 'URI') {
             $this->_resource_url[] = $this->_cdata_buf;
-            $this->search_text[]   = $this->_cdata_buf;
+            $this->search_text[] = $this->_cdata_buf;
             $this->addMetadataField(end($this->tagstack), $this->_cdata_buf, XOONIPS_METADATA_CATEGORY_RESOURCE_LINK);
             array_pop($this->tagstack);
         } else {

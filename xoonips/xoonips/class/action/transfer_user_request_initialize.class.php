@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,11 +25,11 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/transfer.class.php';
-require_once __DIR__ . '/../../include/transfer.inc.php';
+require_once __DIR__.'/transfer.class.php';
+require_once __DIR__.'/../../include/transfer.inc.php';
 
 /**
- * Class XooNIpsActionTransferUserRequestInitialize
+ * Class XooNIpsActionTransferUserRequestInitialize.
  */
 class XooNIpsActionTransferUserRequestInitialize extends XooNIpsActionTransfer
 {
@@ -40,9 +41,6 @@ class XooNIpsActionTransferUserRequestInitialize extends XooNIpsActionTransfer
         parent::__construct();
     }
 
-    /**
-     * @return null
-     */
     public function _get_logic_name()
     {
         return null;
@@ -79,7 +77,7 @@ class XooNIpsActionTransferUserRequestInitialize extends XooNIpsActionTransfer
 
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
         if ($item_typeHandler->getCount() <= 1) {
-            redirect_header(XOOPS_URL . '/modules/xoonips/', 3, _MD_XOONIPS_TRANSFER_USER_REQUEST_ERROR_NO_ITEMTYPE);
+            redirect_header(XOOPS_URL.'/modules/xoonips/', 3, _MD_XOONIPS_TRANSFER_USER_REQUEST_ERROR_NO_ITEMTYPE);
         }
 
         $this->_view_params['to_uid']
@@ -95,7 +93,7 @@ class XooNIpsActionTransferUserRequestInitialize extends XooNIpsActionTransfer
             = xoonips_transfer_get_users_for_dropdown($xoopsUser->getVar('uid'));
 
         if (empty($this->_view_params['to_user_options'])) {
-            redirect_header(XOOPS_URL . '/modules/xoonips/', 3, _MD_XOONIPS_TRANSFER_USER_REQUEST_ERROR_NO_TRANSFEREE_USER);
+            redirect_header(XOOPS_URL.'/modules/xoonips/', 3, _MD_XOONIPS_TRANSFER_USER_REQUEST_ERROR_NO_TRANSFEREE_USER);
         }
 
         $this->_view_params['transfer_enable']

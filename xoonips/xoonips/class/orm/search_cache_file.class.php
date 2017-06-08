@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,10 +27,10 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * class of XooNIps Search Cache File
+ * class of XooNIps Search Cache File.
+ *
  * @li getVar( 'search_cache_id' ) :search cache ID
  * @li getVar( 'file_id' ) : file id
- *
  */
 class XooNIpsOrmSearchCacheFile extends XooNIpsTableObject
 {
@@ -45,14 +46,13 @@ class XooNIpsOrmSearchCacheFile extends XooNIpsTableObject
 }
 
 /**
- *
- * XooNIps search cache item Handler class
- *
+ * XooNIps search cache item Handler class.
  */
 class XooNIpsOrmSearchCacheFileHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmSearchCacheFileHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,7 +27,6 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- *
  * @brief Data object of system preference
  *
  * @li    getVar('name') : key
@@ -53,6 +53,7 @@ class XooNIpsOrmConfigHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmConfigHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -62,54 +63,58 @@ class XooNIpsOrmConfigHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * get a configuration value
+     * get a configuration value.
      *
-     * @access public
      * @param string $key configuration key
+     *
      * @return string configuration value
      */
     public function getValue($key)
     {
-        $config_obj =  $this->getConfig($key);
+        $config_obj = $this->getConfig($key);
         if (!is_object($config_obj)) {
             return null;
         }
+
         return $config_obj->get('value');
     }
 
     /**
-     * set a configuration value
+     * set a configuration value.
      *
-     * @access public
      * @param string $key   configuration key
      * @param string $val   configuration value
      * @param bool   $force force update
+     *
      * @return bool FALSE if failed
      */
     public function setValue($key, $val, $force = false)
     {
-        $config_obj =  $this->getConfig($key);
+        $config_obj = $this->getConfig($key);
         if (!is_object($config_obj)) {
             return false;
         }
         $config_obj->set('value', $val);
+
         return $this->insert($config_obj, $force);
     }
 
     /**
-     * get a configuration value object
+     * get a configuration value object.
      *
-     * @access public
      * @param string $key configuration key
+     *
      * @return bool|CriteriaElement
      */
     public function getConfig($key)
     {
-        $config_objs =&  $this->getObjects(new Criteria('name', addslashes($key)));
+        $config_objs = &$this->getObjects(new Criteria('name', addslashes($key)));
         if (!$config_objs || count($config_objs) != 1) {
             $result = false;
+
             return $result;
         }
+
         return $config_objs[0];
     }
 }

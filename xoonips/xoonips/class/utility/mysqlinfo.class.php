@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,46 +27,43 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * The MySQL Information class
+ * The MySQL Information class.
  *
- * @package   xoonips_utility
  * @copyright copyright &copy; 2005-2008 RIKEN Japan
  */
 class XooNIpsUtilityMysqlinfo extends XooNIpsUtility
 {
-
     /**
-     * database instance
+     * database instance.
+     *
      * @var object
-     * @access private
      */
     public $_db;
 
     /**
-     * mysql version
+     * mysql version.
+     *
      * @var array
-     * @access private
      */
     public $_version = array();
 
     /**
-     * mysql acceptable charsets
+     * mysql acceptable charsets.
+     *
      * @var array
-     * @access private
      */
     public $_charsets = array();
 
     /**
-     * constructor
+     * constructor.
      *
      * this class is singleton
-     * @access public
      */
     public function __construct()
     {
         $this->setSingleton();
 
-        $this->_db            = $GLOBALS['xoopsDB'];
+        $this->_db = $GLOBALS['xoopsDB'];
         $support_http_charset = array(
             'EUC-JP',
             'Shift_JIS',
@@ -79,37 +77,37 @@ class XooNIpsUtilityMysqlinfo extends XooNIpsUtility
         list($key, $value) = $this->_db->fetchRow($res);
         $this->_version['full'] = $value;
         if (!preg_match('/^(\\d+)\\.(\\d+)\\.(\\d+)(.*)$/', $this->_version['full'], $regs)) {
-            die('Could not get version number : ' . $this->_version['full']);
+            die('Could not get version number : '.$this->_version['full']);
         }
-        $this->_version['major']      = (int)$regs[1];
-        $this->_version['minor']      = (int)$regs[2];
-        $this->_version['micro']      = (int)$regs[3];
+        $this->_version['major'] = (int) $regs[1];
+        $this->_version['minor'] = (int) $regs[2];
+        $this->_version['micro'] = (int) $regs[3];
         $this->_version['additional'] = $regs[4];
 
         // get acceptable charsets
-        $this->_charsets['client']   = array(
-            'EUC-JP'     => array(
+        $this->_charsets['client'] = array(
+            'EUC-JP' => array(
                 'ujis',
             ),
-            'Shift_JIS'  => array(
+            'Shift_JIS' => array(
                 'sjis',
             ),
             'ISO-8859-1' => array(
                 'latin1',
             ),
-            'UTF-8'      => array(),
+            'UTF-8' => array(),
         );
         $this->_charsets['database'] = array(
-            'EUC-JP'     => array(
+            'EUC-JP' => array(
                 'ujis',
             ),
-            'Shift_JIS'  => array(
+            'Shift_JIS' => array(
                 'sjis',
             ),
             'ISO-8859-1' => array(
                 'latin1',
             ),
-            'UTF-8'      => array(),
+            'UTF-8' => array(),
         );
         // -- set version depending charsets
         if ($this->isVersion41orHigher()) {
@@ -118,10 +116,10 @@ class XooNIpsUtilityMysqlinfo extends XooNIpsUtility
                 $this->_charsets['database'][$http_charset][] = 'utf8';
             }
             $this->_charsets['database']['EUC-JP'][] = 'sjis';
-            $this->_charsets['client']['UTF-8'][]    = 'utf8';
+            $this->_charsets['client']['UTF-8'][] = 'utf8';
             if ($this->isMSJapaneseSupport()) {
                 // for 5.0.3 or higher
-                $japanese_http_charsets  = array(
+                $japanese_http_charsets = array(
                     'EUC-JP',
                     'Shift_JIS',
                 );
@@ -134,16 +132,15 @@ class XooNIpsUtilityMysqlinfo extends XooNIpsUtility
                         $this->_charsets['database'][$http_charset][] = $mysql_charset;
                     }
                 }
-                $this->_charsets['client']['EUC-JP'][]    = 'eucjpms';
+                $this->_charsets['client']['EUC-JP'][] = 'eucjpms';
                 $this->_charsets['client']['Shift_JIS'][] = 'cp932';
             }
         }
     }
 
     /**
-     * get the mysql version
+     * get the mysql version.
      *
-     * @access public
      * @param string $name what kind of version (full, major, minor, micro, additional)
      *
      * @return mixed version number of string
@@ -154,26 +151,26 @@ class XooNIpsUtilityMysqlinfo extends XooNIpsUtility
     }
 
     /**
-     * get the mysql variable
+     * get the mysql variable.
      *
-     * @access public
      * @param string name variable name
+     *
      * @return string variable
      */
     public function getVariable($name)
     {
-        $sql = 'SHOW VARIABLES LIKE \'' . $name . '\'';
+        $sql = 'SHOW VARIABLES LIKE \''.$name.'\'';
         $res = $this->_db->queryF($sql);
         while (list($key, $value) = $this->_db->fetchRow($res)) {
             $variable[$key] = $value;
         }
+
         return $variable[$name];
     }
 
     /**
-     * check the mysql version 4.1 or higher
+     * check the mysql version 4.1 or higher.
      *
-     * @access public
      * @return bool TRUE if 4.1 or higher
      */
     public function isVersion41orHigher()
@@ -181,13 +178,13 @@ class XooNIpsUtilityMysqlinfo extends XooNIpsUtility
         if ($this->_version['major'] >= 5 || ($this->_version['major'] == 4 && $this->_version['minor'] >= 1)) {
             return true;
         }
+
         return false;
     }
 
     /**
-     * check the Microsoft extended Japanese suportments
+     * check the Microsoft extended Japanese suportments.
      *
-     * @access public
      * @return bool FALSE if unsupported
      */
     public function isMSJapaneseSupport()
@@ -198,19 +195,22 @@ class XooNIpsUtilityMysqlinfo extends XooNIpsUtility
         ) {
             return true;
         }
+
         return false;
     }
 
     /**
-     * get acceptable charsets
+     * get acceptable charsets.
      *
      * @param bool   is_database TRUE if check for database charset
      * @param string http_charset http charset
+     *
      * @return array mysql charset array
      */
     public function getAcceptableCharsets($is_database, $http_charset)
     {
         $name = $is_database ? 'database' : 'client';
+
         return $this->_charsets[$name][$http_charset];
     }
 }

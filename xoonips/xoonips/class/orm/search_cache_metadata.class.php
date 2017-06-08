@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -36,11 +37,11 @@ ALTER TABLE `x_xoonips_search_cache_metadata`
 */
 
 /**
- * class of XooNIps Search Cache Metadata
+ * class of XooNIps Search Cache Metadata.
+ *
  * @li getVar( 'search_cache_metadata_id' ) : primary key
  * @li getVar( 'search_cache_id' ) :search cache ID
  * @li getVar( 'identifier' ) : metadata identifier
- *
  */
 class XooNIpsOrmSearchCacheMetadata extends XooNIpsTableObject
 {
@@ -57,14 +58,13 @@ class XooNIpsOrmSearchCacheMetadata extends XooNIpsTableObject
 }
 
 /**
- *
- * XooNIps search cache item Handler class
- *
+ * XooNIps search cache item Handler class.
  */
 class XooNIpsOrmSearchCacheMetadataHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmSearchCacheMetadataHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

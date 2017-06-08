@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,86 +27,86 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_POLICY_ITEM_TYPE_TITLE;
+$title = _AM_XOONIPS_POLICY_ITEM_TYPE_TITLE;
 $description = _AM_XOONIPS_POLICY_ITEM_TYPE_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_ITEM_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=item',
+        'url' => $xoonips_admin['myfile_url'].'?page=item',
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
-$ticket_area  = 'xoonips_admin_policy_item_type';
+require_once __DIR__.'/../../class/base/gtickets.php';
+$ticket_area = 'xoonips_admin_policy_item_type';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // >> item type order
-$moduleHandler  = xoops_getHandler('module');
-$itHandler      = xoonips_getOrmHandler('xoonips', 'item_type');
-$it_objs        =  $itHandler->getObjectsSortByWeight();
+$moduleHandler = xoops_getHandler('module');
+$itHandler = xoonips_getOrmHandler('xoonips', 'item_type');
+$it_objs = $itHandler->getObjectsSortByWeight();
 $itemtype_order = array();
-$editicon       = '<img src="../images/icon_modify.png" alt="' . _AM_XOONIPS_LABEL_PREFERENCES . '" title="' . _AM_XOONIPS_LABEL_PREFERENCES . '"/>';
+$editicon = '<img src="../images/icon_modify.png" alt="'._AM_XOONIPS_LABEL_PREFERENCES.'" title="'._AM_XOONIPS_LABEL_PREFERENCES.'"/>';
 foreach ($it_objs as $it_obj) {
     // get module id
     $mid = $it_obj->get('mid');
     // get display name
     $display_name_s = $it_obj->getVar('display_name', 's');
     $display_name_e = $it_obj->getVar('display_name', 'e');
-    $item_type_id   = $it_obj->getVar('item_type_id', 'e');
+    $item_type_id = $it_obj->getVar('item_type_id', 'e');
     // get module information
     $xoonips_module = $moduleHandler->getByDirname('xoonips');
-    $xoonips_mid    = $xoonips_module->getVar('mid');
-    $module         = $moduleHandler->get($mid);
-    $modname        = $module->getVar('name', 's');
+    $xoonips_mid = $xoonips_module->getVar('mid');
+    $module = $moduleHandler->get($mid);
+    $modname = $module->getVar('name', 's');
     // get admin page link
     $hasadmin = $module->getVar('hasadmin', 'n');
     if ($hasadmin) {
         $adminindex = $module->getInfo('adminindex');
-        $dirname    = $module->getVar('dirname', 'e');
-        $adminlink  = '<a href="' . XOOPS_URL . '/modules/' . $dirname . '/' . $adminindex . '">' . $editicon . '</a>';
+        $dirname = $module->getVar('dirname', 'e');
+        $adminlink = '<a href="'.XOOPS_URL.'/modules/'.$dirname.'/'.$adminindex.'">'.$editicon.'</a>';
     } else {
         $adminlink = '&nbsp;';
     }
     // get module order
-    $weight           = $module->getVar('weight', 'n');
+    $weight = $module->getVar('weight', 'n');
     $itemtype_order[] = array(
-        'mid'            => $mid,
-        'item_type_id'   => $item_type_id,
+        'mid' => $mid,
+        'item_type_id' => $item_type_id,
         'display_name_s' => $display_name_s,
         'display_name_e' => $display_name_e,
-        'modname'        => $modname,
-        'weight'         => $weight,
-        'admin_link'     => $adminlink,
+        'modname' => $modname,
+        'weight' => $weight,
+        'admin_link' => $adminlink,
     );
     unset($module);
 }
 $num = 0;
 foreach ($itemtype_order as $key => $itemtype) {
     $itemtype_order[$key]['evenodd'] = ($num % 2) ? 'even' : 'odd';
-    $num++;
+    ++$num;
 }
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('policy_item_type.tmpl.tpl');

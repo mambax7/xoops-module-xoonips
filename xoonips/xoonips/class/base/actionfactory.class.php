@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 /**
- * Class XooNIpsActionFactory
+ * Class XooNIpsActionFactory.
  */
 class XooNIpsActionFactory
 {
@@ -37,7 +38,7 @@ class XooNIpsActionFactory
     }
 
     /**
-     * return XooNIpsActionFactory instance
+     * return XooNIpsActionFactory instance.
      *
      * @return XooNIpsActionFactory
      */
@@ -45,42 +46,44 @@ class XooNIpsActionFactory
     {
         static $singleton = null;
         if (!isset($singleton)) {
-            $singleton = new XooNIpsActionFactory();
+            $singleton = new self();
         }
+
         return $singleton;
     }
 
     /**
-     * return XooNIpsAction corresponding to $logic
+     * return XooNIpsAction corresponding to $logic.
      *
      * @param string $name action name
      * @retval XooNIpsAction corresponding to $name
      * @retval false unknown action
+     *
      * @return bool|null
      */
     public function create($name)
     {
         static $falseVar = false;
         $action = null;
-        //
+
         $name = trim($name);
         if (false !== strstr($name, '..')) {
             return $falseVar;
         }
-        $include_file = XOOPS_ROOT_PATH . '/modules/xoonips/class/action/' . strtolower($name) . '.class.php';
+        $include_file = XOOPS_ROOT_PATH.'/modules/xoonips/class/action/'.strtolower($name).'.class.php';
         if (file_exists($include_file)) {
             require_once $include_file;
         } else {
             return $falseVar;
         }
-        //
-        $class = 'XooNIpsAction' . str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
+
+        $class = 'XooNIpsAction'.str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
         if (class_exists($class)) {
             $action = new $class();
         }
-        //
+
         if (!isset($action)) {
-            trigger_error('Handler does not exist. Name: ' . $name, E_USER_ERROR);
+            trigger_error('Handler does not exist. Name: '.$name, E_USER_ERROR);
         }
         // return result
         if (isset($action)) {

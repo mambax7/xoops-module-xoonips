@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -48,12 +49,12 @@ class XooNIpsOrmItemShow extends XooNIpsTableObject
 
 /**
  * @brief Handler object of XooNIps Item Status
- *
  */
 class XooNIpsOrmItemShowHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmItemShowHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -63,25 +64,26 @@ class XooNIpsOrmItemShowHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * count user defined publications
+     * count user defined publications.
      *
-     * @access public
      * @param int $uid user id
+     *
      * @return array publication count by item type id
      */
     public function getCountPublications($uid)
     {
-        $join     = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'ib');
+        $join = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'ib');
         $criteria = new Criteria('uid', $uid, '=', $this->db->prefix($this->__table_name));
         $criteria->setGroupBy('ib.item_type_id');
-        $res  =& $this->open($criteria, 'item_type_id, COUNT(DISTINCT ib.item_id)', false, $join);
+        $res = &$this->open($criteria, 'item_type_id, COUNT(DISTINCT ib.item_id)', false, $join);
         $nums = array();
-        while ($obj =  $this->getNext($res)) {
-            $item_type_id        = $obj->getExtraVar('item_type_id');
-            $count               = $obj->getExtraVar('COUNT(DISTINCT ib.item_id)');
+        while ($obj = $this->getNext($res)) {
+            $item_type_id = $obj->getExtraVar('item_type_id');
+            $count = $obj->getExtraVar('COUNT(DISTINCT ib.item_id)');
             $nums[$item_type_id] = $count;
         }
         $this->close($res);
+
         return $nums;
     }
 }

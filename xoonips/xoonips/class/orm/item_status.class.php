@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -52,12 +53,12 @@ class XooNIpsOrmItemStatus extends XooNIpsTableObject
 
 /**
  * @brief Handler object of XooNIps Item Status
- *
  */
 class XooNIpsOrmItemStatusHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmItemStatusHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -69,22 +70,21 @@ class XooNIpsOrmItemStatusHandler extends XooNIpsTableObjectHandler
     /**
      * update item status table.
      *
-     * @access public
      * @param int $item_id Item ID to update item status
-     * @return bool
      *
+     * @return bool
      */
     public function updateItemStatus($item_id)
     {
-        $indexHandler       = xoonips_getOrmHandler('xoonips', 'index');
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
         $item_statusHandler = xoonips_getOrmHandler('xoonips', 'item_status');
-        $criteria1          = new CriteriaCompo();
+        $criteria1 = new CriteriaCompo();
         $criteria1->add(new Criteria('certify_state', CERTIFIED));
         $criteria1->add(new Criteria('open_level', OL_PUBLIC));
-        $criteria1->add(new Criteria('item_id', (int)$item_id, '=', 'txil'));
+        $criteria1->add(new Criteria('item_id', (int) $item_id, '=', 'txil'));
         $join = new XooNIpsJoinCriteria('xoonips_index_item_link', 'index_id', 'index_id', 'LEFT', 'txil');
         $join->cascade(new XooNIpsJoinCriteria('xoonips_item_status', 'item_id', 'item_id', 'LEFT', 'tis'), 'txil', true);
-        $results =  $indexHandler->getObjects($criteria1, false, 'txil.item_id, tis.is_deleted', true, $join);
+        $results = $indexHandler->getObjects($criteria1, false, 'txil.item_id, tis.is_deleted', true, $join);
         foreach ($results as $row) {
             if (null === $row->getExtraVar('is_deleted')) {
                 $item_status = $item_statusHandler->create();
@@ -106,12 +106,12 @@ class XooNIpsOrmItemStatusHandler extends XooNIpsTableObjectHandler
             }
         }
 
-        $item_statusHandler     = xoonips_getOrmHandler('xoonips', 'item_status');
+        $item_statusHandler = xoonips_getOrmHandler('xoonips', 'item_status');
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $criteria2              = new CriteriaCompo();
+        $criteria2 = new CriteriaCompo();
         $criteria2->add(new Criteria('is_deleted', 0));
-        $criteria2->add(new Criteria('item_id', (int)$item_id));
-        $rows =  $item_statusHandler->getObjects($criteria2);
+        $criteria2->add(new Criteria('item_id', (int) $item_id));
+        $rows = $item_statusHandler->getObjects($criteria2);
         if (!$rows) {
             return false;
         }
@@ -120,8 +120,8 @@ class XooNIpsOrmItemStatusHandler extends XooNIpsTableObjectHandler
             $criteria3->add(new Criteria('certify_state', CERTIFIED));
             $criteria3->add(new Criteria('open_level', OL_PUBLIC));
             $criteria3->add(new Criteria('item_id', $row->get('item_id')));
-            $join    = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'LEFT', 'tx');
-            $results =  $index_item_linkHandler->getObjects($criteria3, false, 'count(*)', true, $join);
+            $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'LEFT', 'tx');
+            $results = $index_item_linkHandler->getObjects($criteria3, false, 'count(*)', true, $join);
             if (!$results) {
                 return false;
             }
@@ -131,6 +131,7 @@ class XooNIpsOrmItemStatusHandler extends XooNIpsTableObjectHandler
                 $item_statusHandler->insert($row);
             }
         }
+
         return true;
     }
 }

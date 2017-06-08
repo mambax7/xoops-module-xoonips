@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/abstract_ranking.class.php';
+require_once __DIR__.'/abstract_ranking.class.php';
 
 /**
  * @brief data object of ranking new item
@@ -48,12 +49,12 @@ class XooNIpsOrmRankingNewItem extends XooNIpsTableObject
 
 /**
  * @brief handler object of ranking new item
- *
  */
 class XooNIpsOrmRankingNewItemHandler extends XooNIpsOrmAbstractRankingHandler
 {
     /**
      * XooNIpsOrmRankingNewItemHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -62,16 +63,16 @@ class XooNIpsOrmRankingNewItemHandler extends XooNIpsOrmAbstractRankingHandler
         $this->__initHandler('XooNIpsOrmRankingNewItem', 'xoonips_ranking_new_item', 'item_id', false);
         $this->_set_columns(array(
                                 'item_id',
-                                'timestamp'
+                                'timestamp',
                             ));
     }
 
     /**
-     * insert/upldate/replace object
+     * insert/upldate/replace object.
      *
-     * @access public
      * @param XoopsObject $obj
      * @param bool        $force force operation
+     *
      * @return bool false if failed
      */
     public function insert(XoopsObject $obj, $force = false)
@@ -81,33 +82,36 @@ class XooNIpsOrmRankingNewItemHandler extends XooNIpsOrmAbstractRankingHandler
             // ignore if item id is zero
             return true;
         }
+
         return parent::insert($obj, $force);
     }
 
     /**
-     * delete old entries for updating/rebuilding rankings
+     * delete old entries for updating/rebuilding rankings.
      *
      * @param int $num_rows number of new entries
+     *
      * @return bool FALSE if failed
      */
     public function trim($num_rows)
     {
-        $field    = 'timestamp';
+        $field = 'timestamp';
         $criteria = new CriteriaElement();
         $criteria->setSort('timestamp');
         $criteria->setOrder('DESC');
         $criteria->setStart($num_rows);
         $criteria->setLimit(1);
-        $objs =&  $this->getObjects($criteria, false, $field);
+        $objs = &$this->getObjects($criteria, false, $field);
         if (empty($objs)) {
             return true;
         }
         $timestamp = $objs[0]->get('timestamp');
-        $criteria  = new Criteria($field, $timestamp, '<');
+        $criteria = new Criteria($field, $timestamp, '<');
         // force deletion
         if (!$this->deleteAll($criteria, true)) {
             return false;
         }
+
         return true;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 /**
- * constant strings
+ * constant strings.
  */
 
 // _MD_<MODULENAME>_<STRINGNAME>
@@ -128,7 +129,7 @@ define('_MD_XOONIPS_ITEM_TO_LABEL', 'To');
 define('_MD_XOONIPS_ITEM_TITLE_REQUIRED', "'タイトル' を入力して下さい．");
 define('_MD_XOONIPS_ITEM_UPLOAD_PREVIEW', "先にUploadボタンを押して、プレビューファイル '%s' をアップロードしてください．");
 
-define('_MD_XOONIPS_ITEM_REQUIRED_MARK', "<span style=\"color: red;\">*</span>");
+define('_MD_XOONIPS_ITEM_REQUIRED_MARK', '<span style="color: red;">*</span>');
 define('_MD_XOONIPS_ITEM_DOWNLOAD_CONFIRMATION', 'このファイルのライセンス文に合意しますか？');
 
 define('_MD_XOONIPS_ADD_TO_PUBLIC_EXPLANATION', '公開領域へ追加<br>');
@@ -272,32 +273,32 @@ define('_MD_XOONIPS_INDEX_NUMBER_OF_GROUP_INDEX_LABEL', 'グループインデ�
 define('_MD_XOONIPS_INDEX_TOO_MANY_INDEXES', '登録可能なインデックス数を超えたため、インデックスを作成できません');
 define('_MD_XOONIPS_INDEX_NO_INDEX', 'サブインデックスキーワードはありません');
 
-define('_MD_XOONIPS_INDEX_BUTTON_REGISTER', '登録');//
-define('_MD_XOONIPS_INDEX_TITLE_EDIT', 'インデックスキーワード編集');//
-define('_MD_XOONIPS_INDEX_TITLE_ADD', '追加');//
-define('_MD_XOONIPS_INDEX_TITLE_NEW_INDEX_KEYWORD', 'New Index Keyword');//
-define('_MD_XOONIPS_INDEX_TITLE_MODIFY', '編集');//
-define('_MD_XOONIPS_INDEX_INDEX_KEYWORD', 'インデックスキーワード');//
-define('_MD_XOONIPS_INDEX_RENAME_TO', 'Rename to');//
-define('_MD_XOONIPS_INDEX_LABEL_UPDOWN', '上へ/下へ');//
-define('_MD_XOONIPS_INDEX_LABEL_UP', '上へ');//
-define('_MD_XOONIPS_INDEX_LABEL_DOWN', '下へ');//
-define('_MD_XOONIPS_INDEX_BUTTON_RENAME', '改名');//
-define('_MD_XOONIPS_INDEX_BUTTON_DELETE', '削除');//
-define('_MD_XOONIPS_INDEX_BUTTON_MOVETO', '次へ移動 : ');//
-define('_MD_XOONIPS_INDEX_LABEL_WITH_SELECTED', 'With selected:');//
+define('_MD_XOONIPS_INDEX_BUTTON_REGISTER', '登録');
+define('_MD_XOONIPS_INDEX_TITLE_EDIT', 'インデックスキーワード編集');
+define('_MD_XOONIPS_INDEX_TITLE_ADD', '追加');
+define('_MD_XOONIPS_INDEX_TITLE_NEW_INDEX_KEYWORD', 'New Index Keyword');
+define('_MD_XOONIPS_INDEX_TITLE_MODIFY', '編集');
+define('_MD_XOONIPS_INDEX_INDEX_KEYWORD', 'インデックスキーワード');
+define('_MD_XOONIPS_INDEX_RENAME_TO', 'Rename to');
+define('_MD_XOONIPS_INDEX_LABEL_UPDOWN', '上へ/下へ');
+define('_MD_XOONIPS_INDEX_LABEL_UP', '上へ');
+define('_MD_XOONIPS_INDEX_LABEL_DOWN', '下へ');
+define('_MD_XOONIPS_INDEX_BUTTON_RENAME', '改名');
+define('_MD_XOONIPS_INDEX_BUTTON_DELETE', '削除');
+define('_MD_XOONIPS_INDEX_BUTTON_MOVETO', '次へ移動 : ');
+define('_MD_XOONIPS_INDEX_LABEL_WITH_SELECTED', 'With selected:');
 
-define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_PUBLIC_INDEX_KEYWORD', '公開ツリー編集');//
-define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_GROUP_INDEX_KEYWORD', 'グループツリー編集');//
-define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_PRIVATE_INDEX_KEYWORD', 'プライベートツリー編集');//
-define('_MD_XOONIPS_INDEX_NAME_CANNOT_BE_EMPTY', 'インデックスキーワードが空欄です');//
-define('_MD_XOONIPS_INDEX_DESTINATION_HAS_TOO_MANY_INDEXES', 'エラー: 宛先のインデックスはインデックス数が多すぎます');//
+define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_PUBLIC_INDEX_KEYWORD', '公開ツリー編集');
+define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_GROUP_INDEX_KEYWORD', 'グループツリー編集');
+define('_MD_XOONIPS_INDEX_PANKUZU_EDIT_PRIVATE_INDEX_KEYWORD', 'プライベートツリー編集');
+define('_MD_XOONIPS_INDEX_NAME_CANNOT_BE_EMPTY', 'インデックスキーワードが空欄です');
+define('_MD_XOONIPS_INDEX_DESTINATION_HAS_TOO_MANY_INDEXES', 'エラー: 宛先のインデックスはインデックス数が多すぎます');
 
-define('_MD_XOONIPS_INDEX_RENAME_MESSAGE', 'インデックスキーワードの名前が %s から %s に変更されました．これに伴い次のアイテムにも影響がありました :');//
+define('_MD_XOONIPS_INDEX_RENAME_MESSAGE', 'インデックスキーワードの名前が %s から %s に変更されました．これに伴い次のアイテムにも影響がありました :');
 define('_MD_XOONIPS_INDEX_RENAME_MAIL_SUBJECT', 'インデックスキーワードの名前が変更されました．');
-define('_MD_XOONIPS_INDEX_DELETE_MESSAGE', 'インデックスキーワード %s が削除されました．これに伴い次のアイテムにも影響がありました :');//
+define('_MD_XOONIPS_INDEX_DELETE_MESSAGE', 'インデックスキーワード %s が削除されました．これに伴い次のアイテムにも影響がありました :');
 define('_MD_XOONIPS_INDEX_DELETE_MAIL_SUBJECT', 'インデックスキーワードが削除されました');
-define('_MD_XOONIPS_INDEX_MOVETO_MESSAGE', 'インデックスキーワード %s が %s へ移動されました．これに伴い次のアイテムも影響がありました :');//
+define('_MD_XOONIPS_INDEX_MOVETO_MESSAGE', 'インデックスキーワード %s が %s へ移動されました．これに伴い次のアイテムも影響がありました :');
 define('_MD_XOONIPS_INDEX_MOVETO_MAIL_SUBJECT', 'インデックスキーワードは移動されました．');
 define('_MD_XOONIPS_INDEX_TITLE_CONFLICT', "インデックス名 '%s' が競合しています．");
 define('_MD_XOONIPS_INDEX_TITLE_EXCEEDS', 'インデックス名が長すぎます');
@@ -341,13 +342,13 @@ define('_MD_XOONIPS_ACCOUNT_NOTREGISTERED2', '');
 define('_MD_XOONIPS_ACCOUNT_NOTIFICATIONS', 'イベント通知機能');
 
 // register.php errormessage
-define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_ADDRESS', '住所' . 'が長すぎます．全角127文字以下にして下さい．');
-define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_DIVISION', '部門/研究室' . 'が長すぎます．全角127文字以下にして下さい．');
-define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_TEL', '電話番号' . 'が長すぎます．半角32文字以下にして下さい．');
-define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_COMPANY_NAME', 'FAX番号' . 'が長すぎます．半角32文字以下にして下さい．');
-define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_ZIPCODE', '郵便番号' . 'が長すぎます．全角127文字以下にして下さい．');
-define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_COUNTRY', '機関名/大学名/会社名' . 'が長すぎます．全角127文字以下にして下さい．');
-define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_FAX', '国名' . 'が長すぎます．半角32文字以下にしてください．');
+define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_ADDRESS', '住所'.'が長すぎます．全角127文字以下にして下さい．');
+define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_DIVISION', '部門/研究室'.'が長すぎます．全角127文字以下にして下さい．');
+define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_TEL', '電話番号'.'が長すぎます．半角32文字以下にして下さい．');
+define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_COMPANY_NAME', 'FAX番号'.'が長すぎます．半角32文字以下にして下さい．');
+define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_ZIPCODE', '郵便番号'.'が長すぎます．全角127文字以下にして下さい．');
+define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_COUNTRY', '機関名/大学名/会社名'.'が長すぎます．全角127文字以下にして下さい．');
+define('_MD_XOONIPS_ACCOUNT_REG_TOO_LONG_FAX', '国名'.'が長すぎます．半角32文字以下にしてください．');
 define('_MD_XOONIPS_ACCOUNT_MUST_BE_FILLED_IN', "'%s' を入力してください．");
 
 define('_MD_XOONIPS_ACCOUNT_INVITE_USER', 'ユーザ紹介');
@@ -723,9 +724,9 @@ define('_MD_XOONIPS_LOCK_TYPE_STRING_CERTIFY_REQUEST', '公開要求中');
 define('_MD_XOONIPS_LOCK_TYPE_STRING_TRANSFER_REQUEST', '移譲要求中');
 define('_MD_XOONIPS_LOCK_TYPE_STRING_PUBLICATION_GROUP_INDEX', '公開要求中');
 define('_MD_XOONIPS_IMPORT_CONFLICT_ITEMS_LOCKED_CERTIFY_REQUEST',
-       '同じインデックスに以下の衝突アイテムがあります(' . _MD_XOONIPS_LOCK_TYPE_STRING_CERTIFY_REQUEST . 'のため、上書きしません)');
+       '同じインデックスに以下の衝突アイテムがあります('._MD_XOONIPS_LOCK_TYPE_STRING_CERTIFY_REQUEST.'のため、上書きしません)');
 define('_MD_XOONIPS_IMPORT_CONFLICT_ITEMS_LOCKED_TRANSFER_REQUEST',
-       '同じインデックスに以下の衝突アイテムがあります(' . _MD_XOONIPS_LOCK_TYPE_STRING_TRANSFER_REQUEST . 'のため、上書きしません)');
+       '同じインデックスに以下の衝突アイテムがあります('._MD_XOONIPS_LOCK_TYPE_STRING_TRANSFER_REQUEST.'のため、上書きしません)');
 
 define('_MD_XOONIPS_ITEM_TRANSFER_NOTIFYSBJ', 'アイテムが移譲されました');
 define('_MD_XOONIPS_ACCOUNT_CERTIFY_REQUEST_NOTIFYSBJ', '新規アカウントが登録されました');

@@ -24,12 +24,12 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require __DIR__ . '/include/common.inc.php';
+require __DIR__.'/include/common.inc.php';
 
 // If not a user, redirect
 $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
 if ($uid == UID_GUEST) {
-    redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
+    redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
 }
 
 $textutil = xoonips_getUtility('text');
@@ -39,8 +39,8 @@ $name = $formdata->getValue('get', 'name', 's', true);
 
 // name -> get names to display
 $ftHandler = xoonips_getOrmHandler('xoonips', 'file_type');
-$criteria  = new Criteria('name', addslashes($name));
-$ft_objs   =  $ftHandler->getObjects($criteria);
+$criteria = new Criteria('name', addslashes($name));
+$ft_objs = $ftHandler->getObjects($criteria);
 if (count($ft_objs) != 1) {
     die('invalid name');
 }
@@ -49,15 +49,15 @@ unset($ft_objs);
 
 //var_dump( $_POST );
 //var_dump( $_FILES );
-$text         = false;
-$file         = $formdata->getFile('file', false);
+$text = false;
+$file = $formdata->getFile('file', false);
 $errorMessage = false;
 if (null !== $file) {
     // file was uploaded
     $originalFileName = $file['name'];
-    $mimeType         = $file['type'];
-    $fileName         = $file['tmp_name'];
-    $error            = (int)$file['error'];
+    $mimeType = $file['type'];
+    $fileName = $file['tmp_name'];
+    $error = (int) $file['error'];
     if ($error != 0) {
         if ($error == UPLOAD_ERR_INI_SIZE) {
             $errorMessage = _MD_XOONIPS_ITEM_UPLOAD_FILE_TOO_LARGE;
@@ -68,13 +68,13 @@ if (null !== $file) {
     } else {
         // check mime type
         if (strstr($mimeType, 'text/plain') === false) {
-            $errorMessage      = 'unsupported file type : ' . $mimeType;
+            $errorMessage = 'unsupported file type : '.$mimeType;
             $getTextFromOpener = true;
         } else {
             $text = file_get_contents($fileName);
             // convert encoding to _CHARSET
-            $unicode           = xoonips_getUtility('unicode');
-            $text              = $unicode->convert_encoding($text, _CHARSET, 'h');
+            $unicode = xoonips_getUtility('unicode');
+            $text = $unicode->convert_encoding($text, _CHARSET, 'h');
             $getTextFromOpener = false;
         }
     }

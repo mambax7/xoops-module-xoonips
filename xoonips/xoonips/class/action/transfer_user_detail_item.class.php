@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,11 +25,11 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/transfer.class.php';
-require_once __DIR__ . '/../../include/transfer.inc.php';
+require_once __DIR__.'/transfer.class.php';
+require_once __DIR__.'/../../include/transfer.inc.php';
 
 /**
- * Class XooNIpsActionTransferUserDetailItem
+ * Class XooNIpsActionTransferUserDetailItem.
  */
 class XooNIpsActionTransferUserDetailItem extends XooNIpsActionTransfer
 {
@@ -40,9 +41,6 @@ class XooNIpsActionTransferUserDetailItem extends XooNIpsActionTransfer
         parent::__construct();
     }
 
-    /**
-     * @return null
-     */
     public function _get_logic_name()
     {
         return null;
@@ -77,13 +75,13 @@ class XooNIpsActionTransferUserDetailItem extends XooNIpsActionTransfer
 
         // get item_info_compo of $item_id
         $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $item_basic        = $item_basicHandler->get($item_id);
+        $item_basic = $item_basicHandler->get($item_id);
 
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $item_type        = $item_typeHandler->get($item_basic->get('item_type_id'));
+        $item_type = $item_typeHandler->get($item_basic->get('item_type_id'));
 
         $info_compoHandler = xoonips_getOrmCompoHandler($item_type->get('name'), 'item');
-        $info_compo        = $info_compoHandler->get($item_id);
+        $info_compo = $info_compoHandler->get($item_id);
 
         // read language file of item
         $langman = xoonips_getUtility('languagemanager');
@@ -98,12 +96,12 @@ class XooNIpsActionTransferUserDetailItem extends XooNIpsActionTransfer
     }
 
     /**
-     * show error message and close button
+     * show error message and close button.
      */
     public function show_no_permission_error_page()
     {
         xoops_header();
-        echo _MD_XOONIPS_ITEM_FORBIDDEN . '<br><input type="button"' . ' onclick="javascript:window.close();" value="' . _CLOSE . '" />';
+        echo _MD_XOONIPS_ITEM_FORBIDDEN.'<br><input type="button"'.' onclick="javascript:window.close();" value="'._CLOSE.'" />';
         xoops_footer();
         exit;
     }

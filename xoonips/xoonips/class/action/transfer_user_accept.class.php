@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,26 +25,23 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-require_once __DIR__ . '/transfer.class.php';
-require_once __DIR__ . '/../../include/transfer.inc.php';
-require_once __DIR__ . '/../base/gtickets.php';
-require_once __DIR__ . '/../../include/notification.inc.php';
+require_once __DIR__.'/transfer.class.php';
+require_once __DIR__.'/../../include/transfer.inc.php';
+require_once __DIR__.'/../base/gtickets.php';
+require_once __DIR__.'/../../include/notification.inc.php';
 
 /**
- * Class XooNIpsActionTransferUserAccept
+ * Class XooNIpsActionTransferUserAccept.
  */
 class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
 {
-
     /**
-     * map of owner(transferer) uid and item_ids
-     * @access private
+     * map of owner(transferer) uid and item_ids.
      */
     public $_uid_item_ids_map = null;
 
     /**
-     * map of uid to notify, transferer, transferee and item id array
-     * @access private
+     * map of uid to notify, transferer, transferee and item id array.
      */
     public $_notify_uid_transferer_transferee_item_ids_map = null;
 
@@ -63,9 +61,6 @@ class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
         return 'TransferUserAccept';
     }
 
-    /**
-     * @return null
-     */
     public function _get_view_name()
     {
         return null;
@@ -84,16 +79,13 @@ class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
 
         $item_ids = $this->get_item_ids_to_transfer();
         if (empty($item_ids)) {
-            redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_TRANSFER_USER_ACCEPT_ERROR_NO_ITEM);
+            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_TRANSFER_USER_ACCEPT_ERROR_NO_ITEM);
         }
 
         $result = array();
         foreach ($this->get_item_ids_to_transfer() as $item_id) {
             foreach ($this->get_notify_uids($item_id) as $uid) {
-                $result
-                [$uid]
-                [$this->get_transferer_uid($item_id)]
-                [$this->get_transferee_uid($item_id)][]
+                $result[$uid][$this->get_transferer_uid($item_id)][$this->get_transferee_uid($item_id)][]
                     = $item_id;
             }
         }
@@ -105,12 +97,12 @@ class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
             = $this->get_item_ids_to_transfer();
 
         if ($this->get_limit_check_result($xoopsUser->getVar('uid'), $this->get_item_ids_to_transfer())) {
-            redirect_header(XOOPS_URL . '/modules/xoonips/transfer_item.php' . '?action=list_item', 3,
+            redirect_header(XOOPS_URL.'/modules/xoonips/transfer_item.php'.'?action=list_item', 3,
                             _MD_XOONIPS_TRANSFER_USER_ACCEPT_ERROR_NUMBER_OR_STORAGE_EXCEED);
         }
 
         if (!$this->is_user_in_group_of_items($xoopsUser->getVar('uid'), $this->get_item_ids_to_transfer())) {
-            redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_TRANSFER_USER_ACCEPT_ERROR_BAD_SUBSCRIBE_GROUP);
+            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_TRANSFER_USER_ACCEPT_ERROR_BAD_SUBSCRIBE_GROUP);
         }
 
         $this->_params[] = $this->get_item_ids_to_transfer();
@@ -125,9 +117,9 @@ class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
         if ($this->_response->getResult()) {
             $this->notify_transfer_accepted();
 
-            redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_TRANSFER_USER_ACCEPT_COMPLETE);
+            redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_TRANSFER_USER_ACCEPT_COMPLETE);
         } else {
-            redirect_header(XOOPS_URL . '/modules/xoonips/transfer_item.php' . '?action=list_item', 3, _MD_XOONIPS_TRANSFER_USER_ACCEPT_ERROR);
+            redirect_header(XOOPS_URL.'/modules/xoonips/transfer_item.php'.'?action=list_item', 3, _MD_XOONIPS_TRANSFER_USER_ACCEPT_ERROR);
         }
     }
 
@@ -140,6 +132,7 @@ class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
         if (null === $result) {
             return array();
         }
+
         return $result;
     }
 
@@ -165,12 +158,13 @@ class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
 
     /**
      * @param $item_id
+     *
      * @return bool
      */
     public function get_transferee_uid($item_id)
     {
         $handler = xoonips_getOrmHandler('xoonips', 'transfer_request');
-        $request =  $handler->getObjects(new Criteria('item_id', $item_id));
+        $request = $handler->getObjects(new Criteria('item_id', $item_id));
 
         if (false === $request) {
             return false;
@@ -178,17 +172,19 @@ class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
         if (count($request) == 0) {
             return false;
         }
+
         return $request[0]->get('to_uid');
     }
 
     /**
      * @param $item_id
+     *
      * @return bool
      */
     public function get_transferer_uid($item_id)
     {
         $handler = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $basic   =  $handler->getObjects(new Criteria('item_id', $item_id));
+        $basic = $handler->getObjects(new Criteria('item_id', $item_id));
 
         if (!$basic) {
             return false;
@@ -196,18 +192,20 @@ class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
         if (count($basic) == 0) {
             return false;
         }
+
         return $basic[0]->get('uid');
     }
 
     /**
      * @param $item_id
+     *
      * @return array
      */
     public function get_notify_uids($item_id)
     {
         global $xoopsDB;
 
-        $result                 = array();
+        $result = array();
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
 
         $links = $index_item_linkHandler->getByItemid($item_id, array(OL_PUBLIC));
@@ -222,14 +220,15 @@ class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
 
         foreach ($links as $link) {
             $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-            $join         = new XooNIpsJoinCriteria('xoonips_groups_users_link', 'gid', 'gid', 'INNER', 'tgul');
-            $criteria     = new CriteriaCompo(new Criteria('index_id', $link->get('index_id')));
+            $join = new XooNIpsJoinCriteria('xoonips_groups_users_link', 'gid', 'gid', 'INNER', 'tgul');
+            $criteria = new CriteriaCompo(new Criteria('index_id', $link->get('index_id')));
             $criteria->add(new Criteria('is_admin', 1));
-            $rows =  $indexHandler->getObjects($criteria, false, 'tgul.uid', true, $join);
+            $rows = $indexHandler->getObjects($criteria, false, 'tgul.uid', true, $join);
             foreach ($rows as $row) {
                 $result[] = $row->get('uid');
             }
         }
+
         return $result;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -28,6 +29,7 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 /**
  * @param $xoopsMod
  * @param $oldversion
+ *
  * @return bool
  */
 function xoops_module_update_xnpmemo($xoopsMod, $oldversion)
@@ -38,10 +40,11 @@ function xoops_module_update_xnpmemo($xoopsMod, $oldversion)
     switch ($oldversion) {
         // remember that version is multiplied with 100 to get an integer
         case 200:
-            $sql    = 'ALTER TABLE ' . $xoopsDB->prefix('xnpmemo_item_detail') . ' TYPE = innodb';
+            $sql = 'ALTER TABLE '.$xoopsDB->prefix('xnpmemo_item_detail').' TYPE = innodb';
             $result = $xoopsDB->query($sql);
             if (!$result) {
-                echo '&nbsp;&nbsp;' . $xoopsDB->error() . '<br />';
+                echo '&nbsp;&nbsp;'.$xoopsDB->error().'<br />';
+
                 return false;
             }
         case 311:
@@ -51,5 +54,6 @@ function xoops_module_update_xnpmemo($xoopsMod, $oldversion)
         case 340:
         default:
     }
+
     return true;
 }

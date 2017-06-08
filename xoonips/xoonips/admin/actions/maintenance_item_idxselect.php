@@ -44,9 +44,7 @@
  * @var string $submit       submit button label
  */
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // load libraries
 require_once __DIR__ . '/../../include/libitem.php';

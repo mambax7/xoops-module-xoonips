@@ -27,9 +27,7 @@
 require_once __DIR__ . '/AL.php';
 require_once __DIR__ . '/lib.php';
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 $formdata        = xoonips_getUtility('formdata');
 $checkbox        = $formdata->getValue('both', 'checkbox', 's', false, 'off');

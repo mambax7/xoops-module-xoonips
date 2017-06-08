@@ -3,9 +3,7 @@
 //
 // customized Snoopy class for the XooNIps
 //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // php-indent: disable
 /*************************************************

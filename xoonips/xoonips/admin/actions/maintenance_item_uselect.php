@@ -34,9 +34,7 @@
  * @var string $nextaction next action
  */
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // functions
 /**

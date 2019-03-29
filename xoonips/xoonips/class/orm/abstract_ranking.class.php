@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,34 +24,32 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief abstract handler object of ranking tables
- *
  */
 class XooNIpsOrmAbstractRankingHandler extends XooNIpsTableObjectHandler
 {
-
     /**
-     * object column names
+     * object column names.
+     *
      * @var array
      */
     public $columns = array();
 
     /**
-     * flag of sum table handler
+     * flag of sum table handler.
+     *
      * @var bool
      */
     public $is_sum_table = false;
 
     /**
-     * get object column names
+     * get object column names.
      *
-     * @access   private
      * @return array
+     *
      * @internal param array $columns
      */
     public function get_columns()
@@ -60,9 +58,8 @@ class XooNIpsOrmAbstractRankingHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * set object column names
+     * set object column names.
      *
-     * @access private
      * @param array $columns
      */
     public function _set_columns($columns)
@@ -71,9 +68,7 @@ class XooNIpsOrmAbstractRankingHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * set sum table flag
-     *
-     * @access private
+     * set sum table flag.
      */
     public function _set_sum_table()
     {
@@ -81,21 +76,22 @@ class XooNIpsOrmAbstractRankingHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * copy ranking data from ranking_sum_* table for rebuild rankings
+     * copy ranking data from ranking_sum_* table for rebuild rankings.
      *
      * @return bool|resource
      */
     public function copy_from_sum_table()
     {
         if ($this->is_sum_table) {
-            die('invalid operation found in ' . __FILE__ . ' at ' . __LINE__);
+            die('invalid operation found in '.__FILE__.' at '.__LINE__);
         }
-        $columns   = implode(', ', $this->columns);
-        $name      = $this->__table_name;
-        $table     = $this->db->prefix($name);
-        $sum_name  = str_replace('ranking_', 'ranking_sum_', $name);
+        $columns = implode(', ', $this->columns);
+        $name = $this->__table_name;
+        $table = $this->db->prefix($name);
+        $sum_name = str_replace('ranking_', 'ranking_sum_', $name);
         $sum_table = $this->db->prefix($sum_name);
-        $sql       = 'INSERT INTO ' . $table . ' ( ' . $columns . ' ) SELECT ' . $columns . ' FROM ' . $sum_table;
+        $sql = 'INSERT INTO '.$table.' ( '.$columns.' ) SELECT '.$columns.' FROM '.$sum_table;
+
         return $this->_query($sql, true);
     }
 }

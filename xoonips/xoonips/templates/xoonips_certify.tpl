@@ -1,7 +1,6 @@
 <{*
 template for display to certify items
 
-$Revision: 1.13.2.1.2.2 $
 
 $items[] array of item information to be certified
          array( item_id=>id of item,

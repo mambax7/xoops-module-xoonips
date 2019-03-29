@@ -1,5 +1,4 @@
 <{* xnppaper detail block *}>
-<{* $Revision: 1.19.4.1.2.6 $ *}>
 <form id="xoonips_edit_form" action="#">
 <table class="outer">
   <tr>

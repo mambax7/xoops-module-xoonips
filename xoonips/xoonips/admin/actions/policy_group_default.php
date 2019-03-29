@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.3 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,55 +24,53 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_POLICY_GROUP_TITLE;
+$title = _AM_XOONIPS_POLICY_GROUP_TITLE;
 $description = _AM_XOONIPS_POLICY_GROUP_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
-$ticket_area  = 'xoonips_admin_policy_group';
+require_once __DIR__.'/../../class/base/gtickets.php';
+$ticket_area = 'xoonips_admin_policy_group';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys          = array();
+$config_keys = array();
 $initvals_config_keys = array(
-    'group_item_number_limit'  => array(
+    'group_item_number_limit' => array(
         'title' => _AM_XOONIPS_LABEL_ITEM_NUMBER_LIMIT,
-        'desc'  => _AM_XOONIPS_POLICY_GROUP_INITIAL_MAX_ITEM_DESC,
-        'type'  => 'i',
+        'desc' => _AM_XOONIPS_POLICY_GROUP_INITIAL_MAX_ITEM_DESC,
+        'type' => 'i',
     ),
     'group_index_number_limit' => array(
         'title' => _AM_XOONIPS_LABEL_INDEX_NUMBER_LIMIT,
-        'desc'  => _AM_XOONIPS_POLICY_GROUP_INITIAL_MAX_INDEX_DESC,
-        'type'  => 'i',
+        'desc' => _AM_XOONIPS_POLICY_GROUP_INITIAL_MAX_INDEX_DESC,
+        'type' => 'i',
     ),
     'group_item_storage_limit' => array(
         'title' => _AM_XOONIPS_LABEL_ITEM_STORAGE_LIMIT,
-        'desc'  => _AM_XOONIPS_POLICY_GROUP_INITIAL_MAX_DISK_DESC,
-        'type'  => 'f',
+        'desc' => _AM_XOONIPS_POLICY_GROUP_INITIAL_MAX_DISK_DESC,
+        'type' => 'f',
     ),
 );
 foreach ($initvals_config_keys as $key => $value) {
@@ -83,10 +81,10 @@ $config_values = xoonips_admin_get_configs($config_keys, 'e');
 // initial values
 $initil_values = array();
 foreach ($initvals_config_keys as $name => $value) {
-    $iv          = array();
+    $iv = array();
     $iv['title'] = $value['title'];
-    $iv['desc']  = $value['desc'];
-    $iv['name']  = $name;
+    $iv['desc'] = $value['desc'];
+    $iv['name'] = $name;
     if ($value['type'] === 'f') {
         $iv['value'] = $config_values[$name] / 1000000.0;
     } else {
@@ -96,7 +94,7 @@ foreach ($initvals_config_keys as $name => $value) {
 }
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('policy_group.tmpl.tpl');

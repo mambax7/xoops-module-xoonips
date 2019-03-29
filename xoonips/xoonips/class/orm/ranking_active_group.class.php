@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.8 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,11 +24,9 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/abstract_ranking.class.php';
+require_once __DIR__.'/abstract_ranking.class.php';
 
 /**
  * @brief data object of ranking active group
@@ -51,12 +49,12 @@ class XooNIpsOrmRankingActiveGroup extends XooNIpsTableObject
 
 /**
  * @brief handler object of ranking active group
- *
  */
 class XooNIpsOrmRankingActiveGroupHandler extends XooNIpsOrmAbstractRankingHandler
 {
     /**
      * XooNIpsOrmRankingActiveGroupHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -65,16 +63,16 @@ class XooNIpsOrmRankingActiveGroupHandler extends XooNIpsOrmAbstractRankingHandl
         $this->__initHandler('XooNIpsOrmRankingActiveGroup', 'xoonips_ranking_active_group', 'gid', false);
         $this->_set_columns(array(
                                 'gid',
-                                'count'
+                                'count',
                             ));
     }
 
     /**
-     * insert/upldate/replace object
+     * insert/upldate/replace object.
      *
-     * @access public
      * @param XoopsObject $obj
      * @param bool        $force force operation
+     *
      * @return bool false if failed
      */
     public function insert(XoopsObject $obj, $force = false)
@@ -84,23 +82,25 @@ class XooNIpsOrmRankingActiveGroupHandler extends XooNIpsOrmAbstractRankingHandl
             // ignore if group id is zero
             return true;
         }
+
         return parent::insert($obj, $force);
     }
 
     /**
-     * increment active group counter for updating/rebuilding rankings
+     * increment active group counter for updating/rebuilding rankings.
      *
      * @param int $gid   group id
      * @param int $delta counter delta
+     *
      * @return bool FALSE if failed
      */
     public function increment($gid, $delta)
     {
-        $obj =  $this->get($gid);
+        $obj = $this->get($gid);
         if (is_object($obj)) {
             $delta += $obj->get('count');
         } else {
-            $obj =  $this->create();
+            $obj = $this->create();
             $obj->set('gid', $gid);
         }
         $obj->set('count', $delta);

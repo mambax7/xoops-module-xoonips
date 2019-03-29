@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.3 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,24 +25,22 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/class/xml/rpc/xmlrpcparser.php';
+require_once XOOPS_ROOT_PATH.'/class/xml/rpc/xmlrpcparser.php';
 
 /**
- * XML-RPC Parser
+ * XML-RPC Parser.
  *
  * use XooNIpsRpcDateTimeHandler to parse <dateTime.iso8601>
- *
- *
  */
 class XooNIpsXmlRpcParser extends XoopsXmlRpcParser
 {
-
     /**
-     * Constructor of the class
+     * Constructor of the class.
      *
-     * @access
      * @author
+     *
      * @see
+     *
      * @param $input
      */
     public function __construct($input)
@@ -64,13 +62,13 @@ class XooNIpsXmlRpcParser extends XoopsXmlRpcParser
 }
 
 /**
- * Class XooNIpsRpcDateTimeHandler
+ * Class XooNIpsRpcDateTimeHandler.
  */
 class XooNIpsRpcDateTimeHandler extends RpcDateTimeHandler
 {
-
     /**
-     * parse sISO-8601 date time string
+     * parse sISO-8601 date time string.
+     *
      * @param $parser
      * @param $data
      */
@@ -116,6 +114,7 @@ class XooNIpsRpcValueHandler extends RpcValueHandler
 
     /**
      * set content to $parser->_tempValue if $parser->_tempValue is not set.
+     *
      * @param $parser
      */
     public function handleEndElement($parser)

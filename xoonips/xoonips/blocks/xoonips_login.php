@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // xoonips login block
 /**
@@ -42,25 +40,25 @@ function b_xoonips_login_show()
     }
 
     // get xoops configurations
-    $myxoopsConfig =  xoonips_get_xoops_configs(XOOPS_CONF);
-    $usercookie    = $myxoopsConfig['usercookie'];
-    $use_ssl       = $myxoopsConfig['use_ssl'];
-    $sslloginlink  = $myxoopsConfig['sslloginlink'];
+    $myxoopsConfig = xoonips_get_xoops_configs(XOOPS_CONF);
+    $usercookie = $myxoopsConfig['usercookie'];
+    $use_ssl = $myxoopsConfig['use_ssl'];
+    $sslloginlink = $myxoopsConfig['sslloginlink'];
 
     // set variables
-    $block                  = array();
+    $block = array();
     $block['lang_username'] = _MB_XOONIPS_LOGIN_USERNAME;
     if ($usercookie != '' && isset($_COOKIE[$usercookie])) {
         $block['unamevalue'] = $_COOKIE[$usercookie];
     } else {
         $block['unamevalue'] = '';
     }
-    $block['lang_password']    = _MB_XOONIPS_LOGIN_PASSWORD;
-    $block['lang_login']       = _MB_XOONIPS_LOGIN_LOGIN;
-    $block['lang_lostpass']    = _MB_XOONIPS_LOGIN_LOSTPASS;
+    $block['lang_password'] = _MB_XOONIPS_LOGIN_PASSWORD;
+    $block['lang_login'] = _MB_XOONIPS_LOGIN_LOGIN;
+    $block['lang_lostpass'] = _MB_XOONIPS_LOGIN_LOSTPASS;
     $block['lang_registernow'] = _MB_XOONIPS_LOGIN_USERREG;
     if ($use_ssl == 1 && $sslloginlink != '') {
-        $block['use_ssl']      = $use_ssl;
+        $block['use_ssl'] = $use_ssl;
         $block['sslloginlink'] = $sslloginlink;
     }
     // $block['lang_rememberme'] = _MB_XOONIPS_LOGIN_REMEMBERME;

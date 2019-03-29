@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.10 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,10 +25,10 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/view.class.php';
+require_once __DIR__.'/../base/view.class.php';
 
 /**
- * Class XooNIpsViewImportConflict
+ * Class XooNIpsViewImportConflict.
  */
 class XooNIpsViewImportConflict extends XooNIpsView
 {
@@ -36,6 +36,7 @@ class XooNIpsViewImportConflict extends XooNIpsView
 
     /**
      * XooNIpsViewImportConflict constructor.
+     *
      * @param associative $params
      */
     public function __construct($params)
@@ -43,21 +44,18 @@ class XooNIpsViewImportConflict extends XooNIpsView
         parent::__construct($params);
     }
 
-    /**
-     *
-     */
     public function render()
     {
         global $xoopsOption, $xoopsConfig, $xoopsUser, $xoopsUserIsAdmin, $xoopsLogger, $xoopsTpl;
         $conflict_items = array();
-        $c              = 0;
+        $c = 0;
         foreach ($this->_params['import_items'] as $item) {
             // skip no conflict item.
             if (!$this->isConflictItem($item)) {
                 continue;
             }
 
-            $c++;
+            ++$c;
             if ($c <= ($this->getPageNo() - 1) * $this->_item_per_page) {
                 continue;
             }
@@ -65,31 +63,31 @@ class XooNIpsViewImportConflict extends XooNIpsView
                 break;
             }
 
-            $vars                = array();
-            $handler             = xoonips_getHandler('xoonips', 'import_item');
+            $vars = array();
+            $handler = xoonips_getHandler('xoonips', 'import_item');
             $vars['import_item'] = array(
-                'pseudo_id'   => $item->getPseudoId(),
+                'pseudo_id' => $item->getPseudoId(),
                 'update_flag' => $item->getUpdateFlag(),
-                'item_text'   => $item->getItemAbstractText()
+                'item_text' => $item->getItemAbstractText(),
             );
 
             $vars['conflict_updatable_items'] = array();
-            $handler                          = xoonips_getOrmCompoHandler('xoonips', 'item');
+            $handler = xoonips_getOrmCompoHandler('xoonips', 'item');
             foreach ($item->getDuplicateUpdatableItemId() as $id) {
                 $vars['conflict_updatable_items'][] = array(
-                    'item_id'   => $id,
-                    'item_text' => $handler->getItemAbstractTextById($id)
+                    'item_id' => $id,
+                    'item_text' => $handler->getItemAbstractTextById($id),
                 );
             }
 
             $vars['conflict_import_items'] = array();
-            $handler                       = xoonips_getHandler('xoonips', 'import_item');
+            $handler = xoonips_getHandler('xoonips', 'import_item');
             foreach ($item->getDuplicatePseudoId() as $id) {
                 foreach ($this->_params['import_items'] as $item) {
                     if ($item->getPseudoId() == $id) {
                         $vars['conflict_import_items'][] = array(
-                            'item_id'   => $id,
-                            'item_text' => $item->getItemAbstractText()
+                            'item_id' => $id,
+                            'item_text' => $item->getItemAbstractText(),
                         );
                         break;
                     }
@@ -97,27 +95,27 @@ class XooNIpsViewImportConflict extends XooNIpsView
             }
 
             $vars['conflict_unupdatable_items'] = array();
-            $handler                            = xoonips_getOrmCompoHandler('xoonips', 'item');
+            $handler = xoonips_getOrmCompoHandler('xoonips', 'item');
             foreach ($item->getDuplicateUnupdatableItemId() as $id) {
                 $vars['conflict_unupdatable_items'][] = array(
-                    'item_id'   => $id,
-                    'item_text' => $handler->getItemAbstractTextById($id)
+                    'item_id' => $id,
+                    'item_text' => $handler->getItemAbstractTextById($id),
                 );
             }
 
-            $handler                                       = xoonips_getOrmCompoHandler('xoonips', 'item');
-            $lockHandler                                   = xoonips_getOrmHandler('xoonips', 'item_lock');
+            $handler = xoonips_getOrmCompoHandler('xoonips', 'item');
+            $lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
             $vars['conflict_certify_request_locked_items'] = array();
             foreach ($item->getDuplicateLockedItemId() as $id) {
                 if ($lockHandler->isLocked($id)) {
                     if ($lockHandler->getLockType($id) == XOONIPS_LOCK_TYPE_CERTIFY_REQUEST) {
                         $vars['conflict_certify_request_locked_items'][]
                             = array(
-                            'item_id'   => $id,
-                            'item_text' => $handler->getItemAbstractTextById($id)
+                            'item_id' => $id,
+                            'item_text' => $handler->getItemAbstractTextById($id),
                         );
                     } else {
-                        die('unknown lock type:' . $lockHandler->getLockType($id));
+                        die('unknown lock type:'.$lockHandler->getLockType($id));
                     }
                 }
             }
@@ -125,9 +123,9 @@ class XooNIpsViewImportConflict extends XooNIpsView
             $conflict_items[] = $vars;
         }
 
-        $handler                                 = xoonips_getHandler('xoonips', 'import_item');
+        $handler = xoonips_getHandler('xoonips', 'import_item');
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_import_conflict.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH.'/header.php';
         $xoopsTpl->assign('import_as_new_flag', isset($this->_params['import_as_new_flag']) ? $this->_params['import_as_new_flag'] : '0');
         $xoopsTpl->assign('number_of_conflict_items', $handler->numberOfConflictItem($this->_params['import_items']));
         $xoopsTpl->assign('conflict_items', $conflict_items);
@@ -138,13 +136,14 @@ class XooNIpsViewImportConflict extends XooNIpsView
         $xoopsTpl->assign('page', $this->getPageNo());
         $xoopsTpl->assign('page_max', ceil($this->getConflictItemCount() / $this->_item_per_page));
 
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH.'/footer.php';
     }
 
     /**
      * get current page number to show from input of view
-     * (if no page number, returns '1')
-     * @return integer page number
+     * (if no page number, returns '1').
+     *
+     * @return int page number
      */
     public function getPageNo()
     {
@@ -152,8 +151,10 @@ class XooNIpsViewImportConflict extends XooNIpsView
     }
 
     /**
-     * return boolean value of confliction item
+     * return boolean value of confliction item.
+     *
      * @param XooNIpsImportItem $item
+     *
      * @return true(conflict) or false(not conflict)
      */
     public function isConflictItem($item)
@@ -165,17 +166,19 @@ class XooNIpsViewImportConflict extends XooNIpsView
     }
 
     /**
-     * return number of conflict items
-     * @return integer number of conflict items
+     * return number of conflict items.
+     *
+     * @return int number of conflict items
      */
     public function getConflictItemCount()
     {
         $result = 0;
         foreach ($this->_params['import_items'] as $item) {
             if ($this->isConflictItem($item)) {
-                $result++;
+                ++$result;
             }
         }
+
         return $result;
     }
 }

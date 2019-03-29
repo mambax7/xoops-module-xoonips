@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.8 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,20 +25,17 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/logic.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/transaction.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/include/notification.inc.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/logic.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/transaction.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/include/notification.inc.php';
 
 /**
- *
- * subclass of XooNIpsLogic(getFile)
- *
+ * subclass of XooNIpsLogic(getFile).
  */
 class XooNIpsLogicGetFile extends XooNIpsLogic
 {
-
     /**
-     * execute getFile
+     * execute getFile.
      *
      * @param[in]  $vars[0] session ID
      * @param[in]  $vars[1] file ID
@@ -46,19 +43,20 @@ class XooNIpsLogicGetFile extends XooNIpsLogic
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response->success XooNIpsFile file information
+     *
      * @return bool
      */
     public function execute($vars, $response)
     {
         // parameter check
-        $error =  $response->getError();
+        $error = $response->getError();
         if (count($vars) > 3) {
             $error->add(XNPERR_EXTRA_PARAM);
         }
         if (count($vars) < 3) {
             $error->add(XNPERR_MISSING_PARAM);
         }
-        //
+
         if (isset($vars[0]) && strlen($vars[0]) > 32) {
             $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
         }
@@ -68,28 +66,31 @@ class XooNIpsLogicGetFile extends XooNIpsLogic
         if ($vars[2] != '1' && $vars[2] != '0') {
             $error->add(XNPERR_INVALID_PARAM, 'parameter 3 must be 0 or 1');
         }
-        //
+
         if ($error->get(0)) {
             // return if parameter error
             $response->setResult(false);
+
             return false;
         } else {
             $sessionid = $vars[0];
-            $file_id   = (int)$vars[1];
-            $agreement = (int)$vars[2];
+            $file_id = (int) $vars[1];
+            $agreement = (int) $vars[2];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
+
             return false;
         }
         // file_id -> file, item_id
         $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
-        $file        = $fileHandler->get($file_id);
+        $file = $fileHandler->get($file_id);
         if (!$file) {
             $response->setResult(false);
             $error->add(XNPERR_NOT_FOUND);
+
             return false;
         }
         $item_id = $file->get('item_id');
@@ -103,35 +104,40 @@ class XooNIpsLogicGetFile extends XooNIpsLogic
         if (!$itemHandler->getPerm($item_id, $uid, 'read')) {
             $response->setResult(false);
             $error->add(XNPERR_ACCESS_FORBIDDEN);
+
             return false;
         }
         // already deleted?
         if ($file->get('is_deleted')) {
             $response->setResult(false);
             $error->add(XNPERR_NOT_FOUND, 'already deleted or replaced');
+
             return false;
         }
         // item_id -> item, itemtype
         $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $basic             = $item_basicHandler->get($item_id);
+        $basic = $item_basicHandler->get($item_id);
         if (!$basic) {
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'cannot get item_basic');
+
             return false;
         }
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $item_type        = $item_typeHandler->get($basic->get('item_type_id'));
+        $item_type = $item_typeHandler->get($basic->get('item_type_id'));
         if (!$item_type) {
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'cannot get itemtype of that item');
+
             return false;
         }
         // item_type, item_id -> detail
         $detail_itemHandler = xoonips_getOrmCompoHandler($item_type->get('name'), 'item');
-        $detail_item        = $detail_itemHandler->get($item_id);
+        $detail_item = $detail_itemHandler->get($item_id);
         if (!$detail_item) {
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'cannot get item');
+
             return false;
         }
         $detail = $detail_item->getVar('detail');
@@ -139,12 +145,14 @@ class XooNIpsLogicGetFile extends XooNIpsLogic
         if (!$agreement && $detail->get('rights')) {
             $response->setResult(false);
             $error->add(XNPERR_ERROR, 'need license agreement');
+
             return false;
         }
 
         if (!$detail_itemHandler->hasDownloadPermission($uid, $file_id)) {
             $response->setResult(false);
             $error->add(XNPERR_ACCESS_FORBIDDEN);
+
             return false;
         }
         // start transaction
@@ -156,6 +164,7 @@ class XooNIpsLogicGetFile extends XooNIpsLogic
             $transaction->rollback();
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'cannot update file table');
+
             return false;
         }
         // insert event log ( file downloaded )
@@ -164,15 +173,16 @@ class XooNIpsLogicGetFile extends XooNIpsLogic
             $transaction->rollback();
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'cannot insert event log');
+
             return false;
         }
 
         // get module option 'enable_dl_limit'
         $iteminfo = $detail_itemHandler->getIteminfo();
         $mhandler = xoops_getHandler('module');
-        $module   = $mhandler->getByDirname($iteminfo['ormcompo']['module']);
+        $module = $mhandler->getByDirname($iteminfo['ormcompo']['module']);
         $chandler = xoops_getHandler('config');
-        $assoc    = $chandler->getConfigsByCat(false, $module->mid());
+        $assoc = $chandler->getConfigsByCat(false, $module->mid());
         if (isset($assoc['enable_dl_limit']) && $assoc['enable_dl_limit'] == '1') {
             // send download-notification
             if ($detail->get('attachment_dl_limit') && $detail->get('attachment_dl_notify')) {
@@ -183,6 +193,7 @@ class XooNIpsLogicGetFile extends XooNIpsLogic
         $transaction->commit();
         $response->setSuccess($file);
         $response->setResult(true);
+
         return true;
     }
 }

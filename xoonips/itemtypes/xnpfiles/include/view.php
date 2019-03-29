@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.18.2.1.2.28 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2013 RIKEN, Japan All rights reserved.                //
@@ -26,9 +26,9 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-$itemtype_path    = dirname(__DIR__);
+$itemtype_path = dirname(__DIR__);
 $itemtype_dirname = basename($itemtype_path);
-$xoonips_path     = dirname($itemtype_path) . '/xoonips';
+$xoonips_path = dirname($itemtype_path).'/xoonips';
 
 $langman = xoonips_getUtility('languagemanager');
 $langman->read('main.php', $itemtype_dirname);
@@ -42,20 +42,23 @@ define('XNPFILES_ITEM_TITLE_EMPTY_MAGIC', str_repeat(md5('@@@@@@@@@@@@@@@ XNPFIL
 function xnpfilesGetTypes()
 {
     $filesHandler = xoonips_getOrmHandler('xnpfiles', 'item_detail');
-    $files_objs   = $filesHandler->getObjects(null, false, 'data_file_filetype', true);
-    $html         = array();
+    $files_objs = $filesHandler->getObjects(null, false, 'data_file_filetype', true);
+    $html = array();
     foreach ($files_objs as $files_obj) {
         $ext = $files_obj->getVar('data_file_filetype', 's');
         if ($ext != '') {
             $html[$ext] = $ext;
         }
     }
+
     return $html;
 }
 
 /**
- * get DetailInformation by item_id
+ * get DetailInformation by item_id.
+ *
  * @param $item_id
+ *
  * @return array|bool
  */
 function xnpfilesGetDetailInformation($item_id)
@@ -63,35 +66,39 @@ function xnpfilesGetDetailInformation($item_id)
     global $xoopsDB;
     if (empty($item_id)) {
         return array(
-            'data_file_name'     => '',
+            'data_file_name' => '',
             'data_file_mimetype' => '',
-            'data_file_filetype' => ''
+            'data_file_filetype' => '',
         );
     }
 
-    $sql    = 'select * from ' . $xoopsDB->prefix('xnpfiles_item_detail') . " where files_id=$item_id";
+    $sql = 'select * from '.$xoopsDB->prefix('xnpfiles_item_detail')." where files_id=$item_id";
     $result = $xoopsDB->query($sql);
     if ($result == false) {
         echo $xoopsDB->error();
+
         return false;
     }
 
     $detail = $xoopsDB->fetchArray($result);
+
     return $detail;
 }
 
 /**
  * @param $columns
+ *
  * @return array|bool
  */
 function xnpfilesGetDetailDistinctInfo($columns)
 {
     global $xoopsDB;
 
-    $sql    = "select distinct($columns) from " . $xoopsDB->prefix('xnpfiles_item_detail') . " order by $columns";
+    $sql = "select distinct($columns) from ".$xoopsDB->prefix('xnpfiles_item_detail')." order by $columns";
     $result = $xoopsDB->query($sql);
     if ($result == false) {
         echo $xoopsDB->error();
+
         return false;
     }
 
@@ -99,35 +106,39 @@ function xnpfilesGetDetailDistinctInfo($columns)
     while (false != ($row = $xoopsDB->fetchRow($result))) {
         $files[] = $row;
     }
+
     return $files;
 }
 
 /**
  * @param $item_id
+ *
  * @return array
  */
 function xnpfilesGetMetaInformation($item_id)
 {
-    $ret    = array();
-    $basic  = xnpGetBasicInformationArray($item_id);
+    $ret = array();
+    $basic = xnpGetBasicInformationArray($item_id);
     $detail = xnpfilesGetDetailInformation($item_id);
     if (!empty($basic)) {
-        $ret[_MD_XOONIPS_ITEM_TITLE_LABEL]            = implode("\n", $basic['titles']);
-        $ret[_MD_XOONIPS_ITEM_CONTRIBUTOR_LABEL]      = $basic['contributor'];
-        $ret[_MD_XOONIPS_ITEM_KEYWORDS_LABEL]         = implode("\n", $basic['keywords']);
-        $ret[_MD_XOONIPS_ITEM_DESCRIPTION_LABEL]      = $basic['description'];
-        $ret[_MD_XOONIPS_ITEM_DOI_LABEL]              = $basic['doi'];
-        $ret[_MD_XOONIPS_ITEM_CREATION_DATE_LABEL]    = $basic['creation_date'];
+        $ret[_MD_XOONIPS_ITEM_TITLE_LABEL] = implode("\n", $basic['titles']);
+        $ret[_MD_XOONIPS_ITEM_CONTRIBUTOR_LABEL] = $basic['contributor'];
+        $ret[_MD_XOONIPS_ITEM_KEYWORDS_LABEL] = implode("\n", $basic['keywords']);
+        $ret[_MD_XOONIPS_ITEM_DESCRIPTION_LABEL] = $basic['description'];
+        $ret[_MD_XOONIPS_ITEM_DOI_LABEL] = $basic['doi'];
+        $ret[_MD_XOONIPS_ITEM_CREATION_DATE_LABEL] = $basic['creation_date'];
         $ret[_MD_XOONIPS_ITEM_LAST_UPDATE_DATE_LABEL] = $basic['last_update_date'];
     }
     if (!empty($basic)) {
         $ret[_MD_XNPFILES_DATE_LABEL] = xnpDate($basic['publication_year'], $basic['publication_month'], $basic['publication_mday']);
     }
+
     return $ret;
 }
 
 /**
  * @param $item_basic
+ *
  * @return mixed|string|void
  */
 function xnpfilesGetListBlock($item_basic)
@@ -152,6 +163,7 @@ function xnpfilesGetListBlock($item_basic)
 
 /**
  * @param $item_basic
+ *
  * @return mixed|string|void
  */
 function xnpfilesGetPrinterFriendlyListBlock($item_basic)
@@ -161,6 +173,7 @@ function xnpfilesGetPrinterFriendlyListBlock($item_basic)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpfilesGetDetailBlock($item_id)
@@ -188,6 +201,7 @@ function xnpfilesGetDetailBlock($item_id)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpfilesGetPrinterFriendlyDetailBlock($item_id)
@@ -225,29 +239,29 @@ function xnpfilesGetRegisterBlock()
     if ($basic['title'] == '') {
         $basic['title'] = ' ';
     }
-    $index     = xnpGetIndexRegisterBlock();
+    $index = xnpGetIndexRegisterBlock();
     $data_file = xnpGetAttachmentRegisterBlock('files_file');
 
     $post_id = $formdata->getValue('get', 'post_id', 's', false);
     if (null !== $post_id) {
         $file_id = $formdata->getValue('post', 'files_fileFileID', 'i', false);
         if ($file_id == 0) {
-            $data_file_name     = '';
+            $data_file_name = '';
             $data_file_mimetype = '';
             $data_file_filetype = '';
         } else {
-            $fileHandler        = xoonips_getOrmHandler('xoonips', 'file');
-            $file_obj           = $fileHandler->get($file_id);
-            $data_file_name     = $file_obj->get('original_file_name', 's');
+            $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
+            $file_obj = $fileHandler->get($file_id);
+            $data_file_name = $file_obj->get('original_file_name', 's');
             $data_file_mimetype = $file_obj->get('mime_type', 's');
-            $file_pathinfo      = pathinfo($data_file_name);
+            $file_pathinfo = pathinfo($data_file_name);
             $data_file_filetype = $file_pathinfo['extension'];
         }
     }
 
     if (isset($data_file_name)) {
         $data_file_name = array(
-            'name'  => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
+            'name' => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
             'value' => $data_file_name,
         );
     } else {
@@ -255,7 +269,7 @@ function xnpfilesGetRegisterBlock()
     }
     if (isset($data_file_mimetype)) {
         $data_file_mimetype = array(
-            'name'  => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
+            'name' => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
             'value' => $data_file_mimetype,
         );
     } else {
@@ -263,7 +277,7 @@ function xnpfilesGetRegisterBlock()
     }
     if (isset($data_file_filetype)) {
         $data_file_filetype = array(
-            'name'  => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
+            'name' => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
             'value' => $data_file_filetype,
         );
     } else {
@@ -290,6 +304,7 @@ function xnpfilesGetRegisterBlock()
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpfilesGetEditBlock($item_id)
@@ -297,27 +312,27 @@ function xnpfilesGetEditBlock($item_id)
     $formdata = xoonips_getUtility('formdata');
 
     // get BasicInformation / Preview / index block
-    $basic     = xnpGetBasicInformationEditBlock($item_id);
-    $index     = xnpGetIndexEditBlock($item_id);
+    $basic = xnpGetBasicInformationEditBlock($item_id);
+    $index = xnpGetIndexEditBlock($item_id);
     $data_file = xnpGetAttachmentEditBlock($item_id, 'files_file');
 
     $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
-    $post_id     = $formdata->getValue('get', 'post_id', 's', false);
+    $post_id = $formdata->getValue('get', 'post_id', 's', false);
     if (null !== $post_id) {
-        $file_id  = $formdata->getValue('post', 'files_fileFileID', 'i', false);
+        $file_id = $formdata->getValue('post', 'files_fileFileID', 'i', false);
         $file_obj = $fileHandler->get($file_id);
     } else {
-        $criteria  = new Criteria('item_id', $item_id);
+        $criteria = new Criteria('item_id', $item_id);
         $file_objs = $fileHandler->getObjects($criteria);
-        $file_obj  = $file_objs[0];
+        $file_obj = $file_objs[0];
     }
-    $data_file_name     = $file_obj->get('original_file_name', 's');
+    $data_file_name = $file_obj->get('original_file_name', 's');
     $data_file_mimetype = $file_obj->get('mime_type', 's');
-    $file_pathinfo      = pathinfo($data_file_name);
+    $file_pathinfo = pathinfo($data_file_name);
     $data_file_filetype = $file_pathinfo['extension'];
     if (isset($data_file_name)) {
         $data_file_name = array(
-            'name'  => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
+            'name' => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
             'value' => $data_file_name,
         );
     } else {
@@ -325,7 +340,7 @@ function xnpfilesGetEditBlock($item_id)
     }
     if (isset($data_file_mimetype)) {
         $data_file_mimetype = array(
-            'name'  => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
+            'name' => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
             'value' => $data_file_mimetype,
         );
     } else {
@@ -333,7 +348,7 @@ function xnpfilesGetEditBlock($item_id)
     }
     if (isset($data_file_filetype)) {
         $data_file_filetype = array(
-            'name'  => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
+            'name' => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
             'value' => $data_file_filetype,
         );
     } else {
@@ -366,6 +381,7 @@ function xnpfilesGetEditBlock($item_id)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpfilesGetConfirmBlock($item_id)
@@ -373,32 +389,32 @@ function xnpfilesGetConfirmBlock($item_id)
     $formdata = xoonips_getUtility('formdata');
     $textutil = xoonips_getUtility('text');
     // get BasicInformation / Preview / index block
-    $basic     = xnpGetBasicInformationConfirmBlock($item_id);
-    $index     = xnpGetIndexConfirmBlock($item_id);
+    $basic = xnpGetBasicInformationConfirmBlock($item_id);
+    $index = xnpGetIndexConfirmBlock($item_id);
     $file_file = $formdata->getFile('files_file', false);
     $data_file = xnpGetAttachmentConfirmBlock($item_id, 'files_file');
-    $file_id   = $formdata->getValue('post', 'files_fileFileID', 'i', false);
+    $file_id = $formdata->getValue('post', 'files_fileFileID', 'i', false);
     // get detail information
     if (null === $file_file && $file_id == 0) {
-        $data_file_name     = '';
+        $data_file_name = '';
         $data_file_mimetype = '';
         $data_file_filetype = '';
     } else {
         if (null === $file_file) {
-            $fileHandler        = xoonips_getOrmHandler('xoonips', 'file');
-            $file_obj           = $fileHandler->get($file_id);
-            $data_file_name     = $file_obj->get('original_file_name', 's');
+            $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
+            $file_obj = $fileHandler->get($file_id);
+            $data_file_name = $file_obj->get('original_file_name', 's');
             $data_file_mimetype = $file_obj->get('mime_type', 's');
         } else {
-            $data_file_name     = $file_file['name'];
+            $data_file_name = $file_file['name'];
             $data_file_mimetype = $file_file['type'];
         }
-        $file_pathinfo      = pathinfo($data_file_name);
+        $file_pathinfo = pathinfo($data_file_name);
         $data_file_filetype = $file_pathinfo['extension'];
     }
     if (xnpHasWithout($basic) || xnpHasWithout($data_file)) {
         global $system_message;
-        $system_message = $system_message . "\n<br /><font color='#ff0000'>" . _MD_XOONIPS_ITEM_WARNING_FIELD_TRIM . '</font><br />';
+        $system_message = $system_message."\n<br /><font color='#ff0000'>"._MD_XOONIPS_ITEM_WARNING_FIELD_TRIM.'</font><br />';
     }
 
     // set to template
@@ -419,18 +435,20 @@ function xnpfilesGetConfirmBlock($item_id)
 }
 
 /** check DetailInformation input
- * called from confirm/registered page
+ * called from confirm/registered page.
+ *
  * @param $message
+ *
  * @return bool
  */
 function xnpfilesCheckRegisterParameters($message)
 {
-    $xnpsid            = $_SESSION['XNPSID'];
-    $formdata          = xoonips_getUtility('formdata');
-    $messages          = array();
-    $files_file        = $formdata->getFile('files_file', false);
-    $file_id           = $formdata->getValue('post', 'files_fileFileID', 'i', false);
-    $title             = $formdata->getValue('post', 'title', 's', false);
+    $xnpsid = $_SESSION['XNPSID'];
+    $formdata = xoonips_getUtility('formdata');
+    $messages = array();
+    $files_file = $formdata->getFile('files_file', false);
+    $file_id = $formdata->getValue('post', 'files_fileFileID', 'i', false);
+    $title = $formdata->getValue('post', 'title', 's', false);
     $xoonipsCheckedXID = $formdata->getValue('post', 'xoonipsCheckedXID', 's', false);
 
     if (empty($file_id) && empty($files_file['name'])) {
@@ -443,8 +461,8 @@ function xnpfilesCheckRegisterParameters($message)
         if ($title == XNPFILES_ITEM_TITLE_EMPTY_MAGIC) {
             if (null === $files_file) {
                 $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
-                $file_obj    = $fileHandler->get($file_id);
-                $file_name   = $file_obj->get('original_file_name', 's');
+                $file_obj = $fileHandler->get($file_id);
+                $file_name = $file_obj->get('original_file_name', 's');
             } else {
                 $file_name = $files_file['name'];
             }
@@ -456,7 +474,7 @@ function xnpfilesCheckRegisterParameters($message)
     }
 
     // require Readme, License and Rights if register to public indexes
-    $xids    = explode(',', $xoonipsCheckedXID);
+    $xids = explode(',', $xoonipsCheckedXID);
     $indexes = array();
     if ($xids[0] != $xoonipsCheckedXID) {
         foreach ($xids as $i) {
@@ -464,8 +482,8 @@ function xnpfilesCheckRegisterParameters($message)
             if (xnp_get_index($xnpsid, $i, $index) == RES_OK) {
                 $indexes[] = $index;
             } else {
-                $messages[] = '<font color=\'#ff0000\'>' . xnp_get_last_error_string() . '</font>';
-                $result     = false;
+                $messages[] = '<font color=\'#ff0000\'>'.xnp_get_last_error_string().'</font>';
+                $result = false;
                 break;
             }
         }
@@ -473,13 +491,16 @@ function xnpfilesCheckRegisterParameters($message)
     if (count($messages) == 0) {
         return true;
     }
-    $message = "<br />\n" . implode("<br />\n", $messages);
+    $message = "<br />\n".implode("<br />\n", $messages);
+
     return false;
 }
 
 /**
- * check DetailInformation input
+ * check DetailInformation input.
+ *
  * @param $message
+ *
  * @return bool
  */
 function xnpfilesCheckEditParameters($message)
@@ -489,6 +510,7 @@ function xnpfilesCheckEditParameters($message)
 
 /**
  * @param $item_id
+ *
  * @return bool
  */
 function xnpfilesInsertItem($item_id)
@@ -500,7 +522,7 @@ function xnpfilesInsertItem($item_id)
 
     // register BasicInformation, Index, Attachment
     $item_id = 0;
-    $result  = xnpInsertBasicInformation($item_id);
+    $result = xnpInsertBasicInformation($item_id);
     if ($result) {
         $result = xnpUpdateIndex($item_id);
         if ($result) {
@@ -520,21 +542,22 @@ function xnpfilesInsertItem($item_id)
     }
 
     // register Detail Information
-    $file_id       = $formdata->getValue('post', 'files_fileFileID', 'i', false);
-    $fileHandler   = xoonips_getOrmHandler('xoonips', 'file');
-    $file_obj      = $fileHandler->get($file_id);
-    $file_name     = $file_obj->get('original_file_name');
+    $file_id = $formdata->getValue('post', 'files_fileFileID', 'i', false);
+    $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
+    $file_obj = $fileHandler->get($file_id);
+    $file_name = $file_obj->get('original_file_name');
     $file_mimetype = $file_obj->get('mime_type');
     $file_pathinfo = pathinfo($file_name);
-    $file_type     = $file_pathinfo['extension'];
+    $file_type = $file_pathinfo['extension'];
     $detailHandler = xoonips_getOrmHandler('xnpfiles', 'item_detail');
-    $detail_obj    = $detailHandler->create();
+    $detail_obj = $detailHandler->create();
     $detail_obj->set('files_id', $item_id);
     $detail_obj->set('data_file_name', $file_name);
     $detail_obj->set('data_file_mimetype', $file_mimetype);
     $detail_obj->set('data_file_filetype', $file_type);
     if (!$detailHandler->insert($detail_obj)) {
         echo 'cannot insert item_detail';
+
         return false;
     }
 
@@ -543,13 +566,14 @@ function xnpfilesInsertItem($item_id)
 
 /**
  * @param $item_id
+ *
  * @return bool
  */
 function xnpfilesUpdateItem($item_id)
 {
     global $xoopsDB;
     $formdata = xoonips_getUtility('formdata');
-    $xnpsid   = $_SESSION['XNPSID'];
+    $xnpsid = $_SESSION['XNPSID'];
 
     // edit BasicInformation, Index, Preview, Attachment
     $result = xnpUpdateBasicInformation($item_id);
@@ -582,22 +606,24 @@ function xnpfilesUpdateItem($item_id)
     }
 
     // update item detail information
-    $file_id       = $formdata->getValue('post', 'files_fileFileID', 'i', false);
-    $fileHandler   = xoonips_getOrmHandler('xoonips', 'file');
-    $file_obj      = $fileHandler->get($file_id);
-    $file_name     = $file_obj->get('original_file_name');
+    $file_id = $formdata->getValue('post', 'files_fileFileID', 'i', false);
+    $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
+    $file_obj = $fileHandler->get($file_id);
+    $file_name = $file_obj->get('original_file_name');
     $file_mimetype = $file_obj->get('mime_type');
     $file_pathinfo = pathinfo($file_name);
-    $file_type     = $file_pathinfo['extension'];
+    $file_type = $file_pathinfo['extension'];
     $detailHandler = xoonips_getOrmHandler('xnpfiles', 'item_detail');
-    $detail_obj    = $detailHandler->get($item_id);
+    $detail_obj = $detailHandler->get($item_id);
     $detail_obj->set('data_file_name', $file_name);
     $detail_obj->set('data_file_mimetype', $file_mimetype);
     $detail_obj->set('data_file_filetype', $file_type);
     if (!$detailHandler->insert($detail_obj)) {
         echo 'cannot insert item_detail';
+
         return false;
     }
+
     return true;
 }
 
@@ -605,6 +631,7 @@ function xnpfilesUpdateItem($item_id)
  * @param $wheres
  * @param $join
  * @param $keywords
+ *
  * @return bool
  */
 function xnpfilesGetDetailInformationQuickSearchQuery(&$wheres, &$join, $keywords)
@@ -618,6 +645,7 @@ function xnpfilesGetDetailInformationQuickSearchQuery(&$wheres, &$join, $keyword
                                         "$data_table.data_file_mimetype",
                                         "$data_table.data_file_filetype",
                                     ), $keywords);
+
     return true;
 }
 
@@ -631,24 +659,24 @@ function xnpfilesGetAdvancedSearchQuery(&$where, &$join)
     $formdata = xoonips_getUtility('formdata');
 
     $basic_table = $xoopsDB->prefix('xoonips_item_basic');
-    $data_table  = $xoopsDB->prefix('xnpfiles_item_detail');
-    $file_table  = $xoopsDB->prefix('xoonips_file');
+    $data_table = $xoopsDB->prefix('xnpfiles_item_detail');
+    $file_table = $xoopsDB->prefix('xoonips_file');
 
-    $wheres                      = array();
-    $joins                       = array();
+    $wheres = array();
+    $joins = array();
     $xnpfiles_data_file_filetype = $formdata->getValue('post', 'xnpfiles_data_file_filetype', 's', false);
-    $data_file_name              = $formdata->getValue('post', 'data_file_name', 's', false);
-    $w                           = xnpGetBasicInformationAdvancedSearchQuery('xnpfiles');
+    $data_file_name = $formdata->getValue('post', 'data_file_name', 's', false);
+    $w = xnpGetBasicInformationAdvancedSearchQuery('xnpfiles');
     if ($w) {
         $wheres[] = $w;
     }
     if (!empty($xnpfiles_data_file_filetype)) {
-        $wheres[] = $data_table . '.data_file_filetype = \'' . addslashes($xnpfiles_data_file_filetype) . '\'';
+        $wheres[] = $data_table.'.data_file_filetype = \''.addslashes($xnpfiles_data_file_filetype).'\'';
     }
     if (!empty($data_file_name)) {
-        $wheres[] = $data_table . '.data_file_name = \'' . addslashes($data_file_name) . '\'';
+        $wheres[] = $data_table.'.data_file_name = \''.addslashes($data_file_name).'\'';
     }
-    $w = xnpGetKeywordQuery($data_table . '.data_file_mimetype', 'data_file_mimetype');
+    $w = xnpGetKeywordQuery($data_table.'.data_file_mimetype', 'data_file_mimetype');
     if ($w) {
         $wheres[] = $w;
     }
@@ -658,7 +686,7 @@ function xnpfilesGetAdvancedSearchQuery(&$where, &$join)
             if ($w != '') {
                 $w .= ' or ';
             }
-            $w .= $data_table . '.data_file_filetype = \'' . substr($key, 19) . '\'';
+            $w .= $data_table.'.data_file_filetype = \''.substr($key, 19).'\'';
         }
     }
     if ($w) {
@@ -666,23 +694,24 @@ function xnpfilesGetAdvancedSearchQuery(&$where, &$join)
     }
 
     $where = implode(' and ', $wheres);
-    $join  = implode(' ', $joins);
+    $join = implode(' ', $joins);
 }
 
 /**
  * @param $search_var
+ *
  * @return mixed|string|void
  */
 function xnpfilesGetAdvancedSearchBlock($search_var)
 {
     // get BasicInformation / Preview / IndexKeywords block
-    $basic              = xnpGetBasicInformationAdvancedSearchBlock('xnpfiles', $search_var);
-    $data_file_name     = xnpfilesGetAttachmentFilenameAdvancedSearchBlock('data_file_name');
+    $basic = xnpGetBasicInformationAdvancedSearchBlock('xnpfiles', $search_var);
+    $data_file_name = xnpfilesGetAttachmentFilenameAdvancedSearchBlock('data_file_name');
     $data_file_mimetype = xnpfilesGetAttachmentMimetypeAdvancedSearchBlock('data_file_mimetype');
     $data_file_filetype = xnpfilesGetAttachmentFiletypeAdvancedSearchBlock('data_file_filetype');
-    $search_var[]       = 'data_file_mimetype';
-    $search_var[]       = 'data_file_filetype';
-    $search_var[]       = 'xnpfiles_data_file';
+    $search_var[] = 'data_file_mimetype';
+    $search_var[] = 'data_file_filetype';
+    $search_var[] = 'xnpfiles_data_file';
 
     // set to template
     global $xoopsTpl;
@@ -703,20 +732,23 @@ function xnpfilesGetAdvancedSearchBlock($search_var)
 
 /**
  * @param $name
+ *
  * @return array
  */
 function xnpfilesGetAttachmentFilenameAdvancedSearchBlock($name)
 {
     // create html
     $html = "<input type='text' name='${name}' value='' />";
+
     return array(
-        'name'  => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
-        'value' => $html
+        'name' => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
+        'value' => $html,
     );
 }
 
 /**
  * @param $name
+ *
  * @return array
  */
 function xnpfilesGetAttachmentMimetypeAdvancedSearchBlock($name)
@@ -730,24 +762,26 @@ function xnpfilesGetAttachmentMimetypeAdvancedSearchBlock($name)
 				</select>';
     } else {
         $mimetypes = $files;
-        $html      = '<select name="data_file_mimetype">';
+        $html = '<select name="data_file_mimetype">';
         $html
             .= '<option value="">Any</option>
 		';
         foreach ($mimetypes as $key => $value) {
-            $html .= '<option label="' . $value[0] . '" value="' . $value[0] . '">' . $value[0] . '</option>
+            $html .= '<option label="'.$value[0].'" value="'.$value[0].'">'.$value[0].'</option>
 			';
         }
         $html .= '</select>';
     }
+
     return array(
-        'name'  => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
-        'value' => $html
+        'name' => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
+        'value' => $html,
     );
 }
 
 /**
  * @param $name
+ *
  * @return array
  */
 function xnpfilesGetAttachmentFiletypeAdvancedSearchBlock($name)
@@ -762,20 +796,20 @@ function xnpfilesGetAttachmentFiletypeAdvancedSearchBlock($name)
 				</select>';
     } else {
         $mimetypes = $files;
-        $html      = '<table><tr>';
+        $html = '<table><tr>';
         $html
             .= '<td><input type="checkbox" name="data_file_filetype_Any" value="any"/>Any</td>
 		';
         $cnt = 1;
         foreach ($mimetypes as $key => $value) {
             if ($value[0] == '') {
-                $html .= '<td><input type="checkbox" name="data_file_filetype_' . $value[0] . '"/>none</td>
+                $html .= '<td><input type="checkbox" name="data_file_filetype_'.$value[0].'"/>none</td>
 				';
             } else {
-                $html .= '<td><input type="checkbox" name="data_file_filetype_' . $value[0] . '"/>' . $value[0] . '</td>
+                $html .= '<td><input type="checkbox" name="data_file_filetype_'.$value[0].'"/>'.$value[0].'</td>
 				';
             }
-            $cnt++;
+            ++$cnt;
             if ($cnt >= 10) {
                 $html .= '</tr><tr>';
                 $cnt = 0;
@@ -783,14 +817,16 @@ function xnpfilesGetAttachmentFiletypeAdvancedSearchBlock($name)
         }
         $html .= '</tr></table>';
     }
+
     return array(
-        'name'  => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
-        'value' => $html
+        'name' => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL,
+        'value' => $html,
     );
 }
 
 /**
  * @param $iids
+ *
  * @return float|sum
  */
 function xnpfilesGetDetailInformationTotalSize($iids)
@@ -799,8 +835,7 @@ function xnpfilesGetDetailInformationTotalSize($iids)
 }
 
 /**
- *
- * write item detail information xml form export
+ * write item detail information xml form export.
  *
  * @see xnpExportItem
  *
@@ -808,6 +843,7 @@ function xnpfilesGetDetailInformationTotalSize($iids)
  * @param resource $fhdl        output file handle
  * @param int      $item_id     target item id
  * @param bool     $attachment  true if export attachment or image file
+ *
  * @return bool false if failure
  */
 function xnpfilesExportItem($export_path, $fhdl, $item_id, $attachment)
@@ -819,15 +855,15 @@ function xnpfilesExportItem($export_path, $fhdl, $item_id, $attachment)
     }
 
     // get DetailInformation
-    $result = $xoopsDB->query('select * from ' . $xoopsDB->prefix('xnpfiles_item_detail') . " where files_id=$item_id");
+    $result = $xoopsDB->query('select * from '.$xoopsDB->prefix('xnpfiles_item_detail')." where files_id=$item_id");
     if (!$result) {
         return null;
     }
     $detail = $xoopsDB->fetchArray($result);
     if (!fwrite($fhdl,
-                "<detail id=\"${item_id}\">\n" . '<data_file_name>' . htmlspecialchars($detail['data_file_name'], ENT_QUOTES) . "</data_file_name>\n"
-                . '<data_file_mimetype>' . htmlspecialchars($detail['data_file_mimetype'], ENT_QUOTES) . "</data_file_mimetype>\n"
-                . '<data_file_filetype>' . htmlspecialchars($detail['data_file_filetype'], ENT_QUOTES) . "</data_file_filetype>\n")
+                "<detail id=\"${item_id}\">\n".'<data_file_name>'.htmlspecialchars($detail['data_file_name'], ENT_QUOTES)."</data_file_name>\n"
+                .'<data_file_mimetype>'.htmlspecialchars($detail['data_file_mimetype'], ENT_QUOTES)."</data_file_mimetype>\n"
+                .'<data_file_filetype>'.htmlspecialchars($detail['data_file_filetype'], ENT_QUOTES)."</data_file_filetype>\n")
     ) {
         return false;
     }
@@ -843,11 +879,12 @@ function xnpfilesExportItem($export_path, $fhdl, $item_id, $attachment)
 
 /**
  * @param $item_id
+ *
  * @return array
  */
 function xnpfilesGetModifiedFields($item_id)
 {
-    $ret      = array();
+    $ret = array();
     $formdata = xoonips_getUtility('formdata');
 
     $basic = xnpGetBasicInformationArray($item_id);
@@ -860,11 +897,13 @@ function xnpfilesGetModifiedFields($item_id)
             array_push($ret, _MD_XNPFILES_DATA_FILE_LABEL);
         }
     }
+
     return $ret;
 }
 
 /**
  * @param $itemtype
+ *
  * @return mixed|string|void
  */
 function xnpfilesGetTopBlock($itemtype)
@@ -876,6 +915,7 @@ function xnpfilesGetTopBlock($itemtype)
 /**
  * @param $metadataPrefix
  * @param $item_id
+ *
  * @return bool
  */
 function xnpfilesSupportMetadataFormat($metadataPrefix, $item_id)
@@ -883,12 +923,14 @@ function xnpfilesSupportMetadataFormat($metadataPrefix, $item_id)
     if ($metadataPrefix === 'oai_dc' || $metadataPrefix === 'junii2') {
         return true;
     }
+
     return false;
 }
 
 /**
  * @param $prefix
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpfilesGetMetadata($prefix, $item_id)
@@ -897,7 +939,7 @@ function xnpfilesGetMetadata($prefix, $item_id)
     $mydirname = basename($mydirpath);
     if (!in_array($prefix, array(
         'oai_dc',
-        'junii2'
+        'junii2',
     ))
     ) {
         return false;
@@ -905,13 +947,13 @@ function xnpfilesGetMetadata($prefix, $item_id)
 
     // detail information
     $detailHandler = xoonips_getOrmHandler($mydirname, 'item_detail');
-    $detail_obj    = $detailHandler->get($item_id);
+    $detail_obj = $detailHandler->get($item_id);
     if (empty($detail_obj)) {
         return false;
     }
     $detail = $detail_obj->getArray();
     // basic information
-    $basic                             = xnpGetBasicInformationArray($item_id);
+    $basic = xnpGetBasicInformationArray($item_id);
     $basic['publication_date_iso8601'] = xnpISO8601($basic['publication_year'], $basic['publication_month'], $basic['publication_mday']);
     // indexes
     $indexes = array();
@@ -923,10 +965,10 @@ function xnpfilesGetMetadata($prefix, $item_id)
         }
     }
     // files
-    $files       = array();
-    $mimetypes   = array();
+    $files = array();
+    $mimetypes = array();
     $fileHandler = xoonips_gethandler('xoonips', 'file');
-    $files       = $fileHandler->getFilesInfo($item_id, 'files_file');
+    $files = $fileHandler->getFilesInfo($item_id, 'files_file');
     foreach ($files as $file) {
         if (!in_array($file['mime_type'], $mimetypes)) {
             $mimetypes[] = $file['mime_type'];
@@ -934,28 +976,28 @@ function xnpfilesGetMetadata($prefix, $item_id)
     }
     // related to
     $related_toHandler = xoonips_getOrmHandler('xoonips', 'related_to');
-    $related_to_ids    = $related_toHandler->getChildItemIds($item_id);
-    $related_tos       = array();
+    $related_to_ids = $related_toHandler->getChildItemIds($item_id);
+    $related_tos = array();
     foreach ($related_to_ids as $related_to_id) {
         $related_tos[] = array(
-            'item_id'  => $related_to_id,
-            'item_url' => XOOPS_URL . '/modules/xoonips/detail.php?item_id=' . $related_to_id
+            'item_id' => $related_to_id,
+            'item_url' => XOOPS_URL.'/modules/xoonips/detail.php?item_id='.$related_to_id,
         );
     }
     // repository configs
-    $xconfigHandler          = xoonips_getOrmHandler('xoonips', 'config');
+    $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
     $myxoopsConfigMetaFooter = xoonips_get_xoops_configs(XOOPS_CONF_METAFOOTER);
-    $repository              = array(
+    $repository = array(
         'download_file_compression' => $xconfigHandler->getValue('download_file_compression'),
-        'nijc_code'                 => $xconfigHandler->getValue('repository_nijc_code'),
-        'publisher'                 => $xconfigHandler->getValue('repository_publisher'),
-        'institution'               => $xconfigHandler->getValue('repository_institution'),
-        'meta_author'               => $myxoopsConfigMetaFooter['meta_author']
+        'nijc_code' => $xconfigHandler->getValue('repository_nijc_code'),
+        'publisher' => $xconfigHandler->getValue('repository_publisher'),
+        'institution' => $xconfigHandler->getValue('repository_institution'),
+        'meta_author' => $myxoopsConfigMetaFooter['meta_author'],
     );
     // assign template
     global $xoopsTpl;
-    $tpl                = new XoopsTpl();
-    $tpl->plugins_dir[] = XOONIPS_PATH . '/class/smarty/plugins';
+    $tpl = new XoopsTpl();
+    $tpl->plugins_dir[] = XOONIPS_PATH.'/class/smarty/plugins';
     $tpl->assign($xoopsTpl->get_template_vars());
     $tpl->assign('basic', $basic);
     $tpl->assign('detail', $detail);
@@ -964,6 +1006,7 @@ function xnpfilesGetMetadata($prefix, $item_id)
     $tpl->assign('mimetypes', $mimetypes);
     $tpl->assign('related_tos', $related_tos);
     $tpl->assign('repository', $repository);
-    $xml = $tpl->fetch('db:' . $mydirname . '_oaipmh_' . $prefix . '.xml');
+    $xml = $tpl->fetch('db:'.$mydirname.'_oaipmh_'.$prefix.'.xml');
+
     return $xml;
 }

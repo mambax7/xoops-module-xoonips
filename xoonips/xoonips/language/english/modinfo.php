@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.18.2.1.2.4 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,7 +25,6 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 /* constant strings
- * $Revision: 1.18.2.1.2.4 $
  */
 
 // _MI_<MODULENAME>_<STRINGNAME>
@@ -49,38 +48,38 @@ define('_MI_XOONIPS_NAME', 'XooNIps');
 define('_MI_XOONIPS_DESC', 'XooNIps Module');
 
 //submenu labels
-define('_MI_XOONIPS_ITEM_SMNAME1', 'Register Item');//
-define('_MI_XOONIPS_ITEM_SMNAME2', 'Certify Item');//
-define('_MI_XOONIPS_ITEM_SMNAME3', 'Advanced Search');//
+define('_MI_XOONIPS_ITEM_SMNAME1', 'Register Item');
+define('_MI_XOONIPS_ITEM_SMNAME2', 'Certify Item');
+define('_MI_XOONIPS_ITEM_SMNAME3', 'Advanced Search');
 
-define('_MI_XOONIPS_ITEM_BNAME1', 'XooNIps Search');//
+define('_MI_XOONIPS_ITEM_BNAME1', 'XooNIps Search');
 
-define('_MI_XOONIPS_MODERATOR_BNAME2', 'XooNIps Moderator main menu');//
-
-//submenu labels
-define('_MI_XOONIPS_MODERATOR_SMNAME1', 'Edit Groups');//
-define('_MI_XOONIPS_MODERATOR_SMNAME2', 'Certify users');//
-
-define('_MI_XOONIPS_INDEX_BNAME1', 'Index Tree');//
+define('_MI_XOONIPS_MODERATOR_BNAME2', 'XooNIps Moderator main menu');
 
 //submenu labels
-define('_MI_XOONIPS_INDEX_SMNAME1', 'Edit Private Tree');//
-define('_MI_XOONIPS_INDEX_SMNAME2', 'Edit Group Tree');//
-define('_MI_XOONIPS_INDEX_SMNAME3', 'Edit Public Tree');//
+define('_MI_XOONIPS_MODERATOR_SMNAME1', 'Edit Groups');
+define('_MI_XOONIPS_MODERATOR_SMNAME2', 'Certify users');
+
+define('_MI_XOONIPS_INDEX_BNAME1', 'Index Tree');
+
+//submenu labels
+define('_MI_XOONIPS_INDEX_SMNAME1', 'Edit Private Tree');
+define('_MI_XOONIPS_INDEX_SMNAME2', 'Edit Group Tree');
+define('_MI_XOONIPS_INDEX_SMNAME3', 'Edit Public Tree');
 
 // Names of admin menu items
 define('_MI_XOONIPS_CONFIG_DSN', 'DSN');
 define('_MI_XOONIPS_CONFIG_DSN_DESC', ' ODBC DSN');
 
-define('_MI_XOONIPS_ACCOUNT_BNAME1', 'XooNIps Login');//
-define('_MI_XOONIPS_ACCOUNT_BNAME2', 'XooNIps User Menu');//
-define('_MI_XOONIPS_ACCOUNT_BNAME3', 'XooNIps Group Admin Menu');//
-define('_MI_XOONIPS_ACCOUNT_BNAME4', 'XooNIps Moderator Menu');//
+define('_MI_XOONIPS_ACCOUNT_BNAME1', 'XooNIps Login');
+define('_MI_XOONIPS_ACCOUNT_BNAME2', 'XooNIps User Menu');
+define('_MI_XOONIPS_ACCOUNT_BNAME3', 'XooNIps Group Admin Menu');
+define('_MI_XOONIPS_ACCOUNT_BNAME4', 'XooNIps Moderator Menu');
 
 //submenu labels
-define('_MI_XOONIPS_ACCOUNT_SMNAME1', 'View Account');//
-define('_MI_XOONIPS_ACCOUNT_SMNAME2', 'Edit Account');//
-define('_MI_XOONIPS_ACCOUNT_SMNAME4', 'Edit Group');//
+define('_MI_XOONIPS_ACCOUNT_SMNAME1', 'View Account');
+define('_MI_XOONIPS_ACCOUNT_SMNAME2', 'Edit Account');
+define('_MI_XOONIPS_ACCOUNT_SMNAME4', 'Edit Group');
 
 //administrator menu
 define('_MI_XOONIPS_ADMENU1', 'System Configuration');
@@ -144,7 +143,7 @@ define('_MI_XOONIPS_USER_GROUP_ITEM_CERTIFY_REQUEST_NOTIFYDSC', 'Receive notific
 define('_MI_XOONIPS_USER_GROUP_ITEM_CERTIFY_REQUEST_NOTIFYSBJ', 'Certify group index');
 
 //itemtype block labels
-define('_MI_XOONIPS_ITEMTYPE_BNAME1', 'Registered Itemtypes');//
+define('_MI_XOONIPS_ITEMTYPE_BNAME1', 'Registered Itemtypes');
 
 define('_MI_XOONIPS_RANKING', 'XooNIps Ranking');
 define('_MI_XOONIPS_RANKING_NEW', 'XooNIps Update');

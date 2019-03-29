@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.4 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,8 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 /**
- * factory class to create XooNIpsXmlRpcViewElement
- *
+ * factory class to create XooNIpsXmlRpcViewElement.
  */
 class XooNIpsXmlRpcItemViewFactory
 {
@@ -39,7 +38,7 @@ class XooNIpsXmlRpcItemViewFactory
     }
 
     /**
-     * return XooNIpsXmlRpcItemViewFactory instance
+     * return XooNIpsXmlRpcItemViewFactory instance.
      *
      * @return XooNIpsXmlRpcItemViewFactory
      */
@@ -47,52 +46,55 @@ class XooNIpsXmlRpcItemViewFactory
     {
         static $singleton = null;
         if (!isset($singleton)) {
-            $singleton = new XooNIpsXmlRpcItemViewFactory();
+            $singleton = new self();
         }
+
         return $singleton;
     }
 
     /**
-     * return XooNIpsXmlRpcItemView corresponding to $logic and $item(itemtype)
+     * return XooNIpsXmlRpcItemView corresponding to $logic and $item(itemtype).
      *
-     * @param string $logic           logic name
+     * @param string $logic logic name
      * @param        XooNIpsItemCompo item object
      * @retval XooNIpsXmlRpcItemViewElement corresponding to $logic
      * @retval false unknown logic or unknown item
+     *
      * @return bool
      */
     public function create($logic, $item)
     {
         static $falseVar = false;
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $basic            = $item->getVar('basic');
-        $itemtype         = $item_typeHandler->get($basic->get('item_type_id'));
+        $basic = $item->getVar('basic');
+        $itemtype = $item_typeHandler->get($basic->get('item_type_id'));
         if (!$itemtype) {
             return $falseVar;
         }
-        //
+
         $name = $itemtype->get('name');
-        //
-        $include_file = XOOPS_ROOT_PATH . "/modules/${name}/class/xmlrpc/view/" . strtolower($logic) . '.class.php';
+
+        $include_file = XOOPS_ROOT_PATH."/modules/${name}/class/xmlrpc/view/".strtolower($logic).'.class.php';
         if (file_exists($include_file)) {
-            include_once $include_file;
+            require_once $include_file;
         } else {
             return $falseVar;
         }
-        //
+
         if (strncmp('xnp', $name, 3) == 0) {
-            $tok   = substr($name, 3);
-            $class = 'XNP' . ucfirst($tok) . 'XmlRpcItemView' . ucfirst($logic);
-            $ret   = new $class($item);
+            $tok = substr($name, 3);
+            $class = 'XNP'.ucfirst($tok).'XmlRpcItemView'.ucfirst($logic);
+            $ret = new $class($item);
+
             return $ret;
         }
+
         return $falseVar;
     }
 }
 
 /**
- * factory class to create XooNIpsXmlRpcViewElement
- *
+ * factory class to create XooNIpsXmlRpcViewElement.
  */
 class XooNIpsXmlRpcViewFactory
 {
@@ -104,7 +106,7 @@ class XooNIpsXmlRpcViewFactory
     }
 
     /**
-     * return XooNIpsXmlRpcViewFactory instance
+     * return XooNIpsXmlRpcViewFactory instance.
      *
      * @return XooNIpsXmlRpcViewFactory
      */
@@ -112,29 +114,32 @@ class XooNIpsXmlRpcViewFactory
     {
         static $singleton = null;
         if (!isset($singleton)) {
-            $singleton = new XooNIpsXmlRpcViewFactory();
+            $singleton = new self();
         }
+
         return $singleton;
     }
 
     /**
-     * return XooNIpsXmlRpcViewElement corresponding to $logic
+     * return XooNIpsXmlRpcViewElement corresponding to $logic.
      *
-     * @param string $logic                logic name
+     * @param string $logic logic name
      * @param        XooNIpsXmlRpcResponse response of logic
      * @retval XooNIpsXmlRpcViewElement corresponding to $logic
      * @retval false unknown logic
+     *
      * @return mixed
      */
     public function create($logic, $response)
     {
-        $lc_logic     = strtolower(trim($logic));
-        $include_file = XOOPS_ROOT_PATH . "/modules/xoonips/class/xmlrpc/view/{$lc_logic}.class.php";
+        $lc_logic = strtolower(trim($logic));
+        $include_file = XOOPS_ROOT_PATH."/modules/xoonips/class/xmlrpc/view/{$lc_logic}.class.php";
         if (file_exists($include_file)) {
             require_once $include_file;
         }
-        $class = 'XooNIpsXmlRpcView' . ucfirst(trim($logic));
-        $view  = new $class($response);
+        $class = 'XooNIpsXmlRpcView'.ucfirst(trim($logic));
+        $view = new $class($response);
+
         return $view;
     }
 }

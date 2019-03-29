@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.11 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,17 +25,16 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/logic.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/logic.class.php';
 
 /**
- *
- * subclass of XooNIpsLogic(searchItem)
- *
+ * subclass of XooNIpsLogic(searchItem).
  */
 class XooNIpsLogicSearchItem extends XooNIpsLogic
 {
     /**
      * @param $query
+     *
      * @return bool
      */
     public function getSearchCacheIdByQuery($query)
@@ -43,6 +42,7 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
         if (isset($_SESSION['xoonips_search_cache']) && isset($_SESSION['xoonips_search_cache']["_$query"])) {
             return $_SESSION['xoonips_search_cache']["_$query"];
         }
+
         return false;
     }
 
@@ -66,13 +66,14 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
         foreach (array_keys($_SESSION['xoonips_search_cache']) as $key) {
             if ($_SESSION['xoonips_search_cache'][$key] == $search_cache_id) {
                 unset($_SESSION['xoonips_search_cache'][$key]);
+
                 return;
             }
         }
     }
 
     /**
-     * execute searchItem
+     * execute searchItem.
      *
      * @param[in]  $vars[0] session ID
      * @param[in]  $vars[1] query string
@@ -86,19 +87,20 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
      * @param[out] $response->success[n] search result
      * @param[out] $response->success[n]['id'] item id of matched item
      * @param[out] $response->success[n]['matchfor'] bit flag represents what part of item matched
+     *
      * @return bool
      */
     public function execute($vars, $response)
     {
         // parameter check
-        $error =  $response->getError();
+        $error = $response->getError();
         if (count($vars) > 6) {
             $error->add(XNPERR_EXTRA_PARAM);
         }
         if (count($vars) < 6) {
             $error->add(XNPERR_MISSING_PARAM);
         }
-        //
+
         if (isset($vars[0]) && strlen($vars[0]) > 32) {
             $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
         }
@@ -106,7 +108,7 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
         if (count($ar) < 2
             || !in_array($ar[0], array(
                 'index',
-                'keyword'
+                'keyword',
             ))
         ) {
             $error->add(XNPERR_INVALID_PARAM, 'bad query parameter 2');
@@ -122,35 +124,37 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
             'ext_id',
             'last_modified_date',
             'registration_date',
-            'creation_date'
+            'creation_date',
         ))
         ) {
             $error->add(XNPERR_INVALID_PARAM, 'unknown sort key parameter 4');
         }
         if (!in_array($vars[5], array(
             'asc',
-            'desc'
+            'desc',
         ))
         ) {
             $error->add(XNPERR_INVALID_PARAM, 'unknown sort order parameter 5');
         }
-        //
+
         if ($error->get(0)) {
             // return if parameter error
             $response->setResult(false);
+
             return;
         } else {
             $sessionid = $vars[0];
-            $query     = $vars[1];
-            $start     = $vars[2];
-            $limit     = $vars[3];
-            $sortkey   = $vars[4];
-            $ascdesc   = $vars[5];
+            $query = $vars[1];
+            $start = $vars[2];
+            $limit = $vars[3];
+            $sortkey = $vars[4];
+            $ascdesc = $vars[5];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
+
             return false;
         }
         $response->setResult(false);
@@ -187,21 +191,22 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
                 $criteria->setSort(array(
                                        'publication_year',
                                        'publication_month',
-                                       'publication_mday'
+                                       'publication_mday',
                                    ));
                 break;
 
             default:
                 $error->add(XNPERR_INVALID_PARAM, 'unknown sort key parameter 4');
                 $response->setResult(false);
+
                 return false;
                 break;
         }
 
         // get valid item_type_ids -> $criteria
         $factory = XooNIpsLogicFactory::getInstance();
-        $logic   = $factory->create('getItemTypes');
-        $vars    = array($sessionid);
+        $logic = $factory->create('getItemTypes');
+        $vars = array($sessionid);
         $logic->execute($vars, $response);
         if ($response->getResult() == false) {
             return false;
@@ -212,13 +217,14 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
             $ar = array();
             $response->setSuccess($ar);
             $response->setResult(true);
+
             return true;
         }
         $itemtype_ids = array();
         foreach ($itemtypes as $itemtype) {
             $itemtype_ids[] = $itemtype->get('item_type_id');
         }
-        $criteria->add(new Criteria('item_type_id', '(' . implode(',', $itemtype_ids) . ')', 'IN'));
+        $criteria->add(new Criteria('item_type_id', '('.implode(',', $itemtype_ids).')', 'IN'));
 
         if (substr($query, 0, 6) === 'index:') {
             // index id -> search_cache_items
@@ -226,33 +232,36 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
             if (!ctype_digit($index_id)) {
                 $error->add(XNPERR_INVALID_PARAM, "bad index id(index_id=$index_id)");
                 $response->setResult(false);
+
                 return false;
             }
             $criteria->add(new Criteria('index_id', $index_id));
             $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-            $index        = $indexHandler->get($index_id);
+            $index = $indexHandler->get($index_id);
             if (false == $index) {
                 $error->add(XNPERR_NOT_FOUND, "index not found(index_id=$index_id)");
                 $response->setResult(false);
+
                 return false;
             }
             if (!$indexHandler->getPerm($index_id, $uid, 'read')) {
                 $error->add(XNPERR_ACCESS_FORBIDDEN, "forbidden(index_id=$index_id)");
                 $response->setResult(false);
+
                 return false;
             }
             // xoonips_index_item_link <- $join(xoonips_item_basic) <- $join2($join_sort_table)
             $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-            $join                   = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id');
+            $join = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id');
             if ($join_sort_table) {
                 $join2 = new XooNIpsJoinCriteria($join_sort_table, 'item_id', 'item_id');
                 $join->cascade($join2);
             }
 
-            $index_item_links         =  $index_item_linkHandler->getObjects($criteria, false, '', false, $join);
-            $item_compoHandler        = xoonips_getOrmCompoHandler('xoonips', 'item');
+            $index_item_links = $index_item_linkHandler->getObjects($criteria, false, '', false, $join);
+            $item_compoHandler = xoonips_getOrmCompoHandler('xoonips', 'item');
             $search_cache_itemHandler = xoonips_getOrmHandler('xoonips', 'search_cache_item');
-            $search_cache_items       = array();
+            $search_cache_items = array();
             foreach ($index_item_links as $index_item_link) {
                 if (!$item_compoHandler->getPerm($index_item_link->get('item_id'), $uid, 'read')) {
                     continue;
@@ -266,11 +275,12 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
             }
             $response->setSuccess($search_cache_items);
             $response->setResult(true);
+
             return true;
         } elseif (substr($query, 0, 8) === 'keyword:') {
-            $search_cache_id     = $this->getSearchCacheIdByQuery($query);
+            $search_cache_id = $this->getSearchCacheIdByQuery($query);
             $search_cacheHandler = xoonips_getOrmHandler('xoonips', 'search_cache');
-            $eventlogHandler     = xoonips_getOrmHandler('xoonips', 'event_log');
+            $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
             if ($search_cache_id) {
                 $search_cache = $search_cacheHandler->get($search_cache_id);
                 if ($search_cache === false) {
@@ -291,25 +301,27 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
                                 ETID_REJECT_ITEM,
                                 ETID_TRANSFER_ITEM,
                     );
-                    $c->add(new Criteria('event_type_id', '(' . implode(',', $event_type_ids) . ')', 'in'));
-                    $c->add(new Criteria("timestamp - unix_timestamp('" . $search_cache->get('timestamp') . "')", 0, '>='));
+                    $c->add(new Criteria('event_type_id', '('.implode(',', $event_type_ids).')', 'in'));
+                    $c->add(new Criteria("timestamp - unix_timestamp('".$search_cache->get('timestamp')."')", 0, '>='));
                     $c->setSort('timestamp');
                     $c->setOrder('desc');
                     $c->setLimit(1);
-                    $event_logs =  $eventlogHandler->getObjects($c);
+                    $event_logs = $eventlogHandler->getObjects($c);
                     if (false === $event_logs) {
                         $response->setResult(false);
                         $error->add(XNPERR_SERVER_ERROR, 'cannot get event logs');
+
                         return false;
                     } elseif (!empty($event_logs)) {
                         $search_cache_id = false;
                         // delete old search results from search cache
                         $c = new CriteriaCompo(new Criteria('sess_id', $sessionid));
                         $c->add(new Criteria('unix_timestamp(timestamp)', $event_logs[0]->get('timestamp'), '<'));
-                        $search_caches =  $search_cacheHandler->getObjects($c);
+                        $search_caches = $search_cacheHandler->getObjects($c);
                         if (false === $search_caches) {
                             $response->setResult(false);
                             $error->add(XNPERR_SERVER_ERROR, 'cannot get search cache ids');
+
                             return false;
                         }
                         $search_cache_itemHandler = xoonips_getOrmHandler('xoonips', 'search_cache_item');
@@ -329,14 +341,16 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
                 if (!$search_cacheHandler->insert($search_cache)) {
                     $response->setResult(false);
                     $error->add(XNPERR_SERVER_ERROR, 'cannot create search_cache_id');
+
                     return false;
                 }
                 $search_cache_id = $search_cache->get('search_cache_id');
-                $keyword         = substr($query, 8);
+                $keyword = substr($query, 8);
                 $this->keywordSearch($error, $search_cache_id, $uid, $keyword);
                 if (!$eventlogHandler->recordQuickSearchEvent('all', $keyword)) {
                     $error->add(XNPERR_SERVER_ERROR, 'cannot insert event');
                     $response->setResult(false);
+
                     return false;
                 }
             }
@@ -351,7 +365,7 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
                 $c->add(new Criteria('certify_state', CERTIFIED));
             }
             $groups_users_linkHandler = xoonips_getOrmHandler('xoonips', 'groups_users_link');
-            $links                    =  $groups_users_linkHandler->getObjects(new Criteria('uid', $uid));
+            $links = $groups_users_linkHandler->getObjects(new Criteria('uid', $uid));
             foreach ($links as $link) {
                 $c->add(new Criteria('open_level', OL_GROUP_ONLY), 'OR');
                 $c->add(new Criteria('gid', $link->get('gid')));
@@ -370,7 +384,7 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
             //                              <-  $join2(xoonips_index)
             //                              <-  $join3(xoonips_item_basic)
             //                              <-  $join4($join_sort_table)
-            $join  = new XooNIpsJoinCriteria('xoonips_index_item_link', 'item_id', 'item_id', 'LEFT', 'txil');
+            $join = new XooNIpsJoinCriteria('xoonips_index_item_link', 'item_id', 'item_id', 'LEFT', 'txil');
             $join2 = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'LEFT', 'tx');
             $join3 = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id');
             $join4 = new XooNIpsJoinCriteria($join_sort_table, 'item_id', 'item_id');
@@ -380,16 +394,18 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
                 $join->cascade($join4, 'xoonips_search_cache_item');
             }
             $search_cache_itemHandler = xoonips_getOrmHandler('xoonips', 'search_cache_item');
-            $search_cache_items       =  $search_cache_itemHandler->getObjects($criteria, false, '', false, $join);
+            $search_cache_items = $search_cache_itemHandler->getObjects($criteria, false, '', false, $join);
             if ($search_cache_items === false) {
                 $error->add(XNPERR_INVALID_PARAM, 'cannot get searched item');
                 $response->setResult(false);
+
                 return false;
             }
             $this->putSearchCache($query, $search_cache_id);
 
             $response->setSuccess($search_cache_items);
             $response->setResult(true);
+
             return true;
         } else {
             $error->add(XNPERR_INVALID_PARAM, 'query must begin with index: or keyword:');
@@ -397,6 +413,7 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
 
         if ($error->get()) {
             $response->setResult(false);
+
             return false;
         }
     }
@@ -406,6 +423,7 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
      * @param $search_cache_id
      * @param $uid
      * @param $query
+     *
      * @return string|void
      */
     public function keywordSearch($error, $search_cache_id, $uid, $query)
@@ -413,7 +431,7 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
         $search_cache_itemHandler = xoonips_getOrmHandler('xoonips', 'search_cache_item');
         // search item
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $item_types       =  $item_typeHandler->getObjects(new Criteria('isnull(mid)', 0));
+        $item_types = $item_typeHandler->getObjects(new Criteria('isnull(mid)', 0));
         foreach ($item_types as $item_type) {
             $detail_itemHandler = xoonips_getOrmCompoHandler($item_type->get('name'), 'item');
             if (!$detail_itemHandler) {
@@ -424,6 +442,7 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
                 $item_ids = $detail_itemHandler->search($query, $step, $offset, $uid);
                 if ($item_ids === false) {
                     $error->add(XNPERR_SERVER_ERROR, 'cannot search item');
+
                     return;
                 }
                 foreach ($item_ids as $item_id) {
@@ -435,6 +454,7 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
                     $search_cache_item->setVar('matchfor_file', 0, true);
                     if (!$search_cache_itemHandler->insert($search_cache_item)) {
                         $error->add(XNPERR_SERVER_ERROR, 'cannot get items');
+
                         return;
                     }
                 }
@@ -444,31 +464,34 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
             }
         }
         // search file
-        $step               = 1000;
+        $step = 1000;
         $search_textHandler = xoonips_getOrmHandler('xoonips', 'search_text');
-        $fileHandler        = xoonips_getOrmHandler('xoonips', 'file');
+        $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
         for ($offset = 0; ; $offset += $step) {
             $item_ids = $search_textHandler->search($query, $step, $offset, $uid);
             if ($item_ids === false) {
                 $error->add(XNPERR_SERVER_ERROR, 'cannot search file');
+
                 return;
             }
             if (count($item_ids)) {
                 // update search_cache_item
                 $criteria = new CriteriaCompo();
-                $criteria->add(new Criteria('item_id', '(' . implode(',', $item_ids) . ')', 'in'));
+                $criteria->add(new Criteria('item_id', '('.implode(',', $item_ids).')', 'in'));
                 $criteria->add(new Criteria('search_cache_id', $search_cache_id));
-                $search_cache_items =  $search_cache_itemHandler->getObjects($criteria);
+                $search_cache_items = $search_cache_itemHandler->getObjects($criteria);
                 if ($search_cache_items === false) {
                     $error->add(XNPERR_SERVER_ERROR, 'cannot get search_cache_item');
+
                     return;
                 }
-                $len             = count($search_cache_items);
+                $len = count($search_cache_items);
                 $update_item_ids = array();
-                for ($i = 0; $i < $len; $i++) {
+                for ($i = 0; $i < $len; ++$i) {
                     $search_cache_items[$i]->setVar('matchfor_file', 1, true);
                     if (!$search_cache_itemHandler->insert($search_cache_items[$i])) {
                         $error->add(XNPERR_SERVER_ERROR, 'cannot update search_cache_item');
+
                         return;
                     }
                     $update_item_ids[] = $search_cache_items[$i]->get('item_id');
@@ -484,6 +507,7 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
                     $search_cache_item->setVar('matchfor_file', 1, true);
                     if (!$search_cache_itemHandler->insert($search_cache_item)) {
                         $error->add(XNPERR_SERVER_ERROR, 'cannot insert search_cache_item');
+
                         return;
                     }
                 }
@@ -492,6 +516,7 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
                 break;
             }
         }
+
         return '';
     }
 }

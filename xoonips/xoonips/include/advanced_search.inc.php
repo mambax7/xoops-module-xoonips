@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.13 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,28 +25,26 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/AL.php';
-include_once __DIR__ . '/lib.php';
+require_once __DIR__.'/AL.php';
+require_once __DIR__.'/lib.php';
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-$formdata        = xoonips_getUtility('formdata');
-$checkbox        = $formdata->getValue('both', 'checkbox', 's', false, 'off');
+$formdata = xoonips_getUtility('formdata');
+$checkbox = $formdata->getValue('both', 'checkbox', 's', false, 'off');
 $add_to_index_id = $formdata->getValue('both', 'add_to_index_id', 'i', false, 0);
-$jumpto_url      = $formdata->getValue('both', 'jumpto_url', 's', false, '');
+$jumpto_url = $formdata->getValue('both', 'jumpto_url', 's', false, '');
 
 $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-$itemtypes        =  $item_typeHandler->getObjectsSortByWeight();
+$itemtypes = $item_typeHandler->getObjectsSortByWeight();
 
 // making block, search_var
 $search_blocks = array();
-$search_var    = array();
+$search_var = array();
 foreach ($itemtypes as $itemtype) {
     $modname = $itemtype->get('name');
-    include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype->get('viewphp');
-    $fname = $modname . 'GetAdvancedSearchBlock';
+    require_once XOOPS_ROOT_PATH.'/modules/'.$itemtype->get('viewphp');
+    $fname = $modname.'GetAdvancedSearchBlock';
     if (function_exists($fname)) {
         $search_blocks[] = $fname($search_var);
     }
@@ -56,7 +54,7 @@ if (!isset($itemselect_url)) {
     $itemselect_url = 'itemselect.php';
 }
 if (!isset($pankuzu)) {
-    $pankuzu = _MI_XOONIPS_ACCOUNT_PANKUZU_PLATFORM_USER . _MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR . _MD_XOONIPS_ITEM_PANKUZU_ADVANCED_SEARCH;
+    $pankuzu = _MI_XOONIPS_ACCOUNT_PANKUZU_PLATFORM_USER._MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR._MD_XOONIPS_ITEM_PANKUZU_ADVANCED_SEARCH;
 }
 
 $textutil = xoonips_getUtility('text');
@@ -69,7 +67,7 @@ foreach ($search_var as $val) {
 }
 $xoopsTpl->assign('search_var', $escaped_search_var);
 $xoopsTpl->assign('search_blocks', $search_blocks);
-$xoopsTpl->assign('add_to_index_id', (int)$add_to_index_id);
+$xoopsTpl->assign('add_to_index_id', (int) $add_to_index_id);
 $xoopsTpl->assign('accept_charset', xnpGetMacSafariAcceptCharset());
 
 $xoopsTpl->assign('jumpto_url', $textutil->html_special_chars($jumpto_url));

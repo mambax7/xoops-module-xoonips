@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.11 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,15 +25,16 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/view.class.php';
+require_once __DIR__.'/../base/view.class.php';
 
 /**
- * Class XooNIpsViewImportFinish
+ * Class XooNIpsViewImportFinish.
  */
 class XooNIpsViewImportFinish extends XooNIpsView
 {
     /**
      * XooNIpsViewImportFinish constructor.
+     *
      * @param associative $params
      */
     public function __construct($params)
@@ -41,15 +42,12 @@ class XooNIpsViewImportFinish extends XooNIpsView
         parent::__construct($params);
     }
 
-    /**
-     *
-     */
     public function render()
     {
         global $xoopsOption, $xoopsConfig, $xoopsUser, $xoopsUserIsAdmin, $xoopsLogger, $xoopsTpl;
-        $textutil                                = xoonips_getUtility('text');
+        $textutil = xoonips_getUtility('text');
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_import_finish.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH.'/header.php';
         $xoopsTpl->assign('result', $this->_params['result']);
         $xoopsTpl->assign('begin_time', $this->_params['begin_time']);
         $xoopsTpl->assign('finish_time', $this->_params['finish_time']);
@@ -59,7 +57,7 @@ class XooNIpsViewImportFinish extends XooNIpsView
         $xoopsTpl->assign('log', $textutil->html_special_chars($this->_get_item_log()));
         $xoopsTpl->assign('item_urls', $this->_get_item_urls());
         $xoopsTpl->assign('errors', $this->_params['errors']);
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH.'/footer.php';
     }
 
     /**
@@ -67,7 +65,7 @@ class XooNIpsViewImportFinish extends XooNIpsView
      */
     public function _get_item_log()
     {
-        $log              = '';
+        $log = '';
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
         foreach ($this->_params['import_items'] as $item) {
             //skip this item if don't import as new and update
@@ -75,22 +73,23 @@ class XooNIpsViewImportFinish extends XooNIpsView
                 continue;
             }
 
-            $basic   = $item->getVar('basic');
+            $basic = $item->getVar('basic');
             $itemtype = $item_typeHandler->get($basic->get('item_type_id'));
             $handler = xoonips_getHandler($itemtype->get('name'), 'import_item');
-            $log .= "\n\n[item]\n" . $handler->getImportLog($item);
+            $log .= "\n\n[item]\n".$handler->getImportLog($item);
             foreach ($item->getErrors() as $e) {
                 $log .= "\nerror $e";
             }
             if ($item->getDoiConflictFlag()) {
-                $log .= "\nerror doi conflict with following items" . ' in exitsing item.';
+                $log .= "\nerror doi conflict with following items".' in exitsing item.';
             }
             foreach (array_merge($item->getDuplicateUnupdatableItemId(), $item->getDuplicateUpdatableItemId(), $item->getDuplicateLockedItemId()) as
                      $item_id
             ) {
-                $log .= "\nwarning conflict with " . xnpGetItemDetailURL($item_id);
+                $log .= "\nwarning conflict with ".xnpGetItemDetailURL($item_id);
             }
         }
+
         return $log;
     }
 
@@ -101,7 +100,7 @@ class XooNIpsViewImportFinish extends XooNIpsView
     {
         $result = array();
 
-        $log              = '';
+        $log = '';
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
         foreach ($this->_params['import_items'] as $item) {
             //skip this item if don't import as new and update
@@ -117,9 +116,10 @@ class XooNIpsViewImportFinish extends XooNIpsView
             }
             $result[] = array(
                 'pseudo_id' => $item->getPseudoId(),
-                'url'       => xnpGetItemDetailURL($basic->get('item_id'))
+                'url' => xnpGetItemDetailURL($basic->get('item_id')),
             );
         }
+
         return $result;
     }
 
@@ -134,8 +134,9 @@ class XooNIpsViewImportFinish extends XooNIpsView
             if (!$item->getImportAsNewFlag() && !$item->getUpdateFlag()) {
                 continue;
             }
-            $count++;
+            ++$count;
         }
+
         return $count;
     }
 }

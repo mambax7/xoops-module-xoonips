@@ -1,5 +1,4 @@
 <{* xnpmemo list block *}>
-<{* $Revision: 1.5.4.1.2.3 $ *}>
 <table>
  <tr>
   <td width="65" style="vertical-align:middle; text-align:center;">

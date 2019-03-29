@@ -1,5 +1,4 @@
 <{* form to input link related to items(a part of confirm's page) *}>
-<{* $Revision: 1.3 $ *}>
 <{* 
 
 display HTML (summary of linked items)

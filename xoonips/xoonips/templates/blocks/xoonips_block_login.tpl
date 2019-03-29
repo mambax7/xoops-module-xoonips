@@ -1,5 +1,4 @@
 <{* login block *}>
-<{* $Revision: 1.2.4.1.2.1 $ *}>
 <form id='xoonips_login_form' style="margin-top: 0;" action="<{$xoops_url}>/modules/xoonips/user.php" method="post">
     <{$block.lang_username}><br>
     <input type="text" name="uname" size="12" value="<{$block.unamevalue}>" maxlength="25" /><br>

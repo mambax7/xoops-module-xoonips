@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,17 +25,14 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonipserror.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonipsresponse.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/xmlrpcresponse.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/xmlrpctransform.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/logic/xmlrpclogic.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xoonipserror.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xoonipsresponse.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xmlrpc/xmlrpcresponse.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xmlrpc/xmlrpctransform.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xmlrpc/logic/xmlrpclogic.class.php';
 
 /**
  * @brief Class that executes logic specified by XML-RPC updateFile request
- *
- *
- *
  */
 class XooNIpsXmlRpcLogicGetSimpleItems extends XooNIpsXmlRpcLogic
 {
@@ -45,36 +42,40 @@ class XooNIpsXmlRpcLogicGetSimpleItems extends XooNIpsXmlRpcLogic
      * @param[in] XooNIpsXmlRpcRequest $request
      * @param[out] XooNIpsXmlRpcResponse $response
      *  result of logic(success/fault, response, error)
+     *
      * @return bool|void
      */
     public function execute($request, $response)
     {
         // load logic instance
         $factory = XooNIpsLogicFactory::getInstance();
-        $logic   = $factory->create($request->getMethodName());
+        $logic = $factory->create($request->getMethodName());
         if (!is_object($logic)) {
             $response->setResult(false);
-            $error =  $response->getError();
+            $error = $response->getError();
             $logic = $request->getMethodName();
             $error->add(XNPERR_SERVER_ERROR, "can't create a logic of $logic");
+
             return;
         }
         // execute logic
-        $params           =  $request->getParams();
+        $params = $request->getParams();
         $xoonips_response = new XooNIpsResponse();
 
         if (count($params) < 3) {
             $response->setResult(false);
-            $error =  $response->getError();
+            $error = $response->getError();
             $error->add(XNPERR_MISSING_PARAM);
+
             return false;
         } elseif (count($params) > 3) {
             $response->setResult(false);
-            $error =  $response->getError();
+            $error = $response->getError();
             $error->add(XNPERR_EXTRA_PARAM);
+
             return false;
         }
-        $vars    = array();
+        $vars = array();
         $vars[0] = $params[0];
         $unicode = xoonips_getUtility('unicode');
         $vars[1] = array();
@@ -84,7 +85,7 @@ class XooNIpsXmlRpcLogicGetSimpleItems extends XooNIpsXmlRpcLogic
         $vars[2] = $params[2];
 
         $logic->execute($vars, $xoonips_response);
-        //
+
         $response->setResult($xoonips_response->getResult());
         $response->setError($xoonips_response->getError());
         $response->setSuccess($xoonips_response->getSuccess());

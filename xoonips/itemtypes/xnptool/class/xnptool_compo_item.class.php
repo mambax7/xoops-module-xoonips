@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,19 +27,18 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xnptool/include/view.php';
-include_once XOOPS_ROOT_PATH . '/modules/xnptool/iteminfo.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xoonips_compo_item.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xnptool/include/view.php';
+require_once XOOPS_ROOT_PATH.'/modules/xnptool/iteminfo.php';
 
 /**
- *
  * @brief Handler object that create,insert,update,get,delete XNPToolCompo object.
- *
  */
 class XNPToolCompoHandler extends XooNIpsItemInfoCompoHandler
 {
     /**
      * XNPToolCompoHandler constructor.
+     *
      * @param $db
      */
     public function __construct($db)
@@ -53,15 +52,17 @@ class XNPToolCompoHandler extends XooNIpsItemInfoCompoHandler
     public function create()
     {
         $tool = new XNPToolCompo();
+
         return $tool;
     }
 
     /**
-     * return template filename
+     * return template filename.
      *
      * @param string $type defined symbol
      *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
      *                     or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
+     *
      * @return string|template
      */
     public function getTemplateFileName($type)
@@ -77,15 +78,16 @@ class XNPToolCompoHandler extends XooNIpsItemInfoCompoHandler
     }
 
     /**
-     * return template variables of item
+     * return template variables of item.
      *
-     * @param string $type defined symbol
-     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *                     , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
-     *                     , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
-     *                     or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
+     * @param string $type    defined symbol
+     *                        XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                        , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
+     *                        , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
+     *                        or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
      * @param int    $item_id
-     * @param int    $uid  user id who get item
+     * @param int    $uid     user id who get item
+     *
      * @return array of template variables
      */
     public function getTemplateVar($type, $item_id, $uid)
@@ -96,10 +98,10 @@ class XNPToolCompoHandler extends XooNIpsItemInfoCompoHandler
         }
         $result = $this->getBasicTemplateVar($type, $tool, $uid);
 
-        $textutil                            = xoonips_getUtility('text');
-        $detail                              = $tool->getVar('detail');
-        $result['detail']                    = $detail->getVarArray('s');
-        $result['detail']['tool_type']       = $textutil->html_special_chars($this->get_tool_type_label($detail->getVar('tool_type', 's')));
+        $textutil = xoonips_getUtility('text');
+        $detail = $tool->getVar('detail');
+        $result['detail'] = $detail->getVarArray('s');
+        $result['detail']['tool_type'] = $textutil->html_special_chars($this->get_tool_type_label($detail->getVar('tool_type', 's')));
         $result['detail']['tool_type_value'] = $detail->getVar('tool_type', 's');
         if ($detail->getVar('use_cc', 'n')) {
             $result['detail']['rights'] = $detail->getVar('rights', 'n');
@@ -111,6 +113,7 @@ class XNPToolCompoHandler extends XooNIpsItemInfoCompoHandler
                 foreach ($tool->getVar('developer') as $developer) {
                     $result['developer'][] = $developer->getVarArray('s');
                 }
+
                 return $result;
             case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
             case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
@@ -130,26 +133,28 @@ class XNPToolCompoHandler extends XooNIpsItemInfoCompoHandler
                 if ($tool_data->get('item_id') == $item_id) {
                     $result['detail']['tool_data'] = $this->getAttachmentTemplateVar($tool->getVar('tool_data'));
                 }
+
                 return $result;
         }
+
         return $result;
     }
 
     /**
      * @param $type
+     *
      * @return mixed
      */
     public function get_tool_type_label($type)
     {
         $keyval = xnptool_get_type_array();
+
         return $keyval[$type];
     }
 }
 
 /**
- *
  * @brief Data object that have one ore more XooNIpsTableObject for Tool type.
- *
  */
 class XNPToolCompo extends XooNIpsItemInfoCompo
 {

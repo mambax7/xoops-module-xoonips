@@ -1,4 +1,3 @@
-<{* $Revision: 1.1.1.4 $ *}>
 
 <table>
  <tr>

@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.7.4.1.2.17 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,9 +26,9 @@
 // ------------------------------------------------------------------------- //
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
+require __DIR__.'/include/common.inc.php';
+require_once __DIR__.'/include/lib.php';
+require_once __DIR__.'/include/AL.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
@@ -36,7 +36,7 @@ xoonips_deny_guest_access();
 
 $op = 'open';
 
-$myts     = MyTextSanitizer::getInstance();
+$myts = MyTextSanitizer::getInstance();
 $textutil = xoonips_getUtility('text');
 $formdata = xoonips_getUtility('formdata');
 
@@ -47,18 +47,18 @@ if ($uid <= 0) {
         //Next, try to retrive a UID from a xoopsUser.
         $uid = $xoopsUser->getVar('uid');
     } else {
-        redirect_header(XOOPS_URL . '/', 3, _US_SELECTNG);
+        redirect_header(XOOPS_URL.'/', 3, _US_SELECTNG);
     }
 }
 
 //error if argument 'uid' is not equal to own UID
 if (xnp_is_moderator($xnpsid, $_SESSION['xoopsUserId']) || $xoopsUser->isAdmin($xoopsModule->getVar('mid'))) {
 } elseif ($uid != $_SESSION['xoopsUserId']) {
-    redirect_header(XOOPS_URL . '/', 3, _NOPERM);
+    redirect_header(XOOPS_URL.'/', 3, _NOPERM);
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_editcvitae.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH.'/header.php';
 
 $op = $formdata->getValue('both', 'op', 's', false);
 
@@ -75,22 +75,23 @@ if (isset($op_modify)) {
 /**
  * @param $pos
  * @param $uid
+ *
  * @return array|null
  */
 function xnpGetSwapCvitaeId($pos, $uid)
 {
     global $xoopsDB;
-    $sql = 'SELECT cvitae_id, cvitae_order FROM ' . $xoopsDB->prefix('xoonips_cvitaes') . ' WHERE uid=' . $uid . ' ORDER BY cvitae_order ASC';
+    $sql = 'SELECT cvitae_id, cvitae_order FROM '.$xoopsDB->prefix('xoonips_cvitaes').' WHERE uid='.$uid.' ORDER BY cvitae_order ASC';
     $res = $xoopsDB->query($sql);
-    $i   = 0;
+    $i = 0;
     while ($row = $xoopsDB->fetchArray($res)) {
         if ($pos == $i) {
-            $cvitae_id    = $row['cvitae_id'];
+            $cvitae_id = $row['cvitae_id'];
             $cvitae_order = $row['cvitae_order'];
-            $result       = array($cvitae_id => $cvitae_order);
+            $result = array($cvitae_id => $cvitae_order);
             break;
         } else {
-            $i++;
+            ++$i;
         }
     }
     if (isset($result)) {
@@ -103,14 +104,13 @@ function xnpGetSwapCvitaeId($pos, $uid)
 // function to get order in array of cvitae_ids
 /**
  * @param $id
- * @return null
  */
 function xnpGetSwapCvitaePos($id)
 {
     global $xoopsDB;
-    $sql    = 'SELECT cvitae_id FROM ' . $xoopsDB->prefix('xoonips_cvitaes') . ' WHERE uid=' . $id
-              . ' ORDER BY cvitae_order ASC, from_year ASC, from_month ASC';
-    $res    = $xoopsDB->query($sql);
+    $sql = 'SELECT cvitae_id FROM '.$xoopsDB->prefix('xoonips_cvitaes').' WHERE uid='.$id
+              .' ORDER BY cvitae_order ASC, from_year ASC, from_month ASC';
+    $res = $xoopsDB->query($sql);
     $result = $xoopsDB->getRowsNum($res);
     if (isset($result)) {
         return $result;
@@ -128,7 +128,7 @@ if ($op === 'open' || $op == '') {
         $xoopsTpl->assign('ent', $ent);
     } else {
         $cvitae_from_date = $formdata->getValueArray('post', 'cvitae_from_date', 's', false);
-        $from_month4sql   = isset($cvitae_from_date['Date_Month']) ? addslashes($cvitae_from_date['Date_Month']) : '';
+        $from_month4sql = isset($cvitae_from_date['Date_Month']) ? addslashes($cvitae_from_date['Date_Month']) : '';
         if (strlen(trim($cvitae_from_date['Date_Month'])) == 0) {
             $from_month4sql = 0;
         }
@@ -137,7 +137,7 @@ if ($op === 'open' || $op == '') {
             $from_year4sql = 0;
         }
         $cvitae_to_date = $formdata->getValueArray('post', 'cvitae_to_date', 's', false);
-        $to_month4sql   = isset($cvitae_to_date['Date_Month']) ? addslashes($cvitae_to_date['Date_Month']) : '';
+        $to_month4sql = isset($cvitae_to_date['Date_Month']) ? addslashes($cvitae_to_date['Date_Month']) : '';
         if (strlen(trim($cvitae_to_date['Date_Month'])) == 0) {
             $to_month4sql = 0;
         }
@@ -146,29 +146,29 @@ if ($op === 'open' || $op == '') {
             $to_year4sql = 0;
         }
         $cvitae_title4sql = addslashes($cvitae_title);
-        $besql            = 'SELECT cvitae_order FROM ' . $xoopsDB->prefix('xoonips_cvitaes') . ' ORDER BY cvitae_order DESC LIMIT 1';
-        $beres            = $xoopsDB->query($besql);
+        $besql = 'SELECT cvitae_order FROM '.$xoopsDB->prefix('xoonips_cvitaes').' ORDER BY cvitae_order DESC LIMIT 1';
+        $beres = $xoopsDB->query($besql);
         if (!$beres) {
             // $err = "Can't insert data into database.";
             // if No CV data in DB, cvitae_order=1.
             $cvitae_order4sql = 1;
         }
         if ($beres == false) {
-            echo "ERROR: SQL=$besql<br>\n error=" . $xoopsDB->error() . "<br>\n";
+            echo "ERROR: SQL=$besql<br>\n error=".$xoopsDB->error()."<br>\n";
         }
-        $berow            = $xoopsDB->fetchArray($beres);
-        $current_order    = $berow['cvitae_order'];
+        $berow = $xoopsDB->fetchArray($beres);
+        $current_order = $berow['cvitae_order'];
         $cvitae_order4sql = ++$current_order;
-        $sql              = 'INSERT INTO ' . $xoopsDB->prefix('xoonips_cvitaes') . ' ';
-        $sql .= 'SET uid=' . $uid . ', from_month=' . $from_month4sql . ', from_year=' . $from_year4sql . ', to_month=' . $to_month4sql . ', ';
-        $sql .= "to_year='" . $to_year4sql . "', cvitae_title='" . $cvitae_title4sql . "', cvitae_order='" . $cvitae_order4sql . "'";
+        $sql = 'INSERT INTO '.$xoopsDB->prefix('xoonips_cvitaes').' ';
+        $sql .= 'SET uid='.$uid.', from_month='.$from_month4sql.', from_year='.$from_year4sql.', to_month='.$to_month4sql.', ';
+        $sql .= "to_year='".$to_year4sql."', cvitae_title='".$cvitae_title4sql."', cvitae_order='".$cvitae_order4sql."'";
         $result = $xoopsDB->query($sql);
         redirect_header('editcvitae.php', 1, _MD_XOONIPS_CURRICULUM_VITAE_INSERT);
         if (!$result) {
             $err = "Can't insert data into database.";
         }
         if ($result == false) {
-            echo "ERROR: SQL=$sql<br>\n error=" . $xoopsDB->error() . "<br>\n";
+            echo "ERROR: SQL=$sql<br>\n error=".$xoopsDB->error()."<br>\n";
         }
     }
 } elseif ($op === 'modify') {
@@ -176,9 +176,9 @@ if ($op === 'open' || $op == '') {
     if (isset($check)) {
         reset($check);
         while ($cvitae_id = array_shift($check)) {
-            $ecvitae_id = (int)$cvitae_id;
+            $ecvitae_id = (int) $cvitae_id;
 
-            $from          = $formdata->getValueArray('post', $ecvitae_id . '_from', 's', false);
+            $from = $formdata->getValueArray('post', $ecvitae_id.'_from', 's', false);
             $from_month4up = isset($from['Date_Month']) ? addslashes($from['Date_Month']) : '';
             if (strlen(trim($from['Date_Month'])) == 0) {
                 $from_month4up = 0;
@@ -187,7 +187,7 @@ if ($op === 'open' || $op == '') {
             if (strlen(trim($from['Date_Year'])) == 0) {
                 $from_year4up = 0;
             }
-            $to          = $formdata->getValueArray('post', $ecvitae_id . '_to', 's', false);
+            $to = $formdata->getValueArray('post', $ecvitae_id.'_to', 's', false);
             $to_month4up = isset($to['Date_Month']) ? addslashes($to['Date_Month']) : '';
             if (strlen(trim($to['Date_Month'])) == 0) {
                 $to_month4up = 0;
@@ -196,16 +196,16 @@ if ($op === 'open' || $op == '') {
             if (strlen(trim($to['Date_Year'])) == 0) {
                 $to_year4up = 0;
             }
-            $cvitae_title4up = addslashes($formdata->getValue('post', 'cvitae_title' . $ecvitae_id, 's', false));
-            $sql             = 'UPDATE ' . $xoopsDB->prefix('xoonips_cvitaes') . ' ';
-            $sql .= 'SET from_month=' . $from_month4up . ', from_year=' . $from_year4up . ', to_month=' . $to_month4up . ', ';
-            $sql .= 'to_year=' . $to_year4up . ", cvitae_title='" . $cvitae_title4up . "' WHERE cvitae_id=" . $ecvitae_id . ' AND uid=' . $uid . '';
+            $cvitae_title4up = addslashes($formdata->getValue('post', 'cvitae_title'.$ecvitae_id, 's', false));
+            $sql = 'UPDATE '.$xoopsDB->prefix('xoonips_cvitaes').' ';
+            $sql .= 'SET from_month='.$from_month4up.', from_year='.$from_year4up.', to_month='.$to_month4up.', ';
+            $sql .= 'to_year='.$to_year4up.", cvitae_title='".$cvitae_title4up."' WHERE cvitae_id=".$ecvitae_id.' AND uid='.$uid.'';
             $result = $xoopsDB->query($sql);
             if (!$result) {
                 $err = "Can't update data into database.";
             }
             if ($result == false) {
-                echo "ERROR: SQL=$sql<br>\n error=" . $xoopsDB->error() . "<br>\n";
+                echo "ERROR: SQL=$sql<br>\n error=".$xoopsDB->error()."<br>\n";
             }
         }
     }
@@ -214,21 +214,21 @@ if ($op === 'open' || $op == '') {
     if (isset($check)) {
         reset($check);
         while ($cvitae_id = array_shift($check)) {
-            $dcvitae_id = (int)$cvitae_id;
-            $sql        = 'DELETE FROM ' . $xoopsDB->prefix('xoonips_cvitaes') . ' WHERE cvitae_id=' . $dcvitae_id . ' AND uid=' . $uid . '';
-            $result     = $xoopsDB->query($sql);
+            $dcvitae_id = (int) $cvitae_id;
+            $sql = 'DELETE FROM '.$xoopsDB->prefix('xoonips_cvitaes').' WHERE cvitae_id='.$dcvitae_id.' AND uid='.$uid.'';
+            $result = $xoopsDB->query($sql);
             if (!$result) {
                 $err = "Can't delete data into database.";
             }
             if ($result == false) {
-                echo "ERROR: SQL=$sql<br>\n error=" . $xoopsDB->error() . "<br>\n";
+                echo "ERROR: SQL=$sql<br>\n error=".$xoopsDB->error()."<br>\n";
             }
         }
     }
 } elseif ($op === 'up' || $op === 'down') {
     $move_id = $formdata->getValue('post', 'updown_cvitae', 'i', true);
-    $steps   = $formdata->getValueArray('post', 'steps', 'i', true);
-    $step    = $steps[$move_id];
+    $steps = $formdata->getValueArray('post', 'steps', 'i', true);
+    $step = $steps[$move_id];
 
     if ($op === 'up') {
         $dir = -1;
@@ -241,18 +241,18 @@ if ($op === 'open' || $op == '') {
     // get position
     $pos = -1;
     // $psql = "SELECT cvitae_id FROM ".$xoopsDB->prefix('xoonips_cvitaes')." WHERE uid=".$uid." ORDER BY cvitae_order ASC, from_year ASC, from_month ASC";
-    $psql = 'SELECT cvitae_id, cvitae_order FROM ' . $xoopsDB->prefix('xoonips_cvitaes') . ' WHERE uid=' . $uid
-            . ' ORDER BY cvitae_order ASC, from_year ASC, from_month ASC';
+    $psql = 'SELECT cvitae_id, cvitae_order FROM '.$xoopsDB->prefix('xoonips_cvitaes').' WHERE uid='.$uid
+            .' ORDER BY cvitae_order ASC, from_year ASC, from_month ASC';
     $pres = $xoopsDB->query($psql);
-    $i    = 0;
+    $i = 0;
     while ($prow = $xoopsDB->fetchArray($pres)) {
         $cvitae_id_sql = $prow['cvitae_id'];
         if ($move_id == $cvitae_id_sql) {
             $move_order = $prow['cvitae_order'];
-            $pos        = $i;
+            $pos = $i;
             break;
         } else {
-            $i++;
+            ++$i;
         }
     }
 
@@ -260,7 +260,7 @@ if ($op === 'open' || $op == '') {
         // change order ch1:cvitae_order=0 (cvitae_id=move_id)
         //              ch2:cvitae_order=move_id's order (cvitae_id=updown_cvitae2)
         //              ch3:cvitae_order=updown_cvitae2's order (cvitae_id=move_id)
-        for ($i = 0; $i < $step; $i++) {
+        for ($i = 0; $i < $step; ++$i) {
             $pos += $dir;
 
             if ($pos < 0 || $cvitaeLen <= $pos) {
@@ -269,35 +269,35 @@ if ($op === 'open' || $op == '') {
 
             $nextArray = xnpGetSwapCvitaeId($pos, $uid);
             foreach ($nextArray as $key => $value) {
-                $updown_cvitae2 = (string)$key;
+                $updown_cvitae2 = (string) $key;
                 $change_orders2 = $value;
             }
 
-            $ch1sql = 'UPDATE ' . $xoopsDB->prefix('xoonips_cvitaes') . ' SET cvitae_order = 0 WHERE cvitae_id=' . $move_id . ' ';
+            $ch1sql = 'UPDATE '.$xoopsDB->prefix('xoonips_cvitaes').' SET cvitae_order = 0 WHERE cvitae_id='.$move_id.' ';
             $ch1res = $xoopsDB->query($ch1sql);
             if (!$ch1res) {
                 $err = "Can't update data into database1.";
             }
             if ($ch1res == false) {
-                echo "ERROR: SQL=$ch1sql<br>\n error=" . $xoopsDB->error() . "<br>1\n";
+                echo "ERROR: SQL=$ch1sql<br>\n error=".$xoopsDB->error()."<br>1\n";
             }
-            $ch2sql = 'UPDATE ' . $xoopsDB->prefix('xoonips_cvitaes') . ' SET cvitae_order = ' . $move_order . ' WHERE cvitae_id=' . $updown_cvitae2
-                      . '';
+            $ch2sql = 'UPDATE '.$xoopsDB->prefix('xoonips_cvitaes').' SET cvitae_order = '.$move_order.' WHERE cvitae_id='.$updown_cvitae2
+                      .'';
             $ch2res = $xoopsDB->query($ch2sql);
             if (!$ch2res) {
                 $err = "Can't update data into database2.";
             }
             if ($ch2res == false) {
-                echo "ERROR: SQL=$ch2sql<br>\n error=" . $xoopsDB->error() . "<br>2\n";
+                echo "ERROR: SQL=$ch2sql<br>\n error=".$xoopsDB->error()."<br>2\n";
             }
-            $ch3sql = 'UPDATE ' . $xoopsDB->prefix('xoonips_cvitaes') . ' SET cvitae_order = ' . $change_orders2 . ' WHERE cvitae_id=' . $move_id
-                      . '';
+            $ch3sql = 'UPDATE '.$xoopsDB->prefix('xoonips_cvitaes').' SET cvitae_order = '.$change_orders2.' WHERE cvitae_id='.$move_id
+                      .'';
             $ch3res = $xoopsDB->query($ch3sql);
             if (!$ch3res) {
                 $err = "Can't update data into database3.";
             }
             if ($ch3res == false) {
-                echo "ERROR: SQL=$ch3sql<br>\n error=" . $xoopsDB->error() . "<br>3\n";
+                echo "ERROR: SQL=$ch3sql<br>\n error=".$xoopsDB->error()."<br>3\n";
             }
             $move_order = $change_orders2;
         }
@@ -305,56 +305,58 @@ if ($op === 'open' || $op == '') {
 }
 
 // display confirm form
-$sql = 'SELECT * FROM ' . $xoopsDB->prefix('xoonips_cvitaes') . ' ';
-$sql .= 'WHERE uid=' . $uid . ' ORDER BY cvitae_order ASC, from_year ASC, from_month ASC';
+$sql = 'SELECT * FROM '.$xoopsDB->prefix('xoonips_cvitaes').' ';
+$sql .= 'WHERE uid='.$uid.' ORDER BY cvitae_order ASC, from_year ASC, from_month ASC';
 $result = $xoopsDB->query($sql);
 if (!$result) {
     $err = "Can't select data into database.";
 }
 if ($result == false) {
-    echo "ERROR: SQL=$sql<br>\n error=" . $xoopsDB->error() . "<br>\n";
+    echo "ERROR: SQL=$sql<br>\n error=".$xoopsDB->error()."<br>\n";
 }
 $rcount = $xoopsDB->getRowsNum($result);
 $xoopsTpl->assign('rcount', $rcount);
 while ($row = $xoopsDB->fetchArray($result)) {
-    $cvdata['cvitae_id']        = $myts->htmlSpecialChars($row['cvitae_id']);
+    $cvdata['cvitae_id'] = $myts->htmlSpecialChars($row['cvitae_id']);
     $cvdata['cvitae_from_date'] = $textutil->html_special_chars(xnpMktime($row['from_year'], $row['from_month'], 0));
-    $cvdata['cvitae_to_date']   = $textutil->html_special_chars(xnpMktime($row['to_year'], $row['to_month'], 0));
-    $cvdata['cvitae_title']     = $textutil->html_special_chars($row['cvitae_title']);
+    $cvdata['cvitae_to_date'] = $textutil->html_special_chars(xnpMktime($row['to_year'], $row['to_month'], 0));
+    $cvdata['cvitae_title'] = $textutil->html_special_chars($row['cvitae_title']);
     $xoopsTpl->append('cv_array', $cvdata);
 }
 
 $xoopsTpl->assign('updown_options', array(
-    1  => 1,
-    2  => 2,
-    3  => 3,
-    4  => 4,
-    5  => 5,
-    6  => 6,
-    7  => 7,
-    8  => 8,
-    9  => 9,
-    10 => 10
+    1 => 1,
+    2 => 2,
+    3 => 3,
+    4 => 4,
+    5 => 5,
+    6 => 6,
+    7 => 7,
+    8 => 8,
+    9 => 9,
+    10 => 10,
 ));
 
-require XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH.'/footer.php';
 exit();
 
 /**
  * @param $year
  * @param $month
  * @param $day
+ *
  * @return string
  */
 function xnpMktime($year, $month, $day)
 {
-    $int_year  = (int)$year;
-    $int_month = (int)$month;
-    $int_day   = (int)$day;
+    $int_year = (int) $year;
+    $int_month = (int) $month;
+    $int_day = (int) $day;
     if ($int_month == 0) {
         $date = sprintf('%04s--%02s', $int_year, $int_day);
     } else {
         $date = sprintf('%04s-%02s-%02s', $int_year, $int_month, $int_day);
     }
+
     return $date;
 }

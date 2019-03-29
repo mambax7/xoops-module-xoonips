@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.3 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,14 +24,12 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once XOOPS_ROOT_PATH . '/class/xoopsblock.php';
+require_once XOOPS_ROOT_PATH.'/class/xoopsblock.php';
 
 // check token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
+require_once __DIR__.'/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_system_basic';
 if (!$xoopsGTicket->check(true, $ticket_area, false)) {
     redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
@@ -39,12 +37,12 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 
 // get requests
 $post_keys = array(
-    'moderator_gid'   => array(
+    'moderator_gid' => array(
         'i',
         false,
         true,
     ),
-    'upload_dir'      => array(
+    'upload_dir' => array(
         's',
         false,
         true,
@@ -73,11 +71,11 @@ $config_vals = xoonips_admin_get_configs($config_keys, 'e');
 function update_block_permissions($old_gid, $new_gid)
 {
     // get handlers
-    $gpermHandler  = xoops_getHandler('groupperm');
+    $gpermHandler = xoops_getHandler('groupperm');
     $moduleHandler = xoops_getHandler('module');
-    $module        = $moduleHandler->getByDirname('xoonips');
-    $mid           = $module->getVar('mid');
-    $block_objs    = XoopsBlock::getByModule($mid);
+    $module = $moduleHandler->getByDirname('xoonips');
+    $mid = $module->getVar('mid');
+    $block_objs = XoopsBlock::getByModule($mid);
     foreach ($block_objs as $block_obj) {
         // find moderator menu block
         if ($block_obj->getVar('show_func') === 'b_xoonips_moderator_show') {

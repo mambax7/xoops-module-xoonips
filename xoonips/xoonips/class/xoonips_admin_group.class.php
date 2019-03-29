@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.2 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,14 +24,12 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/xoonips_group.class.php';
+require_once __DIR__.'/xoonips_group.class.php';
 
 /**
- * XooNIps Admin Group Handler class
+ * XooNIps Admin Group Handler class.
  */
 class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
 {
@@ -44,18 +42,18 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
     }
 
     /**
-     * add user to XooNIps group
+     * add user to XooNIps group.
      *
-     * @access public
      * @param int  $gid      group id
      * @param int  $uid      user id
      * @param bool $is_admin true if user will be group admin
+     *
      * @return bool false if failure
      */
     public function addUserToXooNIpsGroup($gid, $uid, $is_admin)
     {
-        $xuHandler    = xoonips_getOrmHandler('xoonips', 'users');
-        $is_update    = false;
+        $xuHandler = xoonips_getOrmHandler('xoonips', 'users');
+        $is_update = false;
         $is_admin_new = $is_admin ? 1 : 0;
         // check user and group exists
         $criteria = new Criteria('uid', $uid);
@@ -71,7 +69,7 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
         // check current groups
         $criteria = new CriteriaCompo(new Criteria('gid', $gid));
         $criteria->add(new Criteria('uid', $uid));
-        $xgl_objs  =  $this->_xglHandler->getObjects($criteria);
+        $xgl_objs = $this->_xglHandler->getObjects($criteria);
         $xgl_count = count($xgl_objs);
         if ($xgl_count == 0) {
             // insert user to group
@@ -84,7 +82,7 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
             }
         } elseif ($xgl_count == 1) {
             // already exists
-            $xgl_obj      = $xgl_objs[0];
+            $xgl_obj = $xgl_objs[0];
             $is_admin_old = $xgl_obj->get('is_admin');
             if ($is_admin_old == $is_admin_new) {
                 // status not changed
@@ -97,7 +95,7 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
             }
         } else {
             // unexcepted error - the user joined duplicated same group
-            die('Fatal error occurred in ' . __FILE__ . ' line ' . __LINE__);
+            die('Fatal error occurred in '.__FILE__.' line '.__LINE__);
         }
         // record event log
         $eventHandler = xoonips_getOrmHandler('xoonips', 'event_log');
@@ -105,14 +103,15 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
             $eventHandler->recordDeleteGroupMemberEvent($uid, $gid);
         }
         $eventHandler->recordInsertGroupMemberEvent($uid, $gid);
+
         return true;
     }
 
     /**
-     * add user to default xoonips group
+     * add user to default xoonips group.
      *
-     * @access public
      * @param int $uid user id
+     *
      * @return bool false if failure
      */
     public function addUserToDefaultXooNIpsGroup($uid)
@@ -121,12 +120,12 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
     }
 
     /**
-     * delete user from xoonips group
+     * delete user from xoonips group.
      *
-     * @access public
      * @param int  $uid   user id
      * @param int  $gid   group id
      * @param bool $force force deletion
+     *
      * @return bool false if failure
      */
     public function deleteUserFromXooNIpsGroup($gid, $uid, $force = false)
@@ -146,7 +145,7 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
         // check current groups
         $criteria = new CriteriaCompo(new Criteria('gid', $gid));
         $criteria->add(new Criteria('uid', $uid));
-        $xgl_objs  =  $this->_xglHandler->getObjects($criteria);
+        $xgl_objs = $this->_xglHandler->getObjects($criteria);
         $xgl_count = count($xgl_objs);
         if ($xgl_count == 0) {
             return true;
@@ -166,24 +165,25 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
             }
         } else {
             // unexcepted error - the user joined duplicated same group
-            die('Fatal error occurred in ' . __FILE__ . ' line ' . __LINE__);
+            die('Fatal error occurred in '.__FILE__.' line '.__LINE__);
         }
         // record event log
         $eventHandler = xoonips_getOrmHandler('xoonips', 'event_log');
         $eventHandler->recordDeleteGroupMemberEvent($uid, $gid);
+
         return true;
     }
 
     /**
-     * create new group
+     * create new group.
      *
-     * @access public
      * @param string $name       group name
      * @param string $desc       group description
      * @param array  $admin_uids administrator's uids
      * @param int    $max_item   maximum number of items
      * @param int    $max_index  maximum number of indexes
      * @param float  $max_size   maximum storage size [MB]
+     *
      * @return bool false if failure
      */
     public function createGroup($name, $desc, $admin_uids, $max_item, $max_index, $max_size)
@@ -191,7 +191,7 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
         if (in_array(strtolower($name), array(
             'public',
             'private',
-            'root'
+            'root',
         ))) {
             // doesn't accept system reserved name
             return false;
@@ -213,9 +213,10 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
         $gid = $xg_obj->get('gid');
         // create group root index
         $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-        $gxid         = $indexHandler->createGroupRootIndex($gid);
+        $gxid = $indexHandler->createGroupRootIndex($gid);
         if ($gxid === false) {
             $this->_xgHandler->delete($xg_obj);
+
             return false;
         }
         // update group index id
@@ -232,13 +233,13 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
         foreach ($admin_uids as $uid) {
             $this->addUserToXooNIpsGroup($gid, $uid, true);
         }
+
         return true;
     }
 
     /**
-     * update group
+     * update group.
      *
-     * @access public
      * @param int    $gid        group id
      * @param string $name       group name
      * @param string $desc       group description
@@ -246,6 +247,7 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
      * @param int    $max_item   maximum number of items
      * @param int    $max_index  maximum number of indexes
      * @param float  $max_size   maximum storage size [MB]
+     *
      * @return bool false if failure
      */
     public function updateGroup($gid, $name, $desc, $admin_uids, $max_item, $max_index, $max_size)
@@ -258,7 +260,7 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
         if (in_array(strtolower($name), array(
             'public',
             'private',
-            'root'
+            'root',
         ))) {
             // doesn't accept system reserved name
             return false;
@@ -283,7 +285,7 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
             return false;
         }
         // update group admin privileges
-        $uids     = $this->getUserIds($gid, true);
+        $uids = $this->getUserIds($gid, true);
         $add_uids = array_diff($admin_uids, $uids);
         $del_uids = array_diff($uids, $admin_uids);
         foreach ($add_uids as $uid) {
@@ -298,7 +300,7 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
         }
         if ($old_name != $name) {
             // rename index title
-            $xid          = $xg_obj->get('group_index_id');
+            $xid = $xg_obj->get('group_index_id');
             $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
             if (!$indexHandler->renameIndexTitle($xid, $name)) {
                 return false;
@@ -307,13 +309,15 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
         // record event log
         $eventHandler = xoonips_getOrmHandler('xoonips', 'event_log');
         $eventHandler->recordUpdateGroupEvent($gid);
+
         return true;
     }
 
     /**
-     * delete xoonips group
+     * delete xoonips group.
      *
      * @param int $gid group id
+     *
      * @return bool false if failure
      */
     public function deleteGroup($gid)
@@ -322,16 +326,16 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
         if (!is_object($xg_obj)) {
             return false;
         }
-        $admin_rankingHandler   = xoonips_getHandler('xoonips', 'admin_ranking');
-        $indexHandler           = xoonips_getOrmHandler('xoonips', 'index');
-        $item_basicHandler      = xoonips_getOrmHandler('xoonips', 'item_basic');
+        $admin_rankingHandler = xoonips_getHandler('xoonips', 'admin_ranking');
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
+        $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $titleHandler           = xoonips_getOrmHandler('xoonips', 'title');
-        $keywordHandler         = xoonips_getOrmHandler('xoonips', 'keyword');
-        $eventHandler           = xoonips_getOrmHandler('xoonips', 'event_log');
+        $titleHandler = xoonips_getOrmHandler('xoonips', 'title');
+        $keywordHandler = xoonips_getOrmHandler('xoonips', 'keyword');
+        $eventHandler = xoonips_getOrmHandler('xoonips', 'event_log');
         // check group index locking status for group root index deletion
         $gid_criteria = new Criteria('gid', $gid);
-        $join         = new XooNIpsJoinCriteria('xoonips_item_lock', 'index_id', 'item_id', 'INNER');
+        $join = new XooNIpsJoinCriteria('xoonips_item_lock', 'index_id', 'item_id', 'INNER');
         if ($indexHandler->getCount($gid_criteria, $join) != 0) {
             // some indexes is locked
             return false;
@@ -348,9 +352,9 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
             }
         }
         // delete group indexes
-        $index_objs =  $indexHandler->getObjects($gid_criteria);
+        $index_objs = $indexHandler->getObjects($gid_criteria);
         foreach ($index_objs as $index_obj) {
-            $index_id        = $index_obj->get('index_id');
+            $index_id = $index_obj->get('index_id');
             $parent_index_id = $index_obj->get('parent_index_id');
             $indexHandler->delete($index_obj);
             $item_criteria = new Criteria('item_id', $index_id);
@@ -370,6 +374,7 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
         }
         // record event log : delete group
         $eventHandler->recordDeleteGroupEvent($gid);
+
         return true;
     }
 }

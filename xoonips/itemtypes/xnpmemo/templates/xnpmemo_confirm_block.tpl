@@ -1,5 +1,4 @@
 <{* xnpmemo confirm block *}>
-<{* $Revision: 1.6.8.1 $ *}>
 <table class="outer">
   <!-- Basic Information -->
   <tr>

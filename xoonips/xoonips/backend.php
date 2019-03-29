@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.4 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,7 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-include __DIR__ . '/include/common.inc.php';
+require __DIR__.'/include/common.inc.php';
 
 /**
  * @return string
@@ -33,10 +33,10 @@ function xoonips_get_backend()
 {
     $formdata = xoonips_getUtility('formdata');
     $itemtype = $formdata->getValue('get', 'itemtype', 's', true);
-    $action   = $formdata->getValue('get', 'action', 's', true);
+    $action = $formdata->getValue('get', 'action', 's', true);
     // check item type name
     $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-    $criteria         = new CriteriaCompo(new Criteria('name', $itemtype));
+    $criteria = new CriteriaCompo(new Criteria('name', $itemtype));
     $criteria->add(new Criteria('mid', null, '!='));
     if ($item_typeHandler->getCount($criteria) != 1) {
         die('illegal request');
@@ -45,11 +45,12 @@ function xoonips_get_backend()
     if (!preg_match('/^[a-z][_a-z]*$/', $action)) {
         die('illegal request');
     }
-    $backend = '../' . $itemtype . '/backend/' . $action . '.php';
+    $backend = '../'.$itemtype.'/backend/'.$action.'.php';
     if (!file_exists($backend)) {
         die('illegal request');
     }
+
     return $backend;
 }
 
-include xoonips_get_backend();
+require xoonips_get_backend();

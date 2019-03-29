@@ -1,21 +1,16 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Zip file creation library class for the XooNIps
  *  - original file can be found in phpMyAdmin 2.11.6 (zip.lib.php).
- *  - modified for runtime memory saving
- *
- * $Revision: 1.1.2.3 $
+ *  - modified for runtime memory saving.
  */
 
 /**
- *
  * @version $phpMyAdmin-2.11.6-Id: zip.lib.php 10240 2007-04-01 11:02:46Z cybot_tm $
  */
-
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // php-indent: disable
 /**
@@ -34,44 +29,42 @@ if (!defined('XOOPS_ROOT_PATH')) {
  *  date and time of the compressed file
  *
  * Official ZIP file format: http://www.pkware.com/appnote.txt
- *
- * @access  public
  */
 // XooNIps: renamed class name
 class XooNIpsUtilityZip extends XooNIpsUtility
 {
     /**
-     * Data buffer size
+     * Data buffer size.
      *
-     * @var  int $bsize
+     * @var int
      */
     public $bsize = 65536;
 
     /**
-     * File handle to store compressed data
+     * File handle to store compressed data.
      *
-     * @var  resource $datasec_handle
+     * @var resource
      */
     public $datasec_handle = false;
 
     /**
-     * Central directory
+     * Central directory.
      *
-     * @var  array $ctrl_dir
+     * @var array
      */
     public $ctrl_dir = array();
 
     /**
-     * End of central directory record
+     * End of central directory record.
      *
-     * @var  string $eof_ctrl_dir
+     * @var string
      */
     public $eof_ctrl_dir = "\x50\x4b\x05\x06\x00\x00\x00\x00";
 
     /**
-     * Last offset position
+     * Last offset position.
      *
-     * @var  integer $old_offset
+     * @var int
      */
     public $old_offset = 0;
 
@@ -79,33 +72,34 @@ class XooNIpsUtilityZip extends XooNIpsUtility
      * Converts an Unix timestamp to a four byte DOS date and time format (date
      * in high two bytes, time in low two bytes allowing magnitude comparison).
      *
-     * @param  integer  the current Unix timestamp
+     * @param  int  the current Unix timestamp
      *
-     * @return integer  the current date in a four byte DOS format
-     *
-     * @access private
+     * @return int the current date in a four byte DOS format
      */
     public function unix2DosTime($unixtime = 0)
     {
         $timearray = ($unixtime == 0) ? getdate() : getdate($unixtime);
 
         if ($timearray['year'] < 1980) {
-            $timearray['year']    = 1980;
-            $timearray['mon']     = 1;
-            $timearray['mday']    = 1;
-            $timearray['hours']   = 0;
+            $timearray['year'] = 1980;
+            $timearray['mon'] = 1;
+            $timearray['mday'] = 1;
+            $timearray['hours'] = 0;
             $timearray['minutes'] = 0;
             $timearray['seconds'] = 0;
         } // end if
 
         return (($timearray['year'] - 1980) << 25) | ($timearray['mon'] << 21) | ($timearray['mday'] << 16) | ($timearray['hours'] << 11)
                | ($timearray['minutes'] << 5) | ($timearray['seconds'] >> 1);
-    } // end of the 'unix2DosTime()' method
+    }
+
+ // end of the 'unix2DosTime()' method
 
     /**
-     * open zip file
+     * open zip file.
      *
      * @param string $zip_filename creating zip file name
+     *
      * @return bool
      */
     public function open($zip_filename)
@@ -118,18 +112,20 @@ class XooNIpsUtilityZip extends XooNIpsUtility
             return false;
         }
         $this->datasec_handle = $fh;
+
         return true;
-    } // end of the 'open()' method
+    }
+
+ // end of the 'open()' method
 
     /**
-     * Adds "file" to archive
+     * Adds "file" to archive.
      *
      * @param  string   local file path
      * @param  string   name of the file in the archive (may contains the path)
-     * @param  integer  the current timestamp
-     * @return bool     result status, false if failed
+     * @param  int  the current timestamp
      *
-     * @access public
+     * @return bool result status, false if failed
      */
     public function add($path, $name)
     {
@@ -145,12 +141,14 @@ class XooNIpsUtilityZip extends XooNIpsUtility
         $h = @fopen($path, 'rb');
         if ($h === false) {
             unlink($tmpfile);
+
             return false;
         }
         $hgz = gzopen($tmpfile, 'wb');
         if ($hgz === false) {
             unlink($tmpfile);
             fclose($h);
+
             return false;
         }
         while (!feof($h)) {
@@ -163,9 +161,9 @@ class XooNIpsUtilityZip extends XooNIpsUtility
         $name = str_replace('\\', '/', $name);
         $time = filemtime($path);
 
-        $dtime    = dechex($this->unix2DosTime($time));
-        $hexdtime = '\x' . $dtime[6] . $dtime[7] . '\x' . $dtime[4] . $dtime[5] . '\x' . $dtime[2] . $dtime[3] . '\x' . $dtime[0] . $dtime[1];
-        eval('$hexdtime = "' . $hexdtime . '";');
+        $dtime = dechex($this->unix2DosTime($time));
+        $hexdtime = '\x'.$dtime[6].$dtime[7].'\x'.$dtime[4].$dtime[5].'\x'.$dtime[2].$dtime[3].'\x'.$dtime[0].$dtime[1];
+        eval('$hexdtime = "'.$hexdtime.'";');
 
         $fr = "\x50\x4b\x03\x04";
         $fr .= "\x14\x00";            // ver needed to extract
@@ -176,12 +174,12 @@ class XooNIpsUtilityZip extends XooNIpsUtility
         // "local file header" segment
         $htmp = fopen($tmpfile, 'rb');
         fseek($htmp, -8, SEEK_END);
-        $ar  = unpack('Vcrc', fread($htmp, 4));
+        $ar = unpack('Vcrc', fread($htmp, 4));
         $crc = $ar['crc'];
         fseek($htmp, 10, SEEK_SET);
 
         $unc_len = filesize($path);
-        $c_len   = filesize($tmpfile) - 18;    // 10 for header, 4 for crc, 4 for isize
+        $c_len = filesize($tmpfile) - 18;    // 10 for header, 4 for crc, 4 for isize
         $fr .= pack('V', $crc);             // crc32
         $fr .= pack('V', $c_len);           // compressed filesize
         $fr .= pack('V', $unc_len);         // uncompressed filesize
@@ -236,14 +234,14 @@ class XooNIpsUtilityZip extends XooNIpsUtility
         $this->ctrl_dir[] = $cdrec;
 
         return true;
-    } // end of the 'add()' method
+    }
+
+ // end of the 'add()' method
 
     /**
-     * Close zip file
+     * Close zip file.
      *
      * @return bool status
-     *
-     * @access public
      */
     public function close()
     {
@@ -252,22 +250,24 @@ class XooNIpsUtilityZip extends XooNIpsUtility
         }
 
         $datasec_len = ftell($this->datasec_handle);
-        $ctrldir     = implode('', $this->ctrl_dir);
+        $ctrldir = implode('', $this->ctrl_dir);
 
-        fwrite($this->datasec_handle, $ctrldir . $this->eof_ctrl_dir . pack('v', count($this->ctrl_dir)) .  // total # of entries "on this disk"
-                                      pack('v', count($this->ctrl_dir)) .  // total # of entries overall
-                                      pack('V', strlen($ctrldir)) .           // size of central dir
-                                      pack('V', $datasec_len) .               // offset to start of central dir
+        fwrite($this->datasec_handle, $ctrldir.$this->eof_ctrl_dir.pack('v', count($this->ctrl_dir)).  // total # of entries "on this disk"
+                                      pack('v', count($this->ctrl_dir)).  // total # of entries overall
+                                      pack('V', strlen($ctrldir)).           // size of central dir
+                                      pack('V', $datasec_len).               // offset to start of central dir
                                       "\x00\x00"                              // .zip file comment length
         );
         fclose($this->datasec_handle);
 
         // reset runtime variables
         $this->datasec_handle = false;
-        $this->ctrl_dir       = array();
-        $this->old_offset     = 0;
+        $this->ctrl_dir = array();
+        $this->old_offset = 0;
 
         return true;
-    } // end of the 'close()' method
+    }
+
+ // end of the 'close()' method
 } // end of the 'XooNIpsUtilityZip' class
 // php-indent: enable

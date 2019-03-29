@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.9 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -37,18 +37,18 @@ class XNPToolOrmItemDetail extends XooNIpsTableObject
     // for column length check
     public $lengths
         = array(
-            'tool_id'              => 10,
-            'tool_type'            => 30,
-            'developer'            => 255,
-            'readme'               => 65535,
-            'rights'               => 65535,
-            'use_cc'               => 3,
-            'cc_commercial_use'    => 3,
-            'cc_modification'      => 3,
-            'attachment_dl_limit'  => 1,
+            'tool_id' => 10,
+            'tool_type' => 30,
+            'developer' => 255,
+            'readme' => 65535,
+            'rights' => 65535,
+            'use_cc' => 3,
+            'cc_commercial_use' => 3,
+            'cc_modification' => 3,
+            'attachment_dl_limit' => 1,
             'attachment_dl_notify' => 1,
         );
-    //
+
     /**
      * XNPToolOrmItemDetail constructor.
      */
@@ -67,31 +67,32 @@ class XNPToolOrmItemDetail extends XooNIpsTableObject
     }
 
     /**
-     * get developer objects of this item
+     * get developer objects of this item.
+     *
      * @return XNPToolOrmDeveloper[]
      */
     public function getDevelopers()
     {
-        $handler  = xoonips_getOrmHandler('xnptool', 'developer');
+        $handler = xoonips_getOrmHandler('xnptool', 'developer');
         $criteria = new Criteria('tool_id', $this->get('tool_id'));
         $criteria->setSort('developer_order');
         $result = $handler->getObjects($criteria);
         if ($result) {
             return $result;
         }
+
         return array();
     }
 }
 
 /**
  * @brief Handler class that create, insert, update, get and delete detail information
- *
- *
  */
 class XNPToolOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XNPToolOrmItemDetailHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -103,6 +104,7 @@ class XNPToolOrmItemDetailHandler extends XooNIpsTableObjectHandler
     /**
      * @param XoopsObject $obj
      * @param bool        $force
+     *
      * @return bool
      */
     public function insert(XoopsObject $obj, $force = false)
@@ -124,6 +126,7 @@ class XNPToolOrmItemDetailHandler extends XooNIpsTableObjectHandler
 
     /**
      * @param $detail
+     *
      * @return bool|string
      */
     public function get_cc($detail)

@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.17.2.1.2.20 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,11 +24,11 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-include __DIR__ . '/include/common.inc.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/include/notification.inc.php';
-include __DIR__ . '/class/base/gtickets.php';
+require __DIR__.'/include/common.inc.php';
+require_once __DIR__.'/include/lib.php';
+require_once __DIR__.'/include/AL.php';
+require_once __DIR__.'/include/notification.inc.php';
+require __DIR__.'/class/base/gtickets.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
@@ -38,27 +38,27 @@ $uid = $_SESSION['xoopsUserId'];
 
 $xgroupHandler = xoonips_getHandler('xoonips', 'group');
 
-$is_moderator  = xnp_is_moderator($xnpsid, $uid);
-$admin_gids    = $xgroupHandler->getGroupIds($uid, true);
+$is_moderator = xnp_is_moderator($xnpsid, $uid);
+$admin_gids = $xgroupHandler->getGroupIds($uid, true);
 $is_groupadmin = (count($admin_gids) != 0);
 
 // Only Moderator and Group administrator can access this page.
 if (!$is_moderator) {
     if (!xnp_is_activated($xnpsid, $uid)) {
-        redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_MODERATOR_NOT_ACTIVATED);
+        redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_MODERATOR_NOT_ACTIVATED);
     }
 
     if (!$is_groupadmin) {
-        redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
+        redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
     }
 }
 
 // get requests
-$formdata  = xoonips_getUtility('formdata');
-$op        = $formdata->getValue('post', 'op', 's', false, '');
-$menu_id   = $formdata->getValue('get', 'menu_id', 'i', false);
+$formdata = xoonips_getUtility('formdata');
+$op = $formdata->getValue('post', 'op', 's', false, '');
+$menu_id = $formdata->getValue('get', 'menu_id', 'i', false);
 $index_ids = $formdata->getValueArray('post', 'index_ids', 'i', false);
-$item_id   = $formdata->getValue('post', 'item_id', 'i', false);
+$item_id = $formdata->getValue('post', 'item_id', 'i', false);
 // check request variables
 if ($op === 'certify' || $op === 'uncertify') {
     if (null === $item_id) {
@@ -70,15 +70,15 @@ if ($op === 'certify' || $op === 'uncertify') {
 
 if ($menu_id == 1) {
     // pankuzu for administrator
-    $pankuzu = _MI_XOONIPS_ACCOUNT_PANKUZU_MODERATOR . _MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR . _MI_XOONIPS_ITEM_PANKUZU_CERTIFY_PUBLIC_ITEMS;
+    $pankuzu = _MI_XOONIPS_ACCOUNT_PANKUZU_MODERATOR._MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR._MI_XOONIPS_ITEM_PANKUZU_CERTIFY_PUBLIC_ITEMS;
     if (!$is_moderator) {
-        redirect_header(XOOPS_URL . '/', 3, _NOPERM);
+        redirect_header(XOOPS_URL.'/', 3, _NOPERM);
     }
 } elseif ($menu_id == 2) {
     // pankuzu for group administrator
-    $pankuzu = _MI_XOONIPS_ACCOUNT_PANKUZU_GROUP_ADMINISTRATOR . _MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR . _MI_XOONIPS_ITEM_PANKUZU_CERTIFY_GROUP_ITEMS;
+    $pankuzu = _MI_XOONIPS_ACCOUNT_PANKUZU_GROUP_ADMINISTRATOR._MI_XOONIPS_ACCOUNT_PANKUZU_SEPARATOR._MI_XOONIPS_ITEM_PANKUZU_CERTIFY_GROUP_ITEMS;
     if (!$is_groupadmin) {
-        redirect_header(XOOPS_URL . '/', 3, _NOPERM);
+        redirect_header(XOOPS_URL.'/', 3, _NOPERM);
     }
 } else {
     $pankuzu = '';
@@ -114,8 +114,8 @@ if ($op === 'certify' || $op === 'uncertify') {
 }
 
 $xilHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-$join       = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'x');
-$criteria   = new CriteriaCompo(new Criteria('certify_state', CERTIFY_REQUIRED));
+$join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'x');
+$criteria = new CriteriaCompo(new Criteria('certify_state', CERTIFY_REQUIRED));
 switch ($menu_id) {
     case 1:
         // public
@@ -123,7 +123,7 @@ switch ($menu_id) {
         break;
     case 2:
         // group only
-        $criteria->add(new Criteria('gid', '(' . implode(',', $admin_gids) . ')', 'IN', 'x'));
+        $criteria->add(new Criteria('gid', '('.implode(',', $admin_gids).')', 'IN', 'x'));
         $criteria->add(new Criteria('open_level', OL_GROUP_ONLY, '=', 'x'));
         break;
     default:
@@ -134,7 +134,7 @@ switch ($menu_id) {
             $criteria_public = false;
         }
         if ($is_groupadmin) {
-            $criteria_group = new CriteriaCompo(new Criteria('gid', '(' . implode(',', $admin_gids) . ')', 'IN', 'x'));
+            $criteria_group = new CriteriaCompo(new Criteria('gid', '('.implode(',', $admin_gids).')', 'IN', 'x'));
             $criteria_group->add(new Criteria('open_level', OL_GROUP_ONLY, '=', 'x'));
         } else {
             $criteria_group = false;
@@ -148,27 +148,27 @@ switch ($menu_id) {
             $criteria->add($criteria_group);
         }
 }
-$xil_objs =  $xilHandler->getObjects($criteria, false, '', false, $join);
-$items    = array();
+$xil_objs = $xilHandler->getObjects($criteria, false, '', false, $join);
+$items = array();
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_certify.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH.'/header.php';
 foreach ($xil_objs as $xil_obj) {
     $iid = $xil_obj->get('item_id');
     $xid = $xil_obj->get('index_id');
     if (!isset($items[$iid])) {
         $itemlibHandler = XooNIpsItemLibraryHandler::getInstance();
-        $itemlib_obj    = $itemlibHandler->get($iid);
+        $itemlib_obj = $itemlibHandler->get($iid);
         if (!is_object($itemlib_obj)) {
             continue;
         }
         $items[$iid] = array(
-            'item_id'   => $iid,
-            'indexes'   => array(),
+            'item_id' => $iid,
+            'indexes' => array(),
             'item_body' => $itemlib_obj->getItemListBlock(),
         );
     }
     $items[$iid]['indexes'][] = array(
-        'id'   => $xid,
+        'id' => $xid,
         'path' => xnpGetIndexPathString($xnpsid, $xid),
     );
 }
@@ -186,9 +186,9 @@ $xoopsTpl->assign('index_label', _MD_XOONIPS_ITEM_INDEX_LABEL);
 if (count($items) > 0) {
     $xoopsTpl->assign('items', $items);
 }
-$xoopsTpl->assign('xoonips_editprofile_url', XOOPS_URL . '/modules/xoonips/edituser.php?uid=' . $uid);
+$xoopsTpl->assign('xoonips_editprofile_url', XOOPS_URL.'/modules/xoonips/edituser.php?uid='.$uid);
 // token ticket
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, 'xoonips_certify_item');
 $xoopsTpl->assign('token_ticket', $token_ticket);
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH.'/footer.php';

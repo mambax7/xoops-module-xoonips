@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.8.4.1.2.7 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -33,35 +33,35 @@
  */
 
 /** A child is added recursively. (Caution) not add parentXID.
- * @param int   $parentXID    parentXID
+ * @param int   $parentXID   parentXID
  * @param array $indexFinder
- * @param array $childFinder  XID->array(childXID) Conversion table
- * @param       $out          Output place. Priority is given to the depth when searching.
- *                            Brothers output in result sorted by sort_number.  $out[] = index
- *                            ROOT's depth = 0 ($out don't contain ROOT.)
- * @param  int  $depth
+ * @param array $childFinder XID->array(childXID) Conversion table
+ * @param       $out         Output place. Priority is given to the depth when searching.
+ *                           Brothers output in result sorted by sort_number.  $out[] = index
+ *                           ROOT's depth = 0 ($out don't contain ROOT.)
+ * @param int   $depth
+ *
  * @return nothing
+ *
  * @internal param XID $in ->index Conversion table
  */
-
 function genIndexTreeAdd($parentXID, $indexFinder, $childFinder, $out, $depth)
 {
-    $depth++;
-if (count($indexFinder) >0 ) {
+    ++$depth;
+    if (count($indexFinder) > 0) {
+        $len = count($childFinder[$parentXID]);
+        for ($i = 0; $i < $len; ++$i) {
+            $xid = $childFinder[$parentXID][$i];
 
-    $len = count($childFinder[$parentXID]);
-    for ($i = 0; $i < $len; $i++) {
-        $xid = $childFinder[$parentXID][$i];
+            $indexFinder[$xid]['is_last'] = ($i == $len - 1);
+            $indexFinder[$xid]['depth'] = $depth;
 
-        $indexFinder[$xid]['is_last'] = ($i == $len - 1);
-        $indexFinder[$xid]['depth']   = $depth;
-
-        if (isset($childFinder[$xid])) {
-            $indexFinder[$xid]['child_count'] = count($childFinder[$xid]);
-            $indexFinder[$xid]['child']       = $childFinder[$xid];
-        } else {
-            $indexFinder[$xid]['child_count'] = 0;
-        }
+            if (isset($childFinder[$xid])) {
+                $indexFinder[$xid]['child_count'] = count($childFinder[$xid]);
+                $indexFinder[$xid]['child'] = $childFinder[$xid];
+            } else {
+                $indexFinder[$xid]['child_count'] = 0;
+            }
 
         // first, add children.
         $out[] = $indexFinder[$xid];
@@ -70,8 +70,8 @@ if (count($indexFinder) >0 ) {
         if (isset($childFinder[$xid])) {
             genIndexTreeAdd($xid, $indexFinder, $childFinder, $out, $depth);
         }
+        }
     }
-}
 }
 
 /* todo: to collect genIndexTree, genPublicIndexTree, genMyIndexTree, genSameAreaIndexTree, genPublicPrivateIndexTree,
@@ -81,6 +81,7 @@ if (count($indexFinder) >0 ) {
 
 /**
  * @param $xnpsid
+ *
  * @return array
  */
 function genIndexTree0($xnpsid)
@@ -88,25 +89,27 @@ function genIndexTree0($xnpsid)
     $criteria = array(
         'orders' => array(
             array(
-                'name'  => 'parent_index_id',
-                'order' => 'ASC'
+                'name' => 'parent_index_id',
+                'order' => 'ASC',
             ),
             array(
-                'name'  => 'sort_number',
-                'order' => 'ASC'
-            )
-        )
+                'name' => 'sort_number',
+                'order' => 'ASC',
+            ),
+        ),
     );
-    $indexes  = array();
+    $indexes = array();
     xnp_get_all_indexes($xnpsid, $criteria, $indexes);
     if (empty($indexes)) {
         return array();
     }
+
     return $indexes;
 }
 
 /**
  * @param $indexes
+ *
  * @return array
  */
 function genIndexTree1($indexes)
@@ -130,27 +133,32 @@ function genIndexTree1($indexes)
     // add recursively from ROOT
     $out = array();
     genIndexTreeAdd(IID_ROOT, $indexFinder, $childFinder, $out, 0);
+
     return $out;
 }
 
 /** get Index tree
  * @param $xnpsid XNPSID
+ *
  * @return array|tree
  */
 function genIndexTree($xnpsid)
 {
     $indexes = genIndexTree0($xnpsid);
+
     return genIndexTree1($indexes);
 }
 
 /** get Public index tree.
  * @param $xnpsid XNPSID
+ *
  * @return array|tree
  */
 function genPublicIndexTree($xnpsid)
 {
     $indexes = genIndexTree0($xnpsid);
     filterPublicIndex($indexes);
+
     return genIndexTree1($indexes);
 }
 
@@ -160,7 +168,7 @@ function genPublicIndexTree($xnpsid)
 function filterPublicIndex($indexes)
 {
     $len = count($indexes);
-    for ($i = 0; $i < $len; $i++) {
+    for ($i = 0; $i < $len; ++$i) {
         if ($indexes[$i] === false) {
             continue;
         }
@@ -172,14 +180,17 @@ function filterPublicIndex($indexes)
 
 /** get Index tree for moderator
  *  not contain other's private index, and not contain group-index of group which he does not belong.
+ *
  * @param $xnpsid XNPSID
  * @param $uid
+ *
  * @return array|tree
  */
 function genMyIndexTree($xnpsid, $uid)
 {
     $indexes = genIndexTree0($xnpsid);
     filterMyIndex($indexes, $xnpsid, $uid);
+
     return genIndexTree1($indexes);
 }
 
@@ -191,10 +202,10 @@ function genMyIndexTree($xnpsid, $uid)
 function filterMyIndex($indexes, $xnpsid, $uid)
 {
     $xgroupHandler = xoonips_getHandler('xoonips', 'group');
-    $gids          = $xgroupHandler->getGroupIds($uid, false);
-    $len           = count($indexes);
-    for ($i = 0; $i < $len; $i++) {
-        $index =  $indexes[$i];
+    $gids = $xgroupHandler->getGroupIds($uid, false);
+    $len = count($indexes);
+    for ($i = 0; $i < $len; ++$i) {
+        $index = $indexes[$i];
         if ($index === false) {
             continue;
         }
@@ -219,8 +230,8 @@ function filterMyIndex($indexes, $xnpsid, $uid)
 function filterPrivateIndex($indexes, $uid)
 {
     $len = count($indexes);
-    for ($i = 0; $i < $len; $i++) {
-        $index =  $indexes[$i];
+    for ($i = 0; $i < $len; ++$i) {
+        $index = $indexes[$i];
         if ($index === false) {
             continue;
         }
@@ -231,16 +242,19 @@ function filterPrivateIndex($indexes, $uid)
 }
 
 /** get Index tree.
- *  get same index as $refIndex ($refIndex have same open_level and same owner_gid, and  same owner_uid)
+ *  get same index as $refIndex ($refIndex have same open_level and same owner_gid, and  same owner_uid).
+ *
  * @param $xnpsid XNPSID
  * @param $uid
  * @param $refIndex
+ *
  * @return array|tree
  */
 function genSameAreaIndexTree($xnpsid, $uid, $refIndex)
 {
     $indexes = genIndexTree0($xnpsid);
     filterSameAreaIndex($indexes, $refIndex);
+
     return genIndexTree1($indexes);
 }
 
@@ -251,8 +265,8 @@ function genSameAreaIndexTree($xnpsid, $uid, $refIndex)
 function filterSameAreaIndex($indexes, $refIndex)
 {
     $len = count($indexes);
-    for ($i = 0; $i < $len; $i++) {
-        $index =  $indexes[$i];
+    for ($i = 0; $i < $len; ++$i) {
+        $index = $indexes[$i];
         if ($index === false) {
             continue;
         }
@@ -268,12 +282,14 @@ function filterSameAreaIndex($indexes, $refIndex)
 /** get Index tree contains Public and Private Index.
  * @param $xnpsid XNPSID
  * @param $uid
+ *
  * @return array|tree
  */
 function genPublicPrivateIndexTree($xnpsid, $uid)
 {
     $indexes = genIndexTree0($xnpsid);
     filterPublicPrivateIndex($indexes, $uid);
+
     return genIndexTree1($indexes);
 }
 
@@ -284,8 +300,8 @@ function genPublicPrivateIndexTree($xnpsid, $uid)
 function filterPublicPrivateIndex($indexes, $uid)
 {
     $len = count($indexes);
-    for ($i = 0; $i < $len; $i++) {
-        $index =  $indexes[$i];
+    for ($i = 0; $i < $len; ++$i) {
+        $index = $indexes[$i];
         if ($index === false) {
             continue;
         }
@@ -303,14 +319,14 @@ function filterPublicPrivateIndex($indexes, $uid)
 function filterWritableIndex(&$indexes, $xnpsid, $uid)
 {
     $xmemberHandler = xoonips_getHandler('xoonips', 'member');
-    $xgroupHandler  = xoonips_getHandler('xoonips', 'group');
+    $xgroupHandler = xoonips_getHandler('xoonips', 'group');
     if ($xmemberHandler->isModerator($uid)) {
         return;
     }
     $admin_gids = $xgroupHandler->getGroupIds($uid, true);
-    $len        = count($indexes);
-    for ($i = 0; $i < $len; $i++) {
-        $index =  $indexes[$i];
+    $len = count($indexes);
+    for ($i = 0; $i < $len; ++$i) {
+        $index = $indexes[$i];
         if ($index === false) {
             continue;
         }
@@ -333,12 +349,12 @@ function filterWritableIndex(&$indexes, $xnpsid, $uid)
 function filterEditableIndex(&$indexes, $xnpsid, $uid, $puid, $isPublicEditable)
 {
     $xmemberHandler = xoonips_getHandler('xoonips', 'member');
-    $xgroupHandler  = xoonips_getHandler('xoonips', 'group');
+    $xgroupHandler = xoonips_getHandler('xoonips', 'group');
     $isPublicEditable |= $xmemberHandler->isModerator($uid);
     $admin_gids = $xgroupHandler->getGroupIds($puid, true);
-    $len        = count($indexes);
-    for ($i = 0; $i < $len; $i++) {
-        $index =  $indexes[$i];
+    $len = count($indexes);
+    for ($i = 0; $i < $len; ++$i) {
+        $index = $indexes[$i];
         if ($index === false) {
             continue;
         }

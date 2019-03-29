@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.2 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,21 +26,16 @@
 // ------------------------------------------------------------------------- //
 
 /**
- *
  * @brief Class that has parameters of a requrest
- *
  */
 class XooNIpsRequest
 {
-
     /**
-     *
      * @brief requested logic name
      */
     public $method = false;
 
     /**
-     *
      * @brief parameters
      */
     public $vars = false;
@@ -74,6 +69,6 @@ class XooNIpsRequest
      */
     public function setVars($params)
     {
-        $this->vars =& $params;
+        $this->vars = &$params;
     }
 }

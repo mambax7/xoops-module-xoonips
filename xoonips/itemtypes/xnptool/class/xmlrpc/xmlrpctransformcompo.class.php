@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.3 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -28,10 +28,7 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- *
- * XmlRpcTransform composer class for Tool type
- *
- *
+ * XmlRpcTransform composer class for Tool type.
  */
 class XNPToolXmlRpcTransformCompo extends XooNIpsXmlRpcTransformCompo
 {
@@ -49,15 +46,17 @@ class XNPToolXmlRpcTransformCompo extends XooNIpsXmlRpcTransformCompo
      * @see XooNIpsXmlRpcTransformCompo::getObject
      *
      * @param array associative array of XML-RPC argument
+     *
      * @return XNPToolOrmDeveloper
      */
     public function getObject($in_array)
     {
-        $obj        = parent::getObject($in_array);
+        $obj = parent::getObject($in_array);
         $developers = $obj->getVar('developer');
-        for ($i = 0; $i < count($developers); $i++) {
+        for ($i = 0; $i < count($developers); ++$i) {
             $developers[$i]->set('developer_order', $i);
         }
+
         return $obj;
     }
 }

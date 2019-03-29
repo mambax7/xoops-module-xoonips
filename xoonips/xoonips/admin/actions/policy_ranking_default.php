@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,53 +24,51 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // block resources
 $langman->read('blocks.php');
 
 // class files
-require_once XOOPS_ROOT_PATH . '/class/xoopsblock.php';
+require_once XOOPS_ROOT_PATH.'/class/xoopsblock.php';
 
 // title
-$title       = _AM_XOONIPS_POLICY_RANKING_TITLE;
+$title = _AM_XOONIPS_POLICY_RANKING_TITLE;
 $description = _AM_XOONIPS_POLICY_RANKING_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
-$ticket_area  = 'xoonips_admin_policy_ranking';
+require_once __DIR__.'/../../class/base/gtickets.php';
+$ticket_area = 'xoonips_admin_policy_ranking';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys   = array(
-    'ranking_num_rows'     => 'i',
-    'ranking_order'        => 's',
-    'ranking_visible'      => 's',
+$config_keys = array(
+    'ranking_num_rows' => 'i',
+    'ranking_order' => 's',
+    'ranking_visible' => 's',
     'ranking_new_num_rows' => 'i',
-    'ranking_new_order'    => 's',
-    'ranking_new_visible'  => 's',
-    'ranking_days'         => 'i',
+    'ranking_new_order' => 's',
+    'ranking_new_visible' => 's',
+    'ranking_days' => 'i',
     'ranking_days_enabled' => 's',
 );
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
@@ -82,11 +80,12 @@ $config_values = xoonips_admin_get_configs($config_keys, 'e');
 function xoonips_get_module_id()
 {
     $moduleHandler = xoops_getHandler('module');
-    $module        = $moduleHandler->getByDirname('xoonips');
+    $module = $moduleHandler->getByDirname('xoonips');
     if (!is_object($module)) {
         return false;
     }
     $mid = $module->getVar('mid');
+
     return $mid;
 }
 
@@ -94,11 +93,12 @@ function xoonips_get_module_id()
  * @param $mid
  * @param $fname
  * @param $sfunc
+ *
  * @return string
  */
 function get_block_title($mid, $fname, $sfunc)
 {
-    $block_objs  = XoopsBlock::getByModule($mid);
+    $block_objs = XoopsBlock::getByModule($mid);
     $block_title = '';
     foreach ($block_objs as $block_obj) {
         $func_file = $block_obj->getVar('func_file', 'n');
@@ -109,6 +109,7 @@ function get_block_title($mid, $fname, $sfunc)
             break;
         }
     }
+
     return $block_title;
 }
 
@@ -116,30 +117,32 @@ function get_block_title($mid, $fname, $sfunc)
  * @param $names
  * @param $order_conf
  * @param $visible_conf
+ *
  * @return array
  */
 function ranking_create_array($names, $order_conf, $visible_conf)
 {
-    $orders   = array_map('intval', explode(',', $order_conf));
+    $orders = array_map('intval', explode(',', $order_conf));
     $visibles = array_map('intval', explode(',', $visible_conf));
-    $cnt      = count($names);
-    $ranking  = array();
-    for ($i = 0; $i < $cnt; $i++) {
+    $cnt = count($names);
+    $ranking = array();
+    for ($i = 0; $i < $cnt; ++$i) {
         $ranking[$orders[$i]] = array(
-            'id'      => $i,
-            'name'    => $names[$i],
-            'order'   => $orders[$i],
+            'id' => $i,
+            'name' => $names[$i],
+            'order' => $orders[$i],
             'checked' => ($visibles[$i] == 1) ? 'checked' : '',
-            'up'      => _AM_XOONIPS_LABEL_UP,
-            'down'    => _AM_XOONIPS_LABEL_DOWN,
+            'up' => _AM_XOONIPS_LABEL_UP,
+            'down' => _AM_XOONIPS_LABEL_DOWN,
         );
     }
     ksort($ranking);
     $evenodd = 'odd';
-    for ($i = 0; $i < $cnt; $i++) {
+    for ($i = 0; $i < $cnt; ++$i) {
         $ranking[$i]['evenodd'] = $evenodd;
-        $evenodd                = ($evenodd === 'even') ? 'odd' : 'even';
+        $evenodd = ($evenodd === 'even') ? 'odd' : 'even';
     }
+
     return $ranking;
 }
 
@@ -150,34 +153,34 @@ if ($xoonips_mid === false) {
 }
 
 // >> general ranking block
-$general_ranking_title   = _AM_XOONIPS_POLICY_RANKING_BLOCK_TITLE . '&nbsp;:&nbsp;' . get_block_title($xoonips_mid, 'xoonips_blocks.php',
+$general_ranking_title = _AM_XOONIPS_POLICY_RANKING_BLOCK_TITLE.'&nbsp;:&nbsp;'.get_block_title($xoonips_mid, 'xoonips_blocks.php',
                                                                                                       'b_xoonips_ranking_show');
-$general_ranking_names   = array(
+$general_ranking_names = array(
     _MB_XOONIPS_RANKING_VIEWED_ITEM,
     _MB_XOONIPS_RANKING_DOWNLOADED_ITEM,
     _MB_XOONIPS_RANKING_CONTRIBUTING_USER,
     _MB_XOONIPS_RANKING_SEARCHED_KEYWORD,
     _MB_XOONIPS_RANKING_CONTRIBUTED_GROUP,
 );
-$general_ranking         = ranking_create_array($general_ranking_names, $config_values['ranking_order'], $config_values['ranking_visible']);
+$general_ranking = ranking_create_array($general_ranking_names, $config_values['ranking_order'], $config_values['ranking_visible']);
 $general_ranking_numrows = $config_values['ranking_num_rows'];
 
 // >> recent ranking block
-$recent_ranking_title   = _AM_XOONIPS_POLICY_RANKING_BLOCK_TITLE . '&nbsp;&nbsp;:&nbsp;&nbsp;' . get_block_title($xoonips_mid, 'xoonips_blocks.php',
+$recent_ranking_title = _AM_XOONIPS_POLICY_RANKING_BLOCK_TITLE.'&nbsp;&nbsp;:&nbsp;&nbsp;'.get_block_title($xoonips_mid, 'xoonips_blocks.php',
                                                                                                                  'b_xoonips_ranking_new_show');
-$recent_ranking_names   = array(
+$recent_ranking_names = array(
     _MB_XOONIPS_RANKING_NEW_ITEM,
     _MB_XOONIPS_RANKING_NEW_GROUP,
 );
-$recent_ranking         = ranking_create_array($recent_ranking_names, $config_values['ranking_new_order'], $config_values['ranking_new_visible']);
+$recent_ranking = ranking_create_array($recent_ranking_names, $config_values['ranking_new_order'], $config_values['ranking_new_visible']);
 $recent_ranking_numrows = $config_values['ranking_new_num_rows'];
 
 // >> calculation days
-$ranking_days         = $config_values['ranking_days'];
+$ranking_days = $config_values['ranking_days'];
 $ranking_days_checked = ($config_values['ranking_days_enabled'] === 'on') ? 'checked' : '';
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('policy_ranking.tmpl.tpl');

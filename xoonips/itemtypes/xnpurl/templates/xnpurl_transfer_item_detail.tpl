@@ -1,4 +1,3 @@
-<{* $Revision: 1.1.2.3 $ *}>
 <table class="outer">
   <!-- Basic Information -->
 <{include file="db:xoonips_transfer_detail_doi.tpl"}>

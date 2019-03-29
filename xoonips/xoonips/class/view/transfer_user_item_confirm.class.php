@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.15 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,21 +25,16 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/transfer.class.php';
-include_once __DIR__ . '/../base/gtickets.php';
+require_once __DIR__.'/transfer.class.php';
+require_once __DIR__.'/../base/gtickets.php';
 
 /**
- *
  * HTML view to list items to transfer for a user.
- *
- *
- *
- *
  */
 class XooNIpsViewTransferUserItemConfirm extends XooNIpsViewTransfer
 {
     /**
-     * create view
+     * create view.
      *
      * @param arrray $params associative array of view<br>
      *                       - $params['to_uid']:
@@ -60,9 +55,6 @@ class XooNIpsViewTransferUserItemConfirm extends XooNIpsViewTransfer
         parent::__construct($params);
     }
 
-    /**
-     *
-     */
     public function render()
     {
         global $xoopsOption, $xoopsConfig, $xoopsUser, $xoopsUserIsAdmin, $xoopsLogger, $xoopsTpl;
@@ -72,7 +64,7 @@ class XooNIpsViewTransferUserItemConfirm extends XooNIpsViewTransfer
         $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
 
         $xoopsOption['template_main'] = 'xoonips_transfer_user_item_confirm.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH.'/header.php';
         $this->setXooNIpsStyleSheet($xoopsTpl);
 
         $xoopsTpl->assign('token_hidden', $GLOBALS['xoopsGTicket']->getTicketHtml(__LINE__, 600, 'xoonips_transfer_user_item_confirm'));
@@ -84,7 +76,7 @@ class XooNIpsViewTransferUserItemConfirm extends XooNIpsViewTransfer
         foreach ($this->_params as $key => $val) {
             $xoopsTpl->assign($key, $val);
         }
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH.'/footer.php';
     }
 
     /**
@@ -96,6 +88,7 @@ class XooNIpsViewTransferUserItemConfirm extends XooNIpsViewTransfer
         foreach (array_values($this->_params['child_item_ids_to_transfer']) as $child_item_ids) {
             $item_ids = array_merge($item_ids, $child_item_ids);
         }
+
         return array_unique($item_ids);
     }
 
@@ -112,25 +105,29 @@ class XooNIpsViewTransferUserItemConfirm extends XooNIpsViewTransfer
         foreach ($item_ids as $item_id) {
             $result[] = $this->get_item_template_vars($item_id);
         }
+
         return $result;
     }
 
     /**
-     * get array of item for template vars
-     * @param integer $item_id
+     * get array of item for template vars.
+     *
+     * @param int $item_id
+     *
      * @return array
      */
     public function get_item_template_vars($item_id)
     {
-        $itemHandler      = xoonips_getOrmCompoHandler('xoonips', 'item');
+        $itemHandler = xoonips_getOrmCompoHandler('xoonips', 'item');
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $item             = $itemHandler->get($item_id);
-        $basic            = $item->getVar('basic');
+        $item = $itemHandler->get($item_id);
+        $basic = $item->getVar('basic');
         $itemtype = $item_typeHandler->get($basic->get('item_type_id'));
+
         return array(
-            'item_id'        => $item_id,
+            'item_id' => $item_id,
             'item_type_name' => $itemtype->getVar('display_name', 's'),
-            'title'          => $this->concatenate_titles($item->getVar('titles'))
+            'title' => $this->concatenate_titles($item->getVar('titles')),
         );
     }
 
@@ -140,21 +137,22 @@ class XooNIpsViewTransferUserItemConfirm extends XooNIpsViewTransfer
     public function get_gname_csv()
     {
         $result = array();
-        $gids   = array();
+        $gids = array();
         foreach ($this->_params['gids_to_subscribe'] as $gid) {
-            $gids[] = (int)$gid;
+            $gids[] = (int) $gid;
         }
         if (count($gids) == 0) {
             return '';
         }
         $xgroupHandler = xoonips_getHandler('xoonips', 'group');
-        $xgroup_objs   =  $xgroupHandler->getGroupObjects($gids);
+        $xgroup_objs = $xgroupHandler->getGroupObjects($gids);
         if (empty($xgroup_objs)) {
             return '';
         }
         foreach ($xgroup_objs as $xgroup_obj) {
             $result[] = $xgroup_obj->getVar('gname', 's');
         }
+
         return implode(',', $result);
     }
 }

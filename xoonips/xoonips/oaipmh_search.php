@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.9 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,31 +25,31 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include __DIR__ . '/include/common.inc.php';
+require __DIR__.'/include/common.inc.php';
 
-include_once __DIR__ . '/class/base/actionfactory.class.php';
+require_once __DIR__.'/class/base/actionfactory.class.php';
 
 $formdata = xoonips_getUtility('formdata');
-$op       = $formdata->getValue('get', 'action', 'n', false);
+$op = $formdata->getValue('get', 'action', 'n', false);
 if (null === $op) {
-    header('Location: ' . XOOPS_URL . '/modules/xoonips/oaipmh_search.php?action=default');
+    header('Location: '.XOOPS_URL.'/modules/xoonips/oaipmh_search.php?action=default');
 }
 
 xoonips_validate_request(in_array($op, array(
     'default',
     'detail',
     'search',
-    'metadata_detail'
+    'metadata_detail',
 )));
 
 $factory = XooNIpsActionFactory::getInstance();
 if ($op === 'metadata_detail') {
     $action = $factory->create('xoonips_search_metadata_detail');
 } else {
-    $action = $factory->create('oaipmh_search_' . $op);
+    $action = $factory->create('oaipmh_search_'.$op);
 }
 if (!$action) {
-    header('Location: ' . XOOPS_URL . '/');
+    header('Location: '.XOOPS_URL.'/');
 }
 $action->action();
 exit();

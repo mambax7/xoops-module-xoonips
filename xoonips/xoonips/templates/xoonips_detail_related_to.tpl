@@ -1,5 +1,4 @@
 <{* form to display link related to items(a part of detail page) *}>
-<{* $Revision: 1.3 $ *}>
 <{* 
 
 display summary(in HTML) of linked (registered) item in edit

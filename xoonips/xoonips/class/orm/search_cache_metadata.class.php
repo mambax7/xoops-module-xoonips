@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.7 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /*
 alter table following from xoonips 3.30
@@ -39,11 +37,11 @@ ALTER TABLE `x_xoonips_search_cache_metadata`
 */
 
 /**
- * class of XooNIps Search Cache Metadata
+ * class of XooNIps Search Cache Metadata.
+ *
  * @li getVar( 'search_cache_metadata_id' ) : primary key
  * @li getVar( 'search_cache_id' ) :search cache ID
  * @li getVar( 'identifier' ) : metadata identifier
- *
  */
 class XooNIpsOrmSearchCacheMetadata extends XooNIpsTableObject
 {
@@ -60,14 +58,13 @@ class XooNIpsOrmSearchCacheMetadata extends XooNIpsTableObject
 }
 
 /**
- *
- * XooNIps search cache item Handler class
- *
+ * XooNIps search cache item Handler class.
  */
 class XooNIpsOrmSearchCacheMetadataHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmSearchCacheMetadataHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

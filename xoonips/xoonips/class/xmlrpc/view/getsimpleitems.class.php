@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.2 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,27 +25,25 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/view/xmlrpcview.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xmlrpc/view/xmlrpcview.class.php';
 
 /**
- *
  * @brief Class that generate response of XML-RPC getSimpleItems request
- *
- *
  */
 class XooNIpsXmlRpcViewGetSimpleItems extends XooNIpsXmlRpcViewElement
 {
     /**
      * XooNIpsXmlRpcViewGetSimpleItems constructor.
+     *
      * @param $response
      */
     public function __construct($response)
     {
         parent::__construct($response);
         $factory = XooNIpsXmlRpcItemViewFactory::getInstance();
-        $items   = $response->getSuccess();
-        $len     = count($items);
-        for ($i = 0; $i < $len; $i++) {
+        $items = $response->getSuccess();
+        $len = count($items);
+        for ($i = 0; $i < $len; ++$i) {
             $view = $factory->create('getSimpleItems', $items[$i]);
             if ($view) {
                 $this->addView($view);
@@ -54,7 +52,6 @@ class XooNIpsXmlRpcViewGetSimpleItems extends XooNIpsXmlRpcViewElement
     }
 
     /**
-     *
      * @brief return XoopsXmlRpcTag that has response of this request
      *
      * @return XoopsXmlRpcTag
@@ -71,6 +68,7 @@ class XooNIpsXmlRpcViewGetSimpleItems extends XooNIpsXmlRpcViewElement
                 unset($ret); // because $resp->add() holds a reference to $ret, we must unbind ret for the next iteration.
             }
         }
+
         return $resp;
     }
 }

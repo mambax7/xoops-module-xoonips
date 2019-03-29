@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.2 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,30 +25,28 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/logic.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/logic.class.php';
 
 /**
- *
- * subclass of XooNIpsLogic(gettIndex)
- *
+ * subclass of XooNIpsLogic(gettIndex).
  */
 class XooNIpsLogicGetIndex extends XooNIpsLogic
 {
-
     /**
-     * execute getIndex
+     * execute getIndex.
      *
      * @param[in]  $vars[0] session ID
      * @param[in]  $vars[1] index ID
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response->success XooNIpsIndexCompo index information
+     *
      * @return bool
      */
     public function execute($vars, $response)
     {
         // parameter check
-        $error =  $response->getError();
+        $error = $response->getError();
         if (count($vars) > 2) {
             $error->add(XNPERR_EXTRA_PARAM);
         } elseif (count($vars) < 2) {
@@ -64,23 +62,26 @@ class XooNIpsLogicGetIndex extends XooNIpsLogic
         if ($error->get(0)) {
             // return if parameter error
             $response->setResult(false);
+
             return;
         } else {
             $sessionid = $vars[0];
-            $index_id  = $vars[1];
+            $index_id = $vars[1];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
+
             return false;
         }
         // get index from index_id
         $index_compoHandler = xoonips_getOrmCompoHandler('xoonips', 'index');
-        $index              = $index_compoHandler->get($index_id);
+        $index = $index_compoHandler->get($index_id);
         if ($index == false) {
             $response->setResult(false);
             $response->error->add(XNPERR_NOT_FOUND, 'cannot get index');
+
             return false;
         }
         // check permission
@@ -88,10 +89,12 @@ class XooNIpsLogicGetIndex extends XooNIpsLogic
         if (!$indexHandler->getPerm($index_id, $uid, 'read')) {
             $response->setResult(false);
             $response->error->add(XNPERR_ACCESS_FORBIDDEN, 'no permission');
+
             return false;
         }
         $response->setSuccess($index);
         $response->setResult(true);
+
         return true;
     }
 }

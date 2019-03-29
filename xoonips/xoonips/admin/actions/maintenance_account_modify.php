@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.3 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // get variables
 $get_keys = array(
@@ -37,11 +35,11 @@ $get_keys = array(
     ),
 );
 $get_vals = xoonips_admin_get_requests('get', $get_keys);
-$uid      = $get_vals['uid'];
+$uid = $get_vals['uid'];
 
 // title
 $title = _AM_XOONIPS_MAINTENANCE_ACCOUNT_MODIFY_TITLE;
 
 // load edit form
-include __DIR__ . '/maintenance_account_edit.php';
+require __DIR__.'/maintenance_account_edit.php';
 exit();

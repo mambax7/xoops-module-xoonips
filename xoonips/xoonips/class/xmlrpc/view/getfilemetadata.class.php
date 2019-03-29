@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.8 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,20 +25,15 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/view/xmlrpcview.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/xmlrpcfault.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xmlrpc/view/xmlrpcview.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xmlrpc/xmlrpcfault.class.php';
 
 /**
- *
  * @brief Class that generate response of XML-RPC getFileMetadata request
- *
- *
  */
 class XooNIpsXmlRpcViewGetFileMetadata extends XooNIpsXmlRpcViewElement
 {
-
     /**
-     *
      * @brief return XoopsXmlRpcTag that has response of this request
      *
      * @return XoopsXmlRpcTag
@@ -46,8 +41,8 @@ class XooNIpsXmlRpcViewGetFileMetadata extends XooNIpsXmlRpcViewElement
     public function render()
     {
         $metadata = $this->response->getSuccess();
-        $resp     = new XoopsXmlRpcStruct();
-        $unicode  = xoonips_getUtility('unicode');
+        $resp = new XoopsXmlRpcStruct();
+        $unicode = xoonips_getUtility('unicode');
         $resp->add('id', new XoopsXmlRpcInt($metadata['id']));
         $resp->add('filetype', new XoopsXmlRpcString($metadata['filetype']));
         $resp->add('originalname',
@@ -63,6 +58,7 @@ class XooNIpsXmlRpcViewGetFileMetadata extends XooNIpsXmlRpcViewElement
         $resp->add('last_modified_date', new XoopsXmlRpcDatetime($metadata['last_modified_date']));
         $resp->add('download_count', new XoopsXmlRpcInt($metadata['download_count']));
         $resp->add('download_count_sum', new XoopsXmlRpcInt($metadata['download_count_sum']));
+
         return $resp;
     }
 }

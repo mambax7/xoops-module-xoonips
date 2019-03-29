@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.6.2.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -31,9 +31,9 @@ session_cache_limiter('none');
 session_cache_expire(5);
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
-include __DIR__ . '/include/lib.php';
-include __DIR__ . '/include/AL.php';
+require __DIR__.'/include/common.inc.php';
+require __DIR__.'/include/lib.php';
+require __DIR__.'/include/AL.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
@@ -47,15 +47,15 @@ if ($xnpsid != 0) {
 } else {
     if (!xnp_is_valid_session_id($xnpsid)) {
         // Uncertified user can't access(except XOOPS administrator).
-        redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
+        redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
     }
     $uid = 0;
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_advanced_search.tpl';
 
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH.'/header.php';
 
-include __DIR__ . '/include/advanced_search.inc.php';
+require __DIR__.'/include/advanced_search.inc.php';
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH.'/footer.php';

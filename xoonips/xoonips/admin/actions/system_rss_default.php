@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,63 +24,61 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_SYSTEM_RSS_TITLE;
+$title = _AM_XOONIPS_SYSTEM_RSS_TITLE;
 $description = _AM_XOONIPS_SYSTEM_RSS_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
-$ticket_area  = 'xoonips_admin_system_rss';
+require_once __DIR__.'/../../class/base/gtickets.php';
+$ticket_area = 'xoonips_admin_system_rss';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys   = array(
+$config_keys = array(
     'rss_item_max' => 'i',
 );
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 // >> rss_item_max
 $feed_item_max_title = _AM_XOONIPS_SYSTEM_RSS_FEED_ITEM_MAX_TITLE;
-$feed_item_max_desc  = _AM_XOONIPS_SYSTEM_RSS_FEED_ITEM_MAX_DESC;
-$feed_item_max       = $config_values['rss_item_max'];
+$feed_item_max_desc = _AM_XOONIPS_SYSTEM_RSS_FEED_ITEM_MAX_DESC;
+$feed_item_max = $config_values['rss_item_max'];
 
 $textutil = xoonips_getUtility('text');
 
 // feed url
 $feed_url_title = _AM_XOONIPS_SYSTEM_RSS_FEED_URL_TITLE;
-$feed_url_desc  = _AM_XOONIPS_SYSTEM_RSS_FEED_URL_DESC;
-$feed_url_rdf   = $textutil->html_special_chars($xoonips_admin['mod_url'] . '/feed.php?type=rdf');
-$feed_url_rss   = $textutil->html_special_chars($xoonips_admin['mod_url'] . '/feed.php?type=rss');
-$feed_url_atom  = $textutil->html_special_chars($xoonips_admin['mod_url'] . '/feed.php?type=atom');
-$feed_url_html  = '<link rel="alternate" type="application/rss+xml" title="RSS 1.0" href="' . $feed_url_rdf . '" />' . "\n";
-$feed_url_html .= '<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="' . $feed_url_rss . '" />' . "\n";
-$feed_url_html .= '<link rel="alternate" type="application/atom+xml" title="Atom 1.0" href="' . $feed_url_atom . '" />';
+$feed_url_desc = _AM_XOONIPS_SYSTEM_RSS_FEED_URL_DESC;
+$feed_url_rdf = $textutil->html_special_chars($xoonips_admin['mod_url'].'/feed.php?type=rdf');
+$feed_url_rss = $textutil->html_special_chars($xoonips_admin['mod_url'].'/feed.php?type=rss');
+$feed_url_atom = $textutil->html_special_chars($xoonips_admin['mod_url'].'/feed.php?type=atom');
+$feed_url_html = '<link rel="alternate" type="application/rss+xml" title="RSS 1.0" href="'.$feed_url_rdf.'" />'."\n";
+$feed_url_html .= '<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="'.$feed_url_rss.'" />'."\n";
+$feed_url_html .= '<link rel="alternate" type="application/atom+xml" title="Atom 1.0" href="'.$feed_url_atom.'" />';
 $feed_url_html = $textutil->html_special_chars($feed_url_html);
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_rss.tmpl.tpl');

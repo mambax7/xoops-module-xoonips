@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.5.2.1.2.4 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,35 +25,35 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 /**
- * file search plugin class for Excel
+ * file search plugin class for Excel.
  */
 class XooNIpsFileSearchPluginEXCEL extends XooNIpsFileSearchPlugin
 {
-
     /**
-     * constractor
+     * constractor.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->is_xml  = true;
+        $this->is_xml = true;
         $this->is_utf8 = true;
     }
 
     /**
-     * open file resource
+     * open file resource.
      *
      * @acccess protected
+     *
      * @param string $filename file name
      */
     public function _open_file($filename)
     {
-        $cmd          = sprintf('xlhtml %s', escapeshellarg($filename));
+        $cmd = sprintf('xlhtml %s', escapeshellarg($filename));
         $this->handle = @popen($cmd, 'rb');
     }
 
     /**
-     * close file resource
+     * close file resource.
      *
      * @acccess protected
      */

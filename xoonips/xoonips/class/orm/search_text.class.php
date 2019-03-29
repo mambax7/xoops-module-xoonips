@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.8 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,20 +24,16 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/include/lib.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/include/AL.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/include/lib.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/include/AL.php';
 
 /**
- *
  * @brief data object of searchtext
  *
  * @li    getVar('file_id') :
  * @li    getVar('search_text') :
- *
  */
 class XooNIpsOrmSearchText extends XooNIpsTableObject
 {
@@ -59,6 +55,7 @@ class XooNIpsOrmSearchTextHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmSearchTextHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -74,19 +71,21 @@ class XooNIpsOrmSearchTextHandler extends XooNIpsTableObjectHandler
      * @param the  $limit
      * @param the  $offset
      * @param user $uid
+     *
      * @return array|bool
+     *
      * @internal param the $limit maximum number of rows to return
      * @internal param the $offset offset of the first row to return
      * @internal param user $uid ID
      */
     public function search($query, $limit, $offset, $uid)
     {
-        $msg                = false;
-        $iids               = false;
-        $dummy              = false;
-        $search_cache_id    = false;
+        $msg = false;
+        $iids = false;
+        $dummy = false;
+        $search_cache_id = false;
         $_SESSION['XNPSID'] = session_id();
-        $memberHandler      = xoops_getHandler('member');
+        $memberHandler = xoops_getHandler('member');
         if (empty($GLOBALS['xoopsUser'])) {
             $GLOBALS['xoopsUser'] = $memberHandler->getUser($uid);
         }
@@ -98,9 +97,9 @@ class XooNIpsOrmSearchTextHandler extends XooNIpsTableObjectHandler
             if ($limit) {
                 $criteria->setLimit($limit);
             }
-            $join        = new XooNIpsJoinCriteria('xoonips_search_cache_file', 'file_id', 'file_id', 'LEFT');
+            $join = new XooNIpsJoinCriteria('xoonips_search_cache_file', 'file_id', 'file_id', 'LEFT');
             $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
-            $files       =  $fileHandler->getObjects($criteria, false, 'item_id', true, $join);
+            $files = $fileHandler->getObjects($criteria, false, 'item_id', true, $join);
             if (false === $files) {
                 return false;
             }
@@ -108,6 +107,7 @@ class XooNIpsOrmSearchTextHandler extends XooNIpsTableObjectHandler
             foreach ($files as $file) {
                 $item_ids[] = $file->get('item_id');
             }
+
             return $item_ids;
         } else {
             return false;

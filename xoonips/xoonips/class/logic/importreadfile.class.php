@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.11 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,34 +25,30 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/logic.class.php';
+require_once __DIR__.'/../base/logic.class.php';
 
 /**
- * Class XooNIpsLogicImportReadFile
+ * Class XooNIpsLogicImportReadFile.
  */
 class XooNIpsLogicImportReadFile extends XooNIpsLogic
 {
     /**
-     * result of XooNIpsResponse
-     * @access private
+     * result of XooNIpsResponse.
      */
     public $_response = null;
 
     /**
-     * import file path
-     * @access private
+     * import file path.
      */
     public $_import_file_path = null;
 
     /**
-     * zip extract dir path
-     * @access private
+     * zip extract dir path.
      */
     public $_extract_dir = null;
 
     /**
-     * array of items to import
-     * @access private
+     * array of items to import.
      */
     public $_items = array();
 
@@ -67,27 +63,30 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
     /**
      * @param $vars
      * @param $response
+     *
      * @return bool
      */
     public function execute($vars, $response)
     {
-        $this->_response         =  $response;
+        $this->_response = $response;
         $this->_import_file_path = $vars[0];
-        $import_index_ids        = $vars[1];
+        $import_index_ids = $vars[1];
 
         $unzip = xoonips_getUtility('unzip');
         if (!$unzip->open($this->_import_file_path)) {
-            $response->addError(E_XOONIPS_OPEN_FILE, "can't open file(" . $this->_import_file_path . ')');
+            $response->addError(E_XOONIPS_OPEN_FILE, "can't open file(".$this->_import_file_path.')');
             $response->setResult(false);
             $unzip->close();
+
             return false;
         }
         $fnames = $unzip->get_file_list();
         $unzip->close();
 
         if (!$this->_extract_zip()) {
-            $response->addError(E_XOONIPS_OPEN_FILE, "can't open file(" . $this->_import_file_path . ')');
+            $response->addError(E_XOONIPS_OPEN_FILE, "can't open file(".$this->_import_file_path.')');
             $response->setResult(false);
+
             return false;
         }
 
@@ -96,16 +95,16 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
             // read from extract_dir(not sub directories)
             if (dirname($fname) === '.' && ctype_digit(basename($fname, '.xml'))) {
                 $handler = xoonips_getHandler('xoonips', 'import_item');
-                $item    = $handler->parseXml(file_get_contents($this->_extract_dir . '/' . $fname));
-                $basic   = $item->getVar('basic');
+                $item = $handler->parseXml(file_get_contents($this->_extract_dir.'/'.$fname));
+                $basic = $item->getVar('basic');
                 $handler_item = $this->_get_import_itemHandler_by_item_type_id($basic->get('item_type_id'));
                 $handler_item->setAttachmentDirectoryPath($this->_extract_dir);
                 foreach ($import_index_ids as $index_id) {
                     $handler_item->addImportIndexId($index_id);
                 }
-                $item =  $handler_item->parseXml(file_get_contents($this->_extract_dir . '/' . $fname));
+                $item = $handler_item->parseXml(file_get_contents($this->_extract_dir.'/'.$fname));
                 $item->setFilename($fname);
-                $this->_items[] =  $item;
+                $this->_items[] = $item;
             }
         }
 
@@ -129,9 +128,7 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
     }
 
     /**
-     *
-     * check all import items and set error
-     *
+     * check all import items and set error.
      */
     public function _check_import_items_and_set_errors()
     {
@@ -142,9 +139,9 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
             if (isset($pseudo_id2i[$pseudo_id])) {
                 foreach ($pseudo_id2i[$pseudo_id] as $j) {
                     $this->_items[$i]->setErrors(E_XOONIPS_PSEUDO_ID_CONFLICT,
-                                                 " pseudo_id($pseudo_id) conflicts with " . $this->_items[$j]->getFilename());
+                                                 " pseudo_id($pseudo_id) conflicts with ".$this->_items[$j]->getFilename());
                     $this->_items[$j]->setErrors(E_XOONIPS_PSEUDO_ID_CONFLICT,
-                                                 " pseudo_id($pseudo_id) conflicts with " . $this->_items[$i]->getFilename());
+                                                 " pseudo_id($pseudo_id) conflicts with ".$this->_items[$i]->getFilename());
                 }
                 $pseudo_id2i[$pseudo_id][] = $i;
             } else {
@@ -164,7 +161,7 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
             foreach ($item->getVar('related_tos') as $related_to) {
                 if (!isset($valid_pseudo_ids[$related_to->get('item_id')])) {
                     $this->_items[$key]->setErrors(E_XOONIPS_RELATED_ITEM_IS_NOT_FOUND,
-                                                   'unresolvable related_to(id=' . $related_to->get('item_id') . ')');
+                                                   'unresolvable related_to(id='.$related_to->get('item_id').')');
                 }
             }
         }
@@ -172,15 +169,15 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
         //doi conflict in import file
         $doi2i = array();
         foreach ($this->_items as $i => $item) {
-            $basic =  $item->getVar('basic');
-            $doi   = $basic->get('doi');
+            $basic = $item->getVar('basic');
+            $doi = $basic->get('doi');
             if (empty($doi)) {
                 continue;
             }
             if (isset($doi2i[$doi])) {
                 foreach ($doi2i[$doi] as $j) {
-                    $this->_items[$i]->setErrors(E_XOONIPS_DOI_CONFLICT, " doi($doi) conflicts with " . $this->_items[$j]->getFilename());
-                    $this->_items[$j]->setErrors(E_XOONIPS_DOI_CONFLICT, " doi($doi) conflicts with " . $this->_items[$i]->getFilename());
+                    $this->_items[$i]->setErrors(E_XOONIPS_DOI_CONFLICT, " doi($doi) conflicts with ".$this->_items[$j]->getFilename());
+                    $this->_items[$j]->setErrors(E_XOONIPS_DOI_CONFLICT, " doi($doi) conflicts with ".$this->_items[$i]->getFilename());
                 }
                 $doi2i[$doi][] = $i;
             } else {
@@ -190,8 +187,7 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
     }
 
     /**
-     *
-     * extract zip file to temp dir
+     * extract zip file to temp dir.
      *
      * @return bool
      * @private
@@ -200,33 +196,38 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
     {
         $unzip = xoonips_getUtility('unzip');
         if (!$unzip->open($this->_import_file_path)) {
-            $this->_response->addError(E_XOONIPS_OPEN_FILE, "can't open file(" . $this->_import_file_path . ')');
+            $this->_response->addError(E_XOONIPS_OPEN_FILE, "can't open file(".$this->_import_file_path.')');
+
             return false;
         }
         $this->_extract_dir = tempnam('/tmp', 'XNP');
         @unlink($this->_extract_dir);
         if (!@mkdir($this->_extract_dir, 0755)) {
-            $this->_response->addError(E_XOONIPS_FILE_SYSTEM, "can't mkdir(" . $this->_extract_dir . ')');
+            $this->_response->addError(E_XOONIPS_FILE_SYSTEM, "can't mkdir(".$this->_extract_dir.')');
             $unzip->close();
+
             return false;
         }
 
         $fnames = $unzip->get_file_list();
         foreach ($fnames as $fname) {
             if (!$unzip->extract_file($fname, $this->_extract_dir)) {
-                $this->_response->addError(E_XOONIPS_FILE_SYSTEM, "can't extract file to " . $this->_extract_dir . '/' . $fname);
+                $this->_response->addError(E_XOONIPS_FILE_SYSTEM, "can't extract file to ".$this->_extract_dir.'/'.$fname);
                 $unzip->close();
+
                 return false;
             }
         }
         $unzip->close();
+
         return true;
     }
 
     /**
-     *
      * Clean all extrcted files and directories.
+     *
      * @param null|would $path
+     *
      * @return true if succeed. false if failed removing files or directories.
      *
      * @internal param would $path be deleted. if path omitted,
@@ -237,7 +238,7 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
         if (null === $path) {
             $path = $this->_extract_dir;
         }
-        foreach (glob($path . '/*') as $file) {
+        foreach (glob($path.'/*') as $file) {
             if (is_dir($file)) {
                 if (!$this->_clean_files($file)) {
                     return false;
@@ -245,29 +246,34 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
             } else {
                 if (!unlink($file)) {
                     $this->_response->addError(E_XOONIPS_FILE_SYSTEM, "can't remove file(${file})");
+
                     return false;
                 }
             }
         }
         if (!rmdir($path)) {
             $this->_response->addError(E_XOONIPS_FILE_SYSTEM, "can't remove directory(${path})");
+
             return false;
         }
+
         return true;
     }
 
     /**
      * @param $item_type_id
+     *
      * @return bool|reference
      */
     public function _get_import_itemHandler_by_item_type_id($item_type_id)
     {
         $falseValue = false;
-        $handler    = xoonips_getOrmHandler('xoonips', 'item_type');
-        $itemtype   = $handler->get($item_type_id);
+        $handler = xoonips_getOrmHandler('xoonips', 'item_type');
+        $itemtype = $handler->get($item_type_id);
         if (!$itemtype) {
             return $falseValue;
         }
+
         return xoonips_getHandler($itemtype->get('name'), 'import_item');
     }
 }

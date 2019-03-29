@@ -1,5 +1,4 @@
 <{* control to select date (for publication_mday) *}>
-<{* $Revision: 1.5.4.1 $ *}>
 <table>
  <tr>
   <td width="60"><input type='checkbox' name='<{$prefixFrom}>' /><{$smarty.const._MD_XOONIPS_ITEM_FROM_LABEL}></td>

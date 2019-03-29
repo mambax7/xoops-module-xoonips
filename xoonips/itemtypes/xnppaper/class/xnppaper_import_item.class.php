@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.8 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,10 +25,10 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once dirname(dirname(__DIR__)) . '/xoonips/class/xoonips_import_item.class.php';
+require_once dirname(dirname(__DIR__)).'/xoonips/class/xoonips_import_item.class.php';
 
 /**
- * Class XNPPaperImportItem
+ * Class XNPPaperImportItem.
  */
 class XNPPaperImportItem extends XooNIpsImportItem
 {
@@ -39,7 +39,7 @@ class XNPPaperImportItem extends XooNIpsImportItem
      */
     public function __construct()
     {
-        $handler     = xoonips_getOrmCompoHandler('xnppaper', 'item');
+        $handler = xoonips_getOrmCompoHandler('xnppaper', 'item');
         $this->_item = $handler->create();
     }
 
@@ -62,8 +62,9 @@ class XNPPaperImportItem extends XooNIpsImportItem
     }
 
     /**
-     * get total file size(bytes) of this item
-     * @return integer file size in bytes.
+     * get total file size(bytes) of this item.
+     *
+     * @return int file size in bytes
      */
     public function getTotalFileSize()
     {
@@ -73,6 +74,7 @@ class XNPPaperImportItem extends XooNIpsImportItem
             return 0;
         }
         $size = $file->get('file_size');
+
         return $size;
     }
 
@@ -81,50 +83,50 @@ class XNPPaperImportItem extends XooNIpsImportItem
      */
     public function getClone()
     {
-        $clone                         = parent::getClone();
+        $clone = parent::getClone();
         $clone->_has_paper_pdf_reprint = $this->_has_paper_pdf_reprint;
+
         return $clone;
     }
 }
 
 /**
- * Class XNPPaperImportItemHandler
+ * Class XNPPaperImportItemHandler.
  */
 class XNPPaperImportItemHandler extends XooNIpsImportItemHandler
 {
-
     /**
-     * array of supported version of import file
+     * array of supported version of import file.
      */
     public $_import_file_version
         = array(
             '1.00',
             '1.01',
-            '1.02'
+            '1.02',
         );
 
     /**
-     * version string of detail information
+     * version string of detail information.
      */
     public $_detail_version = null;
 
     /**
-     * attachment file object(XooNIpsFile)
+     * attachment file object(XooNIpsFile).
      */
     public $_paper_pdf_reprint_file = null;
 
     /**
-     * flag of attachment file parsed
+     * flag of attachment file parsed.
      */
     public $_paper_pdf_reprint_file_flag = false;
 
     /**
-     * attachment_dl_limit flag
+     * attachment_dl_limit flag.
      */
     public $_attachment_dl_limit_flag = false;
 
     /**
-     * attachment_dl__notify_limit flag
+     * attachment_dl__notify_limit flag.
      */
     public $_attachment_dl_notify_limit_flag = false;
 
@@ -145,10 +147,10 @@ class XNPPaperImportItemHandler extends XooNIpsImportItemHandler
     }
 
     /**
-     *
      * @param $parser
      * @param $name
      * @param $attribs
+     *
      * @internal param $
      */
     public function xmlStartElementHandler($parser, $name, $attribs)
@@ -166,7 +168,7 @@ class XNPPaperImportItemHandler extends XooNIpsImportItemHandler
                         $this->_detail_version = $attribs['VERSION'];
                     } else {
                         $this->_import_item->setErrors(E_XOONIPS_INVALID_VALUE,
-                                                       'unsupported version(' . $attribs['VERSION'] . ') ' . $this->_get_parser_error_at());
+                                                       'unsupported version('.$attribs['VERSION'].') '.$this->_get_parser_error_at());
                     }
                 } else {
                     $this->_detail_version = '1.00';
@@ -175,24 +177,23 @@ class XNPPaperImportItemHandler extends XooNIpsImportItemHandler
             case 'ITEM/DETAIL/FILE':
                 if ($this->_paper_pdf_reprint_file_flag) {
                     $this->_import_item->setErrors(E_XOONIPS_ATTACHMENT_HAS_REDUNDANT,
-                                                   "multiple $name attachments is not allowed" . $this->_get_parser_error_at());
+                                                   "multiple $name attachments is not allowed".$this->_get_parser_error_at());
                     break;
                 }
                 $file_typeHandler = xoonips_getOrmHandler('xoonips', 'file_type');
-                $fileHandler      = xoonips_getOrmHandler('xoonips', 'file');
-                $criteria         = new Criteria('name', addslashes($attribs['FILE_TYPE_NAME']));
-                $file_type        = $file_typeHandler->getObjects($criteria);
+                $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
+                $criteria = new Criteria('name', addslashes($attribs['FILE_TYPE_NAME']));
+                $file_type = $file_typeHandler->getObjects($criteria);
                 if (count($file_type) == 0) {
                     $this->_import_item->setErrors(E_XOONIPS_ATTR_NOT_FOUND,
-                                                   'file_type_id is not found:' . $attribs['FILE_TYPE_NAME'] . $this->_get_parser_error_at());
+                                                   'file_type_id is not found:'.$attribs['FILE_TYPE_NAME'].$this->_get_parser_error_at());
                     break;
                 }
 
-                $unicode                       = xoonips_getUtility('unicode');
+                $unicode = xoonips_getUtility('unicode');
                 $this->_paper_pdf_reprint_file = $fileHandler->create();
-                $this->_paper_pdf_reprint_file->setFilepath($this->_attachment_dir . '/' . $attribs['FILE_NAME']);
+                $this->_paper_pdf_reprint_file->setFilepath($this->_attachment_dir.'/'.$attribs['FILE_NAME']);
                 $this->_paper_pdf_reprint_file->set('original_file_name',
-
                                                     $unicode->decode_utf8($attribs['ORIGINAL_FILE_NAME'], xoonips_get_server_charset(), 'h'));
                 $this->_paper_pdf_reprint_file->set('mime_type', $attribs['MIME_TYPE']);
                 $this->_paper_pdf_reprint_file->set('file_size', $attribs['FILE_SIZE']);
@@ -206,15 +207,15 @@ class XNPPaperImportItemHandler extends XooNIpsImportItemHandler
     }
 
     /**
-     *
      * @param $parser
      * @param $name
+     *
      * @internal param $
      */
     public function xmlEndElementHandler($parser, $name)
     {
         global $xoopsDB;
-        $detail  = $this->_import_item->getVar('detail');
+        $detail = $this->_import_item->getVar('detail');
         $unicode = xoonips_getUtility('unicode');
 
         switch (implode('/', $this->_tag_stack)) {
@@ -225,23 +226,23 @@ class XNPPaperImportItemHandler extends XooNIpsImportItemHandler
                              'number',
                              'page',
                              'abstract',
-                             'pubmed_id'
+                             'pubmed_id',
                          ) as $key
                 ) {
                     if (null === $detail->get($key, 'n')) {
-                        $this->_import_item->setErrors(E_XOONIPS_TAG_NOT_FOUND, " no $key" . $this->_get_parser_error_at());
+                        $this->_import_item->setErrors(E_XOONIPS_TAG_NOT_FOUND, " no $key".$this->_get_parser_error_at());
                     }
                 }
                 //error is no authors
                 if (count($this->_import_item->getVar('author')) == 0) {
-                    $this->_import_item->setErrors(E_XOONIPS_TAG_NOT_FOUND, ' no author' . $this->_get_parser_error_at());
+                    $this->_import_item->setErrors(E_XOONIPS_TAG_NOT_FOUND, ' no author'.$this->_get_parser_error_at());
                 }
                 break;
             case 'ITEM/DETAIL/AUTHORS/AUTHOR':
                 $authors = $this->_import_item->getVar('author');
 
                 $authorHandler = xoonips_getOrmHandler('xnppaper', 'author');
-                $author        = $authorHandler->create();
+                $author = $authorHandler->create();
 
                 $author->set('author', $unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h'));
                 $author->set('author_order', count($authors));
@@ -258,11 +259,11 @@ class XNPPaperImportItemHandler extends XooNIpsImportItemHandler
                 break;
             case 'ITEM/DETAIL/FILE':
                 $this->_paper_pdf_reprint_file_flag = true;
-                $fileHandler                        = xoonips_getOrmHandler('xoonips', 'file');
+                $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
                 if (!$fileHandler->insert($this->_paper_pdf_reprint_file)) {
                     $this->_import_item->setErrors(E_XOONIPS_DB_QUERY,
-                                                   "can't insert attachment file:" . $this->_paper_pdf_reprint_file->get('original_file_name')
-                                                   . $this->_get_parser_error_at());
+                                                   "can't insert attachment file:".$this->_paper_pdf_reprint_file->get('original_file_name')
+                                                   .$this->_get_parser_error_at());
                 }
                 $this->_paper_pdf_reprint_file = $fileHandler->get($this->_paper_pdf_reprint_file->get('file_id'));
                 $this->_import_item->setVar('paper_pdf_reprint', $this->_paper_pdf_reprint_file);
@@ -280,10 +281,9 @@ class XNPPaperImportItemHandler extends XooNIpsImportItemHandler
     }
 
     /**
-     *
      * Update item_id and sess_id of xoonips_file.
      *
-     * @param $item         XooNIpsImportItem that is imported.
+     * @param $item         xooNIpsImportItem that is imported
      * @param $import_items array of all of XooNIpsImportItems
      */
     public function onImportFinished($item, $import_items)
@@ -306,11 +306,13 @@ class XNPPaperImportItemHandler extends XooNIpsImportItemHandler
 
     /**
      * @param $item
+     *
      * @return bool
      */
     public function insert($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnppaper', 'item');
+
         return $handler->insert($item);
     }
 
@@ -320,6 +322,7 @@ class XNPPaperImportItemHandler extends XooNIpsImportItemHandler
     public function setNew($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnppaper', 'item');
+
         return $handler->setNew($item);
     }
 
@@ -329,6 +332,7 @@ class XNPPaperImportItemHandler extends XooNIpsImportItemHandler
     public function unsetNew($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnppaper', 'item');
+
         return $handler->unsetNew($item);
     }
 
@@ -338,6 +342,7 @@ class XNPPaperImportItemHandler extends XooNIpsImportItemHandler
     public function setDirty($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnppaper', 'item');
+
         return $handler->setDirty($item);
     }
 
@@ -347,27 +352,30 @@ class XNPPaperImportItemHandler extends XooNIpsImportItemHandler
     public function unsetDirty($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnppaper', 'item');
+
         return $handler->unsetDirty($item);
     }
 
     /**
      * reeturn import log text of import item.
+     *
      * @param $import_item reference of XooNIpsImportItem object
+     *
      * @return string import log text
      */
     public function getImportLog($import_item)
     {
-        $text   = parent::getImportLog($import_item);
+        $text = parent::getImportLog($import_item);
         $detail = $import_item->getVar('detail');
         foreach ($import_item->getVar('author') as $author) {
-            $text .= "\ndetail.author " . $author->get('author');
+            $text .= "\ndetail.author ".$author->get('author');
         }
-        $text .= "\ndetail.journal " . $detail->get('journal');
-        $text .= "\ndetail.volume " . $detail->get('volume');
-        $text .= "\ndetail.number " . $detail->get('number');
-        $text .= "\ndetail.page " . $detail->get('page');
-        $text .= "\ndetail.abstract " . mb_ereg_replace('\n', '\n', mb_ereg_replace('\\\\', '\\\\', $detail->get('abstract')));
-        $text .= "\ndetail.pubmed_id " . $detail->get('pubmed_id');
+        $text .= "\ndetail.journal ".$detail->get('journal');
+        $text .= "\ndetail.volume ".$detail->get('volume');
+        $text .= "\ndetail.number ".$detail->get('number');
+        $text .= "\ndetail.page ".$detail->get('page');
+        $text .= "\ndetail.abstract ".mb_ereg_replace('\n', '\n', mb_ereg_replace('\\\\', '\\\\', $detail->get('abstract')));
+        $text .= "\ndetail.pubmed_id ".$detail->get('pubmed_id');
 
         return $text;
     }
@@ -386,7 +394,7 @@ class XNPPaperImportItemHandler extends XooNIpsImportItemHandler
             $paper_pdf_reprint = $item->getVar('paper_pdf_reprint');
             if ($item->hasPaperPdfReprint()) {
                 $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
-                $clonefile   = $fileHandler->fileClone($paper_pdf_reprint);
+                $clonefile = $fileHandler->fileClone($paper_pdf_reprint);
                 $clonefile->setDirty();
                 $item->setVar('paper_pdf_reprint', $clonefile);
 

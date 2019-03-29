@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.2 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,13 +25,11 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 if (!function_exists('session_regenerate_id')) {
     if (!defined('XOOPS_SALT')) {
-        define('XOOPS_SALT', substr(md5(XOOPS_DB_PREFIX . XOOPS_DB_USER . XOOPS_ROOT_PATH), 5, 8));
+        define('XOOPS_SALT', substr(md5(XOOPS_DB_PREFIX.XOOPS_DB_USER.XOOPS_ROOT_PATH), 5, 8));
     }
     // session_regenerate_id compatible function for PHP Version< PHP4.3.2
     /**
@@ -40,7 +38,7 @@ if (!function_exists('session_regenerate_id')) {
     function session_regenerate_id()
     {
         mt_srand(microtime() * 100000);
-        $random = md5(XOOPS_SALT . uniqid(mt_rand(), true));
+        $random = md5(XOOPS_SALT.uniqid(mt_rand(), true));
         if (session_id($random)) {
             return true;
         } else {
@@ -62,22 +60,22 @@ function xoonips_session_regenerate()
     $sessHandler = xoops_getHandler('session');
     session_set_saveHandler(array(
                                 &$sessHandler,
-                                'open'
+                                'open',
                             ), array(
                                 &$sessHandler,
-                                'close'
+                                'close',
                             ), array(
                                 &$sessHandler,
-                                'read'
+                                'read',
                             ), array(
                                 &$sessHandler,
-                                'write'
+                                'write',
                             ), array(
                                 &$sessHandler,
-                                'destroy'
+                                'destroy',
                             ), array(
                                 &$sessHandler,
-                                'gc'
+                                'gc',
                             ));
     session_start();
     $_SESSION = array();
@@ -89,22 +87,22 @@ function xoonips_session_regenerate()
     // restart session
     session_set_saveHandler(array(
                                 &$sessHandler,
-                                'open'
+                                'open',
                             ), array(
                                 &$sessHandler,
-                                'close'
+                                'close',
                             ), array(
                                 &$sessHandler,
-                                'read'
+                                'read',
                             ), array(
                                 &$sessHandler,
-                                'write'
+                                'write',
                             ), array(
                                 &$sessHandler,
-                                'destroy'
+                                'destroy',
                             ), array(
                                 &$sessHandler,
-                                'gc'
+                                'gc',
                             ));
     session_start();
     $_SESSION = array();

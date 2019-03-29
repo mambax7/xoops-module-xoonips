@@ -1,5 +1,4 @@
 <{* xoonips index list block *}>
-<{* $Revision: 1.1.4.1.2.2 $ *}>
 <table>
  <tr>
   <td style='vertical-align:middle; text-align:center; width: 65px;'>

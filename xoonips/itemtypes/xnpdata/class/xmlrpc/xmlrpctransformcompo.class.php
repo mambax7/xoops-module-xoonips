@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.3 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -28,10 +28,7 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- *
- * XmlRpcTransform composer class for Data type
- *
- *
+ * XmlRpcTransform composer class for Data type.
  */
 class XNPDataXmlRpcTransformCompo extends XooNIpsXmlRpcTransformCompo
 {
@@ -49,15 +46,17 @@ class XNPDataXmlRpcTransformCompo extends XooNIpsXmlRpcTransformCompo
      * @see XooNIpsXmlRpcTransformCompo::getObject
      *
      * @param array associative array of XML-RPC argument
+     *
      * @return XNPDataOrmExperimenter
      */
     public function getObject($in_array)
     {
-        $obj           = parent::getObject($in_array);
+        $obj = parent::getObject($in_array);
         $experimenters = $obj->getVar('experimenter');
-        for ($i = 0; $i < count($experimenters); $i++) {
+        for ($i = 0; $i < count($experimenters); ++$i) {
             $experimenters[$i]->set('experimenter_order', $i);
         }
+
         return $obj;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.7 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,11 +24,9 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/abstract_ranking.class.php';
+require_once __DIR__.'/abstract_ranking.class.php';
 
 /**
  * @brief data object of ranking contributing user
@@ -53,12 +51,12 @@ class XooNIpsOrmRankingContributingUser extends XooNIpsTableObject
 
 /**
  * @brief handler object of ranking contributing user
- *
  */
 class XooNIpsOrmRankingContributingUserHandler extends XooNIpsOrmAbstractRankingHandler
 {
     /**
      * XooNIpsOrmRankingContributingUserHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -68,40 +66,42 @@ class XooNIpsOrmRankingContributingUserHandler extends XooNIpsOrmAbstractRanking
         $this->_set_columns(array(
                                 'item_id',
                                 'uid',
-                                'timestamp'
+                                'timestamp',
                             ));
     }
 
     /**
-     * insert/upldate/replace object
+     * insert/upldate/replace object.
      *
-     * @access public
      * @param XoopsObject $obj
      * @param bool        $force force operation
+     *
      * @return bool false if failed
      */
     public function insert(XoopsObject $obj, $force = false)
     {
         $item_id = $obj->get('item_id');
-        $uid     = $obj->get('uid');
+        $uid = $obj->get('uid');
         if ($item_id == 0 || $uid == 0) {
             // ignore if item id or user id is zero
             return true;
         }
+
         return parent::insert($obj, $force);
     }
 
     /**
-     * replace contributing user raking data for updating/rebuilding rankings
+     * replace contributing user raking data for updating/rebuilding rankings.
      *
      * @param int $item_id   item id
      * @param int $uid       user id
      * @param int $timestamp timestamp
+     *
      * @return bool FALSE if failed
      */
     public function replace($item_id, $uid, $timestamp)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->setReplace();
         $obj->set('item_id', $item_id);
         $obj->set('uid', $uid);

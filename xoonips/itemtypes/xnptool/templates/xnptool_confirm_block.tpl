@@ -1,5 +1,4 @@
 <{* xnptool confirm block *}>
-<{* $Revision: 1.20.2.1.2.4 $ *}>
 <table class="outer">
   <!-- Basic Information -->
   <tr>

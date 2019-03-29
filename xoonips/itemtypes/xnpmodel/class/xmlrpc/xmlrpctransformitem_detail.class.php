@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.2 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -28,10 +28,8 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- *
  * @brief class that transform a detail information of XML-RPC argument to XNPModelItemDetail
  * implement code here if item type specific transform is needed
- *
  */
 class XNPModelXmlRpcTransformItemDetail extends XooNIpsXmlRpcTransformElement
 {

@@ -1,5 +1,4 @@
 <{* xoonips module top page itemtype block *}>
-<{* $Revision: 1.4 $ *}>
 
 <table style="width: auto;">
  <tr>

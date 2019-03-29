@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,10 +25,10 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once dirname(dirname(__DIR__)) . '/xoonips/class/xoonips_import_item.class.php';
+require_once dirname(dirname(__DIR__)).'/xoonips/class/xoonips_import_item.class.php';
 
 /**
- * Class XNPMemoImportItem
+ * Class XNPMemoImportItem.
  */
 class XNPMemoImportItem extends XooNIpsImportItem
 {
@@ -39,7 +39,7 @@ class XNPMemoImportItem extends XooNIpsImportItem
      */
     public function __construct()
     {
-        $handler     = xoonips_getOrmCompoHandler('xnpmemo', 'item');
+        $handler = xoonips_getOrmCompoHandler('xnpmemo', 'item');
         $this->_item = $handler->create();
     }
 
@@ -62,8 +62,9 @@ class XNPMemoImportItem extends XooNIpsImportItem
     }
 
     /**
-     * get total file size(bytes) of this item
-     * @return integer file size in bytes.
+     * get total file size(bytes) of this item.
+     *
+     * @return int file size in bytes
      */
     public function getTotalFileSize()
     {
@@ -71,6 +72,7 @@ class XNPMemoImportItem extends XooNIpsImportItem
         if (!$file) {
             return 0;
         }
+
         return $file->get('file_size');
     }
 
@@ -79,35 +81,35 @@ class XNPMemoImportItem extends XooNIpsImportItem
      */
     public function getClone()
     {
-        $clone                 = parent::getClone();
+        $clone = parent::getClone();
         $clone->_has_memo_file = $this->_has_memo_file;
+
         return $clone;
     }
 }
 
 /**
- * Class XNPMemoImportItemHandler
+ * Class XNPMemoImportItemHandler.
  */
 class XNPMemoImportItemHandler extends XooNIpsImportItemHandler
 {
-
     /**
-     * attachment file object(XooNIpsAttachment)
+     * attachment file object(XooNIpsAttachment).
      */
     public $_memo_file = null;
 
     /**
-     * flag of attachment file parsed
+     * flag of attachment file parsed.
      */
     public $_memo_file_flag = false;
 
     /**
-     * attachment_dl_limit flag
+     * attachment_dl_limit flag.
      */
     public $_attachment_dl_limit_flag = false;
 
     /**
-     * attachment_dl__notify_limit flag
+     * attachment_dl__notify_limit flag.
      */
     public $_attachment_dl_notify_limit_flag = false;
 
@@ -128,10 +130,10 @@ class XNPMemoImportItemHandler extends XooNIpsImportItemHandler
     }
 
     /**
-     *
      * @param $parser
      * @param $name
      * @param $attribs
+     *
      * @internal param $
      */
     public function xmlStartElementHandler($parser, $name, $attribs)
@@ -145,23 +147,22 @@ class XNPMemoImportItemHandler extends XooNIpsImportItemHandler
             case 'ITEM/DETAIL/FILE':
                 if ($this->_memo_file_flag) {
                     $this->_import_item->setErrors(E_XOONIPS_ATTACHMENT_HAS_REDUNDANT, "multiple $name attachments is not allowed"
-
-                                                                                       . $this->_get_parser_error_at());
+                                                                                       .$this->_get_parser_error_at());
                     break;
                 }
                 $file_typeHandler = xoonips_getOrmHandler('xoonips', 'file_type');
-                $fileHandler      = xoonips_getOrmHandler('xoonips', 'file');
-                $criteria         = new Criteria('name', addslashes($attribs['FILE_TYPE_NAME']));
-                $file_type        = $file_typeHandler->getObjects($criteria);
+                $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
+                $criteria = new Criteria('name', addslashes($attribs['FILE_TYPE_NAME']));
+                $file_type = $file_typeHandler->getObjects($criteria);
                 if (count($file_type) == 0) {
                     $this->_import_item->setErrors(E_XOONIPS_ATTR_NOT_FOUND,
-                                                   'file_type_id is not found:' . $attribs['FILE_TYPE_NAME'] . $this->_get_parser_error_at());
+                                                   'file_type_id is not found:'.$attribs['FILE_TYPE_NAME'].$this->_get_parser_error_at());
                     break;
                 }
 
-                $unicode          = xoonips_getUtility('unicode');
+                $unicode = xoonips_getUtility('unicode');
                 $this->_memo_file = $fileHandler->create();
-                $this->_memo_file->setFilepath($this->_attachment_dir . '/' . $attribs['FILE_NAME']);
+                $this->_memo_file->setFilepath($this->_attachment_dir.'/'.$attribs['FILE_NAME']);
                 $this->_memo_file->set('original_file_name',
                                        $unicode->decode_utf8($attribs['ORIGINAL_FILE_NAME'], xoonips_get_server_charset(), 'h'));
                 $this->_memo_file->set('mime_type', $attribs['MIME_TYPE']);
@@ -176,21 +177,21 @@ class XNPMemoImportItemHandler extends XooNIpsImportItemHandler
     }
 
     /**
-     *
      * @param $parser
      * @param $name
+     *
      * @internal param $
      */
     public function xmlEndElementHandler($parser, $name)
     {
         global $xoopsDB;
-        $detail  = $this->_import_item->getVar('detail');
+        $detail = $this->_import_item->getVar('detail');
         $unicode = xoonips_getUtility('unicode');
 
         switch (implode('/', $this->_tag_stack)) {
             case 'ITEM/DETAIL':
                 if (null === $detail->get('item_link', 'n')) {
-                    $this->_import_item->setErrors(E_XOONIPS_TAG_NOT_FOUND, ' no item_link' . $this->_get_parser_error_at());
+                    $this->_import_item->setErrors(E_XOONIPS_TAG_NOT_FOUND, ' no item_link'.$this->_get_parser_error_at());
                 }
                 break;
             case 'ITEM/DETAIL/ITEM_LINK':
@@ -198,10 +199,10 @@ class XNPMemoImportItemHandler extends XooNIpsImportItemHandler
                 break;
             case 'ITEM/DETAIL/FILE':
                 $this->_memo_file_flag = true;
-                $fileHandler           = xoonips_getOrmHandler('xoonips', 'file');
+                $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
                 if (!$fileHandler->insert($this->_memo_file)) {
-                    $this->_import_item->setErrors(E_XOONIPS_DB_QUERY, "can't insert attachment file:" . $this->_memo_file->get('original_file_name')
-                                                                       . $this->_get_parser_error_at());
+                    $this->_import_item->setErrors(E_XOONIPS_DB_QUERY, "can't insert attachment file:".$this->_memo_file->get('original_file_name')
+                                                                       .$this->_get_parser_error_at());
                 }
                 $this->_memo_file = $fileHandler->get($this->_memo_file->get('file_id'));
                 $this->_import_item->setVar('memo_file', $this->_memo_file);
@@ -219,10 +220,9 @@ class XNPMemoImportItemHandler extends XooNIpsImportItemHandler
     }
 
     /**
-     *
      * Update item_id and sess_id of xoonips_file.
      *
-     * @param $item         XooNIpsImportItem that is imported.
+     * @param $item         xooNIpsImportItem that is imported
      * @param $import_items array of all of XooNIpsImportItems
      */
     public function onImportFinished($item, $import_items)
@@ -245,11 +245,13 @@ class XNPMemoImportItemHandler extends XooNIpsImportItemHandler
 
     /**
      * @param $item
+     *
      * @return bool
      */
     public function insert($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpmemo', 'item');
+
         return $handler->insert($item);
     }
 
@@ -259,6 +261,7 @@ class XNPMemoImportItemHandler extends XooNIpsImportItemHandler
     public function setNew($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpmemo', 'item');
+
         return $handler->setNew($item);
     }
 
@@ -268,6 +271,7 @@ class XNPMemoImportItemHandler extends XooNIpsImportItemHandler
     public function unsetNew($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpmemo', 'item');
+
         return $handler->unsetNew($item);
     }
 
@@ -277,6 +281,7 @@ class XNPMemoImportItemHandler extends XooNIpsImportItemHandler
     public function setDirty($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpmemo', 'item');
+
         return $handler->setDirty($item);
     }
 
@@ -286,19 +291,23 @@ class XNPMemoImportItemHandler extends XooNIpsImportItemHandler
     public function unsetDirty($item)
     {
         $handler = xoonips_getOrmCompoHandler('xnpmemo', 'item');
+
         return $handler->unsetDirty($item);
     }
 
     /**
      * reeturn import log text of import item.
+     *
      * @param $import_item reference of XooNIpsImportItem object
+     *
      * @return string import log text
      */
     public function getImportLog($import_item)
     {
-        $text   = parent::getImportLog($import_item);
+        $text = parent::getImportLog($import_item);
         $detail = $import_item->getVar('detail');
-        $text .= "\ndetail.item_link " . $detail->get('item_link');
+        $text .= "\ndetail.item_link ".$detail->get('item_link');
+
         return $text;
     }
 
@@ -316,7 +325,7 @@ class XNPMemoImportItemHandler extends XooNIpsImportItemHandler
             $memo_file = $item->getVar('memo_file');
             if ($item->hasMemoFile()) {
                 $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
-                $clonefile   = $fileHandler->fileClone($memo_file);
+                $clonefile = $fileHandler->fileClone($memo_file);
                 $clonefile->setDirty();
                 $item->setVar('memo_file', $clonefile);
 

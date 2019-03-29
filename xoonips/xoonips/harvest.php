@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.4.4.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -28,33 +28,33 @@
 //  Process of Harvest in OAI-PMH
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/include/item_limit_check.php';
+require __DIR__.'/include/common.inc.php';
+require_once __DIR__.'/include/lib.php';
+require_once __DIR__.'/include/AL.php';
+require_once __DIR__.'/include/item_limit_check.php';
 
 // how to show output results
 //  $mode='text' : plain text for external command
 //  $mode='html' : html for web browser
 $mode = 'text';
 
-include_once __DIR__ . '/class/base/oaipmh.class.php';
+require_once __DIR__.'/class/base/oaipmh.class.php';
 
 // if connection is guest access then basic authentication required
 if (!$xoopsUser) {
     if (!isset($_SERVER['PHP_AUTH_USER'])) {
         // unauthorized error
-        header("WWW-Authenticate: Basic realm=\"XooNIps harvesting\"");
+        header('WWW-Authenticate: Basic realm="XooNIps harvesting"');
         header('HTTP/1.0 401 Unauthorized');
         echo "Unauthorized your access\n";
         exit;
     } else {
         // try to login as user
-        $uname         = $_SERVER['PHP_AUTH_USER'];
-        $pass          = $_SERVER['PHP_AUTH_PW'];
+        $uname = $_SERVER['PHP_AUTH_USER'];
+        $pass = $_SERVER['PHP_AUTH_PW'];
         $memberHandler = xoops_getHandler('member');
-        $myts          = MyTextSanitizer::getInstance();
-        $xoopsUser     = $memberHandler->loginUser(addslashes($myts->stripSlashesGPC($uname)), $myts->stripSlashesGPC($pass));
+        $myts = MyTextSanitizer::getInstance();
+        $xoopsUser = $memberHandler->loginUser(addslashes($myts->stripSlashesGPC($uname)), $myts->stripSlashesGPC($pass));
         if (!$xoopsUser) {
             echo 'Unauthorized your account';
             exit;
@@ -63,32 +63,32 @@ if (!$xoopsUser) {
     }
     $mode = 'text';
 } else {
-    $uid  = $_SESSION['xoopsUserId'];
+    $uid = $_SESSION['xoopsUserId'];
     $mode = 'html';
 }
 
 // check user privileges. moderator or administrator can access this page.
 $xmemberHandler = xoonips_getHandler('xoonips', 'member');
-$is_admin       = $xmemberHandler->isAdmin($uid);
-$is_moderator   = $xmemberHandler->isModerator($uid);
+$is_admin = $xmemberHandler->isAdmin($uid);
+$is_moderator = $xmemberHandler->isModerator($uid);
 if (!$is_admin && !$is_moderator) {
-    redirect_header(XOOPS_URL . '/index.php', 3, _MD_XOONIPS_MODERATOR_SHULD_BE_MODERATOR);
+    redirect_header(XOOPS_URL.'/index.php', 3, _MD_XOONIPS_MODERATOR_SHULD_BE_MODERATOR);
 }
 
 global $xoopsDB;
 
 if ($mode === 'html') {
-    include XOOPS_ROOT_PATH . '/header.php';
+    require XOOPS_ROOT_PATH.'/header.php';
     echo "<p>\n";
-    echo '<h3>' . _MD_XOONIPS_OAIPMH_HARVEST_RESULT . "</h3>\n";
+    echo '<h3>'._MD_XOONIPS_OAIPMH_HARVEST_RESULT."</h3>\n";
     echo "</p>\n";
-    echo "<a href='admin/maintenance.php?page=oaipmh'>" . _MD_XOONIPS_BACK_TO_OAIPMH_CONFIGURATION . '</a><br>';
+    echo "<a href='admin/maintenance.php?page=oaipmh'>"._MD_XOONIPS_BACK_TO_OAIPMH_CONFIGURATION.'</a><br>';
     echo "<p>\n";
 } elseif ($mode === 'text') {
     header('Content-type: text/plain');
 }
 
-$result = $xoopsDB->query('SELECT URL FROM ' . $xoopsDB->prefix('xoonips_oaipmh_repositories') . ' WHERE enabled=1 AND deleted!=1 ORDER BY sort');
+$result = $xoopsDB->query('SELECT URL FROM '.$xoopsDB->prefix('xoonips_oaipmh_repositories').' WHERE enabled=1 AND deleted!=1 ORDER BY sort');
 set_time_limit(0);
 while (list($url) = $xoopsDB->fetchRow($result)) {
     echo "Trying\t$url";
@@ -99,7 +99,7 @@ while (list($url) = $xoopsDB->fetchRow($result)) {
     }
     $h = new OAIPMHHarvester($url);
     if (!$h->harvest()) {
-        echo 'ERROR:' . $h->last_error();
+        echo 'ERROR:'.$h->last_error();
     } else {
         echo "Succeed\t${url}";
     }
@@ -112,6 +112,6 @@ while (list($url) = $xoopsDB->fetchRow($result)) {
 
 if ($mode === 'html') {
     echo "</p>\n";
-    echo "<a href='admin/maintenance.php?page=oaipmh'>" . _MD_XOONIPS_BACK_TO_OAIPMH_CONFIGURATION . '</a><br>';
-    include XOOPS_ROOT_PATH . '/footer.php';
+    echo "<a href='admin/maintenance.php?page=oaipmh'>"._MD_XOONIPS_BACK_TO_OAIPMH_CONFIGURATION.'</a><br>';
+    require XOOPS_ROOT_PATH.'/footer.php';
 }

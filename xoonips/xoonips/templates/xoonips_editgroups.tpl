@@ -1,4 +1,3 @@
-<{* $Revision: 1.10.2.1.2.9 $ *}>
 <{include file="db:xoonips_breadcrumbs.inc.tpl"}>
 <script type="text/javascript">
 <!--//

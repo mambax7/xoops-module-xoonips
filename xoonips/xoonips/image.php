@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.4.4.1.2.17 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -28,11 +28,9 @@
  * display thumbnail
  * input:
  *    $_GET['file_id']
- *    $_GET['thumbnail'] 1: thumbnail image
- *
+ *    $_GET['thumbnail'] 1: thumbnail image.
  */
-
-include __DIR__ . '/include/common.inc.php';
+require __DIR__.'/include/common.inc.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
@@ -57,36 +55,36 @@ function image_error($err)
 
 // -> fileID
 $formdata = xoonips_getUtility('formdata');
-$fileID   = $formdata->getValue('get', 'file_id', 'i', false);
+$fileID = $formdata->getValue('get', 'file_id', 'i', false);
 if (empty($fileID)) {
     image_error(404);
 }
 
 // fileID -> itemID, sid, file_type_id.
 $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
-$file        = $fileHandler->get($fileID);
+$file = $fileHandler->get($fileID);
 if (!is_object($file)) {
     image_error(404);
 }
-$item_id      = $file->getVar('item_id', 'n');
+$item_id = $file->getVar('item_id', 'n');
 $file_type_id = $file->getVar('file_type_id', 'n');
-$file_name    = $file->getVar('original_file_name', 'n');
-$sess_id      = $file->getVar('sess_id', 'n');
-$mime_type    = $file->get('mime_type');
-$file_size    = $file->get('file_size');
+$file_name = $file->getVar('original_file_name', 'n');
+$sess_id = $file->getVar('sess_id', 'n');
+$mime_type = $file->get('mime_type');
+$file_size = $file->get('file_size');
 
 $file_typeHandler = xoonips_getOrmHandler('xoonips', 'file_type');
-$file_type        = $file_typeHandler->get($file_type_id);
+$file_type = $file_typeHandler->get($file_type_id);
 if (!is_object($file_type)) {
     image_error(500);
 }
 $file_type_name = $file_type->getVar('name', 'n');
 
 // get mime_type from file
-$xconfigHandler  = xoonips_getOrmHandler('xoonips', 'config');
-$upload_dir      = $xconfigHandler->getValue('upload_dir');
+$xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
+$upload_dir = $xconfigHandler->getValue('upload_dir');
 $magic_file_path = $xconfigHandler->getValue('magic_file_path');
-$file_path       = $upload_dir . '/' . $fileID;
+$file_path = $upload_dir.'/'.$fileID;
 if (!is_readable($file_path)) {
     image_error(404);
 }
@@ -126,7 +124,7 @@ if (function_exists('mb_http_output')) {
 $thumbnail = $formdata->getValue('get', 'thumbnail', 'b', false);
 if (!empty($thumbnail)) {
     $thumbnail_file = $file->getVar('thumbnail_file', 'n');
-    $size           = strlen($thumbnail_file);
+    $size = strlen($thumbnail_file);
 
     if ($size > 0) {
         header('Content-Type: image/png');
@@ -157,7 +155,7 @@ if (!empty($thumbnail)) {
             } elseif ($matches[1] === 'text') {
                 $img_type = 'text';
             } elseif ($matches[1] === 'application') {
-                $text_types  = array(
+                $text_types = array(
                     'pdf',
                     'xml',
                     'msword',
@@ -185,10 +183,10 @@ if (!empty($thumbnail)) {
         } else {
             $img_type = 'unknown';
         }
-        $img_file = XOOPS_ROOT_PATH . '/modules/xoonips/images/thumbnail_' . $img_type . '.png';
+        $img_file = XOOPS_ROOT_PATH.'/modules/xoonips/images/thumbnail_'.$img_type.'.png';
         // create image resource
-        $w  = 100;
-        $h  = 100;
+        $w = 100;
+        $h = 100;
         $im = imagecreatetruecolor($w, $h);
         // label setting
         $f = 2;
@@ -202,8 +200,8 @@ if (!empty($thumbnail)) {
         $fmaxlen = ($w - $lp * 2) / $fw;
         // max label length
         $labels = explode(',', $label);
-        $label  = $labels[0];
-        $llen   = strlen($label);
+        $label = $labels[0];
+        $llen = strlen($label);
         if ($llen > $fmaxlen) {
             $label = substr($label, 0, $fmaxlen - 3);
             $label .= '...';
@@ -216,9 +214,9 @@ if (!empty($thumbnail)) {
         imagealphablending($im, false);
         imagesavealpha($im, true);
         $transparent = imagecolorallocatealpha($im, 255, 255, 255, 0);
-        $col_white   = imagecolorallocate($im, 255, 255, 255);
-        $col_gray    = imagecolorallocate($im, 127, 127, 127);
-        $col_black   = imagecolorallocate($im, 0, 0, 0);
+        $col_white = imagecolorallocate($im, 255, 255, 255);
+        $col_gray = imagecolorallocate($im, 127, 127, 127);
+        $col_black = imagecolorallocate($im, 0, 0, 0);
         // fill all area with transparent color
         imagefill($im, 0, 0, $col_white);
         imagealphablending($im, true);
@@ -232,7 +230,7 @@ if (!empty($thumbnail)) {
             $w - 1,
             $h - 1,
             0,
-            $h - 1
+            $h - 1,
         ), 4, $col_gray);
         if (strlen($label) != 0) {
             imagestring($im, $f, $lx, $ly, $label, $black);
@@ -245,18 +243,17 @@ if (!empty($thumbnail)) {
     }
 } else {
     if ($file_type_name !== 'preview') {
-
         /* check the download limitation */
         $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $criteria          = new Criteria('item_id', $item_id);
-        $items             =  $item_basicHandler->getObjects($criteria, false, 'item_type_id');
+        $criteria = new Criteria('item_id', $item_id);
+        $items = $item_basicHandler->getObjects($criteria, false, 'item_type_id');
         if (empty($items)) {
             image_error(500);
         }
         list($item) = $items;
-        $item_type_id     = $item->getVar('item_type_id', 'n');
+        $item_type_id = $item->getVar('item_type_id', 'n');
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $item_type        = $item_typeHandler->get($item_type_id);
+        $item_type = $item_typeHandler->get($item_type_id);
         if (null === $item_type) {
             image_error(500);
         }
@@ -264,17 +261,16 @@ if (!empty($thumbnail)) {
         if (empty($viewphp)) {
             image_error(500);
         }
-        include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+        require_once XOOPS_ROOT_PATH.'/modules/'.$itemtype['viewphp'];
         $fname_dllimit = "${name}GetAttachmentDownloadLimitOption";
         if (function_exists($fname_dllimit) && $fname_dllimit($item_id) == 1) {
-
             /* require to confirm file download */
             image_error(403);
         }
     }
     $strip_mime_types = explode(';', $mime_type);
-    $strip_mime_type  = trim($strip_mime_types[0]);
-    $show_mime_types  = array(
+    $strip_mime_type = trim($strip_mime_types[0]);
+    $show_mime_types = array(
         'image/jpeg',
         'image/png',
         'image/gif',
@@ -290,9 +286,9 @@ if (!empty($thumbnail)) {
         // download file
         $download = xoonips_getUtility('download');
         if (!$download->check_pathinfo($file_name)) {
-            $url = XOOPS_URL . '/modules/xoonips/image.php?file_id=' . $fileID;
+            $url = XOOPS_URL.'/modules/xoonips/image.php?file_id='.$fileID;
             $url = $download->append_pathinfo($url, $file_name);
-            header('Location: ' . $url);
+            header('Location: '.$url);
             exit();
         }
         $download->download_file($file_path, $file_name, $mime_type);

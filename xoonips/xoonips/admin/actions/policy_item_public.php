@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.4 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,91 +24,89 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_POLICY_ITEM_PUBLIC_TITLE;
+$title = _AM_XOONIPS_POLICY_ITEM_PUBLIC_TITLE;
 $description = _AM_XOONIPS_POLICY_ITEM_PUBLIC_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_ITEM_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=item',
+        'url' => $xoonips_admin['myfile_url'].'?page=item',
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
-$ticket_area  = 'xoonips_admin_policy_item_public';
+require_once __DIR__.'/../../class/base/gtickets.php';
+$ticket_area = 'xoonips_admin_policy_item_public';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys   = array(
-    'certify_item'              => 's',
-    'public_item_target_user'   => 's',
+$config_keys = array(
+    'certify_item' => 's',
+    'public_item_target_user' => 's',
     'download_file_compression' => 's',
-    'item_show_optional'        => 's',
+    'item_show_optional' => 's',
 );
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 
 // >> certify item
-$certify_item   = array();
-$ci['value']    = 'on';
-$ci['label']    = _AM_XOONIPS_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_MANUAL;
+$certify_item = array();
+$ci['value'] = 'on';
+$ci['label'] = _AM_XOONIPS_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_MANUAL;
 $ci['selected'] = ($config_values['certify_item'] === 'on') ? 'yes' : 'no';
 $certify_item[] = $ci;
-$ci['value']    = 'auto';
-$ci['label']    = _AM_XOONIPS_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_AUTO;
+$ci['value'] = 'auto';
+$ci['label'] = _AM_XOONIPS_POLICY_ITEM_PUBLIC_CERTIFY_ITEM_AUTO;
 $ci['selected'] = ($config_values['certify_item'] === 'auto') ? 'yes' : 'no';
 $certify_item[] = $ci;
 // >> public item target user
-$target_user    = array();
-$tu['value']    = 'platform';
-$tu['label']    = _AM_XOONIPS_POLICY_ITEM_PUBLIC_TARGET_USER_PLATFORM;
+$target_user = array();
+$tu['value'] = 'platform';
+$tu['label'] = _AM_XOONIPS_POLICY_ITEM_PUBLIC_TARGET_USER_PLATFORM;
 $tu['selected'] = ($config_values['public_item_target_user'] === 'platform') ? 'yes' : 'no';
-$target_user[]  = $tu;
-$tu['value']    = 'all';
-$tu['label']    = _AM_XOONIPS_POLICY_ITEM_PUBLIC_TARGET_USER_ALL;
+$target_user[] = $tu;
+$tu['value'] = 'all';
+$tu['label'] = _AM_XOONIPS_POLICY_ITEM_PUBLIC_TARGET_USER_ALL;
 $tu['selected'] = ($config_values['public_item_target_user'] === 'all') ? 'yes' : 'no';
-$target_user[]  = $tu;
+$target_user[] = $tu;
 // >> download file compression
-$download_file   = array();
-$df['value']     = 'on';
-$df['label']     = _AM_XOONIPS_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_ZIP;
-$df['selected']  = ($config_values['download_file_compression'] === 'on') ? 'yes' : 'no';
+$download_file = array();
+$df['value'] = 'on';
+$df['label'] = _AM_XOONIPS_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_ZIP;
+$df['selected'] = ($config_values['download_file_compression'] === 'on') ? 'yes' : 'no';
 $download_file[] = $df;
-$df['value']     = 'off';
-$df['label']     = _AM_XOONIPS_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_PLAIN;
-$df['selected']  = ($config_values['download_file_compression'] === 'off') ? 'yes' : 'no';
+$df['value'] = 'off';
+$df['label'] = _AM_XOONIPS_POLICY_ITEM_PUBLIC_DOWNLOAD_FILE_PLAIN;
+$df['selected'] = ($config_values['download_file_compression'] === 'off') ? 'yes' : 'no';
 $download_file[] = $df;
 // >>  item show optional
-$item_show     = array();
-$is['yes']     = _AM_XOONIPS_LABEL_YES;
-$is['no']      = _AM_XOONIPS_LABEL_NO;
+$item_show = array();
+$is['yes'] = _AM_XOONIPS_LABEL_YES;
+$is['no'] = _AM_XOONIPS_LABEL_NO;
 $is['checked'] = $config_values['item_show_optional'];
-$item_show[]   = $is;
+$item_show[] = $is;
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('policy_item_public.tmpl.tpl');

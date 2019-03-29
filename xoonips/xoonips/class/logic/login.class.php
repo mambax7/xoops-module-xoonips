@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.10 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,57 +25,56 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/transaction.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/logic.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/transaction.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/transaction.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/logic.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/transaction.class.php';
 
 /**
- *
- * subclass of XooNIpsLogic(login)
- *
+ * subclass of XooNIpsLogic(login).
  */
 class XooNIpsLogicLogin extends XooNIpsLogic
 {
-
     /**
-     * execute login
+     * execute login.
      *
      * @param[in] $vars[0] id (use '' if guest login)
      * @param[in] $vars[1] pass (use '' if guest login)
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error error information
      * @param[out] $response->success session id
+     *
      * @return false|void
      */
     public function execute($vars, $response)
     {
-        $myxoopsConfig =  xoonips_get_xoops_configs(XOOPS_CONF);
+        $myxoopsConfig = xoonips_get_xoops_configs(XOOPS_CONF);
         // parameter check
-        $error =  $response->getError();
+        $error = $response->getError();
         if (count($vars) > 2) {
             $error->add(XNPERR_EXTRA_PARAM);
         }
         if (count($vars) < 2) {
             $error->add(XNPERR_MISSING_PARAM);
         }
-        //
+
         if (isset($vars[0]) && strlen($vars[0]) > 25) {
             $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
         }
-        //
+
         if ($error->get(0)) {
             // return if parameter error
             $response->setResult(false);
+
             return;
         } else {
-            $id   = $vars[0];
+            $id = $vars[0];
             $pass = $vars[1];
         }
-        $memberHandler   = xoonips_getHandler('xoonips', 'member');
-        $userHandler     = xoonips_getOrmHandler('xoonips', 'users');
+        $memberHandler = xoonips_getHandler('xoonips', 'member');
+        $userHandler = xoonips_getOrmHandler('xoonips', 'users');
         $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
-        $xconfigHandler  = xoonips_getOrmHandler('xoonips', 'config');
-        $transaction     = XooNIpsTransaction::getInstance();
+        $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
+        $transaction = XooNIpsTransaction::getInstance();
         $transaction->start();
         if ($id == '') {
             $target_user = $xconfigHandler->getValue(XNP_CONFIG_PUBLIC_ITEM_TARGET_USER_KEY);
@@ -83,10 +82,11 @@ class XooNIpsLogicLogin extends XooNIpsLogic
                 $transaction->rollback();
                 $response->error->add(XNPERR_AUTH_FAILURE);
                 $response->setResult(false);
+
                 return false;
             }
-            $user   = false;
-            $uid    = UID_GUEST;
+            $user = false;
+            $uid = UID_GUEST;
             $groups = array();
         } else {
             $user = $memberHandler->loginUser($id, $pass);
@@ -99,17 +99,19 @@ class XooNIpsLogicLogin extends XooNIpsLogic
                 // return error
                 $response->error->add(XNPERR_AUTH_FAILURE);
                 $response->setResult(false);
+
                 return false;
             }
-            $xoonips_user      = $user->getVar('xoonips_user');
-            $uid               = $xoonips_user->get('uid');
+            $xoonips_user = $user->getVar('xoonips_user');
+            $uid = $xoonips_user->get('uid');
             $xoops_userHandler = xoops_getHandler('user');
-            $xoops_user        = $xoops_userHandler->get($uid);
+            $xoops_user = $xoops_userHandler->get($uid);
             if (0 == $xoops_user->getVar('level', 'n') || !$xoonips_user->get('activate')) { // not activated, not certified
                 // return error
                 $transaction->rollback();
                 $response->error->add(XNPERR_AUTH_FAILURE);
                 $response->setResult(false);
+
                 return false;
             }
             $groups = $xoops_user->getGroups();
@@ -129,6 +131,7 @@ class XooNIpsLogicLogin extends XooNIpsLogic
                 $transaction->rollback();
                 $response->error->add(XNPERR_AUTH_FAILURE);
                 $response->setResult(false);
+
                 return false;
             }
         }
@@ -138,11 +141,12 @@ class XooNIpsLogicLogin extends XooNIpsLogic
             $transaction->rollback();
             $response->error->add(XNPERR_SERVER_ERROR, 'failed to gc session');
             $response->setResult(false);
+
             return false;
         }
         // record $uid
-        $_SESSION                    = array();
-        $_SESSION['xoopsUserId']     = $uid;
+        $_SESSION = array();
+        $_SESSION['xoopsUserId'] = $uid;
         $_SESSION['xoopsUserGroups'] = $groups;
 
         // set XNPSID(for old routines)
@@ -161,6 +165,7 @@ class XooNIpsLogicLogin extends XooNIpsLogic
         $transaction->commit();
         $response->setSuccess(session_id());
         $response->setResult(true);
+
         return true;
     }
 }

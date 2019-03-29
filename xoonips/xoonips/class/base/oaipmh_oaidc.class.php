@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.7 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,9 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 //  OAIPMHHandler class for OAI-DC
 
@@ -35,7 +33,7 @@ if (!defined('XOOPS_ROOT_PATH')) {
 // Implementation of 'ListSets' verb response is contributed by KEIO University.
 
 /**
- * Class OAI_DCHandler
+ * Class OAI_DCHandler.
  */
 class OAI_DCHandler extends OAIPMHHandler
 {
@@ -53,6 +51,7 @@ class OAI_DCHandler extends OAIPMHHandler
 
     /**
      * @param null $identifier
+     *
      * @return bool|string
      */
     public function metadataFormat($identifier = null)
@@ -67,16 +66,16 @@ class OAI_DCHandler extends OAIPMHHandler
             if (xnp_get_item_types($tmparray) == RES_OK) {
                 foreach ($tmparray as $i) {
                     if ($i['item_type_id'] == $parsed['item_type_id']) {
-                        $itemtype  = $i;
+                        $itemtype = $i;
                         $item_type = $itemtype['display_name'];
                         break;
                     }
                 }
             }
 
-            include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
+            require_once XOOPS_ROOT_PATH.'/modules/'.$itemtype['viewphp'];
 
-            $f = $itemtype['name'] . 'SupportMetadataFormat';
+            $f = $itemtype['name'].'SupportMetadataFormat';
             if (!function_exists($f)) {
                 return false;
             }
@@ -84,6 +83,7 @@ class OAI_DCHandler extends OAIPMHHandler
                 return false;
             }
         }
+
         return '<metadataFormat>
 <metadataPrefix>oai_dc</metadataPrefix>
 <schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema>
@@ -92,7 +92,6 @@ class OAI_DCHandler extends OAIPMHHandler
     }
 
     /**
-     *
      * generate XML from <record> to </record>
      * check errors
      * - nijc_code of identifier = Setting of Site Configuration?
@@ -101,21 +100,21 @@ class OAI_DCHandler extends OAIPMHHandler
      * - Can itemtype generate metadata?
      *
      * @param $identifier      : identifier of item to generate XML
-     * @param $index_tree_list : array of convert from index id to index path string.
+     * @param $index_tree_list : array of convert from index id to index path string
+     *
      * @return array( generated XML, true ) in success to generate <record>
      * @return array( error XML, false )  in success to generate <record>, return <error> ... </error>.
-     *
      */
     public function record($identifier, $index_tree_list)
     {
         $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-        $parsed         = $identifier;
+        $parsed = $identifier;
 
         if ($parsed['is_deleted'] == 1) {
             //return only header if item is deleted
             return array(
-                "<record>\n" . $this->oaipmh_header($identifier, $index_tree_list) . "</record>\n",
-                true
+                "<record>\n".$this->oaipmh_header($identifier, $index_tree_list)."</record>\n",
+                true,
             );
         }
 
@@ -124,17 +123,17 @@ class OAI_DCHandler extends OAIPMHHandler
         if (empty($nijc_code) || $nijc_code != $parsed['nijc_code']) {
             return array(
                 parent::error('idDoesNotExist', ''),
-                false
+                false,
             );
         }
 
         //return error if item_id mismatched
-        $item   = array();
+        $item = array();
         $result = xnp_get_item($_SESSION['XNPSID'], $parsed['item_id'], $item);
         if ($result != RES_OK) {
             return array(
                 parent::error('idDoesNotExist', 'item_id not found'),
-                false
+                false,
             );
         }
 
@@ -142,81 +141,87 @@ class OAI_DCHandler extends OAIPMHHandler
         if ($result == RES_OK && $item['item_type_id'] != $parsed['item_type_id']) {
             return array(
                 parent::error('idDoesNotExist', 'item_type_id not found'),
-                false
+                false,
             );
         }
 
-        include_once XOOPS_ROOT_PATH . '/modules/' . $parsed['item_type_viewphp'];
+        require_once XOOPS_ROOT_PATH.'/modules/'.$parsed['item_type_viewphp'];
 
-        $f = $parsed['item_type_name'] . 'GetMetadata';
+        $f = $parsed['item_type_name'].'GetMetadata';
         if (!function_exists($f)) {
             return array(
                 parent::error('idDoesNotExist', "function $f not defined"),
-                false
+                false,
             );
         }
 
         return array(
-            "<record>\n" . $this->oaipmh_header($identifier, $index_tree_list) . $f($this->metadataPrefix, $parsed['item_id']) . "</record>\n",
-            true
+            "<record>\n".$this->oaipmh_header($identifier, $index_tree_list).$f($this->metadataPrefix, $parsed['item_id'])."</record>\n",
+            true,
         );
     }
 
     /**
-     *
      * process demand of GetRecord, return part of <GetRecord> in the results.
      * making of <record> uses record function.
+     *
      * @see      record
      *
      * @param $args
+     *
      * @return mixed|string|void <GetRecord> in XML  success
+     *
      * @internal param $args : hash contained demand arguments. array( 'identifier' => identifier of items )
      */
     public function GetRecord($args)
     {
-        $result           = false;
-        $id_str           = $this->convertIdentifierFormat($args['identifier']);
+        $result = false;
+        $id_str = $this->convertIdentifierFormat($args['identifier']);
         $param_identifier = parent::parseIdentifier($id_str);
-        $identifiers      = array();
+        $identifiers = array();
         if (RES_OK == xnp_selective_harvesting(0, 0, null, $param_identifier['item_id'], 1, $identifiers) && count($identifiers) > 0) {
-            $index_tree_list                = xnpListIndexTree(XOONIPS_LISTINDEX_PUBLICONLY, true);
-            $identifiers[0]['nijc_code']    = $param_identifier['nijc_code'];
+            $index_tree_list = xnpListIndexTree(XOONIPS_LISTINDEX_PUBLICONLY, true);
+            $identifiers[0]['nijc_code'] = $param_identifier['nijc_code'];
             $identifiers[0]['item_type_id'] = $param_identifier['item_type_id'];
             list($xml, $result) = $this->record($identifiers[0], $index_tree_list);
             if (!$result) {
                 return $xml;
             }
-            return "<GetRecord>\n" . $xml . "</GetRecord>\n";
+
+            return "<GetRecord>\n".$xml."</GetRecord>\n";
         }
+
         return parent::error('idDoesNotExist', '');
     }
 
     /**
-     *
      * process demands of GetIdentifires, and return part of <GetIdentifiers> in the results.
      * making of <record> uses record function.
+     *
      * @see      record
      *
      * @param $args
+     *
      * @return string|void <GetIdentifiers> in XML  success
+     *
      * @internal param $args : hash contained demand arguments. array( 'identifier' => identifier of items )
      */
     public function ListIdentifiers($args)
     {
         $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
 
-        $from        = 0;
-        $until       = 0;
-        $set         = null;
-        $start_iid   = 0;
-        $limit_row   = REPOSITORY_RESPONSE_LIMIT_ROW;
+        $from = 0;
+        $until = 0;
+        $set = null;
+        $start_iid = 0;
+        $limit_row = REPOSITORY_RESPONSE_LIMIT_ROW;
         $expire_term = REPOSITORY_RESUMPTION_TOKEN_EXPIRE_TERM;
 
         foreach (array(
                      'from',
                      'until',
                      'resumptionToken',
-                     'set'
+                     'set',
                  ) as $k
         ) {
             if (isset($args[$k])) {
@@ -257,9 +262,10 @@ class OAI_DCHandler extends OAIPMHHandler
             if (isset($result['publish_date'])) {
                 //expire resumptionToken if repository is modified after resumptionToken has published
                 $iids = array();
-                if (RES_OK == xnp_selective_harvesting((int)$result['publish_date'], 0, null, 0, 1, $iids)) {
+                if (RES_OK == xnp_selective_harvesting((int) $result['publish_date'], 0, null, 0, 1, $iids)) {
                     if (count($iids) > 0) {
                         expireResumptionToken($resumptionToken);
+
                         return parent::error('badResumptionToken', 'repository has been modified');
                     }
                 }
@@ -267,7 +273,7 @@ class OAI_DCHandler extends OAIPMHHandler
         }
 
         $identifiers = array();
-        if (RES_OK != xnp_selective_harvesting((int)$from, (int)$until, $set, (int)$start_iid, (int)$limit_row, $identifiers)
+        if (RES_OK != xnp_selective_harvesting((int) $from, (int) $until, $set, (int) $start_iid, (int) $limit_row, $identifiers)
             || count($identifiers) == 0
         ) {
             return parent::error('noRecordsMatch', '');
@@ -285,44 +291,47 @@ class OAI_DCHandler extends OAIPMHHandler
             $resumptionToken = '';
         }
         $index_tree_list = xnpListIndexTree(XOONIPS_LISTINDEX_PUBLICONLY, true);
-        $nijc_code       = $xconfigHandler->getValue('repository_nijc_code');
+        $nijc_code = $xconfigHandler->getValue('repository_nijc_code');
         if (!empty($nijc_code)) {
             $headers = array();
             foreach ($identifiers as $identifier) {
                 $headers[] = $this->oaipmh_header($identifier, $index_tree_list);
             }
-            return "<ListIdentifiers>\n" . implode("\n", $headers) . $resumptionToken . "</ListIdentifiers>\n";
+
+            return "<ListIdentifiers>\n".implode("\n", $headers).$resumptionToken."</ListIdentifiers>\n";
         } else {
             return parent::error('noRecordsMatch', '');
         }
     }
 
     /**
-     *
      * process demand of ListRecords, and return part of <LifeRecords> in the result.
      * making of <record> uses record function.
+     *
      * @see      record
      *
      * @param $args
+     *
      * @return string|void <ListRecords> in XML  success
+     *
      * @internal param $args : hash contained demand of arguments. array( 'identifier' => identifier of items )
      */
     public function ListRecords($args)
     {
         $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
 
-        $from        = 0;
-        $until       = 0;
-        $set         = null;
-        $start_iid   = 0;
-        $limit_row   = REPOSITORY_RESPONSE_LIMIT_ROW;
+        $from = 0;
+        $until = 0;
+        $set = null;
+        $start_iid = 0;
+        $limit_row = REPOSITORY_RESPONSE_LIMIT_ROW;
         $expire_term = REPOSITORY_RESUMPTION_TOKEN_EXPIRE_TERM;
 
         foreach (array(
                      'from',
                      'until',
                      'resumptionToken',
-                     'set'
+                     'set',
                  ) as $k
         ) {
             if (isset($args[$k])) {
@@ -360,9 +369,10 @@ class OAI_DCHandler extends OAIPMHHandler
             if (isset($result['publish_date'])) {
                 //expire resumptionToken if repository is modified after resumptionToken has published
                 $iids = array();
-                if (RES_OK == xnp_selective_harvesting((int)$result['publish_date'], 0, null, 0, 1, $iids)) {
+                if (RES_OK == xnp_selective_harvesting((int) $result['publish_date'], 0, null, 0, 1, $iids)) {
                     if (count($iids) > 0) {
                         expireResumptionToken($resumptionToken);
+
                         return parent::error('badResumptionToken', 'repository has been modified');
                     }
                 }
@@ -370,7 +380,7 @@ class OAI_DCHandler extends OAIPMHHandler
         }
 
         $identifiers = array();
-        if (RES_OK != xnp_selective_harvesting((int)$from, (int)$until, $set, (int)$start_iid, (int)$limit_row, $identifiers)
+        if (RES_OK != xnp_selective_harvesting((int) $from, (int) $until, $set, (int) $start_iid, (int) $limit_row, $identifiers)
             || count($identifiers) == 0
         ) {
             return parent::error('noRecordsMatch', '');
@@ -398,7 +408,7 @@ class OAI_DCHandler extends OAIPMHHandler
         $nijc_code = $xconfigHandler->getValue('repository_nijc_code');
         if (!empty($nijc_code)) {
             $records = array();
-            $errors  = array();
+            $errors = array();
             foreach ($identifiers as $item) {
                 list($xml, $result) = $this->record($item, $index_tree_list);
                 if ($result) {
@@ -410,7 +420,7 @@ class OAI_DCHandler extends OAIPMHHandler
             if (count($identifiers) == 0) {
                 return parent::error('noRecordsMatch', '');
             } else {
-                return "<ListRecords>\n" . implode("\n", $records) . $resumptionToken . "</ListRecords>\n";
+                return "<ListRecords>\n".implode("\n", $records).$resumptionToken."</ListRecords>\n";
             }
         } else {
             return parent::error('idDoesNotExist', 'nijc_code is not configured');

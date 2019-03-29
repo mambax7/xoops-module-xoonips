@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,70 +24,68 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_POLICY_ITEM_COMMENT_TITLE;
+$title = _AM_XOONIPS_POLICY_ITEM_COMMENT_TITLE;
 $description = _AM_XOONIPS_POLICY_ITEM_COMMENT_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_ITEM_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=item',
+        'url' => $xoonips_admin['myfile_url'].'?page=item',
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
-$ticket_area  = 'xoonips_admin_policy_item_comment';
+require_once __DIR__.'/../../class/base/gtickets.php';
+$ticket_area = 'xoonips_admin_policy_item_comment';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys   = array(
-    'item_comment_dirname'  => 's',
+$config_keys = array(
+    'item_comment_dirname' => 's',
     'item_comment_forum_id' => 'i',
 );
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 
 // get d3forum module list
-include XOOPS_ROOT_PATH . '/class/xoopslists.php';
-$moduleHandler     = xoops_getHandler('module');
-$mod_dirnames      = XoopsLists::getModulesList();
+require XOOPS_ROOT_PATH.'/class/xoopslists.php';
+$moduleHandler = xoops_getHandler('module');
+$mod_dirnames = XoopsLists::getModulesList();
 $d3forum_not_found = true;
-$d3forums          = array();
+$d3forums = array();
 // set empty d3forum module name
 $selected = ($config_values['item_comment_dirname'] == '');
 if ($selected) {
     $d3forum_not_found = false;
 }
 $d3forums[] = array(
-    'dirname'  => '',
-    'label'    => '----------',
+    'dirname' => '',
+    'label' => '----------',
     'selected' => $selected,
 );
 foreach ($mod_dirnames as $mod_dirname) {
-    $trustdir_php = XOOPS_ROOT_PATH . '/modules/' . $mod_dirname . '/mytrustdirname.php';
+    $trustdir_php = XOOPS_ROOT_PATH.'/modules/'.$mod_dirname.'/mytrustdirname.php';
     if (file_exists($trustdir_php)) {
-        include $trustdir_php;
+        require $trustdir_php;
         if ($mytrustdirname === 'd3forum') {
             $module = $moduleHandler->getByDirname($mod_dirname);
             if (is_object($module) && $module->getVar('isactive', 'n') == 1) {
@@ -97,8 +95,8 @@ foreach ($mod_dirnames as $mod_dirname) {
                     $d3forum_not_found = false;
                 }
                 $d3forums[] = array(
-                    'dirname'  => $mod_dirname,
-                    'label'    => $mod_dirname,
+                    'dirname' => $mod_dirname,
+                    'label' => $mod_dirname,
                     'selected' => $selected,
                 );
             }
@@ -107,20 +105,20 @@ foreach ($mod_dirnames as $mod_dirname) {
 }
 if ($d3forum_not_found) {
     // selected d3forum dirname not found
-    $d3forum_dirname_notfound = _AM_XOONIPS_POLICY_ITEM_COMMENT_DIRNAME_NOTFOUND . ' : ' . $config_values['item_comment_dirname'];
-    $d3forums[0]['selected']  = true;
-    $d3forum_forumid          = $config_values['item_comment_forum_id'];
-    $d3forum_forumid_notfound = _AM_XOONIPS_POLICY_ITEM_COMMENT_FORUMID_NOTFOUND . ' : ' . $config_values['item_comment_forum_id'];
+    $d3forum_dirname_notfound = _AM_XOONIPS_POLICY_ITEM_COMMENT_DIRNAME_NOTFOUND.' : '.$config_values['item_comment_dirname'];
+    $d3forums[0]['selected'] = true;
+    $d3forum_forumid = $config_values['item_comment_forum_id'];
+    $d3forum_forumid_notfound = _AM_XOONIPS_POLICY_ITEM_COMMENT_FORUMID_NOTFOUND.' : '.$config_values['item_comment_forum_id'];
 } else {
     // selected d3forum dirname found or empty dirname
-    $d3forum_forumid          = $config_values['item_comment_forum_id'];
+    $d3forum_forumid = $config_values['item_comment_forum_id'];
     $d3forum_dirname_notfound = '';
     if ($config_values['item_comment_dirname'] == '') {
         // empty dirname
         $d3forum_forumid_notfound = '';
     } else {
         // selected d3forum dirname found
-        $sql = sprintf('SELECT forum_id FROM %s WHERE forum_id=%u', $xoopsDB->prefix($config_values['item_comment_dirname'] . '_forums'),
+        $sql = sprintf('SELECT forum_id FROM %s WHERE forum_id=%u', $xoopsDB->prefix($config_values['item_comment_dirname'].'_forums'),
                        $config_values['item_comment_forum_id']);
         $res = $xoopsDB->query($sql);
         if ($res === false) {
@@ -129,7 +127,7 @@ if ($d3forum_not_found) {
         list($forum_id) = $xoopsDB->fetchRow($res);
         $xoopsDB->freeRecordSet($res);
         if (empty($forum_id)) {
-            $d3forum_forumid_notfound = _AM_XOONIPS_POLICY_ITEM_COMMENT_FORUMID_NOTFOUND . ' : ' . $config_values['item_comment_forum_id'];
+            $d3forum_forumid_notfound = _AM_XOONIPS_POLICY_ITEM_COMMENT_FORUMID_NOTFOUND.' : '.$config_values['item_comment_forum_id'];
         } else {
             $d3forum_forumid_notfound = '';
         }
@@ -137,7 +135,7 @@ if ($d3forum_not_found) {
 }
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('policy_item_comment.tmpl.tpl');

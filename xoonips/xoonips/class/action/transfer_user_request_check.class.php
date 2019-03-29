@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.11 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,11 +25,11 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/transfer.class.php';
-include_once __DIR__ . '/../../include/transfer.inc.php';
+require_once __DIR__.'/transfer.class.php';
+require_once __DIR__.'/../../include/transfer.inc.php';
 
 /**
- * Class XooNIpsActionTransferUserRequestCheck
+ * Class XooNIpsActionTransferUserRequestCheck.
  */
 class XooNIpsActionTransferUserRequestCheck extends XooNIpsActionTransfer
 {
@@ -41,9 +41,6 @@ class XooNIpsActionTransferUserRequestCheck extends XooNIpsActionTransfer
         parent::__construct();
     }
 
-    /**
-     * @return null
-     */
     public function _get_logic_name()
     {
         return null;
@@ -108,18 +105,19 @@ class XooNIpsActionTransferUserRequestCheck extends XooNIpsActionTransfer
             if ($item['transfer_enable']) {
                 continue;
             }
-            redirect_header(XOOPS_URL . '/modules/xoonips/transfer_item.php', 3, _MD_XOONIPS_TRANSFER_USER_CAN_NOT_TRANSFER_ITEM);
+            redirect_header(XOOPS_URL.'/modules/xoonips/transfer_item.php', 3, _MD_XOONIPS_TRANSFER_USER_CAN_NOT_TRANSFER_ITEM);
         }
     }
 
     /**
      * @param $from_uid
      * @param $item_id_to_transfer
+     *
      * @return array
      */
     public function get_child_item_ids_to_transfer($from_uid, $item_id_to_transfer)
     {
-        $items  = xoonips_transfer_get_transferrable_item_information($from_uid, $item_id_to_transfer);
+        $items = xoonips_transfer_get_transferrable_item_information($from_uid, $item_id_to_transfer);
         $result = array();
         foreach ($items as $item) {
             $result[$item['item_id']] = array();
@@ -127,6 +125,7 @@ class XooNIpsActionTransferUserRequestCheck extends XooNIpsActionTransfer
                 $result[$item['item_id']][] = $child_item['item_id'];
             }
         }
+
         return $result;
     }
 }

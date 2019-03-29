@@ -1,5 +1,4 @@
 <{* xnppresentation register block *}>
-<{* $Revision: 1.15.6.4 $ *}>
 <script type="text/javascript">
 <!--
 function onSubmitItemType(form){

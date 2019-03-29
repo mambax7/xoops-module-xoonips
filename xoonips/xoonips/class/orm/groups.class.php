@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.11 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,12 +24,9 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- *
  * @brief class that has group information
  *
  * @li    getVar('gid') : group ID
@@ -39,7 +36,6 @@ if (!defined('XOOPS_ROOT_PATH')) {
  * @li    getVar('group_item_number_limit') : group item number limit
  * @li    getVar('group_index_number_limit') : group index number limit
  * @li    getVar('group_item_storage_limit') : group item storage limit(bytes)
- *
  */
 class XooNIpsOrmGroups extends XooNIpsTableObject
 {
@@ -72,6 +68,7 @@ class XooNIpsOrmGroups extends XooNIpsTableObject
             $this->setErrors('group_item_storage_limit must be numeric.');
             $retval = false;
         }
+
         return $retval && parent::cleanVars();
     }
 }
@@ -83,6 +80,7 @@ class XooNIpsOrmGroupsHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmGroupsHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -92,21 +90,22 @@ class XooNIpsOrmGroupsHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * create object
+     * create object.
      *
-     * @access public
      * @param bool $isNew true if create new object
+     *
      * @return object
      */
     public function create($isNew = true)
     {
-        $obj =  parent::create($isNew);
+        $obj = parent::create($isNew);
         if ($isNew) {
             $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
             $obj->set('group_item_number_limit', $xconfigHandler->getValue('group_item_number_limit'));
             $obj->set('group_index_number_limit', $xconfigHandler->getValue('group_index_number_limit'));
             $obj->set('group_item_storage_limit', $xconfigHandler->getValue('group_item_storage_limit'));
         }
+
         return $obj;
     }
 }

@@ -2,11 +2,8 @@
 
 //
 // customized Snoopy class for the XooNIps
-// $Revision: 1.1.2.7 $
 //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // php-indent: disable
 /*************************************************
@@ -42,26 +39,26 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
     /* user definable vars */
 
-    public $host       = 'www.php.net';        // host name we are connecting to
-    public $port       = 80;                    // port we are connecting to
-    public $host_port  = '';                    // port for Host Header
+    public $host = 'www.php.net';        // host name we are connecting to
+    public $port = 80;                    // port we are connecting to
+    public $host_port = '';                    // port for Host Header
     public $proxy_host = '';                    // proxy host to use
     public $proxy_port = '';                    // proxy port to use
     public $proxy_user = '';                    // proxy user to use
     public $proxy_pass = '';                    // proxy password to use
 
-    public $agent   = 'Snoopy v1.2.4';    // agent we masquerade as
+    public $agent = 'Snoopy v1.2.4';    // agent we masquerade as
     public $referer = '';                    // referer info to pass
     public $cookies = array();            // array of cookies to pass
     // $cookies["username"]="joe";
     public $rawheaders = array();            // array of raw headers to send
     // $rawheaders["Content-type"]="text/html";
 
-    public $maxredirs        = 5;                    // http redirection depth maximum. 0 = disallow
+    public $maxredirs = 5;                    // http redirection depth maximum. 0 = disallow
     public $lastredirectaddr = '';                // contains address of last redirected address
-    public $offsiteok        = true;                // allows redirection off-site
-    public $maxframes        = 0;                    // frame content depth maximum. 0 = disallow
-    public $expandlinks      = true;                // expand links to fully qualified URLs.
+    public $offsiteok = true;                // allows redirection off-site
+    public $maxframes = 0;                    // frame content depth maximum. 0 = disallow
+    public $expandlinks = true;                // expand links to fully qualified URLs.
     // this only applies to fetchlinks()
     // submitlinks(), and submittext()
     public $passcookies = true;                // pass set cookies back through redirects
@@ -76,15 +73,15 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
     public $results = '';                    // where the content is put
 
-    public $error         = '';                    // error messages sent here
+    public $error = '';                    // error messages sent here
     public $response_code = '';                    // response code returned from server
-    public $headers       = array();            // headers returned from server sent here
-    public $maxlength     = 500000;                // max return data length (body)
-    public $read_timeout  = 0;                    // timeout on read operations, in seconds
+    public $headers = array();            // headers returned from server sent here
+    public $maxlength = 500000;                // max return data length (body)
+    public $read_timeout = 0;                    // timeout on read operations, in seconds
     // supported only since PHP 4 Beta 4
     // set to 0 to disallow timeouts
     public $timed_out = false;                // if a read operation timed out
-    public $status    = 0;                    // http request status
+    public $status = 0;                    // http request status
 
     public $temp_dir = '/tmp';                // temporary directory that the webserver
     // has permission to write to.
@@ -106,20 +103,21 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
     public $_maxlinelen = 4096;                // max line length (headers)
 
-    public $_httpmethod    = 'GET';                // default http request method
-    public $_httpversion   = 'HTTP/1.0';            // default http request version
+    public $_httpmethod = 'GET';                // default http request method
+    public $_httpversion = 'HTTP/1.0';            // default http request version
     public $_submit_method = 'POST';                // default submit method
-    public $_submit_type   = 'application/x-www-form-urlencoded';    // default submit type
+    public $_submit_type = 'application/x-www-form-urlencoded';    // default submit type
     public $_mime_boundary = '';                    // MIME boundary for multipart/form-data submit type
-    public $_redirectaddr  = false;                // will be set if page fetched is a redirect
+    public $_redirectaddr = false;                // will be set if page fetched is a redirect
     public $_redirectdepth = 0;                    // increments on an http redirect
-    public $_frameurls     = array();            // frame src urls
-    public $_framedepth    = 0;                    // increments on frame depth
+    public $_frameurls = array();            // frame src urls
+    public $_framedepth = 0;                    // increments on frame depth
 
-    public $_isproxy    = false;                // set if using a proxy server
+    public $_isproxy = false;                // set if using a proxy server
     public $_fp_timeout = 30;                    // timeout for socket connection
 
     // XooNIps
+
     /**
      * XooNIpsUtilitySnoopy constructor.
      */
@@ -130,18 +128,18 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
             'proxy_host',
             'proxy_port',
             'proxy_user',
-            'proxy_pass'
+            'proxy_pass',
         );
         $configHandler = xoonips_getOrmHandler('xoonips', 'config');
-        $criteria      = new CriteriaCompo();
+        $criteria = new CriteriaCompo();
         foreach ($proxy_configs as $config) {
             $criteria->add(new Criteria('name', $config), 'OR');
         }
-        $objs  =  $configHandler->getObjects($criteria);
+        $objs = $configHandler->getObjects($criteria);
         $proxy = array();
         foreach ($objs as $obj) {
-            $key         = $obj->getVar('name', 'n');
-            $value       = $obj->getVar('value', 'n');
+            $key = $obj->getVar('name', 'n');
+            $value = $obj->getVar('value', 'n');
             $proxy[$key] = $value;
         }
         // override proxy configs
@@ -170,11 +168,11 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
     /**
      * @param $URI
+     *
      * @return bool
      */
     public function fetch($URI)
     {
-
         //preg_match("|^([^:]+)://([^:/]+)(:[\d]+)*(.*)|",$URI,$URI_PARTS);
         $URI_PARTS = parse_url($URI);
         if (!empty($URI_PARTS['user'])) {
@@ -194,7 +192,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
             case 'http':
                 $this->host = $URI_PARTS['host'];
                 if (!empty($URI_PARTS['port'])) {
-                    $this->port      = $URI_PARTS['port'];
+                    $this->port = $URI_PARTS['port'];
                     $this->host_port = $URI_PARTS['port'];
                 }
                 if ($this->_connect($fp)) {
@@ -202,7 +200,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                         // using proxy, send entire URI
                         $this->_httprequest($URI, $fp, $URI, $this->_httpmethod);
                     } else {
-                        $path = $URI_PARTS['path'] . ($URI_PARTS['query'] ? '?' . $URI_PARTS['query'] : '');
+                        $path = $URI_PARTS['path'].($URI_PARTS['query'] ? '?'.$URI_PARTS['query'] : '');
                         // no proxy, send only the path
                         $this->_httprequest($path, $fp, $URI, $this->_httpmethod);
                     }
@@ -213,9 +211,9 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                         /* url was redirected, check if we've hit the max depth */
                         if ($this->maxredirs > $this->_redirectdepth) {
                             // only follow redirect if it's on this site, or offsiteok is true
-                            if (preg_match('|^http://' . preg_quote($this->host) . '|i', $this->_redirectaddr) || $this->offsiteok) {
+                            if (preg_match('|^http://'.preg_quote($this->host).'|i', $this->_redirectaddr) || $this->offsiteok) {
                                 /* follow the redirect */
-                                $this->_redirectdepth++;
+                                ++$this->_redirectdepth;
                                 $this->lastredirectaddr = $this->_redirectaddr;
                                 $this->fetch($this->_redirectaddr);
                             }
@@ -223,13 +221,13 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                     }
 
                     if ($this->_framedepth < $this->maxframes && count($this->_frameurls) > 0) {
-                        $frameurls        = $this->_frameurls;
+                        $frameurls = $this->_frameurls;
                         $this->_frameurls = array();
 
                         while (list(, $frameurl) = each($frameurls)) {
                             if ($this->_framedepth < $this->maxframes) {
                                 $this->fetch($frameurl);
-                                $this->_framedepth++;
+                                ++$this->_framedepth;
                             } else {
                                 break;
                             }
@@ -238,6 +236,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                 } else {
                     return false;
                 }
+
                 return true;
                 break;
             case 'https':
@@ -251,14 +250,14 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                 }
                 $this->host = $URI_PARTS['host'];
                 if (!empty($URI_PARTS['port'])) {
-                    $this->port      = $URI_PARTS['port'];
+                    $this->port = $URI_PARTS['port'];
                     $this->host_port = $URI_PARTS['port'];
                 }
                 if ($this->_isproxy) {
                     // using proxy, send entire URI
                     $this->_httpsrequest($URI, $URI, $this->_httpmethod);
                 } else {
-                    $path = $URI_PARTS['path'] . ($URI_PARTS['query'] ? '?' . $URI_PARTS['query'] : '');
+                    $path = $URI_PARTS['path'].($URI_PARTS['query'] ? '?'.$URI_PARTS['query'] : '');
                     // no proxy, send only the path
                     $this->_httpsrequest($path, $URI, $this->_httpmethod);
                 }
@@ -267,9 +266,9 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                     /* url was redirected, check if we've hit the max depth */
                     if ($this->maxredirs > $this->_redirectdepth) {
                         // only follow redirect if it's on this site, or offsiteok is true
-                        if (preg_match('|^http://' . preg_quote($this->host) . '|i', $this->_redirectaddr) || $this->offsiteok) {
+                        if (preg_match('|^http://'.preg_quote($this->host).'|i', $this->_redirectaddr) || $this->offsiteok) {
                             /* follow the redirect */
-                            $this->_redirectdepth++;
+                            ++$this->_redirectdepth;
                             $this->lastredirectaddr = $this->_redirectaddr;
                             $this->fetch($this->_redirectaddr);
                         }
@@ -277,26 +276,29 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                 }
 
                 if ($this->_framedepth < $this->maxframes && count($this->_frameurls) > 0) {
-                    $frameurls        = $this->_frameurls;
+                    $frameurls = $this->_frameurls;
                     $this->_frameurls = array();
 
                     while (list(, $frameurl) = each($frameurls)) {
                         if ($this->_framedepth < $this->maxframes) {
                             $this->fetch($frameurl);
-                            $this->_framedepth++;
+                            ++$this->_framedepth;
                         } else {
                             break;
                         }
                     }
                 }
+
                 return true;
                 break;
             default:
                 // not a valid protocol
-                $this->error = 'Invalid protocol "' . $URI_PARTS['scheme'] . '"\n';
+                $this->error = 'Invalid protocol "'.$URI_PARTS['scheme'].'"\n';
+
                 return false;
                 break;
         }
+
         return true;
     }
 
@@ -315,6 +317,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
      * @param        $URI
      * @param string $formvars
      * @param string $formfiles
+     *
      * @return bool
      */
     public function submit($URI, $formvars = '', $formfiles = '')
@@ -341,7 +344,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
             case 'http':
                 $this->host = $URI_PARTS['host'];
                 if (!empty($URI_PARTS['port'])) {
-                    $this->port      = $URI_PARTS['port'];
+                    $this->port = $URI_PARTS['port'];
                     $this->host_port = $URI_PARTS['port'];
                 }
                 if ($this->_connect($fp)) {
@@ -349,7 +352,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                         // using proxy, send entire URI
                         $this->_httprequest($URI, $fp, $URI, $this->_submit_method, $this->_submit_type, $postdata);
                     } else {
-                        $path = $URI_PARTS['path'] . ($URI_PARTS['query'] ? '?' . $URI_PARTS['query'] : '');
+                        $path = $URI_PARTS['path'].($URI_PARTS['query'] ? '?'.$URI_PARTS['query'] : '');
                         // no proxy, send only the path
                         $this->_httprequest($path, $fp, $URI, $this->_submit_method, $this->_submit_type, $postdata);
                     }
@@ -359,14 +362,14 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                     if ($this->_redirectaddr) {
                         /* url was redirected, check if we've hit the max depth */
                         if ($this->maxredirs > $this->_redirectdepth) {
-                            if (!preg_match('|^' . $URI_PARTS['scheme'] . '://|', $this->_redirectaddr)) {
-                                $this->_redirectaddr = $this->_expandlinks($this->_redirectaddr, $URI_PARTS['scheme'] . '://' . $URI_PARTS['host']);
+                            if (!preg_match('|^'.$URI_PARTS['scheme'].'://|', $this->_redirectaddr)) {
+                                $this->_redirectaddr = $this->_expandlinks($this->_redirectaddr, $URI_PARTS['scheme'].'://'.$URI_PARTS['host']);
                             }
 
                             // only follow redirect if it's on this site, or offsiteok is true
-                            if (preg_match('|^http://' . preg_quote($this->host) . '|i', $this->_redirectaddr) || $this->offsiteok) {
+                            if (preg_match('|^http://'.preg_quote($this->host).'|i', $this->_redirectaddr) || $this->offsiteok) {
                                 /* follow the redirect */
-                                $this->_redirectdepth++;
+                                ++$this->_redirectdepth;
                                 $this->lastredirectaddr = $this->_redirectaddr;
                                 if (strpos($this->_redirectaddr, '?') > 0) {
                                     $this->fetch($this->_redirectaddr);
@@ -379,13 +382,13 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                     }
 
                     if ($this->_framedepth < $this->maxframes && count($this->_frameurls) > 0) {
-                        $frameurls        = $this->_frameurls;
+                        $frameurls = $this->_frameurls;
                         $this->_frameurls = array();
 
                         while (list(, $frameurl) = each($frameurls)) {
                             if ($this->_framedepth < $this->maxframes) {
                                 $this->fetch($frameurl);
-                                $this->_framedepth++;
+                                ++$this->_framedepth;
                             } else {
                                 break;
                             }
@@ -394,6 +397,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                 } else {
                     return false;
                 }
+
                 return true;
                 break;
             case 'https':
@@ -407,14 +411,14 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                 }
                 $this->host = $URI_PARTS['host'];
                 if (!empty($URI_PARTS['port'])) {
-                    $this->port      = $URI_PARTS['port'];
+                    $this->port = $URI_PARTS['port'];
                     $this->host_port = $URI_PARTS['port'];
                 }
                 if ($this->_isproxy) {
                     // using proxy, send entire URI
                     $this->_httpsrequest($URI, $URI, $this->_submit_method, $this->_submit_type, $postdata);
                 } else {
-                    $path = $URI_PARTS['path'] . ($URI_PARTS['query'] ? '?' . $URI_PARTS['query'] : '');
+                    $path = $URI_PARTS['path'].($URI_PARTS['query'] ? '?'.$URI_PARTS['query'] : '');
                     // no proxy, send only the path
                     $this->_httpsrequest($path, $URI, $this->_submit_method, $this->_submit_type, $postdata);
                 }
@@ -422,14 +426,14 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                 if ($this->_redirectaddr) {
                     /* url was redirected, check if we've hit the max depth */
                     if ($this->maxredirs > $this->_redirectdepth) {
-                        if (!preg_match('|^' . $URI_PARTS['scheme'] . '://|', $this->_redirectaddr)) {
-                            $this->_redirectaddr = $this->_expandlinks($this->_redirectaddr, $URI_PARTS['scheme'] . '://' . $URI_PARTS['host']);
+                        if (!preg_match('|^'.$URI_PARTS['scheme'].'://|', $this->_redirectaddr)) {
+                            $this->_redirectaddr = $this->_expandlinks($this->_redirectaddr, $URI_PARTS['scheme'].'://'.$URI_PARTS['host']);
                         }
 
                         // only follow redirect if it's on this site, or offsiteok is true
-                        if (preg_match('|^http://' . preg_quote($this->host) . '|i', $this->_redirectaddr) || $this->offsiteok) {
+                        if (preg_match('|^http://'.preg_quote($this->host).'|i', $this->_redirectaddr) || $this->offsiteok) {
                             /* follow the redirect */
-                            $this->_redirectdepth++;
+                            ++$this->_redirectdepth;
                             $this->lastredirectaddr = $this->_redirectaddr;
                             if (strpos($this->_redirectaddr, '?') > 0) {
                                 $this->fetch($this->_redirectaddr);
@@ -442,27 +446,30 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                 }
 
                 if ($this->_framedepth < $this->maxframes && count($this->_frameurls) > 0) {
-                    $frameurls        = $this->_frameurls;
+                    $frameurls = $this->_frameurls;
                     $this->_frameurls = array();
 
                     while (list(, $frameurl) = each($frameurls)) {
                         if ($this->_framedepth < $this->maxframes) {
                             $this->fetch($frameurl);
-                            $this->_framedepth++;
+                            ++$this->_framedepth;
                         } else {
                             break;
                         }
                     }
                 }
+
                 return true;
                 break;
 
             default:
                 // not a valid protocol
-                $this->error = 'Invalid protocol "' . $URI_PARTS['scheme'] . '"\n';
+                $this->error = 'Invalid protocol "'.$URI_PARTS['scheme'].'"\n';
+
                 return false;
                 break;
         }
+
         return true;
     }
 
@@ -475,6 +482,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
     /**
      * @param $URI
+     *
      * @return bool
      */
     public function fetchlinks($URI)
@@ -484,7 +492,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                 $URI = $this->lastredirectaddr;
             }
             if (is_array($this->results)) {
-                for ($x = 0, $iMax = count($this->results); $x < $iMax; $x++) {
+                for ($x = 0, $iMax = count($this->results); $x < $iMax; ++$x) {
                     $this->results[$x] = $this->_striplinks($this->results[$x]);
                 }
             } else {
@@ -494,6 +502,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
             if ($this->expandlinks) {
                 $this->results = $this->_expandlinks($this->results, $URI);
             }
+
             return true;
         } else {
             return false;
@@ -509,13 +518,14 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
     /**
      * @param $URI
+     *
      * @return bool
      */
     public function fetchform($URI)
     {
         if ($this->fetch($URI)) {
             if (is_array($this->results)) {
-                for ($x = 0, $iMax = count($this->results); $x < $iMax; $x++) {
+                for ($x = 0, $iMax = count($this->results); $x < $iMax; ++$x) {
                     $this->results[$x] = $this->_stripform($this->results[$x]);
                 }
             } else {
@@ -537,18 +547,20 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
     /**
      * @param $URI
+     *
      * @return bool
      */
     public function fetchtext($URI)
     {
         if ($this->fetch($URI)) {
             if (is_array($this->results)) {
-                for ($x = 0, $iMax = count($this->results); $x < $iMax; $x++) {
+                for ($x = 0, $iMax = count($this->results); $x < $iMax; ++$x) {
                     $this->results[$x] = $this->_striptext($this->results[$x]);
                 }
             } else {
                 $this->results = $this->_striptext($this->results);
             }
+
             return true;
         } else {
             return false;
@@ -566,6 +578,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
      * @param        $URI
      * @param string $formvars
      * @param string $formfiles
+     *
      * @return bool
      */
     public function submitlinks($URI, $formvars = '', $formfiles = '')
@@ -575,7 +588,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                 $URI = $this->lastredirectaddr;
             }
             if (is_array($this->results)) {
-                for ($x = 0, $iMax = count($this->results); $x < $iMax; $x++) {
+                for ($x = 0, $iMax = count($this->results); $x < $iMax; ++$x) {
                     $this->results[$x] = $this->_striplinks($this->results[$x]);
                     if ($this->expandlinks) {
                         $this->results[$x] = $this->_expandlinks($this->results[$x], $URI);
@@ -587,6 +600,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                     $this->results = $this->_expandlinks($this->results, $URI);
                 }
             }
+
             return true;
         } else {
             return false;
@@ -604,6 +618,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
      * @param        $URI
      * @param string $formvars
      * @param string $formfiles
+     *
      * @return bool
      */
     public function submittext($URI, $formvars = '', $formfiles = '')
@@ -613,7 +628,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                 $URI = $this->lastredirectaddr;
             }
             if (is_array($this->results)) {
-                for ($x = 0, $iMax = count($this->results); $x < $iMax; $x++) {
+                for ($x = 0, $iMax = count($this->results); $x < $iMax; ++$x) {
                     $this->results[$x] = $this->_striptext($this->results[$x]);
                     if ($this->expandlinks) {
                         $this->results[$x] = $this->_expandlinks($this->results[$x], $URI);
@@ -625,6 +640,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                     $this->results = $this->_expandlinks($this->results, $URI);
                 }
             }
+
             return true;
         } else {
             return false;
@@ -651,7 +667,6 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
         $this->_submit_type = 'application/x-www-form-urlencoded';
     }
 
-
     // XOOPS2 Hack begin
     // Added on March 4, 2003 by onokazu@xoops.org
     /*======================================================================*\
@@ -663,6 +678,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
     {
         $this->_submit_type = 'text/xml';
     }
+
     // XOOPS2 Hack end
 
     /*======================================================================*\
@@ -678,6 +694,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
     /**
      * @param $document
+     *
      * @return array
      */
     public function _striplinks($document)
@@ -715,6 +732,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
     /**
      * @param $document
+     *
      * @return string
      */
     public function _stripform($document)
@@ -738,16 +756,16 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
     /**
      * @param $document
+     *
      * @return mixed
      */
     public function _striptext($document)
     {
-
         // I didn't use preg eval (//e) since that is only available in PHP 4.0.
         // so, list your entities one by one here. I included some of the
         // more common ones.
 
-        $search  = array(
+        $search = array(
             "'<script[^>]*?>.*?</script>'si",
             // strip out javascript
             "'<[\/\!]*?[^<>]*?>'si",
@@ -782,8 +800,8 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
         $replace = array(
             '',
             '',
-            "\\1",
-            "\"",
+            '\\1',
+            '"',
             '&',
             '<',
             '>',
@@ -821,32 +839,33 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
     /**
      * @param $links
      * @param $URI
+     *
      * @return mixed
      */
     public function _expandlinks($links, $URI)
     {
         preg_match("/^[^\?]+/", $URI, $match);
 
-        $match      = preg_replace("|/[^\/\.]+\.[^\/\.]+$|", '', $match[0]);
-        $match      = preg_replace("|/$|", '', $match);
+        $match = preg_replace("|/[^\/\.]+\.[^\/\.]+$|", '', $match[0]);
+        $match = preg_replace('|/$|', '', $match);
         $match_part = parse_url($match);
         $match_root
-                    = $match_part['scheme'] . '://' . $match_part['host'];
+                    = $match_part['scheme'].'://'.$match_part['host'];
 
         $search = array(
-            '|^http://' . preg_quote($this->host) . '|i',
+            '|^http://'.preg_quote($this->host).'|i',
             "|^(\/)|i",
             '|^(?!http://)(?!mailto:)|i',
             "|/\./|",
-            "|/[^\/]+/\.\./|"
+            "|/[^\/]+/\.\./|",
         );
 
         $replace = array(
             '',
-            $match_root . '/',
-            $match . '/',
+            $match_root.'/',
+            $match.'/',
             '/',
-            '/'
+            '/',
         );
 
         $expandedLinks = preg_replace($search, $replace, $links);
@@ -871,6 +890,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
      * @param        $http_method
      * @param string $content_type
      * @param string $body
+     *
      * @return bool
      */
     public function _httprequest($url, $fp, $URI, $http_method, $content_type = '', $body = '')
@@ -884,62 +904,62 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
         if (empty($url)) {
             $url = '/';
         }
-        $headers = $http_method . ' ' . $url . ' ' . $this->_httpversion . "\r\n";
+        $headers = $http_method.' '.$url.' '.$this->_httpversion."\r\n";
         if (!empty($this->agent)) {
-            $headers .= 'User-Agent: ' . $this->agent . "\r\n";
+            $headers .= 'User-Agent: '.$this->agent."\r\n";
         }
         if (!empty($this->host) && !isset($this->rawheaders['Host'])) {
-            $headers .= 'Host: ' . $this->host;
+            $headers .= 'Host: '.$this->host;
             if (!empty($this->host_port)) {
-                $headers .= ':' . $this->host_port;
+                $headers .= ':'.$this->host_port;
             }
             $headers .= "\r\n";
         }
         if (!empty($this->accept)) {
-            $headers .= 'Accept: ' . $this->accept . "\r\n";
+            $headers .= 'Accept: '.$this->accept."\r\n";
         }
         if (!empty($this->referer)) {
-            $headers .= 'Referer: ' . $this->referer . "\r\n";
+            $headers .= 'Referer: '.$this->referer."\r\n";
         }
         if (!empty($this->cookies)) {
             if (!is_array($this->cookies)) {
-                $this->cookies = (array)$this->cookies;
+                $this->cookies = (array) $this->cookies;
             }
 
             reset($this->cookies);
             if (count($this->cookies) > 0) {
                 $cookie_headers .= 'Cookie: ';
                 foreach ($this->cookies as $cookieKey => $cookieVal) {
-                    $cookie_headers .= $cookieKey . '=' . urlencode($cookieVal) . '; ';
+                    $cookie_headers .= $cookieKey.'='.urlencode($cookieVal).'; ';
                 }
-                $headers .= substr($cookie_headers, 0, -2) . "\r\n";
+                $headers .= substr($cookie_headers, 0, -2)."\r\n";
             }
         }
         if (!empty($this->rawheaders)) {
             if (!is_array($this->rawheaders)) {
-                $this->rawheaders = (array)$this->rawheaders;
+                $this->rawheaders = (array) $this->rawheaders;
             }
             while (list($headerKey, $headerVal) = each($this->rawheaders)) {
-                $headers .= $headerKey . ': ' . $headerVal . "\r\n";
+                $headers .= $headerKey.': '.$headerVal."\r\n";
             }
         }
         if (!empty($content_type)) {
             $headers .= "Content-type: $content_type";
             if ($content_type === 'multipart/form-data') {
-                $headers .= '; boundary=' . $this->_mime_boundary;
+                $headers .= '; boundary='.$this->_mime_boundary;
             }
             $headers .= "\r\n";
         }
         if (!empty($body)) {
-            $headers .= 'Content-length: ' . strlen($body) . "\r\n";
+            $headers .= 'Content-length: '.strlen($body)."\r\n";
         }
         if (!empty($this->user) || !empty($this->pass)) {
-            $headers .= 'Authorization: Basic ' . base64_encode($this->user . ':' . $this->pass) . "\r\n";
+            $headers .= 'Authorization: Basic '.base64_encode($this->user.':'.$this->pass)."\r\n";
         }
 
         //add proxy auth headers
         if (!empty($this->proxy_user)) {
-            $headers .= 'Proxy-Authorization: ' . 'Basic ' . base64_encode($this->proxy_user . ':' . $this->proxy_pass) . "\r\n";
+            $headers .= 'Proxy-Authorization: '.'Basic '.base64_encode($this->proxy_user.':'.$this->proxy_pass)."\r\n";
         }
 
         $headers .= "\r\n";
@@ -950,7 +970,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
         }
         $this->timed_out = false;
 
-        fwrite($fp, $headers . $body, strlen($headers . $body));
+        fwrite($fp, $headers.$body, strlen($headers.$body));
 
         $this->_redirectaddr = false;
         unset($this->headers);
@@ -958,6 +978,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
         while ($currentHeader = fgets($fp, $this->_maxlinelen)) {
             if ($this->read_timeout > 0 && $this->_check_timeout($fp)) {
                 $this->status = -100;
+
                 return false;
             }
 
@@ -972,13 +993,13 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                 // look for :// in the Location header to see if hostname is included
                 if (!preg_match("|\:\/\/|", $matches[2])) {
                     // no host in the path, so prepend
-                    $this->_redirectaddr = $URI_PARTS['scheme'] . '://' . $this->host;
+                    $this->_redirectaddr = $URI_PARTS['scheme'].'://'.$this->host;
                     if (!empty($this->host_port)) {
-                        $this->_redirectaddr .= ':' . $this->host_port;
+                        $this->_redirectaddr .= ':'.$this->host_port;
                     }
                     // eliminate double slash
                     if (!preg_match('|^/|', $matches[2])) {
-                        $this->_redirectaddr .= '/' . $matches[2];
+                        $this->_redirectaddr .= '/'.$matches[2];
                     } else {
                         $this->_redirectaddr .= $matches[2];
                     }
@@ -1008,6 +1029,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
         if ($this->read_timeout > 0 && $this->_check_timeout($fp)) {
             $this->status = -100;
+
             return false;
         }
 
@@ -1020,8 +1042,8 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
         // have we hit our frame depth and is there frame src to fetch?
         if (($this->_framedepth < $this->maxframes) && preg_match_all("'<frame\s+.*src[\s]*=[\'\"]?([^\'\"\>]+)'i", $results, $match)) {
             $this->results[] = $results;
-            for ($x = 0, $xMax = count($match[1]); $x < $xMax; $x++) {
-                $this->_frameurls[] = $this->_expandlinks($match[1][$x], $URI_PARTS['scheme'] . '://' . $this->host);
+            for ($x = 0, $xMax = count($match[1]); $x < $xMax; ++$x) {
+                $this->_frameurls[] = $this->_expandlinks($match[1][$x], $URI_PARTS['scheme'].'://'.$this->host);
             }
         } // have we already fetched framed content?
         elseif (is_array($this->results)) {
@@ -1049,6 +1071,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
      * @param        $http_method
      * @param string $content_type
      * @param string $body
+     *
      * @return bool
      */
     public function _httpsrequest($url, $URI, $http_method, $content_type = '', $body = '')
@@ -1066,60 +1089,60 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
         // GET ... header not needed for curl
         //$headers[] = $http_method." ".$url." ".$this->_httpversion;
         if (!empty($this->agent)) {
-            $headers[] = 'User-Agent: ' . $this->agent;
+            $headers[] = 'User-Agent: '.$this->agent;
         }
         if (!empty($this->host)) {
             if (!empty($this->host_port)) {
-                $headers[] = 'Host: ' . $this->host . ':' . $this->host_port;
+                $headers[] = 'Host: '.$this->host.':'.$this->host_port;
             } else {
-                $headers[] = 'Host: ' . $this->host;
+                $headers[] = 'Host: '.$this->host;
             }
         }
         if (!empty($this->accept)) {
-            $headers[] = 'Accept: ' . $this->accept;
+            $headers[] = 'Accept: '.$this->accept;
         }
         if (!empty($this->referer)) {
-            $headers[] = 'Referer: ' . $this->referer;
+            $headers[] = 'Referer: '.$this->referer;
         }
         if (!empty($this->cookies)) {
             if (!is_array($this->cookies)) {
-                $this->cookies = (array)$this->cookies;
+                $this->cookies = (array) $this->cookies;
             }
 
             reset($this->cookies);
             if (count($this->cookies) > 0) {
                 $cookie_str = 'Cookie: ';
                 foreach ($this->cookies as $cookieKey => $cookieVal) {
-                    $cookie_str .= $cookieKey . '=' . urlencode($cookieVal) . '; ';
+                    $cookie_str .= $cookieKey.'='.urlencode($cookieVal).'; ';
                 }
                 $headers[] = substr($cookie_str, 0, -2);
             }
         }
         if (!empty($this->rawheaders)) {
             if (!is_array($this->rawheaders)) {
-                $this->rawheaders = (array)$this->rawheaders;
+                $this->rawheaders = (array) $this->rawheaders;
             }
             while (list($headerKey, $headerVal) = each($this->rawheaders)) {
-                $headers[] = $headerKey . ': ' . $headerVal;
+                $headers[] = $headerKey.': '.$headerVal;
             }
         }
         if (!empty($content_type)) {
             if ($content_type === 'multipart/form-data') {
-                $headers[] = "Content-type: $content_type; boundary=" . $this->_mime_boundary;
+                $headers[] = "Content-type: $content_type; boundary=".$this->_mime_boundary;
             } else {
                 $headers[] = "Content-type: $content_type";
             }
         }
         if (!empty($body)) {
-            $headers[] = 'Content-length: ' . strlen($body);
+            $headers[] = 'Content-length: '.strlen($body);
         }
         if (!empty($this->user) || !empty($this->pass)) {
-            $headers[] = 'Authorization: BASIC ' . base64_encode($this->user . ':' . $this->pass);
+            $headers[] = 'Authorization: BASIC '.base64_encode($this->user.':'.$this->pass);
         }
 
-        for ($curr_header = 0, $curr_headerMax = count($headers); $curr_header < $curr_headerMax; $curr_header++) {
-            $safer_header = strtr($headers[$curr_header], "\"", ' ');
-            $cmdline_params .= " -H \"" . $safer_header . "\"";
+        for ($curr_header = 0, $curr_headerMax = count($headers); $curr_header < $curr_headerMax; ++$curr_header) {
+            $safer_header = strtr($headers[$curr_header], '"', ' ');
+            $cmdline_params .= ' -H "'.$safer_header.'"';
         }
 
         if (!empty($body)) {
@@ -1127,15 +1150,16 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
         }
 
         if ($this->read_timeout > 0) {
-            $cmdline_params .= ' -m ' . $this->read_timeout;
+            $cmdline_params .= ' -m '.$this->read_timeout;
         }
 
         $headerfile = tempnam($temp_dir, 'sno');
 
-        exec($this->curl_path . " -k -D \"$headerfile\"" . $cmdline_params . ' ' . escapeshellarg($URI), $results, $return);
+        exec($this->curl_path." -k -D \"$headerfile\"".$cmdline_params.' '.escapeshellarg($URI), $results, $return);
 
         if ($return) {
             $this->error = "Error: cURL could not retrieve the document, error $return.";
+
             return false;
         }
 
@@ -1146,8 +1170,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
         $this->_redirectaddr = false;
         unset($this->headers);
 
-        for ($currentHeader = 0, $currentHeaderMax = count($result_headers); $currentHeader < $currentHeaderMax; $currentHeader++) {
-
+        for ($currentHeader = 0, $currentHeaderMax = count($result_headers); $currentHeader < $currentHeaderMax; ++$currentHeader) {
             // if a header begins with Location: or URI:, set the redirect
             if (preg_match('/^(Location: |URI: )/i', $result_headers[$currentHeader])) {
                 // get URL portion of the redirect
@@ -1155,13 +1178,13 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                 // look for :// in the Location header to see if hostname is included
                 if (!preg_match("|\:\/\/|", $matches[2])) {
                     // no host in the path, so prepend
-                    $this->_redirectaddr = $URI_PARTS['scheme'] . '://' . $this->host;
+                    $this->_redirectaddr = $URI_PARTS['scheme'].'://'.$this->host;
                     if (!empty($this->host_port)) {
-                        $this->_redirectaddr .= ':' . $this->host_port;
+                        $this->_redirectaddr .= ':'.$this->host_port;
                     }
                     // eliminate double slash
                     if (!preg_match('|^/|', $matches[2])) {
-                        $this->_redirectaddr .= '/' . $matches[2];
+                        $this->_redirectaddr .= '/'.$matches[2];
                     } else {
                         $this->_redirectaddr .= $matches[2];
                     }
@@ -1189,8 +1212,8 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
         // have we hit our frame depth and is there frame src to fetch?
         if (($this->_framedepth < $this->maxframes) && preg_match_all("'<frame\s+.*src[\s]*=[\'\"]?([^\'\"\>]+)'i", $results, $match)) {
             $this->results[] = $results;
-            for ($x = 0, $xMax = count($match[1]); $x < $xMax; $x++) {
-                $this->_frameurls[] = $this->_expandlinks($match[1][$x], $URI_PARTS['scheme'] . '://' . $this->host);
+            for ($x = 0, $xMax = count($match[1]); $x < $xMax; ++$x) {
+                $this->_frameurls[] = $this->_expandlinks($match[1][$x], $URI_PARTS['scheme'].'://'.$this->host);
             }
         } // have we already fetched framed content?
         elseif (is_array($this->results)) {
@@ -1212,7 +1235,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
     public function setcookies()
     {
-        for ($x = 0, $xMax = count($this->headers); $x < $xMax; $x++) {
+        for ($x = 0, $xMax = count($this->headers); $x < $xMax; ++$x) {
             if (preg_match('/^set-cookie:[\s]+([^=]+)=([^;]+)/i', $this->headers[$x], $match)) {
                 $this->cookies[$match[1]] = urldecode($match[2]);
             }
@@ -1227,6 +1250,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
     /**
      * @param $fp
+     *
      * @return bool
      */
     public function _check_timeout($fp)
@@ -1235,9 +1259,11 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
             $fp_status = socket_get_status($fp);
             if ($fp_status['timed_out']) {
                 $this->timed_out = true;
+
                 return true;
             }
         }
+
         return false;
     }
 
@@ -1249,6 +1275,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
     /**
      * @param $fp
+     *
      * @return bool
      */
     public function _connect($fp)
@@ -1280,8 +1307,9 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                 case -5:
                     $this->error = 'connection refused or timed out (-5)';
                 default:
-                    $this->error = 'connection failed (' . $errno . ')';
+                    $this->error = 'connection failed ('.$errno.')';
             }
+
             return false;
         }
     }
@@ -1294,6 +1322,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
     /**
      * @param $fp
+     *
      * @return bool
      */
     public function _disconnect($fp)
@@ -1312,12 +1341,13 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
     /**
      * @param $formvars
      * @param $formfiles
+     *
      * @return string|void
      */
     public function _prepare_post_body($formvars, $formfiles)
     {
-        (array)$formvars;
-        (array)$formfiles;
+        (array) $formvars;
+        (array) $formfiles;
         $postdata = '';
 
         if (count($formvars) == 0 && count($formfiles) == 0) {
@@ -1330,27 +1360,27 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
                 while (list($key, $val) = each($formvars)) {
                     if (is_array($val) || is_object($val)) {
                         while (list($cur_key, $cur_val) = each($val)) {
-                            $postdata .= urlencode($key) . '[]=' . urlencode($cur_val) . '&';
+                            $postdata .= urlencode($key).'[]='.urlencode($cur_val).'&';
                         }
                     } else {
-                        $postdata .= urlencode($key) . '=' . urlencode($val) . '&';
+                        $postdata .= urlencode($key).'='.urlencode($val).'&';
                     }
                 }
                 break;
 
             case 'multipart/form-data':
-                $this->_mime_boundary = 'Snoopy' . md5(uniqid(microtime(), true));
+                $this->_mime_boundary = 'Snoopy'.md5(uniqid(microtime(), true));
 
                 reset($formvars);
                 while (list($key, $val) = each($formvars)) {
                     if (is_array($val) || is_object($val)) {
                         while (list($cur_key, $cur_val) = each($val)) {
-                            $postdata .= '--' . $this->_mime_boundary . "\r\n";
+                            $postdata .= '--'.$this->_mime_boundary."\r\n";
                             $postdata .= "Content-Disposition: form-data; name=\"$key\[\]\"\r\n\r\n";
                             $postdata .= "$cur_val\r\n";
                         }
                     } else {
-                        $postdata .= '--' . $this->_mime_boundary . "\r\n";
+                        $postdata .= '--'.$this->_mime_boundary."\r\n";
                         $postdata .= "Content-Disposition: form-data; name=\"$key\"\r\n\r\n";
                         $postdata .= "$val\r\n";
                     }
@@ -1358,23 +1388,23 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
                 reset($formfiles);
                 while (list($field_name, $file_names) = each($formfiles)) {
-                    (array)$file_names;
+                    (array) $file_names;
                     while (list(, $file_name) = each($file_names)) {
                         if (!is_readable($file_name)) {
                             continue;
                         }
 
-                        $fp           = fopen($file_name, 'r');
+                        $fp = fopen($file_name, 'r');
                         $file_content = fread($fp, filesize($file_name));
                         fclose($fp);
                         $base_name = basename($file_name);
 
-                        $postdata .= '--' . $this->_mime_boundary . "\r\n";
+                        $postdata .= '--'.$this->_mime_boundary."\r\n";
                         $postdata .= "Content-Disposition: form-data; name=\"$field_name\"; filename=\"$base_name\"\r\n\r\n";
                         $postdata .= "$file_content\r\n";
                     }
                 }
-                $postdata .= '--' . $this->_mime_boundary . "--\r\n";
+                $postdata .= '--'.$this->_mime_boundary."--\r\n";
                 break;
             // XOOPS2 Hack begin
             // Added on March 4, 2003 by onokazu@xoops.org

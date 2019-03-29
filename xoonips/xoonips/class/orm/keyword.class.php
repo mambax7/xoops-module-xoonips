@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /*
 alter table following from xoonips 3.24
@@ -43,7 +41,6 @@ ALTER TABLE `x_xoonips_item_keyword` ADD UNIQUE (`item_id` ,`keyword_id` );
  * @li    getVar('item_id') :
  * @li    getVar('keyword_id') :
  * @li    getVar('keyword') :
- *
  */
 class XooNIpsOrmKeyword extends XooNIpsTableObject
 {
@@ -61,13 +58,12 @@ class XooNIpsOrmKeyword extends XooNIpsTableObject
 
 /**
  * @brief handler object of keyword
- *
- *
  */
 class XooNIpsOrmKeywordHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmKeywordHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -77,10 +73,10 @@ class XooNIpsOrmKeywordHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * get keywords
+     * get keywords.
      *
-     * @access public
      * @param int $item_id
+     *
      * @return array object array
      */
     public function &getKeywords($item_id)
@@ -88,6 +84,7 @@ class XooNIpsOrmKeywordHandler extends XooNIpsTableObjectHandler
         $criteria = new Criteria('item_id', $item_id);
         $criteria->setSort('keyword_id');
         $criteria->setOrder('ASC');
+
         return $this->getObjects($criteria);
     }
 }

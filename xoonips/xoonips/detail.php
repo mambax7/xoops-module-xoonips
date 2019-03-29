@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.25.2.1.2.28 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -28,15 +28,15 @@
 //  page to display item's detail
 
 $GLOBALS['xoopsOption']['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/include/notification.inc.php';
-include_once __DIR__ . '/class/xoonipsresponse.class.php';
-include_once __DIR__ . '/class/xoonipserror.class.php';
-include_once __DIR__ . '/class/base/logicfactory.class.php';
+require __DIR__.'/include/common.inc.php';
+require_once __DIR__.'/include/lib.php';
+require_once __DIR__.'/include/AL.php';
+require_once __DIR__.'/include/notification.inc.php';
+require_once __DIR__.'/class/xoonipsresponse.class.php';
+require_once __DIR__.'/class/xoonipserror.class.php';
+require_once __DIR__.'/class/base/logicfactory.class.php';
 
-$xnpsid   = $_SESSION['XNPSID'];
+$xnpsid = $_SESSION['XNPSID'];
 $textutil = xoonips_getUtility('text');
 $formdata = xoonips_getUtility('formdata');
 
@@ -51,18 +51,18 @@ if (!$xoopsUser) {
           && !xnp_is_activated($xnpsid, $xoopsUser->getVar('uid'))
 ) {
     // disable to access by not certified user without xoonips admin
-    redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_MODERATOR_NOT_ACTIVATED);
+    redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_MODERATOR_NOT_ACTIVATED);
 } else {
     $uid = $_SESSION['xoopsUserId'];
 }
 
-$myxoopsConfig           = xoonips_get_xoops_configs(XOOPS_CONF);
+$myxoopsConfig = xoonips_get_xoops_configs(XOOPS_CONF);
 $myxoopsConfigMetaFooter = xoonips_get_xoops_configs(XOOPS_CONF_METAFOOTER);
 
 $doi_column_name = XNP_CONFIG_DOI_FIELD_PARAM_NAME;
-$item_id         = $formdata->getValue('both', 'item_id', 'i', false, 0);
-$op              = $formdata->getValue('both', 'op', 's', false, '');
-$doi             = '';
+$item_id = $formdata->getValue('both', 'item_id', 'i', false, 0);
+$op = $formdata->getValue('both', 'op', 's', false, '');
+$doi = '';
 if ($doi_column_name != '') {
     $doi = $formdata->getValue('both', $doi_column_name, 's', false, '');
 }
@@ -70,12 +70,12 @@ if ($doi_column_name != '') {
 // update $item_id by the ID specified by given doi if exists $$doi_column_name param.
 if ($doi != '') {
     $new_item_ids = array();
-    $result       = xnpGetItemIdByDoi($doi, $new_item_ids);
+    $result = xnpGetItemIdByDoi($doi, $new_item_ids);
     // error check. $new_item_ids must be one.
     if (count($new_item_ids) == 0) {
-        redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_ITEM_DOI_NOT_FOUND);
+        redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_DOI_NOT_FOUND);
     } elseif (count($new_item_ids) > 1) {
-        redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_ITEM_DOI_DUPLICATE_ID);
+        redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_ITEM_DOI_DUPLICATE_ID);
     }
     $item_id = $new_item_ids[0];
     // for comment function
@@ -100,29 +100,29 @@ $item = $item_compoHandler->get($item_id);
 if (!$item) {
     redirect_header('user.php', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
 }
-$basic        = $item->getVar('basic');
+$basic = $item->getVar('basic');
 $item_type_id = $basic->get('item_type_id');
 
 //retrieve module name to $modname
-$tmp       = array();
+$tmp = array();
 $itemtypes = array();
 if (xnp_get_item_types($tmp) != RES_OK) {
-    redirect_header(XOOPS_URL . '/', 3, 'ERROR xnp_get_item_types');
+    redirect_header(XOOPS_URL.'/', 3, 'ERROR xnp_get_item_types');
 } else {
     foreach ($tmp as $i) {
         $itemtypes[$i['item_type_id']] = $i;
     }
 
     $itemtype = $itemtypes[$item_type_id];
-    $modname  = $itemtype['name'];
+    $modname = $itemtype['name'];
 }
 
 if ($op === 'reject_certify' || $op === 'accept_certify' || $op === 'withdraw') {
-    $item_lockHandler    = xoonips_getOrmHandler('xoonips', 'item_lock');
+    $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
     $succeeded_index_ids = array();
     foreach ($formdata->getValueArray('post', 'index_ids', 'i', true) as $index_id) {
         if ($op === 'withdraw' && $item_lockHandler->isLocked($item_id)) {
-            redirect_header(XOOPS_URL . '/modules/xoonips/detail.php?item_id=' . $item_id, 5, sprintf(_MD_XOONIPS_ERROR_CANNOT_WITHDRAW_LOCKED_ITEM,
+            redirect_header(XOOPS_URL.'/modules/xoonips/detail.php?item_id='.$item_id, 5, sprintf(_MD_XOONIPS_ERROR_CANNOT_WITHDRAW_LOCKED_ITEM,
                                                                                                       xoonips_get_lock_type_string($item_lockHandler->getLockType($item_id))));
         }
         if ($op === 'reject_certify') {
@@ -158,18 +158,18 @@ if ($op === 'delete') {
     //show error if locked
     $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
     if ($item_lockHandler->isLocked($item_id)) {
-        redirect_header(XOOPS_URL . '/modules/xoonips/detail.php?item_id=' . $item_id, 5,
+        redirect_header(XOOPS_URL.'/modules/xoonips/detail.php?item_id='.$item_id, 5,
                         sprintf(_MD_XOONIPS_ERROR_CANNOT_DELETE_LOCKED_ITEM, xoonips_get_lock_type_string($item_lockHandler->getLockType($item_id))));
     }
     //show error if no permission
     if (!$item_compoHandler->getPerm($item_id, $uid, 'delete')) {
-        redirect_header(XOOPS_URL . '/modules/xoonips/detail.php?item_id=' . $item_id, 3, _MD_XOONIPS_ITEM_FORBIDDEN);
+        redirect_header(XOOPS_URL.'/modules/xoonips/detail.php?item_id='.$item_id, 3, _MD_XOONIPS_ITEM_FORBIDDEN);
     }
 
     xoonips_delete_item($item_id);
 }
 if ($op === 'print') {
-    require_once XOOPS_ROOT_PATH . '/class/template.php';
+    require_once XOOPS_ROOT_PATH.'/class/template.php';
     $xoopsTpl = new XoopsTpl();
     xoops_header(false);
 
@@ -177,8 +177,8 @@ if ($op === 'print') {
     $xoopsTpl->assign('meta_author', $myxoopsConfigMetaFooter['meta_author']);
     $xoopsTpl->assign('sitename', $myxoopsConfig['sitename']);
 
-    include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
-    eval("\$body = " . $modname . "GetPrinterFriendlyDetailBlock( \$item_id );");
+    require_once XOOPS_ROOT_PATH.'/modules/'.$itemtype['viewphp'];
+    eval('$body = '.$modname.'GetPrinterFriendlyDetailBlock( $item_id );');
     echo "</head><body onload='window.print();'>\n";
     $val = '';
     xnp_get_config_value('printer_friendly_header', $val);
@@ -191,7 +191,7 @@ if ($op === 'print') {
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_detail.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH.'/header.php';
 
 $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
 if ($item_lockHandler->isLocked($item_id)) {
@@ -237,33 +237,33 @@ if (xoonips_is_user_export_enabled()) {
  */
 function genSelectLabels($index)
 {
-    $textutil    = xoonips_getUtility('text');
-    $title       = $index['titles'][DEFAULT_INDEX_TITLE_OFFSET];
-    $indent_html = str_repeat('&nbsp;&nbsp;', (int)$index['depth']);
+    $textutil = xoonips_getUtility('text');
+    $title = $index['titles'][DEFAULT_INDEX_TITLE_OFFSET];
+    $indent_html = str_repeat('&nbsp;&nbsp;', (int) $index['depth']);
     if (isset($index['child_count']) && $index['child_count'] != 0) {
         $select_label = sprintf(' %s ( %u )', $title, $index['child_count']);
     } else {
         $select_label = sprintf(' %s ', $title);
     }
-    $index['indent_html']  = $indent_html;
+    $index['indent_html'] = $indent_html;
     $index['select_label'] = $textutil->html_special_chars($select_label);
 }
 
 // display of 'add to public'
 if ($op == '' || $op === 'download') {
     // Display only 'Binder -> Binders'. Display 'Not Binder -> Public not Binders'.
-    include_once __DIR__ . '/include/gentree.php';
-    $index     = array('open_level' => OL_PUBLIC);
+    require_once __DIR__.'/include/gentree.php';
+    $index = array('open_level' => OL_PUBLIC);
     $indexTree = genSameAreaIndexTree($xnpsid, $uid, $index);
     array_walk($indexTree, 'genSelectLabels');
     $xoopsTpl->assign('index_tree', $indexTree);
 }
 
-include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
-eval("\$body = " . $modname . "GetDetailBlock( \$item_id );");
+require_once XOOPS_ROOT_PATH.'/modules/'.$itemtype['viewphp'];
+eval('$body = '.$modname.'GetDetailBlock( $item_id );');
 $xoopsTpl->assign('body', $body);
 
-$func = $modname . 'GetDownloadConfirmationBlock';
+$func = $modname.'GetDownloadConfirmationBlock';
 if (function_exists($func)) {
     $xoopsTpl->assign('download_confirmation', $func($item_id, $download_file_id));
 } else {
@@ -271,11 +271,11 @@ if (function_exists($func)) {
 }
 
 $xoonips_module_header = '<link rel="stylesheet" type="text/css" href="style.css" />';
-$func                  = $modname . 'GetHeadMeta';
+$func = $modname.'GetHeadMeta';
 if (function_exists($func)) {
-    eval('$xoonips_module_header .= "\n".' . $func . '($item_id);');
+    eval('$xoonips_module_header .= "\n".'.$func.'($item_id);');
 }
-$xoonips_module_header .= "\n" . $xoopsTpl->get_template_vars('xoops_module_header');
+$xoonips_module_header .= "\n".$xoopsTpl->get_template_vars('xoops_module_header');
 $xoopsTpl->assign('xoops_module_header', $xoonips_module_header);
 // Record events(view item)
 $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
@@ -292,32 +292,32 @@ $xoopsTpl->assign('viewed_count', $viewed_count);
 
 //start of item comment function
 $comconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-$com_dir_name     = $comconfigHandler->getValue('item_comment_dirname');
-$com_forum_id     = $comconfigHandler->getValue('item_comment_forum_id');
+$com_dir_name = $comconfigHandler->getValue('item_comment_dirname');
+$com_forum_id = $comconfigHandler->getValue('item_comment_forum_id');
 $xoopsTpl->assign('dir_name', $com_dir_name);
 $xoopsTpl->assign('forum_id', $com_forum_id);
 //end of item comment function
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH.'/footer.php';
 
 /**
  * @param $item_id
  */
 function xoonips_delete_item($item_id)
 {
-    $params   = array(
+    $params = array(
         session_id(),
         $item_id,
-        'item_id'
+        'item_id',
     );
     $response = new XooNIpsResponse();
-    $factory  = XooNIpsLogicFactory::getInstance();
-    $logic    = $factory->create('removeItem');
+    $factory = XooNIpsLogicFactory::getInstance();
+    $logic = $factory->create('removeItem');
     $logic->execute($params, $response);
 
     if ($response->getResult()) {
-        redirect_header(XOOPS_URL . '/', 3, 'Succeed');
+        redirect_header(XOOPS_URL.'/', 3, 'Succeed');
     } else {
-        redirect_header(XOOPS_URL . '/', 3, 'ERROR');
+        redirect_header(XOOPS_URL.'/', 3, 'ERROR');
     }
 }

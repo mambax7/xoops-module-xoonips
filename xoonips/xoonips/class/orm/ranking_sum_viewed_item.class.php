@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,21 +24,19 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/abstract_ranking.class.php';
-require_once __DIR__ . '/ranking_viewed_item.class.php';
+require_once __DIR__.'/abstract_ranking.class.php';
+require_once __DIR__.'/ranking_viewed_item.class.php';
 
 /**
  * @brief handler object of ranking sum viewed item
- *
  */
 class XooNIpsOrmRankingSumViewedItemHandler extends XooNIpsOrmRankingViewedItemHandler
 {
     /**
      * XooNIpsOrmRankingSumViewedItemHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -47,7 +45,7 @@ class XooNIpsOrmRankingSumViewedItemHandler extends XooNIpsOrmRankingViewedItemH
         $this->__initHandler('XooNIpsOrmRankingViewedItem', 'xoonips_ranking_sum_viewed_item', 'item_id', false);
         $this->_set_columns(array(
                                 'item_id',
-                                'count'
+                                'count',
                             ));
         $this->_set_sum_table();
     }

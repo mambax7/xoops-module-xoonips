@@ -1,4 +1,3 @@
-<{* $Revision: 1.13.8.7 $ *}>
 <script type="text/javascript" src="js/prototype.js">
 </script>
 <script type="text/javascript">

@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.3 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,55 +24,53 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_SYSTEM_TREE_TITLE;
+$title = _AM_XOONIPS_SYSTEM_TREE_TITLE;
 $description = _AM_XOONIPS_SYSTEM_TREE_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
-$ticket_area  = 'xoonips_admin_system_tree';
+require_once __DIR__.'/../../class/base/gtickets.php';
+$ticket_area = 'xoonips_admin_system_tree';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys   = array(
-    'tree_frame_width'  => 's',
+$config_keys = array(
+    'tree_frame_width' => 's',
     'tree_frame_height' => 's',
 );
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 // >> tree_frame_width
 $tree_frame_width_title = _AM_XOONIPS_SYSTEM_TREE_TREE_FRAME_WIDTH_TITLE;
-$tree_frame_width_desc  = _AM_XOONIPS_SYSTEM_TREE_TREE_FRAME_WIDTH_DESC;
-$tree_frame_width       = $config_values['tree_frame_width'];
+$tree_frame_width_desc = _AM_XOONIPS_SYSTEM_TREE_TREE_FRAME_WIDTH_DESC;
+$tree_frame_width = $config_values['tree_frame_width'];
 // >> tree_frame_height
 $tree_frame_height_title = _AM_XOONIPS_SYSTEM_TREE_TREE_FRAME_HEIGHT_TITLE;
-$tree_frame_height_desc  = _AM_XOONIPS_SYSTEM_TREE_TREE_FRAME_HEIGHT_DESC;
-$tree_frame_height       = $config_values['tree_frame_height'];
+$tree_frame_height_desc = _AM_XOONIPS_SYSTEM_TREE_TREE_FRAME_HEIGHT_DESC;
+$tree_frame_height = $config_values['tree_frame_height'];
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_tree.tmpl.tpl');

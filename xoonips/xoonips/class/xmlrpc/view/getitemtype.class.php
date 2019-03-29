@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.9 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,43 +25,37 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/view/xmlrpcview.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xmlrpc/view/xmlrpcview.class.php';
 
 /**
- *
  * @brief Class that generate response of XML-RPC getItemtype request
- *
- *
  */
 class XooNIpsXmlRpcViewGetItemtype extends XooNIpsXmlRpcViewElement
 {
-
     /**
-     *
      * @brief return XoopsXmlRpcTag that has response of this request
      *
      * @return XoopsXmlRpcTag
      */
     public function render()
     {
-        $resp     = new XoopsXmlRpcStruct();
+        $resp = new XoopsXmlRpcStruct();
         $itemtype = $this->response->getSuccess();
         $resp->add('id', new XoopsXmlRpcInt($itemtype->get('item_type_id')));
         $resp->add('name', new XoopsXmlRpcString($itemtype->get('name')));
         $resp->add('title', new XoopsXmlRpcString($itemtype->get('display_name')));
         $resp->add('description', new XoopsXmlRpcString($itemtype->getDescription()));
-        $fields   = new XoopsXmlRpcArray();
+        $fields = new XoopsXmlRpcArray();
         $iteminfo = $itemtype->getIteminfo();
 
         // include language file of itemtype
-        $langman    = xoonips_getUtility('languagemanager');
+        $langman = xoonips_getUtility('languagemanager');
         $modulename = $iteminfo['ormcompo']['module'];
         $langman->read('main.php', $modulename);
 
         $unicode = xoonips_getUtility('unicode');
 
         foreach ($iteminfo['io']['xmlrpc']['item'] as $i) {
-
             // data_type mapping
             switch ($i['xmlrpc']['type']) {
                 case 'dateTime.iso8601':
@@ -128,6 +122,7 @@ class XooNIpsXmlRpcViewGetItemtype extends XooNIpsXmlRpcViewElement
                 }
             }
         }
+
         return $resp;
     }
 }

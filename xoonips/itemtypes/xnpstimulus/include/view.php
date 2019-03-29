@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.15.2.1.2.28 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2013 RIKEN, Japan All rights reserved.                //
@@ -26,15 +26,14 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-$itemtype_path    = dirname(__DIR__);
+$itemtype_path = dirname(__DIR__);
 $itemtype_dirname = basename($itemtype_path);
-$xoonips_path     = dirname($itemtype_path) . '/xoonips';
+$xoonips_path = dirname($itemtype_path).'/xoonips';
 
 $langman = xoonips_getUtility('languagemanager');
 $langman->read('main.php', $itemtype_dirname);
 
 /**
- *
  * return an array ov available stimulus types.<br/>
  * that structue is shown below.<br/>
  * array( value of stimulus type for processing => value of stimulus type for displaying, ... )<br/>
@@ -44,31 +43,33 @@ $langman->read('main.php', $itemtype_dirname);
  * matlab, mathematica, program, other
  * <br/>
  * number of values for displaying != number of values for processing then return false.<br/>
- * <br/>
- *
+ * <br/>.
  */
 function xnpstimulus_get_type_array()
 {
-    $key   = array(
+    $key = array(
         'picture',
         'movie',
         'program',
         'other',
     );
     $value = explode("\t", _MD_XNPSTIMULUS_STIMULUS_TYPE_SELECT);
-    $ret   = array();
+    $ret = array();
     if (count($key) != count($value)) {
         return false;
     }
-    for ($i = 0; $i < count($key); $i++) {
+    for ($i = 0; $i < count($key); ++$i) {
         $ret[$key[$i]] = $value[$i];
     }
+
     return $ret;
 }
 
 /** retrieve Detail Information that specified by item_id
  * return array(only keys, no values) if item_id is wrong.
+ *
  * @param $item_id
+ *
  * @return array|bool
  */
 function xnpstimulusGetDetailInformation($item_id)
@@ -76,45 +77,48 @@ function xnpstimulusGetDetailInformation($item_id)
     global $xoopsDB;
 
     $xnpsid = $_SESSION['XNPSID'];
-    $item   = array();
+    $item = array();
 
-    $result = $xoopsDB->query('select * from ' . $xoopsDB->prefix('xnpstimulus_item_detail') . " where stimulus_id=$item_id");
-    $item   = $xoopsDB->fetchArray($result);
+    $result = $xoopsDB->query('select * from '.$xoopsDB->prefix('xnpstimulus_item_detail')." where stimulus_id=$item_id");
+    $item = $xoopsDB->fetchArray($result);
 
     $stimulus_types = xnpstimulus_get_type_array();
+
     return array(
-        'stimulus_type'        => array(
-            'value'         => $item['stimulus_type'],
-            'select'        => xnpstimulus_get_type_array(),
+        'stimulus_type' => array(
+            'value' => $item['stimulus_type'],
+            'select' => xnpstimulus_get_type_array(),
             'display_value' => $stimulus_types[$item['stimulus_type']],
         ),
-        'readme'               => array(
+        'readme' => array(
             'value' => $item['readme'],
         ),
-        'rights'               => array(
+        'rights' => array(
             'value' => $item['rights'],
         ),
-        'use_cc'               => array(
+        'use_cc' => array(
             'value' => $item['use_cc'],
         ),
-        'cc_commercial_use'    => array(
+        'cc_commercial_use' => array(
             'value' => $item['cc_commercial_use'],
         ),
-        'cc_modification'      => array(
+        'cc_modification' => array(
             'value' => $item['cc_modification'],
         ),
-        'attachment_dl_limit'  => array(
+        'attachment_dl_limit' => array(
             'value' => $item['attachment_dl_limit'],
         ),
         'attachment_dl_notify' => array(
             'value' => $item['attachment_dl_notify'],
         ),
     );
+
     return false;
 }
 
 /**
  * @param $item_basic
+ *
  * @return mixed|string|void
  */
 function xnpstimulusGetListBlock($item_basic)
@@ -139,6 +143,7 @@ function xnpstimulusGetListBlock($item_basic)
 
 /**
  * @param $item_basic
+ *
  * @return mixed|string|void
  */
 function xnpstimulusGetPrinterFriendlyListBlock($item_basic)
@@ -148,6 +153,7 @@ function xnpstimulusGetPrinterFriendlyListBlock($item_basic)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpstimulusGetDetailBlock($item_id)
@@ -160,7 +166,7 @@ function xnpstimulusGetDetailBlock($item_id)
 
     // get DetailInformation
     $detailHandler = xoonips_getOrmHandler('xnpstimulus', 'item_detail');
-    $detail_orm    = $detailHandler->get($item_id);
+    $detail_orm = $detailHandler->get($item_id);
     if (!$detail_orm) {
         return '';
     }
@@ -189,17 +195,20 @@ function xnpstimulusGetDetailBlock($item_id)
 /**
  * @param $item_id
  * @param $download_file_id
+ *
  * @return mixed|string|void
  */
 function xnpstimulusGetDownloadConfirmationBlock($item_id, $download_file_id)
 {
     $detail = xnpstimulusGetDetailInformation($item_id);
+
     return xnpGetDownloadConfirmationBlock($item_id, $download_file_id, $detail['attachment_dl_notify']['value'], true, $detail['use_cc']['value'],
                                            $detail['rights']['value']);
 }
 
 /**
  * @param $item_id
+ *
  * @return bool
  */
 function xnpstimulusGetDownloadConfirmationRequired($item_id)
@@ -209,6 +218,7 @@ function xnpstimulusGetDownloadConfirmationRequired($item_id)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpstimulusGetPrinterFriendlyDetailBlock($item_id)
@@ -221,7 +231,7 @@ function xnpstimulusGetPrinterFriendlyDetailBlock($item_id)
 
     // get DetailInformation
     $detailHandler = xoonips_getOrmHandler('xnpstimulus', 'item_detail');
-    $detail_orm    = $detailHandler->get($item_id);
+    $detail_orm = $detailHandler->get($item_id);
     if (!$detail_orm) {
         return '';
     }
@@ -256,9 +266,9 @@ function xnpstimulusGetRegisterBlock()
     $formdata = xoonips_getUtility('formdata');
 
     // retrive detail information
-    $detail         = array();
+    $detail = array();
     $stimulus_types = xnpstimulus_get_type_array();
-    $post_id        = $formdata->getValue('get', 'post_id', 's', false);
+    $post_id = $formdata->getValue('get', 'post_id', 's', false);
     if (null === $post_id) {
         $stimulus_type = false;
     } else {
@@ -268,18 +278,18 @@ function xnpstimulusGetRegisterBlock()
         list($stimulus_type) = each($stimulus_types);
     }
     $detail['stimulus_type'] = array(
-        'value'         => $stimulus_type,
+        'value' => $stimulus_type,
         'display_value' => $stimulus_types[$stimulus_type],
-        'select'        => $stimulus_types,
+        'select' => $stimulus_types,
     );
 
     // retrieve blocks of BasicInformation / Preview / Readme / License / index
-    $basic      = xnpGetBasicInformationRegisterBlock();
-    $preview    = xnpGetPreviewRegisterBlock();
-    $index      = xnpGetIndexRegisterBlock();
+    $basic = xnpGetBasicInformationRegisterBlock();
+    $preview = xnpGetPreviewRegisterBlock();
+    $index = xnpGetIndexRegisterBlock();
     $attachment = xnpGetAttachmentRegisterBlock('stimulus_data');
-    $readme     = xnpGetTextFileRegisterBlock('readme');
-    $rights     = xnpGetRightsRegisterBlock();
+    $readme = xnpGetTextFileRegisterBlock('readme');
+    $rights = xnpGetRightsRegisterBlock();
 
     // assign to template
     global $xoopsTpl;
@@ -310,6 +320,7 @@ function xnpstimulusGetRegisterBlock()
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpstimulusGetEditBlock($item_id)
@@ -317,34 +328,34 @@ function xnpstimulusGetEditBlock($item_id)
     $formdata = xoonips_getUtility('formdata');
 
     // retrieve detail information
-    $detail         = xnpstimulusGetDetailInformation($item_id);
+    $detail = xnpstimulusGetDetailInformation($item_id);
     $stimulus_types = xnpstimulus_get_type_array();
-    $post_id        = $formdata->getValue('get', 'post_id', 's', false);
+    $post_id = $formdata->getValue('get', 'post_id', 's', false);
     if (null !== $post_id) {
         $stimulus_type = $formdata->getValue('post', 'stimulus_type', 's', false);
         if ($stimulus_type == false) {
             list($stimulus_type) = each($stimulus_types);
         }
         $detail['stimulus_type'] = array(
-            'value'         => $stimulus_type,
+            'value' => $stimulus_type,
             'display_value' => $stimulus_types[$stimulus_type],
-            'select'        => $stimulus_types,
+            'select' => $stimulus_types,
         );
     }
 
     // retrieve blocks of BasicInformation / Preview / index block
     $basic = xnpGetBasicInformationEditBlock($item_id);
 
-    $preview    = xnpGetPreviewEditBlock($item_id);
-    $index      = xnpGetIndexEditBlock($item_id);
+    $preview = xnpGetPreviewEditBlock($item_id);
+    $index = xnpGetIndexEditBlock($item_id);
     $attachment = xnpGetAttachmentEditBlock($item_id, 'stimulus_data');
 
-    $readme                                   = xnpGetTextFileEditBlock($item_id, 'readme', $detail['readme']['value']);
-    $rights                                   = xnpGetRightsEditBlock($item_id, $detail['use_cc']['value'], $detail['rights']['value'],
+    $readme = xnpGetTextFileEditBlock($item_id, 'readme', $detail['readme']['value']);
+    $rights = xnpGetRightsEditBlock($item_id, $detail['use_cc']['value'], $detail['rights']['value'],
                                                                       $detail['cc_commercial_use']['value'], $detail['cc_modification']['value']);
-    $stimulus_types                           = xnpstimulus_get_type_array();
+    $stimulus_types = xnpstimulus_get_type_array();
     $detail['stimulus_type']['display_value'] = $stimulus_types[$detail['stimulus_type']['value']];
-    $detail['stimulus_type']['select']        = xnpstimulus_get_type_array();
+    $detail['stimulus_type']['select'] = xnpstimulus_get_type_array();
 
     // assign to template
     global $xoopsTpl;
@@ -367,7 +378,7 @@ function xnpstimulusGetEditBlock($item_id)
 
     if (!$formdata->getValue('get', 'post_id', 's', false)) {
         $detailHandler = xoonips_getOrmHandler('xnpstimulus', 'item_detail');
-        $detail_orm    = $detailHandler->get($item_id);
+        $detail_orm = $detailHandler->get($item_id);
         $tpl->assign('xnpstimulus_developer', xoonips_get_multiple_field_template_vars($detail_orm->getDevelopers(), 'xnpstimulus', 'developer'));
     } else {
         $tpl->assign('xnpstimulus_developer',
@@ -380,20 +391,21 @@ function xnpstimulusGetEditBlock($item_id)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpstimulusGetConfirmBlock($item_id)
 {
-    $textutil         = xoonips_getUtility('text');
-    $formdata         = xoonips_getUtility('formdata');
+    $textutil = xoonips_getUtility('text');
+    $formdata = xoonips_getUtility('formdata');
     $developerHandler = xoonips_getOrmHandler('xnpstimulus', 'developer');
-    $developer_objs   = $formdata->getObjectArray('post', $developerHandler->getTableName(), $developerHandler, false);
+    $developer_objs = $formdata->getObjectArray('post', $developerHandler->getTableName(), $developerHandler, false);
 
     // retrive detail information
-    $detail                  = array();
-    $stimulus_types          = xnpstimulus_get_type_array();
+    $detail = array();
+    $stimulus_types = xnpstimulus_get_type_array();
     $detail['stimulus_type'] = array(
-        'value'         => $textutil->html_special_chars($formdata->getValue('post', 'stimulus_type', 's', true)),
+        'value' => $textutil->html_special_chars($formdata->getValue('post', 'stimulus_type', 's', true)),
         'display_value' => $textutil->html_special_chars($stimulus_types[$formdata->getValue('post', 'stimulus_type', 's', true)]),
     );
 
@@ -411,19 +423,19 @@ function xnpstimulusGetConfirmBlock($item_id)
     $basic = xnpGetBasicInformationConfirmBlock($item_id);
 
     xnpConfirmHtml($detail, 'xnpstimulus_item_detail', array_keys($detail), _CHARSET);
-    $preview    = xnpGetPreviewConfirmBlock($item_id);
+    $preview = xnpGetPreviewConfirmBlock($item_id);
     $attachment = xnpGetAttachmentConfirmBlock($item_id, 'stimulus_data');
-    $index      = xnpGetIndexConfirmBlock($item_id);
-    $lengths    = xnpGetColumnLengths('xnpstimulus_item_detail');
-    $readme     = xnpGetTextFileConfirmBlock($item_id, 'readme', $lengths['readme']);
-    $rights     = xnpGetRightsConfirmBlock($item_id, $lengths['rights']);
+    $index = xnpGetIndexConfirmBlock($item_id);
+    $lengths = xnpGetColumnLengths('xnpstimulus_item_detail');
+    $readme = xnpGetTextFileConfirmBlock($item_id, 'readme', $lengths['readme']);
+    $rights = xnpGetRightsConfirmBlock($item_id, $lengths['rights']);
 
     if (xnpHasWithout($basic) || xnpHasWithout($detail) || xnpHasWithout($preview) || xnpHasWithout($attachment) || xnpHasWithout($readme)
         || xnpHasWithout($rights)
         || xoonips_is_multiple_field_too_long($developer_objs, 'xnpstimulus', 'developer')
     ) {
         global $system_message;
-        $system_message = $system_message . "\n<br /><font color='#ff0000'>" . _MD_XOONIPS_ITEM_WARNING_FIELD_TRIM . '</font><br />';
+        $system_message = $system_message."\n<br /><font color='#ff0000'>"._MD_XOONIPS_ITEM_WARNING_FIELD_TRIM.'</font><br />';
     }
 
     // assign to template
@@ -446,7 +458,7 @@ function xnpstimulusGetConfirmBlock($item_id)
         $tpl->assign('stimulus_date', $stimulus_date);
         if ($stimulus_date['Date_Year']) {
             $tpl->assign('system_message',
-                         $tpl->get_template_vars('system_message') . '<br/><font color=\'#ff0000\'>' . _MD_XOONIPS_ITEM_TITLE_REQUIRED . '</font>');
+                         $tpl->get_template_vars('system_message').'<br/><font color=\'#ff0000\'>'._MD_XOONIPS_ITEM_TITLE_REQUIRED.'</font>');
         }
     }
     $tpl->assign('xnpstimulus_developer', xoonips_get_multiple_field_template_vars($developer_objs, 'xnpstimulus', 'developer'));
@@ -457,6 +469,7 @@ function xnpstimulusGetConfirmBlock($item_id)
 
 /**
  * @param $item_id
+ *
  * @return bool
  */
 function xnpstimulusInsertItem($item_id)
@@ -468,7 +481,7 @@ function xnpstimulusInsertItem($item_id)
 
     // retister BasicInformation, Index and Attachment
     $item_id = 0;
-    $result  = xnpInsertBasicInformation($item_id);
+    $result = xnpInsertBasicInformation($item_id);
     if ($result) {
         $result = xnpUpdateIndex($item_id);
         if ($result) {
@@ -493,12 +506,12 @@ function xnpstimulusInsertItem($item_id)
     // trim strings
     $ar = array(
         'stimulus_type' => $formdata->getValue('post', 'stimulus_type', 's', false),
-        'readme'        => xnpGetTextFile('readme'),
-        'rights'        => $rights,
+        'readme' => xnpGetTextFile('readme'),
+        'rights' => $rights,
     );
     xnpTrimColumn($ar, 'xnpstimulus_item_detail', array_keys($ar), _CHARSET);
 
-    $keys                 = implode(',', array(
+    $keys = implode(',', array(
         'stimulus_type',
         'readme',
         'rights',
@@ -506,11 +519,11 @@ function xnpstimulusInsertItem($item_id)
         'cc_commercial_use',
         'cc_modification',
         'attachment_dl_limit',
-        'attachment_dl_notify'
+        'attachment_dl_notify',
     ));
-    $attachment_dl_limit  = $formdata->getValue('post', 'attachment_dl_limit', 'i', false);
+    $attachment_dl_limit = $formdata->getValue('post', 'attachment_dl_limit', 'i', false);
     $attachment_dl_notify = $formdata->getValue('post', 'attachment_dl_notify', 'i', false);
-    $vals                 = implode('\',\'', array(
+    $vals = implode('\',\'', array(
         addslashes($ar['stimulus_type']),
         addslashes($ar['readme']),
         addslashes($ar['rights']),
@@ -521,24 +534,27 @@ function xnpstimulusInsertItem($item_id)
         $attachment_dl_limit ? $attachment_dl_notify : 0,
     ));
 
-    $sql    = 'insert into ' . $xoopsDB->prefix('xnpstimulus_item_detail') . " ( stimulus_id, $keys ) values ( $item_id, '$vals' ) ";
+    $sql = 'insert into '.$xoopsDB->prefix('xnpstimulus_item_detail')." ( stimulus_id, $keys ) values ( $item_id, '$vals' ) ";
     $result = $xoopsDB->queryF($sql);
     if ($result == false) {
-        echo 'cannot insert item_detail: ' . $xoopsDB->error();
+        echo 'cannot insert item_detail: '.$xoopsDB->error();
+
         return false;
     }
 
     // insert developer
     $developerHandler = xoonips_getOrmHandler('xnpstimulus', 'developer');
-    $developer_objs   = $formdata->getObjectArray('post', $developerHandler->getTableName(), $developerHandler, false);
+    $developer_objs = $formdata->getObjectArray('post', $developerHandler->getTableName(), $developerHandler, false);
     if (!$developerHandler->updateAllObjectsByForeignKey('stimulus_id', $item_id, $developer_objs)) {
         return false;
     }
+
     return true;
 }
 
 /**
  * @param $stimulus_id
+ *
  * @return bool
  */
 function xnpstimulusUpdateItem($stimulus_id)
@@ -583,38 +599,40 @@ function xnpstimulusUpdateItem($stimulus_id)
     // trim strings
     $ar = array(
         'stimulus_type' => $formdata->getValue('post', 'stimulus_type', 's', false),
-        'readme'        => xnpGetTextFile('readme'),
-        'rights'        => $rights,
+        'readme' => xnpGetTextFile('readme'),
+        'rights' => $rights,
     );
     xnpTrimColumn($ar, 'xnpstimulus_item_detail', array_keys($ar), _CHARSET);
 
-    $attachment_dl_limit  = $formdata->getValue('post', 'attachment_dl_limit', 'i', false);
+    $attachment_dl_limit = $formdata->getValue('post', 'attachment_dl_limit', 'i', false);
     $attachment_dl_notify = $formdata->getValue('post', 'attachment_dl_notify', 'i', false);
-    $keyval               = array(
-        'stimulus_type=\'' . addslashes($ar['stimulus_type']) . '\'',
-        'readme=\'' . addslashes($ar['readme']) . '\'',
-        'rights=\'' . addslashes($ar['rights']) . '\'',
-        'use_cc=\'' . $use_cc . '\'',
-        'cc_commercial_use=\'' . $cc_commercial_use . '\'',
-        'cc_modification=\'' . $cc_modification . '\'',
-        'attachment_dl_limit' . '=\'' . $attachment_dl_limit . '\'',
-        'attachment_dl_notify' . '=\'' . ($attachment_dl_limit ? $attachment_dl_notify : 0) . '\'',
+    $keyval = array(
+        'stimulus_type=\''.addslashes($ar['stimulus_type']).'\'',
+        'readme=\''.addslashes($ar['readme']).'\'',
+        'rights=\''.addslashes($ar['rights']).'\'',
+        'use_cc=\''.$use_cc.'\'',
+        'cc_commercial_use=\''.$cc_commercial_use.'\'',
+        'cc_modification=\''.$cc_modification.'\'',
+        'attachment_dl_limit'.'=\''.$attachment_dl_limit.'\'',
+        'attachment_dl_notify'.'=\''.($attachment_dl_limit ? $attachment_dl_notify : 0).'\'',
     );
 
     // modify detail information
-    $sql    = 'update ' . $xoopsDB->prefix('xnpstimulus_item_detail') . ' set ' . implode(', ', $keyval) . " where stimulus_id=$stimulus_id";
+    $sql = 'update '.$xoopsDB->prefix('xnpstimulus_item_detail').' set '.implode(', ', $keyval)." where stimulus_id=$stimulus_id";
     $result = $xoopsDB->queryF($sql);
     if ($result == false) {
         echo 'cannot update item_detail';
+
         return false;
     }
 
     // insert/update developer
     $developerHandler = xoonips_getOrmHandler('xnpstimulus', 'developer');
-    $developer_objs   = $formdata->getObjectArray('post', $developerHandler->getTableName(), $developerHandler, false);
+    $developer_objs = $formdata->getObjectArray('post', $developerHandler->getTableName(), $developerHandler, false);
     if (!$developerHandler->updateAllObjectsByForeignKey('stimulus_id', $stimulus_id, $developer_objs)) {
         return false;
     }
+
     return true;
 }
 
@@ -628,31 +646,32 @@ function xnpstimulusGetSearchBlock($item_id)
 
 /**
  * @param $msg
+ *
  * @return bool
  */
 function xnpstimulusCheckRegisterParameters($msg)
 {
-    $xnpsid   = $_SESSION['XNPSID'];
+    $xnpsid = $_SESSION['XNPSID'];
     $formdata = xoonips_getUtility('formdata');
 
-    $result              = true;
-    $developer           = xoonips_get_multi_field_array_from_post('xnpstimulus', 'developer');
-    $stimulus_data       = $formdata->getFile('stimulus_data', false);
+    $result = true;
+    $developer = xoonips_get_multi_field_array_from_post('xnpstimulus', 'developer');
+    $stimulus_data = $formdata->getFile('stimulus_data', false);
     $stimulus_dataFileID = $formdata->getValue('post', 'stimulus_dataFileID', 'i', false);
-    $xoonipsCheckedXID   = $formdata->getValue('post', 'xoonipsCheckedXID', 's', false);
+    $xoonipsCheckedXID = $formdata->getValue('post', 'xoonipsCheckedXID', 's', false);
 
     if (empty($developer)) {
         // developer is not filled
-        $msg    = $msg . '<br/><font color=\'#ff0000\'>' . _MD_XNPSTIMULUS_DEVELOPER_REQUIRED . '</font>';
+        $msg = $msg.'<br/><font color=\'#ff0000\'>'._MD_XNPSTIMULUS_DEVELOPER_REQUIRED.'</font>';
         $result = false;
     }
     if ((empty($stimulus_data) || $stimulus_data['name'] == '') && $stimulus_dataFileID == '') {
         // stimulus_data is not filled
-        $msg    = $msg . '<br/><font color=\'#ff0000\'>' . _MD_XNPSTIMULUS_STIMULUS_FILE_REQUIRED . '</font>';
+        $msg = $msg.'<br/><font color=\'#ff0000\'>'._MD_XNPSTIMULUS_STIMULUS_FILE_REQUIRED.'</font>';
         $result = false;
     }
     // notify that license statement is required when register into public indexes.
-    $xids    = explode(',', $xoonipsCheckedXID);
+    $xids = explode(',', $xoonipsCheckedXID);
     $indexes = array();
     if ($xids[0] != $xoonipsCheckedXID) {
         foreach ($xids as $i) {
@@ -660,7 +679,7 @@ function xnpstimulusCheckRegisterParameters($msg)
             if (xnp_get_index($xnpsid, $i, $index) == RES_OK) {
                 $indexes[] = $index;
             } else {
-                $msg    = $msg . '<br/><font color=\'#ff0000\'>' . xnp_get_last_error_string() . '</font>';
+                $msg = $msg.'<br/><font color=\'#ff0000\'>'.xnp_get_last_error_string().'</font>';
                 $result = false;
                 break;
             }
@@ -671,26 +690,28 @@ function xnpstimulusCheckRegisterParameters($msg)
             if ($i['open_level'] <= OL_GROUP_ONLY) {
                 $readmeEncText = $formdata->getValue('post', 'readmeEncText', 's', false);
                 $rightsEncText = $formdata->getValue('post', 'rightsEncText', 's', false);
-                $rightsUseCC   = $formdata->getValue('post', 'rightsUseCC', 'i', false);
+                $rightsUseCC = $formdata->getValue('post', 'rightsUseCC', 'i', false);
                 if ($readmeEncText == '') {
                     // readme is not filled
-                    $msg    = $msg . '<br/><font color=\'#ff0000\'>' . _MD_XNPSTIMULUS_README_REQUIRED . '</font>';
+                    $msg = $msg.'<br/><font color=\'#ff0000\'>'._MD_XNPSTIMULUS_README_REQUIRED.'</font>';
                     $result = false;
                 }
                 if ($rightsEncText == '' && $rightsUseCC == '0') {
                     // license is not filled
-                    $msg    = $msg . '<br/><font color=\'#ff0000\'>' . _MD_XNPSTIMULUS_RIGHTS_REQUIRED . '</font>';
+                    $msg = $msg.'<br/><font color=\'#ff0000\'>'._MD_XNPSTIMULUS_RIGHTS_REQUIRED.'</font>';
                     $result = false;
                 }
                 break;
             }
         }
     }
+
     return $result;
 }
 
 /**
  * @param $msg
+ *
  * @return bool
  */
 function xnpstimulusCheckEditParameters($msg)
@@ -700,34 +721,35 @@ function xnpstimulusCheckEditParameters($msg)
 
 /**
  * @param $item_id
+ *
  * @return array
  */
 function xnpstimulusGetMetaInformation($item_id)
 {
-    $ret             = array();
+    $ret = array();
     $developer_array = array();
 
-    $basic  = xnpGetBasicInformationArray($item_id);
+    $basic = xnpGetBasicInformationArray($item_id);
     $detail = xnpstimulusGetDetailInformation($item_id);
 
     if (!empty($basic)) {
-        $ret[_MD_XOONIPS_ITEM_TITLE_LABEL]            = implode("\n", $basic['titles']);
-        $ret[_MD_XOONIPS_ITEM_CONTRIBUTOR_LABEL]      = $basic['contributor'];
-        $ret[_MD_XOONIPS_ITEM_KEYWORDS_LABEL]         = implode("\n", $basic['keywords']);
-        $ret[_MD_XOONIPS_ITEM_DESCRIPTION_LABEL]      = $basic['description'];
-        $ret[_MD_XOONIPS_ITEM_DOI_LABEL]              = $basic['doi'];
+        $ret[_MD_XOONIPS_ITEM_TITLE_LABEL] = implode("\n", $basic['titles']);
+        $ret[_MD_XOONIPS_ITEM_CONTRIBUTOR_LABEL] = $basic['contributor'];
+        $ret[_MD_XOONIPS_ITEM_KEYWORDS_LABEL] = implode("\n", $basic['keywords']);
+        $ret[_MD_XOONIPS_ITEM_DESCRIPTION_LABEL] = $basic['description'];
+        $ret[_MD_XOONIPS_ITEM_DOI_LABEL] = $basic['doi'];
         $ret[_MD_XOONIPS_ITEM_LAST_UPDATE_DATE_LABEL] = $basic['last_update_date'];
-        $ret[_MD_XOONIPS_ITEM_CREATION_DATE_LABEL]    = $basic['creation_date'];
-        $ret[_MD_XNPSTIMULUS_DATE_LABEL]              = xnpDate($basic['publication_year'], $basic['publication_month'], $basic['publication_mday']);
+        $ret[_MD_XOONIPS_ITEM_CREATION_DATE_LABEL] = $basic['creation_date'];
+        $ret[_MD_XNPSTIMULUS_DATE_LABEL] = xnpDate($basic['publication_year'], $basic['publication_month'], $basic['publication_mday']);
     }
     if (!empty($detail)) {
         $ret[_MD_XNPSTIMULUS_STIMULUS_TYPE_LABEL] = $detail['stimulus_type']['display_value'];
-        $ret[_MD_XOONIPS_ITEM_README_LABEL]       = $detail['readme']['value'];
-        $ret[_MD_XOONIPS_ITEM_RIGHTS_LABEL]       = $detail['rights']['value'];
+        $ret[_MD_XOONIPS_ITEM_README_LABEL] = $detail['readme']['value'];
+        $ret[_MD_XOONIPS_ITEM_RIGHTS_LABEL] = $detail['rights']['value'];
     }
 
     $xnpstimulusHandler = xoonips_getOrmCompoHandler('xnpstimulus', 'item');
-    $xnpstimulus        = $xnpstimulusHandler->get($item_id);
+    $xnpstimulus = $xnpstimulusHandler->get($item_id);
     foreach ($xnpstimulus->getVar('developer') as $developer) {
         $developer_array[] = $developer->getVar('developer', 'n');
     }
@@ -738,6 +760,7 @@ function xnpstimulusGetMetaInformation($item_id)
 
 /**
  * @param $search_var
+ *
  * @return mixed|string|void
  */
 function xnpstimulusGetAdvancedSearchBlock($search_var)
@@ -771,60 +794,62 @@ function xnpstimulusGetAdvancedSearchBlock($search_var)
 function xnpstimulusGetAdvancedSearchQuery(&$where, &$join)
 {
     global $xoopsDB;
-    $stimulus_table           = $xoopsDB->prefix('xnpstimulus_item_detail');
+    $stimulus_table = $xoopsDB->prefix('xnpstimulus_item_detail');
     $stimulus_developer_table = $xoopsDB->prefix('xnpstimulus_developer');
-    $file_table               = $xoopsDB->prefix('xoonips_file');
+    $file_table = $xoopsDB->prefix('xoonips_file');
 
     $wheres = array();
-    $joins  = array();
-    $w      = xnpGetBasicInformationAdvancedSearchQuery('xnpstimulus');
+    $joins = array();
+    $w = xnpGetBasicInformationAdvancedSearchQuery('xnpstimulus');
     if ($w) {
         $wheres[] = $w;
     }
-    $w = xnpGetKeywordQuery($stimulus_table . '.stimulus_type', 'xnpstimulus_stimulus_type');
+    $w = xnpGetKeywordQuery($stimulus_table.'.stimulus_type', 'xnpstimulus_stimulus_type');
     if ($w) {
         $wheres[] = $w;
     }
-    $w = xnpGetKeywordQuery($stimulus_developer_table . '.developer', 'xnpstimulus_developer');
+    $w = xnpGetKeywordQuery($stimulus_developer_table.'.developer', 'xnpstimulus_developer');
     if ($w) {
         $wheres[] = $w;
     }
-    $w = xnpGetKeywordQuery($file_table . '.caption', 'xnpstimulus_caption');
+    $w = xnpGetKeywordQuery($file_table.'.caption', 'xnpstimulus_caption');
     if ($w) {
         $wheres[] = $w;
         $wheres[] = " $file_table.file_type_id = 1";
     }
     $where = implode(' and ', $wheres);
-    $join  = " join $stimulus_developer_table on " . $stimulus_developer_table . '.stimulus_id  = ' . $xoopsDB->prefix('xoonips_item_basic')
-             . '.item_id ';
+    $join = " join $stimulus_developer_table on ".$stimulus_developer_table.'.stimulus_id  = '.$xoopsDB->prefix('xoonips_item_basic')
+             .'.item_id ';
 }
 
 /**
  * @param $wheres
  * @param $join
  * @param $keywords
+ *
  * @return bool
  */
 function xnpstimulusGetDetailInformationQuickSearchQuery(&$wheres, &$join, $keywords)
 {
     global $xoopsDB;
-    $stimulus_table           = $xoopsDB->prefix('xnpstimulus_item_detail');
+    $stimulus_table = $xoopsDB->prefix('xnpstimulus_item_detail');
     $stimulus_developer_table = $xoopsDB->prefix('xnpstimulus_developer');
-    $file_table               = $xoopsDB->prefix('xoonips_file');
+    $file_table = $xoopsDB->prefix('xoonips_file');
 
     $colnames = array(
         "$stimulus_developer_table.developer",
         "$file_table.caption",
     );
-    $wheres   = xnpGetKeywordsQueries($colnames, $keywords);
-    $join     = " join $stimulus_developer_table on " . $stimulus_developer_table . '.stimulus_id  = ' . $xoopsDB->prefix('xoonips_item_basic')
-                . '.item_id ';
+    $wheres = xnpGetKeywordsQueries($colnames, $keywords);
+    $join = " join $stimulus_developer_table on ".$stimulus_developer_table.'.stimulus_id  = '.$xoopsDB->prefix('xoonips_item_basic')
+                .'.item_id ';
 
     return true;
 }
 
 /**
  * @param $iids
+ *
  * @return float|sum
  */
 function xnpstimulusGetDetailInformationTotalSize($iids)
@@ -834,6 +859,7 @@ function xnpstimulusGetDetailInformationTotalSize($iids)
 
 /**
  * @param $item_id
+ *
  * @return bool|null
  */
 function xnpstimulusGetLicenseRequired($item_id)
@@ -841,16 +867,18 @@ function xnpstimulusGetLicenseRequired($item_id)
     global $xoopsDB;
 
     // retrieve detail information
-    $result = $xoopsDB->query('select * from ' . $xoopsDB->prefix('xnpstimulus_item_detail') . " where stimulus_id=$item_id");
+    $result = $xoopsDB->query('select * from '.$xoopsDB->prefix('xnpstimulus_item_detail')." where stimulus_id=$item_id");
     if (!$result) {
         return null;
     }
     $detail = $xoopsDB->fetchArray($result);
+
     return isset($detail['rights']) && $detail['rights'] != '';
 }
 
 /**
  * @param $item_id
+ *
  * @return array|null
  */
 function xnpstimulusGetLicenseStatement($item_id)
@@ -858,29 +886,32 @@ function xnpstimulusGetLicenseStatement($item_id)
     global $xoopsDB;
 
     // retrieve detail information
-    $result = $xoopsDB->query('select * from ' . $xoopsDB->prefix('xnpstimulus_item_detail') . " where stimulus_id=$item_id");
+    $result = $xoopsDB->query('select * from '.$xoopsDB->prefix('xnpstimulus_item_detail')." where stimulus_id=$item_id");
     if (!$result) {
         return null;
     }
     $detail = $xoopsDB->fetchArray($result);
+
     return array(
         isset($detail['rights']) ? $detail['rights'] : '',
-        $detail['use_cc']
+        $detail['use_cc'],
     );
 }
 
 /**
- *
- * アイテムのDetailInformatinoをExportするXMLを作成する
+ * アイテムのDetailInformatinoをExportするXMLを作成する.
  *
  * export_pathの詳細はxnpExportItemを参照
+ *
  * @see      xnpExportItem
  *
  * @param Exportするファイルを保存するフォルダ $export_path
  * @param 結果を書き出すファイルハンドル       $fhdl
- * @param ExportしたいアイテムのID      $item_id
- * @param 添付ファイル                $attachment
+ * @param ExportしたいアイテムのID                    $item_id
+ * @param 添付ファイル                                  $attachment
+ *
  * @return true :成功，false:失敗
+ *
  * @internal param Exportするファイルを保存するフォルダ $export_path
  * @internal param 結果を書き出すファイルハンドル $fhdl
  * @internal param ExportしたいアイテムのID $item_id
@@ -894,23 +925,23 @@ function xnpstimulusExportItem($export_path, $fhdl, $item_id, $attachment)
     }
 
     $handler = xoonips_getOrmHandler('xnpstimulus', 'item_detail');
-    $detail  = $handler->get($item_id);
+    $detail = $handler->get($item_id);
     if (!$detail) {
         return false;
     }
 
     $developers = '';
     foreach ($detail->getDevelopers() as $developer) {
-        $developers .= '<developer>' . $developer->getVar('developer', 's') . '</developer>';
+        $developers .= '<developer>'.$developer->getVar('developer', 's').'</developer>';
     }
 
     if (!fwrite($fhdl,
-                "<detail id=\"${item_id}\" version=\"1.03\">\n" . '<stimulus_type>' . $detail->getVar('stimulus_type', 's') . "</stimulus_type>\n"
-                . "<developers>{$developers}</developers>\n" . '<readme>' . $detail->getVar('readme', 's') . "</readme>\n" . '<rights>'
-                . $detail->getVar('rights', 's') . "</rights>\n" . '<use_cc>' . (int)$detail->get('use_cc', 's') . "</use_cc>\n"
-                . '<cc_commercial_use>' . (int)$detail->get('cc_commercial_use') . "</cc_commercial_use>\n" . '<cc_modification>'
-                . (int)$detail->get('cc_modification') . "</cc_modification>\n" . '<attachment_dl_limit>' . (int)$detail->get('attachment_dl_limit')
-                . "</attachment_dl_limit>\n" . '<attachment_dl_notify>' . (int)$detail->get('attachment_dl_notify') . "</attachment_dl_notify>\n")
+                "<detail id=\"${item_id}\" version=\"1.03\">\n".'<stimulus_type>'.$detail->getVar('stimulus_type', 's')."</stimulus_type>\n"
+                ."<developers>{$developers}</developers>\n".'<readme>'.$detail->getVar('readme', 's')."</readme>\n".'<rights>'
+                .$detail->getVar('rights', 's')."</rights>\n".'<use_cc>'.(int) $detail->get('use_cc', 's')."</use_cc>\n"
+                .'<cc_commercial_use>'.(int) $detail->get('cc_commercial_use')."</cc_commercial_use>\n".'<cc_modification>'
+                .(int) $detail->get('cc_modification')."</cc_modification>\n".'<attachment_dl_limit>'.(int) $detail->get('attachment_dl_limit')
+                ."</attachment_dl_limit>\n".'<attachment_dl_notify>'.(int) $detail->get('attachment_dl_notify')."</attachment_dl_notify>\n")
     ) {
         return false;
     }
@@ -926,20 +957,21 @@ function xnpstimulusExportItem($export_path, $fhdl, $item_id, $attachment)
 
 /**
  * @param $item_id
+ *
  * @return array
  */
 function xnpstimulusGetModifiedFields($item_id)
 {
-    $ret      = array();
+    $ret = array();
     $formdata = xoonips_getUtility('formdata');
 
     $basic = xnpGetBasicInformationArray($item_id);
     if ($basic) {
-        $publicationDateYear  = $formdata->getValue('post', 'publicationDateYear', 'i', false);
+        $publicationDateYear = $formdata->getValue('post', 'publicationDateYear', 'i', false);
         $publicationDateMonth = $formdata->getValue('post', 'publicationDateMonth', 'i', false);
-        $publicationDateDay   = $formdata->getValue('post', 'publicationDateDay', 'i', false);
-        if ((int)$basic['publication_month'] != (int)$publicationDateMonth || (int)$basic['publication_mday'] != (int)$publicationDateDay
-            || (int)$basic['publication_year'] != (int)$publicationDateYear
+        $publicationDateDay = $formdata->getValue('post', 'publicationDateDay', 'i', false);
+        if ((int) $basic['publication_month'] != (int) $publicationDateMonth || (int) $basic['publication_mday'] != (int) $publicationDateDay
+            || (int) $basic['publication_year'] != (int) $publicationDateYear
         ) {
             array_push($ret, _MD_XNPSTIMULUS_DATE_LABEL);
         }
@@ -967,7 +999,7 @@ function xnpstimulusGetModifiedFields($item_id)
         }
 
         // is rights modified ?
-        $rightsUseCC   = $formdata->getValue('post', 'rightsUseCC', 'i', false);
+        $rightsUseCC = $formdata->getValue('post', 'rightsUseCC', 'i', false);
         $rightsEncText = $formdata->getValue('post', 'rightsEncText', 's', false);
         if ($rightsUseCC !== null) {
             if ($rightsUseCC == 0) {
@@ -977,7 +1009,7 @@ function xnpstimulusGetModifiedFields($item_id)
             } elseif ($rightsUseCC == 1) {
                 foreach (array(
                              'rightsCCCommercialUse' => 'cc_commercial_use',
-                             'rightsCCModification'  => 'cc_modification'
+                             'rightsCCModification' => 'cc_modification',
                          ) as $k => $v
                 ) {
                     $tmp = $formdata->getValue('post', $k, 'i', false);
@@ -997,20 +1029,22 @@ function xnpstimulusGetModifiedFields($item_id)
             array_push($ret, _MD_XNPSTIMULUS_STIMULUS_FILE);
         }
 
-        $developerHandler   = xoonips_getOrmHandler('xnpstimulus', 'developer');
-        $developer_objs     = $formdata->getObjectArray('post', $developerHandler->getTableName(), $developerHandler, false);
-        $detailHandler      = xoonips_getOrmHandler('xnpstimulus', 'item_detail');
-        $detail_orm         = $detailHandler->get($item_id);
+        $developerHandler = xoonips_getOrmHandler('xnpstimulus', 'developer');
+        $developer_objs = $formdata->getObjectArray('post', $developerHandler->getTableName(), $developerHandler, false);
+        $detailHandler = xoonips_getOrmHandler('xnpstimulus', 'item_detail');
+        $detail_orm = $detailHandler->get($item_id);
         $developer_old_objs = $detail_orm->getDevelopers();
         if (!xoonips_is_same_objects($developer_old_objs, $developer_objs)) {
             array_push($ret, _MD_XNPSTIMULUS_DEVELOPER_LABEL);
         }
     }
+
     return $ret;
 }
 
 /**
  * @param $itemtype
+ *
  * @return mixed|string|void
  */
 function xnpstimulusGetTopBlock($itemtype)
@@ -1023,17 +1057,20 @@ function xnpstimulusGetTopBlock($itemtype)
 // return 0 if downloadable for everyone
 /**
  * @param $item_id
+ *
  * @return int
  */
 function xnpstimulusGetAttachmentDownloadLimitOption($item_id)
 {
     global $xoopsDB;
-    $sql    = 'select attachment_dl_limit from ' . $xoopsDB->prefix('xnpstimulus_item_detail') . " where stimulus_id=${item_id}";
+    $sql = 'select attachment_dl_limit from '.$xoopsDB->prefix('xnpstimulus_item_detail')." where stimulus_id=${item_id}";
     $result = $xoopsDB->query($sql);
     if ($result) {
         list($option) = $xoopsDB->fetchRow($result);
+
         return $option;
     }
+
     return 0;
 }
 
@@ -1041,23 +1078,27 @@ function xnpstimulusGetAttachmentDownloadLimitOption($item_id)
 // return 0 if downloading is not notified
 /**
  * @param $item_id
+ *
  * @return int
  */
 function xnpstimulusGetAttachmentDownloadNotifyOption($item_id)
 {
     global $xoopsDB;
-    $sql    = 'select attachment_dl_notify from ' . $xoopsDB->prefix('xnpstimulus_item_detail') . " where stimulus_id=${item_id}";
+    $sql = 'select attachment_dl_notify from '.$xoopsDB->prefix('xnpstimulus_item_detail')." where stimulus_id=${item_id}";
     $result = $xoopsDB->query($sql);
     if ($result) {
         list($notify) = $xoopsDB->fetchRow($result);
+
         return $notify;
     }
+
     return 0;
 }
 
 /**
  * @param $metadataPrefix
  * @param $item_id
+ *
  * @return bool
  */
 function xnpstimulusSupportMetadataFormat($metadataPrefix, $item_id)
@@ -1065,12 +1106,14 @@ function xnpstimulusSupportMetadataFormat($metadataPrefix, $item_id)
     if ($metadataPrefix === 'oai_dc' || $metadataPrefix === 'junii2') {
         return true;
     }
+
     return false;
 }
 
 /**
  * @param $prefix
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpstimulusGetMetadata($prefix, $item_id)
@@ -1079,30 +1122,30 @@ function xnpstimulusGetMetadata($prefix, $item_id)
     $mydirname = basename($mydirpath);
     if (!in_array($prefix, array(
         'oai_dc',
-        'junii2'
+        'junii2',
     ))
     ) {
         return false;
     }
     // detail information
-    $detailHandler    = xoonips_getOrmHandler($mydirname, 'item_detail');
+    $detailHandler = xoonips_getOrmHandler($mydirname, 'item_detail');
     $developerHandler = xoonips_getOrmHandler($mydirname, 'developer');
-    $detail_obj       = $detailHandler->get($item_id);
+    $detail_obj = $detailHandler->get($item_id);
     if (empty($detail_obj)) {
         return false;
     }
-    $detail   = $detail_obj->getArray();
+    $detail = $detail_obj->getArray();
     $criteria = new Criteria('stimulus_id', $item_id);
     $criteria->setSort('developer_order');
-    $developer_objs       = $developerHandler->getObjects($criteria);
+    $developer_objs = $developerHandler->getObjects($criteria);
     $detail['developers'] = array();
     foreach ($developer_objs as $developer_obj) {
         $detail['developers'][] = $developer_obj->get('developer');
     }
-    $types                           = xnpstimulus_get_type_array();
+    $types = xnpstimulus_get_type_array();
     $detail['stimulus_type_display'] = $types[$detail['stimulus_type']];
     // basic information
-    $basic                             = xnpGetBasicInformationArray($item_id);
+    $basic = xnpGetBasicInformationArray($item_id);
     $basic['publication_date_iso8601'] = xnpISO8601($basic['publication_year'], $basic['publication_month'], $basic['publication_mday']);
     // indexes
     $indexes = array();
@@ -1114,8 +1157,8 @@ function xnpstimulusGetMetadata($prefix, $item_id)
         }
     }
     // files
-    $files       = array();
-    $mimetypes   = array();
+    $files = array();
+    $mimetypes = array();
     $fileHandler = xoonips_gethandler('xoonips', 'file');
     if ($detail['attachment_dl_limit'] == 0) {
         $files = $fileHandler->getFilesInfo($item_id, 'stimulus_data');
@@ -1142,28 +1185,28 @@ function xnpstimulusGetMetadata($prefix, $item_id)
     }
     // related to
     $related_toHandler = xoonips_getOrmHandler('xoonips', 'related_to');
-    $related_to_ids    = $related_toHandler->getChildItemIds($item_id);
-    $related_tos       = array();
+    $related_to_ids = $related_toHandler->getChildItemIds($item_id);
+    $related_tos = array();
     foreach ($related_to_ids as $related_to_id) {
         $related_tos[] = array(
-            'item_id'  => $related_to_id,
-            'item_url' => XOOPS_URL . '/modules/xoonips/detail.php?item_id=' . $related_to_id
+            'item_id' => $related_to_id,
+            'item_url' => XOOPS_URL.'/modules/xoonips/detail.php?item_id='.$related_to_id,
         );
     }
     // repository configs
-    $xconfigHandler          = xoonips_getOrmHandler('xoonips', 'config');
+    $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
     $myxoopsConfigMetaFooter = xoonips_get_xoops_configs(XOOPS_CONF_METAFOOTER);
-    $repository              = array(
+    $repository = array(
         'download_file_compression' => $xconfigHandler->getValue('download_file_compression'),
-        'nijc_code'                 => $xconfigHandler->getValue('repository_nijc_code'),
-        'publisher'                 => $xconfigHandler->getValue('repository_publisher'),
-        'institution'               => $xconfigHandler->getValue('repository_institution'),
-        'meta_author'               => $myxoopsConfigMetaFooter['meta_author']
+        'nijc_code' => $xconfigHandler->getValue('repository_nijc_code'),
+        'publisher' => $xconfigHandler->getValue('repository_publisher'),
+        'institution' => $xconfigHandler->getValue('repository_institution'),
+        'meta_author' => $myxoopsConfigMetaFooter['meta_author'],
     );
     // assign template
     global $xoopsTpl;
-    $tpl                = new XoopsTpl();
-    $tpl->plugins_dir[] = XOONIPS_PATH . '/class/smarty/plugins';
+    $tpl = new XoopsTpl();
+    $tpl->plugins_dir[] = XOONIPS_PATH.'/class/smarty/plugins';
     $tpl->assign($xoopsTpl->get_template_vars());
     $tpl->assign('basic', $basic);
     $tpl->assign('detail', $detail);
@@ -1173,6 +1216,7 @@ function xnpstimulusGetMetadata($prefix, $item_id)
     $tpl->assign('previews', $previews);
     $tpl->assign('related_tos', $related_tos);
     $tpl->assign('repository', $repository);
-    $xml = $tpl->fetch('db:' . $mydirname . '_oaipmh_' . $prefix . '.xml');
+    $xml = $tpl->fetch('db:'.$mydirname.'_oaipmh_'.$prefix.'.xml');
+
     return $xml;
 }

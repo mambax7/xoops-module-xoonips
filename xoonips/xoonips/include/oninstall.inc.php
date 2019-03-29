@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.14 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,17 +24,16 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/condefs.php';
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/include/functions.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/condefs.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/include/functions.php';
 
 /**
- * xoonips install function
+ * xoonips install function.
  *
  * @param object $xoopsMod module instance
+ *
  * @return bool false if failure
  */
 function xoops_module_install_xoonips($xoopsMod)
@@ -63,12 +62,12 @@ function xoops_module_install_xoonips($xoopsMod)
 
     // define groups
     $memberHandler = xoops_getHandler('member');
-    $gids          = array_keys($memberHandler->getGroupList());
-    $ogids         = array_diff($gids, array(
+    $gids = array_keys($memberHandler->getGroupList());
+    $ogids = array_diff($gids, array(
         XOOPS_GROUP_ADMIN,
         XOOPS_GROUP_USERS,
         XOOPS_GROUP_ANONYMOUS,
-        $mgid
+        $mgid,
     ));
 
     // set module access permission to all known groups
@@ -85,143 +84,143 @@ function xoops_module_install_xoonips($xoopsMod)
         //   'positions' => array( 'visible', 'side', 'weight' 'show all pages' ),
         // ),
         'b_xoonips_quick_search_show' => array(
-            'rights'    => array(
+            'rights' => array(
                 true,
                 true,
                 false,
-                false
+                false,
             ),
             'positions' => array(
                 true,
                 0,
                 10,
-                true
+                true,
             ),
         ),
-        'b_xoonips_moderator_show'    => array(
-            'rights'    => array(
+        'b_xoonips_moderator_show' => array(
+            'rights' => array(
                 false,
                 false,
                 true,
-                false
+                false,
             ),
             'positions' => array(
                 true,
                 1,
                 20,
-                true
+                true,
             ),
         ),
-        'b_xoonips_tree_show'         => array(
-            'rights'    => array(
+        'b_xoonips_tree_show' => array(
+            'rights' => array(
                 true,
                 true,
                 false,
-                false
+                false,
             ),
             'positions' => array(
                 true,
                 0,
                 20,
-                true
+                true,
             ),
         ),
-        'b_xoonips_login_show'        => array(
-            'rights'    => array(
+        'b_xoonips_login_show' => array(
+            'rights' => array(
                 true,
                 true,
                 false,
-                false
+                false,
             ),
             'positions' => array(
                 true,
                 0,
                 0,
-                true
+                true,
             ),
         ),
-        'b_xoonips_user_show'         => array(
-            'rights'    => array(
+        'b_xoonips_user_show' => array(
+            'rights' => array(
                 true,
                 false,
                 false,
-                false
+                false,
             ),
             'positions' => array(
                 true,
                 1,
                 0,
-                true
+                true,
             ),
         ),
-        'b_xoonips_group_show'        => array(
-            'rights'    => array(
+        'b_xoonips_group_show' => array(
+            'rights' => array(
                 true,
                 false,
                 false,
-                false
+                false,
             ),
             'positions' => array(
                 true,
                 1,
                 10,
-                true
+                true,
             ),
         ),
-        'b_xoonips_itemtypes_show'    => array(
-            'rights'    => array(
+        'b_xoonips_itemtypes_show' => array(
+            'rights' => array(
                 true,
                 true,
                 false,
-                false
+                false,
             ),
             'positions' => array(
                 true,
                 5,
                 20,
-                false
+                false,
             ),
         ),
-        'b_xoonips_ranking_new_show'  => array(
-            'rights'    => array(
+        'b_xoonips_ranking_new_show' => array(
+            'rights' => array(
                 true,
                 true,
                 false,
-                false
+                false,
             ),
             'positions' => array(
                 false,
                 0,
                 0,
-                false
+                false,
             ),
         ),
-        'b_xoonips_ranking_show'      => array(
-            'rights'    => array(
+        'b_xoonips_ranking_show' => array(
+            'rights' => array(
                 true,
                 true,
                 false,
-                false
+                false,
             ),
             'positions' => array(
                 false,
                 0,
                 0,
-                false
+                false,
             ),
         ),
-        'b_xoonips_userlist_show'     => array(
-            'rights'    => array(
+        'b_xoonips_userlist_show' => array(
+            'rights' => array(
                 true,
                 false,
                 false,
-                false
+                false,
             ),
             'positions' => array(
                 false,
                 0,
                 0,
-                false
+                false,
             ),
         ),
     );
@@ -254,11 +253,11 @@ function xoops_module_install_xoonips($xoopsMod)
     // php-indent: disable
     $sys_blocks[] = array(
         'system',
-        'b_system_user_show'
+        'b_system_user_show',
     );
     $sys_blocks[] = array(
         'system',
-        'b_system_login_show'
+        'b_system_login_show',
     );
     // php-indent: enable
     if (defined('XOOPS_CUBE_LEGACY')) {
@@ -266,11 +265,11 @@ function xoops_module_install_xoonips($xoopsMod)
         // php-indent: disable
         $sys_blocks[] = array(
             'legacy',
-            'b_legacy_usermenu_show'
+            'b_legacy_usermenu_show',
         );
         $sys_blocks[] = array(
             'user',
-            'b_user_login_show'
+            'b_user_login_show',
         );
         // php-indent: enable
     }
@@ -318,7 +317,7 @@ function xoops_module_install_xoonips($xoopsMod)
             'item_certify',
             'group_item_certify_request',
         ),
-        'user'          => array(
+        'user' => array(
             'item_transfer',
             'item_updated',
             'item_certified',

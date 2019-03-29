@@ -1,5 +1,4 @@
 <{* xnpbinder search block *}>
-<{* $Revision: 1.1.1.2 $ *}>
 
 <table class="outer">
   <tr>

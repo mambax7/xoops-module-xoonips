@@ -1,4 +1,3 @@
-<{* $Revision: 1.1.2.5 $ *}>
 <div class="xoonips_list_item">
 <div class="xoonips_list_item_left_column">
   <img src="<{$xoops_url}>/modules/xnpbook/images/icon_book.gif" alt="icon_book"/>

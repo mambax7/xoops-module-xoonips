@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.26 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief data object of index
@@ -37,7 +35,6 @@ if (!defined('XOOPS_ROOT_PATH')) {
  * @li    getVar('gid') :
  * @li    getVar('open_level') :
  * @li    getVar('sort_number') :
- *
  */
 class XooNIpsOrmIndex extends XooNIpsTableObject
 {
@@ -60,7 +57,7 @@ class XooNIpsOrmIndex extends XooNIpsTableObject
      */
     public function cleanVars()
     {
-        $result     = true;
+        $result = true;
         $open_level = $this->get('open_level');
         if ($open_level == OL_PUBLIC) {
             if (isset($this->vars['uid']['value'])) {
@@ -87,86 +84,89 @@ class XooNIpsOrmIndex extends XooNIpsTableObject
             trigger_error("unknown open_level($open_level)");
             $result = false;
         }
+
         return $result && parent::cleanVars();
     }
 
     /**
-     * get parent index object of this index
+     * get parent index object of this index.
+     *
      * @return XooNIpsOrmIndex parent index object or null
      */
     public function getParentIndex()
     {
         $handler = xoonips_getOrmHandler('xoonips', 'index');
+
         return $handler->get($this->get('parent_index_id'));
     }
 
     /**
-     * get index title
+     * get index title.
      *
-     * @access public
      * @param string $fmt format
+     *
      * @return string title
      */
     public function getTitle($fmt)
     {
-        $handler  = xoonips_getOrmHandler('xoonips', 'title');
+        $handler = xoonips_getOrmHandler('xoonips', 'title');
         $criteria = new CriteriaCompo(new Criteria('item_id', $this->get('index_id')));
         $criteria->add(new Criteria('title_id', DEFAULT_INDEX_TITLE_OFFSET));
-        $title_objs =  $handler->getObjects($criteria);
+        $title_objs = $handler->getObjects($criteria);
         if (count($title_objs) != 1) {
             return false;
         }
+
         return $title_objs[0]->getVar('title', $fmt);
     }
 
     /**
-     * get all of children
+     * get all of children.
      *
-     * @access public
      * @return XooNIpsOrmIndex[] child indexes
      */
     public function &getAllChildren()
     {
         $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-        $criteria     = new Criteria('parent_index_id', $this->get('index_id'));
+        $criteria = new Criteria('parent_index_id', $this->get('index_id'));
         $criteria->setSort('sort_number');
+
         return $indexHandler->getObjects($criteria);
     }
 
     /**
-     * lock this index
+     * lock this index.
      *
-     * @access public
      * @return bool false if lock failure
      */
     public function lock()
     {
         $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
+
         return $item_lockHandler->lock($this->get('index_id'));
     }
 
     /**
-     * unlock this index
+     * unlock this index.
      *
-     * @access public
      * @return bool false if unlock failure
      */
     public function unlock()
     {
         $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
+
         return $item_lockHandler->unlock($this->get('index_id'));
     }
 }
 
 /**
  * @brief handler object of title
- *
- *
  */
 class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmIndexHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -176,12 +176,12 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     *
-     * return true if permitted to this index
+     * return true if permitted to this index.
      *
      * @param                                               id        id of index
      * @param                                               uid       uid who access to this index
      * @param create|delete|export|read|register_item|write $operation
+     *
      * @return true if permitted
      *
      * @internal param create|delete|export|read|register_item|write $operation
@@ -194,7 +194,7 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
             'delete',
             'create',
             'export',
-            'register_item'
+            'register_item',
         ))
         ) {
             // bad operation.
@@ -236,12 +236,14 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
                             return false;
                         }
                     }
+
                     return true;
                 }
                 if ($operation == 'register_item') {
                     if ($uid == UID_GUEST) {
                         return false;
                     }
+
                     return true;
                 }
                 break;
@@ -273,35 +275,36 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * rename index title
+     * rename index title.
      *
-     * @access public
-     * @param int    $xid index id
+     * @param int    $xid   index id
      * @param string $title
+     *
      * @return bool false if failure
      */
     public function renameIndexTitle($xid, $title)
     {
         $itHandler = xoonips_getOrmHandler('xoonips', 'title');
-        $criteria  = new CriteriaCompo(new Criteria('item_id', $xid));
+        $criteria = new CriteriaCompo(new Criteria('item_id', $xid));
         $criteria->add(new Criteria('title_id', DEFAULT_INDEX_TITLE_OFFSET));
-        $it_objs =  $itHandler->getObjects($criteria);
+        $it_objs = $itHandler->getObjects($criteria);
         if (count($it_objs) != 1) {
             return false;
         }
-        $it_obj =  $it_objs[0];
+        $it_obj = $it_objs[0];
         $it_obj->set('title', $title);
         if (!$itHandler->insert($it_obj)) {
             return false;
         }
+
         return true;
     }
 
     /**
-     * create user root index
+     * create user root index.
      *
-     * @access public
      * @param int uid user id
+     *
      * @return int created index id, false if failure
      */
     public function createUserRootIndex($uid)
@@ -316,23 +319,23 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
 
         // get account id (uname)
         $userHandler = xoonips_getOrmHandler('xoonips', 'xoops_users');
-        $criteria    = new Criteria('uid', $uid);
-        $user_objs   =  $userHandler->getObjects($criteria);
+        $criteria = new Criteria('uid', $uid);
+        $user_objs = $userHandler->getObjects($criteria);
         if (count($user_objs) != 1) {
             // xoops user not found
             return false;
         }
-        $user_obj =  $user_objs[0];
-        $uname    = $user_obj->getVar('uname', 'n');
+        $user_obj = $user_objs[0];
+        $uname = $user_obj->getVar('uname', 'n');
 
         return $this->_createRootIndex($uname, true, $uid);
     }
 
     /**
-     * create group root index
+     * create group root index.
      *
-     * @access public
      * @param int gid group id
+     *
      * @return int created index id, false if failure
      */
     public function createGroupRootIndex($gid)
@@ -347,7 +350,7 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
 
         // get group id (gname)
         $xgroupHandler = xoonips_getHandler('xoonips', 'group');
-        $xgroup_obj    =  $xgroupHandler->getGroupObject($gid);
+        $xgroup_obj = $xgroupHandler->getGroupObject($gid);
         if (!is_object($xgroup_obj)) {
             // group not found
             return false;
@@ -358,24 +361,24 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * create root index
+     * create root index.
      *
-     * @access private
      * @param string $title   index title
      * @param bool   $is_user true: for user index, false: for group index
      * @param int    $ugid    user id or group id
+     *
      * @return int created index id, false if failure
      */
     public function _createRootIndex($title, $is_user, $ugid)
     {
         // transaction
-        require_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/transaction.class.php';
-        $transaction =  XooNIpsTransaction::getInstance();
+        require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/transaction.class.php';
+        $transaction = XooNIpsTransaction::getInstance();
         $transaction->start();
 
         // create item basic
         $ibHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $ib_obj    = $ibHandler->create();
+        $ib_obj = $ibHandler->create();
         $ib_obj->set('item_type_id', ITID_INDEX);
         if ($is_user) {
             $ib_obj->set('uid', $ugid);
@@ -383,24 +386,26 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
             // uid is session owner for group index
             $uid = UID_GUEST;
             if (isset($GLOBALS['xoopsUser']) && is_object($GLOBALS['xoopsUser'])) {
-                $uid = (int)$GLOBALS['xoopsUser']->getVar('uid', 'n');
+                $uid = (int) $GLOBALS['xoopsUser']->getVar('uid', 'n');
             }
             $ib_obj->set('uid', $uid);
         }
         if (!$ibHandler->insert($ib_obj)) {
             $transaction->rollback();
+
             return false;
         }
 
         // create item title
         $itHandler = xoonips_getOrmHandler('xoonips', 'title');
-        $item_id   = $ib_obj->getVar('item_id', 'n');
-        $it_obj    = $itHandler->create();
+        $item_id = $ib_obj->getVar('item_id', 'n');
+        $it_obj = $itHandler->create();
         $it_obj->set('item_id', $item_id);
         $it_obj->set('title_id', DEFAULT_INDEX_TITLE_OFFSET);
         $it_obj->set('title', $title);
         if (!$itHandler->insert($it_obj)) {
             $transaction->rollback();
+
             return false;
         }
 
@@ -415,15 +420,15 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
                 // this value will be used for admin on install xoonips module
                 $sort_number = 2147483647;
             } else {
-                $idx_objs    =&  $this->getObjects($criteria, false, 'MIN(sort_number) AS min_value');
-                $idx_obj     =  $idx_objs[0];
-                $sort_number = (int)$idx_obj->getExtraVar('min_value') - 1;
+                $idx_objs = &$this->getObjects($criteria, false, 'MIN(sort_number) AS min_value');
+                $idx_obj = $idx_objs[0];
+                $sort_number = (int) $idx_obj->getExtraVar('min_value') - 1;
                 unset($idx_objs);
                 unset($idx_obj);
             }
         } else {
             // for group index
-            $criteria  = new CriteriaCompo(new Criteria('parent_index_id', IID_ROOT));
+            $criteria = new CriteriaCompo(new Criteria('parent_index_id', IID_ROOT));
             $criteria2 = new CriteriaCompo();
             $criteria2->add(new Criteria('open_level', OL_PUBLIC));
             $criteria2->add(new Criteria('open_level', OL_GROUP_ONLY), 'OR');
@@ -431,18 +436,19 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
             if ($this->getCount($criteria) == 0) {
                 // not reaeched
                 $transaction->rollback();
+
                 return false;
             } else {
-                $idx_objs    =&  $this->getObjects($criteria, false, 'MAX(sort_number) AS max_value');
-                $idx_obj     =  $idx_objs[0];
-                $sort_number = (int)$idx_obj->getExtraVar('max_value') + 1;
+                $idx_objs = &$this->getObjects($criteria, false, 'MAX(sort_number) AS max_value');
+                $idx_obj = $idx_objs[0];
+                $sort_number = (int) $idx_obj->getExtraVar('max_value') + 1;
                 unset($idx_objs);
                 unset($idx_obj);
             }
         }
 
         // create index
-        $idx_obj =  $this->create();
+        $idx_obj = $this->create();
         $idx_obj->set('index_id', $item_id);
         $idx_obj->set('parent_index_id', IID_ROOT);
         if ($is_user) {
@@ -455,17 +461,19 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
         $idx_obj->set('sort_number', $sort_number);
         if (!$this->insert($idx_obj)) {
             $transaction->rollback();
+
             return false;
         }
         $transaction->commit();
+
         return $idx_obj->getVar('index_id', 'n');
     }
 
     /**
-     * lock descendents
+     * lock descendents.
      *
-     * @access public
      * @param int $id index_id
+     *
      * @return bool
      */
     public function lockAllDescendents($id)
@@ -476,18 +484,20 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
         }
         foreach ($this->getAllDescendents($id) as $index) {
             if (!$index->lock()) {
-                trigger_error('cannot lock descendents: ' . $index->get('index_id'));
+                trigger_error('cannot lock descendents: '.$index->get('index_id'));
+
                 return false;
             }
         }
+
         return true;
     }
 
     /**
-     * unlock descendents
+     * unlock descendents.
      *
-     * @access public
      * @param int $id index_id
+     *
      * @return bool
      */
     public function unlockAllDescendents($id)
@@ -498,19 +508,22 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
         }
         foreach ($this->getAllDescendents($id) as $index) {
             if (!$index->unlock()) {
-                trigger_error('cannot unlock descendents: ' . $index->get('index_id'));
+                trigger_error('cannot unlock descendents: '.$index->get('index_id'));
+
                 return false;
             }
         }
+
         return true;
     }
 
     /**
-     * get all parent indexes
+     * get all parent indexes.
      *
-     * @access   private
      * @param $index_id
+     *
      * @return XooNIpsOrmIndex[]
+     *
      * @internal param int $id index_id
      */
     public function getAllParents($index_id)
@@ -528,17 +541,18 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * get all descendents parent indexes path string
+     * get all descendents parent indexes path string.
      *
-     * @access   public
      * @param $index_id
+     *
      * @return XooNIpsOrmIndex[]
+     *
      * @internal param int $id index_id
      */
     public function getAllDescendents($index_id)
     {
         $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-        $index        = $indexHandler->get($index_id);
+        $index = $indexHandler->get($index_id);
         if (!$index) {
             return array();
         }
@@ -547,14 +561,18 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
         foreach ($index->getAllChildren() as $child) {
             $result = array_merge($result, array($child), $indexHandler->getAllDescendents($child->get('index_id')));
         }
+
         return $result;
     }
 
     /**
      * set sort_number automatically before insert.
+     *
      * @see TableObject::insert
+     *
      * @param XoopsObject $obj
      * @param bool        $force
+     *
      * @return bool
      */
     public function insert(XoopsObject $obj, $force = false)
@@ -563,12 +581,13 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
             return parent::insert($obj, $force);
         }
         // for regular index
-        $row =& $this->getObjects(new Criteria('parent_index_id', $obj->get('parent_index_id')), false, 'MAX(sort_number) as max_value');
+        $row = &$this->getObjects(new Criteria('parent_index_id', $obj->get('parent_index_id')), false, 'MAX(sort_number) as max_value');
         if ($row) {
             $obj->set('sort_number', $row[0]->getExtraVar('max_value') + 1);
         } else {
             $obj->set('sort_number', 1);
         }
+
         return parent::insert($obj, $force);
     }
 }

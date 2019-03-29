@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.19 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,10 +25,10 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/action.class.php';
+require_once __DIR__.'/../base/action.class.php';
 
 /**
- * Class XooNIpsActionTransfer
+ * Class XooNIpsActionTransfer.
  */
 class XooNIpsActionTransfer extends XooNIpsAction
 {
@@ -44,34 +44,35 @@ class XooNIpsActionTransfer extends XooNIpsAction
      * return user's private index information array for template vars.
      * return id, name and depth of all index under the indexes.
      *
-     * @access protected
      * @param int $private_root_index_id user's private root index id
+     *
      * @return array array of index information like
-     *                                   array( array( 'index_id' => index_id,
-     *                                   'title' => index_name,
-     *                                   'number_of_indexes' => number_of_indexes_in_its_index,
-     *                                   'number_of_items' => number_of_items_in_its_index,
-     *                                   'depth' => depth(0~) ), array(...), ... )
+     *               array( array( 'index_id' => index_id,
+     *               'title' => index_name,
+     *               'number_of_indexes' => number_of_indexes_in_its_index,
+     *               'number_of_items' => number_of_items_in_its_index,
+     *               'depth' => depth(0~) ), array(...), ... )
      */
     public function getIndexOptionsTemplateVar($private_root_index_id)
     {
-        $myuid        = $GLOBALS['xoopsUser']->getVar('uid');
-        $xuHandler    = xoonips_getOrmHandler('xoonips', 'users');
-        $xu_obj       = $xuHandler->get($myuid);
+        $myuid = $GLOBALS['xoopsUser']->getVar('uid');
+        $xuHandler = xoonips_getOrmHandler('xoonips', 'users');
+        $xu_obj = $xuHandler->get($myuid);
         $indexHandler = xoonips_getHandler('xoonips', 'index');
-        $result       = $indexHandler->getIndexStructure($private_root_index_id, 's', $myuid, 'read');
+        $result = $indexHandler->getIndexStructure($private_root_index_id, 's', $myuid, 'read');
         // override index title from user's root index to 'Private'
         $result[0]['title'] = XNP_PRIVATE_INDEX_TITLE;
+
         return $result;
     }
 
     /**
      * return true if user is subscribed to all groups of given items.
      *
-     * @param integer $uid      user id
-     * @param array   $item_ids array of integer of item id
-     * @return boolean
+     * @param int   $uid      user id
+     * @param array $item_ids array of integer of item id
      *
+     * @return bool
      */
     public function is_user_in_group_of_items($uid, $item_ids)
     {
@@ -81,13 +82,14 @@ class XooNIpsActionTransfer extends XooNIpsAction
     /**
      * @param $uid
      * @param $item_ids
+     *
      * @return array
      */
     public function get_gids_to_subscribe($uid, $item_ids)
     {
         $item_group_ids = xoonips_transfer_get_group_ids_of_items($item_ids);
-        $xgroupHandler  = xoonips_getHandler('xoonips', 'group');
-        $gids           = $xgroupHandler->getGroupIds($uid);
+        $xgroupHandler = xoonips_getHandler('xoonips', 'group');
+        $gids = $xgroupHandler->getGroupIds($uid);
         // return array_diff( $item_group_ids, $gids );
         $result = array();
         foreach ($item_group_ids as $gid) {
@@ -95,13 +97,16 @@ class XooNIpsActionTransfer extends XooNIpsAction
                 $result[] = $gid;
             }
         }
+
         return $result;
     }
 
     /**
-     * return true if number or storage size of item exceed
+     * return true if number or storage size of item exceed.
+     *
      * @param $to_uid
      * @param $transfer_item_ids
+     *
      * @return bool
      */
     public function get_limit_check_result($to_uid, $transfer_item_ids)
@@ -111,36 +116,39 @@ class XooNIpsActionTransfer extends XooNIpsAction
     }
 
     /**
-     * get item id arrays by uid
-     * @access public
+     * get item id arrays by uid.
+     *
      * @param array $item_ids array of integer of item_id
+     *
      * @return array
-     *                        array(uid_of_contributor => array( item_id, item_id, ...),
-     *                        uid_of_contributor => array( item_id, item_id, ...),
-     *                        .... );
+     *               array(uid_of_contributor => array( item_id, item_id, ...),
+     *               uid_of_contributor => array( item_id, item_id, ...),
+     *               .... );
      */
     public function getMapOfUidTOItemId($item_ids)
     {
-        $result  = array();
+        $result = array();
         $handler = xoonips_getOrmHandler('xoonips', 'item_basic');
 
         if (!is_array($item_ids) || count($item_ids) == 0) {
             return array();
         }
 
-        foreach ($handler->getObjects(new Criteria('item_id', '(' . implode(', ', $item_ids) . ')', 'IN')) as $row) {
+        foreach ($handler->getObjects(new Criteria('item_id', '('.implode(', ', $item_ids).')', 'IN')) as $row) {
             if (!array_key_exists($row->get('uid'), $result)) {
                 $result[$row->get('uid')] = array();
             }
             $result[$row->get('uid')][] = $row->get('item_id');
         }
+
         return $result;
     }
 
     /**
-     * sort item ids by item title
-     * @access protected
+     * sort item ids by item title.
+     *
      * @param array $item_ids
+     *
      * @return array sorted $item_ids by title
      */
     public function sort_item_ids_by_title($item_ids)
@@ -149,40 +157,42 @@ class XooNIpsActionTransfer extends XooNIpsAction
             return array();
         }
         $titleHandler = xoonips_getOrmHandler('xoonips', 'title');
-        $criteria     = new CriteriaCompo();
-        $criteria->add(new Criteria('item_id', '(' . implode(',', $item_ids) . ')', 'in'));
+        $criteria = new CriteriaCompo();
+        $criteria->add(new Criteria('item_id', '('.implode(',', $item_ids).')', 'in'));
         $criteria->add(new Criteria('title_id', DEFAULT_ORDER_TITLE_OFFSET));
         $criteria->setOrder('asc');
         $criteria->setSort('title');
-        $titles =  $titleHandler->getObjects($criteria);
+        $titles = $titleHandler->getObjects($criteria);
 
         $result = array();
         foreach ($titles as $title) {
             $result[] = $title->get('item_id');
         }
+
         return $result;
     }
 
     /**
-     * get untransferrable items grouped by reasons
-     * @access protected
+     * get untransferrable items grouped by reasons.
+     *
      * @param array $from_uid uid of transferer
      * @param array $item_ids
+     *
      * @return array
-     *                        array(request_certify => array( item_id, item_id, ...),
-     *                        request_transfer => array( item_id, item_id, ...),
-     *                        have_another_parent => array( item_id, item_id, ...),
-     *                        child_request_certify => array( item_id, item_id, ...),
-     *                        child_request_transfer => array( item_id, item_id, ...),
+     *               array(request_certify => array( item_id, item_id, ...),
+     *               request_transfer => array( item_id, item_id, ...),
+     *               have_another_parent => array( item_id, item_id, ...),
+     *               child_request_certify => array( item_id, item_id, ...),
+     *               child_request_transfer => array( item_id, item_id, ...),
      */
     public function get_untransferrable_reasons_and_items($from_uid, $item_ids)
     {
-        $result                              = array();
-        $result['request_certify']           = array();
-        $result['request_transfer']          = array();
-        $result['have_another_parent']       = array();
-        $result['child_request_certify']     = array();
-        $result['child_request_transfer']    = array();
+        $result = array();
+        $result['request_certify'] = array();
+        $result['request_transfer'] = array();
+        $result['have_another_parent'] = array();
+        $result['child_request_certify'] = array();
+        $result['child_request_transfer'] = array();
         $result['child_have_another_parent'] = array();
 
         foreach (xoonips_transfer_get_transferrable_item_information($from_uid, $item_ids) as $info) {
@@ -208,14 +218,16 @@ class XooNIpsActionTransfer extends XooNIpsAction
                 }
             }
         }
+
         return $result;
     }
 
     /**
      * return true if all given items are transferrable.
-     * @access protected
+     *
      * @param array $from_uid uid of transferer
      * @param array $item_ids
+     *
      * @return bool
      */
     public function is_all_transferrable_items($from_uid, $item_ids)
@@ -226,14 +238,14 @@ class XooNIpsActionTransfer extends XooNIpsAction
                 return false;
             }
         }
+
         return true;
     }
 
     /**
-     *
-     * @access protected
      * @param int $uid            uid of transferee
      * @param int $uid_transferer (optional)uid of transferer
+     *
      * @return true if uid is valid transferee user(except transferer)
      */
     public function is_valid_transferee_user($uid, $uid_transferer = null)
@@ -245,13 +257,16 @@ class XooNIpsActionTransfer extends XooNIpsAction
         }
 
         $userHandler = xoonips_getOrmCompoHandler('xoonips', 'user');
+
         return $userHandler->isCertifiedUser($uid);
     }
 
     /**
-     * all of items can be readable by specified user
+     * all of items can be readable by specified user.
+     *
      * @param array $item_ids array of integer of item id to read
      * @param int   $uid      user id to read item
+     *
      * @return bool true if all of items are readable
      */
     public function is_readable_all_items($item_ids, $uid)
@@ -266,6 +281,7 @@ class XooNIpsActionTransfer extends XooNIpsAction
                 return false;
             }
         }
+
         return true;
     }
 }

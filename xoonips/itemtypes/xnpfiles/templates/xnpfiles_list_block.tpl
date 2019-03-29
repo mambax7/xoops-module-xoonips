@@ -1,5 +1,4 @@
 <{* xnpfiles list block *}>
-<{* $Revision: 1.6.4.1.2.3 $ *}>
 <table>
  <tr>
   <td width="65" style="vertical-align:middle; text-align:center;">

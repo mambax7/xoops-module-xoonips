@@ -1,4 +1,3 @@
-<{* $Revision: 1.4.4.1.2.4 $ *}>
 <{include file="db:xoonips_breadcrumbs.inc.tpl"}>
 
 <h3><{$smarty.const._MD_XOONIPS_TITLE_GROUP_LIST}></h3>

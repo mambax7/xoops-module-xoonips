@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,66 +25,67 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/logic.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/transaction.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/include/notification.inc.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/logic.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/transaction.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/include/notification.inc.php';
 
 /**
- *
- * subclass of XooNIpsLogic(getFileMetadata)
- *
+ * subclass of XooNIpsLogic(getFileMetadata).
  */
 class XooNIpsLogicGetFileMetadata extends XooNIpsLogic
 {
-
     /**
-     * execute getFile
+     * execute getFile.
      *
      * @param[in]  $vars[0] session ID
      * @param[in]  $vars[1] file ID
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response->success file metadata
+     *
      * @return bool
      */
     public function execute($vars, $response)
     {
         // parameter check
-        $error =  $response->getError();
+        $error = $response->getError();
         if (count($vars) > 2) {
             $error->add(XNPERR_EXTRA_PARAM);
         }
         if (count($vars) < 2) {
             $error->add(XNPERR_MISSING_PARAM);
         }
-        //
+
         if (isset($vars[0]) && strlen($vars[0]) > 32) {
             $error->add(XNPERR_INVALID_PARAM, 'too long parameter 1');
         }
         if (!is_int($vars[1]) && !ctype_digit($vars[1])) {
             $error->add(XNPERR_INVALID_PARAM, 'not integer parameter 2');
         }
-        //
+
         if ($error->get(0)) {
             // return if parameter error
             $response->setResult(false);
+
             return false;
         } else {
             $sessionid = $vars[0];
-            $file_id   = (int)$vars[1];
+            $file_id = (int) $vars[1];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
+
             return false;
         }
         // file_id -> file, item_id
         $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
-        $file        = $fileHandler->get($file_id);
+        $file = $fileHandler->get($file_id);
         if (!$file) {
             $response->setResult(false);
             $error->add(XNPERR_NOT_FOUND);
+
             return false;
         }
         $item_id = $file->get('item_id');
@@ -98,82 +99,90 @@ class XooNIpsLogicGetFileMetadata extends XooNIpsLogic
         if (!$itemHandler->getPerm($item_id, $uid, 'read')) {
             $response->setResult(false);
             $error->add(XNPERR_ACCESS_FORBIDDEN);
+
             return false;
         }
         // already deleted?
         if ($file->get('is_deleted')) {
             $response->setResult(false);
             $error->add(XNPERR_NOT_FOUND, 'already deleted or replaced');
+
             return false;
         }
         // item_id -> item, itemtype
         $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $basic             = $item_basicHandler->get($item_id);
+        $basic = $item_basicHandler->get($item_id);
         if (!$basic) {
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'cannot get item_basic');
+
             return false;
         }
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $item_type        = $item_typeHandler->get($basic->get('item_type_id'));
+        $item_type = $item_typeHandler->get($basic->get('item_type_id'));
         if (!$item_type) {
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'cannot get itemtype of that item');
+
             return false;
         }
         // item_type, item_id -> detail
         $detail_itemHandler = xoonips_getOrmCompoHandler($item_type->get('name'), 'item');
-        $detail_item        = $detail_itemHandler->get($item_id);
+        $detail_item = $detail_itemHandler->get($item_id);
         if (!$detail_item) {
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'cannot get item');
+
             return false;
         }
         if (!$detail_itemHandler->hasDownloadPermission($uid, $file_id)) {
             $response->setResult(false);
             $error->add(XNPERR_ACCESS_FORBIDDEN);
+
             return false;
         }
         $file_typeHandler = xoonips_getOrmHandler('xoonips', 'file_type');
-        $file_type        = $file_typeHandler->get($file->get('file_type_id'));
+        $file_type = $file_typeHandler->get($file->get('file_type_id'));
         if ($file_type === false) {
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'unknown file type');
+
             return false;
         }
 
         $iteminfo = $detail_itemHandler->getItemInfo();
         if ($iteminfo['files']['main'] == $file_type->get('name')) {
-            $download_count     = $file->get('download_count');
+            $download_count = $file->get('download_count');
             $download_count_sum = $fileHandler->getTotalDownloadCount($item_id, $file_type->get('name'));
         } else {
-            $download_count     = 0;
+            $download_count = 0;
             $download_count_sum = 0;
         }
 
         if ($iteminfo['files']['preview'] == $file_type->get('name')) {
-            $caption   = $file->get('caption');
+            $caption = $file->get('caption');
             $thumbnail = $file->get('thumbnail_file');
         } else {
-            $caption   = '';
+            $caption = '';
             $thumbnail = '';
         }
 
         $result = array(
-            'id'                 => $file_id,
-            'filetype'           => $file_type->get('name'),
-            'originalname'       => $file->get('original_file_name'),
-            'size'               => $file->get('file_size'),
-            'mimetype'           => $file->get('mime_type'),
-            'caption'            => $caption,
-            'thumbnail'          => $thumbnail,
-            'registration_date'  => $basic->get('creation_date'),
+            'id' => $file_id,
+            'filetype' => $file_type->get('name'),
+            'originalname' => $file->get('original_file_name'),
+            'size' => $file->get('file_size'),
+            'mimetype' => $file->get('mime_type'),
+            'caption' => $caption,
+            'thumbnail' => $thumbnail,
+            'registration_date' => $basic->get('creation_date'),
             'last_modified_date' => $file->get('timestamp'),
-            'download_count'     => $download_count,
+            'download_count' => $download_count,
             'download_count_sum' => $download_count_sum,
         );
         $response->setSuccess($result);
         $response->setResult(true);
+
         return true;
     }
 }

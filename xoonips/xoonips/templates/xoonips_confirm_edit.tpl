@@ -3,7 +3,6 @@
 <{*
 template for displaying to confirm edited item information
 
-$Revision: 1.7.2.1.2.3 $
 
 $item_id: id of item for edit
 $body: HTML of form to confirm edited item

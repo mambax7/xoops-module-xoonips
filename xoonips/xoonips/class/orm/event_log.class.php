@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.27 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2013 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief Data object of XooNIps event
@@ -43,7 +41,6 @@ if (!defined('XOOPS_ROOT_PATH')) {
  * @li    getVar('gid') :
  * @li    getVar('search_keyword') :
  * @li    getVar('additional_info') :
- *
  */
 class XooNIpsOrmEventLog extends XooNIpsTableObject
 {
@@ -88,7 +85,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                 'uid',
                 'gid',
                 'search_keyword',
-                'additional_info'
+                'additional_info',
             );
             static $eventValidFields = array(
                 array(
@@ -100,7 +97,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 //  0: (dummy)
                 array(
@@ -112,7 +109,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    1
+                    1,
                 ),
                 //  1: ETID_LOGIN_FAILURE
                 array(
@@ -124,7 +121,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 //  2: ETID_LOGIN_SUCCESS
                 array(
@@ -136,7 +133,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 //  3: ETID_LOGOUT
                 array(
@@ -148,7 +145,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 //  4: ETID_INSERT_ITEM
                 array(
@@ -160,7 +157,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 //  5: ETID_UPDATE_ITEM
                 array(
@@ -172,7 +169,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 //  6: ETID_DELETE_ITEM
                 array(
@@ -184,7 +181,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 //  7: ETID_VIEW_ITEM
                 array(
@@ -196,7 +193,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 //  8: ETID_DOWNLOAD_FILE
                 array(
@@ -208,7 +205,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 //  9: ETID_REQUEST_CERTIFY_ITEM
                 array(
@@ -220,7 +217,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 10: ETID_INSERT_INDEX
                 array(
@@ -232,7 +229,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 11: ETID_UPDATE_INDEX
                 array(
@@ -244,7 +241,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 12: ETID_DELETE_INDEX
                 array(
@@ -256,7 +253,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 13: ETID_CERTIFY_ITEM
                 array(
@@ -268,7 +265,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 14: ETID_REJECT_ITEM
                 array(
@@ -280,7 +277,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     1,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 15: ETID_REQUEST_INSERT_ACCOUNT
                 array(
@@ -292,7 +289,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     1,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 16: ETID_CERTIFY_ACCOUNT
                 array(
@@ -304,7 +301,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     1,
                     0,
-                    0
+                    0,
                 ),
                 // 17: ETID_INSERT_GROUP
                 array(
@@ -316,7 +313,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     1,
                     0,
-                    0
+                    0,
                 ),
                 // 18: ETID_UPDATE_GROUP
                 array(
@@ -328,7 +325,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     1,
                     0,
-                    0
+                    0,
                 ),
                 // 19: ETID_DELETE_GROUP
                 array(
@@ -340,7 +337,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     1,
                     1,
                     0,
-                    0
+                    0,
                 ),
                 // 20: ETID_INSERT_GROUP_MEMBER
                 array(
@@ -352,7 +349,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     1,
                     1,
                     0,
-                    0
+                    0,
                 ),
                 // 21: ETID_DELETE_GROUP_MEMBER
                 array(
@@ -364,7 +361,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 22: ETID_VIEW_TOP_PAGE
                 array(
@@ -376,7 +373,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     1,
-                    0
+                    0,
                 ),
                 // 23: ETID_QUICK_SEARCH
                 array(
@@ -388,7 +385,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     1,
-                    0
+                    0,
                 ),
                 // 24: ETID_ADVANCED_SEARCH
                 array(
@@ -400,7 +397,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     1,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 25: ETID_START_SU
                 array(
@@ -412,7 +409,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     1,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 26: ETID_END_SU
                 array(
@@ -424,7 +421,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     1,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 27: ETID_REQUEST_TRANSFER_ITEM
                 array(
@@ -436,7 +433,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     1,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 28: ETID_TRANSFER_ITEM
                 array(
@@ -448,7 +445,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 29: ETID_REJECT_TRANSFER_ITEM
                 array(
@@ -460,7 +457,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 30: ETID_CERTIFY_GROUP_INDEX
                 array(
@@ -472,7 +469,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 31: ETID_REJECT_GROUP_INDEX
                 array(
@@ -484,7 +481,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     0,
                     1,
                     0,
-                    1
+                    1,
                 ),
                 // 32: ETID_GROUP_INDEX_TO_PUBLIC
                 array(
@@ -496,7 +493,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     1,
                     0,
                     0,
-                    0
+                    0,
                 ),
                 // 33: ETID_DELETE_ACCOUNT
                 array(
@@ -508,7 +505,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     1,
                     0,
                     0,
-                    1
+                    1,
                 ),
                 // 34: ETID_UNCERTIFY_ACCOUNT
             );
@@ -520,22 +517,22 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
                     $this->setErrors("cannot specify $field if event_type_id=$event_type_id");
                 }
                 // check necessary && unspecified values
-                $this->vars[$field]['required'] = (bool)$eventValidFields[$event_type_id][$i];
+                $this->vars[$field]['required'] = (bool) $eventValidFields[$event_type_id][$i];
             }
         }
+
         return $result && parent::cleanVars();
     }
 }
 
 /**
  * @brief Handler object of XooNIps event
- *
- *
  */
 class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmEventLogHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -545,10 +542,10 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * create a new object
+     * create a new object.
      *
-     * @access public
      * @param bool $isNew mark the new object as 'new'?
+     *
      * @return bool|object
      */
     public function create($isNew = true)
@@ -561,13 +558,13 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
             $obj->set('remote_host', $this->getRemoteHost());
             $obj->set('timestamp', time());
         }
+
         return $obj;
     }
 
     /**
-     * get remote host
+     * get remote host.
      *
-     * @access private
      * @return string remote host name or address
      */
     public function getRemoteHost()
@@ -589,66 +586,69 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
                 $remote_host = gethostbyaddr($remote_host);
             }
         }
+
         return $remote_host;
     }
 
     /**
-     * get execution user id
+     * get execution user id.
      *
-     * @access private
      * @return int execution user id
      */
     public function getExecUid()
     {
         $exec_uid = UID_GUEST;
         if (isset($GLOBALS['xoopsUser']) && is_object($GLOBALS['xoopsUser'])) {
-            $exec_uid = (int)$GLOBALS['xoopsUser']->getVar('uid', 'n');
+            $exec_uid = (int) $GLOBALS['xoopsUser']->getVar('uid', 'n');
         }
+
         return $exec_uid;
     }
 
     /**
-     * record login failure event (ETID_LOGIN_FAILURE: 1)
+     * record login failure event (ETID_LOGIN_FAILURE: 1).
      *
-     * @access public
      * @param string $uname trying login uname
+     *
      * @return bool false if failure
      */
     public function recordLoginFailureEvent($uname)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_LOGIN_FAILURE);
         $obj->set('exec_uid', UID_GUEST);
         $obj->set('additional_info', $uname);
+
         return $this->insert($obj, true);
     }
 
     /**
-     * record login success event (ETID_LOGIN_SUCCESS: 2)
+     * record login success event (ETID_LOGIN_SUCCESS: 2).
      *
-     * @access public
      * @param int $uid login user id
+     *
      * @return bool false if failure
      */
     public function recordLoginSuccessEvent($uid)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_LOGIN_SUCCESS);
         $obj->set('exec_uid', $uid);
+
         return $this->insert($obj, true);
     }
 
     /**
-     * record logout event (ETID_LOGOUT: 3)
+     * record logout event (ETID_LOGOUT: 3).
      *
-     * @access public
      * @param int $uid       logout user id
      * @param int $timestamp logout timestamp for session GC
+     *
      * @return bool false if failure
      */
     public function recordLogoutEvent($uid, $timestamp = null)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_LOGOUT);
         $obj->set('exec_uid', $uid);
         if (null !== $timestamp) {
@@ -660,63 +660,66 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * record insert item event (ETID_INSERT_ITEM: 4)
+     * record insert item event (ETID_INSERT_ITEM: 4).
      *
-     * @access public
      * @param int $item_id inserted item id
+     *
      * @return bool false if failure
      */
     public function recordInsertItemEvent($item_id)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_INSERT_ITEM);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('item_id', $item_id);
+
         return $this->insert($obj);
     }
 
     /**
-     * record update item event (ETID_UPDATE_ITEM: 5)
+     * record update item event (ETID_UPDATE_ITEM: 5).
      *
-     * @access public
      * @param int $item_id updated item id
+     *
      * @return bool false if failure
      */
     public function recordUpdateItemEvent($item_id)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_UPDATE_ITEM);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('item_id', $item_id);
+
         return $this->insert($obj);
     }
 
     /**
-     * record delete item event (ETID_DELETE_ITEM: 6)
+     * record delete item event (ETID_DELETE_ITEM: 6).
      *
-     * @access public
      * @param int $item_id deleted item id
+     *
      * @return bool false if failure
      */
     public function recordDeleteItemEvent($item_id)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_DELETE_ITEM);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('item_id', $item_id);
+
         return $this->insert($obj);
     }
 
     /**
-     * record view item event (ETID_VIEW_ITEM: 7)
+     * record view item event (ETID_VIEW_ITEM: 7).
      *
-     * @access public
      * @param int $item_id viewed item id
+     *
      * @return bool false if failure
      */
     public function recordViewItemEvent($item_id)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_VIEW_ITEM);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('item_id', $item_id);
@@ -725,16 +728,16 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * record view item event (ETID_DOWNLOAD_FILE: 8)
+     * record view item event (ETID_DOWNLOAD_FILE: 8).
      *
-     * @access public
      * @param int $item_id downloaded item id
      * @param int $file_id downloaded file id
+     *
      * @return bool false if failure
      */
     public function recordDownloadFileEvent($item_id, $file_id)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_DOWNLOAD_FILE);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('item_id', $item_id);
@@ -744,239 +747,251 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * record request certify item event (ETID_REQUEST_CERTIFY_ITEM: 9)
+     * record request certify item event (ETID_REQUEST_CERTIFY_ITEM: 9).
      *
-     * @access public
      * @param int $item_id  requested item id
      * @param int $index_id requested index id
+     *
      * @return bool false if failure
      */
     public function recordRequestCertifyItemEvent($item_id, $index_id)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_REQUEST_CERTIFY_ITEM);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('item_id', $item_id);
         $obj->set('index_id', $index_id);
+
         return $this->insert($obj);
     }
 
     /**
-     * record insert index event (ETID_INSERT_INDEX: 10)
+     * record insert index event (ETID_INSERT_INDEX: 10).
      *
-     * @access public
      * @param int $index_id inserted index id
+     *
      * @return bool false if failure
      */
     public function recordInsertIndexEvent($index_id)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_INSERT_INDEX);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('index_id', $index_id);
+
         return $this->insert($obj);
     }
 
     /**
-     * record update index event (ETID_UPDATE_INDEX: 11)
+     * record update index event (ETID_UPDATE_INDEX: 11).
      *
-     * @access public
      * @param int $index_id updated index id
+     *
      * @return bool false if failure
      */
     public function recordUpdateIndexEvent($index_id)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_UPDATE_INDEX);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('index_id', $index_id);
+
         return $this->insert($obj);
     }
 
     /**
-     * record delete index event (ETID_DELETE_INDEX: 12)
+     * record delete index event (ETID_DELETE_INDEX: 12).
      *
-     * @access public
      * @param int $index_id deleted index id
+     *
      * @return bool false if failure
      */
     public function recordDeleteIndexEvent($index_id)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_DELETE_INDEX);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('index_id', $index_id);
+
         return $this->insert($obj);
     }
 
     /**
-     * record certify item event (ETID_CERTIFY_ITEM: 13)
+     * record certify item event (ETID_CERTIFY_ITEM: 13).
      *
-     * @access public
      * @param int $item_id  certified item id
      * @param int $index_id certified index id
+     *
      * @return bool false if failure
      */
     public function recordCertifyItemEvent($item_id, $index_id)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_CERTIFY_ITEM);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('item_id', $item_id);
         $obj->set('index_id', $index_id);
+
         return $this->insert($obj);
     }
 
     /**
-     * record certify item event (ETID_REJECT_ITEM: 14)
+     * record certify item event (ETID_REJECT_ITEM: 14).
      *
-     * @access public
      * @param int $item_id  rejected item id
      * @param int $index_id rejected index id
+     *
      * @return bool false if failure
      */
     public function recordRejectItemEvent($item_id, $index_id)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_REJECT_ITEM);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('item_id', $item_id);
         $obj->set('index_id', $index_id);
+
         return $this->insert($obj);
     }
 
     /**
-     * record request insert account event (ETID_REQUEST_INSERT_ACCOUNT: 15)
+     * record request insert account event (ETID_REQUEST_INSERT_ACCOUNT: 15).
      *
-     * @access public
      * @param int $uid requested user id
+     *
      * @return bool false if failure
      */
     public function recordRequestInsertAccountEvent($uid)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_REQUEST_INSERT_ACCOUNT);
         $obj->set('uid', $uid);
+
         return $this->insert($obj);
     }
 
     /**
-     * record certify account event (ETID_CERTIFY_ACCOUNT: 16)
+     * record certify account event (ETID_CERTIFY_ACCOUNT: 16).
      *
-     * @access public
      * @param int $uid certified user id
+     *
      * @return bool false if failure
      */
     public function recordCertifyAccountEvent($uid)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_CERTIFY_ACCOUNT);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('uid', $uid);
+
         return $this->insert($obj);
     }
 
     /**
-     * record insert group event (ETID_INSERT_GROUP: 17)
+     * record insert group event (ETID_INSERT_GROUP: 17).
      *
-     * @access public
      * @param int $gid created group id
+     *
      * @return bool false if failure
      */
     public function recordInsertGroupEvent($gid)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_INSERT_GROUP);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('gid', $gid);
+
         return $this->insert($obj);
     }
 
     /**
-     * record update group event (ETID_UPDATE_GROUP: 18)
+     * record update group event (ETID_UPDATE_GROUP: 18).
      *
-     * @access public
      * @param int $gid updated group id
+     *
      * @return bool false if failure
      */
     public function recordUpdateGroupEvent($gid)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_UPDATE_GROUP);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('gid', $gid);
+
         return $this->insert($obj);
     }
 
     /**
-     * record delete group event (ETID_DELETE_GROUP: 19)
+     * record delete group event (ETID_DELETE_GROUP: 19).
      *
-     * @access public
      * @param int $gid deleted group id
+     *
      * @return bool false if failure
      */
     public function recordDeleteGroupEvent($gid)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_DELETE_GROUP);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('gid', $gid);
+
         return $this->insert($obj);
     }
 
     /**
-     * record insert group member event (ETID_INSERT_GROUP_MEMBER: 20)
+     * record insert group member event (ETID_INSERT_GROUP_MEMBER: 20).
      *
-     * @access public
      * @param int $uid subscribed user id
      * @param int $gid subscribed group id
+     *
      * @return bool false if failure
      */
     public function recordInsertGroupMemberEvent($uid, $gid)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_INSERT_GROUP_MEMBER);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('uid', $uid);
         $obj->set('gid', $gid);
+
         return $this->insert($obj);
     }
 
     /**
-     * record delete group member event (ETID_DELETE_GROUP_MEMBER: 21)
+     * record delete group member event (ETID_DELETE_GROUP_MEMBER: 21).
      *
-     * @access public
      * @param int $uid unsubscribed user id
      * @param int $gid unsubscribed group id
+     *
      * @return bool false if failure
      */
     public function recordDeleteGroupMemberEvent($uid, $gid)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_DELETE_GROUP_MEMBER);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('uid', $uid);
         $obj->set('gid', $gid);
+
         return $this->insert($obj);
     }
 
     /**
-     * record view top page event (ETID_VIEW_TOP_PAGE: 22)
+     * record view top page event (ETID_VIEW_TOP_PAGE: 22).
      *
-     * @access public
      * @return bool false if failure
      */
     public function recordViewTopPageEvent()
     {
         // get start page script name
         global $xoopsRequestUri;
-        $myxoopsConfig =  xoonips_get_xoops_configs(XOOPS_CONF);
-        $startpage_url = XOOPS_URL . '/index.php';
+        $myxoopsConfig = xoonips_get_xoops_configs(XOOPS_CONF);
+        $startpage_url = XOOPS_URL.'/index.php';
         if (isset($myxoopsConfig['startpage']) && $myxoopsConfig['startpage'] != '' && $myxoopsConfig['startpage'] != '--') {
-            $moduleHandler     = xoops_getHandler('module');
-            $startpage_module  = $moduleHandler->get($myxoopsConfig['startpage']);
+            $moduleHandler = xoops_getHandler('module');
+            $startpage_module = $moduleHandler->get($myxoopsConfig['startpage']);
             $startpage_dirname = $startpage_module->dirname();
-            $startpage_url     = XOOPS_URL . '/modules/' . $startpage_dirname . '/index.php';
+            $startpage_url = XOOPS_URL.'/modules/'.$startpage_dirname.'/index.php';
         }
         $startpage_script = '';
         if (preg_match('/^(\\S+):\\/\\/([^\\/]+)((\\/[^\\/]+)*\\/index.php)$/', $startpage_url, $matches)) {
@@ -991,7 +1006,7 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
         }
 
         // record event
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_VIEW_TOP_PAGE);
         $obj->set('exec_uid', $this->getExecUid());
         // force insertion
@@ -999,37 +1014,38 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * record xoonips search event (ETID_QUICK_SEARCH: 23)
+     * record xoonips search event (ETID_QUICK_SEARCH: 23).
      *
-     * @access public
      * @param string     $search_itemtype 'all' or itemtype name
      * @param string     $keyword         searched keyword
      * @param int|string $repository_url  repository url to search
+     *
      * @return bool false if failure
      */
     public function recordQuickSearchEvent($search_itemtype, $keyword, $repository_url = '')
     {
-        $search_keyword = 'search_itemtype=' . urlencode($search_itemtype) . '&keyword=' . urlencode($keyword)
-                          . (empty($repository_url) ? '' : '&repository_url=' . urlencode($repository_url));
-        $obj            =  $this->create();
+        $search_keyword = 'search_itemtype='.urlencode($search_itemtype).'&keyword='.urlencode($keyword)
+                          .(empty($repository_url) ? '' : '&repository_url='.urlencode($repository_url));
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_QUICK_SEARCH);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('search_keyword', $search_keyword);
         // force insertion
         $result = $this->insert($obj, true);
+
         return $result;
     }
 
     /**
-     * record advanced search event (ETID_ADVANCED_SEARCH: 24)
+     * record advanced search event (ETID_ADVANCED_SEARCH: 24).
      *
-     * @access public
      * @param array $keywords searched keywords
+     *
      * @return bool false if failure
      */
     public function recordAdvancedSearchEvent($keywords)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_ADVANCED_SEARCH);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('search_keyword', implode('&', $keywords));
@@ -1038,34 +1054,35 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * record start su event (ETID_START_SU: 25)
+     * record start su event (ETID_START_SU: 25).
      *
-     * @access public
      * @param int $original_uid original user id
      * @param int $target_uid   switched user id
+     *
      * @return bool false if failure
      */
     public function recordStartSuEvent($original_uid, $target_uid)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_START_SU);
         $obj->set('exec_uid', $original_uid);
         $obj->set('uid', $target_uid);
+
         return $this->insert($obj);
     }
 
     /**
-     * record end su event (ETID_END_SU: 26)
+     * record end su event (ETID_END_SU: 26).
      *
-     * @access public
      * @param int $original_uid original user id
      * @param int $target_uid   switched user id
      * @param int $timestamp    end su timestamp for session GC
+     *
      * @return bool false if failure
      */
     public function recordEndSuEvent($original_uid, $target_uid, $timestamp = null)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_END_SU);
         $obj->set('exec_uid', $original_uid);
         $obj->set('uid', $target_uid);
@@ -1078,144 +1095,154 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * record request transfer item event (ETID_REQUEST_TRANSFER_ITEM: 27)
+     * record request transfer item event (ETID_REQUEST_TRANSFER_ITEM: 27).
      *
-     * @access   public
      * @param int $item_id requested item id
      * @param     $to_uid
+     *
      * @return bool false if failure
+     *
      * @internal param int $uid requested to user id
      */
     public function recordRequestTransferItemEvent($item_id, $to_uid)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_REQUEST_TRANSFER_ITEM);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('item_id', $item_id);
         $obj->set('uid', $to_uid);
+
         return $this->insert($obj);
     }
 
     /**
-     * record transfer item event (ETID_TRANSFER_ITEM: 28)
+     * record transfer item event (ETID_TRANSFER_ITEM: 28).
      *
-     * @access public
      * @param int $item_id  transferred item id
      * @param int $index_id transferred index id
      * @param int $to_uid   transferred to user id
+     *
      * @return bool false if failure
      */
     public function recordTransferItemEvent($item_id, $index_id, $to_uid)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_TRANSFER_ITEM);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('item_id', $item_id);
         $obj->set('index_id', $index_id);
         $obj->set('uid', $to_uid);
+
         return $this->insert($obj);
     }
 
     /**
-     * record reject transfer item event (ETID_REJECT_TRANSFER_ITEM: 29)
+     * record reject transfer item event (ETID_REJECT_TRANSFER_ITEM: 29).
      *
-     * @access public
      * @param int $item_id rejected item id
+     *
      * @return bool false if failure
      */
     public function recordRejectTransferItemEvent($item_id)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_REJECT_TRANSFER_ITEM);
         $obj->set('exec_uid', $this->getExecUid());
         $obj->set('item_id', $item_id);
+
         return $this->insert($obj);
     }
 
     /**
-     * record certify group index event (ETID_CERTIFY_GROUP_INDEX: 30)
+     * record certify group index event (ETID_CERTIFY_GROUP_INDEX: 30).
      *
-     * @access public
      * @param int $group_index_id certified group index id
+     *
      * @return bool false if failure
      */
     public function recordCertifyGroupIndexEvent($group_index_id)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_CERTIFY_GROUP_INDEX);
         $obj->set('exec_uid', $this->getExecUid());
-        $obj->set('index_id', (int)$group_index_id);
+        $obj->set('index_id', (int) $group_index_id);
+
         return $this->insert($obj);
     }
 
     /**
-     * record reject group index event (ETID_REJECT_GROUP_INDEX: 31)
+     * record reject group index event (ETID_REJECT_GROUP_INDEX: 31).
      *
-     * @access public
      * @param int $group_index_id rejected group index id
+     *
      * @return bool false if failure
      */
     public function recordRejectGroupIndexEvent($group_index_id)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_REJECT_GROUP_INDEX);
         $obj->set('exec_uid', $this->getExecUid());
-        $obj->set('index_id', (int)$group_index_id);
+        $obj->set('index_id', (int) $group_index_id);
+
         return $this->insert($obj);
     }
 
     /**
-     * record group index to public event (ETID_GROUP_INDEX_TO_PUBLIC: 32)
+     * record group index to public event (ETID_GROUP_INDEX_TO_PUBLIC: 32).
      *
-     * @access   public
      * @param     $public_index_id
-     * @param int $group_index_id group index id that is added to public index
+     * @param int $group_index_id  group index id that is added to public index
      * @param int $gid
+     *
      * @return bool false if failure
+     *
      * @internal param int $pubilc_index_id public index id that add group index to
      */
     public function recordGroupIndexToPublicEvent($public_index_id, $group_index_id, $gid)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_GROUP_INDEX_TO_PUBLIC);
         $obj->set('exec_uid', $this->getExecUid());
-        $obj->set('index_id', (int)$public_index_id);
-        $obj->set('gid', (int)$gid);
-        $obj->set('additional_info', (int)$group_index_id);
+        $obj->set('index_id', (int) $public_index_id);
+        $obj->set('gid', (int) $gid);
+        $obj->set('additional_info', (int) $group_index_id);
+
         return $this->insert($obj);
     }
 
     /**
-     * record delete account event (ETID_DELETE_ACCOUNT: 33)
+     * record delete account event (ETID_DELETE_ACCOUNT: 33).
      *
-     * @access public
-     * @param int $uid user id to be deleted.
+     * @param int $uid user id to be deleted
+     *
      * @return bool false if failure
      */
     public function recordDeleteAccountEvent($uid)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_DELETE_ACCOUNT);
         $obj->set('exec_uid', $this->getExecUid());
-        $obj->set('uid', (int)$uid);
+        $obj->set('uid', (int) $uid);
+
         return $this->insert($obj);
     }
 
     /**
-     * record reject transfer item event (ETID_UNCERTIFY_ACCOUNT: 34)
+     * record reject transfer item event (ETID_UNCERTIFY_ACCOUNT: 34).
      *
-     * @access public
      * @param int    $uid      uncertified user id
      * @param string $comments reviewers' comments
+     *
      * @return bool false if failure
      */
     public function recordUncertifyAccountEvent($uid, $comments)
     {
-        $obj =  $this->create();
+        $obj = $this->create();
         $obj->set('event_type_id', ETID_UNCERTIFY_ACCOUNT);
         $obj->set('exec_uid', $this->getExecUid());
-        $obj->set('uid', (int)$uid);
+        $obj->set('uid', (int) $uid);
         $obj->set('additional_info', $comments);
+
         return $this->insert($obj);
     }
 }

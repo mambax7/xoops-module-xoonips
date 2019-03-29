@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.4 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /*
 alter table following from xoonips 3.24
@@ -39,14 +37,14 @@ ALTER TABLE `x_xoonips_search_cache_item` ADD `matchfor_file`  TINYINT( 1 ) NOT 
 */
 
 /**
- * class of XooNIps Search Cache Item
+ * class of XooNIps Search Cache Item.
+ *
  * @li getVar( 'search_cache_item_id' ) : primary key
  * @li getVar( 'search_cache_id' ) :search cache ID
  * @li getVar( 'item_id' ) : item id
  * @li getVar( 'matchfor_index' ) : match for index
  * @li getVar( 'matchfor_item' )  : match for item
  * @li getVar( 'matchfor_file' )  : match for file
- *
  */
 class XooNIpsOrmSearchCacheItem extends XooNIpsTableObject
 {
@@ -66,14 +64,13 @@ class XooNIpsOrmSearchCacheItem extends XooNIpsTableObject
 }
 
 /**
- *
- * XooNIps search cache item Handler class
- *
+ * XooNIps search cache item Handler class.
  */
 class XooNIpsOrmSearchCacheItemHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmSearchCacheItemHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

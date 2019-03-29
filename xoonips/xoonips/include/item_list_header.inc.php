@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.8 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -30,13 +30,14 @@
  */
 function xoonips_item_list_header()
 {
-    $formdata      = xoonips_getUtility('formdata');
-    $order_by      = $formdata->getValue('post', 'order_by', 's', false);
-    $order_dir     = $formdata->getValue('post', 'order_dir', 'i', false);
+    $formdata = xoonips_getUtility('formdata');
+    $order_by = $formdata->getValue('post', 'order_by', 's', false);
+    $order_dir = $formdata->getValue('post', 'order_dir', 'i', false);
     $item_per_page = $formdata->getValue('post', 'item_per_page', 'i', false);
+
     return array(
-        'order_by'      => $order_by,
-        'order_dir'     => $order_dir,
-        'item_per_page' => $item_per_page
+        'order_by' => $order_by,
+        'order_dir' => $order_dir,
+        'item_per_page' => $item_per_page,
     );
 }

@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.2 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,66 +24,63 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * multiple cascadable Join Criteria Class
+ * multiple cascadable Join Criteria Class.
  *
  * this class is based on 'XoopsJoinCriteria' by
+ *
  * @copyright copyright (c) 2004-2006 Kowa.ORG
  * @author    Nobuki Kowa <Nobuki@Kowa.ORG>
  */
 class XooNIpsJoinCriteria
 {
-
     /**
-     * sub table name
+     * sub table name.
+     *
      * @var string
-     * @access private
      */
     public $_subtable_name;
 
     /**
-     * field name of main table
+     * field name of main table.
+     *
      * @var string
-     * @access private
      */
     public $_main_field;
 
     /**
-     * field name of sub table
+     * field name of sub table.
+     *
      * @var string
-     * @access private
      */
     public $_sub_field;
 
     /**
-     * join type
+     * join type.
+     *
      * @var string
-     * @access private
      */
     public $_join_type;
 
     /**
-     * array of cascading next join criteria
+     * array of cascading next join criteria.
+     *
      * @var array
-     * @access private
      */
     public $_next_join;
 
     /**
-     * assigned alias name of sub table
+     * assigned alias name of sub table.
+     *
      * @var string
-     * @access private
      */
     public $_subtable_alias;
 
     /**
-     * constructor
+     * constructor.
      *
-     * @access public
      * @param string $subtable_name  joining sub table name
      * @param string $main_field     field name of main table
      * @param string $sub_field      field name of sub table
@@ -92,40 +89,41 @@ class XooNIpsJoinCriteria
      */
     public function __construct($subtable_name, $main_field, $sub_field, $join_type = 'LEFT', $subtable_alias = false)
     {
-        $this->_subtable_name  = $subtable_name;
-        $this->_main_field     = $main_field;
-        $this->_sub_field      = $sub_field;
-        $this->_join_type      = $join_type;
-        $this->_next_join      = array();
+        $this->_subtable_name = $subtable_name;
+        $this->_main_field = $main_field;
+        $this->_sub_field = $sub_field;
+        $this->_join_type = $join_type;
+        $this->_next_join = array();
         $this->_subtable_alias = $subtable_alias;
     }
 
     /**
-     * append next JOIN criteria
+     * append next JOIN criteria.
      *
-     * @access   public
-     * @param object $join_criteria          object instance of next join criteria
+     * @param object $join_criteria           object instance of next join criteria
      * @param bool   $next_maintable_name
      * @param bool   $next_maintable_is_alias flag for next main table name is alias
+     *
      * @return string
+     *
      * @internal param joining $string main table name, false if use default main table
      */
     public function cascade($join_criteria, $next_maintable_name = false, $next_maintable_is_alias = false)
     {
         $this->_next_join[] = array(
             'join_criteria' => $join_criteria,
-            'main_table'    => $next_maintable_name,
-            'is_alias'      => $next_maintable_is_alias,
+            'main_table' => $next_maintable_name,
+            'is_alias' => $next_maintable_is_alias,
         );
     }
 
     /**
-     * Make a sql JOIN clause
+     * Make a sql JOIN clause.
      *
-     * @access public
-     * @param XoopsDatabase $db                xoops database object instance
-     * @param string $maintable_name     main table name
-     * @param bool   $maintable_is_alias flag for main table name is alias
+     * @param XoopsDatabase $db                 xoops database object instance
+     * @param string        $maintable_name     main table name
+     * @param bool          $maintable_is_alias flag for main table name is alias
+     *
      * @return string
      **/
     public function render(XoopsDatabase $db, $maintable_name, $maintable_is_alias)
@@ -137,17 +135,17 @@ class XooNIpsJoinCriteria
         }
         $my_subtable_name = $db->prefix($this->_subtable_name);
         if ($this->_subtable_alias) {
-            $my_sub_alias_def = 'AS ' . $this->_subtable_alias;
-            $my_sub_alias     = $this->_subtable_alias;
+            $my_sub_alias_def = 'AS '.$this->_subtable_alias;
+            $my_sub_alias = $this->_subtable_alias;
         } else {
             $my_sub_alias_def = '';
-            $my_sub_alias     = $my_subtable_name;
+            $my_sub_alias = $my_subtable_name;
         }
         $join_str = sprintf(' %s JOIN `%s` %s ON `%s`.`%s`=`%s`.`%s` ', $this->_join_type, $my_subtable_name, $my_sub_alias_def, $my_maintable_name,
                             $this->_main_field, $my_sub_alias, $this->_sub_field);
         foreach ($this->_next_join as $next_join) {
-            $next_join_criteria      =  $next_join['join_criteria'];
-            $next_maintable_name     = $next_join['main_table'];
+            $next_join_criteria = $next_join['join_criteria'];
+            $next_maintable_name = $next_join['main_table'];
             $next_maintable_is_alias = $next_join['is_alias'];
             if ($next_maintable_name) {
                 $join_str .= $next_join_criteria->render($db, $next_maintable_name, $next_maintable_is_alias);
@@ -155,55 +153,54 @@ class XooNIpsJoinCriteria
                 $join_str .= $next_join_criteria->render($db, $maintable_name, $maintable_is_alias);
             }
         }
+
         return $join_str;
     }
 }
 
 /**
- * a criteria class for full text search
+ * a criteria class for full text search.
  */
 class XooNIpsFulltextCriteria extends CriteriaElement
 {
-
     /**
-     * table prefix(es)
+     * table prefix(es).
+     *
      * @var string
-     * @access private
      */
     public $_prefix;
 
     /**
-     * search column(s)
+     * search column(s).
+     *
      * @var mixed
-     * @access private
      */
     public $_column;
 
     /**
-     * expr part of SQL : MATCH (...) AGAINST ( 'expr' )
+     * expr part of SQL : MATCH (...) AGAINST ( 'expr' ).
+     *
      * @var string
-     * @access private
      */
     public $_expr;
 
     /**
-     * flag for 'IN BOOLEAN MODE'
+     * flag for 'IN BOOLEAN MODE'.
+     *
      * @var bool
-     * @access private
      */
     public $_in_boolean_mode = false;
 
     /**
-     * flag for 'WITH QUERY EXPANSION'
+     * flag for 'WITH QUERY EXPANSION'.
+     *
      * @var bool
-     * @access private
      */
     public $_with_query_expansion = false;
 
     /**
-     * constructor
+     * constructor.
      *
-     * @access public
      * @param mixed  $column          full-text search column(s)
      * @param string $expr            full-text search expression
      * @param bool   $in_boolean_mode flag for 'IN BOOLEAN MODE'
@@ -211,16 +208,15 @@ class XooNIpsFulltextCriteria extends CriteriaElement
      **/
     public function __construct($column, $expr, $in_boolean_mode, $prefix = '')
     {
-        $this->_column          = $column;
-        $this->_expr            = $expr;
-        $this->_in_boolean_mode = (boolean)$in_boolean_mode;
-        $this->_prefix          = $prefix;
+        $this->_column = $column;
+        $this->_expr = $expr;
+        $this->_in_boolean_mode = (bool) $in_boolean_mode;
+        $this->_prefix = $prefix;
     }
 
     /**
-     * set optional flag for 'IN BOOLEAN MODE'
+     * set optional flag for 'IN BOOLEAN MODE'.
      *
-     * @access public
      * @param bool $flag flag for 'IN BOOLEAN MODE'
      */
     public function setInBooleanMode($flag)
@@ -228,13 +224,12 @@ class XooNIpsFulltextCriteria extends CriteriaElement
         if ($flag && $this->_with_query_expansion) {
             $this->_with_query_expansion = false;
         }
-        $this->_in_boolean_mode = (boolean)$flag;
+        $this->_in_boolean_mode = (bool) $flag;
     }
 
     /**
-     * set optional flag for 'WITH QUERY EXPANSION'
+     * set optional flag for 'WITH QUERY EXPANSION'.
      *
-     * @access public
      * @param bool $flag flag for 'WITH QUERY EXPANSION'
      */
     public function setWithQueryExpansion($flag)
@@ -242,13 +237,12 @@ class XooNIpsFulltextCriteria extends CriteriaElement
         if ($flag && $this->_in_boolean_mode) {
             $this->_in_boolean_mode = false;
         }
-        $this->_with_query_expansion = (boolean)$flag;
+        $this->_with_query_expansion = (bool) $flag;
     }
 
     /**
-     * Make a full-text search sql condition string
+     * Make a full-text search sql condition string.
      *
-     * @access public
      * @return string
      **/
     public function render()
@@ -256,19 +250,21 @@ class XooNIpsFulltextCriteria extends CriteriaElement
         $columns = is_array($this->_column) ? $this->_column : array($this->_column);
         $clauses = array();
         foreach ($columns as $key => $column) {
-            $prefix    = is_array($this->_prefix) ? $this->_prefix[$key] : $this->_prefix;
+            $prefix = is_array($this->_prefix) ? $this->_prefix[$key] : $this->_prefix;
             $clauses[] = empty($prefix) ? sprintf('`%s`', $column) : sprintf('`%s`.`%s`', $prefix, $column);
         }
         $clause = implode(',', $clauses);
-        $expr   = trim($this->_expr);
-        $flag   = $this->_in_boolean_mode ? 'IN BOOLEAN MODE ' : ($this->_with_query_expansion ? 'WITH QUERY EXPANSION ' : '');
+        $expr = trim($this->_expr);
+        $flag = $this->_in_boolean_mode ? 'IN BOOLEAN MODE ' : ($this->_with_query_expansion ? 'WITH QUERY EXPANSION ' : '');
+
         return sprintf('MATCH ( %s ) AGAINST ( \'%s\' %s)', $clause, $expr, $flag);
     }
 
     /**
-     * Generate an LDAP filter from criteria
+     * Generate an LDAP filter from criteria.
      *
      * @return string
+     *
      * @deprecated
      */
     public function renderLdap()
@@ -278,13 +274,14 @@ class XooNIpsFulltextCriteria extends CriteriaElement
     }
 
     /**
-     * Make the criteria into a a SQL "WHERE" clause
+     * Make the criteria into a a SQL "WHERE" clause.
      *
-     * @return  string
+     * @return string
      */
     public function renderWhere()
     {
         $ret = $this->render();
-        return ($ret != '') ? 'WHERE ' . $ret : $ret;
+
+        return ($ret != '') ? 'WHERE '.$ret : $ret;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.10 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,21 +25,21 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/action.class.php';
+require_once __DIR__.'/../base/action.class.php';
 
 /**
- * Class XooNIpsActionOaipmhSearchDetail
+ * Class XooNIpsActionOaipmhSearchDetail.
  */
 class XooNIpsActionOaipmhSearchDetail extends XooNIpsAction
 {
-    public $_identifier      = null;
-    public $_orderDir        = 'asc';
-    public $_orderBy         = 'title';
-    public $_page            = 0;
-    public $_searchCacheId   = 0;
+    public $_identifier = null;
+    public $_orderDir = 'asc';
+    public $_orderBy = 'title';
+    public $_page = 0;
+    public $_searchCacheId = 0;
     public $_metadataPerPage = 20;
-    public $_repositoryId    = 0;
-    public $_keyword         = null;
+    public $_repositoryId = 0;
+    public $_keyword = null;
 
     /**
      * XooNIpsActionOaipmhSearchDetail constructor.
@@ -49,9 +49,6 @@ class XooNIpsActionOaipmhSearchDetail extends XooNIpsAction
         parent::__construct();
     }
 
-    /**
-     * @return null
-     */
     public function _get_logic_name()
     {
         return null;
@@ -74,7 +71,7 @@ class XooNIpsActionOaipmhSearchDetail extends XooNIpsAction
 
     public function doAction()
     {
-        $textutil                     = xoonips_getUtility('text');
+        $textutil = xoonips_getUtility('text');
         $this->_view_params['url_to_back']
                                       = 'oaipmh_search.php?action=search';
         $this->_view_params['repository_name']
@@ -83,58 +80,59 @@ class XooNIpsActionOaipmhSearchDetail extends XooNIpsAction
                                       = $this->getMetadataArray($this->_formdata->getValue('post', 'identifier', 's', false));
         $this->_view_params['hidden'] = array(
             array(
-                'name'  => 'search_cache_id',
-                'value' => $this->_formdata->getValue('post', 'search_cache_id', 'i', false)
+                'name' => 'search_cache_id',
+                'value' => $this->_formdata->getValue('post', 'search_cache_id', 'i', false),
             ),
             array(
-                'name'  => 'search_flag',
-                'value' => '0'
+                'name' => 'search_flag',
+                'value' => '0',
             ),
             array(
-                'name'  => 'repository_id',
-                'value' => $this->_formdata->getValue('post', 'repository_id', 'i', false)
+                'name' => 'repository_id',
+                'value' => $this->_formdata->getValue('post', 'repository_id', 'i', false),
             ),
             array(
-                'name'  => 'keyword',
-                'value' => $textutil->html_special_chars($this->_formdata->getValue('post', 'keyword', 's', false))
+                'name' => 'keyword',
+                'value' => $textutil->html_special_chars($this->_formdata->getValue('post', 'keyword', 's', false)),
             ),
             array(
-                'name'  => 'order_by',
-                'value' => $textutil->html_special_chars($this->_formdata->getValue('post', 'order_by', 's', false))
+                'name' => 'order_by',
+                'value' => $textutil->html_special_chars($this->_formdata->getValue('post', 'order_by', 's', false)),
             ),
             array(
-                'name'  => 'order_dir',
-                'value' => $textutil->html_special_chars($this->_formdata->getValue('post', 'order_dir', 's', false))
+                'name' => 'order_dir',
+                'value' => $textutil->html_special_chars($this->_formdata->getValue('post', 'order_dir', 's', false)),
             ),
             array(
-                'name'  => 'page',
-                'value' => $this->_formdata->getValue('post', 'page', 'i', false)
+                'name' => 'page',
+                'value' => $this->_formdata->getValue('post', 'page', 'i', false),
             ),
             array(
-                'name'  => 'metadata_per_page',
-                'value' => $this->_formdata->getValue('post', 'metadata_per_page', 'i', false)
-            )
+                'name' => 'metadata_per_page',
+                'value' => $this->_formdata->getValue('post', 'metadata_per_page', 'i', false),
+            ),
         );
     }
 
     /**
-     * metadata field array from search cache id
-     * @access private
+     * metadata field array from search cache id.
+     *
      * @param string $identifier
+     *
      * @return array of metadata
      */
     public function getMetadataArray($identifier)
     {
         $metadataHandler = xoonips_getOrmHandler('xoonips', 'oaipmh_metadata');
-        $metadata        = $metadataHandler->getObjects(new Criteria('identifier', $identifier));
+        $metadata = $metadataHandler->getObjects(new Criteria('identifier', $identifier));
         if (!$metadata) {
             return array();
         }
 
         $metadata_fieldHandler = xoonips_getOrmHandler('xoonips', 'oaipmh_metadata_field');
-        $criteria              = new Criteria('metadata_id', $metadata[0]->get('metadata_id'));
+        $criteria = new Criteria('metadata_id', $metadata[0]->get('metadata_id'));
         $criteria->setSort('ordernum');
-        $fields =  $metadata_fieldHandler->getObjects($criteria);
+        $fields = $metadata_fieldHandler->getObjects($criteria);
         if (!$fields) {
             return array();
         }
@@ -148,14 +146,15 @@ class XooNIpsActionOaipmhSearchDetail extends XooNIpsAction
     }
 
     /**
-     * get repository name of metadata
-     * @access private
+     * get repository name of metadata.
+     *
      * @param string $identifier identifier of metadata
+     *
      * @return repository|string
      */
     public function getRepositoryName($identifier)
     {
-        $metadataHandler   = xoonips_getOrmHandler('xoonips', 'oaipmh_metadata');
+        $metadataHandler = xoonips_getOrmHandler('xoonips', 'oaipmh_metadata');
         $repositoryHandler = xoonips_getOrmHandler('xoonips', 'oaipmh_repositories');
 
         $metadata = $metadataHandler->getObjects(new Criteria('identifier', $identifier));
@@ -167,20 +166,21 @@ class XooNIpsActionOaipmhSearchDetail extends XooNIpsAction
         if (!$repository || count($repository) == 0) {
             return '';
         }
+
         return $repository->getVar('repository_name', 's');
     }
 
     /**
-     *
-     * @access private
      * @param $id metadata identifier
+     *
      * @return bool true if valid metadata identifier
      */
     public function isValidMetadataId($id)
     {
         $handler = xoonips_getOrmHandler('xoonips', 'oaipmh_metadata');
 
-        $rows =  $handler->getObjects(new Criteria('identifier', addslashes($id)));
+        $rows = $handler->getObjects(new Criteria('identifier', addslashes($id)));
+
         return $rows && count($rows) > 0;
     }
 }

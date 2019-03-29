@@ -1,5 +1,4 @@
 <{* xnpurl register block *}>
-<{* $Revision: 1.12.4.1.2.4 $ *}>
 <table class="outer">
   <!-- Basic Information -->
   <tr>

@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.7 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2013 RIKEN, Japan All rights reserved.                //
@@ -43,14 +43,14 @@ class XNPBookOrmItemDetail extends XooNIpsTableObject
     // for column length check
     public $lengths
         = array(
-            'book_id'              => 10,
-            'classification'       => 30,
-            'editor'               => 255,
-            'publisher'            => 255,
-            'isbn'                 => 13,
-            'url'                  => 65535,
-            'attachment_dl_limit'  => 1,
-            'attachment_dl_notify' => 1
+            'book_id' => 10,
+            'classification' => 30,
+            'editor' => 255,
+            'publisher' => 255,
+            'isbn' => 13,
+            'url' => 65535,
+            'attachment_dl_limit' => 1,
+            'attachment_dl_notify' => 1,
         );
 
     /**
@@ -69,31 +69,32 @@ class XNPBookOrmItemDetail extends XooNIpsTableObject
     }
 
     /**
-     * get author objects of this item
+     * get author objects of this item.
+     *
      * @return XNPBookOrmAuthor[]
      */
     public function getAuthors()
     {
-        $handler  = xoonips_getOrmHandler('xnpbook', 'author');
+        $handler = xoonips_getOrmHandler('xnpbook', 'author');
         $criteria = new Criteria('book_id', $this->get('book_id'));
         $criteria->setSort('author_order');
         $result = $handler->getObjects($criteria);
         if ($result) {
             return $result;
         }
+
         return array();
     }
 }
 
 /**
  * @brief Handler class that create, insert, update, get and delete detail information
- *
- *
  */
 class XNPBookOrmItemDetailHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XNPBookOrmItemDetailHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

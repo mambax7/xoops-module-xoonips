@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.4 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 /**
- * Class XooNIpsItemEventListener
+ * Class XooNIpsItemEventListener.
  */
 class XooNIpsItemEventListener
 {

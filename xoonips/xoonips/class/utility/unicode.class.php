@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,30 +24,26 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * character set handling singleton class
+ * character set handling singleton class.
  *
  * @packpage  xoonips_utility
+ *
  * @copyright copyright &copy; 2008 RIKEN Japan
  */
 class XooNIpsUtilityUnicode extends XooNIpsUtility
 {
-
     /**
-     * unicode mapping
+     * unicode mapping.
+     *
      * @var array
-     * @access private
      */
     public $unicode_map = array();
 
     /**
-     * constructor
-     *
-     * @access public
+     * constructor.
      */
     public function __construct()
     {
@@ -55,33 +51,34 @@ class XooNIpsUtilityUnicode extends XooNIpsUtility
     }
 
     /**
-     * convert encoding with HTML numeric entities or url encoded string
+     * convert encoding with HTML numeric entities or url encoded string.
      *
-     * @access public
      * @param string $str           input utf8 string
      * @param string $to_encoding   output encoding
      * @param string $fallback      unmapped character encoding method
      *                              'h' : encode to HTML numeric entities
      *                              'u' : encode to UTF-8 based url string
      * @param string $from_encoding encoding of source string
+     *
      * @return string converted string
      */
     public function convert_encoding($str, $to_encoding, $fallback, $from_encoding = '')
     {
         $utf8 = $this->encode_utf8($str, $from_encoding);
+
         return $this->decode_utf8($utf8, $to_encoding, $fallback);
     }
 
     /**
      * decode utf8 string to other encoding with HTML numeric entities or url
-     * encoded string
+     * encoded string.
      *
-     * @access public
      * @param string $str         input utf8 string
      * @param string $to_encoding output encoding
      * @param string $fallback    unmapped character encoding method
      *                            'h' : encode to HTML numeric entities
      *                            'u' : encode to UTF-8 based url string
+     *
      * @return string converted string
      */
     public function decode_utf8($str, $to_encoding, $fallback)
@@ -115,15 +112,16 @@ class XooNIpsUtilityUnicode extends XooNIpsUtility
                 $ret = $this->_utf8_to_charset($str, 'US-ASCII', $fallback);
                 break;
         }
+
         return $ret;
     }
 
     /**
-     * convert encoding to UTF-8
+     * convert encoding to UTF-8.
      *
-     * @access public
      * @param string $str           input string
      * @param string $from_encoding encoding of source string
+     *
      * @return string converted UTF-8 string
      */
     public function encode_utf8($str, $from_encoding = '')
@@ -141,14 +139,14 @@ class XooNIpsUtilityUnicode extends XooNIpsUtility
     }
 
     /**
-     * convert encoding from UTF-8 to each charset with HTML numeric entities
+     * convert encoding from UTF-8 to each charset with HTML numeric entities.
      *
-     * @access private
      * @param string $utf8     input UTF-8 string
      * @param string $charset  output encoding
      * @param string $fallback unmapped character encoding method
      *                         'h' : encode to HTML numeric entities
      *                         'u' : encode to UTF-8 based url string
+     *
      * @return string converted string
      */
     public function _utf8_to_charset($utf8, $charset, $fallback)
@@ -157,19 +155,20 @@ class XooNIpsUtilityUnicode extends XooNIpsUtility
             return '';
         }
         $chars = unpack('C*', $utf8);
-        $cnt   = count($chars);
-        $res   = '';
-        for ($i = 1; $i <= $cnt; $i++) {
+        $cnt = count($chars);
+        $res = '';
+        for ($i = 1; $i <= $cnt; ++$i) {
             $res .= $this->_to_char($chars, $i, $charset, $fallback);
         }
+
         return $res;
     }
 
     /**
-     * load character set mapping file
+     * load character set mapping file.
      *
-     * @access private
      * @param string $charset name of character set
+     *
      * @return bool false if failure
      */
     public function _load_charset($charset)
@@ -178,11 +177,12 @@ class XooNIpsUtilityUnicode extends XooNIpsUtility
             return true;
             // already loaded
         }
-        $include_path = dirname(dirname(__DIR__)) . '/include';
-        $mapfile_path = $include_path . '/unicode/' . $charset . '.TXT';
-        $lines        = @file_get_contents($mapfile_path);
+        $include_path = dirname(dirname(__DIR__)).'/include';
+        $mapfile_path = $include_path.'/unicode/'.$charset.'.TXT';
+        $lines = @file_get_contents($mapfile_path);
         if (empty($lines)) {
-            error_log('Failed to read character set : ' . $charset);
+            error_log('Failed to read character set : '.$charset);
+
             return false;
             // map file not found
         }
@@ -193,52 +193,53 @@ class XooNIpsUtilityUnicode extends XooNIpsUtility
         $lines = explode("\n", $lines);
         foreach ($lines as $line) {
             if (preg_match('/^0x([A-Fa-f0-9]{1,4})\\s+0x([A-Fa-f0-9]{1,4})\\s*$/', $line, $parts)) {
-                $asc                                   = hexdec($parts[1]);
-                $unicode                               = hexdec($parts[2]);
+                $asc = hexdec($parts[1]);
+                $unicode = hexdec($parts[2]);
                 $this->unicode_map[$charset][$unicode] = $asc;
             }
         }
+
         return true;
     }
 
     /**
-     * return specific multibyte character
+     * return specific multibyte character.
      *
-     * @access private
      * @param int $num character code
+     *
      * @return string multibyte character
      */
     public function _my_chr($num)
     {
-        return ($num < 256) ? chr($num) : $this->_my_chr((int)($num / 256)) . chr($num % 256);
+        return ($num < 256) ? chr($num) : $this->_my_chr((int) ($num / 256)).chr($num % 256);
     }
 
     /**
-     * return UTF-8 mapped multibyte character
+     * return UTF-8 mapped multibyte character.
      *
-     * @access private
      * @param array  $chars    unicode characters
      * @param int    $idx      character index of $chars array
      * @param string $charset  conversion character set
      * @param string $fallback unmapped character encoding method
      *                         'h' : encode to HTML numeric entities
      *                         'u' : encode to UTF-8 based url string
+     *
      * @return string multibyte character
      */
     public function _to_char($chars, $idx, $charset, $fallback)
     {
-        $idx_orig =& $idx;
+        $idx_orig = &$idx;
         // get unicode
         if (($chars[$idx] >= 240) && ($chars[$idx] <= 255)) {
             // 4 bytes
-            $unicode = ((int)($chars[$idx] - 240) << 18) + ((int)($chars[++$idx] - 128) << 12) + ((int)($chars[++$idx] - 128) << 6)
-                       + ((int)($chars[++$idx] - 128));
+            $unicode = ((int) ($chars[$idx] - 240) << 18) + ((int) ($chars[++$idx] - 128) << 12) + ((int) ($chars[++$idx] - 128) << 6)
+                       + ((int) ($chars[++$idx] - 128));
         } elseif (($chars[$idx] >= 224) && ($chars[$idx] <= 239)) {
             // 3 bytes
-            $unicode = ((int)($chars[$idx] - 224) << 12) + ((int)($chars[++$idx] - 128) << 6) + ((int)($chars[++$idx] - 128));
+            $unicode = ((int) ($chars[$idx] - 224) << 12) + ((int) ($chars[++$idx] - 128) << 6) + ((int) ($chars[++$idx] - 128));
         } elseif (($chars[$idx] >= 192) && ($chars[$idx] <= 223)) {
             // 2 bytes
-            $unicode = ((int)($chars[$idx] - 192) << 6) + ((int)($chars[++$idx] - 128));
+            $unicode = ((int) ($chars[$idx] - 192) << 6) + ((int) ($chars[++$idx] - 128));
         } else {
             // 1 bytes
             $unicode = $chars[$idx];
@@ -249,13 +250,14 @@ class XooNIpsUtilityUnicode extends XooNIpsUtility
         }
         // unmapped character encoding
         if ($fallback === 'h') {
-            return '&#' . $unicode . ';';
+            return '&#'.$unicode.';';
         } elseif ($fallback === 'u') {
             $utf8 = '';
-            for ($i =& $idx_orig;
-                 $i <= $idx; $i++) {
+            for ($i = &$idx_orig;
+                 $i <= $idx; ++$i) {
                 $utf8 .= chr($chars[$i]);
             }
+
             return urlencode($utf8);
         }
         // else ignore

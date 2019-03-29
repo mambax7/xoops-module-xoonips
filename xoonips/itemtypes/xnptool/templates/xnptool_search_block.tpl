@@ -1,5 +1,4 @@
 <{* xnptool register block *}>
-<{* $Revision: 1.6.8.2 $ *}>
 
 <table class="outer">
   <tr>

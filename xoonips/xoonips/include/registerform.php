@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.12.2.1.2.8 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,19 +25,17 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
-include_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
-include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+require_once XOOPS_ROOT_PATH.'/class/xoopslists.php';
+require_once XOOPS_ROOT_PATH.'/class/xoopsformloader.php';
 
-$myxoopsConfig     = xoonips_get_xoops_configs(XOOPS_CONF);
+$myxoopsConfig = xoonips_get_xoops_configs(XOOPS_CONF);
 $myxoopsConfigUser = xoonips_get_xoops_configs(XOOPS_CONF_USER);
 
 $textutil = xoonips_getUtility('text');
 
-$email_tray   = new XoopsFormElementTray(_US_EMAIL . _MD_XOONIPS_ACCOUNT_REQUIRED_MARK, '<br>');
-$email_text   = new XoopsFormText('', 'email', 25, 60, $textutil->html_special_chars($email));
+$email_tray = new XoopsFormElementTray(_US_EMAIL._MD_XOONIPS_ACCOUNT_REQUIRED_MARK, '<br>');
+$email_text = new XoopsFormText('', 'email', 25, 60, $textutil->html_special_chars($email));
 $email_option = new XoopsFormCheckBox('', 'user_viewemail', $user_viewemail);
 $email_option->addOption(1, _US_ALLOWVIEWEMAIL);
 $email_tray->addElement($email_text);
@@ -71,31 +69,31 @@ $email_tray->addElement($email_option);
 //  $avatar_tray->addElement( $a_dir_label );
 //}
 
-$reg_form   = new XoopsThemeForm(_US_USERREG, 'userinfo', 'registeruser.php');
+$reg_form = new XoopsThemeForm(_US_USERREG, 'userinfo', 'registeruser.php');
 $uname_size = $myxoopsConfigUser['maxuname'] < 25 ? $myxoopsConfigUser['maxuname'] : 25;
-$reg_form->addElement(new XoopsFormText(_US_NICKNAME . _MD_XOONIPS_ACCOUNT_REQUIRED_MARK, 'uname', $uname_size, $uname_size,
+$reg_form->addElement(new XoopsFormText(_US_NICKNAME._MD_XOONIPS_ACCOUNT_REQUIRED_MARK, 'uname', $uname_size, $uname_size,
                                         $textutil->html_special_chars($uname)), true);
-$reg_form->addElement(new XoopsFormText(_US_REALNAME . $required['realname']['mark'], 'realname', 30, 60, $textutil->html_special_chars($realname)),
+$reg_form->addElement(new XoopsFormText(_US_REALNAME.$required['realname']['mark'], 'realname', 30, 60, $textutil->html_special_chars($realname)),
                       $required['realname']['flag']);
 $reg_form->addElement($email_tray);
 $reg_form->addElement(new XoopsFormText(_US_WEBSITE, 'url', 25, 255, $textutil->html_special_chars($url)));
-$reg_form->addElement(new XoopsFormPassword(_US_PASSWORD . _MD_XOONIPS_ACCOUNT_REQUIRED_MARK, 'pass', 10, 32, $textutil->html_special_chars($pass)),
+$reg_form->addElement(new XoopsFormPassword(_US_PASSWORD._MD_XOONIPS_ACCOUNT_REQUIRED_MARK, 'pass', 10, 32, $textutil->html_special_chars($pass)),
                       true);
-$reg_form->addElement(new XoopsFormPassword(_US_VERIFYPASS . _MD_XOONIPS_ACCOUNT_REQUIRED_MARK, 'vpass', 10, 32,
+$reg_form->addElement(new XoopsFormPassword(_US_VERIFYPASS._MD_XOONIPS_ACCOUNT_REQUIRED_MARK, 'vpass', 10, 32,
                                             $textutil->html_special_chars($vpass)), true);
-$reg_form->addElement(new XoopsFormText(_MD_XOONIPS_ACCOUNT_COMPANY_NAME . $required['company_name']['mark'], 'company_name', 60, 255,
+$reg_form->addElement(new XoopsFormText(_MD_XOONIPS_ACCOUNT_COMPANY_NAME.$required['company_name']['mark'], 'company_name', 60, 255,
                                         $textutil->html_special_chars($company_name)), $required['company_name']['flag']);
-$reg_form->addElement(new XoopsFormText(_MD_XOONIPS_ACCOUNT_DIVISION . $required['division']['mark'], 'division', 60, 255,
+$reg_form->addElement(new XoopsFormText(_MD_XOONIPS_ACCOUNT_DIVISION.$required['division']['mark'], 'division', 60, 255,
                                         $textutil->html_special_chars($division)), $required['division']['flag']);
-$reg_form->addElement(new XoopsFormText(_MD_XOONIPS_ACCOUNT_TEL . $required['tel']['mark'], 'tel', 25, 32, $textutil->html_special_chars($tel)),
+$reg_form->addElement(new XoopsFormText(_MD_XOONIPS_ACCOUNT_TEL.$required['tel']['mark'], 'tel', 25, 32, $textutil->html_special_chars($tel)),
                       $required['tel']['flag']);
-$reg_form->addElement(new XoopsFormText(_MD_XOONIPS_ACCOUNT_FAX . $required['fax']['mark'], 'fax', 25, 32, $textutil->html_special_chars($fax)),
+$reg_form->addElement(new XoopsFormText(_MD_XOONIPS_ACCOUNT_FAX.$required['fax']['mark'], 'fax', 25, 32, $textutil->html_special_chars($fax)),
                       $required['fax']['flag']);
-$reg_form->addElement(new XoopsFormText(_MD_XOONIPS_ACCOUNT_ADDRESS . $required['address']['mark'], 'address', 60, 255,
+$reg_form->addElement(new XoopsFormText(_MD_XOONIPS_ACCOUNT_ADDRESS.$required['address']['mark'], 'address', 60, 255,
                                         $textutil->html_special_chars($address)), $required['address']['flag']);
-$reg_form->addElement(new XoopsFormText(_MD_XOONIPS_ACCOUNT_COUNTRY . $required['country']['mark'], 'country', 25, 255,
+$reg_form->addElement(new XoopsFormText(_MD_XOONIPS_ACCOUNT_COUNTRY.$required['country']['mark'], 'country', 25, 255,
                                         $textutil->html_special_chars($country)), $required['country']['flag']);
-$reg_form->addElement(new XoopsFormText(_MD_XOONIPS_ACCOUNT_ZIPCODE . $required['zipcode']['mark'], 'zipcode', 20, 32,
+$reg_form->addElement(new XoopsFormText(_MD_XOONIPS_ACCOUNT_ZIPCODE.$required['zipcode']['mark'], 'zipcode', 20, 32,
                                         $textutil->html_special_chars($zipcode)), $required['zipcode']['flag']);
 
 $tzselected = ($timezone_offset != '') ? $timezone_offset : $myxoopsConfig['default_TZ'];

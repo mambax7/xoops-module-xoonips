@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.9.2.1.2.10 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,15 +25,13 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-$formdata       = xoonips_getUtility('formdata');
-$uname          = $formdata->getValue('post', 'uname', 's', false, '');
-$pass           = $formdata->getValue('post', 'pass', 's', false, '');
+$formdata = xoonips_getUtility('formdata');
+$uname = $formdata->getValue('post', 'uname', 's', false, '');
+$pass = $formdata->getValue('post', 'pass', 's', false, '');
 $xoops_redirect = $formdata->getValue('post', 'xoops_redirect', 's', false, '');
-$redirect       = !empty($xoops_redirect) ? '?xoops_redirect=' . urlencode($xoops_redirect) : '';
+$redirect = !empty($xoops_redirect) ? '?xoops_redirect='.urlencode($xoops_redirect) : '';
 
 $myts = MyTextSanitizer::getInstance();
 
@@ -42,17 +40,17 @@ if ($uname == '' || $pass == '') {
     $eventHandler = xoonips_getOrmHandler('xoonips', 'event_log');
     $eventHandler->recordLoginFailureEvent($myts->stripSlashesGPC($uname));
 
-    redirect_header(XOOPS_URL . '/modules/xoonips/user.php' . $redirect, 1, _US_INCORRECTLOGIN, false);
+    redirect_header(XOOPS_URL.'/modules/xoonips/user.php'.$redirect, 1, _US_INCORRECTLOGIN, false);
     exit();
 }
 
-$myxoopsConfig =  xoonips_get_xoops_configs(XOOPS_CONF);
+$myxoopsConfig = xoonips_get_xoops_configs(XOOPS_CONF);
 
 $memberHandler = xoops_getHandler('member');
-$user          = $memberHandler->loginUser(addslashes($myts->stripSlashesGPC($uname)), $myts->stripSlashesGPC($pass));
+$user = $memberHandler->loginUser(addslashes($myts->stripSlashesGPC($uname)), $myts->stripSlashesGPC($pass));
 if (false != $user) {
     if (0 == $user->getVar('level')) {
-        redirect_header(XOOPS_URL . '/', 5, _US_NOACTTPADM);
+        redirect_header(XOOPS_URL.'/', 5, _US_NOACTTPADM);
     }
     if ($myxoopsConfig['closesite'] == 1) {
         $allowed = false;
@@ -63,16 +61,16 @@ if (false != $user) {
             }
         }
         if (!$allowed) {
-            redirect_header(XOOPS_URL . '/', 1, _NOPERM);
+            redirect_header(XOOPS_URL.'/', 1, _NOPERM);
         }
     }
     $user->setVar('last_login', time());
     if (!$memberHandler->insertUser($user)) {
     }
-    require_once __DIR__ . '/session.php';
+    require_once __DIR__.'/session.php';
     xoonips_session_regenerate();
-    $_SESSION                    = array();
-    $_SESSION['xoopsUserId']     = $user->getVar('uid');
+    $_SESSION = array();
+    $_SESSION['xoopsUserId'] = $user->getVar('uid');
     $_SESSION['xoopsUserGroups'] = $user->getGroups();
     if ($myxoopsConfig['use_mysession'] && $myxoopsConfig['session_name'] != '') {
         setcookie($myxoopsConfig['session_name'], session_id(), time() + (60 * $myxoopsConfig['session_expire']), '/', '', 0);
@@ -83,15 +81,15 @@ if (false != $user) {
     }
     if (!empty($xoops_redirect) && !strpos($xoops_redirect, 'registeruser')) {
         $parsed = parse_url(XOOPS_URL);
-        $url    = isset($parsed['scheme']) ? $parsed['scheme'] . '://' : 'http://';
+        $url = isset($parsed['scheme']) ? $parsed['scheme'].'://' : 'http://';
         if (isset($parsed['host'])) {
             $xoops_redirect = $formdata->getValue('post', 'xoops_redirect', 's', false);
-            $url .= isset($parsed['port']) ? $parsed['host'] . ':' . $parsed['port'] . trim($xoops_redirect) : $parsed['host'] . $xoops_redirect;
+            $url .= isset($parsed['port']) ? $parsed['host'].':'.$parsed['port'].trim($xoops_redirect) : $parsed['host'].$xoops_redirect;
         } else {
-            $url .= xoops_getenv('HTTP_HOST') . $xoops_redirect;
+            $url .= xoops_getenv('HTTP_HOST').$xoops_redirect;
         }
     } else {
-        $url = XOOPS_URL . '/';
+        $url = XOOPS_URL.'/';
     }
 
     // set cookie for autologin
@@ -107,7 +105,7 @@ if (false != $user) {
     $notificationHandler->doLoginMaintenance($user->getVar('uid'));
 
     // init xoonips session
-    $uid            = $user->getVar('uid', 'n');
+    $uid = $user->getVar('uid', 'n');
     $sessionHandler = xoonips_getOrmHandler('xoonips', 'session');
     $sessionHandler->initSession($uid);
 
@@ -128,6 +126,6 @@ if (false != $user) {
     $eventHandler = xoonips_getOrmHandler('xoonips', 'event_log');
     $eventHandler->recordLoginFailureEvent($myts->stripSlashesGPC($uname));
 
-    redirect_header(XOOPS_URL . '/modules/xoonips/user.php' . $redirect, 1, _US_INCORRECTLOGIN, false);
+    redirect_header(XOOPS_URL.'/modules/xoonips/user.php'.$redirect, 1, _US_INCORRECTLOGIN, false);
 }
 exit();

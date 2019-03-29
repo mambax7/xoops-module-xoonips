@@ -1,5 +1,4 @@
 <{* page for download event logs *}>
-<{* $Revision: 1.1.2.1.2.1 $ *}>
 <script type="text/javascript">
 <!--//
 function xoonips_eventview_pagenavi( xnp_page )

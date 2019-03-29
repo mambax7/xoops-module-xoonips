@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.8 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,14 +24,12 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/xoonips_ranking.class.php';
+require_once __DIR__.'/xoonips_ranking.class.php';
 
 /**
- * Class XooNIpsAdminRankingHandler
+ * Class XooNIpsAdminRankingHandler.
  */
 class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
 {
@@ -44,10 +42,10 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
     }
 
     /**
-     * delete group ranking data for group deletion
+     * delete group ranking data for group deletion.
      *
-     * @access public
      * @param int $gid group id
+     *
      * @return bool false if failure
      */
     public function deleteGroupRankings($gid)
@@ -59,23 +57,24 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
             'sum_new_group',
         );
         // lock ranking data
-        $h        = $this->_lock();
+        $h = $this->_lock();
         $criteria = new Criteria('gid', $gid);
         foreach ($names as $name) {
             if (!$this->handlers[$name]->deleteAll($criteria)) {
                 $this->_unlock($h);
+
                 return false;
             }
         }
         // unlock ranking data
         $this->_unlock($h);
+
         return true;
     }
 
     /**
-     * rebuild ranking data
+     * rebuild ranking data.
      *
-     * @access public
      * @return bool false if failure
      */
     public function rebuild()
@@ -89,13 +88,13 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
         $ret = $this->_recalc(false);
         // unlock ranking data
         $this->_unlock($h);
+
         return $ret;
     }
 
     /**
-     * create sum file
+     * create sum file.
      *
-     * @access public
      * @return string zip compressed sum file path
      */
     public function create_sum_file()
@@ -128,13 +127,13 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
             'sum_start',
             'sum_last_update',
         );
-        $config       = array();
+        $config = array();
         foreach ($config_names as $name) {
             $config[$name] = $this->_get_config($name);
         }
         if ($config['sum_start'] == 0) {
             $field = 'MIN(timestamp)';
-            $objs  =  $this->handlers['event_log']->getObjects(null, false, $field);
+            $objs = $this->handlers['event_log']->getObjects(null, false, $field);
             if (count($objs) == 1) {
                 $config['sum_start'] = $objs[0]->getExtraVar($field);
                 $this->_set_config('sum_start', $config['sum_start']);
@@ -145,7 +144,7 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
             $this->_set_config('sum_last_update', $config['sum_last_update']);
         }
         // update sum table
-        $now               = time();
+        $now = time();
         $add_days_criteria = new CriteriaCompo();
         $sub_days_criteria = new CriteriaCompo();
         // condition : $sum_last_update <= timestamp and timestamp < $now
@@ -162,10 +161,10 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
             // copy data of ranking_sum_* table into ranking_* table.
             foreach ($this->basenames as $basename) {
                 if (!$this->handlers[$basename]->deleteAll(null, true)) {
-                    die('fatal error in ' . __FILE__ . ' at ' . __LINE__);
+                    die('fatal error in '.__FILE__.' at '.__LINE__);
                 }
                 if (!$this->handlers[$basename]->copy_from_sum_table()) {
-                    die('fatal error in ' . __FILE__ . ' at ' . __LINE__);
+                    die('fatal error in '.__FILE__.' at '.__LINE__);
                 }
             }
         }
@@ -174,7 +173,7 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
 
         // STEP2 : create sum zip file from sum tables for downloading file
         // create zip file
-        $dirutil       = xoonips_getUtility('directory');
+        $dirutil = xoonips_getUtility('directory');
         $zip_file_path = $dirutil->tempnam($dirutil->get_tempdir(), 'xnp_ranking_zip');
         if ($zip_file_path === false) {
             // faled to create empty zip file
@@ -185,24 +184,25 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
         $zip->open($zip_file_path);
         // add sum table
         foreach ($this->basenames as $basename) {
-            $tmp_file_path = $dirutil->get_template('xnp_ranking_sum_' . $basename);
-            $fh            = $dirutil->mkstemp($tmp_file_path);
+            $tmp_file_path = $dirutil->get_template('xnp_ranking_sum_'.$basename);
+            $fh = $dirutil->mkstemp($tmp_file_path);
             if ($fh === false) {
                 // faled to create temporary file
                 $zip->close();
                 unlink($zip_file_path);
+
                 return false;
             }
-            $sum_basename = 'sum_' . $basename;
-            $res          =  $this->handlers[$sum_basename]->open();
+            $sum_basename = 'sum_'.$basename;
+            $res = $this->handlers[$sum_basename]->open();
             while ($obj = $this->handlers[$sum_basename]->getNext($res)) {
                 $cols = $this->handlers[$sum_basename]->get_columns();
-                $ar   = array();
+                $ar = array();
                 foreach ($cols as $col) {
-                    $val  = $obj->getVar($col, 'n');
+                    $val = $obj->getVar($col, 'n');
                     $ar[] = is_numeric($val) ? $val : urlencode($val);
                 }
-                fwrite($fh, implode(',', $ar) . "\n");
+                fwrite($fh, implode(',', $ar)."\n");
             }
             fclose($fh);
             $this->handlers[$sum_basename]->close($res);
@@ -211,29 +211,31 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
         }
         // add config data
         $tmp_file_path = $dirutil->get_template('xnp_ranking_config');
-        $fh            = $dirutil->mkstemp($tmp_file_path);
+        $fh = $dirutil->mkstemp($tmp_file_path);
         if ($fh === false) {
             // faled to create temporary file
             $zip->close();
             unlink($zip_file_path);
+
             return false;
         }
         foreach ($config_names as $key) {
-            fwrite($fh, 'ranking_' . $key . ',' . $config[$key] . "\n");
+            fwrite($fh, 'ranking_'.$key.','.$config[$key]."\n");
         }
         fclose($fh);
         $zip->add($tmp_file_path, 'config');
         unlink($tmp_file_path);
         // close zip data
         $zip->close();
+
         return $zip_file_path;
     }
 
     /**
-     * load sum file
+     * load sum file.
      *
-     * @access public
      * @param string $file_path uploaded sum file path
+     *
      * @return bool false if failure
      */
     public function load_sum_file($file_path)
@@ -251,7 +253,7 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
 
         $unzip = xoonips_getUtility('unzip');
         if (!$unzip->open($file_path)) {
-            die('can\'t open file ' . $uploadfile);
+            die('can\'t open file '.$uploadfile);
         }
         $filenames = $unzip->get_file_list();
         foreach ($filenames as $name) {
@@ -259,7 +261,7 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
                 // ignore directory
                 continue;
             }
-            $data  = $unzip->get_data($name);
+            $data = $unzip->get_data($name);
             $lines = explode("\n", $data);
             unset($data);
             if ($name === 'config') {
@@ -275,23 +277,23 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
                 }
             } elseif (in_array($name, $this->basenames)) {
                 // write csv lines to sum table. must be post request
-                $this->handlers['sum_' . $name]->deleteAll();
+                $this->handlers['sum_'.$name]->deleteAll();
                 foreach ($lines as $line) {
                     if ($line === '') {
                         continue;
                     }
-                    $ar   = explode(',', $line);
-                    $obj  = $this->handlers['sum_' . $name]->create();
-                    $cols = $this->handlers['sum_' . $name]->get_columns();
+                    $ar = explode(',', $line);
+                    $obj = $this->handlers['sum_'.$name]->create();
+                    $cols = $this->handlers['sum_'.$name]->get_columns();
                     foreach ($cols as $num => $key) {
                         $val = $ar[$num];
                         $val = is_numeric($val) ? floor($val) : urldecode($val);
                         $obj->set($key, $val);
                     }
-                    $this->handlers['sum_' . $name]->insert($obj);
+                    $this->handlers['sum_'.$name]->insert($obj);
                 }
             } else {
-                die('unknown ranking data found ' . $name);
+                die('unknown ranking data found '.$name);
             }
         }
         $unzip->close();
@@ -299,13 +301,13 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
         $ret = $this->_recalc(false);
         // unlock ranking data
         $this->_unlock($h);
+
         return $ret;
     }
 
     /**
-     * clear sum data
+     * clear sum data.
      *
-     * @access public
      * @return bool false if failure
      */
     public function clear_sum_data()
@@ -323,7 +325,7 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
         // clear sum data
         foreach ($this->basenames as $basename) {
             // must be post request
-            $this->handlers['sum_' . $basename]->deleteAll();
+            $this->handlers['sum_'.$basename]->deleteAll();
         }
         foreach ($config_names as $config_name) {
             $this->_set_config($config_name, 0);
@@ -332,6 +334,7 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
         $res = $this->_recalc(false);
         // unlock ranking data
         $this->_unlock($h);
+
         return $res;
     }
 }

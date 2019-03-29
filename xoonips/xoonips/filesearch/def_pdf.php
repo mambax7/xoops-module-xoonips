@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.2.2.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,13 +25,13 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 /**
- * definition file of PDF file search
+ * definition file of PDF file search.
  */
 // php-indent: disable
-$module['class_name']    = 'XooNIpsFileSearchPluginPDF';
+$module['class_name'] = 'XooNIpsFileSearchPluginPDF';
 $module['php_file_name'] = 'pdf.php';
-$module['name']          = 'pdf';
-$module['display_name']  = 'PDF';
-$module['mime_type']     = array('application/pdf');
-$module['extensions']    = array('pdf');
-$module['version']       = '2.0';// php-indent: enable
+$module['name'] = 'pdf';
+$module['display_name'] = 'PDF';
+$module['mime_type'] = array('application/pdf');
+$module['extensions'] = array('pdf');
+$module['version'] = '2.0'; // php-indent: enable

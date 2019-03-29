@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.15 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,16 +24,14 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include __DIR__ . '/../../condefs.php';
-include __DIR__ . '/../../include/functions.php';
+require __DIR__.'/../../condefs.php';
+require __DIR__.'/../../include/functions.php';
 
 // initialize xoonips session
 $xsessionHandler = xoonips_getOrmHandler('xoonips', 'session');
-$uid             = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
+$uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
 $xsessionHandler->initSession($uid);
 $xsessionHandler->validateUser($uid, true);
 unset($uid);
@@ -53,47 +51,48 @@ $langman->read('modinfo.php');
 function xoonips_admin_initialize($myfile, $preference, $pages)
 {
     global $xoonips_admin;
-    $xoonips_admin               = array();
-    $xoonips_admin['mydirname']  = basename(dirname(dirname($myfile)));
-    $xoonips_admin['mod_url']    = XOOPS_URL . '/modules/' . $xoonips_admin['mydirname'];
-    $xoonips_admin['mod_path']   = XOOPS_ROOT_PATH . '/modules/' . $xoonips_admin['mydirname'];
-    $xoonips_admin['admin_url']  = $xoonips_admin['mod_url'] . '/admin';
-    $xoonips_admin['admin_path'] = $xoonips_admin['mod_path'] . '/admin';
-    $xoonips_admin['myfile_url'] = $xoonips_admin['admin_url'] . '/' . basename($myfile);
+    $xoonips_admin = array();
+    $xoonips_admin['mydirname'] = basename(dirname(dirname($myfile)));
+    $xoonips_admin['mod_url'] = XOOPS_URL.'/modules/'.$xoonips_admin['mydirname'];
+    $xoonips_admin['mod_path'] = XOOPS_ROOT_PATH.'/modules/'.$xoonips_admin['mydirname'];
+    $xoonips_admin['admin_url'] = $xoonips_admin['mod_url'].'/admin';
+    $xoonips_admin['admin_path'] = $xoonips_admin['mod_path'].'/admin';
+    $xoonips_admin['myfile_url'] = $xoonips_admin['admin_url'].'/'.basename($myfile);
     // select page and action
     $formdata = xoonips_getUtility('formdata');
-    $page     = $formdata->getValue('get', 'page', 's', false, 'main');
+    $page = $formdata->getValue('get', 'page', 's', false, 'main');
     if (!preg_match('/^[a-z]+$/', $page)) {
         die('illegal request');
     }
-    $actions =  $pages[$page];
-    $action  = $formdata->getValue('both', 'action', 's', false, 'default');
-    $method  = strtolower($formdata->getRequestMethod());
+    $actions = $pages[$page];
+    $action = $formdata->getValue('both', 'action', 's', false, 'default');
+    $method = strtolower($formdata->getRequestMethod());
     if (!preg_match('/^[a-z]+$/', $action)) {
         die('illegal request');
     }
     if ($action !== 'default' && (!isset($actions[$method]) || !in_array($action, $actions[$method]))) {
         die('illegal request');
     }
-    $xoonips_admin['myaction_path'] = 'actions/' . $preference . '_' . $page . '_' . $action . '.php';
+    $xoonips_admin['myaction_path'] = 'actions/'.$preference.'_'.$page.'_'.$action.'.php';
     if (!file_exists($xoonips_admin['myaction_path'])) {
         die('illegal request');
     }
-    $xoonips_admin['mypage']     = $page;
-    $xoonips_admin['myaction']   = $action;
-    $xoonips_admin['mypage_url'] = $xoonips_admin['myfile_url'] . '?page=' . $xoonips_admin['mypage'];
+    $xoonips_admin['mypage'] = $page;
+    $xoonips_admin['myaction'] = $action;
+    $xoonips_admin['mypage_url'] = $xoonips_admin['myfile_url'].'?page='.$xoonips_admin['mypage'];
 }
 
 /**
  * @param $method
  * @param $keys
+ *
  * @return array
  */
 function xoonips_admin_get_requests($method, $keys)
 {
     global $xoonips_admin;
     $formdata = xoonips_getUtility('formdata');
-    $ret      = array();
+    $ret = array();
     foreach ($keys as $key => $attributes) {
         list($type, $is_array, $required) = $attributes;
         if ($method === 'files') {
@@ -107,19 +106,21 @@ function xoonips_admin_get_requests($method, $keys)
         }
         $ret[$key] = $value;
     }
+
     return $ret;
 }
 
 /**
  * @param $keys
  * @param $fmt
+ *
  * @return array
  */
 function xoonips_admin_get_configs($keys, $fmt)
 {
-    $textutil       = xoonips_getUtility('text');
+    $textutil = xoonips_getUtility('text');
     $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-    $ret            = array();
+    $ret = array();
     foreach ($keys as $key => $key_fmt) {
         $val = $xconfigHandler->getValue($key);
         if (null === $val) {
@@ -142,17 +143,18 @@ function xoonips_admin_get_configs($keys, $fmt)
                     break;
                 case 'i':
                     // int
-                    $ret[$key] = (int)$val;
+                    $ret[$key] = (int) $val;
                     break;
                 case 'f':
                     // float
-                    $ret[$key] = (float)$val;
+                    $ret[$key] = (float) $val;
                     break;
                 default:
                     die('unknown key type');
             }
         }
     }
+
     return $ret;
 }
 
@@ -160,13 +162,14 @@ function xoonips_admin_get_configs($keys, $fmt)
  * @param $key
  * @param $val
  * @param $type
+ *
  * @return bool
  */
 function xoonips_admin_set_config($key, &$val, $type)
 {
-    $myts           = MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
     $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-    $cleanv         = null;
+    $cleanv = null;
     switch ($type) {
         case 's':
             // string
@@ -174,15 +177,16 @@ function xoonips_admin_set_config($key, &$val, $type)
             break;
         case 'i':
             // int
-            $cleanv = (int)$val;
+            $cleanv = (int) $val;
             break;
         case 'f':
             // float
-            $cleanv = (float)$val;
+            $cleanv = (float) $val;
             break;
     }
     if (null === $cleanv) {
         return false;
     }
+
     return $xconfigHandler->setValue($key, $cleanv);
 }

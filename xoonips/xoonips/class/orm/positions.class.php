@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief data object of Positions
@@ -34,7 +32,6 @@ if (!defined('XOOPS_ROOT_PATH')) {
  * @li    getVar('posi_id') :
  * @li    getVar('posi_title') :
  * @li    getVar('posi_order') :
- *
  */
 class XooNIpsOrmPositions extends XooNIpsTableObject
 {
@@ -51,13 +48,12 @@ class XooNIpsOrmPositions extends XooNIpsTableObject
 
 /**
  * @brief handler object of Positions
- *
- *
  */
 class XooNIpsOrmPositionsHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmPositionsHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -68,23 +64,26 @@ class XooNIpsOrmPositionsHandler extends XooNIpsTableObjectHandler
 
     /**
      * @param $fmt
+     *
      * @return array
      */
     public function getPositionList($fmt)
     {
         $criteria = new CriteriaElement();
         $criteria->setSort('posi_order');
-        $objs         =&  $this->getObjects($criteria);
+        $objs = &$this->getObjects($criteria);
         $positionlist = array();
         foreach ($objs as $obj) {
-            $posi_id                = $obj->getVar('posi_id', 'n');
+            $posi_id = $obj->getVar('posi_id', 'n');
             $positionlist[$posi_id] = $obj->getVarArray($fmt);
         }
+
         return $positionlist;
     }
 
     /**
      * @param $id
+     *
      * @return bool
      */
     public function deleteById($id)
@@ -97,9 +96,9 @@ class XooNIpsOrmPositionsHandler extends XooNIpsTableObjectHandler
 
         // if deleting position has used in existing users,
         // change position to neutral.
-        $xusersHandler   = xoonips_getOrmHandler('xoonips', 'users');
+        $xusersHandler = xoonips_getOrmHandler('xoonips', 'users');
         $xusers_criteria = new Criteria('posi', $id);
-        $xusers_objs     = $xusersHandler->getObjects($xusers_criteria);
+        $xusers_objs = $xusersHandler->getObjects($xusers_criteria);
         foreach ($xusers_objs as $xusers_obj) {
             $xusers_obj->set('posi', 0);
             $xusersHandler->insert($xusers_obj);

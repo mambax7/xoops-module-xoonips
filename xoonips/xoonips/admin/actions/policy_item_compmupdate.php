@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,20 +24,18 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // check token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
+require_once __DIR__.'/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_policy_item_comment';
 if (!$xoopsGTicket->check(true, $ticket_area, false)) {
-    redirect_header($xoonips_admin['mypage_url'] . '&action=comment', 3, $xoopsGTicket->getErrors());
+    redirect_header($xoonips_admin['mypage_url'].'&action=comment', 3, $xoopsGTicket->getErrors());
 }
 
 // get variables
 $post_keys = array(
-    'item_comment_dirname'  => array(
+    'item_comment_dirname' => array(
         's',
         false,
         true,
@@ -62,4 +60,4 @@ foreach ($config_keys as $key => $type) {
     xoonips_admin_set_config($key, $post_vals[$key], $type);
 }
 
-redirect_header($xoonips_admin['mypage_url'] . '&amp;action=comment', 3, _AM_XOONIPS_MSG_DBUPDATED);
+redirect_header($xoonips_admin['mypage_url'].'&amp;action=comment', 3, _AM_XOONIPS_MSG_DBUPDATED);

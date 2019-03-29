@@ -1,5 +1,4 @@
 <{* page fo group administrator *}>
-<{* $Revision: 1.8.2.1.2.6 $ *}>
 <{include file="db:xoonips_breadcrumbs.inc.tpl"}>
 
 <h3><{$smarty.const._MD_XOONIPS_TITLE_GROUP_MEMBER_EDIT}></h3>

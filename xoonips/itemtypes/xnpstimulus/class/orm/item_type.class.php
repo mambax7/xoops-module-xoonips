@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.3 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,7 +27,7 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/orm/item_type.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/orm/item_type.class.php';
 
 /**
  * @brief Data object of Stimulus detail information
@@ -45,13 +45,12 @@ class XNPStimulusOrmItemType extends XooNIpsOrmItemType
 
 /**
  * @brief handler of item type
- *
- *
  */
 class XNPStimulusOrmItemTypeHandler extends XooNIpsOrmItemTypeHandler
 {
     /**
      * XNPStimulusOrmItemTypeHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

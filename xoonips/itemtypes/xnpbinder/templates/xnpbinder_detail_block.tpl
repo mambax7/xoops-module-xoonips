@@ -1,7 +1,6 @@
 <{*
  xnpbinder detail block
 *}>
-<{* $Revision: 1.1.1.3 $ *}>
 <table class="outer">
   <!-- Basic Information -->
   <tr>

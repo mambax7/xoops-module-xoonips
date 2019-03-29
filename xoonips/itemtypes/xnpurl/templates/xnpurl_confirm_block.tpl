@@ -1,5 +1,4 @@
 <{* xnpurl confirm block *}>
-<{* $Revision: 1.12.8.2 $ *}>
 <table class="outer">
   <!-- Basic Information -->
   <tr>

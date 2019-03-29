@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.7 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,40 +24,38 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_SYSTEM_XOOPS_TITLE;
+$title = _AM_XOONIPS_SYSTEM_XOOPS_TITLE;
 $description = _AM_XOONIPS_SYSTEM_XOOPS_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
-$ticket_area  = 'xoonips_admin_system_xoops';
+require_once __DIR__.'/../../class/base/gtickets.php';
+$ticket_area = 'xoonips_admin_system_xoops';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_xoops.tmpl.tpl');
@@ -69,33 +67,34 @@ $tmpl->readTemplatesFromFile('system_xoops.tmpl.tpl');
 function &get_xoonips_unregistered_users()
 {
     global $xoopsDB;
-    $usersHandler  = xoonips_getOrmHandler('xoonips', 'xoops_users');
+    $usersHandler = xoonips_getOrmHandler('xoonips', 'xoops_users');
     $xusersHandler = xoonips_getOrmHandler('xoonips', 'users');
-    $criteria      = new CriteriaElement();
+    $criteria = new CriteriaElement();
     //  $criteria = new Criteria( 'level', '0', '>' );
     $criteria->setSort('uname');
-    $users_objs =  $usersHandler->getObjects($criteria);
-    $users      = array();
-    $evenodd    = 'odd';
+    $users_objs = $usersHandler->getObjects($criteria);
+    $users = array();
+    $evenodd = 'odd';
     foreach ($users_objs as $users_obj) {
-        $uid      = $users_obj->getVar('uid', 's');
+        $uid = $users_obj->getVar('uid', 's');
         $criteria = new Criteria('uid', $uid);
         if ($xusersHandler->getCount($criteria) == 0) {
-            $user['uid']      = $uid;
-            $user['uname']    = $users_obj->getVar('uname', 's');
-            $user['name']     = $users_obj->getVar('name', 's');
-            $user['email']    = $users_obj->getVar('email', 's');
+            $user['uid'] = $uid;
+            $user['uname'] = $users_obj->getVar('uname', 's');
+            $user['name'] = $users_obj->getVar('name', 's');
+            $user['email'] = $users_obj->getVar('email', 's');
             $user['uname_js'] = str_replace('&#039;', '\\\'', $user['uname']);
             $user['register'] = _AM_XOONIPS_LABEL_REGISTER;
-            $user['evenodd']  = $evenodd;
-            $users[]          = $user;
-            $evenodd          = ($evenodd === 'even') ? 'odd' : 'even';
+            $user['evenodd'] = $evenodd;
+            $users[] = $user;
+            $evenodd = ($evenodd === 'even') ? 'odd' : 'even';
         }
     }
+
     return $users;
 }
 
-$users     =& get_xoonips_unregistered_users();
+$users = &get_xoonips_unregistered_users();
 $has_users = (count($users) == 0) ? false : true;
 
 // assign template variables
@@ -123,8 +122,7 @@ if ($has_users) {
 }
 
 /**
- * render_zombie_list
- *
+ * render_zombie_list.
  */
 function render_zombie_list()
 {
@@ -132,7 +130,7 @@ function render_zombie_list()
     global $xoopsGTicket;
 
     // set token
-    $ticket_area  = 'xoonips_admin_system_xoops_zombielist';
+    $ticket_area = 'xoonips_admin_system_xoops_zombielist';
     $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
     $tmpl->addVar('main', 'ZOMBIELIST_TOKEN_TICKET', $token_ticket);
 
@@ -146,16 +144,16 @@ function render_zombie_list()
     $zombies = array();
     $evenodd = 'odd';
     foreach (get_zombie_user_ids() as $zombie_id) {
-        $zombie            = array();
-        $zombie['uid']     = $zombie_id;
-        $zombie['uname']   = get_uname_by_index_title($zombie_id, 's');
-        $zombie['delete']  = _AM_XOONIPS_LABEL_DELETE;
+        $zombie = array();
+        $zombie['uid'] = $zombie_id;
+        $zombie['uname'] = get_uname_by_index_title($zombie_id, 's');
+        $zombie['delete'] = _AM_XOONIPS_LABEL_DELETE;
         $zombie['evenodd'] = $evenodd;
-        $basicHandler      = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $criteria2         = new CriteriaCompo();
+        $basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
+        $criteria2 = new CriteriaCompo();
         $criteria2->add(new Criteria('uid', $zombie_id));
         $criteria2->add(new Criteria('item_type_id', ITID_INDEX, '!='));
-        $basics =  $basicHandler->getObjects($criteria2);
+        $basics = $basicHandler->getObjects($criteria2);
         if (is_array($basics)) {
             $zombie['itemcount'] = sprintf('%d&nbsp;(%d/%d)', count($basics), get_number_of_item_by_open_level($zombie_id, OL_GROUP_ONLY),
                                            get_number_of_item_by_open_level($zombie_id, OL_PUBLIC));
@@ -163,7 +161,7 @@ function render_zombie_list()
             $zombie['itemcount'] = 0;
         }
         $zombies[] = $zombie;
-        $evenodd   = ($evenodd === 'even') ? 'odd' : 'even';
+        $evenodd = ($evenodd === 'even') ? 'odd' : 'even';
     }
     $has_zombies = (count($zombies) > 0) ? true : false;
 
@@ -183,45 +181,49 @@ $tmpl->displayParsedTemplate('main');
 xoops_cp_footer();
 
 /**
+ * get number of user's items of specified open level(ignore certify state).
  *
- * get number of user's items of specified open level(ignore certify state)
- * @param int $uid user id
+ * @param int $uid        user id
  * @param     $open_level
+ *
  * @return int
+ *
  * @internal param int $open_leven OL_PUBLIC|OL_GROUP_ONLY|OL_PRIVATE
  */
 function get_number_of_item_by_open_level($uid, $open_level)
 {
     $criteria = new CriteriaCompo();
     $criteria->add(new Criteria('item_type_id', ITID_INDEX, '!='));
-    $criteria->add(new Criteria('open_level', (int)$open_level));
-    $criteria->add(new Criteria('uid', (int)$uid, '=', 'basic'));
+    $criteria->add(new Criteria('open_level', (int) $open_level));
+    $criteria->add(new Criteria('uid', (int) $uid, '=', 'basic'));
     $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
     $join->cascade(new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'basic'));
     $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
+
     return count($index_item_linkHandler->getObjects($criteria, false, '', true, $join));
 }
 
 /**
  * get array of user id that have no corresponding row in XOOPS users table.
  *
- * @access public
  * @param void
+ *
  * @return array zombie_users
  */
 function get_zombie_user_ids()
 {
     $xoonips_usersHandler = xoonips_getOrmHandler('xoonips', 'users');
-    $usersHandler         = xoonips_getOrmHandler('xoonips', 'xoops_users');
+    $usersHandler = xoonips_getOrmHandler('xoonips', 'xoops_users');
+
     return array_diff(array_keys($xoonips_usersHandler->getObjects(null, true)), array_keys($usersHandler->getObjects(null, true)));
 }
 
 /**
- * get user name by index title
+ * get user name by index title.
  *
- * @access public
  * @param int    $uid
  * @param string $fmt
+ *
  * @return string title
  */
 function get_uname_by_index_title($uid, $fmt)
@@ -232,19 +234,20 @@ function get_uname_by_index_title($uid, $fmt)
     $criteria = new CriteriaCompo(new Criteria('uid', $uid));
     $criteria->add(new Criteria('parent_index_id', IID_ROOT));
     $criteria->add(new Criteria('open_level', OL_PRIVATE));
-    $index_objs =  $indexHandler->getObjects($criteria);
+    $index_objs = $indexHandler->getObjects($criteria);
     if (count($index_objs) != 1) {
         return '';
     }
-    $index_obj =  $index_objs[0];
-    $index_id  = $index_obj->get('index_id');
+    $index_obj = $index_objs[0];
+    $index_id = $index_obj->get('index_id');
     // get title
     $criteria = new CriteriaCompo(new Criteria('item_id', $index_id));
     $criteria->add(new Criteria('title_id', DEFAULT_INDEX_TITLE_OFFSET));
-    $title_objs =  $titleHandler->getObjects($criteria);
+    $title_objs = $titleHandler->getObjects($criteria);
     if (count($title_objs) != 1) {
         return '';
     }
     $title_obj = $title_objs[0];
+
     return $title_obj->getVar('title', $fmt);
 }

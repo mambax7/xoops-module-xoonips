@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,19 +27,18 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xnpstimulus/include/view.php';
-include_once XOOPS_ROOT_PATH . '/modules/xnpstimulus/iteminfo.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xoonips_compo_item.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xnpstimulus/include/view.php';
+require_once XOOPS_ROOT_PATH.'/modules/xnpstimulus/iteminfo.php';
 
 /**
- *
  * @brief Handler object that create,insert,update,get,delete XNPStimulusCompo object.
- *
  */
 class XNPStimulusCompoHandler extends XooNIpsItemInfoCompoHandler
 {
     /**
      * XNPStimulusCompoHandler constructor.
+     *
      * @param $db
      */
     public function __construct($db)
@@ -53,15 +52,17 @@ class XNPStimulusCompoHandler extends XooNIpsItemInfoCompoHandler
     public function create()
     {
         $stimulus = new XNPStimulusCompo();
+
         return $stimulus;
     }
 
     /**
-     * return template filename
+     * return template filename.
      *
      * @param string $type defined symbol
      *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
      *                     or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
+     *
      * @return string|template
      */
     public function getTemplateFileName($type)
@@ -77,15 +78,16 @@ class XNPStimulusCompoHandler extends XooNIpsItemInfoCompoHandler
     }
 
     /**
-     * return template variables of item
+     * return template variables of item.
      *
-     * @param string $type defined symbol
-     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *                     , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
-     *                     , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
-     *                     or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
+     * @param string $type    defined symbol
+     *                        XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                        , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
+     *                        , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
+     *                        or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
      * @param int    $item_id
-     * @param int    $uid  user id who get item
+     * @param int    $uid     user id who get item
+     *
      * @return array of template variables
      */
     public function getTemplateVar($type, $item_id, $uid)
@@ -96,10 +98,10 @@ class XNPStimulusCompoHandler extends XooNIpsItemInfoCompoHandler
         }
         $result = $this->getBasicTemplateVar($type, $stimulus, $uid);
 
-        $textutil                                = xoonips_getUtility('text');
-        $detail                                  = $stimulus->getVar('detail');
-        $result['detail']                        = $detail->getVarArray('s');
-        $result['detail']['stimulus_type']       = $textutil->html_special_chars($this->get_stimulus_type_label($detail->getVar('stimulus_type',
+        $textutil = xoonips_getUtility('text');
+        $detail = $stimulus->getVar('detail');
+        $result['detail'] = $detail->getVarArray('s');
+        $result['detail']['stimulus_type'] = $textutil->html_special_chars($this->get_stimulus_type_label($detail->getVar('stimulus_type',
                                                                                                                                 's')));
         $result['detail']['stimulus_type_value'] = $detail->getVar('stimulus_type', 's');
         if ($detail->getVar('use_cc', 'n')) {
@@ -112,6 +114,7 @@ class XNPStimulusCompoHandler extends XooNIpsItemInfoCompoHandler
                 foreach ($stimulus->getVar('developer') as $developer) {
                     $result['developer'][] = $developer->getVarArray('s');
                 }
+
                 return $result;
             case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
             case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
@@ -131,26 +134,28 @@ class XNPStimulusCompoHandler extends XooNIpsItemInfoCompoHandler
                 if ($stimulus_data->get('item_id') == $item_id) {
                     $result['detail']['stimulus_data'] = $this->getAttachmentTemplateVar($stimulus->getVar('stimulus_data'));
                 }
+
                 return $result;
         }
+
         return $result;
     }
 
     /**
      * @param $type
+     *
      * @return mixed
      */
     public function get_stimulus_type_label($type)
     {
         $keyval = xnpstimulus_get_type_array();
-        return $keyval[$type];//"TODO convert type name '{$type}' to display name";
+
+        return $keyval[$type]; //"TODO convert type name '{$type}' to display name";
     }
 }
 
 /**
- *
  * @brief Data object that have one ore more XooNIpsTableObject for Stimulus type.
- *
  */
 class XNPStimulusCompo extends XooNIpsItemInfoCompo
 {

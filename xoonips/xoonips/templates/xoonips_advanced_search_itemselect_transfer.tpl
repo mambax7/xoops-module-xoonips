@@ -1,7 +1,3 @@
-<{*
-  $Revision: 1.1.2.5 $
-*}>
-
 <h3><{$smarty.const._MD_XOONIPS_ITEM_ADVANCED_SEARCH_TITLE}></h3>
 <form action="itemselect_transfer.php" method="post"<{$accept_charset}>>
 

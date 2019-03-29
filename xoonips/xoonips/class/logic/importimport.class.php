@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,11 +25,11 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/logic.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/transaction.class.php';
+require_once __DIR__.'/../base/logic.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/transaction.class.php';
 
 /**
- * Class XooNIpsLogicImportImport
+ * Class XooNIpsLogicImportImport.
  */
 class XooNIpsLogicImportImport extends XooNIpsLogic
 {
@@ -44,6 +44,7 @@ class XooNIpsLogicImportImport extends XooNIpsLogic
     /**
      * @param $vars
      * @param $response
+     *
      * @return bool|void
      */
     public function execute($vars, $response)
@@ -51,7 +52,7 @@ class XooNIpsLogicImportImport extends XooNIpsLogic
         global $xoopsUser;
 
         $success = array();
-        $error   = false;
+        $error = false;
 
         $transaction = XooNIpsTransaction::getInstance();
         $transaction->start();
@@ -73,14 +74,14 @@ class XooNIpsLogicImportImport extends XooNIpsLogic
             ) {
                 //no write permission to updating exist item -> error
                 $vars[0][$key]->setErrors(E_XOONIPS_UPDATE_CERTIFY_REQUEST_LOCKED,
-                                          "can't update locked item(" . $vars[0][$key]->getUpdateItemId() . ')');
+                                          "can't update locked item(".$vars[0][$key]->getUpdateItemId().')');
                 $error = true;
                 break;
             }
 
-            $basic    = $vars[0][$key]->getVar('basic');
+            $basic = $vars[0][$key]->getVar('basic');
             $itemtype = $itemtypeHandler->get($basic->get('item_type_id'));
-            $handler  = xoonips_getHandler($itemtype->get('name'), 'import_item');
+            $handler = xoonips_getHandler($itemtype->get('name'), 'import_item');
             $handler->import($vars[0][$key]);
             $error = $error || count($vars[0][$key]->getErrors()) > 0;
         }
@@ -89,9 +90,9 @@ class XooNIpsLogicImportImport extends XooNIpsLogic
             $transaction->rollback();
         } else {
             foreach (array_keys($vars[0]) as $key) {
-                $basic    = $vars[0][$key]->getVar('basic');
+                $basic = $vars[0][$key]->getVar('basic');
                 $itemtype = $itemtypeHandler->get($basic->get('item_type_id'));
-                $handler  = xoonips_getHandler($itemtype->get('name'), 'import_item');
+                $handler = xoonips_getHandler($itemtype->get('name'), 'import_item');
                 $handler->onImportFinished($vars[0][$key], $vars[0]);
                 $error = $error || count($vars[0][$key]->getErrors()) > 0;
             }
@@ -106,13 +107,13 @@ class XooNIpsLogicImportImport extends XooNIpsLogic
     }
 
     /**
-     * remove all deleted(is_deleted=1) files from file system
+     * remove all deleted(is_deleted=1) files from file system.
      */
     public function _remove_files()
     {
-        $handler      = xoonips_getOrmHandler('xoonips', 'file');
-        $criteria     = new Criteria('is_deleted', 1);
-        $delete_files =  $handler->getObjects($criteria);
+        $handler = xoonips_getOrmHandler('xoonips', 'file');
+        $criteria = new Criteria('is_deleted', 1);
+        $delete_files = $handler->getObjects($criteria);
         if ($delete_files) {
             foreach ($delete_files as $file) {
                 $handler->deleteFile($file);

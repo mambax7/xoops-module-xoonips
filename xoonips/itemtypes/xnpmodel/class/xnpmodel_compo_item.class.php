@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,19 +27,18 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xnpmodel/include/view.php';
-include_once XOOPS_ROOT_PATH . '/modules/xnpmodel/iteminfo.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xoonips_compo_item.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xnpmodel/include/view.php';
+require_once XOOPS_ROOT_PATH.'/modules/xnpmodel/iteminfo.php';
 
 /**
- *
  * @brief Handler object that create,insert,update,get,delete XNPModelCompo object.
- *
  */
 class XNPModelCompoHandler extends XooNIpsItemInfoCompoHandler
 {
     /**
      * XNPModelCompoHandler constructor.
+     *
      * @param $db
      */
     public function __construct($db)
@@ -53,15 +52,17 @@ class XNPModelCompoHandler extends XooNIpsItemInfoCompoHandler
     public function create()
     {
         $model = new XNPModelCompo();
+
         return $model;
     }
 
     /**
-     * return template filename
+     * return template filename.
      *
      * @param string $type defined symbol
      *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
      *                     or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
+     *
      * @return string|template
      */
     public function getTemplateFileName($type)
@@ -77,15 +78,16 @@ class XNPModelCompoHandler extends XooNIpsItemInfoCompoHandler
     }
 
     /**
-     * return template variables of item
+     * return template variables of item.
      *
-     * @param string $type defined symbol
-     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *                     , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
-     *                     , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
-     *                     or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
+     * @param string $type    defined symbol
+     *                        XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                        , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
+     *                        , XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL
+     *                        or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
      * @param int    $item_id
-     * @param int    $uid  user id who get item
+     * @param int    $uid     user id who get item
+     *
      * @return array of template variables
      */
     public function getTemplateVar($type, $item_id, $uid)
@@ -97,21 +99,22 @@ class XNPModelCompoHandler extends XooNIpsItemInfoCompoHandler
         $result = $this->getBasicTemplateVar($type, $model, $uid);
 
         $textutil = xoonips_getUtility('text');
-        $detail   = $model->getVar('detail');
+        $detail = $model->getVar('detail');
         switch ($type) {
             case XOONIPS_TEMPLATE_TYPE_ITEM_LIST:
                 $result['creator'] = array();
                 foreach ($model->getVar('creator') as $creator) {
                     $result['creator'][] = $creator->getVarArray('s');
                 }
+
                 return $result;
             case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL:
             case XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL:
             case XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST:
                 $result['xnpmodel_creator']
                                                       = xoonips_get_multiple_field_template_vars($detail->getCreators(), 'xnpmodel', 'creator');
-                $result['detail']                     = $detail->getVarArray('s');
-                $result['detail']['model_type']       = $textutil->html_special_chars($this->get_model_type_label($detail->getVar('model_type',
+                $result['detail'] = $detail->getVarArray('s');
+                $result['detail']['model_type'] = $textutil->html_special_chars($this->get_model_type_label($detail->getVar('model_type',
                                                                                                                                   's')));
                 $result['detail']['model_type_value'] = $detail->getVar('model_type', 's');
 
@@ -131,26 +134,28 @@ class XNPModelCompoHandler extends XooNIpsItemInfoCompoHandler
                 if ($model_data->get('item_id') == $item_id) {
                     $result['detail']['model_data'] = $this->getAttachmentTemplateVar($model->getVar('model_data'));
                 }
+
                 return $result;
         }
+
         return $result;
     }
 
     /**
      * @param $type
+     *
      * @return mixed
      */
     public function get_model_type_label($type)
     {
         $keyval = xnpmodel_get_type_array();
-        return $keyval[$type];//"TODO convert type name '{$type}' to display name";
+
+        return $keyval[$type]; //"TODO convert type name '{$type}' to display name";
     }
 }
 
 /**
- *
  * @brief Data object that have one ore more XooNIpsTableObject for Model type.
- *
  */
 class XNPModelCompo extends XooNIpsItemInfoCompo
 {

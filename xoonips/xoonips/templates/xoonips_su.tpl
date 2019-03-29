@@ -1,5 +1,4 @@
 <{* page for su *}>
-<{* $Revision: 1.2.4.1 $ *}>
 
 <h3><{$smarty.const._MD_XOONIPS_SU_TITLE}></h3>
 <{$smarty.const._MD_XOONIPS_SU_EXPLAIN}>

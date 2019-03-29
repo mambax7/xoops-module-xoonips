@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.3 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,17 +25,16 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/condefs.php';
-require_once XOOPS_ROOT_PATH . '/modules/xoonips/include/functions.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/condefs.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/include/functions.php';
 
 /**
- * xoonips uninstall function
+ * xoonips uninstall function.
  *
  * @param object $xoopsMod module instance
+ *
  * @return bool false if failure
  */
 function xoops_module_uninstall_xoonips($xoopsMod)
@@ -50,27 +49,27 @@ function xoops_module_uninstall_xoonips($xoopsMod)
 
     // show original 'user' and 'login' blocks
     $sys_blocks = array(
-        'user'  => array(),
-        'login' => array()
+        'user' => array(),
+        'login' => array(),
     );
     if (defined('XOOPS_CUBE_LEGACY')) {
         // for XOOPS Cube Legacy 2.1
-        $sys_blocks['user'][]  = array(
+        $sys_blocks['user'][] = array(
             'legacy',
-            'b_legacy_usermenu_show'
+            'b_legacy_usermenu_show',
         );
         $sys_blocks['login'][] = array(
             'user',
-            'b_user_login_show'
+            'b_user_login_show',
         );
     }
-    $sys_blocks['user'][]  = array(
+    $sys_blocks['user'][] = array(
         'system',
-        'b_system_user_show'
+        'b_system_user_show',
     );
     $sys_blocks['login'][] = array(
         'system',
-        'b_system_login_show'
+        'b_system_login_show',
     );
     foreach ($sys_blocks as $type => $sys_type_blocks) {
         foreach ($sys_type_blocks as $sys_block) {
@@ -88,5 +87,6 @@ function xoops_module_uninstall_xoonips($xoopsMod)
             }
         }
     }
+
     return true;
 }

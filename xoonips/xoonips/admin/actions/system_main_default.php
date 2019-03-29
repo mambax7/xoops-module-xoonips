@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.3 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,28 +24,26 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // class files
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 
 // title
-$title       = _AM_XOONIPS_SYSTEM_TITLE;
+$title = _AM_XOONIPS_SYSTEM_TITLE;
 $description = _AM_XOONIPS_SYSTEM_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
@@ -53,39 +51,39 @@ $breadcrumbs = array(
 $menu = array(
     array(
         'label' => _AM_XOONIPS_SYSTEM_BASIC_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=basic',
+        'url' => $xoonips_admin['myfile_url'].'?page=basic',
     ),
     array(
         'label' => _AM_XOONIPS_SYSTEM_TREE_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=tree',
+        'url' => $xoonips_admin['myfile_url'].'?page=tree',
     ),
     array(
         'label' => _AM_XOONIPS_SYSTEM_PRINT_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=print',
+        'url' => $xoonips_admin['myfile_url'].'?page=print',
     ),
     array(
         'label' => _AM_XOONIPS_SYSTEM_RSS_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=rss',
+        'url' => $xoonips_admin['myfile_url'].'?page=rss',
     ),
     array(
         'label' => _AM_XOONIPS_SYSTEM_OAIPMH_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=oaipmh',
+        'url' => $xoonips_admin['myfile_url'].'?page=oaipmh',
     ),
     array(
         'label' => _AM_XOONIPS_SYSTEM_PROXY_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=proxy',
+        'url' => $xoonips_admin['myfile_url'].'?page=proxy',
     ),
     array(
         'label' => _AM_XOONIPS_SYSTEM_MODULE_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=module',
+        'url' => $xoonips_admin['myfile_url'].'?page=module',
     ),
     array(
         'label' => _AM_XOONIPS_SYSTEM_XOOPS_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=xoops',
+        'url' => $xoonips_admin['myfile_url'].'?page=xoops',
     ),
     array(
         'label' => _AM_XOONIPS_SYSTEM_CHECK_TITLE,
-        'url'   => $xoonips_admin['myfile_url'] . '?page=check',
+        'url' => $xoonips_admin['myfile_url'].'?page=check',
     ),
 );
 

@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,30 +24,30 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-require_once __DIR__ . '/../../../include/cp_header.php';
+require_once __DIR__.'/../../../include/cp_header.php';
 
 // load common file.
-include __DIR__ . '/actions/common.inc.php';
+require __DIR__.'/actions/common.inc.php';
 
 // page definition
-$pages           = array();
-$pages['main']   = array();
-$pages['basic']  = array(
+$pages = array();
+$pages['main'] = array();
+$pages['basic'] = array(
     'post' => array(
         'update',
     ),
 );
-$pages['tree']   = array(
+$pages['tree'] = array(
     'post' => array(
         'update',
     ),
 );
-$pages['print']  = array(
+$pages['print'] = array(
     'post' => array(
         'update',
     ),
 );
-$pages['rss']    = array(
+$pages['rss'] = array(
     'post' => array(
         'update',
     ),
@@ -58,7 +58,7 @@ $pages['oaipmh'] = array(
         'hupdate',
     ),
 );
-$pages['proxy']  = array(
+$pages['proxy'] = array(
     'post' => array(
         'update',
     ),
@@ -68,17 +68,17 @@ $pages['module'] = array(
         'update',
     ),
 );
-$pages['xoops']  = array(
+$pages['xoops'] = array(
     'post' => array(
         'pickup',
         'zudelete',
         'zirescue',
     ),
-    'get'  => array(
+    'get' => array(
         'zilist',
     ),
 );
-$pages['check']  = array(
+$pages['check'] = array(
     'post' => array(
         'test',
     ),
@@ -88,4 +88,4 @@ $pages['check']  = array(
 xoonips_admin_initialize(__FILE__, 'system', $pages);
 
 // call action file
-include $xoonips_admin['myaction_path'];
+require $xoonips_admin['myaction_path'];

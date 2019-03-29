@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.12 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,18 +26,18 @@
 // ------------------------------------------------------------------------- //
 
 /**
- * class of XooNIps Member Handler
+ * class of XooNIps Member Handler.
  */
 class XooNIpsMemberHandler
 {
-
     /**
-     * holds reference to XooNIps account handler(DAO) class
+     * holds reference to XooNIps account handler(DAO) class.
      */
     public $_aHandler;
 
     /**
-     * constructor
+     * constructor.
+     *
      * @param $db
      */
     public function __construct($db)
@@ -48,8 +48,10 @@ class XooNIpsMemberHandler
     /** authenticate and return XooNIpsUser object.
      * @param user     $uname
      * @param password $pass
+     *
      * @return bool|if
-     *              otherwise returns false.
+     *                 otherwise returns false
+     *
      * @internal param user $uname name
      * @internal param password $pass
      */
@@ -60,15 +62,18 @@ class XooNIpsMemberHandler
         $user = $this->_aHandler->getObjects($criteria);
         if (!$user || count($user) != 1) {
             $ret = false;
+
             return $ret;
         }
+
         return $user[0];
     }
 
     /** check if $uid is moderator. todo: should be cached?
-     * @access   public
      * @param user $uid
+     *
      * @return true if $uid is moderator. false otherwise.
+     *
      * @internal param user $uid ID
      */
     public function isModerator($uid)
@@ -78,44 +83,47 @@ class XooNIpsMemberHandler
         }
         // get moderator group id
         $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-        $moderator_gid  = $xconfigHandler->getValue('moderator_gid');
+        $moderator_gid = $xconfigHandler->getValue('moderator_gid');
         if (null === $moderator_gid) {
             return false;
         }
         // is $uid in that group?
         $xoops_memberHandler = xoops_getHandler('member');
-        $groups              = $xoops_memberHandler->getGroupsByUser($uid);
-        return in_array((int)$moderator_gid, $groups);
+        $groups = $xoops_memberHandler->getGroupsByUser($uid);
+
+        return in_array((int) $moderator_gid, $groups);
     }
 
     /** check if $uid is xoonips admin. todo: should be cached?
-     * @access   public
      * @param user $uid
+     *
      * @return true if $uid is xoonips admin. false otherwise.
+     *
      * @internal param user $uid ID
      */
     public function isAdmin($uid)
     {
         // xoonips admin?
         $xoops_userHandler = xoops_getHandler('user');
-        $user              = $xoops_userHandler->get($uid);
-        $moduleHandler     = xoops_getHandler('module');
-        $module            = $moduleHandler->getByDirname('xoonips');
+        $user = $xoops_userHandler->get($uid);
+        $moduleHandler = xoops_getHandler('module');
+        $module = $moduleHandler->getByDirname('xoonips');
         if (is_object($module) && is_object($user)) {
             $mid = $module->getVar('mid', 'n');
             if ($user->isAdmin($mid)) {
                 return true; // xoonips admin
             }
         }
+
         return false;
     }
 
     /**
-     * XOOPS user pickup
+     * XOOPS user pickup.
      *
-     * @access public
      * @param int  uid user id
      * @param bool is_certified initial certification state
+     *
      * @return bool false if failure
      */
     public function pickupXoopsUser($uid, $is_certified)
@@ -123,29 +131,29 @@ class XooNIpsMemberHandler
         $xuHandler = xoonips_getOrmHandler('xoonips', 'users');
         // create user root index
         $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-        $index_id     = $indexHandler->createUserRootIndex($uid);
+        $index_id = $indexHandler->createUserRootIndex($uid);
         if ($index_id === false) {
             return false;
         }
 
         // set xoonips user information
         $activate = $is_certified ? 1 : 0;
-        $xu_obj   = $xuHandler->create();
+        $xu_obj = $xuHandler->create();
         $xu_obj->setVar('uid', $uid, true); // not gpc
         $xu_obj->setVar('activate', $activate, true); // not gpc
         $xu_obj->setVar('private_index_id', $index_id, true); // not gpc
         // set dummy variable to required field
-        $dummy_field    = 'required';
+        $dummy_field = 'required';
         $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-        $keys           = array(
+        $keys = array(
             // config key name => field name of 'xoonips_users' table
-            'account_address_optional'      => 'address',
-            'account_division_optional'     => 'division',
-            'account_tel_optional'          => 'tel',
+            'account_address_optional' => 'address',
+            'account_division_optional' => 'division',
+            'account_tel_optional' => 'tel',
             'account_company_name_optional' => 'company_name',
-            'account_country_optional'      => 'country',
-            'account_zipcode_optional'      => 'zipcode',
-            'account_fax_optional'          => 'fax',
+            'account_country_optional' => 'country',
+            'account_zipcode_optional' => 'zipcode',
+            'account_fax_optional' => 'fax',
         );
         foreach ($keys as $key => $field) {
             $val = $xconfigHandler->getValue($key);
@@ -173,8 +181,10 @@ class XooNIpsMemberHandler
         if (!$admin_xgroupHandler->addUserToDefaultXooNIpsGroup($uid)) {
             // TODO: delete created private index
             $xuHandler->delete($xu_obj);
+
             return false;
         }
+
         return true;
     }
 }

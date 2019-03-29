@@ -1,4 +1,3 @@
-<{* $Revision: 1.17.6.4 $ *}>
 <!-- begin of xnptool_register_block.tpl -->
 
 <script type="text/javascript">

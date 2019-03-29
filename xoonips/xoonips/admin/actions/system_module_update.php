@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.4 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,12 +24,10 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // check token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
+require_once __DIR__.'/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_system_module';
 if (!$xoopsGTicket->check(true, $ticket_area, false)) {
     redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
@@ -38,20 +36,20 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 // main logic
 // - $fct = 'preferences'
 // - $op = 'save'
-require_once XOOPS_ROOT_PATH . '/class/template.php';
+require_once XOOPS_ROOT_PATH.'/class/template.php';
 $xoopsTpl = new XoopsTpl();
 $xoopsTpl->clear_all_cache();
 // regenerate admin menu file
 xoops_module_write_admin_menu(xoops_module_get_admin_menu());
-$conf_ids         = (!empty($_POST['conf_ids'])) ? $_POST['conf_ids'] : array();
-$count            = count($conf_ids);
-$tpl_updated      = false;
-$theme_updated    = false;
+$conf_ids = (!empty($_POST['conf_ids'])) ? $_POST['conf_ids'] : array();
+$count = count($conf_ids);
+$tpl_updated = false;
+$theme_updated = false;
 $startmod_updated = false;
-$lang_updated     = false;
+$lang_updated = false;
 if ($count > 0) {
-    for ($i = 0; $i < $count; $i++) {
-        $config    = $configHandler->getConfig($conf_ids[$i]);
+    for ($i = 0; $i < $count; ++$i) {
+        $config = $configHandler->getConfig($conf_ids[$i]);
         $new_value = $_POST[$config->getVar('conf_name')];
         if (is_array($new_value) || $new_value != $config->getVar('conf_value')) {
             // if language has been changed
@@ -81,13 +79,13 @@ if ($count > 0) {
                     // generate compiled files for the new theme
                     // block files only for now..
                     $tplfileHandler = xoops_getHandler('tplfile');
-                    $dtemplates     =  $tplfileHandler->find('default', 'block');
-                    $dcount         = count($dtemplates);
+                    $dtemplates = $tplfileHandler->find('default', 'block');
+                    $dcount = count($dtemplates);
 
                     // need to do this to pass to xoops_template_touch function
                     $GLOBALS['xoopsConfig']['template_set'] = $newtplset;
 
-                    for ($j = 0; $j < $dcount; $j++) {
+                    for ($j = 0; $j < $dcount; ++$j) {
                         $found = $tplfileHandler->find($newtplset, 'block', $dtemplates[$j]->getVar('tpl_refid'), null);
                         if (count($found) > 0) {
                             // template for the new theme found, compile it
@@ -100,9 +98,9 @@ if ($count > 0) {
 
                     // generate image cache files from image binary data, save them under cache/
                     $imageHandler = xoops_getHandler('imagesetimg');
-                    $imagefiles   =  $imageHandler->getObjects(new Criteria('tplset_name', $newtplset), true);
+                    $imagefiles = $imageHandler->getObjects(new Criteria('tplset_name', $newtplset), true);
                     foreach (array_keys($imagefiles) as $i) {
-                        if (!$fp = fopen(XOOPS_CACHE_PATH . '/' . $newtplset . '_' . $imagefiles[$i]->getVar('imgsetimg_file'), 'wb')) {
+                        if (!$fp = fopen(XOOPS_CACHE_PATH.'/'.$newtplset.'_'.$imagefiles[$i]->getVar('imgsetimg_file'), 'wb')) {
                         } else {
                             fwrite($fp, $imagefiles[$i]->getVar('imgsetimg_body'));
                             fclose($fp);
@@ -116,11 +114,11 @@ if ($count > 0) {
             if (!$startmod_updated && $new_value != '--' && $config->getVar('conf_catid') == XOOPS_CONF
                 && $config->getVar('conf_name') === 'startpage'
             ) {
-                $memberHandler     = xoops_getHandler('member');
-                $groups            = $memberHandler->getGroupList();
+                $memberHandler = xoops_getHandler('member');
+                $groups = $memberHandler->getGroupList();
                 $modulepermHandler = xoops_getHandler('groupperm');
-                $moduleHandler     = xoops_getHandler('module');
-                $module            = $moduleHandler->getByDirname($new_value);
+                $moduleHandler = xoops_getHandler('module');
+                $module = $moduleHandler->getByDirname($new_value);
                 foreach ($groups as $groupid => $groupname) {
                     if (!$modulepermHandler->checkRight('module_read', $module->getVar('mid'), $groupid)) {
                         $modulepermHandler->addRight('module_read', $module->getVar('mid'), $groupid);

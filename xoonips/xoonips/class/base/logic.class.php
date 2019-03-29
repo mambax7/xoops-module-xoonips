@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.19 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,15 +25,13 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/class/xml/rpc/xmlrpcapi.php';
+require_once XOOPS_ROOT_PATH.'/class/xml/rpc/xmlrpcapi.php';
 // for RSS update
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/include/lib.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/include/AL.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/include/lib.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/include/AL.php';
 
 /**
- *
- * base class of Business Logic
- *
+ * base class of Business Logic.
  */
 class XooNIpsLogic
 {
@@ -45,10 +43,12 @@ class XooNIpsLogic
     }
 
     /**
-     * implement of logic
+     * implement of logic.
+     *
      * @abstract
      * @param[in] array $vars input parameters of logic
      * @param[out] XooNIpsResponse $response result of logic(success/fault, response, error)
+     *
      * @return bool
      */
     public function execute($vars, $response)
@@ -60,12 +60,12 @@ class XooNIpsLogic
     /**
      * @brief validate $sessionid and restore $_SESSION.
      *
-     * @param [in]  $sessionid session ID
-     * @return     array($result,$uid,$session)
-     *             if $result==true && uid != UID_GUEST, $sessionid was valid, $uid and $session are user ID and XooNIpsSession object.
-     *             if $result==true && uid == UID_GUEST, $sessionid was valid and $session=false.
-     *             if $result==false,                    $sessionid was invalid and $uid=$session=false.
+     * @param [in] $sessionid session ID
      *
+     * @return array($result,$uid,$session)
+     *                                      if $result==true && uid != UID_GUEST, $sessionid was valid, $uid and $session are user ID and XooNIpsSession object.
+     *                                      if $result==true && uid == UID_GUEST, $sessionid was valid and $session=false.
+     *                                      if $result==false,                    $sessionid was invalid and $uid=$session=false.
      */
     public function restoreSession($sessionid)
     {
@@ -73,12 +73,12 @@ class XooNIpsLogic
         session_id($sessionid);
         // restore $_SESSION
         $xoops_sessHandler = xoops_getHandler('session');
-        $sess_data         = $xoops_sessHandler->read($sessionid);
+        $sess_data = $xoops_sessHandler->read($sessionid);
         if ($sess_data == '') {
             return array(
                 false,
                 false,
-                false
+                false,
             );
         } else {
             session_decode($sess_data);
@@ -87,41 +87,42 @@ class XooNIpsLogic
         if ($uid == UID_GUEST) {
             // reject guest if guest is forbidden
             $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-            $target_user    = $xconfigHandler->getValue(XNP_CONFIG_PUBLIC_ITEM_TARGET_USER_KEY);
+            $target_user = $xconfigHandler->getValue(XNP_CONFIG_PUBLIC_ITEM_TARGET_USER_KEY);
             if ($target_user != XNP_CONFIG_PUBLIC_ITEM_TARGET_USER_ALL) {
                 return array(
                     false,
                     false,
-                    false
+                    false,
                 );
             }
             $session = false;
         } else {
             // validate session
             $sessHandler = xoonips_getOrmHandler('xoonips', 'session');
-            $sessions    =  $sessHandler->getObjects(new Criteria('sess_id', $sessionid));
+            $sessions = $sessHandler->getObjects(new Criteria('sess_id', $sessionid));
             if (!$sessions || count($sessions) != 1) {
                 return array(
                     false,
                     false,
-                    false
+                    false,
                 );
             }
 
             $memberHandler = xoops_getHandler('member');
-            $xoops_user    = $memberHandler->getUser($_SESSION['xoopsUserId']);
+            $xoops_user = $memberHandler->getUser($_SESSION['xoopsUserId']);
             if ($xoops_user) {
-                $GLOBALS['xoopsUser'] =  $xoops_user;
+                $GLOBALS['xoopsUser'] = $xoops_user;
             }
 
             $session = $sessions[0];
             $session->setVar('updated', time(), true); // not gpc
             $sessHandler->insert($session);
         }
+
         return array(
             true,
             $uid,
-            $session
+            $session,
         );
     }
 
@@ -132,43 +133,48 @@ class XooNIpsLogic
      * @param             $error
      * @param XooNIpsItem $item
      * @param             $uid
+     *
      * @return bool|result
+     *
      * @internal param XooNIpsResponse $response object
      * @internal param XooNIpsItem $item object
      */
     public function touchItem1($error, $item, $uid)
     {
         // get indexes
-        $index_ids        = array();
+        $index_ids = array();
         $index_item_links = $item->getVar('indexes');
         if (!$index_item_links || count($index_item_links) == 0) {
             $error->add(XNPERR_SERVER_ERROR, 'no indexes');
+
             return false;
         }
         // certify automatically?
         $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-        $certify_item   = $xconfigHandler->getValue('certify_item'); // todo define string const
+        $certify_item = $xconfigHandler->getValue('certify_item'); // todo define string const
         if (null === $certify_item) {
             $error->add(XNPERR_SERVER_ERROR, 'no certify_item config');
+
             return false;
         }
-        $auto_certify           = ($certify_item === 'auto');
-        $indexHandler           = xoonips_getOrmHandler('xoonips', 'index');
-        $eventlogHandler        = xoonips_getOrmHandler('xoonips', 'event_log');
+        $auto_certify = ($certify_item === 'auto');
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
+        $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $item_basicHandler      = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $is_public              = false;
-        $len                    = count($index_item_links);
-        $basic                  = $item->getVar('basic');
-        $item_id                = $basic->get('item_id');
-        for ($i = 0; $i < $len; $i++) {
-            $index_item_link =  $index_item_links[$i];
-            $certify_state   = $index_item_link->get('certify_state');
-            $index_id        = $index_item_link->get('index_id');
-            $index           = $indexHandler->get($index_id);
+        $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
+        $is_public = false;
+        $len = count($index_item_links);
+        $basic = $item->getVar('basic');
+        $item_id = $basic->get('item_id');
+        for ($i = 0; $i < $len; ++$i) {
+            $index_item_link = $index_item_links[$i];
+            $certify_state = $index_item_link->get('certify_state');
+            $index_id = $index_item_link->get('index_id');
+            $index = $indexHandler->get($index_id);
             if (!$index) {
                 // maybe someone deleted this index.
                 $error->add(XNPERR_SERVER_ERROR, "item is in non-existent index(index_id=$index_id)");
+
                 return false;
             }
             $open_level = $index->get('open_level');
@@ -181,12 +187,14 @@ class XooNIpsLogic
                 $indexes[] = $index;
                 if (!$eventlogHandler->recordRequestCertifyItemEvent($item_id, $index_id)) {
                     $error->add(XNPERR_SERVER_ERROR, 'cannot insert event');
+
                     return false;
                 }
                 if ($auto_certify) {
                     $index_item_link->setVar('certify_state', CERTIFIED, true); // not gpc
                     if (!$eventlogHandler->recordCertifyItemEvent($item_id, $index_id)) {
                         $error->add(XNPERR_SERVER_ERROR, 'cannot insert event');
+
                         return false;
                     }
                 } else {
@@ -194,6 +202,7 @@ class XooNIpsLogic
                 }
                 if (!$index_item_linkHandler->insert($index_item_link)) {
                     $error->add(XNPERR_SERVER_ERROR, 'cannot update index_item_link');
+
                     return false;
                 }
                 if ($auto_certify) {
@@ -205,8 +214,8 @@ class XooNIpsLogic
 
         // update item_status
         $item_statusHandler = xoonips_getOrmHandler('xoonips', 'item_status');
-        $old_item_status    = $item_statusHandler->get($item_id);
-        $item_status        = $item_statusHandler->create(); // re-create because XooNIpsTableObject cannot be setVar(key,null,true)ed
+        $old_item_status = $item_statusHandler->get($item_id);
+        $item_status = $item_statusHandler->create(); // re-create because XooNIpsTableObject cannot be setVar(key,null,true)ed
         $item_status->setVar('item_id', $item_id, true); // not gpc
         if ($old_item_status) {
             $item_status->unsetNew();
@@ -217,6 +226,7 @@ class XooNIpsLogic
             $item_status->setVar('is_deleted', 0, true); // not gpc
             if (!$item_statusHandler->insert($item_status)) {
                 $error->add(XNPERR_SERVER_ERROR, 'cannot update item_status');
+
                 return false;
             }
         } else {
@@ -226,6 +236,7 @@ class XooNIpsLogic
                 $item_status->setVar('is_deleted', 1, true); // not gpc
                 if (!$item_statusHandler->insert($item_status)) {
                     $error->add(XNPERR_SERVER_ERROR, 'cannot update item_status');
+
                     return false;
                 }
             } else {
@@ -239,23 +250,26 @@ class XooNIpsLogic
     /**
      * @brief    helper function for putItem, updateItem2.
      * update notify, update rss
+     *
      * @param             $error
      * @param XooNIpsItem $item
      * @param             $uid
+     *
      * @return bool|result
+     *
      * @internal param XooNIpsResponse $response object
      * @internal param XooNIpsItem $item object
      */
     public function touchItem2($error, $item, $uid)
     {
-        $basic   = $item->getVar('basic');
+        $basic = $item->getVar('basic');
         $item_id = $basic->get('item_id');
 
         // notify
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $index_item_links       = $index_item_linkHandler->getByItemId($item_id, array(
+        $index_item_links = $index_item_linkHandler->getByItemId($item_id, array(
             OL_GROUP_ONLY,
-            OL_PUBLIC
+            OL_PUBLIC,
         ));
         foreach ($index_item_links as $link) {
             if ($link->get('certify_state') == CERTIFY_REQUIRED) {
@@ -270,35 +284,39 @@ class XooNIpsLogic
 
     /** get ids of group-certified item.
      * @param gid
+     *
      * @return item_id[]
      */
     public function getCertifiedGroupItemIds($gid)
     {
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $join                   = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
-        $criteria               = new CriteriaCompo();
+        $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
+        $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('gid', $gid));
         $criteria->add(new Criteria('open_level', OL_GROUP_ONLY));
         $criteria->add(new Criteria('certify_state', CERTIFIED));
         $criteria->setGroupBy('item_id');
-        $index_item_links =  $index_item_linkHandler->getObjects($criteria, false, 'item_id', false, $join);
-        $iids             = array();
+        $index_item_links = $index_item_linkHandler->getObjects($criteria, false, 'item_id', false, $join);
+        $iids = array();
         foreach ($index_item_links as $link) {
             $iids[] = $link->get('item_id');
         }
+
         return $iids;
     }
 
     /**
      * @brief get size of item. useful if item is not on DB yet.
+     *
      * @param item [in] XooNIpsItemCompo
+     *
      * @return bool|int
      */
     public function getSizeOfItem($item)
     {
-        $basic            = $item->getVar('basic');
+        $basic = $item->getVar('basic');
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $item_type        = $item_typeHandler->get($basic->get('item_type_id'));
+        $item_type = $item_typeHandler->get($basic->get('item_type_id'));
         if (!$item_type) {
             return false;
         }
@@ -321,8 +339,10 @@ class XooNIpsLogic
                 $result += $files->get('file_size');
             }
         }
+
         return $result;
     }
+
     /* todo: test
     *  if ( sizeof(private_iids) + new_size - old_size > private_item_storage_limit ) -> error: private item storage limit exceeds
     *  if ( !$old_index_item_links && count(private_iids) + 1 > private_item_number_limit ) -> error: private item number limit exceeds
@@ -339,13 +359,16 @@ class XooNIpsLogic
 
     /**
      * @brief    check if enough space is available
+     *
      * @param       $error
      * @param       $uid
      * @param       $new_size
      * @param       $new_index_item_links
      * @param int   $old_size
      * @param array $old_index_item_links
+     *
      * @return bool
+     *
      * @internal param $error [out] error information
      * @internal param $uid [in] user id
      * @internal param $new_size [in]  future total file size of item
@@ -358,14 +381,15 @@ class XooNIpsLogic
         $result = true;
         // check private index limit
         $userHandler = xoonips_getOrmHandler('xoonips', 'users');
-        $user        = $userHandler->get($uid);
+        $user = $userHandler->get($uid);
         if (!$user) {
             $error->add(XNPERR_SERVER_ERROR, "no such user(uid=$uid)");
+
             return false;
         }
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $private_iids           = $index_item_linkHandler->getPrivateItemIdsByUid($uid);
-        $fileHandler            = xoonips_getOrmHandler('xoonips', 'file');
+        $private_iids = $index_item_linkHandler->getPrivateItemIdsByUid($uid);
+        $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
         if ($fileHandler->getTotalSizeOfItems($private_iids) + $new_size - $old_size > $user->get('private_item_storage_limit')) {
             $error->add(XNPERR_STORAGE_OF_ITEM_LIMIT_EXCEEDS, "private item storage limit exceeds(uid=$uid)");
             $result = false;
@@ -378,12 +402,13 @@ class XooNIpsLogic
         }
         // get group ids
         $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-        $new_gids     = array();
+        $new_gids = array();
         foreach ($new_index_item_links as $link) {
             $index_id = $link->get('index_id');
-            $index    = $indexHandler->get($index_id);
+            $index = $indexHandler->get($index_id);
             if (!$index) {
                 $error->add(XNPERR_SERVER_ERROR, "cannot get index(index_id=$index_id)");
+
                 return false;
             } elseif ($index->get('open_level') == OL_GROUP_ONLY) {
                 $new_gids[$index->get('gid')] = true;
@@ -392,9 +417,10 @@ class XooNIpsLogic
         $old_gids = array();
         foreach ($old_index_item_links as $link) {
             $index_id = $link->get('index_id');
-            $index    = $indexHandler->get($index_id);
+            $index = $indexHandler->get($index_id);
             if (!$index) {
                 $error->add(XNPERR_SERVER_ERROR, "cannot get index(index_id=$index_id)");
+
                 return false;
             } elseif ($index->get('open_level') == OL_GROUP_ONLY) {
                 $old_gids[$index->get('gid')] = true;
@@ -402,14 +428,15 @@ class XooNIpsLogic
         }
         // item number/storage limit check (group) (only if auto_certify)
         $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-        $certify_item   = $xconfigHandler->getValue('certify_item');
+        $certify_item = $xconfigHandler->getValue('certify_item');
         if (null === $certify_item) {
             $error->add(XNPERR_SERVER_ERROR, 'cannot get certify_item config');
+
             return false;
         } elseif ($certify_item === 'auto' && count($new_gids)) {
             $groupsHandler = xoonips_getOrmHandler('xoonips', 'groups');
             foreach ($new_gids as $gid => $dummy) {
-                $group      = $groupsHandler->get($gid);
+                $group = $groupsHandler->get($gid);
                 $group_iids = $this->getCertifiedGroupItemIds($gid);
                 if ($fileHandler->getTotalSizeOfItems($group_iids) + $new_size - (empty($old_gids[$gid]) ? 0 : $old_size)
                     > $group->get('group_item_storage_limit')
@@ -425,46 +452,56 @@ class XooNIpsLogic
                 }
             }
         }
+
         return $result;
     }
 
     /**
      * @brief    guess mime-type of file
+     *
      * @param XooNIpsFile $file
+     *
      * @return mime -type string(e.g. application/pdf)
+     *
      * @internal param XooNIpsFile $file
      */
     public function guessMimeType($file)
     {
         // TODO: move this function
-        $fileutil  = xoonips_getUtility('file');
+        $fileutil = xoonips_getUtility('file');
         $file_path = $file->getFilepath();
         $file_name = $file->get('original_file_name');
+
         return $fileutil->get_mimetype($file_path, $file_name);
     }
 
     /**
      * @brief create thumbnail image of file
+     *
      * @param $error
      * @param $file
+     *
      * @return bool
      */
     public function createThumbnail($error, $file)
     {
         $file_path = $file->getFilepath();
-        $mimetype  = $file->get('mime_type');
-        $fileutil  = xoonips_getUtility('file');
+        $mimetype = $file->get('mime_type');
+        $fileutil = xoonips_getUtility('file');
         $thumbnail = $fileutil->get_thumbnail($file_path, $mimetype);
         if (empty($thumbnail)) {
             $error->add(XNPERR_INVALID_PARAM, 'failed to create thumbnail');
+
             return false;
         }
         $file->set('thumbnail_file', $thumbnail);
+
         return true;
     }
 
     /** convert prefixed number to a number(e.g. '4k' to 4096)
      * @param $val
+     *
      * @return int|string
      */
     public function returnBytes($val)
@@ -474,9 +511,9 @@ class XooNIpsLogic
             // -1 : unlimit size
             $val = '1G';
         }
-        $val  = trim($val);
-        $len  = strlen($val);
-        $last = strtolower($val{$len - 1});
+        $val = trim($val);
+        $len = strlen($val);
+        $last = strtolower($val[$len - 1]);
         if (!is_numeric($last)) {
             $val = substr($val, 0, $len - 1);
             switch ($last) {
@@ -489,6 +526,7 @@ class XooNIpsLogic
                     $val *= 1024;
             }
         }
+
         return $val;
     }
 
@@ -514,6 +552,7 @@ class XooNIpsLogic
 
     /** convert lock type to string.
      * @param $lock_type
+     *
      * @return string
      */
     public function getLockTypeString($lock_type)
@@ -526,6 +565,7 @@ class XooNIpsLogic
             case XOONIPS_LOCK_TYPE_TRANSFER_REQUEST:
                 return 'requested to transfer';
         }
+
         return "(internal error: unsupported lock type. lock_type=$lock_type)";
     }
 
@@ -537,25 +577,26 @@ class XooNIpsLogic
      * @param $year_required
      * @param $month_required
      * @param $mday_required
+     *
      * @return bool
      */
     public function isPublicationDateValid($response, $year, $month, $mday, $year_required, $month_required, $mday_required)
     {
-        $error       = $response->getError();
-        $year_valid  = false;
+        $error = $response->getError();
+        $year_valid = false;
         $month_valid = false;
-        $mday_valid  = false;
+        $mday_valid = false;
         if (empty($year) || ctype_digit($year) && (1 <= $year && $year <= 9999)) {
             $year_valid = true;
-            $int_year   = (int)$year;
+            $int_year = (int) $year;
         }
         if (empty($month) || ctype_digit($month) && (1 <= $month && $month <= 12)) {
             $month_valid = true;
-            $int_month   = (int)$month;
+            $int_month = (int) $month;
         }
         if (empty($mday) || ctype_digit($mday) && (1 <= $mday && $mday <= 31 && checkdate($int_month, $mday, $int_year))) {
             $mday_valid = true;
-            $int_mday   = (int)$mday;
+            $int_mday = (int) $mday;
         }
 
         if (!$year_valid || !$month_valid || !$mday_valid || $int_year == 0 && ($int_month != 0 || $int_mday != 0)
@@ -563,6 +604,7 @@ class XooNIpsLogic
                && $int_mday != 0
         ) {
             $error->add(XNPERR_INVALID_PARAM, 'invalid creation date');
+
             return false;
         }
 
@@ -579,6 +621,7 @@ class XooNIpsLogic
             $error->add(XNPERR_INCOMPLETE_PARAM, 'creation_mday');
             $is_complete = false;
         }
+
         return $is_complete;
     }
 }

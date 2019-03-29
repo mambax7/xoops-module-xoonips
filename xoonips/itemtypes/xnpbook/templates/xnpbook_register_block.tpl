@@ -1,4 +1,3 @@
-<{* $Revision: 1.18.2.1.2.12 $ *}>
 <!-- begin of xnpbook_register_block.tpl -->
 <script type="text/javascript">
 //<![CDATA[

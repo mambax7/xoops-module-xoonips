@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.9 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,15 +25,16 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/view.class.php';
+require_once __DIR__.'/../base/view.class.php';
 
 /**
- * Class XooNIpsViewImportConfirm
+ * Class XooNIpsViewImportConfirm.
  */
 class XooNIpsViewImportConfirm extends XooNIpsView
 {
     /**
      * XooNIpsViewImportConfirm constructor.
+     *
      * @param associative $response
      */
     public function __construct($response)
@@ -41,16 +42,13 @@ class XooNIpsViewImportConfirm extends XooNIpsView
         parent::__construct($response);
     }
 
-    /**
-     *
-     */
     public function render()
     {
         global $xoopsOption, $xoopsConfig, $xoopsUser, $xoopsUserIsAdmin, $xoopsLogger, $xoopsTpl;
 
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_import_confirm.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH.'/header.php';
         $xoopsTpl->assign('token_hidden', $this->_params['ticket_html']);
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH.'/footer.php';
     }
 }

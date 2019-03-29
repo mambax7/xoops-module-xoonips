@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @param $category
@@ -35,36 +33,36 @@ function xoonips_admin_system_check_phpext(&$category)
 {
     // mbstring
     $name = 'mbstring';
-    $res  = new XooNIpsAdminSystemCheckResult($name);
-    $ext  = $name;
+    $res = new XooNIpsAdminSystemCheckResult($name);
+    $ext = $name;
     if (extension_loaded($ext)) {
         $res->setResult(_XASC_STATUS_OK, '', _AM_XOONIPS_SYSTEM_CHECK_LABEL_ENABLE);
         $category->registerResult($res);
         unset($res);
         // -- mbstring_language
-        $name       = 'mbstring.language';
+        $name = 'mbstring.language';
         $ans[$name] = mb_language();
-        $res        = new XooNIpsAdminSystemCheckResult(' &raquo; ' . $name);
+        $res = new XooNIpsAdminSystemCheckResult(' &raquo; '.$name);
         $res->setResult(_XASC_STATUS_OK, $ans[$name], _AM_XOONIPS_SYSTEM_CHECK_LABEL_OK);
         $category->registerResult($res);
         unset($res);
         // -- mbstring.internal_encoding
-        $name       = 'mbstring.internal_encoding';
+        $name = 'mbstring.internal_encoding';
         $ans[$name] = mb_internal_encoding();
-        $res        = new XooNIpsAdminSystemCheckResult(' &raquo; ' . $name);
+        $res = new XooNIpsAdminSystemCheckResult(' &raquo; '.$name);
         if ($ans[$name] == _CHARSET) {
             $res->setResult(_XASC_STATUS_OK, $ans[$name], _AM_XOONIPS_SYSTEM_CHECK_LABEL_OK);
         } else {
             $res->setResult(_XASC_STATUS_FAIL, $ans[$name], _AM_XOONIPS_SYSTEM_CHECK_LABEL_FAIL);
-            $res->setMessage('This variable should set \'' . _CHARSET . '\'');
+            $res->setMessage('This variable should set \''._CHARSET.'\'');
             $category->setError(_XASC_ERRORTYPE_PHP, _XASC_STATUS_FAIL);
         }
         $category->registerResult($res);
         unset($res);
         // -- mbstring.detect_order
-        $name             = 'mbstring.detect_order';
-        $ans[$name]       = mb_detect_order();
-        $res              = new XooNIpsAdminSystemCheckResult(' &raquo; ' . $name);
+        $name = 'mbstring.detect_order';
+        $ans[$name] = mb_detect_order();
+        $res = new XooNIpsAdminSystemCheckResult(' &raquo; '.$name);
         $mb_require_order = array(
             'ASCII',
             _CHARSET,
@@ -83,15 +81,15 @@ function xoonips_admin_system_check_phpext(&$category)
             $res->setResult(_XASC_STATUS_OK, $mes, _AM_XOONIPS_SYSTEM_CHECK_LABEL_OK);
         } else {
             $res->setResult(_XASC_STATUS_FAIL, $mes, _AM_XOONIPS_SYSTEM_CHECK_LABEL_FAIL);
-            $res->setMessage('This results must be included charset ' . implode(' and ', $mb_require_order));
+            $res->setMessage('This results must be included charset '.implode(' and ', $mb_require_order));
             $category->setError(_XASC_ERRORTYPE_PHP, _XASC_STATUS_FAIL);
         }
         $category->registerResult($res);
         unset($res);
         // -- mbstring.func_overload
-        $name       = 'mbstring.func_overload';
+        $name = 'mbstring.func_overload';
         $ans[$name] = ini_get($name);
-        $res        = new XooNIpsAdminSystemCheckResult(' &raquo; ' . $name);
+        $res = new XooNIpsAdminSystemCheckResult(' &raquo; '.$name);
         if ($ans[$name] == 0) {
             $res->setResult(_XASC_STATUS_OK, $ans[$name], _AM_XOONIPS_SYSTEM_CHECK_LABEL_OK);
         } else {
@@ -102,9 +100,9 @@ function xoonips_admin_system_check_phpext(&$category)
         $category->registerResult($res);
         unset($res);
         // -- mbstring.http_input
-        $name       = 'mbstring.http_input';
+        $name = 'mbstring.http_input';
         $ans[$name] = ini_get($name);
-        $res        = new XooNIpsAdminSystemCheckResult(' &raquo; ' . $name);
+        $res = new XooNIpsAdminSystemCheckResult(' &raquo; '.$name);
         if ($ans[$name] === 'pass') {
             $res->setResult(_XASC_STATUS_OK, $ans[$name], _AM_XOONIPS_SYSTEM_CHECK_LABEL_OK);
         } else {
@@ -115,9 +113,9 @@ function xoonips_admin_system_check_phpext(&$category)
         $category->registerResult($res);
         unset($res);
         // -- mbstring.http_output
-        $name       = 'mbstring.http_output';
+        $name = 'mbstring.http_output';
         $ans[$name] = ini_get($name);
-        $res        = new XooNIpsAdminSystemCheckResult(' &raquo; ' . $name);
+        $res = new XooNIpsAdminSystemCheckResult(' &raquo; '.$name);
         if ($ans[$name] === 'pass') {
             $res->setResult(_XASC_STATUS_OK, $ans[$name], _AM_XOONIPS_SYSTEM_CHECK_LABEL_OK);
         } else {
@@ -128,16 +126,16 @@ function xoonips_admin_system_check_phpext(&$category)
         $category->registerResult($res);
         unset($res);
         // -- mbstring.encoding_translation
-        $name       = 'mbstring.encoding_translation';
+        $name = 'mbstring.encoding_translation';
         $ans[$name] = ini_get($name);
-        $res        = new XooNIpsAdminSystemCheckResult(' &raquo; ' . $name);
+        $res = new XooNIpsAdminSystemCheckResult(' &raquo; '.$name);
         $res->setResult(_XASC_STATUS_OK, $ans[$name], _AM_XOONIPS_SYSTEM_CHECK_LABEL_OK);
         $category->registerResult($res);
         unset($res);
         // -- mbstring.substitute_character
-        $name       = 'mbstring.substitute_character';
+        $name = 'mbstring.substitute_character';
         $ans[$name] = ini_get($name);
-        $res        = new XooNIpsAdminSystemCheckResult(' &raquo; ' . $name);
+        $res = new XooNIpsAdminSystemCheckResult(' &raquo; '.$name);
         if ($ans[$name] == '') {
             $res->setResult(_XASC_STATUS_OK, '(no value)', _AM_XOONIPS_SYSTEM_CHECK_LABEL_OK);
         } elseif ($ans[$name] === 'none') {
@@ -151,7 +149,7 @@ function xoonips_admin_system_check_phpext(&$category)
         unset($res);
     } else {
         $res->setResult(_XASC_STATUS_FAIL, '', _AM_XOONIPS_SYSTEM_CHECK_LABEL_DISABLE);
-        $res->setMessage('\'' . $ext . '\' extension is required');
+        $res->setMessage('\''.$ext.'\' extension is required');
         $category->setError(_XASC_ERRORTYPE_PHP, _XASC_STATUS_FAIL);
         $category->registerResult($res);
         unset($res);
@@ -159,20 +157,20 @@ function xoonips_admin_system_check_phpext(&$category)
 
     // gd
     $name = 'gd';
-    $res  = new XooNIpsAdminSystemCheckResult($name);
-    $ext  = $name;
+    $res = new XooNIpsAdminSystemCheckResult($name);
+    $ext = $name;
     if (extension_loaded($ext)) {
         $gd_support_info = gd_info();
-        $gd_support      = array(
-            'FreeType Support'   => false,
-            'GIF Read Support'   => false,
+        $gd_support = array(
+            'FreeType Support' => false,
+            'GIF Read Support' => false,
             'GIF Create Support' => false,
-            'JPG Support'        => false,
-            'PNG Support'        => false,
-            'WBMP Support'       => false,
-            'XBM Support'        => false,
+            'JPG Support' => false,
+            'PNG Support' => false,
+            'WBMP Support' => false,
+            'XBM Support' => false,
         );
-        $gd_results      = true;
+        $gd_results = true;
         if (isset($gd_support_info['JPEG Support'])) {
             $gd_support_info['JPG Support'] = $gd_support_info['JPEG Support'];
         }
@@ -186,7 +184,7 @@ function xoonips_admin_system_check_phpext(&$category)
         $category->registerResult($res);
         unset($res);
         foreach ($gd_support as $gd_key => $gd_result) {
-            $res = new XooNIpsAdminSystemCheckResult(' &raquo; ' . $gd_key);
+            $res = new XooNIpsAdminSystemCheckResult(' &raquo; '.$gd_key);
             if ($gd_result) {
                 $res->setResult(_XASC_STATUS_OK, 'enable', _AM_XOONIPS_SYSTEM_CHECK_LABEL_OK);
             } else {
@@ -198,7 +196,7 @@ function xoonips_admin_system_check_phpext(&$category)
         }
     } else {
         $res->setResult(_XASC_STATUS_FAIL, '', _AM_XOONIPS_SYSTEM_CHECK_LABEL_DISABLE);
-        $res->setMessage('\'' . $ext . '\' extension is required');
+        $res->setMessage('\''.$ext.'\' extension is required');
         $category->setError(_XASC_ERRORTYPE_PHP, _XASC_STATUS_FAIL);
         $category->registerResult($res);
         unset($res);
@@ -206,15 +204,15 @@ function xoonips_admin_system_check_phpext(&$category)
 
     // zlib
     $name = 'zlib';
-    $res  = new XooNIpsAdminSystemCheckResult($name);
-    $ext  = $name;
+    $res = new XooNIpsAdminSystemCheckResult($name);
+    $ext = $name;
     if (extension_loaded($ext)) {
         $res->setResult(_XASC_STATUS_OK, '', _AM_XOONIPS_SYSTEM_CHECK_LABEL_ENABLE);
         $category->registerResult($res);
         unset($res);
     } else {
         $res->setResult(_XASC_STATUS_FAIL, '', _AM_XOONIPS_SYSTEM_CHECK_LABEL_DISABLE);
-        $res->setMessage('\'' . $ext . '\' extension is required');
+        $res->setMessage('\''.$ext.'\' extension is required');
         $category->setError(_XASC_ERRORTYPE_PHP, _XASC_STATUS_FAIL);
         $category->registerResult($res);
         unset($res);
@@ -222,15 +220,15 @@ function xoonips_admin_system_check_phpext(&$category)
 
     // xml
     $name = 'xml';
-    $res  = new XooNIpsAdminSystemCheckResult($name);
-    $ext  = $name;
+    $res = new XooNIpsAdminSystemCheckResult($name);
+    $ext = $name;
     if (extension_loaded($ext)) {
         $res->setResult(_XASC_STATUS_OK, '', _AM_XOONIPS_SYSTEM_CHECK_LABEL_ENABLE);
         $category->registerResult($res);
         unset($res);
     } else {
         $res->setResult(_XASC_STATUS_FAIL, '', _AM_XOONIPS_SYSTEM_CHECK_LABEL_DISABLE);
-        $res->setMessage('\'' . $ext . '\' extension is required');
+        $res->setMessage('\''.$ext.'\' extension is required');
         $category->setError(_XASC_ERRORTYPE_PHP, _XASC_STATUS_FAIL);
         $category->registerResult($res);
         unset($res);
@@ -238,15 +236,15 @@ function xoonips_admin_system_check_phpext(&$category)
 
     // fileinfo
     $name = 'fileinfo';
-    $res  = new XooNIpsAdminSystemCheckResult($name);
-    $ext  = $name;
+    $res = new XooNIpsAdminSystemCheckResult($name);
+    $ext = $name;
     if (extension_loaded($ext)) {
         $res->setResult(_XASC_STATUS_OK, '', _AM_XOONIPS_SYSTEM_CHECK_LABEL_ENABLE);
         $category->registerResult($res);
         unset($res);
     } else {
         $res->setResult(_XASC_STATUS_FAIL, '', _AM_XOONIPS_SYSTEM_CHECK_LABEL_DISABLE);
-        $res->setMessage('\'' . $ext . '\' extension is required');
+        $res->setMessage('\''.$ext.'\' extension is required');
         $category->setError(_XASC_ERRORTYPE_PHP, _XASC_STATUS_FAIL);
         $category->registerResult($res);
         unset($res);

@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.20 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,15 +24,12 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // for xnpGetFileInfo
-include_once __DIR__ . '/../../include/lib.php';
+require_once __DIR__.'/../../include/lib.php';
 
 /**
- *
  * @brief data object of file
  *
  * @li    getVar('file_id') :
@@ -51,14 +48,11 @@ include_once __DIR__ . '/../../include/lib.php';
  * @li    getVar('timestamp') :
  * @li    getVar('is_deleted') :
  * @li    getVar('download_count') :
- *
  */
 class XooNIpsOrmFile extends XooNIpsTableObject
 {
-
     /**
-     * file path string of this file
-     *
+     * file path string of this file.
      */
     public $filepath = null;
 
@@ -94,9 +88,6 @@ class XooNIpsOrmFile extends XooNIpsTableObject
         $this->filepath = $path;
     }
 
-    /**
-     * @return null
-     */
     public function getFilepath()
     {
         return $this->filepath;
@@ -110,6 +101,7 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmFileHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -120,27 +112,31 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
 
     /**
      * @todo define upload_dir key name
+     *
      * @param $file
+     *
      * @return string
      */
     public function createFilepath($file)
     {
         // copy file to $upload_dir
         $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-        $upload_dir     = $xconfigHandler->getValue('upload_dir');
+        $upload_dir = $xconfigHandler->getValue('upload_dir');
         if (substr($upload_dir, -1) === '/') {
-            $dstfilepath = $upload_dir . $file->get('file_id');
+            $dstfilepath = $upload_dir.$file->get('file_id');
         } else {
-            $dstfilepath = $upload_dir . '/' . $file->get('file_id');
+            $dstfilepath = $upload_dir.'/'.$file->get('file_id');
         }
+
         return $dstfilepath;
     }
 
     /**
-     * insert a metadata of file and move a file to sysytem's upload_dir
+     * insert a metadata of file and move a file to sysytem's upload_dir.
      *
      * @param XooNIpsOrmFile|XoopsObject $file  file to be inserted
      * @param bool                       $force force insertion flag
+     *
      * @return bool false if failure
      */
     public function insert(XoopsObject $file, $force = false)
@@ -154,8 +150,8 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
             $thumbnail = $file->get('thumbnail_file');
             if (empty($thumbnail)) {
                 $file_path = $file->getFilepath();
-                $mimetype  = $file->get('mime_type');
-                $fileutil  = xoonips_getUtility('file');
+                $mimetype = $file->get('mime_type');
+                $fileutil = xoonips_getUtility('file');
                 $thumbnail = $fileutil->get_thumbnail($file_path, $mimetype);
                 if (!empty($thumbnail)) {
                     $file->set('thumbnail_file', $thumbnail);
@@ -174,14 +170,16 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
                 return true;
             }
         }
+
         return false;
     }
 
     /**
-     * delete a metadata of file and remove a file
+     * delete a metadata of file and remove a file.
      *
-     * @param XooNIpsOrmFile|XoopsObject $file file to delete
+     * @param XooNIpsOrmFile|XoopsObject $file  file to delete
      * @param bool                       $force
+     *
      * @return bool false if failure
      */
     public function delete(XoopsObject $file, $force = false)
@@ -189,6 +187,7 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
         if (parent::delete($file)) {
             return true;
         }
+
         return false;
     }
 
@@ -196,7 +195,9 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
      * get a metadata of file. returned object has a file path of this file.
      *
      * @param mixed $id
+     *
      * @return bool false if failure
+     *
      * @internal param XooNIpsOrmFile $file file to be inserted
      */
     public function &get($id)
@@ -205,18 +206,19 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
         if ($file) {
             $file->setFilepath($this->createFilepath($file));
         }
+
         return $file;
     }
 
     /**
      * gets File objects join xoonips_file_type.
      *
-     * @access public
      * @param object              $criteria
      * @param bool                $id_as_key
      * @param string              $fieldlist fieldlist for distinct select
      * @param bool                $distinct
      * @param XooNIpsJoinCriteria $joindef   join criteria object
+     *
      * @return array objects
      */
     public function &getObjects($criteria = null, $id_as_key = false, $fieldlist = '', $distinct = false, $joindef = null)
@@ -233,10 +235,11 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
         }
         $files = parent::getObjects($criteria, $id_as_key, $fieldlist, $distinct, $joindef);
         if ($files) {
-            for ($i = 0, $iMax = count($files); $i < $iMax; $i++) {
+            for ($i = 0, $iMax = count($files); $i < $iMax; ++$i) {
                 $files[$i]->setFilepath($this->createFilepath($files[$i]));
             }
         }
+
         return $files;
     }
 
@@ -245,8 +248,10 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
      * $file must have file id.
      *
      * @todo define upload_dir key name
+     *
      * @param XooNIpsOrmFile $file XooNIpsOrmFile object
-     * @return boolean false if fault
+     *
+     * @return bool false if fault
      */
     public function moveFile($file)
     {
@@ -256,9 +261,11 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
         }
         if (rename($file->getFilepath(), $this->createFilepath($file))) {
             $file->setFilepath($this->createFilepath($file));
+
             return true;
         }
-        trigger_error('can\'t move file: file_id=' . $file->get('file_id'));
+        trigger_error('can\'t move file: file_id='.$file->get('file_id'));
+
         return false;
     }
 
@@ -268,7 +275,8 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
      * Notice that the function returns true if file has been already deleted.
      *
      * @param XooNIpsOrmFile $file XooNIpsOrmFile object
-     * @return boolean false if file id is empty.
+     *
+     * @return bool false if file id is empty
      */
     public function deleteFile($file)
     {
@@ -282,19 +290,21 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
         if (unlink($this->createFilepath($file))) {
             return true;
         }
+
         return false;
     }
 
     /**
-     * clone file information and copy file
+     * clone file information and copy file.
      *
      * @param XooNIpsOrmFile $file XooNIpsOrmFile object
+     *
      * @return object|reference
      */
     public function &fileClone($file)
     {
         // clone file orm
-        $copyfile =  $file->xoopsClone();
+        $copyfile = $file->xoopsClone();
         $copyfile->setFilepath(tempnam('/tmp', 'XNP'));
 
         // copy file
@@ -306,21 +316,26 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
     /**
      * get total download count of specified file type of item.
      *
-     * @param integer $item_id item id to get total download count
-     * @param         $file_type_name
+     * @param int $item_id        item id to get total download count
+     * @param     $file_type_name
+     *
      * @return
+     *
      * @internal param int $file_type_nameid file id to get total download count
      */
     public function getTotalDownloadCount($item_id, $file_type_name)
     {
-        list($tmp) = xnpGetFileInfo('sum(t_file.download_count)', 't_file_type.name=\'' . addslashes($file_type_name) . '\' and sess_id is NULL ',
+        list($tmp) = xnpGetFileInfo('sum(t_file.download_count)', 't_file_type.name=\''.addslashes($file_type_name).'\' and sess_id is NULL ',
                                     $item_id);
+
         return $tmp[0];
     }
 
     /**
      * get total file size of items.
+     *
      * @param array item_ids item_id[]
+     *
      * @return int size(bytes)
      */
     public function getTotalSizeOfItems($item_ids)
@@ -328,13 +343,14 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
         $total_size = 0;
         if (count($item_ids)) {
             $criteria = new CriteriaCompo();
-            $criteria->add(new Criteria('item_id', '(' . implode(',', $item_ids) . ')', 'in'));
+            $criteria->add(new Criteria('item_id', '('.implode(',', $item_ids).')', 'in'));
             $criteria->add(new Criteria('is_deleted', 0));
-            $files =&  $this->getObjects($criteria);
+            $files = &$this->getObjects($criteria);
             foreach ($files as $file) {
                 $total_size += $file->get('file_size');
             }
         }
+
         return $total_size;
     }
 }

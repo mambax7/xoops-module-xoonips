@@ -1,5 +1,4 @@
 <{* page for certify user *}>
-<{* $Revision: 1.1.2.2 $ *}>
 
 <p>
 <{$smarty.const._MI_XOONIPS_ACCOUNT_PANKUZU_MODERATOR}>

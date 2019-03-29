@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.10.2.1.2.22 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2013 RIKEN, Japan All rights reserved.                //
@@ -26,16 +26,18 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-$itemtype_path    = dirname(__DIR__);
+$itemtype_path = dirname(__DIR__);
 $itemtype_dirname = basename($itemtype_path);
-$xoonips_path     = dirname($itemtype_path) . '/xoonips';
+$xoonips_path = dirname($itemtype_path).'/xoonips';
 
 $langman = xoonips_getUtility('languagemanager');
 $langman->read('main.php', $itemtype_dirname);
 
 /**
- * get DetailInformation by item_id
+ * get DetailInformation by item_id.
+ *
  * @param $item_id
+ *
  * @return array|bool
  */
 function xnpmemoGetDetailInformation($item_id)
@@ -44,33 +46,36 @@ function xnpmemoGetDetailInformation($item_id)
     if (empty($item_id)) {
         return array('item_link' => '');
     }
-    $sql    = 'select * from ' . $xoopsDB->prefix('xnpmemo_item_detail') . " where memo_id=$item_id";
+    $sql = 'select * from '.$xoopsDB->prefix('xnpmemo_item_detail')." where memo_id=$item_id";
     $result = $xoopsDB->query($sql);
     if ($result == false) {
         echo $xoopsDB->error();
+
         return false;
     }
+
     return $xoopsDB->fetchArray($result);
 }
 
 /**
  * @param $item_id
+ *
  * @return array
  */
 function xnpmemoGetMetaInformation($item_id)
 {
-    $ret    = array();
-    $basic  = xnpGetBasicInformationArray($item_id);
+    $ret = array();
+    $basic = xnpGetBasicInformationArray($item_id);
     $detail = xnpmemoGetDetailInformation($item_id);
 
     if (!empty($basic)) {
-        $ret[_MD_XOONIPS_ITEM_TITLE_LABEL]            = implode("\n", $basic['titles']);
-        $ret[_MD_XOONIPS_ITEM_CONTRIBUTOR_LABEL]      = $basic['contributor'];
-        $ret[_MD_XOONIPS_ITEM_KEYWORDS_LABEL]         = implode("\n", $basic['keywords']);
-        $ret[_MD_XOONIPS_ITEM_DESCRIPTION_LABEL]      = $basic['description'];
-        $ret[_MD_XOONIPS_ITEM_DOI_LABEL]              = $basic['doi'];
+        $ret[_MD_XOONIPS_ITEM_TITLE_LABEL] = implode("\n", $basic['titles']);
+        $ret[_MD_XOONIPS_ITEM_CONTRIBUTOR_LABEL] = $basic['contributor'];
+        $ret[_MD_XOONIPS_ITEM_KEYWORDS_LABEL] = implode("\n", $basic['keywords']);
+        $ret[_MD_XOONIPS_ITEM_DESCRIPTION_LABEL] = $basic['description'];
+        $ret[_MD_XOONIPS_ITEM_DOI_LABEL] = $basic['doi'];
         $ret[_MD_XOONIPS_ITEM_LAST_UPDATE_DATE_LABEL] = $basic['last_update_date'];
-        $ret[_MD_XOONIPS_ITEM_CREATION_DATE_LABEL]    = $basic['creation_date'];
+        $ret[_MD_XOONIPS_ITEM_CREATION_DATE_LABEL] = $basic['creation_date'];
     }
     if (!empty($detail)) {
         $ret[_MD_XNPMEMO_ITEM_LINK_LABEL] = $detail['item_link'];
@@ -81,6 +86,7 @@ function xnpmemoGetMetaInformation($item_id)
 
 /**
  * @param $item_basic
+ *
  * @return mixed|string|void
  */
 function xnpmemoGetListBlock($item_basic)
@@ -104,6 +110,7 @@ function xnpmemoGetListBlock($item_basic)
 
 /**
  * @param $item_basic
+ *
  * @return mixed|string|void
  */
 function xnpmemoGetPrinterFriendlyListBlock($item_basic)
@@ -113,6 +120,7 @@ function xnpmemoGetPrinterFriendlyListBlock($item_basic)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpmemoGetDetailBlock($item_id)
@@ -140,6 +148,7 @@ function xnpmemoGetDetailBlock($item_id)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpmemoGetPrinterFriendlyDetailBlock($item_id)
@@ -184,8 +193,8 @@ function xnpmemoGetRegisterBlock()
     }
 
     // get BasicInformation / Preview / index block
-    $basic     = xnpGetBasicInformationRegisterBlock();
-    $index     = xnpGetIndexRegisterBlock();
+    $basic = xnpGetBasicInformationRegisterBlock();
+    $index = xnpGetIndexRegisterBlock();
     $memo_file = xnpGetAttachmentRegisterBlock('memo_file');
 
     // set to template
@@ -203,14 +212,15 @@ function xnpmemoGetRegisterBlock()
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpmemoGetEditBlock($item_id)
 {
     $formdata = xoonips_getUtility('formdata');
     // get BasicInformation / Preview / index block
-    $basic     = xnpGetBasicInformationEditBlock($item_id);
-    $index     = xnpGetIndexEditBlock($item_id);
+    $basic = xnpGetBasicInformationEditBlock($item_id);
+    $index = xnpGetIndexEditBlock($item_id);
     $memo_file = xnpGetAttachmentEditBlock($item_id, 'memo_file');
 
     // get DetailInformation
@@ -242,14 +252,15 @@ function xnpmemoGetEditBlock($item_id)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpmemoGetConfirmBlock($item_id)
 {
     $formdata = xoonips_getUtility('formdata');
     // get BasicInformation / Preview / index block
-    $basic     = xnpGetBasicInformationConfirmBlock($item_id);
-    $index     = xnpGetIndexConfirmBlock($item_id);
+    $basic = xnpGetBasicInformationConfirmBlock($item_id);
+    $index = xnpGetIndexConfirmBlock($item_id);
     $memo_file = xnpGetAttachmentConfirmBlock($item_id, 'memo_file');
     // get DetailInformation
     $item_link = $formdata->getValue('post', 'item_link', 's', false);
@@ -266,12 +277,12 @@ function xnpmemoGetConfirmBlock($item_id)
 
     if (xnpHasWithout($basic)) {
         global $system_message;
-        $system_message = $system_message . "\n<br /><font color='#ff0000'>" . _MD_XOONIPS_ITEM_WARNING_FIELD_TRIM . '</font><br />';
+        $system_message = $system_message."\n<br /><font color='#ff0000'>"._MD_XOONIPS_ITEM_WARNING_FIELD_TRIM.'</font><br />';
     }
     if (isset($item_link)) {
         if (xnpHasWithout($detail)) {
             global $system_message;
-            $system_message = $system_message . "\n<br /><font color='#ff0000'>" . _MD_XOONIPS_ITEM_WARNING_FIELD_TRIM . '</font><br />';
+            $system_message = $system_message."\n<br /><font color='#ff0000'>"._MD_XOONIPS_ITEM_WARNING_FIELD_TRIM.'</font><br />';
         }
     }
 
@@ -291,8 +302,10 @@ function xnpmemoGetConfirmBlock($item_id)
 
 /**
  * check DetailInformation input
- * called from confirm/registered page
+ * called from confirm/registered page.
+ *
  * @param $message
+ *
  * @return bool
  */
 function xnpmemoCheckRegisterParameters($message)
@@ -301,13 +314,16 @@ function xnpmemoCheckRegisterParameters($message)
     if (count($messages) == 0) {
         return true;
     }
-    $message = "<br />\n" . implode("<br />\n", $messages);
+    $message = "<br />\n".implode("<br />\n", $messages);
+
     return false;
 }
 
 /**
- * check DetailInformation input
+ * check DetailInformation input.
+ *
  * @param $message
+ *
  * @return bool
  */
 function xnpmemoCheckEditParameters($message)
@@ -317,17 +333,18 @@ function xnpmemoCheckEditParameters($message)
 
 /**
  * @param $item_id
+ *
  * @return bool
  */
 function xnpmemoInsertItem($item_id)
 {
     global $xoopsDB;
     $formdata = xoonips_getUtility('formdata');
-    $xnpsid   = $_SESSION['XNPSID'];
+    $xnpsid = $_SESSION['XNPSID'];
 
     // register BasicInformation, Index, Attachment
     $item_id = 0;
-    $result  = xnpInsertBasicInformation($item_id);
+    $result = xnpInsertBasicInformation($item_id);
     if ($result) {
         $result = xnpUpdateIndex($item_id);
         if ($result) {
@@ -352,10 +369,11 @@ function xnpmemoInsertItem($item_id)
     $escval = addslashes($ar['item_link']);
 
     // register DetailInformation
-    $sql    = 'insert into ' . $xoopsDB->prefix('xnpmemo_item_detail') . " ( memo_id, item_link ) values ( $item_id, '$escval' ) ";
+    $sql = 'insert into '.$xoopsDB->prefix('xnpmemo_item_detail')." ( memo_id, item_link ) values ( $item_id, '$escval' ) ";
     $result = $xoopsDB->queryF($sql);
     if ($result == false) {
         echo 'cannot insert item_detail';
+
         return false;
     }
 
@@ -364,13 +382,14 @@ function xnpmemoInsertItem($item_id)
 
 /**
  * @param $item_id
+ *
  * @return bool
  */
 function xnpmemoUpdateItem($item_id)
 {
     global $xoopsDB;
     $formdata = xoonips_getUtility('formdata');
-    $xnpsid   = $_SESSION['XNPSID'];
+    $xnpsid = $_SESSION['XNPSID'];
 
     // edit BasicInformation, Index, Preview, Attachment
     $result = xnpUpdateBasicInformation($item_id);
@@ -404,8 +423,8 @@ function xnpmemoUpdateItem($item_id)
     xnpTrimColumn($ar, 'xnpmemo_item_detail', array_keys($ar), _CHARSET);
 
     // register DetailInformation
-    $sql    = implode(',', array('item_link' . '=\'' . addslashes($ar['item_link']) . '\''));
-    $result = $xoopsDB->queryF('update ' . $xoopsDB->prefix('xnpmemo_item_detail') . " set $sql where memo_id = $item_id ");
+    $sql = implode(',', array('item_link'.'=\''.addslashes($ar['item_link']).'\''));
+    $result = $xoopsDB->queryF('update '.$xoopsDB->prefix('xnpmemo_item_detail')." set $sql where memo_id = $item_id ");
     if ($result == false) {
         return false;
     }
@@ -417,11 +436,13 @@ function xnpmemoUpdateItem($item_id)
  * @param $wheres
  * @param $join
  * @param $keywords
+ *
  * @return bool
  */
 function xnpmemoGetDetailInformationQuickSearchQuery($wheres, &$join, $keywords)
 {
     $wheres = $join = '';
+
     return true;
 }
 
@@ -436,27 +457,28 @@ function xnpmemoGetAdvancedSearchQuery(&$where, &$join)
     $file_table = $xoopsDB->prefix('xoonips_file');
 
     $wheres = array();
-    $w      = xnpGetBasicInformationAdvancedSearchQuery('xnpmemo');
+    $w = xnpGetBasicInformationAdvancedSearchQuery('xnpmemo');
     if ($w) {
         $wheres[] = $w;
     }
-    $w = xnpGetKeywordQuery($memo_table . '.item_link', 'xnpmemo_item_link');
+    $w = xnpGetKeywordQuery($memo_table.'.item_link', 'xnpmemo_item_link');
     if ($w) {
         $wheres[] = $w;
     }
 
     $where = implode(' and ', $wheres);
-    $join  = '';
+    $join = '';
 }
 
 /**
  * @param $search_var
+ *
  * @return mixed|string|void
  */
 function xnpmemoGetAdvancedSearchBlock($search_var)
 {
     // get BasicInformation / Preview / IndexKeywords block
-    $basic        = xnpGetBasicInformationAdvancedSearchBlock('xnpmemo', $search_var);
+    $basic = xnpGetBasicInformationAdvancedSearchBlock('xnpmemo', $search_var);
     $search_var[] = 'xnpmemo_url';
 
     // set to template
@@ -475,6 +497,7 @@ function xnpmemoGetAdvancedSearchBlock($search_var)
 
 /**
  * @param $iids
+ *
  * @return float|sum
  */
 function xnpmemoGetDetailInformationTotalSize($iids)
@@ -484,18 +507,21 @@ function xnpmemoGetDetailInformationTotalSize($iids)
 
 /**
  * create XML for exporting detail information
- * see xnpExportItem for detail
+ * see xnpExportItem for detail.
+ *
  * @see      xnpExportItem
  *
  * @param folder $export_path
  * @param file   $fhdl
  * @param item   $item_id
  * @param true   $attachment
+ *
  * @return true : success
- * @internal param folder $export_path that export file is written to.
- * @internal param file $fhdl handle that items are exported to.
+ *
+ * @internal param folder $export_path that export file is written to
+ * @internal param file $fhdl handle that items are exported to
  * @internal param item $item_id id that is exported
- * @internal param true $attachment if attachment files are exported, else false.
+ * @internal param true $attachment if attachment files are exported, else false
  */
 function xnpmemoExportItem($export_path, $fhdl, $item_id, $attachment)
 {
@@ -506,12 +532,12 @@ function xnpmemoExportItem($export_path, $fhdl, $item_id, $attachment)
     }
 
     // get DetailInformation
-    $result = $xoopsDB->query('select * from ' . $xoopsDB->prefix('xnpmemo_item_detail') . " where memo_id=$item_id");
+    $result = $xoopsDB->query('select * from '.$xoopsDB->prefix('xnpmemo_item_detail')." where memo_id=$item_id");
     if (!$result) {
         return false;
     }
     $detail = $xoopsDB->fetchArray($result);
-    if (!fwrite($fhdl, "<detail id=\"${item_id}\">\n" . '<item_link>' . htmlspecialchars($detail['item_link'], ENT_QUOTES) . "</item_link>\n")) {
+    if (!fwrite($fhdl, "<detail id=\"${item_id}\">\n".'<item_link>'.htmlspecialchars($detail['item_link'], ENT_QUOTES)."</item_link>\n")) {
         return false;
     }
     if (!($attachment ? xnpExportFile($export_path, $fhdl, $item_id) : true)) {
@@ -526,13 +552,14 @@ function xnpmemoExportItem($export_path, $fhdl, $item_id, $attachment)
 
 /**
  * @param $item_id
+ *
  * @return array
  */
 function xnpmemoGetModifiedFields($item_id)
 {
-    $ret      = array();
+    $ret = array();
     $formdata = xoonips_getUtility('formdata');
-    $detail   = xnpmemoGetDetailInformation($item_id);
+    $detail = xnpmemoGetDetailInformation($item_id);
     if ($detail) {
         foreach (array('item_link' => _MD_XNPMEMO_ITEM_LINK_LABEL) as $k => $v) {
             $tmp = $formdata->getValue('post', $k, 's', false);
@@ -548,11 +575,13 @@ function xnpmemoGetModifiedFields($item_id)
             array_push($ret, _MD_XNPMEMO_MEMO_FILE_LABEL);
         }
     }
+
     return $ret;
 }
 
 /**
  * @param $itemtype
+ *
  * @return mixed|string|void
  */
 function xnpmemoGetTopBlock($itemtype)
@@ -563,6 +592,7 @@ function xnpmemoGetTopBlock($itemtype)
 /**
  * @param $metadataPrefix
  * @param $item_id
+ *
  * @return bool
  */
 function xnpmemoSupportMetadataFormat($metadataPrefix, $item_id)
@@ -570,12 +600,14 @@ function xnpmemoSupportMetadataFormat($metadataPrefix, $item_id)
     if ($metadataPrefix === 'oai_dc' || $metadataPrefix === 'junii2') {
         return true;
     }
+
     return false;
 }
 
 /**
  * @param $prefix
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpmemoGetMetadata($prefix, $item_id)
@@ -584,7 +616,7 @@ function xnpmemoGetMetadata($prefix, $item_id)
     $mydirname = basename($mydirpath);
     if (!in_array($prefix, array(
         'oai_dc',
-        'junii2'
+        'junii2',
     ))
     ) {
         return false;
@@ -592,13 +624,13 @@ function xnpmemoGetMetadata($prefix, $item_id)
 
     // detail information
     $detailHandler = xoonips_getOrmHandler($mydirname, 'item_detail');
-    $detail_obj    = $detailHandler->get($item_id);
+    $detail_obj = $detailHandler->get($item_id);
     if (empty($detail_obj)) {
         return false;
     }
     $detail = $detail_obj->getArray();
     // basic information
-    $basic                             = xnpGetBasicInformationArray($item_id);
+    $basic = xnpGetBasicInformationArray($item_id);
     $basic['publication_date_iso8601'] = xnpISO8601($basic['publication_year'], $basic['publication_month'], $basic['publication_mday']);
     // indexes
     $indexes = array();
@@ -610,10 +642,10 @@ function xnpmemoGetMetadata($prefix, $item_id)
         }
     }
     // files
-    $files       = array();
-    $mimetypes   = array();
+    $files = array();
+    $mimetypes = array();
     $fileHandler = xoonips_gethandler('xoonips', 'file');
-    $files       = $fileHandler->getFilesInfo($item_id, 'memo_file');
+    $files = $fileHandler->getFilesInfo($item_id, 'memo_file');
     foreach ($files as $file) {
         if (!in_array($file['mime_type'], $mimetypes)) {
             $mimetypes[] = $file['mime_type'];
@@ -621,28 +653,28 @@ function xnpmemoGetMetadata($prefix, $item_id)
     }
     // related to
     $related_toHandler = xoonips_getOrmHandler('xoonips', 'related_to');
-    $related_to_ids    = $related_toHandler->getChildItemIds($item_id);
-    $related_tos       = array();
+    $related_to_ids = $related_toHandler->getChildItemIds($item_id);
+    $related_tos = array();
     foreach ($related_to_ids as $related_to_id) {
         $related_tos[] = array(
-            'item_id'  => $related_to_id,
-            'item_url' => XOOPS_URL . '/modules/xoonips/detail.php?item_id=' . $related_to_id
+            'item_id' => $related_to_id,
+            'item_url' => XOOPS_URL.'/modules/xoonips/detail.php?item_id='.$related_to_id,
         );
     }
     // repository configs
-    $xconfigHandler          = xoonips_getOrmHandler('xoonips', 'config');
+    $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
     $myxoopsConfigMetaFooter = xoonips_get_xoops_configs(XOOPS_CONF_METAFOOTER);
-    $repository              = array(
+    $repository = array(
         'download_file_compression' => $xconfigHandler->getValue('download_file_compression'),
-        'nijc_code'                 => $xconfigHandler->getValue('repository_nijc_code'),
-        'publisher'                 => $xconfigHandler->getValue('repository_publisher'),
-        'institution'               => $xconfigHandler->getValue('repository_institution'),
-        'meta_author'               => $myxoopsConfigMetaFooter['meta_author']
+        'nijc_code' => $xconfigHandler->getValue('repository_nijc_code'),
+        'publisher' => $xconfigHandler->getValue('repository_publisher'),
+        'institution' => $xconfigHandler->getValue('repository_institution'),
+        'meta_author' => $myxoopsConfigMetaFooter['meta_author'],
     );
     // assign template
     global $xoopsTpl;
-    $tpl                = new XoopsTpl();
-    $tpl->plugins_dir[] = XOONIPS_PATH . '/class/smarty/plugins';
+    $tpl = new XoopsTpl();
+    $tpl->plugins_dir[] = XOONIPS_PATH.'/class/smarty/plugins';
     $tpl->assign($xoopsTpl->get_template_vars());
     $tpl->assign('basic', $basic);
     $tpl->assign('detail', $detail);
@@ -651,6 +683,7 @@ function xnpmemoGetMetadata($prefix, $item_id)
     $tpl->assign('mimetypes', $mimetypes);
     $tpl->assign('related_tos', $related_tos);
     $tpl->assign('repository', $repository);
-    $xml = $tpl->fetch('db:' . $mydirname . '_oaipmh_' . $prefix . '.xml');
+    $xml = $tpl->fetch('db:'.$mydirname.'_oaipmh_'.$prefix.'.xml');
+
     return $xml;
 }

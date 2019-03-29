@@ -3,7 +3,6 @@
 <{*
 template for display item's detail information
 
-$Revision: 1.16.2.1.2.14 $
 
 $item_id: id of item
 $body: HTML of detail page

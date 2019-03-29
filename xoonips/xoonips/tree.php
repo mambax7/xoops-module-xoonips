@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.36.2.1.2.21 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -64,49 +64,49 @@
 
 */
 
-include __DIR__ . '/include/common.inc.php';
-include __DIR__ . '/include/AL.php';
+require __DIR__.'/include/common.inc.php';
+require __DIR__.'/include/AL.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
 // get variables
 $formdata = xoonips_getUtility('formdata');
 $get_keys = array(
-    'checkbox'                   => array(
-        'type'    => 'b',
-        'default' => false
+    'checkbox' => array(
+        'type' => 'b',
+        'default' => false,
     ),
-    'url'                        => array(
-        'type'    => 's',
-        'default' => 'listitem.php'
+    'url' => array(
+        'type' => 's',
+        'default' => 'listitem.php',
     ),
-    'edit'                       => array(
-        'type'    => 'b',
-        'default' => false
+    'edit' => array(
+        'type' => 'b',
+        'default' => false,
     ),
     'on_check_privateHandler_id' => array(
-        'type'    => 's',
-        'default' => ''
+        'type' => 's',
+        'default' => '',
     ),
-    'selected_tab'               => array(
-        'type'    => 'i',
-        'default' => ''
+    'selected_tab' => array(
+        'type' => 'i',
+        'default' => '',
     ),
-    'edit_public'                => array(
-        'type'    => 'b',
-        'default' => false
+    'edit_public' => array(
+        'type' => 'b',
+        'default' => false,
     ),
-    'puid'                       => array(
-        'type'    => 'i',
-        'default' => 0
+    'puid' => array(
+        'type' => 'i',
+        'default' => 0,
     ),
-    'onclick_title'              => array(
-        'type'    => 's',
-        'default' => ''
+    'onclick_title' => array(
+        'type' => 's',
+        'default' => '',
     ),
-    'private_only'               => array(
-        'type'    => 'i',
-        'default' => 0
+    'private_only' => array(
+        'type' => 'i',
+        'default' => 0,
     ),
 );
 $get_vals = array();
@@ -119,20 +119,20 @@ if (strpos($get_vals['url'], '?') !== false) {
     die('illegal request');
 }
 
-$myxoopsConfig =  xoonips_get_xoops_configs(XOOPS_CONF);
-$textutil      = xoonips_getUtility('text');
+$myxoopsConfig = xoonips_get_xoops_configs(XOOPS_CONF);
+$textutil = xoonips_getUtility('text');
 
-$xoonips_target_url                = $textutil->html_special_chars($get_vals['url']);
+$xoonips_target_url = $textutil->html_special_chars($get_vals['url']);
 $xoonips_oncheck_privateHandler_id = $textutil->html_special_chars($get_vals['on_check_privateHandler_id']);
 
 // tree node images
-$tree_image_path = XOOPS_THEME_PATH . '/' . $myxoopsConfig['theme_set'] . '/' . XOONIPS_TREE_SWAP_IMAGE_DIR;
+$tree_image_path = XOOPS_THEME_PATH.'/'.$myxoopsConfig['theme_set'].'/'.XOONIPS_TREE_SWAP_IMAGE_DIR;
 if (!is_dir($tree_image_path)) {
-    $tree_image_path = XOOPS_ROOT_PATH . '/modules/xoonips/images';
+    $tree_image_path = XOOPS_ROOT_PATH.'/modules/xoonips/images';
 }
 $tree_image_url = str_replace(XOOPS_ROOT_PATH, XOOPS_URL, $tree_image_path);
 // check compat33 node image
-if (file_exists($tree_image_path . '/tree_root_normal.gif')) {
+if (file_exists($tree_image_path.'/tree_root_normal.gif')) {
     // new node image found
     $tree_image_compat33 = false;
 } else {
@@ -154,8 +154,8 @@ if ($uid == UID_GUEST && !public_item_target_user_all()) {
 }
 
 // get index tree structure
-include_once __DIR__ . '/include/gentree.php';
-$indexes      = genIndexTree0($xnpsid);
+require_once __DIR__.'/include/gentree.php';
+$indexes = genIndexTree0($xnpsid);
 $is_moderator = xnp_is_moderator($xnpsid, $uid);
 if ($is_moderator && $get_vals['puid'] > 0) {
     $puid = $get_vals['puid'];
@@ -176,10 +176,10 @@ $indexes = genIndexTree1($indexes);
 // get number of items under nodes (by index).
 // use special function.
 $itemCounts = array();
-$result     = xnp_get_item_count_group_by_index($xnpsid, $itemCounts);
-$ct         = count($indexes);
-for ($i = 0; $i < $ct; $i++) { // can't change value in foreach
-    $index    =  $indexes[$i];
+$result = xnp_get_item_count_group_by_index($xnpsid, $itemCounts);
+$ct = count($indexes);
+for ($i = 0; $i < $ct; ++$i) { // can't change value in foreach
+    $index = $indexes[$i];
     $index_id = $index['item_id'];
 }
 unset($index);
@@ -191,12 +191,12 @@ $length = count($indexes);
 foreach ($indexes as $i => $index) {
     $xid = $index['item_id'];
     // tree nodes
-    $node               = array();
-    $node['xid']        = $xid;
-    $node['is_last']    = $index['is_last'] ? 1 : 0;
+    $node = array();
+    $node['xid'] = $xid;
+    $node['is_last'] = $index['is_last'] ? 1 : 0;
     $node['open_level'] = $index['open_level'];
-    $node['title']      = $textutil->javascript_special_chars($index['titles'][DEFAULT_INDEX_TITLE_OFFSET]);
-    $itemCount          = isset($itemCounts[$xid]) ? $itemCounts[$xid] : null;
+    $node['title'] = $textutil->javascript_special_chars($index['titles'][DEFAULT_INDEX_TITLE_OFFSET]);
+    $itemCount = isset($itemCounts[$xid]) ? $itemCounts[$xid] : null;
     if ($itemCount) {
         $node['title'] .= sprintf('(%d)', $itemCount);
     }
@@ -216,25 +216,25 @@ unset($index);
 unset($i);
 
 // global attributes
-$attributes                    = array(
-    'url'              => XOOPS_URL . '/modules/xoonips',
-    'target_url'       => $xoonips_target_url,
-    'link_is_checkbox' => (int)$get_vals['checkbox'],
-    'selected_tab'     => $get_vals['selected_tab'],
-    'onclick_title'    => $get_vals['onclick_title'],
-    'image_url'        => $tree_image_url,
-    'image_compat33'   => $tree_image_compat33 ? 1 : 0,
+$attributes = array(
+    'url' => XOOPS_URL.'/modules/xoonips',
+    'target_url' => $xoonips_target_url,
+    'link_is_checkbox' => (int) $get_vals['checkbox'],
+    'selected_tab' => $get_vals['selected_tab'],
+    'onclick_title' => $get_vals['onclick_title'],
+    'image_url' => $tree_image_url,
+    'image_compat33' => $tree_image_compat33 ? 1 : 0,
 );
 $xoonips_tree_attributes_array = array();
 foreach ($attributes as $key => $val) {
     $xoonips_tree_attributes_array[] = array(
-        'key'   => $key,
-        'value' => $val
+        'key' => $key,
+        'value' => $val,
     );
 }
 
 // start to output html
-require_once XOOPS_ROOT_PATH . '/class/template.php';
+require_once XOOPS_ROOT_PATH.'/class/template.php';
 $xoopsTpl = new XoopsTpl();
 xoops_header(false);
 echo "\n";

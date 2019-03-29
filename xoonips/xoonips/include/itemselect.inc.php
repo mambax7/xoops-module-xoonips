@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.53 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,11 +25,9 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once __DIR__ . '/extra_param.inc.php';
+require_once __DIR__.'/extra_param.inc.php';
 /*
  *
  * $_POST['op'] :
@@ -47,78 +45,78 @@ include_once __DIR__ . '/extra_param.inc.php';
  */
 
 // TODO: check uncommented NOT USED variables
-$sess_orderby  = isset($_SESSION['xoonips_order_by']) ? $_SESSION['xoonips_order_by'] : 'title';
+$sess_orderby = isset($_SESSION['xoonips_order_by']) ? $_SESSION['xoonips_order_by'] : 'title';
 $sess_orderdir = isset($_SESSION['xoonips_order_dir']) ? $_SESSION['xoonips_order_dir'] : ASC;
-$request_vars  = array(
-    'op'              => array(
+$request_vars = array(
+    'op' => array(
         's',
-        ''
+        '',
     ),
-    'checkbox'        => array(
+    'checkbox' => array(
         's',
-        'off'
+        'off',
     ),
     // 'on' or 'off'
     'add_to_index_id' => array(
         'i',
-        false
+        false,
     ),
-    'submit_url'      => array(
+    'submit_url' => array(
         's',
-        ''
+        '',
     ),
-    'page'            => array(
+    'page' => array(
         'i',
-        1
+        1,
     ),
-    'item_per_page'   => array(
+    'item_per_page' => array(
         'i',
-        20
+        20,
     ),
-    'order_by'        => array(
+    'order_by' => array(
         's',
-        $sess_orderby
+        $sess_orderby,
     ),
-    'order_dir'       => array(
+    'order_dir' => array(
         'i',
-        $sess_orderdir
+        $sess_orderdir,
     ),
-    'index_id'        => array(
+    'index_id' => array(
         'i',
-        false
+        false,
     ),
-    'keyword'         => array(
+    'keyword' => array(
         'n',
-        ''
+        '',
     ),
     'search_itemtype' => array(
         's',
-        ''
+        '',
     ),
-    'print'           => array(
+    'print' => array(
         'b',
-        false
+        false,
     ),
     'search_cache_id' => array(
         'i',
-        null
+        null,
     ),
-    'search_tab'      => array(
+    'search_tab' => array(
         's',
-        'item'
+        'item',
     ),
 );
-$formdata      = xoonips_getUtility('formdata');
+$formdata = xoonips_getUtility('formdata');
 foreach ($request_vars as $key => $meta) {
     list($type, $default) = $meta;
     $$key = $formdata->getValue('both', $key, $type, false, $default);
 }
-$search_var                    = $formdata->getValueArray('both', 'search_var', 's', false, array());
-$selected                      = $formdata->getValueArray('both', 'selected', 'i', false, array());
-$selected_hidden               = $formdata->getValueArray('both', 'selected_hidden', 's', false, array());
-$selected_original             = $formdata->getValueArray('both', 'selected_original', 's', false, array());
-$initially_selected            = $formdata->getValueArray('both', 'initially_selected', 's', false, array());
-$_SESSION['xoonips_order_by']  = $order_by;
+$search_var = $formdata->getValueArray('both', 'search_var', 's', false, array());
+$selected = $formdata->getValueArray('both', 'selected', 'i', false, array());
+$selected_hidden = $formdata->getValueArray('both', 'selected_hidden', 's', false, array());
+$selected_original = $formdata->getValueArray('both', 'selected_original', 's', false, array());
+$initially_selected = $formdata->getValueArray('both', 'initially_selected', 's', false, array());
+$_SESSION['xoonips_order_by'] = $order_by;
 $_SESSION['xoonips_order_dir'] = $order_dir;
 
 $xnpsid = $_SESSION['XNPSID'];
@@ -131,29 +129,29 @@ $formdata->copy('get', 'post');
 
 $initially_selected = array();
 
-$itemtypes      = array();
+$itemtypes = array();
 $itemtype_names = array();
-$tmp            = array();
+$tmp = array();
 if (xnp_get_item_types($tmp) != RES_OK) {
-    redirect_header(XOOPS_URL . '/', 3, 'ERROR xnp_get_item_types ');
+    redirect_header(XOOPS_URL.'/', 3, 'ERROR xnp_get_item_types ');
 } else {
     foreach ($tmp as $i) {
         $itemtypes[$i['item_type_id']] = $i;
-        $itemtype_names[$i['name']]    = $i;
+        $itemtype_names[$i['name']] = $i;
     }
 }
 
 $xoopsTpl->assign('checkbox', $checkbox);
 $xoopsTpl->assign('add_to_index_id', $add_to_index_id);
 
-$iids         = array();
-$items        = array();
-$cri          = array();
+$iids = array();
+$items = array();
+$cri = array();
 $errorMessage = null;
 switch ($op) {
     case 'advancedsearch':
         $errorMessage = '';
-        $iids         = xoonips_advanced_search($keyword, $search_itemtype, false, $errorMessage, $search_cache_id);
+        $iids = xoonips_advanced_search($keyword, $search_itemtype, false, $errorMessage, $search_cache_id);
 
         if (!$add_to_index_id) {
             $xoopsTpl->assign('print_enabled', true);
@@ -165,64 +163,64 @@ switch ($op) {
         $xoopsTpl->assign('error_message', $textutil->html_special_chars($errorMessage));
 
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_itemselect_listitem.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH.'/header.php';
         break;
     case 'quicksearch':
         $errorMessage = '';
-        $iids         = xoonips_quick_search($keyword, $search_itemtype, false, $errorMessage, $search_cache_id, $search_tab);
+        $iids = xoonips_quick_search($keyword, $search_itemtype, false, $errorMessage, $search_cache_id, $search_tab);
         $xoopsTpl->assign('export_enabled', xoonips_is_user_export_enabled());
         $xoopsTpl->assign('print_enabled', 1);
         $xoopsTpl->assign('error_message', $textutil->html_special_chars($errorMessage));
         $xoopsTpl->assign('quick_search_keyword', $textutil->html_special_chars($keyword));
         $xoopsTpl->assign('keyword', $textutil->html_special_chars($keyword));
 
-        $page         = $page;
-        $url_orderby  = urlencode($order_by);
+        $page = $page;
+        $url_orderby = urlencode($order_by);
         $url_orderdir = urlencode($order_dir);
 
-        $url_keyword         = urlencode($keyword);
+        $url_keyword = urlencode($keyword);
         $url_search_itemtype = urlencode($search_itemtype);
         $xoopsTpl->assign('url_for_get',
-                          XOOPS_URL . "/modules/xoonips/itemselect.php?op=$op&amp;search_itemtype=$url_search_itemtype&amp;keyword=$url_keyword"
-                          . "&amp;page=$page&amp;item_per_page=$item_per_page&amp;orderby=$url_orderby&amp;orderdir=$url_orderdir");
+                          XOOPS_URL."/modules/xoonips/itemselect.php?op=$op&amp;search_itemtype=$url_search_itemtype&amp;keyword=$url_keyword"
+                          ."&amp;page=$page&amp;item_per_page=$item_per_page&amp;orderby=$url_orderby&amp;orderdir=$url_orderdir");
 
         $metadata_count = xoonips_get_metadata_count_from_search_cache($search_cache_id);
-        $item_count     = xoonips_get_item_count_from_search_cache($search_cache_id);
-        $file_count     = xoonips_get_file_count_from_search_cache($search_cache_id);
+        $item_count = xoonips_get_item_count_from_search_cache($search_cache_id);
+        $file_count = xoonips_get_file_count_from_search_cache($search_cache_id);
 
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $criteria         = new Criteria('name', $search_itemtype);
-        $item_types       =  $item_typeHandler->getObjects($criteria);
+        $criteria = new Criteria('name', $search_itemtype);
+        $item_types = $item_typeHandler->getObjects($criteria);
         if (count($item_types) > 0) {
             $xoopsTpl->assign('search_tabs', array(
                 array(
                     'search_tab' => 'item',
-                    'label'      => _MD_XOONIPS_ITEM_SEARCH_TAB_ITEM,
-                    'count'      => $item_count
+                    'label' => _MD_XOONIPS_ITEM_SEARCH_TAB_ITEM,
+                    'count' => $item_count,
                 ),
                 array(
                     'search_tab' => 'file',
-                    'label'      => _MD_XOONIPS_ITEM_SEARCH_TAB_FILE,
-                    'count'      => $file_count
-                )
+                    'label' => _MD_XOONIPS_ITEM_SEARCH_TAB_FILE,
+                    'count' => $file_count,
+                ),
             ));
         } elseif ($search_itemtype === 'all') {
             $xoopsTpl->assign('search_tabs', array(
                 array(
                     'search_tab' => 'item',
-                    'label'      => _MD_XOONIPS_ITEM_SEARCH_TAB_ITEM,
-                    'count'      => $item_count
+                    'label' => _MD_XOONIPS_ITEM_SEARCH_TAB_ITEM,
+                    'count' => $item_count,
                 ),
                 array(
                     'search_tab' => 'metadata',
-                    'label'      => _MD_XOONIPS_ITEM_SEARCH_TAB_METADATA,
-                    'count'      => $metadata_count
+                    'label' => _MD_XOONIPS_ITEM_SEARCH_TAB_METADATA,
+                    'count' => $metadata_count,
                 ),
                 array(
                     'search_tab' => 'file',
-                    'label'      => _MD_XOONIPS_ITEM_SEARCH_TAB_FILE,
-                    'count'      => $file_count
-                )
+                    'label' => _MD_XOONIPS_ITEM_SEARCH_TAB_FILE,
+                    'count' => $file_count,
+                ),
             ));
         }
 
@@ -232,14 +230,14 @@ switch ($op) {
             // retrieving metadata and constructing associative array of the items
             // that has same structure of a xoonips item.
             if ($order_by === 'title') {
-                $order_sql = 'order by tmetadata.title ' . ($order_dir == ASC ? 'ASC' : 'DESC');
+                $order_sql = 'order by tmetadata.title '.($order_dir == ASC ? 'ASC' : 'DESC');
             } else {
-                $order_sql = 'order by tmetadata.datestamp ' . ($order_dir == ASC ? 'ASC' : 'DESC');
+                $order_sql = 'order by tmetadata.datestamp '.($order_dir == ASC ? 'ASC' : 'DESC');
             }
 
-            $table_metadata       = $xoopsDB->prefix('xoonips_oaipmh_metadata');
-            $table_repo           = $xoopsDB->prefix('xoonips_oaipmh_repositories');
-            $table_cache          = $xoopsDB->prefix('xoonips_search_cache');
+            $table_metadata = $xoopsDB->prefix('xoonips_oaipmh_metadata');
+            $table_repo = $xoopsDB->prefix('xoonips_oaipmh_repositories');
+            $table_cache = $xoopsDB->prefix('xoonips_search_cache');
             $table_cache_metadata = $xoopsDB->prefix('xoonips_search_cache_metadata');
             $sql
                                   = "select tmetadata.identifier, tmetadata.repository_id, title 
@@ -251,36 +249,36 @@ switch ($op) {
       AND trepo.enabled=1
       AND trepo.deleted!=1 
       $order_sql limit $item_per_page offset $start";
-            $result               = $xoopsDB->query($sql);
+            $result = $xoopsDB->query($sql);
             // get number of rows
-            $sql     = "select count(*) from $table_cache_metadata where search_cache_id = $search_cache_id";
+            $sql = "select count(*) from $table_cache_metadata where search_cache_id = $search_cache_id";
             $result2 = $xoopsDB->query($sql);
             list($total_count) = $xoopsDB->fetchRow($result2);
 
             if ($page * $item_per_page >= $total_count) {
-                $page = 1;//reset page number
+                $page = 1; //reset page number
             }
 
             // query to database
-            $items    = array();
+            $items = array();
             $metadata = array();
             while ($row = $xoopsDB->fetchRow($result)) {
                 $ar = array();
                 list($ar['identifier'], $ar['repository_id'], $title) = $row;
-                $ar['title']  = $textutil->html_special_chars($title);
+                $ar['title'] = $textutil->html_special_chars($title);
                 $ar['params'] = urlencode(implode('&', array(
-                    'op' . '=' . urlencode($op),
-                    'keyword' . '=' . urlencode($keyword),
-                    'search_itemtype' . '=' . urlencode($search_itemtype),
-                    'search_cache_id' . '=' . urlencode($search_cache_id),
-                    'order_by' . '=' . urlencode($order_by),
-                    'order_dir' . '=' . urlencode($order_dir),
-                    'item_per_page' . '=' . urlencode($item_per_page),
-                    'page' . '=' . urlencode($page),
-                    'search_tab' . '=' . urlencode($search_tab),
+                    'op'.'='.urlencode($op),
+                    'keyword'.'='.urlencode($keyword),
+                    'search_itemtype'.'='.urlencode($search_itemtype),
+                    'search_cache_id'.'='.urlencode($search_cache_id),
+                    'order_by'.'='.urlencode($order_by),
+                    'order_dir'.'='.urlencode($order_dir),
+                    'item_per_page'.'='.urlencode($item_per_page),
+                    'page'.'='.urlencode($page),
+                    'search_tab'.'='.urlencode($search_tab),
                 )));
-                $items[]      = $ar;
-                $metadata[]   = $ar;
+                $items[] = $ar;
+                $metadata[] = $ar;
             }
             $xoopsTpl->assign('metadata', $metadata);
             $xoopsTpl->assign('maxpage', ceil($total_count / $item_per_page));
@@ -303,16 +301,16 @@ switch ($op) {
         $xoopsTpl->assign('print_enabled', true);
         $xoopsTpl->assign('op', 'itemtypesearch');
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_itemselect_listitem.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
-        $submit_url                              = 'itemselect.php';
+        require XOOPS_ROOT_PATH.'/header.php';
+        $submit_url = 'itemselect.php';
         break;
     case 'itemsubtypesearch':
         $iids = xoonips_itemsubtype_search($keyword, $search_itemtype, false, $errorMessage, $search_cache_id, 'item');
         $xoopsTpl->assign('print_enabled', true);
         $xoopsTpl->assign('op', 'itemsubtypesearch');
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_itemselect_listitem.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
-        $submit_url                              = 'itemselect.php';
+        require XOOPS_ROOT_PATH.'/header.php';
+        $submit_url = 'itemselect.php';
         break;
     case 'add_selected_item':
         xoonips_deny_guest_access();
@@ -321,11 +319,11 @@ switch ($op) {
         $iids = _xoonips_filter_add_items($add_to_index_id, $iids);
 
         // get registered items of index(of $add_to_index_id) to $initially_selected
-        $registered_iids        = array();
+        $registered_iids = array();
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $criteria               = new Criteria('index_id', (int)$add_to_index_id);
-        $index_item_links       =  $index_item_linkHandler->getObjects($criteria);
-        $initially_selected     = array();
+        $criteria = new Criteria('index_id', (int) $add_to_index_id);
+        $index_item_links = $index_item_linkHandler->getObjects($criteria);
+        $initially_selected = array();
         foreach ($index_item_links as $i) {
             if (in_array($i->get('item_id'), $iids)) {
                 $initially_selected[] = $i->get('item_id');
@@ -339,12 +337,12 @@ switch ($op) {
         $xoopsTpl->assign('initially_selected', $initially_selected);
 
         xoonips_add_selected_item($add_to_index_id, $xoopsUser->getVar('uid'), $initially_selected, $selected);
-        header('Location: ' . XOOPS_URL . "/modules/xoonips/listitem.php?index_id=$add_to_index_id");
+        header('Location: '.XOOPS_URL."/modules/xoonips/listitem.php?index_id=$add_to_index_id");
         break;
     case 'add_to_index':
         $errorMessage = '';
-        $iids         = xoonips_advanced_search($keyword, $search_itemtype, false, $errorMessage, $search_cache_id);
-        $iids         = _xoonips_filter_add_items($add_to_index_id, $iids);
+        $iids = xoonips_advanced_search($keyword, $search_itemtype, false, $errorMessage, $search_cache_id);
+        $iids = _xoonips_filter_add_items($add_to_index_id, $iids);
         $xoopsTpl->assign('error_message', $textutil->html_special_chars($errorMessage));
 
         $xoopsTpl->assign('add_to_index_id', $add_to_index_id);
@@ -353,12 +351,12 @@ switch ($op) {
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_itemselect_add_to_index.tpl';
         break;
     case 'select_item_advancedsearch':
-        $selected        = $selected_original; //initialize $selected
+        $selected = $selected_original; //initialize $selected
         $selected_hidden = array();
         break;
     case 'select_item_advancedsearch_pagenavi':
         $errorMessage = '';
-        $iids         = xoonips_advanced_search($keyword, $search_itemtype, false, $errorMessage, $search_cache_id);
+        $iids = xoonips_advanced_search($keyword, $search_itemtype, false, $errorMessage, $search_cache_id);
         $xoopsTpl->assign('error_message', $textutil->html_special_chars($errorMessage));
         $xoopsTpl->assign('op', 'select_item_advancedsearch');
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_itemselect_select_item.tpl';
@@ -366,7 +364,7 @@ switch ($op) {
     case 'select_item_index':
         // select item from indexed item
         // - initialize $selected
-        $selected        = $selected_original;
+        $selected = $selected_original;
         $selected_hidden = array();
         // - reset page number
         $page = 1;
@@ -374,13 +372,13 @@ switch ($op) {
         // change page no of select item from indexed item
         if ($index_id == IID_ROOT) {
             // access denied to IID_ROOT
-            header('Location: ' . XOOPS_URL . '/modules/xoonips/itemselect.php');
+            header('Location: '.XOOPS_URL.'/modules/xoonips/itemselect.php');
             exit();
         }
         $myuid = $xoopsUser->getVar('uid');
         // get private index id
-        $xu_ohandler      = xoonips_getOrmHandler('xoonips', 'users');
-        $xu_obj           = $xu_ohandler->get($myuid);
+        $xu_ohandler = xoonips_getOrmHandler('xoonips', 'users');
+        $xu_obj = $xu_ohandler->get($myuid);
         $private_index_id = $xu_obj->get('private_index_id');
 
         $indexHandler = xoonips_getHandler('xoonips', 'index');
@@ -395,7 +393,7 @@ switch ($op) {
             }
         }
         // get item ids into target index
-        $iids         = $indexHandler->getItemIds($index_id, $myuid, 'read');
+        $iids = $indexHandler->getItemIds($index_id, $myuid, 'read');
         $indexes_vars = $indexHandler->getIndexPathArray($index_id, 's');
         if ($indexes_vars[0]['index_id'] == $private_index_id) {
             $indexes_vars[0]['title'] = XNP_PRIVATE_INDEX_TITLE;
@@ -406,12 +404,12 @@ switch ($op) {
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_itemselect_select_item.tpl';
         break;
     case 'select_item_useritem'://select item from user's items
-        $selected        = $selected_original; //initialize $selected
+        $selected = $selected_original; //initialize $selected
         $selected_hidden = array();
     case 'select_item_useritem_pagenavi':
         $iids = array();
         if (xnp_dump_item_id($xnpsid, $cri, $iids) != RES_OK) {
-            redirect_header(XOOPS_URL . '/', 3, 'ERROR in get item');
+            redirect_header(XOOPS_URL.'/', 3, 'ERROR in get item');
             break;
         }
 
@@ -420,9 +418,9 @@ switch ($op) {
         break;
     case 'related_to_from_index':
         $items = xoonips_get_indexed_items($index_id, empty($xoopsUser) ? UID_GUEST : $xoopsUser->getVar('uid'));
-        $iids  = array();
+        $iids = array();
         foreach ($items as $item) {
-            $basic  = $item->getVar('basic');
+            $basic = $item->getVar('basic');
             $iids[] = $basic->get('item_id');
         }
         break;
@@ -431,11 +429,11 @@ switch ($op) {
 
         $xoopsTpl->assign('export_enabled', xoonips_is_user_export_enabled());
         $xoopsTpl->assign('print_enabled', true);
-        $uid  = $xoopsUser->getVar('uid');
+        $uid = $xoopsUser->getVar('uid');
         $iids = array();
         xnp_get_own_public_item_id($xnpsid, $uid, $iids);
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_itemselect_listitem.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH.'/header.php';
         break;
 }
 
@@ -451,7 +449,7 @@ if ($search_tab === 'metadata' || $search_itemtype === 'metadata') {
 } else {
     $start = ($page - 1) * $item_per_page;
     if ($start >= count($iids)) {
-        $page  = 1;
+        $page = 1;
         $start = 0;
     }
 
@@ -459,66 +457,66 @@ if ($search_tab === 'metadata' || $search_itemtype === 'metadata') {
         $cri = array(
             'orders' => array(
                 array(
-                    'name'  => 'publication_year',
-                    'order' => $order_dir
+                    'name' => 'publication_year',
+                    'order' => $order_dir,
                 ),
                 array(
-                    'name'  => 'publication_month',
-                    'order' => $order_dir
+                    'name' => 'publication_month',
+                    'order' => $order_dir,
                 ),
                 array(
-                    'name'  => 'publication_mday',
-                    'order' => $order_dir
-                )
-            )
+                    'name' => 'publication_mday',
+                    'order' => $order_dir,
+                ),
+            ),
         );
     } else {
         $cri = array(
             'orders' => array(
                 array(
-                    'name'  => $order_by,
-                    'order' => $order_dir
-                )
-            )
+                    'name' => $order_by,
+                    'order' => $order_dir,
+                ),
+            ),
         );
     }
     if (xnp_get_items($xnpsid, $iids, $cri, $items) != RES_OK) {
-        redirect_header(XOOPS_URL . '/', 3, 'ERROR ');
+        redirect_header(XOOPS_URL.'/', 3, 'ERROR ');
     }
     $xoopsTpl->assign('ids', $iids);
 
     //slice items array
     $xoopsTpl->assign('items', $items);
 
-    $item_htmls         = array();
-    $display_item_ids   = array();
-    $c                  = 0;
+    $item_htmls = array();
+    $display_item_ids = array();
+    $c = 0;
     $item_template_vars = array();
     foreach ($items as $i) {
         if ($start <= $c && $c < $start + $item_per_page) {
             if (array_key_exists($i['item_type_id'], $itemtypes)) {
                 $itemtype = $itemtypes[$i['item_type_id']];
-                $modname  = $itemtype['name'];
-                include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
-                if ($print && function_exists($modname . 'GetPrinterFriendlyListBlock')) {
-                    eval("\$html = " . $modname . "GetPrinterFriendlyListBlock( \$i );");
-                } elseif (function_exists($modname . 'GetListBlock')) {
-                    eval("\$html = " . $modname . "GetListBlock( \$i );");
+                $modname = $itemtype['name'];
+                require_once XOOPS_ROOT_PATH.'/modules/'.$itemtype['viewphp'];
+                if ($print && function_exists($modname.'GetPrinterFriendlyListBlock')) {
+                    eval('$html = '.$modname.'GetPrinterFriendlyListBlock( $i );');
+                } elseif (function_exists($modname.'GetListBlock')) {
+                    eval('$html = '.$modname.'GetListBlock( $i );');
                 }
                 if (in_array($i['item_id'], $selected)) {
                     $sel = 1;
                 } else {
                     $sel = 0;
                 }
-                $item_htmls[]       = array(
+                $item_htmls[] = array(
                     'selected' => $sel,
-                    'item_id'  => $i['item_id'],
-                    'html'     => $html
+                    'item_id' => $i['item_id'],
+                    'html' => $html,
                 );
                 $display_item_ids[] = $i['item_id'];
             }
         }
-        $c++;
+        ++$c;
     }
 
     $selected_hidden = array();
@@ -536,11 +534,11 @@ if ($search_tab === 'metadata' || $search_itemtype === 'metadata') {
     $xoopsTpl->assign('selected_original', $selected_original);
 }
 
-$xoopsTpl->assign('page', (int)$page);
+$xoopsTpl->assign('page', (int) $page);
 $xoopsTpl->assign('order_by', $order_by);
-$xoopsTpl->assign('order_dir', (int)$order_dir);
-$xoopsTpl->assign('item_per_page', (int)$item_per_page);
-$xoopsTpl->assign('search_cache_id', (int)$search_cache_id);
+$xoopsTpl->assign('order_dir', (int) $order_dir);
+$xoopsTpl->assign('item_per_page', (int) $item_per_page);
+$xoopsTpl->assign('search_cache_id', (int) $search_cache_id);
 $xoopsTpl->assign('search_itemtype', $textutil->html_special_chars($search_itemtype));
 $xoopsTpl->assign('search_tab', $search_tab);
 $xoopsTpl->assign('submit_url', $textutil->html_special_chars($submit_url));
@@ -549,7 +547,7 @@ foreach ($search_var as $val) {
     $escaped_search_var[] = $textutil->html_special_chars($val);
 }
 $xoopsTpl->assign('search_var', $escaped_search_var);
-$xoopsTpl->assign('isKHTML', (bool)stristr($_SERVER['HTTP_USER_AGENT'], 'khtml'));
+$xoopsTpl->assign('isKHTML', (bool) stristr($_SERVER['HTTP_USER_AGENT'], 'khtml'));
 $xoopsTpl->assign('extra_param', $textutil->html_special_chars(serialize(xoonips_extra_param_restore())));
 
 if (isset($pankuzu)) {
@@ -563,29 +561,29 @@ if (isset($index_id)) {
 //
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /**
- *
  * @param $keyword             search keyword
  * @param $search_itemtype     'all'/'basic'/each item type name(ex:xnppaper)
  * @param $search_only_private boolean true if search only private items
  * @param $errorMessage        reference of string to write errorMessage
  * @param $search_cache_id
- * @return array id of content of search result
- * @internal param $search_content_type 'item'/'metadata'/'file'
  *
+ * @return array id of content of search result
+ *
+ * @internal param $search_content_type 'item'/'metadata'/'file'
  */
 function xoonips_advanced_search($keyword, $search_itemtype, $search_only_private, &$errorMessage, &$search_cache_id)
 {
     global $xoopsUser;
 
-    $iids       = array();
-    $search_var = array();//not used here
-    $res        = xnpSearchExec('advancedsearch', $keyword, $search_itemtype, $search_only_private, $errorMessage, $iids, $search_var,
+    $iids = array();
+    $search_var = array(); //not used here
+    $res = xnpSearchExec('advancedsearch', $keyword, $search_itemtype, $search_only_private, $errorMessage, $iids, $search_var,
                                 $search_cache_id, 'item');
 
     // record events(advanced search)
     $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-    $item_types       =  $item_typeHandler->getObjects();
-    $search_target    = array();
+    $item_types = $item_typeHandler->getObjects();
+    $search_target = array();
     foreach ($item_types as $item_type) {
         if (isset($_POST[$item_type->get('name')])) {
             $search_target[] = $item_type->get('name');
@@ -593,20 +591,20 @@ function xoonips_advanced_search($keyword, $search_itemtype, $search_only_privat
     }
 
     $search_keywords = array(); // characeter strings that brings search condition together
-    $formdata        = xoonips_getUtility('formdata');
-    $mysearch_vars   = $formdata->getValueArray('post', 'search_var', 's', false);
+    $formdata = xoonips_getUtility('formdata');
+    $mysearch_vars = $formdata->getValueArray('post', 'search_var', 's', false);
     if (!empty($mysearch_vars)) {
         foreach ($mysearch_vars as $var_name) {
-            $ar  = explode('_', $var_name);
+            $ar = explode('_', $var_name);
             $var = $formdata->getValue('post', $var_name, 's', false);
             if (in_array($ar[0], $search_target) && null !== $var) {
                 if (!is_array($var)) {
                     if (strlen($var) != 0) {
-                        $search_keywords[] = urlencode($var_name) . '=' . urlencode($var);
+                        $search_keywords[] = urlencode($var_name).'='.urlencode($var);
                     }
                 } else {
                     foreach ($var as $tmp_words) {
-                        $search_keywords[] = urlencode($var_name) . '=' . urlencode($tmp_words);
+                        $search_keywords[] = urlencode($var_name).'='.urlencode($tmp_words);
                     }
                 }
             }
@@ -626,14 +624,15 @@ function xoonips_advanced_search($keyword, $search_itemtype, $search_only_privat
  * @param        $search_cache_id
  * @param        $search_content_type
  * @param string $file_or_item_metadata
+ *
  * @return array
  */
 function xoonips_quick_search($keyword, $search_itemtype, $search_only_private, &$errorMessage, &$search_cache_id, $search_content_type,
                               $file_or_item_metadata = 'all'
 ) {
-    $iids       = array();
-    $search_var = array();//not used here
-    $res        = xnpSearchExec('quicksearch', $keyword, $search_itemtype, $search_only_private, $errorMessage, $iids, $search_var, $search_cache_id,
+    $iids = array();
+    $search_var = array(); //not used here
+    $res = xnpSearchExec('quicksearch', $keyword, $search_itemtype, $search_only_private, $errorMessage, $iids, $search_var, $search_cache_id,
                                 $search_content_type, $file_or_item_metadata);
 
     // record events(quick search)
@@ -652,14 +651,15 @@ function xoonips_quick_search($keyword, $search_itemtype, $search_only_private, 
  * @param        $search_cache_id
  * @param        $search_content_type
  * @param string $file_or_item_metadata
+ *
  * @return array
  */
 function xoonips_itemtype_search($keyword, $search_itemtype, $search_only_private, &$errorMessage, &$search_cache_id, $search_content_type,
                                  $file_or_item_metadata = 'all'
 ) {
-    $iids       = array();
-    $search_var = array();//not used here
-    $res        = xnpSearchExec('itemtypesearch', $keyword, $search_itemtype, $search_only_private, $errorMessage, $iids, $search_var,
+    $iids = array();
+    $search_var = array(); //not used here
+    $res = xnpSearchExec('itemtypesearch', $keyword, $search_itemtype, $search_only_private, $errorMessage, $iids, $search_var,
                                 $search_cache_id, $search_content_type, $file_or_item_metadata);
 
     // record events(quick search)
@@ -676,21 +676,22 @@ function xoonips_itemtype_search($keyword, $search_itemtype, $search_only_privat
  * @param $search_only_private
  * @param $errorMessage
  * @param $search_cache_id
+ *
  * @return array
  */
 function xoonips_itemsubtype_search($keyword, $search_itemtype, $search_only_private, &$errorMessage, &$search_cache_id)
 {
     global $xoopsUser;
 
-    $iids       = array();
-    $search_var = array();//not used here
-    $res        = xnpSearchExec('itemsubtypesearch', $keyword, $search_itemtype, $search_only_private, $errorMessage, $iids, $search_var,
+    $iids = array();
+    $search_var = array(); //not used here
+    $res = xnpSearchExec('itemsubtypesearch', $keyword, $search_itemtype, $search_only_private, $errorMessage, $iids, $search_var,
                                 $search_cache_id, 'item');
 
     // record events(advanced search)
     $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-    $item_types       =  $item_typeHandler->getObjects();
-    $search_target    = array();
+    $item_types = $item_typeHandler->getObjects();
+    $search_target = array();
     foreach ($item_types as $item_type) {
         if (isset($_POST[$item_type->get('name')])) {
             $search_target[] = $item_type->get('name');
@@ -698,20 +699,20 @@ function xoonips_itemsubtype_search($keyword, $search_itemtype, $search_only_pri
     }
 
     $search_keywords = array(); // characeter strings that brings search condition together
-    $formdata        = xoonips_getUtility('formdata');
-    $mysearch_vars   = $formdata->getValueArray('post', 'search_var', 's', false);
+    $formdata = xoonips_getUtility('formdata');
+    $mysearch_vars = $formdata->getValueArray('post', 'search_var', 's', false);
     if (!empty($mysearch_vars)) {
         foreach ($mysearch_vars as $var_name) {
-            $ar  = explode('_', $var_name);
+            $ar = explode('_', $var_name);
             $var = $formdata->getValue('post', $var_name, 's', false);
             if (in_array($ar[0], $search_target) && null !== $var) {
                 if (!is_array($var)) {
                     if (strlen($var) != 0) {
-                        $search_keywords[] = urlencode($var_name) . '=' . urlencode($var);
+                        $search_keywords[] = urlencode($var_name).'='.urlencode($var);
                     }
                 } else {
                     foreach ($var as $tmp_words) {
-                        $search_keywords[] = urlencode($var_name) . '=' . urlencode($tmp_words);
+                        $search_keywords[] = urlencode($var_name).'='.urlencode($tmp_words);
                     }
                 }
             }
@@ -719,15 +720,16 @@ function xoonips_itemsubtype_search($keyword, $search_itemtype, $search_only_pri
         $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
         $eventlogHandler->recordAdvancedSearchEvent($search_keywords);
     }
+
     return $iids;
 }
 
 /**
- *
  * return array of XooNIpsItemCompo that is registerd to the index.
  *
  * @param $index_id integer index id
  * @param $uid      integer uid (for permission check)
+ *
  * @return array XooNIpsItemCompo(s)
  */
 function xoonips_get_indexed_items($index_id, $uid)
@@ -735,9 +737,9 @@ function xoonips_get_indexed_items($index_id, $uid)
     global $xoopsDB;
 
     $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-    $join                   = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'LEFT', 'tiil');
-    $criteria               = new Criteria('tiil.index_id', $index_id);
-    $index_item_links       =  $index_item_linkHandler->getObjects($criteria, false, '', false, $join);
+    $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'LEFT', 'tiil');
+    $criteria = new Criteria('tiil.index_id', $index_id);
+    $index_item_links = $index_item_linkHandler->getObjects($criteria, false, '', false, $join);
 
     $items = array();
     foreach ($index_item_links as $i) {
@@ -752,38 +754,37 @@ function xoonips_get_indexed_items($index_id, $uid)
 }
 
 /**
- * add item to index, set certify_state and lock item and indexes
+ * add item to index, set certify_state and lock item and indexes.
  *
  * @param $index_id              integer id of index item is registerd to
  * @param $uid                   integer user id of executor
  * @param $old_selected_item_ids array id of all of already registerd items to the index($index_id)
  * @param $new_selected_item_ids array id of all of items to be registered to the index($index_id)
- *
  */
 function xoonips_add_selected_item($index_id, $uid, $old_selected_item_ids, $new_selected_item_ids)
 {
     global $xoopsDB;
 
-    $uid_list     = array(); // uid(s) who receive notification.
+    $uid_list = array(); // uid(s) who receive notification.
     $add_item_ids = array_diff($new_selected_item_ids, $old_selected_item_ids);
     $del_item_ids = array_diff($old_selected_item_ids, $new_selected_item_ids);
 
     $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-    $index        = $indexHandler->get($index_id);
+    $index = $indexHandler->get($index_id);
 
     switch ($index->get('open_level')) {
         case OL_GROUP_ONLY:
             // get uid list of group admins
             $xgroupHandler = xoonips_getHandler('xoonips', 'group');
-            $uid_list      = $xgroupHandler->getUserIds($index->get('gid'), true);
+            $uid_list = $xgroupHandler->getUserIds($index->get('gid'), true);
             break;
         case OL_PUBLIC:
             // get uid list of moderators
-            $xoonips_usersHandler  = xoonips_getOrmHandler('xoonips', 'users');
+            $xoonips_usersHandler = xoonips_getOrmHandler('xoonips', 'users');
             $xoonips_configHandler = xoonips_getOrmHandler('xoonips', 'config');
-            $moderator_gid         = $xoonips_configHandler->getValue('moderator_gid');
-            $memberHandler         = xoops_getHandler('member');
-            $users                 = $memberHandler->getUsersByGroup($moderator_gid, true);
+            $moderator_gid = $xoonips_configHandler->getValue('moderator_gid');
+            $memberHandler = xoops_getHandler('member');
+            $users = $memberHandler->getUsersByGroup($moderator_gid, true);
             foreach ($users as $u) {
                 if ($xoonips_usersHandler->get($u->getVar('uid'))) {
                     $uid_list[] = $u->getVar('uid');
@@ -799,9 +800,9 @@ function xoonips_add_selected_item($index_id, $uid, $old_selected_item_ids, $new
     // add selected item into index
     foreach ($add_item_ids as $item_id) {
         // can't add items when the item is certified already or is in pending state.
-        $criteria        = new CriteriaCompo(new Criteria('index_id', $index_id));
-        $criteria        = $criteria->add(new Criteria('item_id', $item_id));
-        $index_item_link =  $index_item_linkHandler->getObjects($criteria);
+        $criteria = new CriteriaCompo(new Criteria('index_id', $index_id));
+        $criteria = $criteria->add(new Criteria('item_id', $item_id));
+        $index_item_link = $index_item_linkHandler->getObjects($criteria);
         if ((isset($index_item_link[0]) && $index_item_link[0]->get('certify_state') == CERTIFY_REQUIRED)
             || (isset($index_item_link[0]) && $index_item_link[0]->get('certify_state') == CERTIFIED)
         ) {
@@ -809,17 +810,17 @@ function xoonips_add_selected_item($index_id, $uid, $old_selected_item_ids, $new
         }
 
         // add
-        $certify_item    = $xoonips_configHandler->getValue(XNP_CONFIG_CERTIFY_ITEM_KEY);
+        $certify_item = $xoonips_configHandler->getValue(XNP_CONFIG_CERTIFY_ITEM_KEY);
         $index_item_link = $index_item_linkHandler->create();
         $index_item_link->set('index_id', $index_id);
         $index_item_link->set('item_id', $item_id);
         $index_item_link->set('certify_state', $certify_item === 'auto' ? CERTIFIED : CERTIFY_REQUIRED);
         if (!$index_item_linkHandler->insert($index_item_link)) {
-            redirect_header(XOOPS_URL . '/', 3, "ERROR can't create index_item_link");
+            redirect_header(XOOPS_URL.'/', 3, "ERROR can't create index_item_link");
         }
 
         $changelogsHandler = xoonips_getOrmHandler('xoonips', 'changelog');
-        $change_log        = $changelogsHandler->create();
+        $change_log = $changelogsHandler->create();
         $change_log->set('uid', $uid);
         $change_log->set('item_id', $item_id);
         $change_log->set('log_date', time());
@@ -827,8 +828,8 @@ function xoonips_add_selected_item($index_id, $uid, $old_selected_item_ids, $new
                                         implode(_MD_XOONIPS_ITEM_CHANGE_LOG_AUTOFILL_DELIMITER, array(_MD_XOONIPS_ITEM_INDEX_LABEL))));
 
         $itemHandler = xoonips_getOrmCompoHandler('xoonips', 'item');
-        $item        = $itemHandler->get($item_id);
-        $item_basic  = $item->getVar('basic');
+        $item = $itemHandler->get($item_id);
+        $item_basic = $item->getVar('basic');
         $change_logs = $item->getVar('changelogs');
 
         $item_basic->set('last_update_date', time());
@@ -838,14 +839,14 @@ function xoonips_add_selected_item($index_id, $uid, $old_selected_item_ids, $new
         $item->setVar('basic', $item_basic);
 
         if (!$itemHandler->insert($item)) {
-            redirect_header(XOOPS_URL . '/', 3, 'ERROR in updating item');
+            redirect_header(XOOPS_URL.'/', 3, 'ERROR in updating item');
         }
         trigger_error('TODO lock item and indexes');
 
         // lock if imported items are registered to public/group index and certify required
         $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $index_item_links  =  $item->getVar('indexes');
-        $indexHandler      = xoonips_getOrmHandler('xoonips', 'index');
+        $index_item_links = $item->getVar('indexes');
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
         foreach ($index_item_links as $index_item_link2) {
             if ($index_item_link2->get('certify_state') == CERTIFY_REQUIRED) {
                 $index = $indexHandler->get($index_item_link2->get('index_id'));
@@ -873,12 +874,12 @@ function xoonips_add_selected_item($index_id, $uid, $old_selected_item_ids, $new
                     global $xoopsModule;
                     $notificationHandler = xoops_getHandler('notification');
                     //define tags here for notification message
-                    $tags                = array();
-                    $tags['ITEM_URL']    = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . "/detail.php?item_id=${item_id}";
-                    $tags['CERTIFY_URL'] = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/certify.php';
-                    $tags['INDEX']       = xnpGetIndexPathString($_SESSION['XNPSID'], $index_id);
+                    $tags = array();
+                    $tags['ITEM_URL'] = XOOPS_URL.'/modules/'.$xoopsModule->dirname()."/detail.php?item_id=${item_id}";
+                    $tags['CERTIFY_URL'] = XOOPS_URL.'/modules/'.$xoopsModule->dirname().'/certify.php';
+                    $tags['INDEX'] = xnpGetIndexPathString($_SESSION['XNPSID'], $index_id);
                     $notificationHandler = xoops_getHandler('notification');
-                    $result              = $notificationHandler->triggerEvent('administrator', 0, 'item_certify_request', $tags, $uid_list);
+                    $result = $notificationHandler->triggerEvent('administrator', 0, 'item_certify_request', $tags, $uid_list);
                     break;
             }
         }
@@ -886,95 +887,96 @@ function xoonips_add_selected_item($index_id, $uid, $old_selected_item_ids, $new
 }
 
 /**
- *
- *
- *
- *
  * @param $total
  * @param $offset
  * @param $limit
+ *
  * @return string
  */
 function xoonips_get_page_number_label($total, $offset, $limit)
 {
-    if ((int)$total > 0) {
-        return (int)$offset . ' - ' . ((int)$offset + (int)$limit - 1) . ' of ' . (int)$total . ' Items';
+    if ((int) $total > 0) {
+        return (int) $offset.' - '.((int) $offset + (int) $limit - 1).' of '.(int) $total.' Items';
     } else {
         return '0 - 0 of 0 Items';
     }
 }
 
 /**
- *
  * @param $page    integer current page number
  * @param $maxpage integer max page number
- * @return array of integer page numbers
  *
+ * @return array of integer page numbers
  */
 function xoonips_get_selectable_page_number($page, $maxpage)
 {
     //centering current page number(5th of $pages)
     $pages = array(min(max(1, $page - 4), max(1, $maxpage - 9)));
-    for ($i = 1; $i < 10 && $pages[$i - 1] < $maxpage; $i++) {
+    for ($i = 1; $i < 10 && $pages[$i - 1] < $maxpage; ++$i) {
         $pages[$i] = $pages[$i - 1] + 1;
     }
+
     return $pages;
 }
 
 /**
- * return number of items of the file search cache
+ * return number of items of the file search cache.
  *
  * @param $search_cache_id integer cache id
- * @return integer number of items
+ *
+ * @return int number of items
  */
 function xoonips_get_file_count_from_search_cache($search_cache_id)
 {
     global $xoopsDB, $xoopsUser;
 
     $search_cache_fileHandler = xoonips_getOrmHandler('xoonips', 'search_cache_file');
-    $join                     = new XooNIpsJoinCriteria('xoonips_file', 'file_id', 'file_id', 'INNER', 'tf');
+    $join = new XooNIpsJoinCriteria('xoonips_file', 'file_id', 'file_id', 'INNER', 'tf');
     $join->cascade(new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'tb'), 'tf', true);
 
-    $search_cache_file =  $search_cache_fileHandler->getObjects(new Criteria('search_cache_id', $search_cache_id), false, 'tb.item_id', false, $join);
+    $search_cache_file = $search_cache_fileHandler->getObjects(new Criteria('search_cache_id', $search_cache_id), false, 'tb.item_id', false, $join);
     if (count($search_cache_file) == 0) {
         return 0;
     }
 
-    $c           = 0;
+    $c = 0;
     $itemHandler = xoonips_getOrmCompoHandler('xoonips', 'item');
     foreach ($search_cache_file as $item) {
         if ($itemHandler->getPerm($item->getExtraVar('item_id'), $xoopsUser ? $xoopsUser->getVar('uid') : UID_GUEST, 'read')) {
-            $c++;
+            ++$c;
         }
     }
+
     return $c;
 }
 
 /**
- * return number of items of the item search cache
+ * return number of items of the item search cache.
  *
  * @param $search_cache_id integer cache id
- * @return integer number of items
+ *
+ * @return int number of items
  */
 function xoonips_get_item_count_from_search_cache($search_cache_id)
 {
     global $xoopsDB, $xoopsUser;
 
     $search_cache_itemHandler = xoonips_getOrmHandler('xoonips', 'search_cache_item');
-    $join                     = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'tb');
+    $join = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'tb');
 
-    $search_cache_item =  $search_cache_itemHandler->getObjects(new Criteria('search_cache_id', $search_cache_id), false, '', false, $join);
+    $search_cache_item = $search_cache_itemHandler->getObjects(new Criteria('search_cache_id', $search_cache_id), false, '', false, $join);
     if (count($search_cache_item) == 0) {
         return 0;
     }
 
-    $c           = 0;
+    $c = 0;
     $itemHandler = xoonips_getOrmCompoHandler('xoonips', 'item');
     foreach ($search_cache_item as $item) {
         if ($itemHandler->getPerm($item->get('item_id'), $xoopsUser ? $xoopsUser->getVar('uid') : UID_GUEST, 'read')) {
-            $c++;
+            ++$c;
         }
     }
+
     return $c;
 
     /*
@@ -986,26 +988,28 @@ function xoonips_get_item_count_from_search_cache($search_cache_id)
 }
 
 /**
- * return number of items of the metadata search cache
+ * return number of items of the metadata search cache.
  *
  * @param $search_cache_id integer cache id
- * @return integer number of metadata
+ *
+ * @return int number of metadata
  */
 function xoonips_get_metadata_count_from_search_cache($search_cache_id)
 {
     global $xoopsDB;
 
     $search_cache_metadataHandler = xoonips_getOrmHandler('xoonips', 'search_cache_metadata');
-    $search_cache_metadata        =  $search_cache_metadataHandler->getObjects(new Criteria('search_cache_id', $search_cache_id));
+    $search_cache_metadata = $search_cache_metadataHandler->getObjects(new Criteria('search_cache_id', $search_cache_id));
+
     return count($search_cache_metadata);
 }
 
 /**
- *
  * get only own item ids(item's uid == $xoopsUser->getVar('uid')) from given item id array.
  *
  * @param array $item_ids array of item id
- * @return array item id of own items.
+ *
+ * @return array item id of own items
  */
 function get_only_own_items($item_ids)
 {
@@ -1016,32 +1020,33 @@ function get_only_own_items($item_ids)
     }
 
     $basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-    $criteria     = new CriteriaCompo(new Criteria('item_id', '(' . implode(',', $item_ids) . ')', 'IN'));
+    $criteria = new CriteriaCompo(new Criteria('item_id', '('.implode(',', $item_ids).')', 'IN'));
     $criteria->add(new Criteria('uid', $xoopsUser->getVar('uid')));
     $result = array();
     foreach ($basicHandler->getObjects($criteria) as $basic) {
         $result[] = $basic->get('item_id');
     }
+
     return $result;
 }
 
 /**
- * filter for add items to index feature
+ * filter for add items to index feature.
  *
- * @access private
  * @param int        $index_id target index id
  * @param array(int) $iids     item ids
+ *
  * @return array(int) filtered item ids
  */
 function _xoonips_filter_add_items($index_id, $iids)
 {
     $lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
-    $idxHandler  = xoonips_getOrmHandler('xoonips', 'index');
-    $ibHandler   = xoonips_getOrmHandler('xoonips', 'item_basic');
+    $idxHandler = xoonips_getOrmHandler('xoonips', 'index');
+    $ibHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
     // filter currently locked items
     if (is_array($iids) && !empty($iids)) {
         $criteria = new CriteriaCompo(new Criteria('lock_count', 0, '!='));
-        $criteria->add(new Criteria('item_id', '(' . implode(',', $iids) . ')', 'IN'));
+        $criteria->add(new Criteria('item_id', '('.implode(',', $iids).')', 'IN'));
         $lock_objs = $lockHandler->getObjects($criteria, 'item_id');
         $lock_iids = array();
         foreach ($lock_objs as $lock_obj) {
@@ -1053,15 +1058,16 @@ function _xoonips_filter_add_items($index_id, $iids)
     if (is_array($iids) && !empty($iids)) {
         $idx_obj = $idxHandler->get($index_id);
         if ($idx_obj !== false && $idx_obj->get('open_level') == OL_PRIVATE) {
-            $uid      = (int)$idx_obj->get('uid');
+            $uid = (int) $idx_obj->get('uid');
             $criteria = new CriteriaCompo(new Criteria('uid', $uid));
-            $criteria->add(new Criteria('item_id', '(' . implode(',', $iids) . ')', 'IN'));
+            $criteria->add(new Criteria('item_id', '('.implode(',', $iids).')', 'IN'));
             $ib_objs = $ibHandler->getObjects($criteria, 'item_id');
-            $iids    = array();
+            $iids = array();
             foreach ($ib_objs as $ib_obj) {
                 $iids[] = $ib_obj->get('item_id');
             }
         }
     }
+
     return $iids;
 }

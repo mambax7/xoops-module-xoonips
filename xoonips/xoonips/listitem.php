@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.20.4.1.2.25 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,11 +26,11 @@
 // ------------------------------------------------------------------------- //
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
+require __DIR__.'/include/common.inc.php';
 
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/../../class/xoopstree.php';
+require_once __DIR__.'/include/lib.php';
+require_once __DIR__.'/include/AL.php';
+require_once __DIR__.'/../../class/xoopstree.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
@@ -41,57 +41,57 @@ if (!xnp_is_valid_session_id($xnpsid)) {
     redirect_header('user.php', 3, _MD_XOONIPS_ITEM_FORBIDDEN);
 }
 
-$myxoopsConfig           = xoonips_get_xoops_configs(XOOPS_CONF);
+$myxoopsConfig = xoonips_get_xoops_configs(XOOPS_CONF);
 $myxoopsConfigMetaFooter = xoonips_get_xoops_configs(XOOPS_CONF_METAFOOTER);
 
 $textutil = xoonips_getUtility('text');
 
-$sess_orderby  = isset($_SESSION['xoonips_order_by']) ? $_SESSION['xoonips_order_by'] : 'title';
+$sess_orderby = isset($_SESSION['xoonips_order_by']) ? $_SESSION['xoonips_order_by'] : 'title';
 $sess_orderdir = isset($_SESSION['xoonips_order_dir']) ? $_SESSION['xoonips_order_dir'] : ASC;
-$request_vars  = array(
-    'op'                 => array(
+$request_vars = array(
+    'op' => array(
         's',
-        ''
+        '',
     ),
-    'page'               => array(
+    'page' => array(
         'i',
-        1
+        1,
     ),
-    'orderby'            => array(
+    'orderby' => array(
         's',
-        $sess_orderby
+        $sess_orderby,
     ),
-    'order_dir'          => array(
+    'order_dir' => array(
         'i',
-        $sess_orderdir
+        $sess_orderdir,
     ),
-    'itemcount'          => array(
+    'itemcount' => array(
         'i',
-        20
+        20,
     ),
-    'selected'           => array(
+    'selected' => array(
         'i',
-        array()
+        array(),
     ),
     'initially_selected' => array(
         'i',
-        array()
+        array(),
     ),
-    'print'              => array(
+    'print' => array(
         'b',
-        false
+        false,
     ),
-    'add_to_index'       => array(
+    'add_to_index' => array(
         'b',
-        false
+        false,
     ),
-    'num_of_items'       => array(
+    'num_of_items' => array(
         'i',
-        null
+        null,
     ),
-    'index_id'           => array(
+    'index_id' => array(
         'i',
-        null
+        null,
     ),
 );
 
@@ -101,13 +101,13 @@ foreach ($request_vars as $key => $meta) {
     $$key = $formdata->getValue('both', $key, $type, false, $default);
 }
 
-$_SESSION['xoonips_order_by']  = $orderby;
+$_SESSION['xoonips_order_by'] = $orderby;
 $_SESSION['xoonips_order_dir'] = $order_dir;
 
 $itemtypes = array();
-$tmp       = array();
+$tmp = array();
 if (xnp_get_item_types($tmp) != RES_OK) {
-    redirect_header(XOOPS_URL . '/', 3, 'ERROR xnp_get_item_types ' . xnp_get_last_error_string());
+    redirect_header(XOOPS_URL.'/', 3, 'ERROR xnp_get_item_types '.xnp_get_last_error_string());
 } else {
     foreach ($tmp as $i) {
         $itemtypes[$i['item_type_id']] = $i;
@@ -116,12 +116,12 @@ if (xnp_get_item_types($tmp) != RES_OK) {
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_itemlist.tpl';
 if ($print) {
-    require_once XOOPS_ROOT_PATH . '/class/template.php';
+    require_once XOOPS_ROOT_PATH.'/class/template.php';
     $xoopsTpl = new XoopsTpl();
     xoops_header(false);
     echo "</head><body onload='window.print();'>\n";
 } else {
-    include XOOPS_ROOT_PATH . '/header.php';
+    require XOOPS_ROOT_PATH.'/header.php';
 }
 
 $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
@@ -130,15 +130,15 @@ if (isset($index_id)) {
     $idx_obj = $indexHandler->get($index_id);
     if ($idx_obj === false) {
         // index not found
-        redirect_header(XOOPS_URL . '/', 3, _NOPERM);
+        redirect_header(XOOPS_URL.'/', 3, _NOPERM);
     }
     if (!$indexHandler->getPerm($index_id, $uid, 'read')) {
         if ($uid == UID_GUEST) {
             // try login
-            redirect_header(XOONIPS_URL . '/user.php', 3, _NOPERM);
+            redirect_header(XOONIPS_URL.'/user.php', 3, _NOPERM);
         }
         // no permission
-        redirect_header(XOOPS_URL . '/', 3, _NOPERM);
+        redirect_header(XOOPS_URL.'/', 3, _NOPERM);
     }
 }
 $xoopsTpl->assign('add_button_visible', $indexHandler->getPerm($index_id, @$_SESSION['xoopsUserId'], 'register_item'));
@@ -148,103 +148,104 @@ $xoopsTpl->assign('order_by_label', _MD_XOONIPS_ITEM_ORDER_BY);
 $xoopsTpl->assign('item_count_label', _MD_XOONIPS_ITEM_NUM_OF_ITEM_PER_PAGE);
 //order_by_select: array( "variable name" => "name for view", ... )
 $xoopsTpl->assign('order_by_select', array(
-    'title'            => _MD_XOONIPS_ITEM_TITLE_LABEL,
-    'doi'              => _MD_XOONIPS_ITEM_DOI_LABEL,
+    'title' => _MD_XOONIPS_ITEM_TITLE_LABEL,
+    'doi' => _MD_XOONIPS_ITEM_DOI_LABEL,
     'last_update_date' => _MD_XOONIPS_ITEM_LAST_UPDATE_DATE_LABEL,
-    'creation_date'    => _MD_XOONIPS_ITEM_CREATION_DATE_LABEL,
-    'publication_date' => _MD_XOONIPS_ITEM_PUBLICATION_DATE_LABEL
+    'creation_date' => _MD_XOONIPS_ITEM_CREATION_DATE_LABEL,
+    'publication_date' => _MD_XOONIPS_ITEM_PUBLICATION_DATE_LABEL,
 ));
 $xoopsTpl->assign('order_by', $textutil->html_special_chars($orderby));
 
 $xoopsTpl->assign('item_count_select', array(
     '20',
     '50',
-    '100'
+    '100',
 ));
 
-$iids  = array();
+$iids = array();
 $items = array();
-$cri   = array();
+$cri = array();
 if ($orderby === 'publication_date') {
     $cri = array(
-        'start'  => ($page - 1) * $itemcount,
-        'rows'   => $itemcount,
+        'start' => ($page - 1) * $itemcount,
+        'rows' => $itemcount,
         'orders' => array(
             array(
-                'name'  => 'publication_year',
-                'order' => $order_dir
+                'name' => 'publication_year',
+                'order' => $order_dir,
             ),
             array(
-                'name'  => 'publication_month',
-                'order' => $order_dir
+                'name' => 'publication_month',
+                'order' => $order_dir,
             ),
             array(
-                'name'  => 'publication_mday',
-                'order' => $order_dir
-            )
-        )
+                'name' => 'publication_mday',
+                'order' => $order_dir,
+            ),
+        ),
     );
 } else {
     $cri = array(
-        'start'  => ($page - 1) * $itemcount,
-        'rows'   => $itemcount,
+        'start' => ($page - 1) * $itemcount,
+        'rows' => $itemcount,
         'orders' => array(
             array(
-                'name'  => $orderby,
-                'order' => $order_dir
-            )
-        )
+                'name' => $orderby,
+                'order' => $order_dir,
+            ),
+        ),
     );
 }
 if (isset($index_id)) {
     $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-    $index_item_links       = $index_item_linkHandler->getByIndexId($index_id, $uid);
-    $num_of_items           = count($index_item_links);
+    $index_item_links = $index_item_linkHandler->getByIndexId($index_id, $uid);
+    $num_of_items = count($index_item_links);
     foreach ($index_item_links as $link) {
         $iids[] = $link->get('item_id');
     }
 } else {
-    $ret          = xnp_dump_item_id($xnpsid, array(), $iids);
+    $ret = xnp_dump_item_id($xnpsid, array(), $iids);
     $num_of_items = count($iids);
     if ($ret != RES_OK) {
-        redirect_header(XOOPS_URL . '/', 3, 'ERROR ' . xnp_get_last_error_string());
+        redirect_header(XOOPS_URL.'/', 3, 'ERROR '.xnp_get_last_error_string());
     }
 }
 
 /**
  * @param $db
  * @param $index_id
+ *
  * @return array
  */
 function my_xoonips_get_child_index($db, $index_id)
 {
-    $sql     = 'SELECT index_id FROM ' . $db->prefix('xoonips_index') . ' WHERE parent_index_id=' . $index_id . ' ORDER BY sort_number';
+    $sql = 'SELECT index_id FROM '.$db->prefix('xoonips_index').' WHERE parent_index_id='.$index_id.' ORDER BY sort_number';
     $results = $db->query($sql);
-    $cids    = array();
+    $cids = array();
     while ($row = $db->fetchArray($results)) {
         $cids[] = $row['index_id'];
     }
+
     return $cids;
 }
 
 if (isset($index_id)) {
-
     // add index list
     $my_indexes = array();
-    $cids       = my_xoonips_get_child_index($xoopsDB, $index_id);
+    $cids = my_xoonips_get_child_index($xoopsDB, $index_id);
     if (count($cids) > 0) {
         $item_counts = array();
         xnp_get_item_count_group_by_index($xnpsid, $item_counts);
         foreach ($cids as $cid) {
-            $info  = array();
+            $info = array();
             $cicnt = count(my_xoonips_get_child_index($xoopsDB, $cid));
             if (xnp_get_index($xnpsid, $cid, $info) == RES_OK) {
-                $cnt       = isset($item_counts[$cid]) ? $item_counts[$cid] : 0;
-                $my_index  = array(
-                    'index_id'        => $cid,
-                    'title'           => $info['html_title'],
+                $cnt = isset($item_counts[$cid]) ? $item_counts[$cid] : 0;
+                $my_index = array(
+                    'index_id' => $cid,
+                    'title' => $info['html_title'],
                     'child_index_num' => $cicnt,
-                    'child_item_num'  => $cnt,
+                    'child_item_num' => $cnt,
                 );
                 $index_tpl = new XoopsTpl();
                 $index_tpl->assign('index', $my_index);
@@ -256,12 +257,12 @@ if (isset($index_id)) {
     // making character strings in display current place (Root/Private/Tools&Techniques etc)
     // -> index_path
     $dirArray = array();
-    for ($p_xid = $index_id; $p_xid != IID_ROOT; $p_xid = (int)$index['parent_index_id']) {
+    for ($p_xid = $index_id; $p_xid != IID_ROOT; $p_xid = (int) $index['parent_index_id']) {
         // get $index
-        $index  = array();
+        $index = array();
         $result = xnp_get_index($xnpsid, $p_xid, $index);
         if ($result != RES_OK) {
-            redirect_header(XOOPS_URL . '/', 3, 'ERROR ' . xnp_get_last_error_string());
+            redirect_header(XOOPS_URL.'/', 3, 'ERROR '.xnp_get_last_error_string());
         }
         $dirArray[] = $index;
     }
@@ -272,7 +273,7 @@ if (isset($index_id)) {
     foreach ($indexes as $i) {
         $index_titles[] = $i['titles'][DEFAULT_INDEX_TITLE_OFFSET];
     }
-    $xoopsTpl->assign('xoops_pagetitle', $textutil->html_special_chars('/' . implode('/', $index_titles)));
+    $xoopsTpl->assign('xoops_pagetitle', $textutil->html_special_chars('/'.implode('/', $index_titles)));
 
     // check that index is editable
     $handler = xoonips_getOrmHandler('xoonips', 'index');
@@ -290,7 +291,7 @@ if ($num_of_items == 0) {
     if ($_pMin == 1 && $_pMax == $num_of_items && $num_of_items == 1) {
         $page_no_label = '';
     } else {
-        $page_no_label = $_pMin . ' - ' . $_pMax . ' of ' . $num_of_items . ' Items';
+        $page_no_label = $_pMin.' - '.$_pMax.' of '.$num_of_items.' Items';
     }
 }
 
@@ -298,7 +299,7 @@ $xoopsTpl->assign('maxpage', ceil($num_of_items / $itemcount));
 $xoopsTpl->assign('orderby', $textutil->html_special_chars($orderby));
 $xoopsTpl->assign('order_dir', $order_dir);
 $xoopsTpl->assign('page', $page);
-$xoopsTpl->assign('itemcount', (int)$itemcount);
+$xoopsTpl->assign('itemcount', (int) $itemcount);
 $xoopsTpl->assign('num_of_items', $textutil->html_special_chars($num_of_items));
 $xoopsTpl->assign('page_no_label', $textutil->html_special_chars($page_no_label));
 
@@ -306,19 +307,19 @@ $xoopsTpl->assign('page_no_label', $textutil->html_special_chars($page_no_label)
 // ignore 'start' and 'rows' of criteria because already truncated by dump_item_id
 //if( xnp_get_items( $xnpsid, $iids, array( 'orders' => $cri['orders'] ), $items ) != RES_OK ){
 if (xnp_get_items($xnpsid, $iids, $cri, $items) != RES_OK) {
-    redirect_header(XOOPS_URL . '/', 3, 'ERROR ' . xnp_get_last_error_string());
+    redirect_header(XOOPS_URL.'/', 3, 'ERROR '.xnp_get_last_error_string());
 }
 
 $item_htmls = array();
 foreach ($items as $i) {
     if (array_key_exists($i['item_type_id'], $itemtypes)) {
         $itemtype = $itemtypes[$i['item_type_id']];
-        $modname  = $itemtype['name'];
-        include_once XOOPS_ROOT_PATH . '/modules/' . $itemtype['viewphp'];
-        if ($print && function_exists($modname . 'GetPrinterFriendlyListBlock')) {
-            eval("\$html = " . $modname . "GetPrinterFriendlyListBlock( \$i );");
-        } elseif (function_exists($modname . 'GetListBlock')) {
-            eval("\$html = " . $modname . "GetListBlock( \$i );");
+        $modname = $itemtype['name'];
+        require_once XOOPS_ROOT_PATH.'/modules/'.$itemtype['viewphp'];
+        if ($print && function_exists($modname.'GetPrinterFriendlyListBlock')) {
+            eval('$html = '.$modname.'GetPrinterFriendlyListBlock( $i );');
+        } elseif (function_exists($modname.'GetListBlock')) {
+            eval('$html = '.$modname.'GetListBlock( $i );');
         } else {
             $html = '';
         }
@@ -345,8 +346,8 @@ if ($print) {
 
     if ($op === 'quicksearch') {
         $search_itemtypes = array(
-            'all'   => _MB_XOONIPS_ITEM_ALL_LABEL,
-            'basic' => _MB_XOONIPS_ITEM_TITLE_AND_KEYWORD_LABEL
+            'all' => _MB_XOONIPS_ITEM_ALL_LABEL,
+            'basic' => _MB_XOONIPS_ITEM_TITLE_AND_KEYWORD_LABEL,
         );
 
         $itemtypes = array();
@@ -370,22 +371,22 @@ if ($print) {
     xoops_footer();
     exit();
 } else {
-    include XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH.'/footer.php';
 }
 
 /**
- *
  * @param $page    integer current page number
  * @param $maxpage integer max page number
- * @return array of integer page numbers
  *
+ * @return array of integer page numbers
  */
 function xoonips_get_selectable_page_number($page, $maxpage)
 {
     //centering current page number(5th of $pages)
     $pages = array(min(max(1, $page - 4), max(1, $maxpage - 9)));
-    for ($i = 1; $i < 10 && $pages[$i - 1] < $maxpage; $i++) {
+    for ($i = 1; $i < 10 && $pages[$i - 1] < $maxpage; ++$i) {
         $pages[$i] = $pages[$i - 1] + 1;
     }
+
     return $pages;
 }

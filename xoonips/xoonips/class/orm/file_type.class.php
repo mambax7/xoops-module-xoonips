@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.4 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,19 +24,15 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- *
  * @brief Data object of file type
  *
  * @li    getVar('file_type_id') :
  * @li    getVar('name') :
  * @li    getVar('mid') :
  * @li    getVar('display_name') :
- *
  */
 class XooNIpsOrmFileType extends XooNIpsTableObject
 {
@@ -59,6 +55,7 @@ class XooNIpsOrmFileTypeHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmFileTypeHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

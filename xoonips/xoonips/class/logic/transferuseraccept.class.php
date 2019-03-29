@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.9 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,11 +25,11 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/logic.class.php';
-include_once __DIR__ . '/transfer.class.php';
+require_once __DIR__.'/../base/logic.class.php';
+require_once __DIR__.'/transfer.class.php';
 
 /**
- * Class XooNIpsLogicTransferUserAccept
+ * Class XooNIpsLogicTransferUserAccept.
  */
 class XooNIpsLogicTransferUserAccept extends XooNIpsLogicTransfer
 {
@@ -42,22 +42,24 @@ class XooNIpsLogicTransferUserAccept extends XooNIpsLogicTransfer
     }
 
     /**
-     * user accepted transfer request
+     * user accepted transfer request.
      *
      * @param[in]  $vars[0] array of item_id
      * @param[in]  $vars[1] uid of new item owner
      * @param[in]  $vars[2] index_id where items are registered to
      * @param[out] XooNIpsError error
+     *
      * @return bool true if succeeded
      */
     public function execute_without_transaction($vars, $error)
     {
         $item_ids = $vars[0];
-        $to_uid   = $vars[1];
+        $to_uid = $vars[1];
         $index_id = $vars[2];
 
         if (false == $this->is_private_index_id_of($index_id, $to_uid)) {
             $error->add(XNPERR_SERVER_ERROR, 'bad index id');
+
             return false;
         }
 
@@ -76,14 +78,15 @@ class XooNIpsLogicTransferUserAccept extends XooNIpsLogicTransfer
             }
 
             // update owner, last_udpate_date
-            $item_basicHandler          = xoonips_getOrmHandler('xoonips', 'item_basic');
-            $item_basic                 = $item_basicHandler->get($item_id);
-            $from_uid                   = $item_basic->get('uid');
+            $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
+            $item_basic = $item_basicHandler->get($item_id);
+            $from_uid = $item_basic->get('uid');
             $from_uid_of_item[$item_id] = $from_uid;
             $item_basic->set('uid', $to_uid);
             $item_basic->set('last_update_date', time());
             if (false == $item_basicHandler->insert($item_basic)) {
                 $error->add(XNPERR_SERVER_ERROR, 'cannot update item');
+
                 return false;
             }
 
@@ -95,12 +98,14 @@ class XooNIpsLogicTransferUserAccept extends XooNIpsLogicTransfer
             $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
             if (false == $eventlogHandler->recordTransferItemEvent($item_id, $index_id, $to_uid)) {
                 $error->add(XNPERR_SERVER_ERROR, 'cannot insert event');
+
                 return false;
             }
 
             $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
             if (false == $item_lockHandler->unlock($item_id)) {
                 $error->add(XNPERR_SERVER_ERROR, 'cannot unlock item');
+
                 return false;
             }
 
@@ -113,6 +118,7 @@ class XooNIpsLogicTransferUserAccept extends XooNIpsLogicTransfer
                 return false;
             }
         }
+
         return true;
     }
 
@@ -121,16 +127,17 @@ class XooNIpsLogicTransferUserAccept extends XooNIpsLogicTransfer
      * @param $item_id
      * @param $from_uid
      * @param $to_uid
+     *
      * @return bool
      */
     public function insert_changelog($error, $item_id, $from_uid, $to_uid)
     {
         // insert changelog
         $xoops_userHandler = xoops_getHandler('user');
-        $from_user         = $xoops_userHandler->get($from_uid);
-        $to_user           = $xoops_userHandler->get($to_uid);
-        $changelogHandler  = xoonips_getOrmHandler('xoonips', 'changelog');
-        $changelog         = $changelogHandler->create();
+        $from_user = $xoops_userHandler->get($from_uid);
+        $to_user = $xoops_userHandler->get($to_uid);
+        $changelogHandler = xoonips_getOrmHandler('xoonips', 'changelog');
+        $changelog = $changelogHandler->create();
         $changelog->set('uid', $from_uid);
         $changelog->set('item_id', $item_id);
         $changelog->set('log_date', time());
@@ -138,8 +145,10 @@ class XooNIpsLogicTransferUserAccept extends XooNIpsLogicTransfer
                         sprintf(_MD_XOONIPS_TRANSFER_CHANGE_LOG_AUTOFILL_TEXT, $from_user->getVar('uname', 'n'), $to_user->getVar('uname', 'n')));
         if (false == $changelogHandler->insert($changelog)) {
             $error->add(XNPERR_SERVER_ERROR, 'cannot insert changelog');
+
             return false;
         }
+
         return true;
     }
 }

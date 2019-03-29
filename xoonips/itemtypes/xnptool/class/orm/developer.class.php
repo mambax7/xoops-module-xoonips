@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.4 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,7 +27,7 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * Data object of Tool developer information
+ * Data object of Tool developer information.
  */
 class XNPToolOrmDeveloper extends XooNIpsTableObject
 {
@@ -45,12 +45,13 @@ class XNPToolOrmDeveloper extends XooNIpsTableObject
 }
 
 /**
- * Handler class that create, insert, update, get and delete detail information
+ * Handler class that create, insert, update, get and delete detail information.
  */
 class XNPToolOrmDeveloperHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XNPToolOrmDeveloperHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)

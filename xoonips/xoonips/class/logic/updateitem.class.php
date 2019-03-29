@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,29 +25,27 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/logic.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/transaction.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/logic.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/transaction.class.php';
 
 /**
- *
- * subclass of XooNIpsLogic(updateItem)
- *
+ * subclass of XooNIpsLogic(updateItem).
  */
 class XooNIpsLogicUpdateItem extends XooNIpsLogic
 {
-
     /**
      * @param[in]  $vars[0] session ID
      * @param[in]  $vars[1] XooNIpsItem item information
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response->success item id of updated item
+     *
      * @return bool
      */
     public function execute($vars, $response)
     {
         // parameter check
-        $error =  $response->getError();
+        $error = $response->getError();
         if (count($vars) > 2) {
             $error->add(XNPERR_EXTRA_PARAM);
         } elseif (count($vars) < 2) {
@@ -70,29 +68,32 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
         if ($error->get(0)) {
             // return if parameter error
             $response->setResult(false);
+
             return;
         } else {
             $sessionid = $vars[0];
-            $item      = $vars[1];
+            $item = $vars[1];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
+
             return false;
         }
         // item_id -> item_type_id
-        $basic        = $item->getVar('basic');
-        $item_id      = $basic->getVar('item_id');
+        $basic = $item->getVar('basic');
+        $item_id = $basic->getVar('item_id');
         $basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $old_basic    = $basicHandler->get($item_id);
+        $old_basic = $basicHandler->get($item_id);
         $item_type_id = $old_basic->get('item_type_id');
         // item_type_id -> itemHandler
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $item_type        = $item_typeHandler->get($item_type_id);
+        $item_type = $item_typeHandler->get($item_type_id);
         if (!$item_type) {
             $response->setResult(false);
             $error->add(XNPERR_ERROR, "unsupported itemtype($item_type_id)");
+
             return false;
         }
         $itemHandler = xoonips_getOrmCompoHandler($item_type->get('name'), 'item');
@@ -102,13 +103,14 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
         $basic = $item->getVar('basic');
         if (strlen($basic->get('doi')) > 0) {
             $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-            $criteria          = new CriteriaCompo(new Criteria('doi', addslashes($basic->get('doi'))));
-            $criteria->add(new Criteria('item_id', (int)$basic->get('item_id'), '<>'));
-            $objs =&  $item_basicHandler->getObjects($criteria);
+            $criteria = new CriteriaCompo(new Criteria('doi', addslashes($basic->get('doi'))));
+            $criteria->add(new Criteria('item_id', (int) $basic->get('item_id'), '<>'));
+            $objs = &$item_basicHandler->getObjects($criteria);
             if (count($objs) > 0) {
                 // error if other item(in public, group, private of all users) has same doi
                 $response->setResult(false);
-                $error->add(XNPERR_INCOMPLETE_PARAM, $basic->get('doi') . ' already exists');
+                $error->add(XNPERR_INCOMPLETE_PARAM, $basic->get('doi').' already exists');
+
                 return false;
             }
         }
@@ -118,10 +120,11 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
             $response->setResult(false);
             if ($item_lockHandler->isLocked($item_id)) {
                 $error->add(XNPERR_ACCESS_FORBIDDEN,
-                            'cannot update item because item is ' . $this->getLockTypeString($item_lockHandler->getLockType($item_id)));
+                            'cannot update item because item is '.$this->getLockTypeString($item_lockHandler->getLockType($item_id)));
             } else {
                 $error->add(XNPERR_ACCESS_FORBIDDEN);
             }
+
             return false;
         }
         // item_id -> old_item
@@ -129,26 +132,29 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
         if (!$old_item) {
             $response->setResult(false);
             $error->add(XNPERR_NOT_FOUND);
+
             return false;
         }
         // item_type_id -> item_type_name, detail_item_typeHandler
-        $item_type_name          = $item_type->getVar('name');
+        $item_type_name = $item_type->getVar('name');
         $detail_item_typeHandler = xoonips_getOrmHandler($item_type_name, 'item_type');
         if (!$detail_item_typeHandler) {
             $response->setResult(false);
             $error->add(XNPERR_ERROR, "unsupported itemtype($item_type_id)");
+
             return false;
         }
         $detail_item_type = $detail_item_typeHandler->get($item_type_id);
         if (!$detail_item_type) {
             $response->setResult(false);
             $error->add(XNPERR_ERROR, "unsupported itemtype($item_type_id)");
+
             return false;
         }
         // error if unchangable fields changed:itemtype, username, last_modified_date, registration_date, url, file_id
         // but logic cannot detect it...
         $userHandler = xoonips_getOrmCompoHandler('xoonips', 'user');
-        $user        = $userHandler->get($old_basic->getVar('uid'));
+        $user = $userHandler->get($old_basic->getVar('uid'));
         if (!$user) {
             $error->add(XNPERR_SERVER_ERROR, 'cannot get item owner');
         }
@@ -164,6 +170,7 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
         if ($old_basic->getVar('item_type_id') != $basic->getVar('item_type_id')) {
             $error->add(XNPERR_INVALID_PARAM, 'cannot change itemtype');
             $response->setResult(false);
+
             return false;
         }
         $old_file_ids = array();
@@ -193,19 +200,20 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
         }
         if ($error->get()) {
             $response->setResult(false);
+
             return false;
         }
 
         // can access that indexes?
-        $indexHandler           = xoonips_getOrmHandler('xoonips', 'index');
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $index_item_links       = $item->getVar('indexes');
-        $add_to_private         = false;
-        $add_to_group           = false;
-        $add_to_public          = false;
+        $index_item_links = $item->getVar('indexes');
+        $add_to_private = false;
+        $add_to_group = false;
+        $add_to_public = false;
         foreach ($index_item_links as $index_item_link) {
             $index_id = $index_item_link->get('index_id');
-            $index    = $indexHandler->get($index_id);
+            $index = $indexHandler->get($index_id);
             if (false == $index) {
                 $error->add(XNPERR_NOT_FOUND, "index not found($index_id)");
             } else {
@@ -227,10 +235,10 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
             $error->add(XNPERR_INVALID_PARAM, 'select at least 1 private index');
         }
         // related_to items exist?
-        $related_tos       = $item->getVar('related_tos');
+        $related_tos = $item->getVar('related_tos');
         $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
         foreach ($related_tos as $related_to) {
-            $related_item_id    = $related_to->getVar('item_id');
+            $related_item_id = $related_to->getVar('item_id');
             $related_item_basic = $item_basicHandler->get($related_item_id);
             if (!$related_item_basic) {
                 $error->add(XNPERR_INVALID_PARAM, "related_to has non-existent item(item_id=$related_item_id)");
@@ -240,6 +248,7 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
         }
         if ($error->get()) {
             $response->setResult(false);
+
             return false;
         }
         // error if add to public/group and no rights input
@@ -254,6 +263,7 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
                 if ($detail->get('rights') == '' && $use_cc == 0) {
                     $response->setResult(false);
                     $error->add(XNPERR_INCOMPLETE_PARAM, 'rights is required');
+
                     return false;
                 }
             }
@@ -262,6 +272,7 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
                 if ($detail->get('readme') == '') {
                     $response->setResult(false);
                     $error->add(XNPERR_INCOMPLETE_PARAM, 'readme is required');
+
                     return false;
                 }
             }
@@ -270,6 +281,7 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
         $size = $this->getSizeOfItem($item);
         if (!$this->isEnoughSpace($error, $uid, $size, $item->getVar('indexes'), $size, $old_item->getVar('indexes'))) {
             $response->setResult(false);
+
             return false;
         }
         // only private index changed?
@@ -282,6 +294,7 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
             $transaction->rollback();
             $response->setResult(false);
             $error->add(XNPERR_SERVER_ERROR, 'cannot update item');
+
             return false;
         }
         $itemHandler->unsetNew($item);
@@ -290,6 +303,7 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
         if (!$basicHandler->insert($basic)) {
             $error->add(XNPERR_SERVER_ERROR, 'cannot update item_basic');
             $response->setResult(false);
+
             return false;
         }
         // event log ( update item )
@@ -297,18 +311,21 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
         if (!$eventlogHandler->recordUpdateItemEvent($item_id)) {
             $error->add(XNPERR_SERVER_ERROR, 'cannot insert event');
             $response->setResult(false);
+
             return false;
         }
         // item insert/update/certify_required/certified event, change certify_state, send notification, update RSS, update item_status.
         if (!$only_private_index_changed && !$this->touchItem($error, $item, $uid)) {
             $transaction->rollback();
             $response->setResult(false);
+
             return false;
         }
         // commit
         $transaction->commit();
         $response->setSuccess($item_id);
         $response->setResult(true);
+
         return true;
     }
 
@@ -317,6 +334,7 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
      * @param $iteminfo
      * @param $new_item
      * @param $old_item
+     *
      * @return bool
      */
     public function isOnlyPrivateIndexChanged($error, $iteminfo, $new_item, $old_item)
@@ -330,7 +348,7 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
                     if (count($new_orm) != count($old_orm)) {
                         return false;
                     }
-                    for ($i = 0, $iMax = count($new_orm); $i < $iMax; $i++) {
+                    for ($i = 0, $iMax = count($new_orm); $i < $iMax; ++$i) {
                         if (!$new_orm[$i]->equals($old_orm[$i])) {
                             return false;
                         }
@@ -343,7 +361,7 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
             }
         }
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $new_index_ids          = array();
+        $new_index_ids = array();
         foreach ($new_item->getVar('indexes') as $link) {
             $new_index_ids[] = $link->get('index_id');
         }
@@ -356,13 +374,15 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
             return true; // not changed
         }
         $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-        $criteria     = new CriteriaCompo(new Criteria('open_level', OL_PRIVATE, '<>'));
-        $criteria->add(new Criteria('index_id', '(' . implode(',', $changed_index_ids) . ')', 'in'));
-        $indexes =  $indexHandler->getObjects($criteria);
+        $criteria = new CriteriaCompo(new Criteria('open_level', OL_PRIVATE, '<>'));
+        $criteria->add(new Criteria('index_id', '('.implode(',', $changed_index_ids).')', 'in'));
+        $indexes = $indexHandler->getObjects($criteria);
         if ($indexes === false) {
             $error->add(XNPERR_SERVER_ERROR, 'cannot get changed nonprivate index');
+
             return false;
         }
+
         return empty($indexes);
     }
 }

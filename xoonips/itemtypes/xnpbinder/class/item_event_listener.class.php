@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.1.7 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,11 +25,11 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once dirname(dirname(__DIR__)) . '/xoonips/class/base/itemeventlistener.class.php';
-include_once dirname(dirname(__DIR__)) . '/xoonips/include/notification.inc.php';
+require_once dirname(dirname(__DIR__)).'/xoonips/class/base/itemeventlistener.class.php';
+require_once dirname(dirname(__DIR__)).'/xoonips/include/notification.inc.php';
 
 /**
- * Class XNPBinderItemEventListener
+ * Class XNPBinderItemEventListener.
  */
 class XNPBinderItemEventListener extends XooNIpsItemEventListener
 {
@@ -40,8 +40,8 @@ class XNPBinderItemEventListener extends XooNIpsItemEventListener
     {
         //trigger_error( "Binder onDelete( $item_id )" );
         $bilinkHandler = xoonips_getOrmHandler('xnpbinder', 'binder_item_link');
-        $criteria      = new Criteria('item_id', $item_id);
-        $bilinks       = $bilinkHandler->getObjects($criteria);
+        $criteria = new Criteria('item_id', $item_id);
+        $bilinks = $bilinkHandler->getObjects($criteria);
         if (!$bilinks) {
             return;
         }
@@ -53,8 +53,8 @@ class XNPBinderItemEventListener extends XooNIpsItemEventListener
             }
 
             $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-            $join                   = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
-            $criteria               = new CriteriaCompo(new Criteria('open_level', OL_PUBLIC));
+            $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
+            $criteria = new CriteriaCompo(new Criteria('open_level', OL_PUBLIC));
             $criteria->add(new Criteria('certify_state', CERTIFIED));
             $criteria->add(new Criteria('item_id', $bilink->get('binder_id')));
             $index_item_links = $index_item_linkHandler->getObjects($criteria, false, '', false, $join);
@@ -64,14 +64,14 @@ class XNPBinderItemEventListener extends XooNIpsItemEventListener
 
             if (count($child_items) == 1) {
                 $itemHandler = xoonips_getOrmCompoHandler('xnpbinder', 'item');
-                $binder      = $itemHandler->get($bilink->get('binder_id'));
-                $basic       = $binder->getVar('basic');
+                $binder = $itemHandler->get($bilink->get('binder_id'));
+                $basic = $binder->getVar('basic');
 
                 // define tags here for notification message
                 $tags = xoonips_notification_get_item_tags($basic->get('item_id'));
 
                 $mhandler = xoops_getHandler('module');
-                $module   = $mhandler->getByDirName('xnpbinder');
+                $module = $mhandler->getByDirName('xnpbinder');
 
                 $nhandler = xoonips_gethandler('xoonips', 'notification');
                 $nhandler->triggerEvent2('user', 0, 'item_updated', _MD_XNPBINDER_USER_CONTENT_EMPTY_NOTIFYSBJ,

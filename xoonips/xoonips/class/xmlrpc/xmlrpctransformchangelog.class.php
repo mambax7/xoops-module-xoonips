@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.3 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,26 +25,27 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/orm/changelog.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/orm/changelog.class.php';
 
 /**
- * Class XooNIpsXmlRpcTransformChangelog
+ * Class XooNIpsXmlRpcTransformChangelog.
  */
 class XooNIpsXmlRpcTransformChangelog extends XooNIpsXmlRpcTransformElement
 {
     /**
      * @param $array
+     *
      * @return XooNIpsChangelog
      */
     public function getObject($array)
     {
         $obj = new XooNIpsChangelog();
-        //
+
         $fields = array();
         foreach ($fields as $f) {
             $obj->assignVar($f, $array[$f]);
         }
-        //
+
         return $obj;
     }
 }

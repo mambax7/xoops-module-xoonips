@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.17.2.1.2.16 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,15 +24,13 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // debug mode
 define('XOONIPS_DEBUG_MODE', false);
 
-define('XOONIPS_URL', XOOPS_URL . '/modules/xoonips');
-define('XOONIPS_PATH', XOOPS_ROOT_PATH . '/modules/xoonips');
+define('XOONIPS_URL', XOOPS_URL.'/modules/xoonips');
+define('XOONIPS_PATH', XOOPS_ROOT_PATH.'/modules/xoonips');
 
 // reserved item_id value
 define('IID_ROOT', 1);
@@ -58,7 +56,7 @@ define('CERTIFIED', 2);
 define('OL_PUBLIC', 1);
 define('OL_GROUP_ONLY', 2);
 define('OL_PRIVATE', 3);
-//
+
 define('OP_REGISTER', 1);
 define('OP_UNREGISTER', 2);
 
@@ -124,7 +122,6 @@ define('ME_CREATED', 1);
 define('ME_MODIFIED', 2);
 define('ME_DELETED', 3);
 
-//
 define('DESC', 1);
 define('ASC', 0);
 
@@ -148,7 +145,7 @@ define('XNP_CONFIG_CERTIFY_USER_ON', 'on');
 define('XNP_PRIVATE_INDEX_TITLE', 'Private');
 
 define('XOONIPS_WINDOW_SIZE', 2); // using in generating search_text
-define('XOONIPS_SEARCH_TEXT_ENCODING', 'UTF-8');//encoding of search_text column
+define('XOONIPS_SEARCH_TEXT_ENCODING', 'UTF-8'); //encoding of search_text column
 
 define('DEFAULT_INDEX_TITLE_OFFSET',
        0); //Define a integer number to specify a index title which to be used for displaying index tree(see xoonips_item_title.title_id)
@@ -175,24 +172,24 @@ define('E_XOONIPS_ERROR', 'E0001');
 define('E_XOONIPS_PARSER', 'E0002');
 define('E_XOONIPS_USER_NOT_FOUND', 'E0003');
 define('E_XOONIPS_DB_QUERY', 'E0004');
-define('E_XOONIPS_ATTR_REDUNDANT', 'E0005');//redundant attributes
-define('E_XOONIPS_ATTR_NOT_FOUND', 'E0006');//required attributes is not declared
-define('E_XOONIPS_ATTR_INVALID_VALUE', 'E0007');//attribute value is invalid
+define('E_XOONIPS_ATTR_REDUNDANT', 'E0005'); //redundant attributes
+define('E_XOONIPS_ATTR_NOT_FOUND', 'E0006'); //required attributes is not declared
+define('E_XOONIPS_ATTR_INVALID_VALUE', 'E0007'); //attribute value is invalid
 define('E_XOONIPS_DATA_TOO_LONG', 'E0008');
 define('E_XOONIPS_INDEX_NOT_FOUND', 'E0009');
 define('E_XOONIPS_OPEN_FILE', 'E0010');
-define('E_XOONIPS_RELATED_ITEM_IS_NOT_FOUND', 'E0011');//related item is not found
-define('E_XOONIPS_FILE_SYSTEM', 'E0012');//error in file system
-define('E_XOONIPS_IMPORT', 'E0013');//error in importing
-define('E_XOONIPS_INVALID_VALUE', 'E0014');//CDATA is in valid(invalid format, unknown values ...)
-define('E_XOONIPS_VALUE_IS_REQUIRED', 'E0015');//required value is not given
-define('E_XOONIPS_NO_PRIVATE_INDEX', 'E0016');//error if importing item is not registered any private indexes.
-define('E_XOONIPS_ATTACHMENT_HAS_REDUNDANT', 'E0017');//more than two attachments are given for an item that requires only one attachment.
-define('E_XOONIPS_NOT_PERMITTED_ACCESS', 'E0018');//not permitted access for index, item, ...
+define('E_XOONIPS_RELATED_ITEM_IS_NOT_FOUND', 'E0011'); //related item is not found
+define('E_XOONIPS_FILE_SYSTEM', 'E0012'); //error in file system
+define('E_XOONIPS_IMPORT', 'E0013'); //error in importing
+define('E_XOONIPS_INVALID_VALUE', 'E0014'); //CDATA is in valid(invalid format, unknown values ...)
+define('E_XOONIPS_VALUE_IS_REQUIRED', 'E0015'); //required value is not given
+define('E_XOONIPS_NO_PRIVATE_INDEX', 'E0016'); //error if importing item is not registered any private indexes.
+define('E_XOONIPS_ATTACHMENT_HAS_REDUNDANT', 'E0017'); //more than two attachments are given for an item that requires only one attachment.
+define('E_XOONIPS_NOT_PERMITTED_ACCESS', 'E0018'); //not permitted access for index, item, ...
 define('E_XOONIPS_TAG_NOT_FOUND', 'E0019'); // required tag is omitted
 define('E_XOONIPS_INVALID_VERSION', 'E0020'); // unsupported version, format of version is invalid , ...
 define('E_XOONIPS_PSEUDO_ID_CONFLICT', 'E0021'); // pseudo_id conflicts
 define('E_XOONIPS_RELATED_TO_CONFLICTING_ITEM', 'E0022'); // an item relates to conflicting item
-define('E_XOONIPS_TAG_REDUNDANT', 'E0023');//redundant element tags
-define('E_XOONIPS_DOI_CONFLICT', 'E0024');// doi conflict other items
-define('E_XOONIPS_UPDATE_CERTIFY_REQUEST_LOCKED', 'E0025');// error if updating locked(certify request lock) item
+define('E_XOONIPS_TAG_REDUNDANT', 'E0023'); //redundant element tags
+define('E_XOONIPS_DOI_CONFLICT', 'E0024'); // doi conflict other items
+define('E_XOONIPS_UPDATE_CERTIFY_REQUEST_LOCKED', 'E0025'); // error if updating locked(certify request lock) item

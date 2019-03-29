@@ -1,4 +1,3 @@
-<{* $Revision: 1.21.6.5 $ *}>
 <table class="outer">
   <!-- Basic Information -->
   <tr>

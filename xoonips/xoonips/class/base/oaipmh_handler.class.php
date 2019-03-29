@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.9 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 /**
- * Class OAIPMHHarvester
+ * Class OAIPMHHarvester.
  */
 class OAIPMHHarvester
 {
@@ -39,19 +39,21 @@ class OAIPMHHarvester
     public $_repositoryName;
 
     //public
+
     /**
      * OAIPMHHarvester constructor.
+     *
      * @param $_baseUrl
      */
     public function __construct($_baseUrl)
     {
-        $this->_baseUrl           = $_baseUrl;
-        $this->_lastError         = null;
-        $this->_lastStatus        = null;
-        $this->_metadataPrefix    = null;
-        $this->_dateFormat        = null;
+        $this->_baseUrl = $_baseUrl;
+        $this->_lastError = null;
+        $this->_lastStatus = null;
+        $this->_metadataPrefix = null;
+        $this->_dateFormat = null;
         $this->_earliestDatestamp = null;
-        $this->_repositoryName    = '';
+        $this->_repositoryName = '';
     }
 
     /**
@@ -64,8 +66,8 @@ class OAIPMHHarvester
 
         $ts = MyTextSanitizer::getInstance();
 
-        $criteria   = new Criteria('URL', $this->_baseUrl);
-        $repository =  $handler->getObjects($criteria);
+        $criteria = new Criteria('URL', $this->_baseUrl);
+        $repository = $handler->getObjects($criteria);
         if (!$repository) {
             return false;
         }
@@ -90,6 +92,7 @@ class OAIPMHHarvester
                         $repository[0]->set('last_access_result', $this->_lastStatus);
                         $repository[0]->set('last_success_date', time());
                         $repository[0]->set('metadata_count', $this->getMetadataCount($repository[0]->get('repository_id')));
+
                         return $handler->insert($repository[0], true);
                     }
                 }
@@ -101,18 +104,17 @@ class OAIPMHHarvester
         //update repositories table(last_access_result)
         $repository[0]->set('last_access_result', $this->_lastError);
         $handler->insert($repository[0], true);
+
         return false;
     }
 
-    /**
-     * @return null
-     */
     public function last_error()
     {
         return $this->_lastError;
     }
 
     //private
+
     /**
      * @return bool
      */
@@ -121,11 +123,13 @@ class OAIPMHHarvester
         $snoopy = xoonips_getUtility('snoopy');
         if (!is_object($snoopy)) {
             $this->_lastError = 'snoopy object is null';
+
             return false;
         }
-        $url = $this->_baseUrl . '?verb=Identify';
+        $url = $this->_baseUrl.'?verb=Identify';
         if (!$snoopy->fetch($url)) {
-            $this->_lastError = "can't retrieve " . $url;
+            $this->_lastError = "can't retrieve ".$url;
+
             return false;
         }
         $this->_lastError = $http_status = $snoopy->response_code;
@@ -133,6 +137,7 @@ class OAIPMHHarvester
         $this->parser = xml_parser_create('UTF-8');
         if (!$this->parser) {
             $this->_lastError = "can't create XML parser";
+
             return false;
         }
         $handler = new IdentifyHandler($this->parser);
@@ -146,11 +151,12 @@ class OAIPMHHarvester
         $this->_dateFormat = $handler->getDateFormat();
         if (!$this->_dateFormat) {
             $this->_lastError = 'value of <granularity> is wrong';
+
             return false;
         }
 
         $this->_earliestDatestamp = $handler->getEarliestDatestamp();
-        $this->_repositoryName    = $handler->getRepositoryName();
+        $this->_repositoryName = $handler->getRepositoryName();
 
         return true;
     }
@@ -163,11 +169,13 @@ class OAIPMHHarvester
         $snoopy = xoonips_getUtility('snoopy');
         if (!is_object($snoopy)) {
             $this->_lastError = 'snoopy object is null';
+
             return false;
         }
-        $url = $this->_baseUrl . '?verb=ListMetadataFormats';
+        $url = $this->_baseUrl.'?verb=ListMetadataFormats';
         if (!$snoopy->fetch($url)) {
-            $this->_lastError = "can't retrieve " . $url;
+            $this->_lastError = "can't retrieve ".$url;
+
             return false;
         }
         $this->_lastError = $http_status = $snoopy->response_code;
@@ -175,6 +183,7 @@ class OAIPMHHarvester
         $this->parser = xml_parser_create('UTF-8');
         if (!$this->parser) {
             $this->_lastError = "can't create XML parser";
+
             return false;
         }
         $handler = new ListMetadataFormatsHandler($this->parser);
@@ -188,14 +197,17 @@ class OAIPMHHarvester
         $this->_metadataPrefix = $handler->getMetadataPrefix();
         if (!$this->_metadataPrefix) {
             $this->_metadataPrefix = null;
-            $this->_lastError      = "can't retrieve <metadataPrefix>";
+            $this->_lastError = "can't retrieve <metadataPrefix>";
+
             return false;
         }
+
         return true;
     }
 
     /**
      * @param $args
+     *
      * @return bool
      */
     public function ListRecords($args)
@@ -203,35 +215,38 @@ class OAIPMHHarvester
         global $xoopsDB;
         if (!isset($args['metadataPrefix'])) {
             $this->_lastError = "'metadataPrefix' is not specified.";
+
             return false;
         }
         $resumptionToken = null;
         do {
-            $url = $this->_baseUrl . '?verb=ListRecords';
+            $url = $this->_baseUrl.'?verb=ListRecords';
             if ($resumptionToken == null) {
                 foreach (array(
                              'metadataPrefix',
                              'from',
                              'until',
-                             'set'
+                             'set',
                          ) as $k
                 ) {
                     if (isset($args[$k])) {
-                        $url .= '&' . urlencode($k) . '=' . urlencode($args[$k]);
+                        $url .= '&'.urlencode($k).'='.urlencode($args[$k]);
                     }
                 }
             } else {
-                $url .= '&resumptionToken=' . htmlspecialchars($resumptionToken, ENT_QUOTES);
+                $url .= '&resumptionToken='.htmlspecialchars($resumptionToken, ENT_QUOTES);
             }
             $snoopy = xoonips_getUtility('snoopy');
             if (!is_object($snoopy)) {
                 $this->_lastError = "can't retrieve ${url}";
                 $xoopsDB->setLogger(XoopsLogger::getInstance());
+
                 return false;
             }
             if (!$snoopy->fetch($url)) {
                 $this->_lastError = "can't retrieve ${url}";
                 $xoopsDB->setLogger(XoopsLogger::getInstance());
+
                 return false;
             }
             $this->_lastError = $this->_lastStatus = $snoopy->response_code;
@@ -240,6 +255,7 @@ class OAIPMHHarvester
             if (!$this->parser) {
                 $this->_lastError = "can't create XML parser";
                 $xoopsDB->setLogger(XoopsLogger::getInstance());
+
                 return false;
             }
 
@@ -249,7 +265,7 @@ class OAIPMHHarvester
             if (!$result) {
                 //some erorr has occured
                 if ($listRecordsHandler->getIdentifier() != null) {
-                    $this->_lastError .= '[identifier]' . $listRecordsHandler->getIdentifier();
+                    $this->_lastError .= '[identifier]'.$listRecordsHandler->getIdentifier();
                 }
                 $xoopsDB->setLogger(XoopsLogger::getInstance());
                 //some error has occured in parse( $snoopy->results );
@@ -259,36 +275,41 @@ class OAIPMHHarvester
             $resumptionToken = $listRecordsHandler->getResumptionToken();
         } while ($resumptionToken != null);
         $xoopsDB->setLogger(XoopsLogger::getInstance());
+
         return true;
     }
 
     /**
      * @param $data
+     *
      * @return bool
      */
     public function parse($data)
     {
         if (!xml_parse($this->parser, $data)) {
-            $this->_lastError = '[XMLParser]' . xml_error_string(xml_get_error_code($this->parser)) . ' at line '
-                                . xml_get_current_line_number($this->parser) . ', column ' . xml_get_current_column_number($this->parser);
+            $this->_lastError = '[XMLParser]'.xml_error_string(xml_get_error_code($this->parser)).' at line '
+                                .xml_get_current_line_number($this->parser).', column '.xml_get_current_column_number($this->parser);
             xml_parser_free($this->parser);
+
             return false;
         }
+
         return true;
     }
 
     /**
-     * return number of metadata of repository
-     * @access private
-     * @param int $repository_id id of repository to get metadata count.
-     * @return integer number of metadata or zero if failure.
+     * return number of metadata of repository.
+     *
+     * @param int $repository_id id of repository to get metadata count
+     *
+     * @return int number of metadata or zero if failure
      */
     public function getMetadataCount($repository_id)
     {
         $metadataHandler = xoonips_getOrmHandler('xoonips', 'oaipmh_metadata');
 
-        $metadata_criteria = new Criteria('repository_id', (int)$repository_id);
-        $rows              =  $metadataHandler->getObjects($metadata_criteria, false, 'count(*)');
+        $metadata_criteria = new Criteria('repository_id', (int) $repository_id);
+        $rows = $metadataHandler->getObjects($metadata_criteria, false, 'count(*)');
         if (!$rows) {
             return 0;
         } else {
@@ -297,12 +318,12 @@ class OAIPMHHarvester
     }
 
     /**
-     *
-     * @access   private
      * @param $parser
      * @param $baseUrl
      * @param $metadataPrefix
+     *
      * @return bool|Junii2ListRecordsHandler|JuniiListRecordsHandler|OaidcListRecordsHandler
+     *
      * @internal param $
      * @internal param $
      * @internal param $
@@ -312,18 +333,19 @@ class OAIPMHHarvester
         $result = false;
         switch ($metadataPrefix) {
             case 'oai_dc':
-                include_once __DIR__ . '/oaipmh_oaidc_list_records_handler.class.php';
+                require_once __DIR__.'/oaipmh_oaidc_list_records_handler.class.php';
                 $result = new OaidcListRecordsHandler($parser, $baseUrl);
                 break;
             case 'junii':
-                include_once __DIR__ . '/oaipmh_junii_list_records_handler.class.php';
+                require_once __DIR__.'/oaipmh_junii_list_records_handler.class.php';
                 $result = new JuniiListRecordsHandler($parser, $baseUrl);
                 break;
             case 'junii2':
-                include_once __DIR__ . '/oaipmh_junii2_list_records_handler.class.php';
+                require_once __DIR__.'/oaipmh_junii2_list_records_handler.class.php';
                 $result = new Junii2ListRecordsHandler($parser, $baseUrl);
                 break;
         }
+
         return $result;
     }
 }

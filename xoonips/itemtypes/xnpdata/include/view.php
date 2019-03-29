@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.57.2.1.2.31 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2013 RIKEN, Japan All rights reserved.                //
@@ -26,9 +26,9 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-$itemtype_path    = dirname(__DIR__);
+$itemtype_path = dirname(__DIR__);
 $itemtype_dirname = basename($itemtype_path);
-$xoonips_path     = dirname($itemtype_path) . '/xoonips';
+$xoonips_path = dirname($itemtype_path).'/xoonips';
 
 $langman = xoonips_getUtility('languagemanager');
 $langman->read('main.php', $itemtype_dirname);
@@ -39,16 +39,17 @@ $langman->read('main.php', $itemtype_dirname);
 function xnpdataGetTypes()
 {
     return array(
-        'excel'   => 'Excel',
-        'movie'   => 'Movie',
-        'text'    => 'Text',
+        'excel' => 'Excel',
+        'movie' => 'Movie',
+        'text' => 'Text',
         'picture' => 'Picture',
-        'other'   => 'Other'
+        'other' => 'Other',
     );
 }
 
 /** get DetailInformation by item_id
  * @param $item_id
+ *
  * @return array|bool
  */
 function xnpdataGetDetailInformation($item_id)
@@ -56,50 +57,52 @@ function xnpdataGetDetailInformation($item_id)
     global $xoopsDB;
     if (empty($item_id)) {
         return array(
-            'data_type'            => '',
-            'attachment_dl_limit'  => '',
+            'data_type' => '',
+            'attachment_dl_limit' => '',
             'attachment_dl_notify' => '',
-            'rights'               => '',
-            'readme'               => '',
-            'use_cc'               => '',
-            'cc_commercial_use'    => '',
-            'cc_modification'      => ''
+            'rights' => '',
+            'readme' => '',
+            'use_cc' => '',
+            'cc_commercial_use' => '',
+            'cc_modification' => '',
         );
     }
 
-    $sql    = 'select * from ' . $xoopsDB->prefix('xnpdata_item_detail') . " where data_id=$item_id";
+    $sql = 'select * from '.$xoopsDB->prefix('xnpdata_item_detail')." where data_id=$item_id";
     $result = $xoopsDB->query($sql);
     if ($result == false) {
         return false;
     }
 
-    $types  = xnpdataGetTypes();
+    $types = xnpdataGetTypes();
     $detail = $xoopsDB->fetchArray($result);
     if (!$detail) {
         return false;
     }
     $detail['data_type_str'] = $types[$detail['data_type']];
+
     return $detail;
 }
 
 /**
  * @param $item_id
+ *
  * @return array
  */
 function xnpdataGetMetaInformation($item_id)
 {
-    $ret                = array();
+    $ret = array();
     $experimenter_array = array();
 
-    $basic  = xnpGetBasicInformationArray($item_id);
+    $basic = xnpGetBasicInformationArray($item_id);
     $detail = xnpdataGetDetailInformation($item_id);
     if (!empty($basic)) {
-        $ret[_MD_XOONIPS_ITEM_TITLE_LABEL]            = implode("\n", $basic['titles']);
-        $ret[_MD_XOONIPS_ITEM_CONTRIBUTOR_LABEL]      = $basic['contributor'];
-        $ret[_MD_XOONIPS_ITEM_KEYWORDS_LABEL]         = implode("\n", $basic['keywords']);
-        $ret[_MD_XOONIPS_ITEM_DESCRIPTION_LABEL]      = $basic['description'];
-        $ret[_MD_XOONIPS_ITEM_DOI_LABEL]              = $basic['doi'];
-        $ret[_MD_XOONIPS_ITEM_CREATION_DATE_LABEL]    = $basic['creation_date'];
+        $ret[_MD_XOONIPS_ITEM_TITLE_LABEL] = implode("\n", $basic['titles']);
+        $ret[_MD_XOONIPS_ITEM_CONTRIBUTOR_LABEL] = $basic['contributor'];
+        $ret[_MD_XOONIPS_ITEM_KEYWORDS_LABEL] = implode("\n", $basic['keywords']);
+        $ret[_MD_XOONIPS_ITEM_DESCRIPTION_LABEL] = $basic['description'];
+        $ret[_MD_XOONIPS_ITEM_DOI_LABEL] = $basic['doi'];
+        $ret[_MD_XOONIPS_ITEM_CREATION_DATE_LABEL] = $basic['creation_date'];
         $ret[_MD_XOONIPS_ITEM_LAST_UPDATE_DATE_LABEL] = $basic['last_update_date'];
     }
     if (!empty($detail)) {
@@ -113,7 +116,7 @@ function xnpdataGetMetaInformation($item_id)
         $ret[_MD_XOONIPS_ITEM_RIGHTS_LABEL] = $detail['rights'];
     }
     $xnpdataHandler = xoonips_getOrmCompoHandler('xnpdata', 'item');
-    $xnpdata        = $xnpdataHandler->get($item_id);
+    $xnpdata = $xnpdataHandler->get($item_id);
     foreach ($xnpdata->getVar('experimenter') as $experimenter) {
         $experimenter_array[] = $experimenter->getVar('experimenter', 'n');
     }
@@ -124,6 +127,7 @@ function xnpdataGetMetaInformation($item_id)
 
 /**
  * @param $item_basic
+ *
  * @return mixed|string|void
  */
 function xnpdataGetListBlock($item_basic)
@@ -147,6 +151,7 @@ function xnpdataGetListBlock($item_basic)
 
 /**
  * @param $item_basic
+ *
  * @return mixed|string|void
  */
 function xnpdataGetPrinterFriendlyListBlock($item_basic)
@@ -156,6 +161,7 @@ function xnpdataGetPrinterFriendlyListBlock($item_basic)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpdataGetDetailBlock($item_id)
@@ -168,7 +174,7 @@ function xnpdataGetDetailBlock($item_id)
 
     // get DetailInformation
     $detailHandler = xoonips_getOrmHandler('xnpdata', 'item_detail');
-    $detail_orm    = $detailHandler->get($item_id);
+    $detail_orm = $detailHandler->get($item_id);
     if (!$detail_orm) {
         return '';
     }
@@ -197,16 +203,19 @@ function xnpdataGetDetailBlock($item_id)
 /**
  * @param $item_id
  * @param $download_file_id
+ *
  * @return mixed|string|void
  */
 function xnpdataGetDownloadConfirmationBlock($item_id, $download_file_id)
 {
     $detail = xnpdataGetDetailInformation($item_id);
+
     return xnpGetDownloadConfirmationBlock($item_id, $download_file_id, $detail['attachment_dl_notify'], true, $detail['use_cc'], $detail['rights']);
 }
 
 /**
  * @param $item_id
+ *
  * @return bool
  */
 function xnpdataGetDownloadConfirmationRequired($item_id)
@@ -216,6 +225,7 @@ function xnpdataGetDownloadConfirmationRequired($item_id)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpdataGetPrinterFriendlyDetailBlock($item_id)
@@ -228,7 +238,7 @@ function xnpdataGetPrinterFriendlyDetailBlock($item_id)
 
     // get DetailInformation
     $detailHandler = xoonips_getOrmHandler('xnpdata', 'item_detail');
-    $detail_orm    = $detailHandler->get($item_id);
+    $detail_orm = $detailHandler->get($item_id);
     if (!$detail_orm) {
         return '';
     }
@@ -274,13 +284,13 @@ function xnpdataGetRegisterBlock()
     }
 
     // get BasicInformation / Preview / index block
-    $basic                = xnpGetBasicInformationRegisterBlock();
-    $preview              = xnpGetPreviewRegisterBlock();
-    $index                = xnpGetIndexRegisterBlock();
-    $data_file            = xnpGetAttachmentRegisterBlock('data_file');
-    $readme               = xnpGetTextFileRegisterBlock('readme');
-    $rights               = xnpGetRightsRegisterBlock();
-    $attachment_dl_limit  = xnpGetDownloadLimitationOptionRegisterBlock('xnpdata');
+    $basic = xnpGetBasicInformationRegisterBlock();
+    $preview = xnpGetPreviewRegisterBlock();
+    $index = xnpGetIndexRegisterBlock();
+    $data_file = xnpGetAttachmentRegisterBlock('data_file');
+    $readme = xnpGetTextFileRegisterBlock('readme');
+    $rights = xnpGetRightsRegisterBlock();
+    $attachment_dl_limit = xnpGetDownloadLimitationOptionRegisterBlock('xnpdata');
     $attachment_dl_notify = xnpGetDownloadNotificationOptionRegisterBlock('xnpdata');
 
     // set to template
@@ -309,6 +319,7 @@ function xnpdataGetRegisterBlock()
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpdataGetEditBlock($item_id)
@@ -317,30 +328,30 @@ function xnpdataGetEditBlock($item_id)
     $formdata = xoonips_getUtility('formdata');
 
     // get BasicInformation / Preview / index block
-    $basic     = xnpGetBasicInformationEditBlock($item_id);
-    $preview   = xnpGetPreviewEditBlock($item_id);
-    $index     = xnpGetIndexEditBlock($item_id);
+    $basic = xnpGetBasicInformationEditBlock($item_id);
+    $preview = xnpGetPreviewEditBlock($item_id);
+    $index = xnpGetIndexEditBlock($item_id);
     $data_file = xnpGetAttachmentEditBlock($item_id, 'data_file');
     // get DetailInformation
     $data_type = $formdata->getValue('post', 'data_type', 's', false);
     if (isset($data_type)) {
         $detail = array(
-            'data_type'         => $data_type,
-            'readme'            => '',
-            'rights'            => '',
-            'use_cc'            => '',
+            'data_type' => $data_type,
+            'readme' => '',
+            'rights' => '',
+            'use_cc' => '',
             'cc_commercial_use' => '',
-            'cc_modification'   => '',
+            'cc_modification' => '',
         );
     } elseif (!empty($item_id)) {
         $detail = xnpdataGetDetailInformation($item_id);
     } else {
         $detail = array();
     }
-    $readme               = xnpGetTextFileEditBlock($item_id, 'readme', $detail['readme']);
-    $rights               = xnpGetRightsEditBlock($item_id, $detail['use_cc'], $detail['rights'], $detail['cc_commercial_use'],
+    $readme = xnpGetTextFileEditBlock($item_id, 'readme', $detail['readme']);
+    $rights = xnpGetRightsEditBlock($item_id, $detail['use_cc'], $detail['rights'], $detail['cc_commercial_use'],
                                                   $detail['cc_modification']);
-    $attachment_dl_limit  = xnpGetDownloadLimitationOptionEditBlock('xnpdata', xnpdataGetAttachmentDownloadLimitOption($item_id));
+    $attachment_dl_limit = xnpGetDownloadLimitationOptionEditBlock('xnpdata', xnpdataGetAttachmentDownloadLimitOption($item_id));
     $attachment_dl_notify = xnpGetDownloadNotificationOptionEditBlock('xnpdata', xnpdataGetAttachmentDownloadNotifyOption($item_id));
 
     // set to template
@@ -357,7 +368,7 @@ function xnpdataGetEditBlock($item_id)
     $tpl->assign('data_file', $data_file);
     $tpl->assign('detail', array_map(array(
                                          $textutil,
-                                         'html_special_chars'
+                                         'html_special_chars',
                                      ), $detail));
     $tpl->assign('readme', $readme);
     $tpl->assign('rights', $rights);
@@ -366,7 +377,7 @@ function xnpdataGetEditBlock($item_id)
 
     if (!$formdata->getValue('get', 'post_id', 's', false)) {
         $detailHandler = xoonips_getOrmHandler('xnpdata', 'item_detail');
-        $detail_orm    = $detailHandler->get($item_id);
+        $detail_orm = $detailHandler->get($item_id);
         $tpl->assign('xnpdata_experimenter', xoonips_get_multiple_field_template_vars($detail_orm->getExperimenters(), 'xnpdata', 'experimenter'));
     } else {
         $tpl->assign('xnpdata_experimenter',
@@ -379,26 +390,27 @@ function xnpdataGetEditBlock($item_id)
 
 /**
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpdataGetConfirmBlock($item_id)
 {
-    $formdata            = xoonips_getUtility('formdata');
+    $formdata = xoonips_getUtility('formdata');
     $experimenterHandler = xoonips_getOrmHandler('xnpdata', 'experimenter');
-    $experimenter_objs   = $formdata->getObjectArray('post', $experimenterHandler->getTableName(), $experimenterHandler, false);
+    $experimenter_objs = $formdata->getObjectArray('post', $experimenterHandler->getTableName(), $experimenterHandler, false);
 
     $textutil = xoonips_getUtility('text');
     // get BasicInformation / Preview / index block
-    $ar        = array();
-    $basic     = xnpGetBasicInformationConfirmBlock($item_id);
-    $preview   = xnpGetPreviewConfirmBlock($item_id);
-    $index     = xnpGetIndexConfirmBlock($item_id);
+    $ar = array();
+    $basic = xnpGetBasicInformationConfirmBlock($item_id);
+    $preview = xnpGetPreviewConfirmBlock($item_id);
+    $index = xnpGetIndexConfirmBlock($item_id);
     $data_file = xnpGetAttachmentConfirmBlock($item_id, 'data_file');
 
-    $lengths              = xnpGetColumnLengths('xnpdata_item_detail');
-    $readme               = xnpGetTextFileConfirmBlock($item_id, 'readme', $lengths['readme']);
-    $rights               = xnpGetRightsConfirmBlock($item_id, $lengths['rights']);
-    $attachment_dl_limit  = xnpGetDownloadLimitationOptionConfirmBlock('xnpdata');
+    $lengths = xnpGetColumnLengths('xnpdata_item_detail');
+    $readme = xnpGetTextFileConfirmBlock($item_id, 'readme', $lengths['readme']);
+    $rights = xnpGetRightsConfirmBlock($item_id, $lengths['rights']);
+    $attachment_dl_limit = xnpGetDownloadLimitationOptionConfirmBlock('xnpdata');
     $attachment_dl_notify = xnpGetDownloadNotificationOptionConfirmBlock('xnpdata');
     // get DetailInformation
     $detail = array(
@@ -407,7 +419,7 @@ function xnpdataGetConfirmBlock($item_id)
         ),
     );
     xnpConfirmHtml($detail, 'xnpdata_item_detail', array_keys($detail), _CHARSET);
-    $types                   = xnpdataGetTypes();
+    $types = xnpdataGetTypes();
     $detail['data_type_str'] = array(
         'value' => $textutil->html_special_chars($types[$detail['data_type']['value']], ENT_QUOTES),
     );
@@ -416,7 +428,7 @@ function xnpdataGetConfirmBlock($item_id)
         || xoonips_is_multiple_field_too_long($experimenter_objs, 'xnpdata', 'experimenter')
     ) {
         global $system_message;
-        $system_message = $system_message . "\n" . '<br /><font color="#ff0000">' . _MD_XOONIPS_ITEM_WARNING_FIELD_TRIM . '</font><br />';
+        $system_message = $system_message."\n".'<br /><font color="#ff0000">'._MD_XOONIPS_ITEM_WARNING_FIELD_TRIM.'</font><br />';
     }
 
     // set to template
@@ -441,23 +453,25 @@ function xnpdataGetConfirmBlock($item_id)
 }
 
 /** check DetailInformation input
- * called from confirm/registered page
+ * called from confirm/registered page.
+ *
  * @param $message
+ *
  * @return bool
  */
 function xnpdataCheckRegisterParameters($message)
 {
-    $xnpsid   = $_SESSION['XNPSID'];
+    $xnpsid = $_SESSION['XNPSID'];
     $formdata = xoonips_getUtility('formdata');
 
-    $messages          = array();
-    $experimenter      = xoonips_get_multi_field_array_from_post('xnpdata', 'experimenter');
-    $data_file         = $formdata->getFile('data_file', false);
-    $data_fileFileID   = $formdata->getValue('post', 'data_fileFileID', 'i', false);
+    $messages = array();
+    $experimenter = xoonips_get_multi_field_array_from_post('xnpdata', 'experimenter');
+    $data_file = $formdata->getFile('data_file', false);
+    $data_fileFileID = $formdata->getValue('post', 'data_fileFileID', 'i', false);
     $xoonipsCheckedXID = $formdata->getValue('post', 'xoonipsCheckedXID', 's', false);
-    $readmeEncText     = $formdata->getValue('post', 'readmeEncText', 's', false);
-    $rightsEncText     = $formdata->getValue('post', 'rightsEncText', 's', false);
-    $rightsUseCC       = $formdata->getValue('post', 'rightsUseCC', 'i', false);
+    $readmeEncText = $formdata->getValue('post', 'readmeEncText', 's', false);
+    $rightsEncText = $formdata->getValue('post', 'rightsEncText', 's', false);
+    $rightsUseCC = $formdata->getValue('post', 'rightsUseCC', 'i', false);
 
     if (empty($experimenter)) {
         $messages[] = _MD_XNPDATA_EXPERIMENTER_REQUIRED;
@@ -467,7 +481,7 @@ function xnpdataCheckRegisterParameters($message)
     }
 
     // require Readme and License if register to public indexes
-    $xids    = explode(',', $xoonipsCheckedXID);
+    $xids = explode(',', $xoonipsCheckedXID);
     $indexes = array();
     if ($xids[0] != $xoonipsCheckedXID) {
         foreach ($xids as $i) {
@@ -475,8 +489,8 @@ function xnpdataCheckRegisterParameters($message)
             if (xnp_get_index($xnpsid, $i, $index) == RES_OK) {
                 $indexes[] = $index;
             } else {
-                $messages[] = '<font color="#ff0000">' . xnp_get_last_error_string() . '</font>';
-                $result     = false;
+                $messages[] = '<font color="#ff0000">'.xnp_get_last_error_string().'</font>';
+                $result = false;
                 break;
             }
         }
@@ -486,11 +500,11 @@ function xnpdataCheckRegisterParameters($message)
             if ($i['open_level'] <= OL_GROUP_ONLY) {
                 if ($readmeEncText == '') {
                     // readme is not filled
-                    $messages[] = '<font color="#ff0000">' . _MD_XNPDATA_README_REQUIRED . '</font>';
+                    $messages[] = '<font color="#ff0000">'._MD_XNPDATA_README_REQUIRED.'</font>';
                 }
                 if ($rightsEncText == '' && $rightsUseCC == '0') {
                     // rights is not filled
-                    $messages[] = '<font color="#ff0000">' . _MD_XNPDATA_RIGHTS_REQUIRED . '</font>';
+                    $messages[] = '<font color="#ff0000">'._MD_XNPDATA_RIGHTS_REQUIRED.'</font>';
                 }
                 break;
             }
@@ -499,12 +513,14 @@ function xnpdataCheckRegisterParameters($message)
     if (count($messages) == 0) {
         return true;
     }
-    $message = "<br />\n" . implode("<br />\n", $messages);
+    $message = "<br />\n".implode("<br />\n", $messages);
+
     return false;
 }
 
 /** check DetailInformation input
  * @param $message
+ *
  * @return bool
  */
 function xnpdataCheckEditParameters($message)
@@ -514,17 +530,18 @@ function xnpdataCheckEditParameters($message)
 
 /**
  * @param $item_id
+ *
  * @return bool
  */
 function xnpdataInsertItem($item_id)
 {
     global $xoopsDB;
     $formdata = xoonips_getUtility('formdata');
-    $xnpsid   = $_SESSION['XNPSID'];
+    $xnpsid = $_SESSION['XNPSID'];
 
     // register BasicInformation, Index, Attachment
     $item_id = 0;
-    $result  = xnpInsertBasicInformation($item_id);
+    $result = xnpInsertBasicInformation($item_id);
     if ($result) {
         $result = xnpUpdateIndex($item_id);
         if ($result) {
@@ -549,12 +566,12 @@ function xnpdataInsertItem($item_id)
     // it makes string with constant length
     $ar = array(
         'data_type' => $formdata->getValue('post', 'data_type', 's', false),
-        'readme'    => xnpGetTextFile('readme'),
-        'rights'    => $rights,
+        'readme' => xnpGetTextFile('readme'),
+        'rights' => $rights,
     );
     xnpTrimColumn($ar, 'xnpdata_item_detail', array_keys($ar), _CHARSET);
 
-    $keys                 = implode(',', array(
+    $keys = implode(',', array(
         'attachment_dl_limit',
         'attachment_dl_notify',
         'data_type',
@@ -562,11 +579,11 @@ function xnpdataInsertItem($item_id)
         'rights',
         'use_cc',
         'cc_commercial_use',
-        'cc_modification'
+        'cc_modification',
     ));
-    $attachment_dl_limit  = $formdata->getValue('post', 'attachment_dl_limit', 'i', false);
+    $attachment_dl_limit = $formdata->getValue('post', 'attachment_dl_limit', 'i', false);
     $attachment_dl_notify = $formdata->getValue('post', 'attachment_dl_notify', 'i', false);
-    $vals                 = implode('\',\'', array(
+    $vals = implode('\',\'', array(
         $attachment_dl_limit,
         $attachment_dl_limit ? $attachment_dl_notify : 0,
         addslashes($ar['data_type']),
@@ -574,19 +591,20 @@ function xnpdataInsertItem($item_id)
         addslashes($ar['rights']),
         $use_cc,
         $cc_commercial_use,
-        $cc_modification
+        $cc_modification,
     ));
 
-    $sql    = 'insert into ' . $xoopsDB->prefix('xnpdata_item_detail') . " ( data_id, $keys ) values ( $item_id, '$vals' ) ";
+    $sql = 'insert into '.$xoopsDB->prefix('xnpdata_item_detail')." ( data_id, $keys ) values ( $item_id, '$vals' ) ";
     $result = $xoopsDB->queryF($sql);
     if ($result == false) {
         echo 'cannot insert item_detail';
+
         return false;
     }
 
     // insert experimenter
     $experimenterHandler = xoonips_getOrmHandler('xnpdata', 'experimenter');
-    $experimenter_objs   = $formdata->getObjectArray('post', $experimenterHandler->getTableName(), $experimenterHandler, false);
+    $experimenter_objs = $formdata->getObjectArray('post', $experimenterHandler->getTableName(), $experimenterHandler, false);
     if (!$experimenterHandler->updateAllObjectsByForeignKey('data_id', $item_id, $experimenter_objs)) {
         return false;
     }
@@ -596,13 +614,14 @@ function xnpdataInsertItem($item_id)
 
 /**
  * @param $item_id
+ *
  * @return bool
  */
 function xnpdataUpdateItem($item_id)
 {
     global $xoopsDB;
     $formdata = xoonips_getUtility('formdata');
-    $xnpsid   = $_SESSION['XNPSID'];
+    $xnpsid = $_SESSION['XNPSID'];
 
     // edit BasicInformation, Index, Preview, Attachment
     $result = xnpUpdateBasicInformation($item_id);
@@ -640,36 +659,37 @@ function xnpdataUpdateItem($item_id)
     // trim strings
     $ar = array(
         'data_type' => $formdata->getValue('post', 'data_type', 's', false),
-        'readme'    => xnpGetTextFile('readme'),
-        'rights'    => $rights,
+        'readme' => xnpGetTextFile('readme'),
+        'rights' => $rights,
     );
     xnpTrimColumn($ar, 'xnpdata_item_detail', array_keys($ar), _CHARSET);
 
     // register DetailInformation
-    $attachment_dl_limit  = $formdata->getValue('post', 'attachment_dl_limit', 'i', false);
+    $attachment_dl_limit = $formdata->getValue('post', 'attachment_dl_limit', 'i', false);
     $attachment_dl_notify = $formdata->getValue('post', 'attachment_dl_notify', 'i', false);
-    $ar                   = array(
-        'attachment_dl_limit' . '=\'' . $attachment_dl_limit . '\'',
-        'attachment_dl_notify' . '=\'' . ($attachment_dl_limit ? $attachment_dl_notify : 0) . '\'',
-        'data_type' . '=\'' . addslashes($ar['data_type']) . '\'',
-        'readme' . '=\'' . addslashes($ar['readme']) . '\'',
-        'rights' . '=\'' . addslashes($ar['rights']) . '\'',
-        'use_cc' . '=\'' . $use_cc . '\'',
-        'cc_commercial_use' . '=\'' . $cc_commercial_use . '\'',
-        'cc_modification' . '=\'' . $cc_modification . '\'',
+    $ar = array(
+        'attachment_dl_limit'.'=\''.$attachment_dl_limit.'\'',
+        'attachment_dl_notify'.'=\''.($attachment_dl_limit ? $attachment_dl_notify : 0).'\'',
+        'data_type'.'=\''.addslashes($ar['data_type']).'\'',
+        'readme'.'=\''.addslashes($ar['readme']).'\'',
+        'rights'.'=\''.addslashes($ar['rights']).'\'',
+        'use_cc'.'=\''.$use_cc.'\'',
+        'cc_commercial_use'.'=\''.$cc_commercial_use.'\'',
+        'cc_modification'.'=\''.$cc_modification.'\'',
     );
-    $table                = $xoopsDB->prefix('xnpdata_item_detail');
-    $sql                  = implode(',', $ar);
-    $sql                  = 'update ' . $table . " set $sql where data_id = $item_id ";
-    $result               = $xoopsDB->queryF($sql);
+    $table = $xoopsDB->prefix('xnpdata_item_detail');
+    $sql = implode(',', $ar);
+    $sql = 'update '.$table." set $sql where data_id = $item_id ";
+    $result = $xoopsDB->queryF($sql);
     if ($result == false) {
         echo $xoopsDB->error();
+
         return false;
     }
 
     // insert/update experimenter
     $experimenterHandler = xoonips_getOrmHandler('xnpdata', 'experimenter');
-    $experimenter_objs   = $formdata->getObjectArray('post', $experimenterHandler->getTableName(), $experimenterHandler, false);
+    $experimenter_objs = $formdata->getObjectArray('post', $experimenterHandler->getTableName(), $experimenterHandler, false);
     if (!$experimenterHandler->updateAllObjectsByForeignKey('data_id', $item_id, $experimenter_objs)) {
         return false;
     }
@@ -681,21 +701,23 @@ function xnpdataUpdateItem($item_id)
  * @param $wheres
  * @param $join
  * @param $keywords
+ *
  * @return bool
  */
 function xnpdataGetDetailInformationQuickSearchQuery($wheres, &$join, $keywords)
 {
     global $xoopsDB;
-    $data_table              = $xoopsDB->prefix('xnpdata_item_detail');
+    $data_table = $xoopsDB->prefix('xnpdata_item_detail');
     $data_experimenter_table = $xoopsDB->prefix('xnpdata_experimenter');
-    $file_table              = $xoopsDB->prefix('xoonips_file');
+    $file_table = $xoopsDB->prefix('xoonips_file');
 
-    $join   = " INNER JOIN $data_experimenter_table ON " . $data_experimenter_table . '.data_id  = ' . $xoopsDB->prefix('xoonips_item_basic')
-              . '.item_id ';
+    $join = " INNER JOIN $data_experimenter_table ON ".$data_experimenter_table.'.data_id  = '.$xoopsDB->prefix('xoonips_item_basic')
+              .'.item_id ';
     $wheres = xnpGetKeywordsQueries(array(
                                         "$data_experimenter_table.experimenter",
-                                        "$file_table.caption"
+                                        "$file_table.caption",
                                     ), $keywords);
+
     return true;
 }
 
@@ -708,28 +730,28 @@ function xnpdataGetAdvancedSearchQuery(&$where, &$join)
     global $xoopsDB;
     $formdata = xoonips_getUtility('formdata');
 
-    $basic_table             = $xoopsDB->prefix('xoonips_item_basic');
-    $data_table              = $xoopsDB->prefix('xnpdata_item_detail');
+    $basic_table = $xoopsDB->prefix('xoonips_item_basic');
+    $data_table = $xoopsDB->prefix('xnpdata_item_detail');
     $data_experimenter_table = $xoopsDB->prefix('xnpdata_experimenter');
-    $file_table              = $xoopsDB->prefix('xoonips_file');
-    $search_text_table       = $xoopsDB->prefix('xoonips_search_text');
+    $file_table = $xoopsDB->prefix('xoonips_file');
+    $search_text_table = $xoopsDB->prefix('xoonips_search_text');
 
-    $wheres            = array();
-    $joins             = array();
+    $wheres = array();
+    $joins = array();
     $xnpdata_data_type = $formdata->getValue('post', 'xnpdata_data_type', 's', false);
     $xnpdata_data_file = $formdata->getValue('post', 'xnpdata_data_file', 's', false);
-    $w                 = xnpGetBasicInformationAdvancedSearchQuery('xnpdata');
+    $w = xnpGetBasicInformationAdvancedSearchQuery('xnpdata');
     if ($w) {
         $wheres[] = $w;
     }
     if (!empty($xnpdata_data_type)) {
-        $wheres[] = $data_table . '.data_type = \'' . addslashes($xnpdata_data_type) . '\'';
+        $wheres[] = $data_table.'.data_type = \''.addslashes($xnpdata_data_type).'\'';
     }
-    $w = xnpGetKeywordQuery($data_experimenter_table . '.experimenter', 'xnpdata_experimenter');
+    $w = xnpGetKeywordQuery($data_experimenter_table.'.experimenter', 'xnpdata_experimenter');
     if ($w) {
         $wheres[] = $w;
     }
-    $w = xnpGetKeywordQuery($file_table . '.caption', 'xnpdata_caption');
+    $w = xnpGetKeywordQuery($file_table.'.caption', 'xnpdata_caption');
     if ($w) {
         $wheres[] = $w;
         $wheres[] = " $file_table.file_type_id = 1";
@@ -737,9 +759,9 @@ function xnpdataGetAdvancedSearchQuery(&$where, &$join)
 
     if (!empty($xnpdata_data_file)) {
         $search_text_table = $xoopsDB->prefix('xoonips_search_text');
-        $file_table        = $xoopsDB->prefix('xoonips_file');
-        $searchutil        = xoonips_getUtility('search');
-        $fulltext_query    = $xnpdata_data_file;
+        $file_table = $xoopsDB->prefix('xoonips_file');
+        $searchutil = xoonips_getUtility('search');
+        $fulltext_query = $xnpdata_data_file;
         $fulltext_encoding = mb_detect_encoding($fulltext_query);
         $fulltext_criteria = new CriteriaCompo($searchutil->getFulltextSearchCriteria('search_text', $fulltext_query, $fulltext_encoding,
                                                                                       $search_text_table));
@@ -748,18 +770,19 @@ function xnpdataGetAdvancedSearchQuery(&$where, &$join)
     }
 
     $where = implode(' AND ', $wheres);
-    $join  = " INNER JOIN $data_experimenter_table ON " . $data_experimenter_table . '.data_id  = ' . $xoopsDB->prefix('xoonips_item_basic')
-             . '.item_id ';
+    $join = " INNER JOIN $data_experimenter_table ON ".$data_experimenter_table.'.data_id  = '.$xoopsDB->prefix('xoonips_item_basic')
+             .'.item_id ';
 }
 
 /**
  * @param $search_var
+ *
  * @return mixed|string|void
  */
 function xnpdataGetAdvancedSearchBlock($search_var)
 {
     // get BasicInformation / Preview / IndexKeywords block
-    $basic        = xnpGetBasicInformationAdvancedSearchBlock('xnpdata', $search_var);
+    $basic = xnpGetBasicInformationAdvancedSearchBlock('xnpdata', $search_var);
     $search_var[] = 'xnpdata_data_type';
     $search_var[] = 'xnpdata_experimenter';
     $search_var[] = 'xnpdata_data_file';
@@ -782,6 +805,7 @@ function xnpdataGetAdvancedSearchBlock($search_var)
 
 /**
  * @param $iids
+ *
  * @return float|sum
  */
 function xnpdataGetDetailInformationTotalSize($iids)
@@ -790,20 +814,22 @@ function xnpdataGetDetailInformationTotalSize($iids)
 }
 
 /**
- *
  * create XML for exporting detail information
- * see xnpExportItem for detail
+ * see xnpExportItem for detail.
+ *
  * @see      xnpExportItem
  *
  * @param folder $export_path
  * @param file   $fhdl
  * @param item   $item_id
  * @param true   $attachment
+ *
  * @return true : success
- * @internal param folder $export_path that export file is written to.
- * @internal param file $fhdl handle that items are exported to.
+ *
+ * @internal param folder $export_path that export file is written to
+ * @internal param file $fhdl handle that items are exported to
  * @internal param item $item_id id that is exported
- * @internal param true $attachment if attachment files are exported, else false.
+ * @internal param true $attachment if attachment files are exported, else false
  */
 function xnpdataExportItem($export_path, $fhdl, $item_id, $attachment)
 {
@@ -813,23 +839,23 @@ function xnpdataExportItem($export_path, $fhdl, $item_id, $attachment)
     }
 
     $handler = xoonips_getOrmHandler('xnpdata', 'item_detail');
-    $detail  = $handler->get($item_id);
+    $detail = $handler->get($item_id);
     if (!$detail) {
         return false;
     }
 
     $experimenters = '';
     foreach ($detail->getExperimenters() as $experimenter) {
-        $experimenters .= '<experimenter>' . $experimenter->getVar('experimenter', 's') . '</experimenter>';
+        $experimenters .= '<experimenter>'.$experimenter->getVar('experimenter', 's').'</experimenter>';
     }
 
-    if (!fwrite($fhdl, "<detail id=\"${item_id}\" version=\"1.03\">\n" . '<data_type>' . $detail->getVar('data_type', 's') . "</data_type>\n"
-                       . "<experimenters>{$experimenters}</experimenters>\n" . '<rights>' . $detail->getVar('rights', 's') . "</rights>\n"
-                       . '<readme>' . $detail->getVar('readme', 's') . "</readme>\n" . '<use_cc>' . (int)$detail->get('use_cc', 's') . "</use_cc>\n"
-                       . '<cc_commercial_use>' . (int)$detail->get('cc_commercial_use') . "</cc_commercial_use>\n" . '<cc_modification>'
-                       . (int)$detail->get('cc_modification') . "</cc_modification>\n" . '<attachment_dl_limit>'
-                       . (int)$detail->get('attachment_dl_limit') . "</attachment_dl_limit>\n" . '<attachment_dl_notify>'
-                       . (int)$detail->get('attachment_dl_notify') . "</attachment_dl_notify>\n")
+    if (!fwrite($fhdl, "<detail id=\"${item_id}\" version=\"1.03\">\n".'<data_type>'.$detail->getVar('data_type', 's')."</data_type>\n"
+                       ."<experimenters>{$experimenters}</experimenters>\n".'<rights>'.$detail->getVar('rights', 's')."</rights>\n"
+                       .'<readme>'.$detail->getVar('readme', 's')."</readme>\n".'<use_cc>'.(int) $detail->get('use_cc', 's')."</use_cc>\n"
+                       .'<cc_commercial_use>'.(int) $detail->get('cc_commercial_use')."</cc_commercial_use>\n".'<cc_modification>'
+                       .(int) $detail->get('cc_modification')."</cc_modification>\n".'<attachment_dl_limit>'
+                       .(int) $detail->get('attachment_dl_limit')."</attachment_dl_limit>\n".'<attachment_dl_notify>'
+                       .(int) $detail->get('attachment_dl_notify')."</attachment_dl_notify>\n")
     ) {
         return false;
     }
@@ -845,6 +871,7 @@ function xnpdataExportItem($export_path, $fhdl, $item_id, $attachment)
 
 /**
  * @param $item_id
+ *
  * @return bool|null
  */
 function xnpdataGetLicenseRequired($item_id)
@@ -852,16 +879,18 @@ function xnpdataGetLicenseRequired($item_id)
     global $xoopsDB;
 
     // get DetailInformation
-    $result = $xoopsDB->query('select * from ' . $xoopsDB->prefix('xnpdata_item_detail') . " where data_id=$item_id");
+    $result = $xoopsDB->query('select * from '.$xoopsDB->prefix('xnpdata_item_detail')." where data_id=$item_id");
     if (!$result) {
         return null;
     }
     $detail = $xoopsDB->fetchArray($result);
+
     return isset($detail['rights']) && $detail['rights'] != '';
 }
 
 /**
  * @param $item_id
+ *
  * @return array|null
  */
 function xnpdataGetLicenseStatement($item_id)
@@ -869,34 +898,36 @@ function xnpdataGetLicenseStatement($item_id)
     global $xoopsDB;
 
     // get DetailInformation
-    $result = $xoopsDB->query('select * from ' . $xoopsDB->prefix('xnpdata_item_detail') . " where data_id=$item_id");
+    $result = $xoopsDB->query('select * from '.$xoopsDB->prefix('xnpdata_item_detail')." where data_id=$item_id");
     if (!$result) {
         return null;
     }
     $detail = $xoopsDB->fetchArray($result);
+
     return array(
         isset($detail['rights']) ? $detail['rights'] : '',
-        $detail['use_cc']
+        $detail['use_cc'],
     );
 }
 
 /**
  * @param $item_id
+ *
  * @return array
  */
 function xnpdataGetModifiedFields($item_id)
 {
-    $ret      = array();
+    $ret = array();
     $formdata = xoonips_getUtility('formdata');
 
     $publicationDateMonth = $formdata->getValue('post', 'publicationDateMonth', 'i', false);
-    $publicationDateDay   = $formdata->getValue('post', 'publicationDateDay', 'i', false);
-    $publicationDateYear  = $formdata->getValue('post', 'publicationDateYear', 'i', false);
+    $publicationDateDay = $formdata->getValue('post', 'publicationDateDay', 'i', false);
+    $publicationDateYear = $formdata->getValue('post', 'publicationDateYear', 'i', false);
 
     $basic = xnpGetBasicInformationArray($item_id);
     if ($basic) {
-        if ((int)$basic['publication_month'] != (int)$publicationDateMonth || (int)$basic['publication_mday'] != (int)$publicationDateDay
-            || (int)$basic['publication_year'] != (int)$publicationDateYear
+        if ((int) $basic['publication_month'] != (int) $publicationDateMonth || (int) $basic['publication_mday'] != (int) $publicationDateDay
+            || (int) $basic['publication_year'] != (int) $publicationDateYear
         ) {
             array_push($ret, _MD_XNPDATA_DATE_LABEL);
         }
@@ -923,7 +954,7 @@ function xnpdataGetModifiedFields($item_id)
             }
         }
         // is rights modified ?
-        $rightsUseCC   = $formdata->getValue('post', 'rightsUseCC', 'i', false);
+        $rightsUseCC = $formdata->getValue('post', 'rightsUseCC', 'i', false);
         $rightsEncText = $formdata->getValue('post', 'rightsEncText', 's', false);
         if ($rightsUseCC !== null) {
             if ($rightsUseCC == 0) {
@@ -933,7 +964,7 @@ function xnpdataGetModifiedFields($item_id)
             } elseif ($rightsUseCC == 1) {
                 foreach (array(
                              'rightsCCCommercialUse' => 'cc_commercial_use',
-                             'rightsCCModification'  => 'cc_modification'
+                             'rightsCCModification' => 'cc_modification',
                          ) as $k => $v
                 ) {
                     $tmp = $formdata->getValue('post', $k, 'i', false);
@@ -948,10 +979,10 @@ function xnpdataGetModifiedFields($item_id)
             }
         }
 
-        $experimenterHandler   = xoonips_getOrmHandler('xnpdata', 'experimenter');
-        $experimenter_objs     = $formdata->getObjectArray('post', $experimenterHandler->getTableName(), $experimenterHandler, false);
-        $detailHandler         = xoonips_getOrmHandler('xnpdata', 'item_detail');
-        $detail_orm            = $detailHandler->get($item_id);
+        $experimenterHandler = xoonips_getOrmHandler('xnpdata', 'experimenter');
+        $experimenter_objs = $formdata->getObjectArray('post', $experimenterHandler->getTableName(), $experimenterHandler, false);
+        $detailHandler = xoonips_getOrmHandler('xnpdata', 'item_detail');
+        $detail_orm = $detailHandler->get($item_id);
         $experimenter_old_objs = $detail_orm->getExperimenters();
         if (!xoonips_is_same_objects($experimenter_old_objs, $experimenter_objs)) {
             array_push($ret, _MD_XNPDATA_EXPERIMENTER_LABEL);
@@ -962,11 +993,13 @@ function xnpdataGetModifiedFields($item_id)
             array_push($ret, _MD_XNPDATA_DATA_FILE_LABEL);
         }
     }
+
     return $ret;
 }
 
 /**
  * @param $itemtype
+ *
  * @return mixed|string|void
  */
 function xnpdataGetTopBlock($itemtype)
@@ -979,17 +1012,20 @@ function xnpdataGetTopBlock($itemtype)
 // return 0 if downloadable for everyone
 /**
  * @param $item_id
+ *
  * @return int
  */
 function xnpdataGetAttachmentDownloadLimitOption($item_id)
 {
     global $xoopsDB;
-    $sql    = 'select attachment_dl_limit from ' . $xoopsDB->prefix('xnpdata_item_detail') . " where data_id=${item_id}";
+    $sql = 'select attachment_dl_limit from '.$xoopsDB->prefix('xnpdata_item_detail')." where data_id=${item_id}";
     $result = $xoopsDB->query($sql);
     if ($result) {
         list($option) = $xoopsDB->fetchRow($result);
+
         return $option;
     }
+
     return 0;
 }
 
@@ -997,23 +1033,27 @@ function xnpdataGetAttachmentDownloadLimitOption($item_id)
 // return 0 if downloading is not notified
 /**
  * @param $item_id
+ *
  * @return int
  */
 function xnpdataGetAttachmentDownloadNotifyOption($item_id)
 {
     global $xoopsDB;
-    $sql    = 'select attachment_dl_notify from ' . $xoopsDB->prefix('xnpdata_item_detail') . " where data_id=${item_id}";
+    $sql = 'select attachment_dl_notify from '.$xoopsDB->prefix('xnpdata_item_detail')." where data_id=${item_id}";
     $result = $xoopsDB->query($sql);
     if ($result) {
         list($notify) = $xoopsDB->fetchRow($result);
+
         return $notify;
     }
+
     return 0;
 }
 
 /**
  * @param $metadataPrefix
  * @param $item_id
+ *
  * @return bool
  */
 function xnpdataSupportMetadataFormat($metadataPrefix, $item_id)
@@ -1021,12 +1061,14 @@ function xnpdataSupportMetadataFormat($metadataPrefix, $item_id)
     if ($metadataPrefix === 'oai_dc' || $metadataPrefix === 'junii2') {
         return true;
     }
+
     return false;
 }
 
 /**
  * @param $prefix
  * @param $item_id
+ *
  * @return mixed|string|void
  */
 function xnpdataGetMetadata($prefix, $item_id)
@@ -1035,30 +1077,30 @@ function xnpdataGetMetadata($prefix, $item_id)
     $mydirname = basename($mydirpath);
     if (!in_array($prefix, array(
         'oai_dc',
-        'junii2'
+        'junii2',
     ))
     ) {
         return false;
     }
     // detail information
-    $detailHandler       = xoonips_getOrmHandler($mydirname, 'item_detail');
+    $detailHandler = xoonips_getOrmHandler($mydirname, 'item_detail');
     $experimenterHandler = xoonips_getOrmHandler($mydirname, 'experimenter');
-    $detail_obj          = $detailHandler->get($item_id);
+    $detail_obj = $detailHandler->get($item_id);
     if (empty($detail_obj)) {
         return false;
     }
-    $detail   = $detail_obj->getArray();
+    $detail = $detail_obj->getArray();
     $criteria = new Criteria('data_id', $item_id);
     $criteria->setSort('experimenter_order');
-    $experimenter_objs       = $experimenterHandler->getObjects($criteria);
+    $experimenter_objs = $experimenterHandler->getObjects($criteria);
     $detail['experimenters'] = array();
     foreach ($experimenter_objs as $experimenter_obj) {
         $detail['experimenters'][] = $experimenter_obj->get('experimenter');
     }
-    $types                       = xnpdataGetTypes();
+    $types = xnpdataGetTypes();
     $detail['data_type_display'] = $types[$detail['data_type']];
     // basic information
-    $basic                             = xnpGetBasicInformationArray($item_id);
+    $basic = xnpGetBasicInformationArray($item_id);
     $basic['publication_date_iso8601'] = xnpISO8601($basic['publication_year'], $basic['publication_month'], $basic['publication_mday']);
     // indexes
     $indexes = array();
@@ -1070,8 +1112,8 @@ function xnpdataGetMetadata($prefix, $item_id)
         }
     }
     // files
-    $files       = array();
-    $mimetypes   = array();
+    $files = array();
+    $mimetypes = array();
     $fileHandler = xoonips_gethandler('xoonips', 'file');
     if ($detail['attachment_dl_limit'] == 0) {
         $files = $fileHandler->getFilesInfo($item_id, 'data_file');
@@ -1098,28 +1140,28 @@ function xnpdataGetMetadata($prefix, $item_id)
     }
     // related to
     $related_toHandler = xoonips_getOrmHandler('xoonips', 'related_to');
-    $related_to_ids    = $related_toHandler->getChildItemIds($item_id);
-    $related_tos       = array();
+    $related_to_ids = $related_toHandler->getChildItemIds($item_id);
+    $related_tos = array();
     foreach ($related_to_ids as $related_to_id) {
         $related_tos[] = array(
-            'item_id'  => $related_to_id,
-            'item_url' => XOOPS_URL . '/modules/xoonips/detail.php?item_id=' . $related_to_id
+            'item_id' => $related_to_id,
+            'item_url' => XOOPS_URL.'/modules/xoonips/detail.php?item_id='.$related_to_id,
         );
     }
     // repository configs
-    $xconfigHandler          = xoonips_getOrmHandler('xoonips', 'config');
+    $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
     $myxoopsConfigMetaFooter = xoonips_get_xoops_configs(XOOPS_CONF_METAFOOTER);
-    $repository              = array(
+    $repository = array(
         'download_file_compression' => $xconfigHandler->getValue('download_file_compression'),
-        'nijc_code'                 => $xconfigHandler->getValue('repository_nijc_code'),
-        'publisher'                 => $xconfigHandler->getValue('repository_publisher'),
-        'institution'               => $xconfigHandler->getValue('repository_institution'),
-        'meta_author'               => $myxoopsConfigMetaFooter['meta_author']
+        'nijc_code' => $xconfigHandler->getValue('repository_nijc_code'),
+        'publisher' => $xconfigHandler->getValue('repository_publisher'),
+        'institution' => $xconfigHandler->getValue('repository_institution'),
+        'meta_author' => $myxoopsConfigMetaFooter['meta_author'],
     );
     // assign template
     global $xoopsTpl;
-    $tpl                = new XoopsTpl();
-    $tpl->plugins_dir[] = XOONIPS_PATH . '/class/smarty/plugins';
+    $tpl = new XoopsTpl();
+    $tpl->plugins_dir[] = XOONIPS_PATH.'/class/smarty/plugins';
     $tpl->assign($xoopsTpl->get_template_vars());
     $tpl->assign('basic', $basic);
     $tpl->assign('detail', $detail);
@@ -1129,6 +1171,7 @@ function xnpdataGetMetadata($prefix, $item_id)
     $tpl->assign('previews', $previews);
     $tpl->assign('related_tos', $related_tos);
     $tpl->assign('repository', $repository);
-    $xml = $tpl->fetch('db:' . $mydirname . '_oaipmh_' . $prefix . '.xml');
+    $xml = $tpl->fetch('db:'.$mydirname.'_oaipmh_'.$prefix.'.xml');
+
     return $xml;
 }

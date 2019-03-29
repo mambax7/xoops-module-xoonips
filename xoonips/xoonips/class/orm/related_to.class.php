@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.8 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /*
 alter table following from xoonips 3.24
@@ -41,7 +39,6 @@ ALTER TABLE `x_xoonips_related_to` CHANGE `parent_id` `parent_id` INT( 10 ) NOT 
  * @li    getVar('related_to_id') :
  * @li    getVar('parent_id') :
  * @li    getVar('item_id') :
- *
  */
 class XooNIpsOrmRelatedTo extends XooNIpsTableObject
 {
@@ -58,13 +55,12 @@ class XooNIpsOrmRelatedTo extends XooNIpsTableObject
 
 /**
  * @brief handler class of related item
- *
- *
  */
 class XooNIpsOrmRelatedToHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmRelatedToHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -77,8 +73,8 @@ class XooNIpsOrmRelatedToHandler extends XooNIpsTableObjectHandler
      * @brief  gets a value object
      * use getObjects instead of this
      *
-     * @access public
      * @param int $id
+     *
      * @return false always false
      */
     public function &get($id)
@@ -87,79 +83,86 @@ class XooNIpsOrmRelatedToHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * get child item ids
+     * get child item ids.
      *
-     * @access public
      * @param int $parent_id parent item id
+     *
      * @return array item ids
      */
     public function getChildItemIds($parent_id)
     {
-        $objs =  $this->_getObjectsByParentItemId($parent_id);
+        $objs = $this->_getObjectsByParentItemId($parent_id);
+
         return array_keys($objs);
     }
 
     /**
-     * insert/update child item ids
+     * insert/update child item ids.
      *
      * @acccess public
+     *
      * @param int   $parent_id parent item id
      * @param array $item_ids
+     *
      * @return bool false if failure
      */
     public function insertChildItemIds($parent_id, $item_ids)
     {
-        $objs_old =  $this->_getObjectsByParentItemId($parent_id);
+        $objs_old = $this->_getObjectsByParentItemId($parent_id);
         $objs_new = array();
         foreach ($item_ids as $item_id) {
             if ($parent_id == $item_id) {
                 continue;
             } // ignore myself
             if (isset($objs_old[$item_id])) {
-                $obj =  $objs_old[$item_id];
+                $obj = $objs_old[$item_id];
             } else {
-                $obj =  $this->create();
+                $obj = $this->create();
                 $obj->set('parent_id', $parent_id);
                 $obj->set('item_id', $item_id);
             }
-            $objs_new[] =  $obj;
+            $objs_new[] = $obj;
             unset($obj);
         }
+
         return $this->updateAllObjectsByForeignKey('parent_id', $parent_id, $objs_new);
     }
 
     /**
-     * delete child item ids
+     * delete child item ids.
      *
-     * @access public
      * @param int $item_id child item id
+     *
      * @return bool false if failure
      */
     public function deleteChildItemIds($item_id)
     {
         $criteria = new Criteria('item_id', $item_id);
+
         return $this->deleteAll($criteria);
     }
 
     /**
-     * get objects by parent item id
+     * get objects by parent item id.
      *
-     * @access   private
      * @param $parent_id
+     *
      * @return array objects
+     *
      * @internal param int $item_id parent item id
      */
     public function _getObjectsByParentItemId($parent_id)
     {
         $criteria = new Criteria('parent_id', $parent_id);
-        $res      =&  $this->open($criteria);
-        $objs     = array();
-        while ($obj =  $this->getNext($res)) {
-            $item_id        = $obj->get('item_id');
-            $objs[$item_id] =  $obj;
+        $res = &$this->open($criteria);
+        $objs = array();
+        while ($obj = $this->getNext($res)) {
+            $item_id = $obj->get('item_id');
+            $objs[$item_id] = $obj;
             unset($obj);
         }
         $this->close($res);
+
         return $objs;
     }
 }

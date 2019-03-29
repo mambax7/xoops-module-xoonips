@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.8 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief class of XooNIps User.
@@ -84,10 +82,9 @@ class XooNIpsOrmUsers extends XooNIpsTableObject
 
     /**
      * clean values of all variables of the object for storage.
-     * also add slashes whereever needed
+     * also add slashes whereever needed.
      *
      * @return bool true if successful
-     * @access public
      */
     public function cleanVars()
     {
@@ -95,27 +92,28 @@ class XooNIpsOrmUsers extends XooNIpsTableObject
         // check required/optional values
         $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
         // $realname_optional = $xconfigHandler->getValue('account_realname_optional');
-        $address_optional      = $xconfigHandler->getValue('account_address_optional');
-        $division_optional     = $xconfigHandler->getValue('account_division_optional');
-        $tel_optional          = $xconfigHandler->getValue('account_tel_optional');
+        $address_optional = $xconfigHandler->getValue('account_address_optional');
+        $division_optional = $xconfigHandler->getValue('account_division_optional');
+        $tel_optional = $xconfigHandler->getValue('account_tel_optional');
         $company_name_optional = $xconfigHandler->getValue('account_company_name_optional');
-        $country_optional      = $xconfigHandler->getValue('account_country_optional');
-        $zipcode_optional      = $xconfigHandler->getValue('account_zipcode_optional');
-        $fax_optional          = $xconfigHandler->getValue('account_fax_optional');
+        $country_optional = $xconfigHandler->getValue('account_country_optional');
+        $zipcode_optional = $xconfigHandler->getValue('account_zipcode_optional');
+        $fax_optional = $xconfigHandler->getValue('account_fax_optional');
         // $this->vars['name']['required'] = ($realname_optional && $realname_optional == 'off');
-        $this->vars['address']['required']      = ($address_optional === 'off');
-        $this->vars['division']['required']     = ($division_optional === 'off');
-        $this->vars['tel']['required']          = ($tel_optional === 'off');
+        $this->vars['address']['required'] = ($address_optional === 'off');
+        $this->vars['division']['required'] = ($division_optional === 'off');
+        $this->vars['tel']['required'] = ($tel_optional === 'off');
         $this->vars['company_name']['required'] = ($company_name_optional === 'off');
-        $this->vars['country']['required']      = ($country_optional === 'off');
-        $this->vars['zipcode']['required']      = ($zipcode_optional === 'off');
-        $this->vars['fax']['required']          = ($fax_optional === 'off');
+        $this->vars['country']['required'] = ($country_optional === 'off');
+        $this->vars['zipcode']['required'] = ($zipcode_optional === 'off');
+        $this->vars['fax']['required'] = ($fax_optional === 'off');
         // is private_item_storage_limit double?
         if (!is_numeric($this->get('private_item_storage_limit'))) {
             // todo: define constant string
             $this->setErrors('private_item_storage_limit must be numeric.');
             $retval = false;
         }
+
         return $retval && parent::cleanVars();
     }
 }
@@ -127,6 +125,7 @@ class XooNIpsOrmUsersHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmUsersHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -136,10 +135,10 @@ class XooNIpsOrmUsersHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * create a new object
+     * create a new object.
      *
-     * @access public
      * @param bool isNew mark the new object as 'new'?
+     *
      * @return bool|object
      */
     public function create($isNew = true)
@@ -151,10 +150,10 @@ class XooNIpsOrmUsersHandler extends XooNIpsTableObjectHandler
         if ($isNew) {
             // set default private index/item/storage limit
             $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-            $keys           = array(
+            $keys = array(
                 // config key name  => field name of 'xoonips_users' table
                 'private_index_number_limit' => 'private_index_number_limit',
-                'private_item_number_limit'  => 'private_item_number_limit',
+                'private_item_number_limit' => 'private_item_number_limit',
                 'private_item_storage_limit' => 'private_item_storage_limit',
             );
             foreach ($keys as $key => $field) {
@@ -163,6 +162,7 @@ class XooNIpsOrmUsersHandler extends XooNIpsTableObjectHandler
                 unset($xcobj);
             }
         }
+
         return $obj;
     }
 }

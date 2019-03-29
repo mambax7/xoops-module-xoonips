@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.11 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,20 +25,15 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/transfer.class.php';
+require_once __DIR__.'/transfer.class.php';
 
 /**
- *
  * HTML view to list items to transfer and show select item menu for a user.
- *
- *
- *
- *
  */
 class XooNIpsViewTransferUserItemList extends XooNIpsViewTransfer
 {
     /**
-     * create view
+     * create view.
      *
      * @param arrray $params associative array of view
      *                       - $params['to_uid']: integer user id transfer to
@@ -67,9 +62,6 @@ class XooNIpsViewTransferUserItemList extends XooNIpsViewTransfer
         parent::__construct($params);
     }
 
-    /**
-     *
-     */
     public function render()
     {
         global $xoopsOption, $xoopsConfig, $xoopsUser, $xoopsUserIsAdmin, $xoopsLogger, $xoopsTpl;
@@ -78,14 +70,14 @@ class XooNIpsViewTransferUserItemList extends XooNIpsViewTransfer
         $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
 
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_transfer_user_item_list.tpl';
-        include XOOPS_ROOT_PATH . '/header.php';
+        require XOOPS_ROOT_PATH.'/header.php';
         $this->setXooNIpsStyleSheet($xoopsTpl);
 
         $xoopsTpl->assign('transfer_items', $this->get_transfer_item_template_vars());
         foreach ($this->_params as $key => $val) {
             $xoopsTpl->assign($key, $val);
         }
-        include XOOPS_ROOT_PATH . '/footer.php';
+        require XOOPS_ROOT_PATH.'/footer.php';
     }
 
     /**
@@ -96,38 +88,42 @@ class XooNIpsViewTransferUserItemList extends XooNIpsViewTransfer
         $result = array();
 
         foreach ($this->_params['items_to_transfer'] as $item) {
-            $item_vars                        = $this->get_item_template_vars($item['item_id']);
-            $item_vars['transfer_enable']     = $item['transfer_enable'];
-            $item_vars['lock_type']           = $item['lock_type'];
+            $item_vars = $this->get_item_template_vars($item['item_id']);
+            $item_vars['transfer_enable'] = $item['transfer_enable'];
+            $item_vars['lock_type'] = $item['lock_type'];
             $item_vars['have_another_parent'] = $item['have_another_parent'];
-            $item_vars['child_items']         = array();
+            $item_vars['child_items'] = array();
             foreach ($item['child_items'] as $child_item) {
                 $child
                                             = $this->get_item_template_vars($child_item['item_id']);
-                $child['lock_type']         = $child_item['lock_type'];
+                $child['lock_type'] = $child_item['lock_type'];
                 $item_vars['child_items'][] = $child;
             }
             $result[] = $item_vars;
         }
+
         return $result;
     }
 
     /**
-     * get array of item for template vars
-     * @param integer $item_id
+     * get array of item for template vars.
+     *
+     * @param int $item_id
+     *
      * @return array
      */
     public function get_item_template_vars($item_id)
     {
-        $itemHandler      = xoonips_getOrmCompoHandler('xoonips', 'item');
+        $itemHandler = xoonips_getOrmCompoHandler('xoonips', 'item');
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $item             = $itemHandler->get($item_id);
-        $basic            = $item->getVar('basic');
-        $itemtype         = $item_typeHandler->get($basic->get('item_type_id'));
+        $item = $itemHandler->get($item_id);
+        $basic = $item->getVar('basic');
+        $itemtype = $item_typeHandler->get($basic->get('item_type_id'));
+
         return array(
-            'item_id'        => $item_id,
+            'item_id' => $item_id,
             'item_type_name' => $itemtype->getVar('display_name', 's'),
-            'title'          => $this->concatenate_titles($item->getVar('titles'))
+            'title' => $this->concatenate_titles($item->getVar('titles')),
         );
     }
 }

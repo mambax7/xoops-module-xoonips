@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,90 +25,86 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 if (!class_exists('XooNIpsGraphLib')) {
-    include __DIR__ . '/graphlib.class.php';
+    require __DIR__.'/graphlib.class.php';
 
     /**
-     * basic data class for graph drawing
+     * basic data class for graph drawing.
      *
-     * @package   xoonips_base
      * @copyright copyright &copy; 2005-2011 RIKEN, Japan
      * @author    Yoshihiro OKUMURA <orrisroot@users.sourceforge.jp>
      */
     class XooNIpsGraphData
     {
         /**
-         * data values
+         * data values.
+         *
          * @var array
-         * @access protected
          */
         public $values = array();
 
         /**
-         * data color
+         * data color.
+         *
          * @var string
-         * @access protected
          */
         public $color = 'black';
 
         /**
-         * legend string
+         * legend string.
+         *
          * @var string
-         * @access protected
          */
         public $legend = '';
 
         /**
-         * shadow color
+         * shadow color.
+         *
          * @var string
-         * @access protected
          */
         public $shadow_color = 'grayCC';
 
         /**
-         * drawing shadow offset
+         * drawing shadow offset.
+         *
          * @var int
-         * @access protected
          */
         public $shadow_offset = 3;
 
         /**
-         * related y axis
+         * related y axis.
+         *
          * @var string
-         * @access protected
          */
         public $y_axis = 'left';
 
         /**
-         * data type
+         * data type.
+         *
          * @var string
-         * @access protected
          */
         public $data_type = '';
 
         /**
-         * maximum value of data array, it used for caching
+         * maximum value of data array, it used for caching.
+         *
          * @var float
-         * @access protected
          */
         public $cache_max = null;
 
         /**
-         * minimum value of data array, it used for caching
+         * minimum value of data array, it used for caching.
+         *
          * @var float
-         * @access protected
          */
         public $cache_min = null;
 
         /**
-         * constructor
+         * constructor.
          *
          * normally, this is called from child classes only
-         * @access public
          */
         public function __construct()
         {
@@ -116,10 +112,10 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set data color
+         * set data color.
          *
-         * @access public
          * @parem  string $color data color
+         *
          * @param $color
          */
         public function setColor($color)
@@ -128,10 +124,10 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set legend string
+         * set legend string.
          *
-         * @access public
          * @parem  string $legend legend string
+         *
          * @param $legend
          */
         public function setLegend($legend)
@@ -140,10 +136,10 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set shadow color
+         * set shadow color.
          *
-         * @access public
          * @parem  string $color shadow color, 'none' means don't draw.
+         *
          * @param $color
          */
         public function setShadowColor($color)
@@ -152,10 +148,10 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set drawing shadow offset
+         * set drawing shadow offset.
          *
-         * @access public
          * @parem  int $offset drawing shadow offset
+         *
          * @param $offset
          */
         public function setShadowOffset($offset)
@@ -164,9 +160,8 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set related y axis
+         * set related y axis.
          *
-         * @access public
          * @param string $axis related y axis. choose from following variables,
          *                     'left','right'
          */
@@ -174,7 +169,7 @@ if (!class_exists('XooNIpsGraphLib')) {
         {
             $axis_types = array(
                 'left',
-                'right'
+                'right',
             );
             if (!in_array($axis, $axis_types)) {
                 $this->error(__FILE__, __LINE__);
@@ -183,9 +178,7 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * calculate maxinum/minimum value in data array
-         *
-         * @access private
+         * calculate maxinum/minimum value in data array.
          */
         public function _calcRange()
         {
@@ -205,9 +198,8 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * get maximum value in data array
+         * get maximum value in data array.
          *
-         * @access public
          * @return float maximum value
          */
         public function getMax()
@@ -215,13 +207,13 @@ if (!class_exists('XooNIpsGraphLib')) {
             if (null === $this->cache_max) {
                 $this->_calcRange();
             }
+
             return $this->cache_max;
         }
 
         /**
-         * get minimum value in data array
+         * get minimum value in data array.
          *
-         * @access public
          * @return float minimum value
          */
         public function getMin()
@@ -229,54 +221,52 @@ if (!class_exists('XooNIpsGraphLib')) {
             if (null === $this->cache_min) {
                 $this->_calcRange();
             }
+
             return $this->cache_min;
         }
     }
 
     /**
-     * point data class for graph drawing
+     * point data class for graph drawing.
      *
-     * @package   xoonips_base
      * @copyright copyright &copy; 2005-2011 RIKEN, Japan
      * @author    Yoshihiro OKUMURA <orrisroot@users.sourceforge.jp>
      */
     class XooNIpsGraphDataPoint extends XooNIpsGraphData
     {
         /**
-         * point shape
+         * point shape.
+         *
          * @var string
-         * @access protected
          */
         public $point = 'circle';
 
         /**
-         * point size
+         * point size.
+         *
          * @var int
-         * @access protected
          */
         public $point_size = 4;
 
         /**
-         * constructor
+         * constructor.
          *
          * @param array $values data array
-         * @access public
          */
         public function __construct($values)
         {
             parent::__construct();
-            $this->values    = $values;
+            $this->values = $values;
             $this->data_type = 'none';
         }
 
         /**
-         * set point shape
+         * set point shape.
          *
          * @param string $type point shape, choose from following shapes,
          *                     'square', 'square-open', 'circle', 'circle-open',
          *                     'diamond', 'diamond-open', 'triangle', 'triangle-open',
          *                     'dot', 'none'. 'none' means don't draw point.
-         * @access public
          */
         public function setPoint($type)
         {
@@ -290,7 +280,7 @@ if (!class_exists('XooNIpsGraphLib')) {
                 'triangle',
                 'triangle-open',
                 'dot',
-                'none'
+                'none',
             );
             if (!in_array($type, $point_types)) {
                 $this->error(__FILE__, __LINE__);
@@ -299,10 +289,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set point size
+         * set point size.
          *
          * @param int $size point size
-         * @access public
          */
         public function setPointSize($size)
         {
@@ -311,97 +300,90 @@ if (!class_exists('XooNIpsGraphLib')) {
     }
 
     /**
-     * line data class for graph drawing
+     * line data class for graph drawing.
      *
-     * @package   xoonips_base
      * @copyright copyright &copy; 2005-2011 RIKEN, Japan
      * @author    Yoshihiro OKUMURA <orrisroot@users.sourceforge.jp>
      */
     class XooNIpsGraphDataLine extends XooNIpsGraphDataPoint
     {
         /**
-         * constructor
+         * constructor.
          *
          * @param array $values data array
-         * @access public
          */
         public function __construct($values)
         {
             parent::__construct();
-            $this->values    = $values;
+            $this->values = $values;
             $this->data_type = 'line';
             $this->setPoint('none');
         }
     }
 
     /**
-     * dash line data class for graph drawing
+     * dash line data class for graph drawing.
      *
-     * @package   xoonips_base
      * @copyright copyright &copy; 2005-2011 RIKEN, Japan
      * @author    Yoshihiro OKUMURA <orrisroot@users.sourceforge.jp>
      */
     class XooNIpsGraphDataDashLine extends XooNIpsGraphDataLine
     {
         /**
-         * constructor
+         * constructor.
          *
          * @param array $values data array
-         * @access public
          */
         public function __construct($values)
         {
             parent::__construct();
-            $this->values    =  $values;
+            $this->values = $values;
             $this->data_type = 'dash';
             $this->setPoint('none');
         }
     }
 
     /**
-     * brush line data class for graph drawing
+     * brush line data class for graph drawing.
      *
-     * @package   xoonips_base
      * @copyright copyright &copy; 2005-2011 RIKEN, Japan
      * @author    Yoshihiro OKUMURA <orrisroot@users.sourceforge.jp>
      */
     class XooNIpsGraphDataBrushLine extends XooNIpsGraphDataLine
     {
         /**
-         * brush shape
+         * brush shape.
+         *
          * @var string
-         * @access protected
          */
         public $brush = 'circle';
 
         /**
-         * brush size
+         * brush size.
+         *
          * @var int
-         * @access protected
          */
         public $brush_size = 4;
 
         /**
-         * constructor
+         * constructor.
          *
          * @param array $values data array
-         * @access public
          */
         public function __construct($values)
         {
             parent::__construct();
-            $this->values    =  $values;
+            $this->values = $values;
             $this->data_type = 'brush';
             $this->setPoint('none');
         }
 
         /**
-         * set brush shape
+         * set brush shape.
          *
          * @param string $type brush shape, choose from following shapes,
          *                     'circle', 'square', 'vertical', 'horizontal', 'slash',
          *                     'backslash', 'none'. 'none' means don't draw point.
-         * @access public
          */
         public function setBrush($type)
         {
@@ -412,7 +394,7 @@ if (!class_exists('XooNIpsGraphLib')) {
                 'horizontal',
                 'slash',
                 'backslash',
-                'none'
+                'none',
             );
             if (!in_array($type, $brush_types)) {
                 $this->error(__FILE__, __LINE__);
@@ -421,7 +403,7 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set brush size
+         * set brush size.
          *
          * @param int $size brush size
          */
@@ -432,52 +414,50 @@ if (!class_exists('XooNIpsGraphLib')) {
     }
 
     /**
-     * bar data class for graph drawing
+     * bar data class for graph drawing.
      *
-     * @package   xoonips_base
      * @copyright copyright &copy; 2005-2011 RIKEN, Japan
      * @author    Yoshihiro OKUMURA <orrisroot@users.sourceforge.jp>
      */
     class XooNIpsGraphDataBar extends XooNIpsGraphData
     {
         /**
-         * bar type
+         * bar type.
+         *
          * @var string
          */
         public $bar = 'fill';
 
         /**
-         * bar width
+         * bar width.
+         *
          * @var float
-         * @access protected
          */
         public $bar_size = 0.8;
 
         /**
-         * constructor
+         * constructor.
          *
          * @param array $values data array
-         * @access public
          */
         public function __construct($values)
         {
             parent::__construct();
-            $this->values    =  $values;
+            $this->values = $values;
             $this->data_type = 'bar';
         }
 
         /**
-         * set bar type
+         * set bar type.
          *
          * @param string $type bar type, choose from following types,
-         *                     'fill', 'open'.
-         * @access protected
+         *                     'fill', 'open'
          */
         public function setBar($type)
         {
             $bar_types = array(
                 'fill',
-                'open'
+                'open',
             );
             if (!in_array($type, $bar_types)) {
                 $this->error(__FILE__, __LINE__);
@@ -486,13 +466,12 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set bar size
+         * set bar size.
          *
          * @param float bar size.
          *              <1 bars won't touch.
          *              1 is full width.
          *              >1 means bars will overlap.
-         * @access protected
          */
         public function setBarSize($size)
         {
@@ -501,46 +480,43 @@ if (!class_exists('XooNIpsGraphLib')) {
     }
 
     /**
-     * area data class for graph drawing
+     * area data class for graph drawing.
      *
-     * @package   xoonips_base
      * @copyright copyright &copy; 2005-2011 RIKEN, Japan
      * @author    Yoshihiro OKUMURA <orrisroot@users.sourceforge.jp>
      */
     class XooNIpsGraphDataArea extends XooNIpsGraphData
     {
         /**
-         * area type
+         * area type.
+         *
          * @var string
-         * @access protected
          */
         public $area = 'fill';
 
         /**
-         * constructor
+         * constructor.
          *
          * @param array $values data array
-         * @access public
          */
         public function __construct($values)
         {
             parent::__construct();
-            $this->values    =  $values;
+            $this->values = $values;
             $this->data_type = 'area';
         }
 
         /**
-         * set area type
+         * set area type.
          *
          * @param string $type area type. choose from following types,
          *                     'fill', 'open'.
-         * @access public
          */
         public function setArea($type)
         {
             $area_types = array(
                 'fill',
-                'open'
+                'open',
             );
             if (!in_array($type, $area_types)) {
                 $this->error(__FILE__, __LINE__);
@@ -550,39 +526,38 @@ if (!class_exists('XooNIpsGraphLib')) {
     }
 
     /**
-     * axis class for graph drawing
+     * axis class for graph drawing.
      *
-     * @package   xoonips_base
      * @copyright copyright &copy; 2005-2011 RIKEN, Japan
      * @author    Yoshihiro OKUMURA <orrisroot@users.sourceforge.jp>
      */
     class XooNIpsGraphAxis
     {
         /**
-         * axis label
+         * axis label.
+         *
          * @var string
-         * @access protected
          */
         public $label = '';
 
         /**
-         * maximum value of axis
+         * maximum value of axis.
+         *
          * @var float
-         * @access protected
          */
         public $max_value = 0;
 
         /**
-         * minimum value of axis
+         * minimum value of axis.
+         *
          * @var float
-         * @access protected
          */
         public $min_value = 0;
 
         /**
-         * number of decimal places for axis text
+         * number of decimal places for axis text.
+         *
          * @var int
-         * @access protected
          */
         public $decimal = 0;
 
@@ -591,25 +566,24 @@ if (!class_exists('XooNIpsGraphLib')) {
          * this variable will used in following scaling algorithm.
          *   $max == 0: $factor = 1;
          *   $max < 0 : $factor = - pow(10,(floor(log10(abs($max)))+$resolution));
-         *   $max > 0 : $factor = pow(10,(floor(log10(abs($max))-$resolution));
+         *   $max > 0 : $factor = pow(10,(floor(log10(abs($max))-$resolution));.
+         *
          *   $max = $factor * @ceil($max/$factor);
          *   $min = $factor * @floor($min/$factor);
+         *
          * @var int
-         * @access protected
          */
         public $resolution = 3;
 
         /**
-         * ticks interval of axis text
+         * ticks interval of axis text.
+         *
          * @var int
-         * @access protected
          */
         public $tick_interval = 1;
 
         /**
-         * constructor
-         *
-         * @access public
+         * constructor.
          */
         public function __construct()
         {
@@ -617,10 +591,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set label string
+         * set label string.
          *
          * @param string label
-         * @access public
          */
         public function setLabel($label)
         {
@@ -628,10 +601,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set maximum value of axis
+         * set maximum value of axis.
          *
          * @param float $max_value maximum value
-         * @access public
          */
         public function setMax($max_value)
         {
@@ -639,10 +611,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set minimum value of axis
+         * set minimum value of axis.
          *
          * @param float $min_value minimum value
-         * @access public
          */
         public function setMin($min_value)
         {
@@ -653,7 +624,6 @@ if (!class_exists('XooNIpsGraphLib')) {
          * set number of decimal places for axis text.
          *
          * @param int $decimal number of decimal places
-         * @access public
          */
         public function setDecimal($decimal)
         {
@@ -664,7 +634,6 @@ if (!class_exists('XooNIpsGraphLib')) {
          * set scaling for rounding of axis max value.
          *
          * @param int $resolution resolution
-         * @access public
          */
         public function setResolution($resolution)
         {
@@ -672,10 +641,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set ticks interval
+         * set ticks interval.
          *
          * @var int
-         * @access protected
          */
         public function setTickInterval($interval)
         {
@@ -684,46 +652,43 @@ if (!class_exists('XooNIpsGraphLib')) {
     }
 
     /**
-     * inner frame class for graph drawing
+     * inner frame class for graph drawing.
      *
-     * @package   xoonips_base
      * @copyright copyright &copy; 2005-2011 RIKEN, Japan
      * @author    Yoshihiro OKUMURA <orrisroot@users.sourceforge.jp>
      */
     class XooNIpsGraphFrame
     {
         /**
-         * padding size of inner frame
+         * padding size of inner frame.
+         *
          * @var int
-         * @access private
          */
         public $padding = 6;
 
         /**
-         * border line color
+         * border line color.
+         *
          * @var string
-         * @access private
          */
         public $color = 'black';
 
         /**
-         * background color of inner frame
+         * background color of inner frame.
+         *
          * @var string
-         * @access private
          */
         public $background = 'none';
 
         /**
-         * inner frame border type
+         * inner frame border type.
+         *
          * @var string
-         * @access private
          */
         public $type = 'box';
 
         /**
-         * constructor
-         *
-         * @access public
+         * constructor.
          */
         public function __construct()
         {
@@ -731,10 +696,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set padding size
+         * set padding size.
          *
          * @param int $size padding size
-         * @access public
          */
         public function setPadding($size)
         {
@@ -742,10 +706,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set border color
+         * set border color.
          *
          * @param string $color border color
-         * @access public
          */
         public function setColor($color)
         {
@@ -753,10 +716,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set background color
+         * set background color.
          *
          * @param string $color background color
-         * @access public
          */
         public function setBackgroundColor($color)
         {
@@ -764,7 +726,7 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set inner frame border type
+         * set inner frame border type.
          *
          * @param string $type inner frame type, choose from following types,
          *                     'box'     : all four size,
@@ -773,8 +735,7 @@ if (!class_exists('XooNIpsGraphLib')) {
          *                     'y-left'  : left y axis only,
          *                     'y-right' : right y axis only,
          *                     'x'       : x axis only,
-         *                     'u'       : both left and right y axis and x axis.
-         * @access public
+         *                     'u'       : both left and right y axis and x axis
          */
         public function setType($type)
         {
@@ -785,7 +746,7 @@ if (!class_exists('XooNIpsGraphLib')) {
                 'y-left',
                 'y-right',
                 'x',
-                'u'
+                'u',
             );
             if (!in_array($type, $frame_types)) {
                 $this->error(__FILE__, __LINE__);
@@ -795,71 +756,69 @@ if (!class_exists('XooNIpsGraphLib')) {
     }
 
     /**
-     * graph class
+     * graph class.
      *
-     * @package   xoonips_base
      * @copyright copyright &copy; 2005-2011 RIKEN, Japan
      * @author    Yoshihiro OKUMURA <orrisroot@users.sourceforge.jp>
      */
     class XooNIpsGraph
     {
         /**
-         * font file name
+         * font file name.
+         *
          * @var string
-         * @access private
          */
         public $font_name = 'default.ttf';
 
         /**
-         * module path for font file detection
+         * module path for font file detection.
+         *
          * @var string
-         * @access private
          */
         public $module_path;
 
         /**
-         * graph library - instance class XooNIpsGraphLib
+         * graph library - instance class XooNIpsGraphLib.
+         *
          * @var object class
-         * @access private
          */
         public $graph;
 
         /**
-         * data array - instance of class XooNIpsGraphData
+         * data array - instance of class XooNIpsGraphData.
+         *
          * @var array
-         * @access private
          */
         public $data = array();
 
         /**
-         * graph axis array - instance of class XooNIpsGraphAxis
+         * graph axis array - instance of class XooNIpsGraphAxis.
+         *
          * @var array
-         * @access public
          */
         public $axis = array();
 
         /**
-         * inner frame - instance of class XooNIpsGraphFrame
+         * inner frame - instance of class XooNIpsGraphFrame.
+         *
          * @var object
-         * @access public
          */
         public $frame;
 
         /**
-         * constructor
+         * constructor.
          *
          * @param int $width  width of graph image
          * @param int $height height of graph image
-         * @access public
          */
         public function __construct($width, $height)
         {
             $this->module_path = dirname(dirname(__DIR__));
-            $this->graph       = new XooNIpsGraphLib($width, $height);
+            $this->graph = new XooNIpsGraphLib($width, $height);
             foreach (array(
                          'bottom',
                          'left',
-                         'right'
+                         'right',
                      ) as $ax
             ) {
                 $this->axis[$ax] = new XooNIpsGraphAxis();
@@ -870,14 +829,14 @@ if (!class_exists('XooNIpsGraphLib')) {
             $this->setAxisAngle('x', 0);
             $this->setXAxisOffset(0);
             // font settings
-            $langman                                 = xoonips_getUtility('languagemanager');
-            $font_path                               = $langman->font_path($this->font_name);
+            $langman = xoonips_getUtility('languagemanager');
+            $font_path = $langman->font_path($this->font_name);
             $this->graph->parameter['path_to_fonts'] = str_replace($this->font_name, '', $font_path);
-            $font_fields                             = array(
+            $font_fields = array(
                 'title_font',
                 'label_font',
                 'axis_font',
-                'legend_font'
+                'legend_font',
             );
             foreach ($font_fields as $field) {
                 $this->graph->parameter[$field] = $this->font_name;
@@ -885,10 +844,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set graph title
+         * set graph title.
          *
          * @param string $title graph title
-         * @access public
          */
         public function setTitle($title)
         {
@@ -896,10 +854,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set graph title size
+         * set graph title size.
          *
          * @param int $size graph title size
-         * @access public
          */
         public function setTitleSize($size)
         {
@@ -907,10 +864,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set graph title color
+         * set graph title color.
          *
          * @param string $color graph title color
-         * @access public
          */
         public function setTitleColor($color)
         {
@@ -918,10 +874,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set axis label size
+         * set axis label size.
          *
          * @param int $size axis label size
-         * @access public
          */
         public function setLabelSize($size)
         {
@@ -929,10 +884,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set axis label color
+         * set axis label color.
          *
          * @param string $color axis label color
-         * @access public
          */
         public function setLabelColor($color)
         {
@@ -940,11 +894,10 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set x axis offset
+         * set x axis offset.
          *
          * @param int $offset x axis tick offset from y axis as fraction
-         *                    of tick spacing.
-         * @access public
+         *                    of tick spacing
          */
         public function setXAxisOffset($offset)
         {
@@ -952,13 +905,12 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set legend position
+         * set legend position.
          *
          * @param string $position legend position, choose from following potisions,
          *                         'top-left', 'top-right', 'bottom-left', 'bottom-right',
          *                         'outside-top', 'outside-bottom', 'outside-left', 'outside-right',
          *                         'none'. 'none' means don't draw legend.
-         * @access public
          */
         public function setLegendPosition($position)
         {
@@ -971,7 +923,7 @@ if (!class_exists('XooNIpsGraphLib')) {
                 'outside-bottom',
                 'outside-left',
                 'outside-right',
-                'none'
+                'none',
             );
             if (!in_array($position, $positions)) {
                 $this->error(__FILE__, __LINE__);
@@ -980,10 +932,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set legend border color
+         * set legend border color.
          *
          * @param string $color legend border color
-         * @access public
          */
         public function setLegendBorderColor($color)
         {
@@ -991,10 +942,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set legend offset
+         * set legend offset.
          *
          * @param int $offset offset in pixels from graph or outside border
-         * @access public
          */
         public function setLegendOffset($offset)
         {
@@ -1002,93 +952,89 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set axis label angle
+         * set axis label angle.
          *
-         * @param string $xy    which axis position 'x' or 'y'.
+         * @param string $xy    which axis position 'x' or 'y'
          * @param int    $angle axis label angle
-         * @access public
          */
         public function setAxisAngle($xy, $angle)
         {
             $xys = array(
                 'x',
-                'y'
+                'y',
             );
             if (!in_array($xy, $xys)) {
                 $this->error(__FILE__, __LINE__);
             }
-            $this->graph->parameter[$xy . '_axis_angle'] = $angle;
+            $this->graph->parameter[$xy.'_axis_angle'] = $angle;
         }
 
         /**
-         * set axis grid line type
+         * set axis grid line type.
          *
-         * @param string $xy   which axis position 'x' or 'y'.
+         * @param string $xy   which axis position 'x' or 'y'
          * @param string $grid grid line type, choose from following types,
          *                     'line', 'dash', 'none'. 'nome' means don't draw grid line.
-         * @access public
          */
         public function setAxisGrid($xy, $grid)
         {
-            $xys   = array(
+            $xys = array(
                 'x',
-                'y'
+                'y',
             );
             $grids = array(
                 'line',
                 'dash',
-                'none'
+                'none',
             );
             if (!in_array($xy, $xys) || !in_array($grid, $grids)) {
                 $this->error(__FILE__, __LINE__);
             }
-            $this->graph->parameter[$xy . '_grid'] = $grid;
+            $this->graph->parameter[$xy.'_grid'] = $grid;
         }
 
         /**
-         * set number of axis grid lines
+         * set number of axis grid lines.
          *
-         * @param string $xy    which axis position 'x' or 'y'.
+         * @param string $xy    which axis position 'x' or 'y'
          * @param int    $lines number of axis grid lines
-         * @access public
          */
         public function setAxisGridLines($xy, $lines)
         {
             $xys = array(
                 'x',
-                'y'
+                'y',
             );
             if (!in_array($xy, $xys)) {
                 $this->error(__FILE__, __LINE__);
             }
-            $this->graph->parameter[$xy . '_axis_gridlines'] = $lines;
+            $this->graph->parameter[$xy.'_axis_gridlines'] = $lines;
         }
 
         /**
-         * set axis ticks color
+         * set axis ticks color.
          *
-         * @param string $xy    which axis position 'x' or 'y'.
+         * @param string $xy    which axis position 'x' or 'y'
          * @param string $color axis ticks color
-         * @access public
          */
         public function setAxisTicksColor($xy, $color)
         {
             $xys = array(
                 'x',
-                'y'
+                'y',
             );
             if (!in_array($xy, $xys)) {
                 $this->error(__FILE__, __LINE__);
             }
-            $this->graph->parameter[$xy . '_ticks_colour'] = $color;
+            $this->graph->parameter[$xy.'_ticks_colour'] = $color;
         }
 
         /**
-         * set axis ticks length
+         * set axis ticks length.
          *
          * @param string $len axis ticks length
-         * @internal param string $xy which axis position 'x' or 'y'.
-         * @access   public
+         *
+         * @internal param string $xy which axis position 'x' or 'y'
          */
         public function setAxisTicksLength($len)
         {
@@ -1096,10 +1042,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set zero line color
+         * set zero line color.
          *
          * @param string $color zero line color
-         * @access public
          */
         public function setAxisZeroLineColor($color)
         {
@@ -1107,10 +1052,9 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set bar spacing size
+         * set bar spacing size.
          *
-         * @param int $size space in pixels between group of bars for each x value.
-         * @access public
+         * @param int $size space in pixels between group of bars for each x value
          */
         public function setBarSpacing($size)
         {
@@ -1118,13 +1062,12 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * add new color
+         * add new color.
          *
          * @param string $name color name
          * @param int    $r    color space of red part. 0-255
          * @param int    $g    color space of green part. 0-255
          * @param int    $b    color space of blue part. 0-255
-         * @access public
          */
         public function addColor($name, $r, $g, $b)
         {
@@ -1132,32 +1075,28 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * set x data
+         * set x data.
          *
-         * @param array $data x data, this is string or float array.
-         * @access public
+         * @param array $data x data, this is string or float array
          */
         public function setXData($data)
         {
-            $this->graph->x_data =&  $data;
+            $this->graph->x_data = &$data;
         }
 
         /**
-         * add y data
+         * add y data.
          *
          * @param array $data y data, this is object instance of
-         *                    class XooNIpsGraphData.
-         * @access public
+         *                    class XooNIpsGraphData
          */
         public function addYData($data)
         {
-            $this->data[] =&  $data;
+            $this->data[] = &$data;
         }
 
         /**
-         * set prefered y axis min/max range
-         *
-         * @access public
+         * set prefered y axis min/max range.
          */
         public function setPreferedYAxisRange()
         {
@@ -1166,7 +1105,7 @@ if (!class_exists('XooNIpsGraphLib')) {
             }
             $axis = array(
                 'left',
-                'right'
+                'right',
             );
             foreach ($axis as $ax) {
                 $my_max[$ax] = $this->axis[$ax]->max_value;
@@ -1194,13 +1133,13 @@ if (!class_exists('XooNIpsGraphLib')) {
                     }
                     $my_max[$ax] += $factor * ($gridlines - 1);
                 } else {
-                    $my_diff     = $my_max[$ax] - $my_min[$ax];
-                    $ten_per     = $my_diff / 10;
+                    $my_diff = $my_max[$ax] - $my_min[$ax];
+                    $ten_per = $my_diff / 10;
                     $my_max[$ax] = $ten_per * 11;
                     if ($gridlines != 0) {
-                        if ($this->graph->parameter['y_decimal_' . $ax] == 0) {
-                            $fix         = ceil($my_diff / ($gridlines - 1));
-                            $total       = $fix * ($gridlines - 1);
+                        if ($this->graph->parameter['y_decimal_'.$ax] == 0) {
+                            $fix = ceil($my_diff / ($gridlines - 1));
+                            $total = $fix * ($gridlines - 1);
                             $my_min[$ax] = floor($my_min[$ax]);
                             $my_max[$ax] = $total + $my_min[$ax];
                         }
@@ -1214,9 +1153,7 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * initialize drawing parameters for library class XooNIpsGraphLib
-         *
-         * @access private
+         * initialize drawing parameters for library class XooNIpsGraphLib.
          */
         public function _initLibraryParams()
         {
@@ -1228,9 +1165,9 @@ if (!class_exists('XooNIpsGraphLib')) {
             }
 
             // frame
-            $this->graph->parameter['inner_padding']     = $this->frame->padding;
-            $this->graph->parameter['inner_border']      = $this->frame->color;
-            $this->graph->parameter['inner_background']  = $this->frame->background;
+            $this->graph->parameter['inner_padding'] = $this->frame->padding;
+            $this->graph->parameter['inner_border'] = $this->frame->color;
+            $this->graph->parameter['inner_background'] = $this->frame->background;
             $this->graph->parameter['inner_border_type'] = $this->frame->type;
             // axis
             $is_numeric_x = true;
@@ -1242,86 +1179,84 @@ if (!class_exists('XooNIpsGraphLib')) {
             }
             if ($is_numeric_x) {
                 if ($this->graph->parameter['x_axis_gridlines'] === 'auto') {
-                    $x_min                                      = $this->axis['bottom']->min_value;
-                    $x_max                                      = $this->axis['bottom']->max_value;
-                    $x_range                                    = $this->graph->find_range($this->graph->x_data, $x_min, $x_max,
+                    $x_min = $this->axis['bottom']->min_value;
+                    $x_max = $this->axis['bottom']->max_value;
+                    $x_range = $this->graph->find_range($this->graph->x_data, $x_min, $x_max,
                                                                                            $this->axis['bottom']->resolution);
-                    $this->axis['bottom']->min_value            = $x_range['min'];
-                    $this->axis['bottom']->max_value            = $x_range['max'];
+                    $this->axis['bottom']->min_value = $x_range['min'];
+                    $this->axis['bottom']->max_value = $x_range['max'];
                     $this->graph->parameter['x_axis_gridlines'] = count($this->graph->x_data);
                 }
             } else {
-                $this->axis['bottom']->min_value            = 0;
-                $this->axis['bottom']->max_value            = 0;
+                $this->axis['bottom']->min_value = 0;
+                $this->axis['bottom']->max_value = 0;
                 $this->graph->parameter['x_axis_gridlines'] = 'auto';
             }
-            $this->graph->parameter['x_label']      = $this->axis['bottom']->label;
-            $this->graph->parameter['x_min']        = $this->axis['bottom']->min_value;
-            $this->graph->parameter['x_max']        = $this->axis['bottom']->max_value;
-            $this->graph->parameter['x_decimal']    = $this->axis['bottom']->decimal;
+            $this->graph->parameter['x_label'] = $this->axis['bottom']->label;
+            $this->graph->parameter['x_min'] = $this->axis['bottom']->min_value;
+            $this->graph->parameter['x_max'] = $this->axis['bottom']->max_value;
+            $this->graph->parameter['x_decimal'] = $this->axis['bottom']->decimal;
             $this->graph->parameter['x_resolution'] = $this->axis['bottom']->resolution;
-            $this->graph->parameter['x_axis_text']  = $this->axis['bottom']->tick_interval;
+            $this->graph->parameter['x_axis_text'] = $this->axis['bottom']->tick_interval;
 
-            $this->graph->parameter['y_label_left']       = $this->axis['left']->label;
-            $this->graph->parameter['y_min_left']         = $this->axis['left']->min_value;
-            $this->graph->parameter['y_max_left']         = $this->axis['left']->max_value;
-            $this->graph->parameter['y_decimal_left']     = $this->axis['left']->decimal;
-            $this->graph->parameter['y_resolution_left']  = $this->axis['left']->resolution;
-            $this->graph->parameter['y_axis_text_left']   = $this->axis['left']->tick_interval;
-            $this->graph->parameter['y_label_right']      = $this->axis['right']->label;
-            $this->graph->parameter['y_min_right']        = $this->axis['right']->min_value;
-            $this->graph->parameter['y_max_right']        = $this->axis['right']->max_value;
-            $this->graph->parameter['y_decimal_right']    = $this->axis['right']->decimal;
+            $this->graph->parameter['y_label_left'] = $this->axis['left']->label;
+            $this->graph->parameter['y_min_left'] = $this->axis['left']->min_value;
+            $this->graph->parameter['y_max_left'] = $this->axis['left']->max_value;
+            $this->graph->parameter['y_decimal_left'] = $this->axis['left']->decimal;
+            $this->graph->parameter['y_resolution_left'] = $this->axis['left']->resolution;
+            $this->graph->parameter['y_axis_text_left'] = $this->axis['left']->tick_interval;
+            $this->graph->parameter['y_label_right'] = $this->axis['right']->label;
+            $this->graph->parameter['y_min_right'] = $this->axis['right']->min_value;
+            $this->graph->parameter['y_max_right'] = $this->axis['right']->max_value;
+            $this->graph->parameter['y_decimal_right'] = $this->axis['right']->decimal;
             $this->graph->parameter['y_resolution_right'] = $this->axis['right']->resolution;
-            $this->graph->parameter['y_axis_text_right']  = $this->axis['right']->tick_interval;
+            $this->graph->parameter['y_axis_text_right'] = $this->axis['right']->tick_interval;
             // values
             $this->graph->y_order = array();
             foreach ($this->data as $key => $datum) {
-                $key                       = 'data:' . (string)$key;
-                $this->graph->y_order[]    = $key;
-                $this->graph->y_data[$key] =  $datum->values;
+                $key = 'data:'.(string) $key;
+                $this->graph->y_order[] = $key;
+                $this->graph->y_data[$key] = $datum->values;
                 switch ($datum->data_type) {
                     case 'point':
-                        $this->graph->y_format[$key]['line']       = 'none';
-                        $this->graph->y_format[$key]['point']      = $datum->point;
+                        $this->graph->y_format[$key]['line'] = 'none';
+                        $this->graph->y_format[$key]['point'] = $datum->point;
                         $this->graph->y_format[$key]['point_size'] = $datum->point_size;
                     case 'line':
-                        $this->graph->y_format[$key]['line']       = 'line';
-                        $this->graph->y_format[$key]['point']      = $datum->point;
+                        $this->graph->y_format[$key]['line'] = 'line';
+                        $this->graph->y_format[$key]['point'] = $datum->point;
                         $this->graph->y_format[$key]['point_size'] = $datum->point_size;
                         break;
                     case 'dash':
-                        $this->graph->y_format[$key]['line']       = 'dash';
-                        $this->graph->y_format[$key]['point']      = $datum->point;
+                        $this->graph->y_format[$key]['line'] = 'dash';
+                        $this->graph->y_format[$key]['point'] = $datum->point;
                         $this->graph->y_format[$key]['point_size'] = $datum->point_size;
                         break;
                     case 'brush':
-                        $this->graph->y_format[$key]['line']       = 'brush';
-                        $this->graph->y_format[$key]['point']      = $datum->point;
+                        $this->graph->y_format[$key]['line'] = 'brush';
+                        $this->graph->y_format[$key]['point'] = $datum->point;
                         $this->graph->y_format[$key]['point_size'] = $datum->point_size;
                         $this->graph->y_format[$key]['brush_type'] = $datum->brush;
                         $this->graph->y_format[$key]['brush_size'] = $datum->brush_size;
                         break;
                     case 'bar':
-                        $this->graph->y_format[$key]['bar']      = $datum->bar;
+                        $this->graph->y_format[$key]['bar'] = $datum->bar;
                         $this->graph->y_format[$key]['bar_size'] = $datum->bar_size;
                         break;
                     case 'area':
                         $this->graph->y_format[$key]['area'] = $datum->area;
                         break;
                 }
-                $this->graph->y_format[$key]['y_axis']        = $datum->y_axis;
-                $this->graph->y_format[$key]['legend']        = $datum->legend;
-                $this->graph->y_format[$key]['colour']        = $datum->color;
-                $this->graph->y_format[$key]['shadow']        = $datum->shadow_color;
+                $this->graph->y_format[$key]['y_axis'] = $datum->y_axis;
+                $this->graph->y_format[$key]['legend'] = $datum->legend;
+                $this->graph->y_format[$key]['colour'] = $datum->color;
+                $this->graph->y_format[$key]['shadow'] = $datum->shadow_color;
                 $this->graph->y_format[$key]['shadow_offset'] = $datum->shadow_offset;
             }
         }
 
         /**
-         * draw graph
-         *
-         * @access public
+         * draw graph.
          */
         public function draw()
         {
@@ -1330,9 +1265,7 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * draw graph with stack bar mode
-         *
-         * @access public
+         * draw graph with stack bar mode.
          */
         public function draw_stack()
         {
@@ -1341,14 +1274,14 @@ if (!class_exists('XooNIpsGraphLib')) {
         }
 
         /**
-         * fatal error
+         * fatal error.
          *
          * @param string $file file name
          * @param string $line line number
          */
         public function error($file, $line)
         {
-            die('Fatal Error in ' . $file . ' line ' . $line);
+            die('Fatal Error in '.$file.' line '.$line);
         }
     }
 }

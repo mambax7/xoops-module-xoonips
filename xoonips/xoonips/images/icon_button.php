@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.12 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,7 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-include __DIR__ . '/../include/common.inc.php';
+require __DIR__.'/../include/common.inc.php';
 
 // remove ob filters
 $handlers = ob_listHandlers();
@@ -38,24 +38,24 @@ $langman->read('main.php', 'xoonips');
 
 $error_mode = 'log';
 
-$text                  = 'Button';
-$text_shadow           = false;
-$font_size             = 8;
-$font_angle            = 0;
-$font_color            = array(
+$text = 'Button';
+$text_shadow = false;
+$font_size = 8;
+$font_angle = 0;
+$font_color = array(
     0,
     0,
     0,
 );
-$font_file             = 'default.ttf';
-$padding_x             = 10;
-$padding_y             = 6;
+$font_file = 'default.ttf';
+$padding_x = 10;
+$padding_y = 6;
 $background_image_file = 'icon_button_normal.png';
 
 // get params
-$myts     = MyTextSanitizer::getInstance();
+$myts = MyTextSanitizer::getInstance();
 $formdata = xoonips_getUtility('formdata');
-$mode     = $formdata->getValue('get', 'mode', 'n', false, $background_image_file);
+$mode = $formdata->getValue('get', 'mode', 'n', false, $background_image_file);
 switch ($mode) {
     case 'normal':
         $background_image_file = 'icon_button_normal.png';
@@ -79,7 +79,7 @@ if (null !== $label) {
     }
 }
 
-$background_image_path = __DIR__ . '/' . $background_image_file;
+$background_image_path = __DIR__.'/'.$background_image_file;
 
 // functions
 /**
@@ -96,40 +96,40 @@ function fatal_error($message)
     }
 }
 
-$unicode   = xoonips_getUtility('unicode');
+$unicode = xoonips_getUtility('unicode');
 $text_utf8 = $unicode->encode_utf8($text, _CHARSET);
 
 // error check
 if (!extension_loaded('gd')) {
     fatal_error('PHP GD extension does not loaded');
 }
-$gdinfo      = gd_info();
+$gdinfo = gd_info();
 $gd_required = array(
     'FreeType Support',
     'PNG Support',
 );
 foreach ($gd_required as $req_type) {
     if (!$gdinfo[$req_type]) {
-        fatal_error('GD : ' . $req_type . ' disabled');
+        fatal_error('GD : '.$req_type.' disabled');
     }
 }
 if (!file_exists($background_image_path)) {
-    fatal_error('background image file not found : ' . $background_iamge_file);
+    fatal_error('background image file not found : '.$background_iamge_file);
 }
 $font_path = $langman->font_path($font_file);
 
 // calculate drawing image size
-$text_bbox    = imagettfbbox($font_size, $font_angle, $font_path, $text_utf8);
-$text_xmax    = max($text_bbox[0], $text_bbox[2], $text_bbox[4], $text_bbox[6]);
-$text_xmin    = min($text_bbox[0], $text_bbox[2], $text_bbox[4], $text_bbox[6]);
-$text_ymax    = max($text_bbox[1], $text_bbox[3], $text_bbox[5], $text_bbox[7]);
-$text_ymin    = min($text_bbox[1], $text_bbox[3], $text_bbox[5], $text_bbox[7]);
-$text_width   = $text_xmax - $text_xmin;
-$text_height  = $text_ymax - $text_ymin;
-$image_width  = $text_width + $padding_x * 2;
+$text_bbox = imagettfbbox($font_size, $font_angle, $font_path, $text_utf8);
+$text_xmax = max($text_bbox[0], $text_bbox[2], $text_bbox[4], $text_bbox[6]);
+$text_xmin = min($text_bbox[0], $text_bbox[2], $text_bbox[4], $text_bbox[6]);
+$text_ymax = max($text_bbox[1], $text_bbox[3], $text_bbox[5], $text_bbox[7]);
+$text_ymin = min($text_bbox[1], $text_bbox[3], $text_bbox[5], $text_bbox[7]);
+$text_width = $text_xmax - $text_xmin;
+$text_height = $text_ymax - $text_ymin;
+$image_width = $text_width + $padding_x * 2;
 $image_height = $text_height + $padding_y * 2;
-$x            = $padding_x - $text_xmin + (($text_xmin == $text_bbox[0]) ? 0 : $text_bbox[0]);
-$y            = $image_height - $padding_y - $text_ymax + (($text_ymax == $text_bbox[1]) ? 0 : $text_bbox[1]);
+$x = $padding_x - $text_xmin + (($text_xmin == $text_bbox[0]) ? 0 : $text_bbox[0]);
+$y = $image_height - $padding_y - $text_ymax + (($text_ymax == $text_bbox[1]) ? 0 : $text_bbox[1]);
 
 // create image resource
 $im = imagecreatetruecolor($image_width, $image_height);

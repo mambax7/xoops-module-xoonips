@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.4 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 /**
- * factory class to create XooNIpsView
+ * factory class to create XooNIpsView.
  */
 class XooNIpsViewFactory
 {
@@ -38,7 +38,7 @@ class XooNIpsViewFactory
     }
 
     /**
-     * return XooNIpsViewFactory instance
+     * return XooNIpsViewFactory instance.
      *
      * @return XooNIpsViewFactory
      */
@@ -46,44 +46,45 @@ class XooNIpsViewFactory
     {
         static $singleton = null;
         if (!isset($singleton)) {
-            $singleton = new XooNIpsViewFactory();
+            $singleton = new self();
         }
+
         return $singleton;
     }
 
     /**
-     * return XooNIpsView corresponding to $view
+     * return XooNIpsView corresponding to $view.
      *
      * @param string $name     view name
      * @param string $response XooNIpsResponse
      * @retval XooNIpsView corresponding to $name
      * @retval false unknown view
+     *
      * @return bool|null
      */
     public function create($name, $response)
     {
         static $falseVar = false;
         $view = null;
-        //
+
         $name = trim($name);
         if (false !== strstr($name, '..')) {
             return $falseVar;
         }
-        $include_file = XOOPS_ROOT_PATH . '/modules/xoonips/class/view/' . strtolower($name) . '.class.php';
+        $include_file = XOOPS_ROOT_PATH.'/modules/xoonips/class/view/'.strtolower($name).'.class.php';
         if (file_exists($include_file)) {
-            include_once $include_file;
+            require_once $include_file;
         } else {
             return $falseVar;
         }
 
-        //
-        $class = 'XooNIpsView' . str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
+        $class = 'XooNIpsView'.str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
         if (class_exists($class)) {
             $view = new $class($response);
         }
-        //
+
         if (!isset($view)) {
-            trigger_error('View does not exist. Name: ' . $name, E_USER_ERROR);
+            trigger_error('View does not exist. Name: '.$name, E_USER_ERROR);
         }
         // return result
         if (isset($view)) {

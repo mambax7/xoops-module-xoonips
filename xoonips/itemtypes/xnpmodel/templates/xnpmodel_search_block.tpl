@@ -1,5 +1,4 @@
 <{* xnpmodel register block *}>
-<{* $Revision: 1.5.8.2 $ *}>
 
 <table class="outer">
   <tr>

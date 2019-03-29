@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.8 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,20 +25,17 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/logic.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/base/transaction.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/include/lib.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/logic.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/transaction.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/include/lib.php';
 
 /**
- *
- * subclass of XooNIpsLogic(putItem)
- *
+ * subclass of XooNIpsLogic(putItem).
  */
 class XooNIpsLogicPutItem extends XooNIpsLogic
 {
-
     /**
-     * execute putItem
+     * execute putItem.
      *
      * @param[in]  $vars[0] session ID
      * @param[in]  $vars[1] XooNIpsItemCompo item information
@@ -46,12 +43,13 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
      * @param[out] $response->result true:success, false:failed
      * @param[out] $response->error  error information
      * @param[out] $response$response->success item id of registered item
+     *
      * @return bool
      */
     public function execute($vars, $response)
     {
         // parameter check
-        $error =  $response->getError();
+        $error = $response->getError();
         if (count($vars) > 3) {
             $error->add(XNPERR_EXTRA_PARAM);
         } elseif (count($vars) < 3) {
@@ -63,9 +61,9 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
             // file size check
             if (is_array($vars[2])) {
                 $upload_max_filesize = $this->returnBytes(ini_get('upload_max_filesize'));
-                for ($i = 0, $iMax = count($vars[2]); $i < $iMax; $i++) {
+                for ($i = 0, $iMax = count($vars[2]); $i < $iMax; ++$i) {
                     if (filesize($vars[2][$i]->getFilepath()) > $upload_max_filesize) {
-                        $error->add(XNPERR_INVALID_PARAM, 'too large file(file_id=' . $vars[2][$i]->get('file_id') . ')');
+                        $error->add(XNPERR_INVALID_PARAM, 'too large file(file_id='.$vars[2][$i]->get('file_id').')');
                     }
                     $vars[2][$i]->set('file_size', filesize($vars[2][$i]->getFilepath()));
                 }
@@ -74,17 +72,19 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
         if ($error->get(0)) {
             // return if parameter error
             $response->setResult(false);
+
             return;
         } else {
             $response->setResult(false);
             $sessionid = $vars[0];
-            $item      = $vars[1];
-            $files     = $vars[2];
+            $item = $vars[1];
+            $files = $vars[2];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
+
             return false;
         }
         if ($uid == UID_GUEST) {
@@ -97,7 +97,7 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
         $transaction->start();
 
         // set uid, title_id, keyword_id, creation_date, last_update_date
-        $now   = time();
+        $now = time();
         $basic = $item->getVar('basic');
         $basic->setVar('uid', $uid, true);
         $basic->setVar('creation_date', $now, true);
@@ -105,24 +105,25 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
         $item->setVar('basic', $basic);
 
         $titles = $item->getVar('titles');
-        for ($i = 0, $iMax = count($titles); $i < $iMax; $i++) {
+        for ($i = 0, $iMax = count($titles); $i < $iMax; ++$i) {
             $titles[$i]->setVar('title_id', $i, true);
         }
         $item->setVar('titles', $titles);
         $keywords = $item->getVar('keywords');
-        for ($i = 0, $iMax = count($keywords); $i < $iMax; $i++) {
+        for ($i = 0, $iMax = count($keywords); $i < $iMax; ++$i) {
             $keywords[$i]->setVar('keyword_id', $i, true);
         }
         $item->setVar('keywords', $keywords);
         // ext_id duplicated?
         $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $ext_id            = $basic->get('doi');
+        $ext_id = $basic->get('doi');
         if (strlen($ext_id)) {
-            $basics =  $item_basicHandler->getObjects(new Criteria('doi', addslashes($ext_id)));
+            $basics = $item_basicHandler->getObjects(new Criteria('doi', addslashes($ext_id)));
             if (count($basics)) {
                 $transaction->rollback();
                 $response->setResult(false);
                 $error->add(XNPERR_INCOMPLETE_PARAM, "$ext_id is duplicated");
+
                 return false;
             }
         }
@@ -134,15 +135,15 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
         //              return false;
         //          }
         // can access that indexes? calculate get add_to_private, add_to_gids, add_to_public
-        $indexHandler           = xoonips_getOrmHandler('xoonips', 'index');
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $index_item_links       = $item->getVar('indexes');
-        $add_to_private         = false;
-        $add_to_gids            = array();
-        $add_to_public          = false;
+        $index_item_links = $item->getVar('indexes');
+        $add_to_private = false;
+        $add_to_gids = array();
+        $add_to_public = false;
         foreach ($index_item_links as $index_item_link) {
             $index_id = $index_item_link->get('index_id');
-            $index    = $indexHandler->get($index_id);
+            $index = $indexHandler->get($index_id);
             if (!$index) {
                 $error->add(XNPERR_INVALID_PARAM, "no such index(index_id=$index_id)"); // test e5
             } else {
@@ -167,16 +168,16 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
         }
         // item_type_id -> item_type_name, detail_item_typeHandler, detail_item_type, detail_itemHandler
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $basic            = $item->getVar('basic');
-        $item_type_id     = $basic->get('item_type_id');
-        $item_type        = $item_typeHandler->get($item_type_id);
+        $basic = $item->getVar('basic');
+        $item_type_id = $basic->get('item_type_id');
+        $item_type = $item_typeHandler->get($item_type_id);
         if (!$item_type) {
             $response->setResult(false);
             $transaction->rollback();
             $error->add(XNPERR_INVALID_PARAM, "bad itemtype(item_type_id=$item_type_id)"); // test E6*
             return false;
         }
-        $item_type_name          = $item_type->get('name');
+        $item_type_name = $item_type->get('name');
         $detail_item_typeHandler = xoonips_getOrmHandler($item_type_name, 'item_type');
         if (!$detail_item_typeHandler) {
             $response->setResult(false);
@@ -195,7 +196,7 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
         // can access that related_tos?
         $related_tos = $item->getVar('related_tos');
         foreach ($related_tos as $related_to) {
-            $item_id    = $related_to->get('item_id');
+            $item_id = $related_to->get('item_id');
             $item_basic = $item_basicHandler->get($item_id);
             if (!$item_basic) {
                 $error->add(XNPERR_INVALID_PARAM, "no such related_to(item_id=$item_id)"); // test e5
@@ -206,6 +207,7 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
         if ($error->get()) {
             $transaction->rollback();
             $response->setResult(false);
+
             return false;
         }
         // error if add to public/group and no rights/readme input
@@ -213,6 +215,7 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
             if (!$detail_itemHandler->isValidForPubicOrGroupShared($item)) {
                 $response->setResult(false);
                 $error->add(XNPERR_INCOMPLETE_PARAM, 'item cannot be public nor group-shared');
+
                 return false;
             }
         }
@@ -222,6 +225,7 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
                                            $detail_item_type->getRequired('publication_month'), $detail_item_type->getRequired('publication_mday'))
         ) {
             $response->setResult(false);
+
             return false;
         }
 
@@ -237,17 +241,17 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
         }
         // get filetypes
         $file_typeHandler = xoonips_getOrmHandler('xoonips', 'file_type');
-        $file_types       =  $file_typeHandler->getObjects(null, true);
+        $file_types = $file_typeHandler->getObjects(null, true);
         // $item->setVar( '...', $files[...] ) // check exactly 1:1 ? correct filetype ? multiple files for non-multiple field?
         $pseudo2files = array();
-        for ($i = 0, $iMax = count($files); $i < $iMax; $i++) {
+        for ($i = 0, $iMax = count($files); $i < $iMax; ++$i) {
             $pseudo_file_id = $files[$i]->get('file_id');
             if (isset($pseudo2files[$pseudo_file_id])) {
                 $error->add(XNPERR_INVALID_PARAM, "pseudo file_id conflicts(pseudo file_id=$pseudo_file_id)"); // test e12
             } else {
                 $pseudo2files[$pseudo_file_id] = array(
                     'used' => false,
-                    'file' => $files[$i]
+                    'file' => $files[$i],
                 );
             }
         }
@@ -261,10 +265,10 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
                 }
 
                 $detail_files = array(
-                    $detail_file
+                    $detail_file,
                 );
             }
-            for ($i = 0, $iMax = count($detail_files); $i < $iMax; $i++) {
+            for ($i = 0, $iMax = count($detail_files); $i < $iMax; ++$i) {
                 $pseudo_id = $detail_files[$i]->get('file_id');
                 if ($pseudo_id == 0) {
                     unset($detail_files[$i]);
@@ -276,7 +280,7 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
                     $error->add(XNPERR_INVALID_PARAM, "file referred twice(pseudo file_id=$pseudo_id)"); // test e12
                 } else {
                     $pseudo2files[$pseudo_id]['used'] = true;
-                    $file_type_id                     = $pseudo2files[$pseudo_id]['file']->get('file_type_id');
+                    $file_type_id = $pseudo2files[$pseudo_id]['file']->get('file_type_id');
                     if (!isset($file_types[$file_type_id])) {
                         $error->add(XNPERR_INVALID_PARAM, "bad filetype(file_type_id=$file_type_id pseudo file_id=$pseudo_id)"); // test e12
                     } elseif ($file_types[$file_type_id]->get('name') != $field_name) {
@@ -309,6 +313,7 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
         if ($error->get()) {
             $transaction->rollback();
             $response->setResult(false);
+
             return false;
         }
 
@@ -319,10 +324,11 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
             $error->add(XNPERR_SERVER_ERROR, 'cannot insert item'); // test E13
             $transaction->rollback();
             $response->setResult(false);
+
             return false;
         }
         $detail_itemHandler->unsetNew($item);
-        $basic   = $item->getVar('basic');
+        $basic = $item->getVar('basic');
         $item_id = $basic->get('item_id');
         // event log ( insert item )
         $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
@@ -342,10 +348,11 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
 
         // update search_text
         $fileHandler = xoonips_getOrmHandler('xoonips', 'file');
-        $files       =  $fileHandler->getObjects(new Criteria('item_id', $item_id));
+        $files = $fileHandler->getObjects(new Criteria('item_id', $item_id));
         if (false === $files) {
             $transaction->rollback();
             $error->add(XNPERR_SERVER_ERROR, 'cannot get file');
+
             return false;
         } else {
             $admin_fileHandler = xoonips_getHandler('xoonips', 'admin_file');
@@ -359,6 +366,7 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
 
         $response->setSuccess($item_id);
         $response->setResult(true);
+
         return true;
     }
 }

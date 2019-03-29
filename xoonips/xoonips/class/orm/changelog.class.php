@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief data object of changelog
@@ -36,7 +34,6 @@ if (!defined('XOOPS_ROOT_PATH')) {
  * @li    getVar('item_id') :
  * @li    getVar('log_date') :
  * @li    getVar('log') :
- *
  */
 class XooNIpsOrmChangelog extends XooNIpsTableObject
 {
@@ -56,13 +53,12 @@ class XooNIpsOrmChangelog extends XooNIpsTableObject
 
 /**
  * @brief handler object of changelog
- *
- *
  */
 class XooNIpsOrmChangelogHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmChangelogHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -72,10 +68,10 @@ class XooNIpsOrmChangelogHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * get change logs
+     * get change logs.
      *
-     * @access public
      * @param int $item_id
+     *
      * @return array objects
      */
     public function getChangeLogs($item_id)
@@ -83,6 +79,7 @@ class XooNIpsOrmChangelogHandler extends XooNIpsTableObjectHandler
         $criteria = new Criteria('item_id', $item_id);
         $criteria->setSort('log_date');
         $criteria->setOrder('DESC');
+
         return $this->getObjects($criteria);
     }
 }

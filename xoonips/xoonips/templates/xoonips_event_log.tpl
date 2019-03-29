@@ -1,5 +1,4 @@
 <{* page for download event logs *}>
-<{* $Revision: 1.4.2.1.2.2 $ *}>
 <script type="text/javascript">
 <!--//
 function xoonips_eventlog_submit( log_type_id, mode ) {

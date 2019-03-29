@@ -23,7 +23,7 @@ class Xoonips_Backend extends XCube_ActionFilter
     // get all published items
     $limit = 10;
         $category = $module->getVar('name');
-        $ibHandler =& xoonips_getormhandler('xoonips', 'item_basic');
+        $ibHandler = &xoonips_getormhandler('xoonips', 'item_basic');
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('event_type_id', ETID_CERTIFY_ITEM));
         $criteria->setGroupBy('ev.item_id');
@@ -36,9 +36,9 @@ class Xoonips_Backend extends XCube_ActionFilter
         $join->cascade(new XooNIpsJoinCriteria('xoonips_index_item_link', 'item_id', 'item_id', 'INNER', 'iil'));
         $criteria->add(new Criteria('idx.open_level', OL_PUBLIC));
         $join->cascade(new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'idx'), 'iil', true);
-        $res =& $ibHandler->open($criteria, $fields, false, $join);
-        while ($obj =& $ibHandler->getNext($res)) {
-            $item_id = (int)$obj->get('item_id');
+        $res = &$ibHandler->open($criteria, $fields, false, $join);
+        while ($obj = &$ibHandler->getNext($res)) {
+            $item_id = (int) $obj->get('item_id');
             $doi = $obj->get('doi');
             $title = $this->_getItemTitle($item_id, 's');
             $url = $this->_getItemUrl($item_id, $doi, 's');
@@ -57,12 +57,13 @@ class Xoonips_Backend extends XCube_ActionFilter
 
     public function _getItemTitle($item_id, $fmt)
     {
-        $itHandler =& xoonips_getormhandler('xoonips', 'title');
+        $itHandler = &xoonips_getormhandler('xoonips', 'title');
         $title = '';
         $tobjs = $itHandler->getTitles($item_id);
         foreach ($tobjs as $tobj) {
             $title .= $tobj->get('title', $fmt);
         }
+
         return $title;
     }
 
@@ -75,6 +76,7 @@ class Xoonips_Backend extends XCube_ActionFilter
                 $url .= '&amp;'.CUBE_UTILS_ML_PARAM_NAME.'='.$GLOBALS['cubeUtilMlang']->mLanguage;
             }
         }
+
         return $url;
     }
 }

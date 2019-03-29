@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.7 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /*
 alter table following from xoonips 3.24
@@ -47,7 +45,6 @@ ALTER TABLE `x_xoonips_item_basic`  DROP `title`,  DROP `keywords`;
  * @li    getVar('publication_month') : month that original(not an item) was created
  * @li    getVar('publication_mday') : day of month that original(not an item) was created
  * @li    getVar('lang') : language of item
- *
  */
 class XooNIpsOrmItemBasic extends XooNIpsTableObject
 {
@@ -72,12 +69,13 @@ class XooNIpsOrmItemBasic extends XooNIpsTableObject
 }
 
 /**
- * Class XooNIpsOrmItemBasicHandler
+ * Class XooNIpsOrmItemBasicHandler.
  */
 class XooNIpsOrmItemBasicHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmItemBasicHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -88,8 +86,10 @@ class XooNIpsOrmItemBasicHandler extends XooNIpsTableObjectHandler
 
     /**
      * @brief set current time to creation_date and last_update_date if these are not initialized and call parent::insert.
+     *
      * @param XoopsObject $obj
      * @param bool        $force
+     *
      * @return bool
      */
     public function insert(XoopsObject $obj, $force = false)
@@ -103,13 +103,13 @@ class XooNIpsOrmItemBasicHandler extends XooNIpsTableObjectHandler
             // update last_update_date
             $obj->set('last_update_date', time());
         }
+
         return parent::insert($obj, $force);
     }
 
     /**
-     * lock item
+     * lock item.
      *
-     * @access public
      * @param int $id item_id
      */
     public function lock($id)
@@ -119,9 +119,8 @@ class XooNIpsOrmItemBasicHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * unlock item
+     * unlock item.
      *
-     * @access public
      * @param int $id item_id
      */
     public function unlock($id)
@@ -131,9 +130,8 @@ class XooNIpsOrmItemBasicHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * lock item and index
+     * lock item and index.
      *
-     * @access public
      * @param int $item_id  item_id
      * @param int $index_id index_id
      */
@@ -145,9 +143,8 @@ class XooNIpsOrmItemBasicHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * unlock item and index
+     * unlock item and index.
      *
-     * @access public
      * @param int $item_id  item_id
      * @param int $index_id index_id
      */

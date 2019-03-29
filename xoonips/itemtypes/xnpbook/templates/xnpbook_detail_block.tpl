@@ -1,4 +1,3 @@
-<{* $Revision: 1.16.4.1.2.6 $ *}>
 <form id="xoonips_edit_form" action="#">
 <table class="outer">
   <!-- Basic Information -->

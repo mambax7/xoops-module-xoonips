@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.10 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // xoonips itemtypes block
 /**
@@ -39,7 +37,7 @@ function b_xoonips_itemtypes_show()
     // hide block if user is guest and public index viewing policy is 'platform'
     if (!is_object($xoopsUser)) {
         $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-        $target_user    = $xconfigHandler->getValue('public_item_target_user');
+        $target_user = $xconfigHandler->getValue('public_item_target_user');
         if ($target_user !== 'all') {
             // 'platform'
             return false;
@@ -54,24 +52,24 @@ function b_xoonips_itemtypes_show()
         return false;
     }
 
-    require_once XOOPS_ROOT_PATH . '/modules/xoonips/include/lib.php';
+    require_once XOOPS_ROOT_PATH.'/modules/xoonips/include/lib.php';
 
     // get installed itemtypes
-    $block            = array();
+    $block = array();
     $block['explain'] = array();
     $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-    $item_type_objs   = $item_typeHandler->getObjectsSortByWeight();
+    $item_type_objs = $item_typeHandler->getObjectsSortByWeight();
     foreach ($item_type_objs as $item_type_obj) {
         $name = $item_type_obj->get('name');
-        $file = XOOPS_ROOT_PATH . '/modules/' . $item_type_obj->get('viewphp');
+        $file = XOOPS_ROOT_PATH.'/modules/'.$item_type_obj->get('viewphp');
         if (file_exists($file)) {
             require_once $file;
         }
-        $fname = $name . 'GetTopBlock';
+        $fname = $name.'GetTopBlock';
         if (function_exists($fname)) {
             // call xxxGetTopBlock function in view.php
             $itemtype = $item_type_obj->getVarArray('s');
-            $html     = $fname($itemtype);
+            $html = $fname($itemtype);
             if (!empty($html)) {
                 $block['explain'][] = $html;
             }

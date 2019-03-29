@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.3 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,12 +24,10 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // check token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
+require_once __DIR__.'/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_policy_account';
 if (!$xoopsGTicket->check(true, $ticket_area, false)) {
     redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
@@ -37,7 +35,7 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 
 // get variables
 $post_keys = array(
-    'account_realname_optional'     => array(
+    'account_realname_optional' => array(
         's',
         false,
         true,
@@ -47,32 +45,32 @@ $post_keys = array(
         false,
         true,
     ),
-    'account_division_optional'     => array(
+    'account_division_optional' => array(
         's',
         false,
         true,
     ),
-    'account_country_optional'      => array(
+    'account_country_optional' => array(
         's',
         false,
         true,
     ),
-    'account_address_optional'      => array(
+    'account_address_optional' => array(
         's',
         false,
         true,
     ),
-    'account_zipcode_optional'      => array(
+    'account_zipcode_optional' => array(
         's',
         false,
         true,
     ),
-    'account_tel_optional'          => array(
+    'account_tel_optional' => array(
         's',
         false,
         true,
     ),
-    'account_fax_optional'          => array(
+    'account_fax_optional' => array(
         's',
         false,
         true,

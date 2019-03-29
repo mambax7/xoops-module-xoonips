@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.4 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,7 +25,6 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 /* constant strings
- * $Revision: 1.1.2.4 $
  */
 
 // _MI_<MODULENAME>_<STRINGNAME>
@@ -49,24 +48,24 @@ define('_MI_XOONIPS_NAME', 'XooNIps');
 define('_MI_XOONIPS_DESC', 'XooNIps Module');
 
 //submenu labels
-define('_MI_XOONIPS_ITEM_SMNAME1', 'アイテム登録');//
-define('_MI_XOONIPS_ITEM_SMNAME2', 'アイテム承認');//
-define('_MI_XOONIPS_ITEM_SMNAME3', '詳細検索');//
+define('_MI_XOONIPS_ITEM_SMNAME1', 'アイテム登録');
+define('_MI_XOONIPS_ITEM_SMNAME2', 'アイテム承認');
+define('_MI_XOONIPS_ITEM_SMNAME3', '詳細検索');
 
-define('_MI_XOONIPS_ITEM_BNAME1', 'XooNIps検索');//
+define('_MI_XOONIPS_ITEM_BNAME1', 'XooNIps検索');
 
-define('_MI_XOONIPS_MODERATOR_BNAME2', 'XooNIpsモデレータ メインメニュー');//
-
-//submenu labels
-define('_MI_XOONIPS_MODERATOR_SMNAME1', 'グループ管理');//
-define('_MI_XOONIPS_MODERATOR_SMNAME2', 'ユーザ承認');//
-
-define('_MI_XOONIPS_INDEX_BNAME1', 'インデックスツリー');//
+define('_MI_XOONIPS_MODERATOR_BNAME2', 'XooNIpsモデレータ メインメニュー');
 
 //submenu labels
-define('_MI_XOONIPS_INDEX_SMNAME1', 'プライベートツリー編集');//
-define('_MI_XOONIPS_INDEX_SMNAME2', 'グループツリー編集');//
-define('_MI_XOONIPS_INDEX_SMNAME3', '公開ツリー編集');//
+define('_MI_XOONIPS_MODERATOR_SMNAME1', 'グループ管理');
+define('_MI_XOONIPS_MODERATOR_SMNAME2', 'ユーザ承認');
+
+define('_MI_XOONIPS_INDEX_BNAME1', 'インデックスツリー');
+
+//submenu labels
+define('_MI_XOONIPS_INDEX_SMNAME1', 'プライベートツリー編集');
+define('_MI_XOONIPS_INDEX_SMNAME2', 'グループツリー編集');
+define('_MI_XOONIPS_INDEX_SMNAME3', '公開ツリー編集');
 
 // Names of admin menu items
 define('_MI_XOONIPS_CONFIG_DSN', 'DSN');
@@ -143,7 +142,7 @@ define('_MI_XOONIPS_USER_GROUP_ITEM_CERTIFY_REQUEST_NOTIFYDSC', 'グループア
 define('_MI_XOONIPS_USER_GROUP_ITEM_CERTIFY_REQUEST_NOTIFYSBJ', '承認待ちのグループアイテムがあります');
 
 //itemtype block labels
-define('_MI_XOONIPS_ITEMTYPE_BNAME1', 'アイテムタイプ一覧');//
+define('_MI_XOONIPS_ITEMTYPE_BNAME1', 'アイテムタイプ一覧');
 
 define('_MI_XOONIPS_RANKING', 'ランキング');
 define('_MI_XOONIPS_RANKING_NEW', '新着');

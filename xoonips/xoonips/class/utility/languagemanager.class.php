@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.8 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,74 +24,68 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * language resource manager class
+ * language resource manager class.
  *
- * @package   xoonips_utility
  * @copyright copyright &copy; 2008 RIKEN Japan
  */
 class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
 {
-
     /**
-     * default module directory name
-     * @access private
+     * default module directory name.
+     *
      * @var string default module directory name
      */
     public $default_mydirname = 'xoonips';
 
     /**
-     * default language resouce name
-     * @access private
+     * default language resouce name.
+     *
      * @var string default language resource name
      */
     public $default_language = 'english';
 
     /**
-     * current language resouce name
-     * @access private
+     * current language resouce name.
+     *
      * @var string current language resource name
      */
     public $language = 'english';
 
     /**
-     * D3 Language Manager class
-     * @access private
+     * D3 Language Manager class.
+     *
      * @var object instance of D3LanguageManager class
      */
     public $d3langman_instance = null;
 
     /**
-     * constractor
-     *
-     * @access private
+     * constractor.
      */
     public function __construct()
     {
         $this->setSingleton();
-        $myxoopsConfig  =  xoonips_get_xoops_configs(XOOPS_CONF);
+        $myxoopsConfig = xoonips_get_xoops_configs(XOOPS_CONF);
         $this->language = preg_replace('/[^0-9a-zA-Z_-]/', '', $myxoopsConfig['language']);
         if (defined('XOOPS_TRUST_PATH') && XOOPS_TRUST_PATH != '') {
-            $langmanpath = XOOPS_TRUST_PATH . '/libs/altsys/class/D3LanguageManager.class.php';
+            $langmanpath = XOOPS_TRUST_PATH.'/libs/altsys/class/D3LanguageManager.class.php';
             if (file_exists($langmanpath)) {
                 require_once $langmanpath;
-                $this->d3langman_instance =  D3LanguageManager::getInstance();
+                $this->d3langman_instance = D3LanguageManager::getInstance();
             }
         }
     }
 
     /**
-     * read language resouce on current language
+     * read language resouce on current language.
      *
-     * @access   public
      * @param        $resource
      * @param string $mydirname      module directory name
      * @param string $mytrustdirname module trust directory name
      * @param bool   $read_once      true if read by require_once
+     *
      * @internal param string $resouce resource file name
      */
     public function read($resource, $mydirname = null, $mytrustdirname = null, $read_once = true)
@@ -112,13 +106,14 @@ class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
     }
 
     /**
-     * read language resouce file on current language
+     * read language resouce file on current language.
      *
-     * @access   public
      * @param        $resource
      * @param string $mydirname      module directory name
      * @param string $mytrustdirname module trust directory name
+     *
      * @return string resource file content
+     *
      * @internal param string $resouce resource file name
      */
     public function get($resource, $mydirname = null, $mytrustdirname = null)
@@ -127,9 +122,8 @@ class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
     }
 
     /**
-     * read XOOPS page type language resouce on current language
+     * read XOOPS page type language resouce on current language.
      *
-     * @access public
      * @param string $pagetype  page type message catalog
      * @param bool   $read_once true if read by require_once
      */
@@ -151,9 +145,9 @@ class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
         if (!in_array($pagetype, $accept_pagetype)) {
             die('invalid pagetype message catalog');
         }
-        $langfile = XOOPS_ROOT_PATH . '/language/' . $this->language . '/' . $pagetype;
+        $langfile = XOOPS_ROOT_PATH.'/language/'.$this->language.'/'.$pagetype;
         if (!file_exists($langfile)) {
-            $langfile = XOOPS_ROOT_PATH . '/language/' . $this->default_language . '/' . $pagetype;
+            $langfile = XOOPS_ROOT_PATH.'/language/'.$this->default_language.'/'.$pagetype;
         }
         if ($read_once) {
             require_once $langfile;
@@ -163,11 +157,11 @@ class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
     }
 
     /**
-     * get mail_template directory name on current language
+     * get mail_template directory name on current language.
      *
-     * @access public
      * @param string $mydirname      module directory name
      * @param string $mytrustdirname module trust directory name
+     *
      * @return string accessible mail_template directory name
      */
     public function mail_template_dir($mydirname = null, $mytrustdirname = null)
@@ -177,48 +171,50 @@ class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
         }
         $resource = 'mail_template/';
         $langpath = $this->_get_path($resource, $mydirname, $mytrustdirname);
+
         return $langpath;
     }
 
     /**
-     * get font path on current language
+     * get font path on current language.
      *
-     * @access public
      * @param string $fontname font file name
+     *
      * @return string accessible font path
      */
     public function font_path($fontname)
     {
         // set alternative language name
         $alternative = _MD_XOONIPS_FONT_LANGUAGE;
+
         return $this->_get_path($fontname, $this->default_mydirname, null, $alternative);
     }
 
     /**
-     * get accessible file or directory path on current language
+     * get accessible file or directory path on current language.
      *
-     * @access private
      * @param        $resource
      * @param string $mydirname      module directory name
      * @param string $mytrustdirname module trust directory name
      * @param string $alternative    alternative language name
+     *
      * @return string accessible file or directory path
      */
     public function _get_path($resource, $mydirname, $mytrustdirname, $alternative = null)
     {
         $is_directory = (substr($resource, -1, 1) === '/') ? true : false;
-        $d3file       = XOOPS_ROOT_PATH . '/modules/' . $mydirname . '/mytrustdirname.php';
+        $d3file = XOOPS_ROOT_PATH.'/modules/'.$mydirname.'/mytrustdirname.php';
         if (empty($mytrustdirname) && file_exists($d3file)) {
             require $d3file;
         }
-        $_basepath   = empty($mytrustdirname) ? XOOPS_ROOT_PATH : XOOPS_TRUST_PATH;
-        $_dirname    = empty($mytrustdirname) ? $mydirname : $mytrustdirname;
-        $langfiles   = array();
-        $langfiles[] = $_basepath . '/modules/' . $_dirname . '/language/' . $this->language . '/' . $resource;
+        $_basepath = empty($mytrustdirname) ? XOOPS_ROOT_PATH : XOOPS_TRUST_PATH;
+        $_dirname = empty($mytrustdirname) ? $mydirname : $mytrustdirname;
+        $langfiles = array();
+        $langfiles[] = $_basepath.'/modules/'.$_dirname.'/language/'.$this->language.'/'.$resource;
         if (!empty($alternative)) {
-            $langfiles[] = $_basepath . '/modules/' . $_dirname . '/language/' . $alternative . '/' . $resource;
+            $langfiles[] = $_basepath.'/modules/'.$_dirname.'/language/'.$alternative.'/'.$resource;
         }
-        $langfiles[] = $_basepath . '/modules/' . $_dirname . '/language/' . $this->default_language . '/' . $resource;
+        $langfiles[] = $_basepath.'/modules/'.$_dirname.'/language/'.$this->default_language.'/'.$resource;
         foreach ($langfiles as $langfile) {
             if (($is_directory && is_dir($langfile)) || (!$is_directory && file_exists($langfile))) {
                 return $langfile;

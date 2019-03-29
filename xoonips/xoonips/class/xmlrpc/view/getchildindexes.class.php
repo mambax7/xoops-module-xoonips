@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.7 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,20 +25,15 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/view/xmlrpcview.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xmlrpc/xmlrpcfault.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xmlrpc/view/xmlrpcview.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xmlrpc/xmlrpcfault.class.php';
 
 /**
- *
  * @brief Class that generate response of XML-RPC getChildIndexes request
- *
- *
  */
 class XooNIpsXmlRpcViewGetChildIndexes extends XooNIpsXmlRpcViewElement
 {
-
     /**
-     *
      * @brief return XoopsXmlRpcTag that has response of this request
      *
      * @return XoopsXmlRpcTag
@@ -46,7 +41,7 @@ class XooNIpsXmlRpcViewGetChildIndexes extends XooNIpsXmlRpcViewElement
     public function render()
     {
         $unicode = xoonips_getUtility('unicode');
-        $resp    = new XoopsXmlRpcArray();
+        $resp = new XoopsXmlRpcArray();
 
         foreach ($this->response->getSuccess() as $index) {
             $struct = new XoopsXmlRpcStruct();
@@ -64,6 +59,7 @@ class XooNIpsXmlRpcViewGetChildIndexes extends XooNIpsXmlRpcViewElement
             $resp->add($struct);
             unset($struct);
         }
+
         return $resp;
     }
 }

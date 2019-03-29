@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.13 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,10 +25,10 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/action.class.php';
+require_once __DIR__.'/../base/action.class.php';
 
 /**
- * Class XooNIpsActionImportDefault
+ * Class XooNIpsActionImportDefault.
  */
 class XooNIpsActionImportDefault extends XooNIpsAction
 {
@@ -40,9 +40,6 @@ class XooNIpsActionImportDefault extends XooNIpsAction
         parent::__construct();
     }
 
-    /**
-     * @return null
-     */
     public function _get_logic_name()
     {
         return null;
@@ -70,15 +67,15 @@ class XooNIpsActionImportDefault extends XooNIpsAction
 
         $result = array(
             'max_file_size_bytes' => $this->_get_upload_max_filesize(),
-            'max_file_size'       => ini_get('upload_max_filesize'),
+            'max_file_size' => ini_get('upload_max_filesize'),
             'xoonips_checked_xid' => $this->_formdata->getValue('post', 'xoonipsCheckedXID', 's', false),
-            'zipfile_is_given'    => $zipfile !== null
+            'zipfile_is_given' => $zipfile !== null
                                      || is_array($zipfile)
                                         && !array_key_exists('name', $zipfile)
                                      || $zipfile['tmp_name'] == ''
                                      || $zipfile['size'] == 0,
-            'admin'               => isset($_SESSION['xoonips_old_uid'])
-                                     || $xoopsUser->isAdmin()
+            'admin' => isset($_SESSION['xoonips_old_uid'])
+                                     || $xoopsUser->isAdmin(),
         );
         //$this -> _response -> setResult( true );
         //$this -> _response -> setSuccess( $result );
@@ -98,14 +95,13 @@ class XooNIpsActionImportDefault extends XooNIpsAction
 
         global $xoonipsTreeCheckBox, $xoonipsEditIndex, $xoonipsEditPublic;
         $xoonipsTreeCheckBox = true;
-        $xoonipsEditIndex    = true; //only import into editable index
-        $xoonipsEditPublic   = true; //
+        $xoonipsEditIndex = true; //only import into editable index
+        $xoonipsEditPublic = true;
     }
 
     /**
-     * get upload max file size from PHP settings
+     * get upload max file size from PHP settings.
      *
-     * @access private
      * @return int upload max file size
      */
     public function _get_upload_max_filesize()
@@ -116,7 +112,7 @@ class XooNIpsActionImportDefault extends XooNIpsAction
             $val = '2G';
         }
         if (preg_match('/^(-?\d+)([KMG])$/i', strtoupper($val), $matches)) {
-            $val = (int)$matches[1];
+            $val = (int) $matches[1];
             switch ($matches[2]) {
                 case 'G':
                     $val *= 1024;
@@ -126,8 +122,9 @@ class XooNIpsActionImportDefault extends XooNIpsAction
                     $val *= 1024;
             }
         } else {
-            $val = (int)$val;
+            $val = (int) $val;
         }
+
         return $val;
     }
 }

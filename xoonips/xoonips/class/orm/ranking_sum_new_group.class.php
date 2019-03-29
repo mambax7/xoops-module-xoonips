@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,21 +24,19 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/abstract_ranking.class.php';
-require_once __DIR__ . '/ranking_new_group.class.php';
+require_once __DIR__.'/abstract_ranking.class.php';
+require_once __DIR__.'/ranking_new_group.class.php';
 
 /**
  * @brief handler object of ranking sum new group
- *
  */
 class XooNIpsOrmRankingSumNewGroupHandler extends XooNIpsOrmRankingNewGroupHandler
 {
     /**
      * XooNIpsOrmRankingSumNewGroupHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -47,7 +45,7 @@ class XooNIpsOrmRankingSumNewGroupHandler extends XooNIpsOrmRankingNewGroupHandl
         $this->__initHandler('XooNIpsOrmRankingNewGroup', 'xoonips_ranking_sum_new_group', 'gid', false);
         $this->_set_columns(array(
                                 'gid',
-                                'timestamp'
+                                'timestamp',
                             ));
         $this->_set_sum_table();
     }

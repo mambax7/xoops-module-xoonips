@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.24.2.1.2.18 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -38,10 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && (isset($_GET['item_type_id']) || iss
 }
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
-include_once __DIR__ . '/include/lib.php';
-include_once __DIR__ . '/include/AL.php';
-include_once __DIR__ . '/include/item_limit_check.php';
+require __DIR__.'/include/common.inc.php';
+require_once __DIR__.'/include/lib.php';
+require_once __DIR__.'/include/AL.php';
+require_once __DIR__.'/include/item_limit_check.php';
 
 $xnpsid = $_SESSION['XNPSID'];
 
@@ -50,7 +50,7 @@ xnpEncodeMacSafariGet();
 
 // If post_id is specified, $_POST is restored.
 $formdata = xoonips_getUtility('formdata');
-$post_id  = $formdata->getValue('get', 'post_id', 'n', false);
+$post_id = $formdata->getValue('get', 'post_id', 'n', false);
 if (null !== $post_id && $_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_SESSION['post_id']) && isset($_SESSION['post_id'][$post_id])) {
         $_POST = unserialize($_SESSION['post_id'][$post_id]);
@@ -59,8 +59,8 @@ if (null !== $post_id && $_SERVER['REQUEST_METHOD'] === 'GET') {
 
 foreach (array(
              'item_type_id' => 0,
-             'scrollX'      => 0,
-             'scrollY'      => 0
+             'scrollX' => 0,
+             'scrollY' => 0,
          ) as $k => $v
 ) {
     $$k = $formdata->getValue('both', $k, 'i', false, $v);
@@ -74,12 +74,12 @@ $uid = $_SESSION['xoopsUserId'];
 if (!$xoopsUser->isAdmin($xoopsModule->getVar('mid'))
     && !xnp_is_activated($xnpsid, $uid)
 ) {
-    redirect_header(XOOPS_URL . '/', 3, _MD_XOONIPS_MODERATOR_NOT_ACTIVATED);
+    redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_MODERATOR_NOT_ACTIVATED);
 }
 
 $select_item_type = array();
 $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-$item_types       =  $item_typeHandler->getObjectsSortByWeight();
+$item_types = $item_typeHandler->getObjectsSortByWeight();
 if ($item_types) {
     foreach ($item_types as $i) {
         $select_item_type[$i->get('display_name')] = $i->get('item_type_id');
@@ -100,33 +100,33 @@ $_SESSION['xoonipsITID'] = $item_type_id; // setting of default value in item_ty
 
 if (!isset($item_type_id) && !isset($post_id) && $_SERVER['REQUEST_METHOD'] === 'GET') {
     header('HTTP/1.0 303 See Other');
-    header('Location: ' . XOOPS_URL . "/modules/xoonips/register.php?item_type_id=$item_type_id&dummy=$xnpsid");
-    echo sprintf(_IFNOTRELOAD, XOOPS_URL . "/modules/xoonips/register.php?item_type_id=$item_type_id&dummy=$xnpsid");
+    header('Location: '.XOOPS_URL."/modules/xoonips/register.php?item_type_id=$item_type_id&dummy=$xnpsid");
+    echo sprintf(_IFNOTRELOAD, XOOPS_URL."/modules/xoonips/register.php?item_type_id=$item_type_id&dummy=$xnpsid");
     exit;
 }
 
-$xoonipsTreeCheckBox          = true;
-$xoonipsURL                   = '';
+$xoonipsTreeCheckBox = true;
+$xoonipsURL = '';
 $xoonipsCheckPrivateHandlerId = 'PrivateIndexCheckedHandler'; //see also xoonips_register.tpl
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_register.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH.'/header.php';
 
 //check private_item_number_limit
 if (available_space_of_private_item() == 0) {
     if (!isset($system_message)) {
         $system_message = '';
     }
-    $system_message .= '<span style="color: red;">' . _MD_XOONIPS_ITEM_WARNING_ITEM_NUMBER_LIMIT . '</span><br>';
+    $system_message .= '<span style="color: red;">'._MD_XOONIPS_ITEM_WARNING_ITEM_NUMBER_LIMIT.'</span><br>';
     $xoopsTpl->assign('system_message', $system_message);
     $xoopsTpl->assign('scrollX', 0);
     $xoopsTpl->assign('scrollY', 0);
-    include XOOPS_ROOT_PATH . '/footer.php';
+    require XOOPS_ROOT_PATH.'/footer.php';
     exit();
 }
 
 $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-$item_type        = $item_typeHandler->get($item_type_id);
+$item_type = $item_typeHandler->get($item_type_id);
 if (!$item_type) {
     $item_type = $item_typeHandler->get($item_types[0]->get('item_type_id'));
 }
@@ -137,11 +137,11 @@ $xoopsTpl->assign('item_type_id', $item_type_id);
 $xoopsTpl->assign('xnpsid', $xnpsid);
 $xoopsTpl->assign('next_url', 'confirm_register.php');
 $xoopsTpl->assign('prev_url', 'register.php');
-$xoopsTpl->assign('this_url', XOOPS_URL . '/modules/xoonips/register.php');
+$xoopsTpl->assign('this_url', XOOPS_URL.'/modules/xoonips/register.php');
 $xoopsTpl->assign('accept_charset', xnpGetMacSafariAcceptCharset());
 
-include_once XOOPS_ROOT_PATH . '/modules/' . $item_type->get('viewphp');
-$func = $item_type->get('name') . 'GetRegisterBlock';
+require_once XOOPS_ROOT_PATH.'/modules/'.$item_type->get('viewphp');
+$func = $item_type->get('name').'GetRegisterBlock';
 $body = $func();
 
 $xoopsTpl->assign('body', $body);
@@ -174,17 +174,17 @@ if (xnp_get_account($xnpsid, $uid, $account) == RES_OK) {
 // If the page is made by POST, $_POST is made to save somewhere and page redirects.
 // rfc2616 10.3.4 303 See Other
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $post_id             = uniqid('postid', true);
+    $post_id = uniqid('postid', true);
     $_SESSION['post_id'] = array($post_id => serialize($_POST));
     header('HTTP/1.0 303 See Other');
-    header('Location: ' . XOOPS_URL . "/modules/xoonips/register.php?post_id=$post_id");
-    echo sprintf(_IFNOTRELOAD, XOOPS_URL . "/modules/xoonips/register.php?post_id=$post_id");
+    header('Location: '.XOOPS_URL."/modules/xoonips/register.php?post_id=$post_id");
+    echo sprintf(_IFNOTRELOAD, XOOPS_URL."/modules/xoonips/register.php?post_id=$post_id");
     //redirect_header("register.php?post_id=$post_id", 5, "redirecting...");
     exit;
 }
 
 // The output( header("Cache-control: no-cache") etc ) is prevented by footer.php.
-header('Content-Type:text/html; charset=' . _CHARSET);
+header('Content-Type:text/html; charset='._CHARSET);
 //echo "\r\n"; flush();
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH.'/footer.php';

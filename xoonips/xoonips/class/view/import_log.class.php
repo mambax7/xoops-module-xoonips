@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.10 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,15 +25,16 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/../base/view.class.php';
+require_once __DIR__.'/../base/view.class.php';
 
 /**
- * Class XooNIpsViewImportLog
+ * Class XooNIpsViewImportLog.
  */
 class XooNIpsViewImportLog extends XooNIpsView
 {
     /**
      * XooNIpsViewImportLog constructor.
+     *
      * @param associative $params
      */
     public function __construct($params)
@@ -41,33 +42,30 @@ class XooNIpsViewImportLog extends XooNIpsView
         parent::__construct($params);
     }
 
-    /**
-     *
-     */
     public function render()
     {
         global $xoopsOption, $xoopsConfig, $xoopsUser, $xoopsUserIsAdmin, $xoopsLogger, $xoopsTpl;
 
-        $textutil                                = xoonips_getUtility('text');
+        $textutil = xoonips_getUtility('text');
         $GLOBALS['xoopsOption']['template_main'] = 'xoonips_import_log.tpl';
         if ($this->_params['result']) {
-            include XOOPS_ROOT_PATH . '/header.php';
+            require XOOPS_ROOT_PATH.'/header.php';
             $xoopsTpl->assign('result', $this->_params['result']);
             $xoopsTpl->assign('filename', $textutil->html_special_chars($this->_params['filename']));
             $xoopsTpl->assign('number_of_items', $this->_number_of_items());
             $xoopsTpl->assign('uname', $textutil->html_special_chars($this->_params['uname']));
             $xoopsTpl->assign('errors', $this->_params['errors']);
             $xoopsTpl->assign('log', $textutil->html_special_chars($this->_get_item_log()));
-            include XOOPS_ROOT_PATH . '/footer.php';
+            require XOOPS_ROOT_PATH.'/footer.php';
         } else {
-            include XOOPS_ROOT_PATH . '/header.php';
+            require XOOPS_ROOT_PATH.'/header.php';
             $xoopsTpl->assign('result', false);
             $xoopsTpl->assign('filename', $this->_params['filename']);
             $xoopsTpl->assign('number_of_items', $this->_number_of_items());
             $xoopsTpl->assign('uname', $this->_params['uname']);
             $xoopsTpl->assign('errors', $this->_params['errors']);
             $xoopsTpl->assign('log', $this->_get_item_log());
-            include XOOPS_ROOT_PATH . '/footer.php';
+            require XOOPS_ROOT_PATH.'/footer.php';
         }
     }
 
@@ -76,7 +74,7 @@ class XooNIpsViewImportLog extends XooNIpsView
      */
     public function _get_item_log()
     {
-        $log              = '';
+        $log = '';
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
         foreach ($this->_params['import_items'] as $item) {
             $basic = $item->getVar('basic');
@@ -84,7 +82,7 @@ class XooNIpsViewImportLog extends XooNIpsView
                    = $item_typeHandler->get($basic->get('item_type_id'));
             $handler
                    = xoonips_getHandler($itemtype->get('name'), 'import_item');
-            $log .= "\n\n[item]\n" . $handler->getImportLog($item);
+            $log .= "\n\n[item]\n".$handler->getImportLog($item);
             foreach ($item->getErrors() as $e) {
                 $log .= "\nerror $e";
             }
@@ -92,7 +90,7 @@ class XooNIpsViewImportLog extends XooNIpsView
             foreach (array_merge($item->getDuplicateUnupdatableItemId(), $item->getDuplicateUpdatableItemId(), $item->getDuplicateLockedItemId()) as
                      $item_id
             ) {
-                $log .= "\nwarning conflict with " . xnpGetItemDetailURL($item_id);
+                $log .= "\nwarning conflict with ".xnpGetItemDetailURL($item_id);
             }
         }
 
@@ -112,13 +110,14 @@ class XooNIpsViewImportLog extends XooNIpsView
      */
     public function _get_result_log()
     {
-        $log              = '';
+        $log = '';
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
         foreach ($this->_params['import_items'] as $item) {
             foreach (array_unique($item->getErrorCodes()) as $code) {
-                $log .= "\nerror " . $code . ' ' . $item->getVar('pseudo_id');
+                $log .= "\nerror ".$code.' '.$item->getVar('pseudo_id');
             }
         }
+
         return $log;
     }
 }

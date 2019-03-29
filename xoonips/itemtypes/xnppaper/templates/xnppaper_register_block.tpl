@@ -1,5 +1,4 @@
 <{* xnppaper register block *}>
-<{* $Revision: 1.22.2.1.2.14 $ *}>
 <script type="text/javascript">
 //<![CDATA[
 

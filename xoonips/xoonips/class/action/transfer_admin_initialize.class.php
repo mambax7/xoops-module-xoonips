@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.17 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,11 +25,11 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/transfer.class.php';
-include_once __DIR__ . '/../../include/transfer.inc.php';
+require_once __DIR__.'/transfer.class.php';
+require_once __DIR__.'/../../include/transfer.inc.php';
 
 /**
- * Class XooNIpsActionTransferAdminInitialize
+ * Class XooNIpsActionTransferAdminInitialize.
  */
 class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
 {
@@ -41,9 +41,6 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
         parent::__construct();
     }
 
-    /**
-     * @return null
-     */
     public function _get_logic_name()
     {
         return null;
@@ -67,17 +64,17 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
         global $xoopsUser;
 
         if (count($this->get_from_user_options()) == 1) {
-            redirect_header(XOOPS_URL . '/modules/xoonips/admin/maintenance.php?page=item', 3,
+            redirect_header(XOOPS_URL.'/modules/xoonips/admin/maintenance.php?page=item', 3,
                             _AM_XOONIPS_MAINTENANCE_TRANSFER_ITEM_ERROR_ONLY_1_USER);
         }
 
-        $this->_view_params['from_uid']          = $this->_formdata->getValue('post', 'from_uid', 'i', false);
-        $this->_view_params['from_index_id']     = $this->_formdata->getValue('post', 'from_index_id', 'i', false);
-        $this->_view_params['to_uid']            = $this->_formdata->getValue('post', 'to_uid', 'i', false);
-        $this->_view_params['to_index_id']       = $this->_formdata->getValue('post', 'to_index_id', 'i', false);
-        $tmp                                     = $this->_formdata->getValueArray('post', 'checked_item_ids', 'i', false);
+        $this->_view_params['from_uid'] = $this->_formdata->getValue('post', 'from_uid', 'i', false);
+        $this->_view_params['from_index_id'] = $this->_formdata->getValue('post', 'from_index_id', 'i', false);
+        $this->_view_params['to_uid'] = $this->_formdata->getValue('post', 'to_uid', 'i', false);
+        $this->_view_params['to_index_id'] = $this->_formdata->getValue('post', 'to_index_id', 'i', false);
+        $tmp = $this->_formdata->getValueArray('post', 'checked_item_ids', 'i', false);
         $this->_view_params['selected_item_ids'] = null !== $tmp ? $tmp : array();
-        $this->_view_params['page']              = $this->_formdata->getValue('post', 'page', 's', false);
+        $this->_view_params['page'] = $this->_formdata->getValue('post', 'page', 's', false);
         $this->_view_params['from_user_options']
                                                  = $this->get_from_user_options();
 
@@ -86,11 +83,11 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
                 $this->_view_params['from_index_id']
                                                          = $this->get_private_index_id($this->_view_params['from_uid']);
                 $this->_view_params['selected_item_ids'] = array();
-                $this->_view_params['page']              = 1;
+                $this->_view_params['page'] = 1;
                 break;
             case 'from_index_id_changed':
                 $this->_view_params['selected_item_ids'] = array();
-                $this->_view_params['page']              = 1;
+                $this->_view_params['page'] = 1;
                 break;
             case 'to_uid_changed':
                 $this->_view_params['to_index_id']
@@ -99,15 +96,15 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
             case 'page_changed':
                 break;
             default:
-                $uids                                    = array_keys($this->_view_params['from_user_options']);
-                $this->_view_params['from_uid']          = $uids[0];
+                $uids = array_keys($this->_view_params['from_user_options']);
+                $this->_view_params['from_uid'] = $uids[0];
                 $this->_view_params['from_index_id']
                                                          = $this->get_private_index_id($uids[0]);
-                $this->_view_params['to_uid']            = $uids[1];
+                $this->_view_params['to_uid'] = $uids[1];
                 $this->_view_params['to_index_id']
                                                          = $this->get_private_index_id($uids[1]);
                 $this->_view_params['selected_item_ids'] = array();
-                $this->_view_params['page']              = 1;
+                $this->_view_params['page'] = 1;
                 break;
         }
 
@@ -152,11 +149,12 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
         $result = array();
 
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $criteria               = new Criteria('index_id', $this->_view_params['from_index_id']);
-        $links                  =  $index_item_linkHandler->getObjects($criteria);
+        $criteria = new Criteria('index_id', $this->_view_params['from_index_id']);
+        $links = $index_item_linkHandler->getObjects($criteria);
         foreach ($links as $link) {
             $result[] = $link->get('item_id');
         }
+
         return $result;
     }
 
@@ -166,18 +164,19 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
     public function get_from_user_options()
     {
         $uHandler = xoonips_getOrmHandler('xoonips', 'xoops_users');
-        $join     = new XooNIpsJoinCriteria('xoonips_users', 'uid', 'uid', 'INNER', 'xu');
+        $join = new XooNIpsJoinCriteria('xoonips_users', 'uid', 'uid', 'INNER', 'xu');
         $criteria = new CriteriaCompo(new Criteria('level', 0, '>'));
         $criteria->add(new Criteria('activate', 1, '=', 'xu'));
         $criteria->setSort('uname');
         $criteria->setOrder('ASC');
-        $res    =  $uHandler->open($criteria, 'xu.uid, uname', false, $join);
+        $res = $uHandler->open($criteria, 'xu.uid, uname', false, $join);
         $result = array();
         while ($obj = $uHandler->getNext($res)) {
-            $uid          = $obj->get('uid');
+            $uid = $obj->get('uid');
             $result[$uid] = $obj->getVar('uname', 's');
         }
         $uHandler->close($res);
+
         return $result;
     }
 
@@ -187,33 +186,36 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
     public function get_to_user_options()
     {
         $uHandler = xoonips_getOrmHandler('xoonips', 'xoops_users');
-        $join     = new XooNIpsJoinCriteria('xoonips_users', 'uid', 'uid', 'INNER', 'xu');
+        $join = new XooNIpsJoinCriteria('xoonips_users', 'uid', 'uid', 'INNER', 'xu');
         $criteria = new CriteriaCompo(new Criteria('level', 0, '>'));
         $criteria->add(new Criteria('activate', 1, '=', 'xu'));
         $criteria->add(new Criteria('uid', $this->_view_params['from_uid'], '!=', 'xu'));
         $criteria->setSort('uname');
         $criteria->setOrder('ASC');
-        $res    =  $uHandler->open($criteria, 'xu.uid, uname', false, $join);
+        $res = $uHandler->open($criteria, 'xu.uid, uname', false, $join);
         $result = array();
         while ($obj = $uHandler->getNext($res)) {
-            $uid          = $obj->get('uid');
+            $uid = $obj->get('uid');
             $result[$uid] = $obj->getVar('uname', 's');
         }
         $uHandler->close($res);
+
         return $result;
     }
 
     /**
      * @param $uid
+     *
      * @return bool
      */
     public function get_private_index_id($uid)
     {
         $userHandler = xoonips_getOrmHandler('xoonips', 'users');
-        $user         = $userHandler->get($uid);
+        $user = $userHandler->get($uid);
         if (!$user) {
             return false;
         }
+
         return $user->get('private_index_id');
     }
 }

@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.14 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,17 +24,15 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
- * class of XooNIps Session
+ * class of XooNIps Session.
+ *
  * @li getVar( 'sess_id' ) : session ID
  * @li getVar( 'updated' ) : last update time. time_t
  * @li getVar( 'uid' ) : {@link XooNIpsUser} ID
  * @li getVar( 'su_uid' ) : target uid in su mode. otherwise null.
- *
  */
 class XooNIpsOrmSession extends XooNIpsTableObject
 {
@@ -55,14 +53,13 @@ class XooNIpsOrmSession extends XooNIpsTableObject
 }
 
 /**
- *
- * XooNIps Session Handler class
- *
+ * XooNIps Session Handler class.
  */
 class XooNIpsOrmSessionHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmSessionHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -72,31 +69,33 @@ class XooNIpsOrmSessionHandler extends XooNIpsTableObjectHandler
     }
 
     /**
-     * get object
+     * get object.
      *
-     * @access public
      * @param string $id session id
+     *
      * @return bool|XooNIpsOrmSession
      */
     public function get($id)
     {
-        $objects =&  $this->getObjects(new Criteria('sess_id', $id));
+        $objects = &$this->getObjects(new Criteria('sess_id', $id));
         if ($objects === false || count($objects) != 1) {
             $ret = false;
+
             return $ret;
         }
+
         return $objects[0];
     }
 
     /**
-     * get objects
+     * get objects.
      *
-     * @access public
      * @param object              $criteria
      * @param bool                $id_as_key
      * @param string              $fieldlist fieldlist for distinct select
      * @param bool                $distinct
      * @param XooNIpsJoinCriteria $joindef   join criteria object
+     *
      * @return array objects
      */
     public function &getObjects($criteria = null, $id_as_key = false, $fieldlist = '', $distinct = false, $joindef = null)
@@ -104,30 +103,32 @@ class XooNIpsOrmSessionHandler extends XooNIpsTableObjectHandler
         if ($fieldlist == '') {
             $fieldlist = '*';
         }
-        $fieldlist .= ', unix_timestamp(' . $this->db->prefix($this->__table_name) . '.updated) as updated ';
+        $fieldlist .= ', unix_timestamp('.$this->db->prefix($this->__table_name).'.updated) as updated ';
+
         return parent::getObjects($criteria, $id_as_key, $fieldlist, $distinct, $joindef);
     }
 
     /**
-     * helper function for sql string creation. change last_updated to updated
+     * helper function for sql string creation. change last_updated to updated.
      *
-     * @access private
      * @param object $obj
      * @param array  $vars array of variables
+     *
      * @return array quoted strings
      */
     public function &_makeVarsArray4SQL($obj, $vars)
     {
-        $ret            = parent::_makeVarsArray4SQL($obj, $vars);
-        $ret['updated'] = 'FROM_UNIXTIME(' . $ret['updated'] . ')';
+        $ret = parent::_makeVarsArray4SQL($obj, $vars);
+        $ret['updated'] = 'FROM_UNIXTIME('.$ret['updated'].')';
+
         return $ret;
     }
 
     /**
-     * init xoonips session
+     * init xoonips session.
      *
-     * @access public
      * @param $uid
+     *
      * @return bool false if failure
      */
     public function initSession($uid)
@@ -140,18 +141,18 @@ class XooNIpsOrmSessionHandler extends XooNIpsTableObjectHandler
             return false;
         }
         $sess_id = session_id();
-        $now     = time();
+        $now = time();
 
         // validate xoonips user
         if (!$this->validateUser($uid, false)) {
             return false;
         }
 
-        $session =  $this->get($sess_id);
+        $session = $this->get($sess_id);
         if (is_object($session)) {
             $session->set('updated', $now);
         } else {
-            $session =  $this->create();
+            $session = $this->create();
             $session->set('sess_id', $sess_id);
             $session->set('uid', $uid);
             $session->set('updated', $now);
@@ -164,33 +165,33 @@ class XooNIpsOrmSessionHandler extends XooNIpsTableObjectHandler
 
     /**
      * validate xoonips user
-     * if user is not xoonips user or not certified user then logout now
+     * if user is not xoonips user or not certified user then logout now.
      *
-     * @access public
      * @param int  $uid       user id
      * @param bool $do_logout logout if invalid xoonips user
+     *
      * @return bool validation result
      */
     public function validateUser($uid, $do_logout)
     {
-        $myxoopsConfig =  xoonips_get_xoops_configs(XOOPS_CONF);
+        $myxoopsConfig = xoonips_get_xoops_configs(XOOPS_CONF);
         if ($uid == UID_GUEST) {
             // guest is ok
             return true;
         }
         $xusersHandler = xoonips_getOrmHandler('xoonips', 'users');
-        $xusers_obj    = $xusersHandler->get($uid);
-        $ret           = true;
-        $message       = '';
+        $xusers_obj = $xusersHandler->get($uid);
+        $ret = true;
+        $message = '';
         if (!is_object($xusers_obj)) {
             // not xoonips user
-            $ret     = false;
+            $ret = false;
             $message = _MD_XOONIPS_ITEM_FORBIDDEN;
         } else {
             $is_certified = $xusers_obj->get('activate');
             if ($is_certified == 0) {
                 // not certified xoonips user
-                $ret     = false;
+                $ret = false;
                 $message = _MD_XOONIPS_ACCOUNT_NOT_ACTIVATED;
             }
         }
@@ -206,30 +207,31 @@ class XooNIpsOrmSessionHandler extends XooNIpsTableObjectHandler
                 $onlineHandler->destroy($uid);
 
                 // redirect to top page
-                redirect_header(XOOPS_URL . '/', 3, $message);
+                redirect_header(XOOPS_URL.'/', 3, $message);
             }
         }
+
         return $ret;
     }
 
     /**
-     * GC expired sessions
+     * GC expired sessions.
      */
     public function gcSession()
     {
-        $myxoopsConfig   =  xoonips_get_xoops_configs(XOOPS_CONF);
-        $session_expire  = $myxoopsConfig['session_expire'];
-        $expire_time     = time() + (60 * $session_expire);
+        $myxoopsConfig = xoonips_get_xoops_configs(XOOPS_CONF);
+        $session_expire = $myxoopsConfig['session_expire'];
+        $expire_time = time() + (60 * $session_expire);
         $eventlogHandler = xoonips_getOrmHandler('xoonips', 'event_log');
 
-        $join     = new XooNIpsJoinCriteria('session', 'sess_id', 'sess_id', 'LEFT', 'ts');
+        $join = new XooNIpsJoinCriteria('session', 'sess_id', 'sess_id', 'LEFT', 'ts');
         $criteria = new Criteria('ISNULL(ts.sess_id)', 1);
         // set fieldlist for same field name 'sess_id'
-        $fieldlist = $GLOBALS['xoopsDB']->prefix('xoonips_session') . '.*';
-        $sessions  =&  $this->getObjects($criteria, false, $fieldlist, false, $join);
+        $fieldlist = $GLOBALS['xoopsDB']->prefix('xoonips_session').'.*';
+        $sessions = &$this->getObjects($criteria, false, $fieldlist, false, $join);
         foreach ($sessions as $session) {
             $su_uid = $session->get('su_uid');
-            $uid    = $session->get('uid');
+            $uid = $session->get('uid');
             // terminate switch user mode
             if ($su_uid) {
                 if (!$eventlogHandler->recordEndSuEvent($uid, $su_uid, $expire_time)) {
@@ -245,6 +247,7 @@ class XooNIpsOrmSessionHandler extends XooNIpsTableObjectHandler
                 return false;
             }
         }
+
         return true;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.3 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,41 +25,36 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/xoonipserror.class.php';
+require_once __DIR__.'/xoonipserror.class.php';
 
 /**
- *
  * @brief Class that have results of a logic
+ *
  * @see   XooNIpsError
  *
  * @li    set or get a result(success or fault) using get/setResult methods
  * @li    set or get error informations using get/setError methods(only if failed)
  * @li    set or get response of logic using set/getSuccess(only if succeed)
- *
  */
 class XooNIpsResponse
 {
-
     /**
-     *
-     * result of logic
+     * result of logic.
      */
     public $result = false;
 
     /**
-     *
-     * response of logic
+     * response of logic.
      */
     public $success = false;
 
     /**
-     *
-     * error information of logic
+     * error information of logic.
      */
     public $error = false;
 
     /**
-     * create XooNIpsResponse
+     * create XooNIpsResponse.
      */
     public function __construct()
     {
@@ -68,7 +63,8 @@ class XooNIpsResponse
 
     /**
      * @brief get result
-     * @return boolean false if failed
+     *
+     * @return bool false if failed
      */
     public function getResult()
     {
@@ -77,6 +73,7 @@ class XooNIpsResponse
 
     /**
      * @brief get response of logic if succeed.
+     *
      * @return mixed response of logic
      */
     public function &getSuccess()
@@ -86,6 +83,7 @@ class XooNIpsResponse
 
     /**
      * @brief get error informatino of logic if failed.
+     *
      * @return XooNIpsError error
      */
     public function &getError()
@@ -95,6 +93,7 @@ class XooNIpsResponse
 
     /**
      * @brief add error code and error message
+     *
      * @param int    $code  error code
      * @param string $extra extra information of err(null if omitted)
      */
@@ -105,7 +104,8 @@ class XooNIpsResponse
 
     /**
      * @brief set error informatino of logic if failed.
-     * @param boolean $result
+     *
+     * @param bool $result
      */
     public function setResult($result)
     {
@@ -114,6 +114,7 @@ class XooNIpsResponse
 
     /**
      * @brief set error informatino of logic if failed.
+     *
      * @param mixed $success
      */
     public function setSuccess($success)

@@ -1,5 +1,4 @@
 <{* xnpmemo register block *}>
-<{* $Revision: 1.2.8.3 $ *}>
 
 <table class="outer">
   <tr>

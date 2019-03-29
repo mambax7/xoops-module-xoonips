@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,18 +27,17 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
-include_once XOOPS_ROOT_PATH . '/modules/xnpbinder/iteminfo.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xoonips_compo_item.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xnpbinder/iteminfo.php';
 
 /**
- *
  * @brief Handler object that create,insert,update,get,delete XNPBinderCompo object.
- *
  */
 class XNPBinderCompoHandler extends XooNIpsItemInfoCompoHandler
 {
     /**
      * XNPBinderCompoHandler constructor.
+     *
      * @param $db
      */
     public function __construct($db)
@@ -52,11 +51,13 @@ class XNPBinderCompoHandler extends XooNIpsItemInfoCompoHandler
     public function create()
     {
         $binder = new XNPBinderCompo();
+
         return $binder;
     }
 
     /**
      * @param $obj
+     *
      * @return bool
      */
     public function insert($obj)
@@ -68,13 +69,14 @@ class XNPBinderCompoHandler extends XooNIpsItemInfoCompoHandler
         if ($detail->isNew()) {
             $detail->setDirty();
         }
+
         return parent::insert($obj);
     }
 
     /**
-     *
      * @param array $child_items array of XooNIpsItem of child item
      * @param array $index_ids   array of integer of index id of binder
+     *
      * @return true(has private and group items) or false(doesn't have)
      */
     public function publicBinderHasNotPublicItems($child_items, $index_ids)
@@ -109,17 +111,20 @@ class XNPBinderCompoHandler extends XooNIpsItemInfoCompoHandler
                         continue 2;
                     }
                 }
-                return true;//one child item is not public
+
+                return true; //one child item is not public
             }
+
             return false;
         }
+
         return false;
     }
 
     /**
-     *
      * @param array $child_items array of XooNIpsItem of child item
      * @param array $index_ids   array of integer of index id of binder
+     *
      * @return true(has private items) or false(doesn't have private items)
      */
     public function groupBinderHasPrivateItems($child_items, $index_ids)
@@ -156,19 +161,23 @@ class XNPBinderCompoHandler extends XooNIpsItemInfoCompoHandler
                         continue 2;
                     }
                 }
-                return true;//one child item is private public
+
+                return true; //one child item is private public
             }
+
             return false;
         }
+
         return false;
     }
 
     /**
-     * return template filename
+     * return template filename.
      *
      * @param string $type defined symbol
      *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
      *                     or XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LISTL
+     *
      * @return string|template
      */
     public function getTemplateFileName($type)
@@ -184,14 +193,15 @@ class XNPBinderCompoHandler extends XooNIpsItemInfoCompoHandler
     }
 
     /**
-     * return template variables of item
+     * return template variables of item.
      *
-     * @param string $type defined symbol
-     *                     XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
-     *                     , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
-     *                     or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
+     * @param string $type    defined symbol
+     *                        XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL
+     *                        , XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST
+     *                        or XOONIPS_TEMPLATE_TYPE_ITEM_LIST
      * @param int    $item_id
-     * @param int    $uid  user id who get item
+     * @param int    $uid     user id who get item
+     *
      * @return array of template variables
      */
     public function getTemplateVar($type, $item_id, $uid)
@@ -220,11 +230,12 @@ class XNPBinderCompoHandler extends XooNIpsItemInfoCompoHandler
                     }
                     if ($handler->getPerm($item_id, $uid, 'read')) {
                         $result['detail']['child_items'][] = array(
-                            'filename' => 'db:' . $handler->getTemplateFileName(XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST),
-                            'var'      => $handler->getTemplateVar(XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST, $link->get('item_id'), $uid)
+                            'filename' => 'db:'.$handler->getTemplateFileName(XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST),
+                            'var' => $handler->getTemplateVar(XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST, $link->get('item_id'), $uid),
                         );
                     }
                 }
+
                 return $result;
             default:
                 return $result;
@@ -233,6 +244,7 @@ class XNPBinderCompoHandler extends XooNIpsItemInfoCompoHandler
 
     /**
      * @param $item_id
+     *
      * @return bool|XooNIpsItemCompoHandler
      */
     public function get_item_compoHandler_by_item_id($item_id)
@@ -240,13 +252,13 @@ class XNPBinderCompoHandler extends XooNIpsItemInfoCompoHandler
         $falsevar = false;
 
         $basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $basic        = $basicHandler->get($item_id);
+        $basic = $basicHandler->get($item_id);
         if (false === $basic) {
             return $falsevar;
         }
 
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $itemtype         = $item_typeHandler->get($basic->get('item_type_id'));
+        $itemtype = $item_typeHandler->get($basic->get('item_type_id'));
         if (false === $itemtype) {
             return $falsevar;
         }
@@ -255,28 +267,27 @@ class XNPBinderCompoHandler extends XooNIpsItemInfoCompoHandler
     }
 
     /**
-     * get parent item ids
+     * get parent item ids.
      *
-     * @access protected
      * @param int item_id
+     *
      * @return array
      */
     public function getItemTypeSpecificParentItemIds($item_id)
     {
         $binder_item_linkHandler = xoonips_getOrmHandler('xnpbinder', 'binder_item_link');
-        $binder_item_links       = $binder_item_linkHandler->getObjects(new Criteria('item_id', $item_id));
-        $result                  = array();
+        $binder_item_links = $binder_item_linkHandler->getObjects(new Criteria('item_id', $item_id));
+        $result = array();
         foreach ($binder_item_links as $binder_item_link) {
             $result[] = $binder_item_link->get('binder_id');
         }
+
         return $result;
     }
 }
 
 /**
- *
  * @brief Data object that have one ore more XooNIpsTableObject for Binder type.
- *
  */
 class XNPBinderCompo extends XooNIpsItemInfoCompo
 {
@@ -295,13 +306,14 @@ class XNPBinderCompo extends XooNIpsItemInfoCompo
      */
     public function getChildItemIds()
     {
-        $basic                   = $this->getVar('basic');
+        $basic = $this->getVar('basic');
         $binder_item_linkHandler = xoonips_getOrmHandler('xnpbinder', 'binder_item_link');
-        $binder_item_links       = $binder_item_linkHandler->getObjects(new Criteria('binder_id', $basic->get('item_id')));
-        $result                  = array();
+        $binder_item_links = $binder_item_linkHandler->getObjects(new Criteria('binder_id', $basic->get('item_id')));
+        $result = array();
         foreach ($binder_item_links as $binder_item_link) {
             $result[] = $binder_item_link->get('item_id');
         }
+
         return $result;
     }
 }

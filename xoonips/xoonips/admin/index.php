@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.11.4.1.2.4 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,17 +24,17 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-include __DIR__ . '/../../../include/cp_header.php';
+require __DIR__.'/../../../include/cp_header.php';
 
 // load common file.
-include __DIR__ . '/actions/common.inc.php';
+require __DIR__.'/actions/common.inc.php';
 
 // page definition
-$pages         = array();
+$pages = array();
 $pages['main'] = array();
 
 // initialize
 xoonips_admin_initialize(__FILE__, 'index', $pages);
 
 // call action file
-include $xoonips_admin['myaction_path'];
+require $xoonips_admin['myaction_path'];

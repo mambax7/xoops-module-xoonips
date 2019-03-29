@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.9 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xoonips_compo_item.class.php';
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
@@ -33,12 +33,13 @@ include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.
 //
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /**
- * Class XooNIpsIndexCompoHandler
+ * Class XooNIpsIndexCompoHandler.
  */
 class XooNIpsIndexCompoHandler extends XooNIpsItemCompoHandler
 {
     /**
      * XooNIpsIndexCompoHandler constructor.
+     *
      * @param $db
      */
     public function __construct($db)
@@ -54,23 +55,24 @@ class XooNIpsIndexCompoHandler extends XooNIpsItemCompoHandler
     public function create()
     {
         $index = new XooNIpsIndexCompo();
+
         return $index;
     }
 
     /**
-     *
      * return string array of index name from /(root) to specified index($index_id)
      * private index name is replaced by 'Private' if
      * $private_index_id is given.
      *
-     * @param integer    $index_id         value of index id
+     * @param int        $index_id         value of index id
      * @param bool|int   $private_index_id integer value of private index(optional)
      * @param int|string $fmt              (optional)string format(see XoopsObject::getVar)
+     *
      * @return string array or false if failure
      */
     public function getIndexPathNames($index_id, $private_index_id = false, $fmt = 'n')
     {
-        $ret          = array();
+        $ret = array();
         $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
         for ($index_obj = $indexHandler->get($index_id);
              is_object($index_obj);
@@ -85,13 +87,15 @@ class XooNIpsIndexCompoHandler extends XooNIpsItemCompoHandler
                 break;
             }
         }
+
         return array_reverse($ret);
     }
 
     /**
-     * return array of indexes from index(id=$index_id) to root index
+     * return array of indexes from index(id=$index_id) to root index.
      *
      * @param $index_id
+     *
      * @return array|bool
      */
     public function getPathIndexes($index_id)
@@ -103,20 +107,22 @@ class XooNIpsIndexCompoHandler extends XooNIpsItemCompoHandler
                 return false;
             }
             $indexes[] = $xoonips_index;
-            $index     = $xoonips_index->getVar('index');
-            $index_id  = $index->get('parent_index_id');
+            $index = $xoonips_index->getVar('index');
+            $index_id = $index->get('parent_index_id');
         } while (IID_ROOT != $index_id);
+
         return array_reverse($indexes);
     }
 
     /**
      * duplicateIndexStructure
      * - duplicate index recursively
-     * - register items in group index to duplicated index
-     * @access public
-     * @param integer $target_index_id index that duplicated index is inserted to.
-     * @param integer $source_index_id index that to be duplicated.
-     * @return bool|integer index id of copy of $source_index_id or false if failure
+     * - register items in group index to duplicated index.
+     *
+     * @param int $target_index_id index that duplicated index is inserted to
+     * @param int $source_index_id index that to be duplicated
+     *
+     * @return bool|int index id of copy of $source_index_id or false if failure
      */
     public function duplicateIndexStructure($target_index_id, $source_index_id)
     {
@@ -126,36 +132,41 @@ class XooNIpsIndexCompoHandler extends XooNIpsItemCompoHandler
         $source_index = $indexHandler->get($source_index_id);
         if (!$target_index) {
             trigger_error('target index is not found');
+
             return false;
         }
         if (!$source_index) {
             trigger_error('source index is not found');
+
             return false;
         }
         if ($target_index->get('open_level') != OL_PUBLIC) {
             trigger_error('target index must be public index');
+
             return false;
         }
         if ($source_index->get('open_level') != OL_GROUP_ONLY) {
             trigger_error('source index must be group index');
+
             return false;
         }
 
         $source_index_compo = $this->get($source_index_id);
-        $new_index_compo    = $source_index_compo->xoopsClone();
-        $new_index          = $new_index_compo->getVar('index');
+        $new_index_compo = $source_index_compo->xoopsClone();
+        $new_index = $new_index_compo->getVar('index');
         $new_index->setDefault('index_id');
         $new_index->setDefault('uid');
         $new_index->setDefault('gid');
         $new_index->setDefault('sort_number');
         $new_index->set('open_level', OL_PUBLIC);
         $new_index->set('parent_index_id', $target_index_id);
-        $new_basic =  $new_index_compo->getVar('basic');
+        $new_basic = $new_index_compo->getVar('basic');
         $new_basic->set('item_id', 0);
         $new_titles = $new_index_compo->getVar('titles');
         $new_titles[0]->setDefault('item_id');
         if (!$this->insert($new_index_compo)) {
             trigger_error('cannot insert new index');
+
             return false;
         }
 
@@ -163,6 +174,7 @@ class XooNIpsIndexCompoHandler extends XooNIpsItemCompoHandler
         foreach ($index_item_linkHandler->getObjects(new Criteria('index_id', $source_index->get('index_id'))) as $link) {
             if (!$index_item_linkHandler->add($new_index->get('index_id'), $link->get('item_id'), CERTIFIED)) {
                 trigger_error('cannot register item to new index');
+
                 return false;
             }
         }
@@ -170,26 +182,31 @@ class XooNIpsIndexCompoHandler extends XooNIpsItemCompoHandler
         foreach ($source_index->getAllChildren() as $child) {
             if (!$this->duplicateIndexStructure($new_index->get('index_id'), $child->get('index_id'))) {
                 trigger_error('cannot duplicate sub index');
+
                 return false;
             }
         }
+
         return $new_index->get('index_id');
     }
 
     /**
-     * delete all of descendents
-     * @param integer $index_id index id
+     * delete all of descendents.
+     *
+     * @param int $index_id index id
+     *
      * @return bool
      */
     public function deleteAllDescendents($index_id)
     {
         $index_compoHandler = xoonips_getOrmCompoHandler('xoonips', 'index');
-        $indexHandler       = xoonips_getOrmHandler('xoonips', 'index');
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
         foreach ($indexHandler->getAllDescendents($index_id) as $descendent) {
             if (!$index_compoHandler->deleteByKey($descendent->get('index_id'))) {
                 return false;
             }
         }
+
         return true;
     }
 }

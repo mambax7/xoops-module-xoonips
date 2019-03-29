@@ -1,5 +1,4 @@
 <{* xnpmemo register block *}>
-<{* $Revision: 1.4.4.1.2.3 $ *}>
 
 <!-- begin of xnpmemo_register_block.tpl -->
 <table class="outer">

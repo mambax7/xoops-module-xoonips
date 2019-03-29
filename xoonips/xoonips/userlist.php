@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.7.4.1.2.11 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 $xoopsOption['pagetype'] = 'user';
-include __DIR__ . '/include/common.inc.php';
+require __DIR__.'/include/common.inc.php';
 
 $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid', 'n') : UID_GUEST;
 
@@ -34,18 +34,18 @@ $textutil = xoonips_getUtility('text');
 
 // get position list
 $posiHandler = xoonips_getOrmHandler('xoonips', 'positions');
-$criteria    = new Criteria('posi_order', 0, '>=');
+$criteria = new Criteria('posi_order', 0, '>=');
 $criteria->setSort('posi_order');
 $criteria->setOrder('ASC');
-$posi_objs =  $posiHandler->getObjects($criteria);
-$users     = array();
+$posi_objs = $posiHandler->getObjects($criteria);
+$users = array();
 // get user list by positions
 $xuHandler = xoonips_getOrmHandler('xoonips', 'users');
 $userslist = array();
 foreach ($posi_objs as $posi_obj) {
-    $posi_id    = $posi_obj->get('posi_id');
+    $posi_id = $posi_obj->get('posi_id');
     $posi_title = $posi_obj->get('posi_title');
-    $criteria   = new CriteriaCompo();
+    $criteria = new CriteriaCompo();
     $criteria->add(new Criteria('posi', $posi_id)); // position id
     $criteria->add(new Criteria('level', 0, '>', 'u')); // activated user
     $criteria->add(new Criteria('activate', 1)); // certified user
@@ -53,13 +53,13 @@ foreach ($posi_objs as $posi_obj) {
     $join_criteria = new XooNIpsJoinCriteria('users', 'uid', 'uid', 'INNER', 'u');
     $criteria->setSort('user_order');
     $criteria->setOrder('ASC');
-    $xu_objs =  $xuHandler->getObjects($criteria, false, 'u.uid, u.name, u.uname, company_name', false, $join_criteria);
-    $users   = array();
+    $xu_objs = $xuHandler->getObjects($criteria, false, 'u.uid, u.name, u.uname, company_name', false, $join_criteria);
+    $users = array();
     foreach ($xu_objs as $xu_obj) {
         $users[] = array(
-            'uid'          => $xu_obj->get('uid'),
-            'name'         => $textutil->html_special_chars($xu_obj->getExtraVar('name')),
-            'uname'        => $textutil->html_special_chars($xu_obj->getExtraVar('uname')),
+            'uid' => $xu_obj->get('uid'),
+            'name' => $textutil->html_special_chars($xu_obj->getExtraVar('name')),
+            'uname' => $textutil->html_special_chars($xu_obj->getExtraVar('uname')),
             'company_name' => $textutil->html_special_chars($xu_obj->getVar('company_name')),
         );
     }
@@ -72,9 +72,9 @@ foreach ($posi_objs as $posi_obj) {
 }
 
 $GLOBALS['xoopsOption']['template_main'] = 'xoonips_userlist.tpl';
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH.'/header.php';
 
 $xoopsTpl->assign('is_user', $uid != UID_GUEST);
 $xoopsTpl->assign('userslist', $userslist);
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH.'/footer.php';

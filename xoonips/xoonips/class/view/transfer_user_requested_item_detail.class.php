@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.9 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,17 +25,15 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once __DIR__ . '/transfer.class.php';
+require_once __DIR__.'/transfer.class.php';
 
 /**
- *
- * HTML view to show transfer item detail
- *
+ * HTML view to show transfer item detail.
  */
 class XooNIpsViewTransferUserRequestedItemDetail extends XooNIpsViewTransfer
 {
     /**
-     * create view
+     * create view.
      *
      * @param arrray $params associative array of view
      *                       - $params['template_file_name']:
@@ -46,17 +44,14 @@ class XooNIpsViewTransferUserRequestedItemDetail extends XooNIpsViewTransfer
         parent::__construct($params);
     }
 
-    /**
-     *
-     */
     public function render()
     {
         global $xoopsConfig;
-        require_once XOOPS_ROOT_PATH . '/class/template.php';
+        require_once XOOPS_ROOT_PATH.'/class/template.php';
 
         $xoopsTpl = new XoopsTpl();
         xoops_header(false);
-        $xoopsTpl->assign('template_file_name', 'db:' . $this->_params['template_file_name']);
+        $xoopsTpl->assign('template_file_name', 'db:'.$this->_params['template_file_name']);
         $xoopsTpl->assign('template_vars', $this->_params['template_vars']);
         $xoopsTpl->display('db:xoonips_transfer_user_requested_item_detail.tpl');
         xoops_footer();
@@ -67,10 +62,11 @@ class XooNIpsViewTransferUserRequestedItemDetail extends XooNIpsViewTransfer
      */
     public function get_xoonips_user_template_vars()
     {
-        $xoops_user =  $this->_params['user']->getVar('xoops_user');
+        $xoops_user = $this->_params['user']->getVar('xoops_user');
+
         return array(
             'uname' => $xoops_user->get('uname'),
-            'name'  => $xoops_user->get('name')
+            'name' => $xoops_user->get('name'),
         );
     }
 
@@ -80,7 +76,7 @@ class XooNIpsViewTransferUserRequestedItemDetail extends XooNIpsViewTransfer
     public function get_xoonips_item_type_template_vars()
     {
         return array(
-            'display_name' => $this->_params['item_type']->getVar('display_name', 's')
+            'display_name' => $this->_params['item_type']->getVar('display_name', 's'),
         );
     }
 
@@ -89,25 +85,25 @@ class XooNIpsViewTransferUserRequestedItemDetail extends XooNIpsViewTransfer
      */
     public function get_xoonips_item_template_vars()
     {
-        $basic =  $this->_params['item']->getVar('basic');
+        $basic = $this->_params['item']->getVar('basic');
 
         $result = array(
-            'basic'           => array(
-                'item_id'           => $basic->get('item_id'),
-                'description'       => $basic->getVar('description', 's'),
-                'doi'               => $basic->get('doi'),
-                'creation_date'     => $basic->get('creation_date'),
-                'last_update_date'  => $basic->get('last_update_date'),
-                'publication_year'  => $basic->get('publication_year'),
+            'basic' => array(
+                'item_id' => $basic->get('item_id'),
+                'description' => $basic->getVar('description', 's'),
+                'doi' => $basic->get('doi'),
+                'creation_date' => $basic->get('creation_date'),
+                'last_update_date' => $basic->get('last_update_date'),
+                'publication_year' => $basic->get('publication_year'),
                 'publication_month' => $basic->get('publication_month'),
-                'publication_mday'  => $basic->get('publication_mday'),
-                'lang'              => $this->get_lang_label()
+                'publication_mday' => $basic->get('publication_mday'),
+                'lang' => $this->get_lang_label(),
             ),
-            'title'           => array(),
-            'keyword'         => array(),
-            'changelog'       => array(),
+            'title' => array(),
+            'keyword' => array(),
+            'changelog' => array(),
             'index_item_link' => array(),
-            'related_tos'     => array()
+            'related_tos' => array(),
         );
 
         foreach ($this->_params['item']->getVar('titles') as $title) {
@@ -122,7 +118,7 @@ class XooNIpsViewTransferUserRequestedItemDetail extends XooNIpsViewTransfer
         foreach ($this->_params['item']->getVar('changelogs') as $changelog) {
             $result['changelog'][] = array(
                 'log_date' => $changelog->get('log_date'),
-                'log'      => $changelog->getVar('log', 's')
+                'log' => $changelog->getVar('log', 's'),
             );
         }
 
@@ -130,25 +126,26 @@ class XooNIpsViewTransferUserRequestedItemDetail extends XooNIpsViewTransfer
             $result['index_item_link'][]
                 = array(
                 'path' => $this->get_index_path_by_index_id($link->get('index_id')),
-                's'
+                's',
             );
         }
 
         $item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-        $basicHandler     = xoonips_getOrmHandler('xoonips', 'item_basic');
+        $basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
         foreach ($this->_params['item']->getVar('related_tos') as $related_to) {
             $related_basic
-                =  $basicHandler->get($related_to->get('item_id'));
+                = $basicHandler->get($related_to->get('item_id'));
             $related_item_type
-                =  $item_typeHandler->get($related_basic->get('item_type_id'));
+                = $item_typeHandler->get($related_basic->get('item_type_id'));
             $item_compoHandler
                 = xoonips_getOrmCompoHandler($related_item_type->get('name'), 'item');
             $result['related_tos'][]
                 = array(
-                'filename' => 'db:' . $item_compoHandler->getTemplateFileName(XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST),
-                'var'      => $item_compoHandler->getTemplateVar(XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST, $related_basic->get('item_id'))
+                'filename' => 'db:'.$item_compoHandler->getTemplateFileName(XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST),
+                'var' => $item_compoHandler->getTemplateVar(XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST, $related_basic->get('item_id')),
             );
         }
+
         return $result;
     }
 
@@ -157,14 +154,16 @@ class XooNIpsViewTransferUserRequestedItemDetail extends XooNIpsViewTransfer
      */
     public function get_xoonips_item_detail_template_vars()
     {
-        $basic   =  $this->_params['item']->getVar('basic');
+        $basic = $this->_params['item']->getVar('basic');
         $handler = xoonips_getOrmCompoHandler($this->_params['item_type']->get('name'), 'item');
+
         return $handler->getTemplateVar(XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL, $basic->get('item_id'));
     }
 
     /**
      * @param $keys
      * @param $values
+     *
      * @return array
      */
     public function array_combine($keys, $values)
@@ -177,6 +176,7 @@ class XooNIpsViewTransferUserRequestedItemDetail extends XooNIpsViewTransfer
             next($keys);
             next($values);
         }
+
         return $result;
     }
 
@@ -187,10 +187,11 @@ class XooNIpsViewTransferUserRequestedItemDetail extends XooNIpsViewTransfer
     {
         $languages = $this->array_combine(explode(',', _MD_XOONIPS_ITEM_LANG_OPTION_IDS), explode(',', _MD_XOONIPS_ITEM_LANG_OPTION_NAMES));
 
-        $basic =  $this->_params['item']->getVar('basic');
+        $basic = $this->_params['item']->getVar('basic');
         if (in_array($basic->get('lang'), array_keys($languages))) {
             return $languages[$basic->get('lang')];
         }
+
         return '';
     }
 }

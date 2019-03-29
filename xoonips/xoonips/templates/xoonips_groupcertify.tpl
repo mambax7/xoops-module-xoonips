@@ -1,7 +1,6 @@
 <{*
 template for display to group certify items
 
-$Revision: 1.1.2.2 $
 
 $indexes[] array of index information to be group certified
          array( group_index_id=>id of group index,

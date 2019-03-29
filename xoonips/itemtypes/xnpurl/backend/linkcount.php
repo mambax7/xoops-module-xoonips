@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.4 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -36,9 +36,9 @@ if (!isset($_POST['item_id'])) {
     die('illegal request');
 }
 
-$item_id       = (int)$_POST['item_id'];
+$item_id = (int) $_POST['item_id'];
 $detailHandler = xoonips_getOrmHandler('xnpurl', 'item_detail');
-$detail_obj    = $detailHandler->get($item_id);
+$detail_obj = $detailHandler->get($item_id);
 if (!is_object($detail_obj)) {
     die('invalid item id');
 }

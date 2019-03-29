@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.20 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -26,39 +26,32 @@
 // ------------------------------------------------------------------------- //
 
 /**
- * Class XooNIpsImportItemCollection
+ * Class XooNIpsImportItemCollection.
  */
 class XooNIpsImportItemCollection
 {
-
     /**
-     * option of importing as new item
+     * option of importing as new item.
      */
     public $_import_as_new_option = false;
 
     /**
-     * option of logging
+     * option of logging.
      */
     public $_logging_option = false;
 
     /**
-     *
-     * associative array(pseudo item id => XooNIpsImportItem)
-     *
+     * associative array(pseudo item id => XooNIpsImportItem).
      */
     public $_items = array();
 
     /**
-     *
-     * original file name of imoprt file
-     *
+     * original file name of imoprt file.
      */
     public $_original_filename = null;
 
     /**
-     *
-     * error message array
-     *
+     * error message array.
      */
     public $_error_messages = array();
 
@@ -70,7 +63,8 @@ class XooNIpsImportItemCollection
     }
 
     /**
-     * set import file name
+     * set import file name.
+     *
      * @param $filename
      */
     public function setImportFileName($filename)
@@ -79,7 +73,7 @@ class XooNIpsImportItemCollection
     }
 
     /**
-     * get import file name
+     * get import file name.
      */
     public function getImportFileName()
     {
@@ -87,7 +81,8 @@ class XooNIpsImportItemCollection
     }
 
     /**
-     * set import file name
+     * set import file name.
+     *
      * @param $option
      */
     public function setImportAsNewOption($option)
@@ -96,7 +91,7 @@ class XooNIpsImportItemCollection
     }
 
     /**
-     * get import file name
+     * get import file name.
      */
     public function getImportAsNewOption()
     {
@@ -104,7 +99,8 @@ class XooNIpsImportItemCollection
     }
 
     /**
-     * set logging option
+     * set logging option.
+     *
      * @param $option
      */
     public function setLoggingOption($option)
@@ -113,7 +109,7 @@ class XooNIpsImportItemCollection
     }
 
     /**
-     * get logging option
+     * get logging option.
      */
     public function getLoggingOption()
     {
@@ -121,7 +117,8 @@ class XooNIpsImportItemCollection
     }
 
     /**
-     * add import item
+     * add import item.
+     *
      * @param $item integer pseudo item id of duplicate item to add
      */
     public function addItem($item)
@@ -130,7 +127,8 @@ class XooNIpsImportItemCollection
     }
 
     /**
-     * remove import item
+     * remove import item.
+     *
      * @param $item integer pseudo item id of duplicate item to remove
      */
     public function removeItem($item)
@@ -145,6 +143,7 @@ class XooNIpsImportItemCollection
 
     /**
      * remove import item by indexed value.
+     *
      * @param $index integer that index item to remove
      */
     public function removeItemAt($index)
@@ -156,7 +155,8 @@ class XooNIpsImportItemCollection
     }
 
     /**
-     * get an array of import item
+     * get an array of import item.
+     *
      * @return array XooNIpsImpotItem(s)
      */
     public function &getItems()
@@ -173,7 +173,8 @@ class XooNIpsImportItemCollection
     }
 
     /**
-     * get an array of error message
+     * get an array of error message.
+     *
      * @return array string error message
      */
     public function getErrors()
@@ -183,72 +184,62 @@ class XooNIpsImportItemCollection
 }
 
 /**
- * Class XooNIpsImportItem
+ * Class XooNIpsImportItem.
  */
 class XooNIpsImportItem extends XoopsObject
 {
-
     /**
-     * XooNIpsItemCompo object
-     * @access private
+     * XooNIpsItemCompo object.
      */
     public $_item = null;
 
     /**
-     * xml filename string
-     * @access private
+     * xml filename string.
      */
     public $_xml_filename = null;
 
     /**
-     * pseudo item id
-     * @access private
+     * pseudo item id.
      */
     public $_pseudo_id = 0;
 
     /**
-     * array of index id that item is imported
-     * @access private
+     * array of index id that item is imported.
      */
     public $_import_index_ids = array();
 
     /**
-     * flag of update import
-     * @access private
+     * flag of update import.
      */
     public $_update_flag = false;
 
     /**
      * array of duplicate pseudo item id.
-     * @access private
      */
     public $_duplicate_pseudo_ids = array();
 
     /**
      * array of duplicate updatable item id.
-     * @access private
      */
     public $_duplicate_updatable_item_ids = array();
 
     /**
      * array of duplicate un-updatable item id.
-     * @access private
      */
     public $_duplicate_un_updatable_item_ids = array();
 
     /**
      * array of duplicate locked item id.
-     * @access private
      */
     public $_duplicate_locked_item_ids = array();
 
     /**
-     * flag of importing as new item
+     * flag of importing as new item.
      */
     public $_import_as_new_flag = false;
 
     /**
-     * flag of certifying automatically
+     * flag of certifying automatically.
      */
     public $_certify_auto_flag = false;
 
@@ -258,35 +249,31 @@ class XooNIpsImportItem extends XoopsObject
     public $_imported_item_ids = array();
 
     /**
-     * an array of error codes
+     * an array of error codes.
      */
     public $_error_codes = array();
 
     /**
-     * update item id(false means don't update)
+     * update item id(false means don't update).
      */
     public $_update_item_id = false;
 
     /**
-     * flag of doi conflict
+     * flag of doi conflict.
      */
     public $_doi_conflict_flag = false;
 
-    /**
-     *
-     */
     public function __construct()
     {
-        $handler     = xoonips_getOrmCompoHandler('xoonips', 'item');
+        $handler = xoonips_getOrmCompoHandler('xoonips', 'item');
         $this->_item = $handler->create();
     }
 
     /**
-     * add an error and error code
+     * add an error and error code.
      *
      * @param string $err_code error code to add
      * @param string $err_str  error to add
-     * @access public
      */
     public function setErrors($err_code, $err_str)
     {
@@ -298,7 +285,6 @@ class XooNIpsImportItem extends XoopsObject
      * return the error codes for this object as an array.
      *
      * @return array an array of error codes
-     * @access public
      */
     public function getErrorCodes()
     {
@@ -309,6 +295,7 @@ class XooNIpsImportItem extends XoopsObject
      * @param $line
      * @param $file
      * @param $func
+     *
      * @return string
      */
     public function getErrorAt($line, $file, $func)
@@ -317,7 +304,8 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * add duplicate pseudo id to set
+     * add duplicate pseudo id to set.
+     *
      * @param $item_id integer pseudo item id of duplicate item to add
      */
     public function addDuplicatePseudoId($item_id)
@@ -328,7 +316,8 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * get a set of duplicate pseudo item ids
+     * get a set of duplicate pseudo item ids.
+     *
      * @return array a set of duplicate pseudo item ids
      */
     public function getDuplicatePseudoId()
@@ -337,7 +326,8 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * add duplicate updatable item id to set
+     * add duplicate updatable item id to set.
+     *
      * @param $item_id integer pseudo item id of duplicate item to add
      */
     public function addDuplicateUpdatableItemId($item_id)
@@ -348,7 +338,8 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * get a set of duplicate pseudo item ids
+     * get a set of duplicate pseudo item ids.
+     *
      * @return array a set of duplicate pseudo item ids
      */
     public function getDuplicateUpdatableItemId()
@@ -357,7 +348,8 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * add duplicate item id to set
+     * add duplicate item id to set.
+     *
      * @param $item_id integer pseudo item id of duplicate item to add
      */
     public function addDuplicateUnupdatableItemId($item_id)
@@ -368,7 +360,8 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * get a set of duplicate pseudo item ids
+     * get a set of duplicate pseudo item ids.
+     *
      * @return array a set of duplicate pseudo item ids
      */
     public function getDuplicateUnupdatableItemId()
@@ -377,7 +370,8 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * add duplicate item id to set
+     * add duplicate item id to set.
+     *
      * @param $item_id integer pseudo item id of duplicate item to add
      */
     public function addDuplicateLockedItemId($item_id)
@@ -388,7 +382,8 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * get a set of duplicate pseudo item ids
+     * get a set of duplicate pseudo item ids.
+     *
      * @return array a set of duplicate pseudo item ids
      */
     public function getDuplicateLockedItemId()
@@ -397,7 +392,8 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * add index id item to be imported to
+     * add index id item to be imported to.
+     *
      * @param $index_id integer
      */
     public function addImportIndexId($index_id)
@@ -408,7 +404,8 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * get a set of index id(s) item to be imported to
+     * get a set of index id(s) item to be imported to.
+     *
      * @return array a set of index id(s) item to be imported to
      */
     public function getImportIndexId()
@@ -417,17 +414,19 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * set import as new flag
-     * @param boolean flag
+     * set import as new flag.
+     *
+     * @param bool flag
      */
     public function setImportAsNewFlag($flag)
     {
-        $this->_import_as_new_flag = (bool)$flag;
+        $this->_import_as_new_flag = (bool) $flag;
     }
 
     /**
-     * get import as new flag
-     * @return boolean import as new flag
+     * get import as new flag.
+     *
+     * @return bool import as new flag
      */
     public function getImportAsNewFlag()
     {
@@ -435,17 +434,19 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * set doi conflict flag
-     * @param boolean flag
+     * set doi conflict flag.
+     *
+     * @param bool flag
      */
     public function setDoiConflictFlag($flag)
     {
-        $this->_doi_conflict_flag = (bool)$flag;
+        $this->_doi_conflict_flag = (bool) $flag;
     }
 
     /**
-     * get doi conflict flag
-     * @return boolean doi conflict flag
+     * get doi conflict flag.
+     *
+     * @return bool doi conflict flag
      */
     public function getDoiConflictFlag()
     {
@@ -453,17 +454,19 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * set update import flag
-     * @param boolean flag
+     * set update import flag.
+     *
+     * @param bool flag
      */
     public function setUpdateFlag($flag)
     {
-        $this->_update_flag = (bool)$flag;
+        $this->_update_flag = (bool) $flag;
     }
 
     /**
-     * get update import flag
-     * @return boolean update import flag
+     * get update import flag.
+     *
+     * @return bool update import flag
      */
     public function getUpdateFlag()
     {
@@ -471,18 +474,21 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * set item id of update import
+     * set item id of update import.
+     *
      * @param $item_id
+     *
      * @internal param int $flag item id to update
      */
     public function setUpdateItemId($item_id)
     {
-        $this->_update_item_id = (int)$item_id;
+        $this->_update_item_id = (int) $item_id;
     }
 
     /**
-     * get item id of update import
-     * @return integer item id to update
+     * get item id of update import.
+     *
+     * @return int item id to update
      */
     public function getUpdateItemId()
     {
@@ -490,17 +496,19 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * set certify automatically flag
-     * @param boolean flag
+     * set certify automatically flag.
+     *
+     * @param bool flag
      */
     public function setCertifyAutoFlag($flag)
     {
-        $this->_certify_auto_flag = (bool)$flag;
+        $this->_certify_auto_flag = (bool) $flag;
     }
 
     /**
-     * get certify automatically flag
-     * @return boolean certify automatically flag
+     * get certify automatically flag.
+     *
+     * @return bool certify automatically flag
      */
     public function getCertifyAutoFlag()
     {
@@ -508,17 +516,19 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * set pseudo item id
+     * set pseudo item id.
+     *
      * @param $id integer
      */
     public function setPseudoId($id)
     {
-        $this->_pseudo_id = (int)$id;
+        $this->_pseudo_id = (int) $id;
     }
 
     /**
-     * get pseudo item id
-     * @return integer pseudo item id
+     * get pseudo item id.
+     *
+     * @return int pseudo item id
      */
     public function getPseudoId()
     {
@@ -526,7 +536,8 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * set XML filename
+     * set XML filename.
+     *
      * @param $filename string
      */
     public function setFilename($filename)
@@ -535,7 +546,8 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * get XML filename
+     * get XML filename.
+     *
      * @return string XML filename
      */
     public function getFilename()
@@ -544,8 +556,9 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * get total file size(bytes) of this item
-     * @return integer file size in bytes.
+     * get total file size(bytes) of this item.
+     *
+     * @return int file size in bytes
      */
     public function getTotalFileSize()
     {
@@ -553,9 +566,9 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     *
      * Is this importable as new item ?
-     * @return boolean true(importable) or false(not)
+     *
+     * @return bool true(importable) or false(not)
      */
     public function isImportableAsNew()
     {
@@ -568,6 +581,7 @@ class XooNIpsImportItem extends XoopsObject
                 return false;
             }
         }
+
         return true;
     }
 
@@ -609,6 +623,7 @@ class XooNIpsImportItem extends XoopsObject
 
     /**
      * @param string $key
+     *
      * @return mixed
      */
     public function getVar($key)
@@ -618,6 +633,7 @@ class XooNIpsImportItem extends XoopsObject
 
     /**
      * @param $missing
+     *
      * @return bool
      */
     public function isFilledRequired(&$missing)
@@ -633,11 +649,11 @@ class XooNIpsImportItem extends XoopsObject
         $class = get_class($this);
         $clone = new $class();
 
-        $clone->_item                 = $this->_item->xoopsClone();
-        $clone->_xml_filename         = null;
-        $clone->_pseudo_id            = $this->_pseudo_id;
-        $clone->_import_index_ids     = $this->_import_index_ids;
-        $clone->_update_flag          = $this->_update_flag;
+        $clone->_item = $this->_item->xoopsClone();
+        $clone->_xml_filename = null;
+        $clone->_pseudo_id = $this->_pseudo_id;
+        $clone->_import_index_ids = $this->_import_index_ids;
+        $clone->_update_flag = $this->_update_flag;
         $clone->_duplicate_pseudo_ids = $this->_duplicate_pseudo_ids;
         $clone->_duplicate_updatable_item_ids
                                       = $this->_duplicate_updatable_item_ids;
@@ -645,11 +661,11 @@ class XooNIpsImportItem extends XoopsObject
                                       = $this->_duplicate_un_updatable_item_ids;
         $clone->_duplicate_locked_item_ids
                                       = $this->_duplicate_locked_item_ids;
-        $clone->_import_as_new_flag   = $this->_import_as_new_flag;
-        $clone->_doi_conflict_flag    = $this->_doi_conflict_flag;
-        $clone->_certify_auto_flag    = $this->_certify_auto_flag;
-        $clone->_imported_item_ids    = $this->_imported_item_ids;
-        $clone->_error_codes          = $this->_error_codes;
+        $clone->_import_as_new_flag = $this->_import_as_new_flag;
+        $clone->_doi_conflict_flag = $this->_doi_conflict_flag;
+        $clone->_certify_auto_flag = $this->_certify_auto_flag;
+        $clone->_imported_item_ids = $this->_imported_item_ids;
+        $clone->_error_codes = $this->_error_codes;
 
         return $clone;
     }
@@ -659,10 +675,10 @@ class XooNIpsImportItem extends XoopsObject
      */
     public function getItemAbstractText()
     {
-        $basic    =&  $this->getVar('basic');
-        $titles   =&  $this->getVar('titles');
-        $indexes  =&  $this->getVar('indexes');
-        $handler  = xoonips_getOrmHandler('xoonips', 'item_type');
+        $basic = &$this->getVar('basic');
+        $titles = &$this->getVar('titles');
+        $indexes = &$this->getVar('indexes');
+        $handler = xoonips_getOrmHandler('xoonips', 'item_type');
         $itemtype = $handler->get($basic->get('item_type_id'));
 
         $ret = array();
@@ -678,11 +694,10 @@ class XooNIpsImportItem extends XoopsObject
 }
 
 /**
- * Class XooNIpsImportItemHandler
+ * Class XooNIpsImportItemHandler.
  */
 class XooNIpsImportItemHandler
 {
-
     // directory path which attachment file is in.
     public $_attachment_dir = '';
 
@@ -698,7 +713,6 @@ class XooNIpsImportItemHandler
     // xml tag stack
     public $_tag_stack = array();
 
-    //
     public $_import_index_ids = array();
 
     /**
@@ -717,8 +731,10 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     * create XooNIpsImportItem object from XML
+     * create XooNIpsImportItem object from XML.
+     *
      * @param $xml string xml text to parse
+     *
      * @return XooNIpsImportItem
      */
     public function &parseXml($xml)
@@ -736,7 +752,8 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     * add index id item to be imported to
+     * add index id item to be imported to.
+     *
      * @param $index_id integer
      */
     public function addImportIndexId($index_id)
@@ -747,7 +764,8 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     * remove index id item to be imported to
+     * remove index id item to be imported to.
+     *
      * @param $index_id integer
      */
     public function removeImportIndexId($index_id)
@@ -757,7 +775,8 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     * get a set of duplicate pseudo item ids
+     * get a set of duplicate pseudo item ids.
+     *
      * @return array a set of index id(s) item to be imported to
      */
     public function getImportIndexId()
@@ -767,7 +786,8 @@ class XooNIpsImportItemHandler
 
     /**
      * set directory path which attachment file is in.
-     * @param boolean flag
+     *
+     * @param bool flag
      */
     public function setAttachmentDirectoryPath($path)
     {
@@ -776,7 +796,8 @@ class XooNIpsImportItemHandler
 
     /**
      * get directory path which attachment file is in.
-     * @return boolean directory path which attachment file is in.
+     *
+     * @return bool directory path which attachment file is in
      */
     public function getAttachmentDirectoryPath()
     {
@@ -784,7 +805,8 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     * set certify auto opution to all XooNIpsImportItems
+     * set certify auto opution to all XooNIpsImportItems.
+     *
      * @param $all_import_items array of reference
      *                          of all XooNIpsImportItem objects
      * @param $option           boolean certify auto option
@@ -798,15 +820,16 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     * find all duplicate items
+     * find all duplicate items.
+     *
      * @param $all_import_items array of reference
      *                          of all XooNIpsImportItem objects
      */
     public function findDuplicateItems($all_import_items)
     {
-        $title_item_map =&  $this->_create_title_item_map($all_import_items);
+        $title_item_map = &$this->_create_title_item_map($all_import_items);
         foreach (array_keys($all_import_items) as $key) {
-            $basic   = $all_import_items[$key]->getVar('basic');
+            $basic = $all_import_items[$key]->getVar('basic');
             $handler = $this->_get_import_itemHandler_by_item_type_id($basic->get('item_type_id'));
             foreach ($handler->_findDuplicateImportItemIds($all_import_items[$key], $all_import_items, $title_item_map) as $pseudo_id) {
                 $all_import_items[$key]->addDuplicatePseudoId($pseudo_id);
@@ -828,11 +851,12 @@ class XooNIpsImportItemHandler
      * @param $import_item
      * @param $all_import_items
      * @param $title_item_map
+     *
      * @return array
      */
     public function _findDuplicateImportItemIds($import_item, $all_import_items, $title_item_map)
     {
-        $a                    = false;
+        $a = false;
         $a_pseudo_id_item_map = false;
         foreach ($import_item->getVar('titles') as $title) {
             if (!is_array($a)) {
@@ -846,11 +870,11 @@ class XooNIpsImportItemHandler
 
         $duplicate_possible = array();
         foreach ($a as $pseudo_id) {
-            $duplicate_possible[] =  $a_pseudo_id_item_map[$pseudo_id];
+            $duplicate_possible[] = $a_pseudo_id_item_map[$pseudo_id];
         }
 
         $item_ids = array();
-        $titles   = array();
+        $titles = array();
         foreach ($import_item->getVar('titles') as $title) {
             $titles[] = $title->get('title');
         }
@@ -880,14 +904,16 @@ class XooNIpsImportItemHandler
 
             $item_ids[] = $i->getPseudoId();
         }
+
         return $item_ids;
     }
 
     /**
-     *
      * @param $a1
      * @param $a2
+     *
      * @return array|bool
+     *
      * @internal param reference $import_item of XooNIpsImportItem object
      */
     public function _equals_array($a1, $a2)
@@ -895,16 +921,18 @@ class XooNIpsImportItemHandler
         if (count($a1) != count($a2)) {
             return false;
         }
-        for ($i = 0, $iMax = count($a1); $i < $iMax; $i++) {
+        for ($i = 0, $iMax = count($a1); $i < $iMax; ++$i) {
             if ($a1[$i] != $a2[$i]) {
                 return false;
             }
         }
+
         return true;
     }
 
     /**
      * @param $item
+     *
      * @return array
      */
     public function _findDuplicateItemIds($item)
@@ -923,12 +951,12 @@ class XooNIpsImportItemHandler
 
         global $xoopsDB, $xoopsUser;
 
-        $basic        = $item->getVar('basic');
+        $basic = $item->getVar('basic');
         $titleHandler = xoonips_getOrmHandler('xoonips', 'title');
-        $titles       = array();
+        $titles = array();
         foreach ($item->getVar('titles') as $title) {
             if (array_key_exists($title->get('title'), $titles)) {
-                $titles[$title->get('title')]++;
+                ++$titles[$title->get('title')];
             } else {
                 $titles[$title->get('title')] = 1;
             }
@@ -943,11 +971,11 @@ class XooNIpsImportItemHandler
             $criteria->add(new Criteria('item_type_id', $basic->get('item_type_id')));
             $criteria->add(new Criteria('uid', $xoopsUser->getVar('uid')));
             if (count($item_ids) > 0) {
-                $criteria->add(new Criteria('tb.item_id', '(' . implode(',', $item_ids) . ')', 'IN'));
+                $criteria->add(new Criteria('tb.item_id', '('.implode(',', $item_ids).')', 'IN'));
             }
-            $criteria->setGroupBy('tb.item_id,title having count(*)=' . $count);
-            $join     = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'LEFT', 'tb');
-            $results  =  $titleHandler->getObjects($criteria, false, '*, count(*)', null, $join);
+            $criteria->setGroupBy('tb.item_id,title having count(*)='.$count);
+            $join = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'LEFT', 'tb');
+            $results = $titleHandler->getObjects($criteria, false, '*, count(*)', null, $join);
             $item_ids = array();
             foreach ($results as $result) {
                 $item_ids[] = $result->get('item_id');
@@ -962,9 +990,9 @@ class XooNIpsImportItemHandler
         //
         // select item that has same number of title
         //
-        $criteria = new Criteria('item_id', '(' . implode(',', $item_ids) . ')', 'IN');
-        $criteria->setGroupBy('item_id having count(*)=' . count($item->getVar('titles')));
-        $titles =  $titleHandler->getObjects($criteria);
+        $criteria = new Criteria('item_id', '('.implode(',', $item_ids).')', 'IN');
+        $criteria->setGroupBy('item_id having count(*)='.count($item->getVar('titles')));
+        $titles = $titleHandler->getObjects($criteria);
         if (count($titles) == 0) {
             return array();
         } // no conflict item
@@ -973,12 +1001,13 @@ class XooNIpsImportItemHandler
             $item_ids[] = $title->get('item_id');
         }
         $ids = array_unique(array_merge($item_ids, $this->_findDoiConflictItemIds($item)));
+
         return $ids;
     }
 
     /**
-     *
      * @param $import_item reference of XooNIpsImportItem object
+     *
      * @return array integer of item ids
      */
     public function _findDuplicateUpdatableItemIds($import_item)
@@ -993,8 +1022,8 @@ class XooNIpsImportItemHandler
 
         $item_ids = $this->_get_items_in_indexes($item_ids, $import_item->getImportIndexId());
 
-        $writable_item_ids      = array();
-        $itemHandler            = xoonips_getOrmCompoHandler('xoonips', 'item');
+        $writable_item_ids = array();
+        $itemHandler = xoonips_getOrmCompoHandler('xoonips', 'item');
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
         foreach ($item_ids as $id) {
             if (!$itemHandler->getPerm($id, $xoopsUser->getVar('uid'), 'write')) {
@@ -1002,12 +1031,13 @@ class XooNIpsImportItemHandler
             }
             $writable_item_ids[] = $id;
         }
+
         return $writable_item_ids;
     }
 
     /**
-     *
      * @param $import_item reference of XooNIpsImportItem object
+     *
      * @return array integer of item ids
      */
     public function _findDuplicateUnupdatableItemIds($import_item)
@@ -1036,29 +1066,31 @@ class XooNIpsImportItemHandler
     /**
      * @param $item_ids
      * @param $index_ids
+     *
      * @return array
      */
     public function _get_items_in_indexes($item_ids, $index_ids)
     {
         $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-        $criteria               = new CriteriaCompo(new Criteria('item_id', '(' . implode(',', $item_ids) . ')', 'IN'));
-        $criteria->add(new Criteria('index_id', '(' . implode(',', $index_ids) . ')', 'IN'));
-        $index_item_links =  $index_item_linkHandler->getObjects($criteria);
+        $criteria = new CriteriaCompo(new Criteria('item_id', '('.implode(',', $item_ids).')', 'IN'));
+        $criteria->add(new Criteria('index_id', '('.implode(',', $index_ids).')', 'IN'));
+        $index_item_links = $index_item_linkHandler->getObjects($criteria);
         // no item in indexes
         if (count($index_item_links) == 0) {
             return array();
         }
-        $item_ids    = array();
+        $item_ids = array();
         $itemHandler = xoonips_getOrmCompoHandler('xoonips', 'item');
         foreach ($index_item_links as $i) {
             $item_ids[] = $i->get('item_id');
         }
+
         return $item_ids;
     }
 
     /**
-     *
      * @param $import_item reference of XooNIpsImportItem object
+     *
      * @return array integer of item ids
      */
     public function _findDuplicateLockedItemIds($import_item)
@@ -1071,33 +1103,35 @@ class XooNIpsImportItemHandler
 
         $item_ids = $this->_get_items_in_indexes($item_ids, $import_item->getImportIndexId());
 
-        $result      = array();
+        $result = array();
         $lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
         foreach ($item_ids as $id) {
             if ($lockHandler->isLocked($id)) {
                 $result[] = $id;
             }
         }
+
         return $result;
     }
 
     /**
+     * get item ids of doi conflict with import item and exits item.
      *
-     * get item ids of doi conflict with import item and exits item
-     * @param $import_item import_item to check a doi conflict.
-     * @return array of integer item id of doi conflict existing item.
+     * @param $import_item import_item to check a doi conflict
+     *
+     * @return array of integer item id of doi conflict existing item
      */
     public function _findDoiConflictItemIds($import_item)
     {
         $basic = $import_item->getVar('basic');
-        $doi   = $basic->get('doi');
+        $doi = $basic->get('doi');
         if (empty($doi)) {
             return array();
         }// no conflict if doi is empty
 
-        $handler  = xoonips_getOrmHandler('xoonips', 'item_basic');
+        $handler = xoonips_getOrmHandler('xoonips', 'item_basic');
         $criteria = new Criteria('doi', $doi);
-        $basics   =  $handler->getObjects($criteria);
+        $basics = $handler->getObjects($criteria);
         if (!$basics) {
             return array();
         }
@@ -1106,11 +1140,11 @@ class XooNIpsImportItemHandler
         foreach ($basics as $basic) {
             $result[] = $basic->get('item_id');
         }
+
         return $result;
     }
 
     /**
-     *
      * @param $item reference of XooNIpsImportItem object
      */
     public function import($item)
@@ -1121,12 +1155,12 @@ class XooNIpsImportItemHandler
             return;
         }
 
-        $indexes =&  $this->_create_index_item_links_from_index_ids($item->getImportIndexId(), $item->getCertifyAutoFlag(), $xoopsUser);
+        $indexes = &$this->_create_index_item_links_from_index_ids($item->getImportIndexId(), $item->getCertifyAutoFlag(), $xoopsUser);
         $item->setVar('indexes', $indexes);
 
         if ($item->getUpdateFlag()) {
             // single field(basic) _isNew=false
-            $basic =  $item->getVar('basic');
+            $basic = $item->getVar('basic');
             $basic->set('item_id', $item->getUpdateItemId());
             $basic->unsetNew();
             $basic->setDirty();
@@ -1136,10 +1170,10 @@ class XooNIpsImportItemHandler
                          'titles',
                          'keywords',
                          'related_tos',
-                         'indexes'
+                         'indexes',
                      ) as $key
             ) {
-                $var =  $item->getVar($key);
+                $var = $item->getVar($key);
                 assert(is_array($var));
                 foreach (array_keys($var) as $k) {
                     $var[$k]->setNew();
@@ -1149,8 +1183,8 @@ class XooNIpsImportItemHandler
 
             // get changelog from DB to keep old changelog
             $changelogHandler = xoonips_getOrmHandler('xoonips', 'changelog');
-            $criteria         = new Criteria('item_id', $item->getUpdateItemId());
-            $changelogs       =  $changelogHandler->getObjects($criteria);
+            $criteria = new Criteria('item_id', $item->getUpdateItemId());
+            $changelogs = $changelogHandler->getObjects($criteria);
             $item->setVar('changelogs', $changelogs);
 
             if ($this->insert($item)) {
@@ -1160,9 +1194,8 @@ class XooNIpsImportItemHandler
                 $item->setErrors(E_XOONIPS_DB_QUERY, 'DB query error in updating');
             }
         } else {
-            //
             if ($this->insert($item)) {
-                $basic        = $item->getVar('basic');
+                $basic = $item->getVar('basic');
                 $eventHandler = xoonips_getOrmHandler('xoonips', 'event_log');
                 $eventHandler->recordInsertItemEvent($basic->get('item_id'));
             } else {
@@ -1174,7 +1207,7 @@ class XooNIpsImportItemHandler
             $eventHandler = xoonips_getOrmHandler('xoonips', 'event_log');
             foreach ($item->getVar('indexes') as $links) {
                 $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-                $index        = $indexHandler->get($links->get('index_id'));
+                $index = $indexHandler->get($links->get('index_id'));
                 if (!$index || OL_PUBLIC != $index->get('open_level')) {
                     continue;
                 }
@@ -1192,57 +1225,59 @@ class XooNIpsImportItemHandler
 
     /**
      * return import log text of import item.
-     * @access public
+     *
      * @param $import_item reference of XooNIpsImportItem object
+     *
      * @return string import log text
      */
     public function getImportLog($import_item)
     {
-        $text    = '';
-        $basic   = $import_item->getVar('basic');
+        $text = '';
+        $basic = $import_item->getVar('basic');
         $item_id = $basic->get('item_id');
         if (!empty($item_id)) {
-            $text .= 'basic.id ' . $basic->get('item_id');
+            $text .= 'basic.id '.$basic->get('item_id');
         }
         foreach ($import_item->getVar('titles') as $title) {
-            $text .= "\nbasic.title " . $title->get('title');
+            $text .= "\nbasic.title ".$title->get('title');
         }
-        $text .= "\nbasic.contributor " . $basic->get('uid');
-        $text .= "\nbasic.itemtype " . $basic->get('item_type_id');
+        $text .= "\nbasic.contributor ".$basic->get('uid');
+        $text .= "\nbasic.itemtype ".$basic->get('item_type_id');
 
         foreach ($import_item->getVar('keywords') as $keyword) {
-            $text .= "\nbasic.keyword " . $keyword->get('keyword');
+            $text .= "\nbasic.keyword ".$keyword->get('keyword');
         }
 
         $comment = $basic->get('description', 'none');
         mb_regex_encoding(mb_detect_encoding($comment));
-        $text .= "\nbasic.description " . mb_ereg_replace('\n', '\n', mb_ereg_replace('\\\\', '\\\\', $comment));
-        $text .= "\nbasic.doi " . $basic->get('doi');
-        $text .= "\nbasic.last_update_date " . $basic->get('last_update_date');
-        $text .= "\nbasic.creation_date " . $basic->get('creation_date');
-        $text .= "\nbasic.publication_year " . $basic->get('publication_year');
-        $text .= "\nbasic.publication_month " . $basic->get('publication_month');
-        $text .= "\nbasic.publication_mday " . $basic->get('publication_mday');
-        $text .= "\nbasic.lang " . $basic->get('lang');
-        $text .= "\nfilename " . (null === $import_item->getFilename() ? '' : $import_item->getFilename());
+        $text .= "\nbasic.description ".mb_ereg_replace('\n', '\n', mb_ereg_replace('\\\\', '\\\\', $comment));
+        $text .= "\nbasic.doi ".$basic->get('doi');
+        $text .= "\nbasic.last_update_date ".$basic->get('last_update_date');
+        $text .= "\nbasic.creation_date ".$basic->get('creation_date');
+        $text .= "\nbasic.publication_year ".$basic->get('publication_year');
+        $text .= "\nbasic.publication_month ".$basic->get('publication_month');
+        $text .= "\nbasic.publication_mday ".$basic->get('publication_mday');
+        $text .= "\nbasic.lang ".$basic->get('lang');
+        $text .= "\nfilename ".(null === $import_item->getFilename() ? '' : $import_item->getFilename());
         $item_id = $basic->get('item_id');
         if (!empty($item_id)) {
-            $text .= "\n" . 'basic.url ' . XOOPS_URL . '/modules/xoonips/detail.php?item_id=' . $basic->get('item_id');
+            $text .= "\n".'basic.url '.XOOPS_URL.'/modules/xoonips/detail.php?item_id='.$basic->get('item_id');
         }
         foreach ($import_item->getVar('related_tos') as $related_to) {
-            $text .= "\n" . 'basic.related_to ' . $related_to->get('item_id');
+            $text .= "\n".'basic.related_to '.$related_to->get('item_id');
         }
         foreach ($import_item->getVar('indexes') as $index_item_link) {
-            $text .= "\n" . 'basic.index ' . $this->_index_id2index_str($index_item_link->get('index_id'));
+            $text .= "\n".'basic.index '.$this->_index_id2index_str($index_item_link->get('index_id'));
         }
+
         return trim($text);
     }
 
     /**
-     *
      * @param $parser
      * @param $name
      * @param $attribs
+     *
      * @internal param $
      */
     public function xmlStartElementHandler($parser, $name, $attribs)
@@ -1252,39 +1287,39 @@ class XooNIpsImportItemHandler
         switch (implode('/', $this->_tag_stack)) {
             case 'ITEM':
                 if (!isset($attribs['VERSION'])) {
-                    $this->_import_item->setErrors(E_XOONIPS_ATTR_NOT_FOUND, 'VERSION is not declared' . $this->_get_parser_error_at());
+                    $this->_import_item->setErrors(E_XOONIPS_ATTR_NOT_FOUND, 'VERSION is not declared'.$this->_get_parser_error_at());
                 } else {
                     $unicode = xoonips_getUtility('unicode');
                     if ($unicode->decode_utf8($attribs['VERSION'], xoonips_get_server_charset(), 'h') !== '1.00') {
-                        $this->_import_item->setErrors(E_XOONIPS_INVALID_VERSION, 'unsupported version(' . $unicode->decode_utf8($attribs['VERSION'],
+                        $this->_import_item->setErrors(E_XOONIPS_INVALID_VERSION, 'unsupported version('.$unicode->decode_utf8($attribs['VERSION'],
                                                                                                                                  xoonips_get_server_charset(),
-                                                                                                                                 'h') . ')'
-                                                                                  . $this->_get_parser_error_at());
+                                                                                                                                 'h').')'
+                                                                                  .$this->_get_parser_error_at());
                     }
                 }
                 break;
             case 'ITEM/BASIC':
                 if (!isset($attribs['ID'])) {
-                    $this->_import_item->setErrors(E_XOONIPS_ATTR_NOT_FOUND, 'ID is not declared' . $this->_get_parser_error_at());
+                    $this->_import_item->setErrors(E_XOONIPS_ATTR_NOT_FOUND, 'ID is not declared'.$this->_get_parser_error_at());
                 }
 
                 if (empty($attribs['ID'])) {
-                    $this->_import_item->setErrors(E_XOONIPS_ATTR_INVALID_VALUE, 'ID is empty' . $this->_get_parser_error_at());
+                    $this->_import_item->setErrors(E_XOONIPS_ATTR_INVALID_VALUE, 'ID is empty'.$this->_get_parser_error_at());
                 } elseif (!ctype_digit($attribs['ID'])) {
                     $this->_import_item->setErrors(E_XOONIPS_ATTR_INVALID_VALUE,
-                                                   "ID is not integer(${attribs['ID']})" . $this->_get_parser_error_at());
+                                                   "ID is not integer(${attribs['ID']})".$this->_get_parser_error_at());
                 } else {
-                    $this->_import_item->setPseudoId((int)$attribs['ID']);
+                    $this->_import_item->setPseudoId((int) $attribs['ID']);
                 }
                 break;
             case 'ITEM/BASIC/RELATED_TO':
                 if (empty($attribs['ITEM_ID'])) {
-                    $this->_import_item->setErrors(E_XOONIPS_ATTR_NOT_FOUND, 'ITEM_ID is not declared' . $this->_get_parser_error_at());
+                    $this->_import_item->setErrors(E_XOONIPS_ATTR_NOT_FOUND, 'ITEM_ID is not declared'.$this->_get_parser_error_at());
                 } elseif (!ctype_digit($attribs['ITEM_ID'])) {
                     $this->_import_item->setErrors(E_ATTR_INVALID_VALUE,
-                                                   "ITEM_ID is not integer(${attribs['ITEM_ID']})" . $this->_get_parser_error_at());
+                                                   "ITEM_ID is not integer(${attribs['ITEM_ID']})".$this->_get_parser_error_at());
                 } else {
-                    $related_tos =  $this->_import_item->getVar('related_tos');
+                    $related_tos = $this->_import_item->getVar('related_tos');
                     $related_toHandler = xoonips_getOrmHandler('xoonips', 'related_to');
                     $related_to = $related_toHandler->create();
                     $related_to->set('item_id', $attribs['ITEM_ID']);
@@ -1293,7 +1328,7 @@ class XooNIpsImportItemHandler
                 break;
             case 'ITEM/BASIC/INDEX':
                 if (!isset($attribs['OPEN_LEVEL'])) {
-                    $this->open_level = 'private';//null;
+                    $this->open_level = 'private'; //null;
                 } else {
                     switch ($attribs['OPEN_LEVEL']) {
                         case 'private':
@@ -1304,7 +1339,7 @@ class XooNIpsImportItemHandler
                         default:
                             $this->open_level = null;
                             $this->_import_item->setErrors(E_XOONIPS_ATTR_INVALID_VALUE,
-                                                           'illegal open_level(' . $attribs['OPEN_LEVEL'] . ')' . $this->_get_parser_error_at());
+                                                           'illegal open_level('.$attribs['OPEN_LEVEL'].')'.$this->_get_parser_error_at());
                             break;
                     }
                 }
@@ -1312,9 +1347,9 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     *
      * @param $parser
      * @param $data
+     *
      * @internal param $
      */
     public function xmlCdataHandler($parser, $data)
@@ -1323,16 +1358,16 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     *
      * @param $parser
      * @param $name
+     *
      * @internal param $
      */
     public function xmlEndElementHandler($parser, $name)
     {
         switch (implode('/', $this->_tag_stack)) {
             case 'ITEM/BASIC':
-                $index_ids    = $this->_import_item->getImportIndexId();
+                $index_ids = $this->_import_item->getImportIndexId();
                 $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
                 foreach ($index_ids as $id) {
                     $index = $indexHandler->get($id);
@@ -1350,15 +1385,15 @@ class XooNIpsImportItemHandler
                     break;
                 }
                 $titlesHandler = xoonips_getOrmHandler('xoonips', 'title');
-                $title         = $titlesHandler->create();
+                $title = $titlesHandler->create();
                 $title->set('title_id', count($this->_import_item->getVar('titles')));
                 $title->set('title', $cdata);
-                $titles   =  $this->_import_item->getVar('titles');
+                $titles = $this->_import_item->getVar('titles');
                 $titles[] = $title;
                 if (strlen($cdata) > $this->_get_max_len($this->_import_item, 'titles', 'title')) {
                     $this->_import_item->setErrors(E_XOONIPS_DATA_TOO_LONG,
-                                                   'title is too long:' . $unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h')
-                                                   . $this->_get_parser_error_at());
+                                                   'title is too long:'.$unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h')
+                                                   .$this->_get_parser_error_at());
                 }
                 break;
             case 'ITEM/BASIC/KEYWORDS/KEYWORD':
@@ -1369,26 +1404,26 @@ class XooNIpsImportItemHandler
                 }
 
                 $keywordsHandler = xoonips_getOrmHandler('xoonips', 'keyword');
-                $keyword         = $keywordsHandler->create();
+                $keyword = $keywordsHandler->create();
                 $keyword->set('keyword_id', count($this->_import_item->getVar('keywords')));
                 $keyword->set('keyword', $unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h'));
-                $keywords   =  $this->_import_item->getVar('keywords');
+                $keywords = $this->_import_item->getVar('keywords');
                 $keywords[] = $keyword;
 
                 if (strlen($unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h')) > $this->_get_max_len($this->_import_item,
                                                                                                                           'keywords', 'keyword')
                 ) {
                     $this->_import_item->setErrors(E_XOONIPS_DATA_TOO_LONG,
-                                                   'keyword is too long:' . $unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h')
-                                                   . $this->_get_parser_error_at());
+                                                   'keyword is too long:'.$unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h')
+                                                   .$this->_get_parser_error_at());
                 }
                 break;
             case 'ITEM/BASIC/ITEMTYPE':
                 $itemtypeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
-                $itemtype        =  $itemtypeHandler->getObjects(new Criteria('name', addslashes($this->_cdata)));
+                $itemtype = $itemtypeHandler->getObjects(new Criteria('name', addslashes($this->_cdata)));
                 if (count($itemtype) == 0) {
                     $this->_import_item->setErrors(E_XOONIPS_INVALID_VALUE,
-                                                   'unknown itemtype(' . $this->_cdata . ')' . $this->_get_parser_error_at());
+                                                   'unknown itemtype('.$this->_cdata.')'.$this->_get_parser_error_at());
                     break;
                 }
                 $basic = $this->_import_item->getVar('basic');
@@ -1406,15 +1441,15 @@ class XooNIpsImportItemHandler
                 // convert CDATA to internal character encoing
                 //
                 $unicode = xoonips_getUtility('unicode');
-                $basic   = $this->_import_item->getVar('basic');
+                $basic = $this->_import_item->getVar('basic');
                 $basic->set('description', $unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h'));
 
                 if (strlen($unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h')) > $this->_get_max_len($this->_import_item,
                                                                                                                           'basic', 'description')
                 ) {
                     $this->_import_item->setErrors(E_XOONIPS_DATA_TOO_LONG,
-                                                   'description is too long:' . $unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(),
-                                                                                                      'h') . $this->_get_parser_error_at());
+                                                   'description is too long:'.$unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(),
+                                                                                                      'h').$this->_get_parser_error_at());
                 }
                 break;
             case 'ITEM/BASIC/DOI':
@@ -1426,15 +1461,15 @@ class XooNIpsImportItemHandler
                                                                                                                           'basic', 'doi')
                 ) {
                     $this->_import_item->setErrors(E_XOONIPS_DATA_TOO_LONG,
-                                                   'doi is too long:' . $unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h')
-                                                   . $this->_get_parser_error_at());
+                                                   'doi is too long:'.$unicode->decode_utf8($this->_cdata, xoonips_get_server_charset(), 'h')
+                                                   .$this->_get_parser_error_at());
                 }
                 break;
             case 'ITEM/BASIC/LAST_UPDATE_DATE':
                 $basic = $this->_import_item->getVar('basic');
                 if (false === $this->_iso8601_to_utc($this->_cdata)) {
                     $this->_import_item->setErrors(E_XOONIPS_INVALID_VALUE,
-                                                   'illegal date format(' . $this->_cdata . ')' . $this->_get_parser_error_at());
+                                                   'illegal date format('.$this->_cdata.')'.$this->_get_parser_error_at());
                 } else {
                     $basic->set('last_update_date', $this->_iso8601_to_utc($this->_cdata));
                 }
@@ -1444,22 +1479,22 @@ class XooNIpsImportItemHandler
                 $basic = $this->_import_item->getVar('basic');
                 if (false === $this->_iso8601_to_utc($this->_cdata)) {
                     $this->_import_item->setErrors(E_XOONIPS_INVALID_VALUE,
-                                                   'illegal date format(' . $this->_cdata . ')' . $this->_get_parser_error_at());
+                                                   'illegal date format('.$this->_cdata.')'.$this->_get_parser_error_at());
                 } else {
                     $basic->set('creation_date', $this->_iso8601_to_utc($this->_cdata));
                 }
                 break;
             case 'ITEM/BASIC/PUBLICATION_YEAR':
                 $basic = $this->_import_item->getVar('basic');
-                $basic->set('publication_year', (int)$this->_cdata);
+                $basic->set('publication_year', (int) $this->_cdata);
                 break;
             case 'ITEM/BASIC/PUBLICATION_MONTH':
                 $basic = $this->_import_item->getVar('basic');
-                $basic->set('publication_month', (int)$this->_cdata);
+                $basic->set('publication_month', (int) $this->_cdata);
                 break;
             case 'ITEM/BASIC/PUBLICATION_MDAY':
                 $basic = $this->_import_item->getVar('basic');
-                $basic->set('publication_mday', (int)$this->_cdata);
+                $basic->set('publication_mday', (int) $this->_cdata);
                 break;
             case 'ITEM/BASIC/URL':
                 // url don't any effect to item
@@ -1477,16 +1512,16 @@ class XooNIpsImportItemHandler
                 //
                 mb_regex_encoding(mb_detect_encoding($this->_cdata));
                 $regexp = array(
-                    ".*[^\\\\]\\\\[^\\/\\\\].*",
-                    ".*[^\\\\]\\\\$",
-                    "^\\\\[^\\/\\\\].*"
+                    '.*[^\\\\]\\\\[^\\/\\\\].*',
+                    '.*[^\\\\]\\\$',
+                    '^\\\\[^\\/\\\\].*',
                 );
                 if (mb_ereg_match($regexp[0], $this->_cdata)
                     || mb_ereg_match($regexp[1], $this->_cdata)
                     || mb_ereg_match($regexp[2], $this->_cdata)
                 ) {
                     $this->_import_item->setErrors(E_XOONIPS_INVALID_VALUE,
-                                                   "invalid value in index. illegal use of '\\'(" . $this->_cdata . ')' . $this->getErrorAt(__LINE__,
+                                                   "invalid value in index. illegal use of '\\'(".$this->_cdata.')'.$this->getErrorAt(__LINE__,
                                                                                                                                             __FILE__,
                                                                                                                                             __FUNCTION__));
                     break;
@@ -1502,8 +1537,8 @@ class XooNIpsImportItemHandler
                         $index_id = $this->_get_index_id($base_index_id, $this->_cdata);
                         if (!$index_id) {
                             $this->_import_item->setErrors(E_XOONIPS_INDEX_NOT_FOUND,
-                                                           'index is not found(' . $this->_index_id2index_str($base_index_id) . '/' . $this->_cdata
-                                                           . ')');
+                                                           'index is not found('.$this->_index_id2index_str($base_index_id).'/'.$this->_cdata
+                                                           .')');
                             continue;
                         }
                         $this->_import_item->addImportIndexId($index_id);
@@ -1511,8 +1546,8 @@ class XooNIpsImportItemHandler
                         $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
                         if (!$indexHandler->getPerm($index_id, $xoopsUser->getVar('uid'), 'read')) {
                             $this->_import_item->setErrors(E_XOONIPS_NOT_PERMITTED_ACCESS,
-                                                           'not permitted access to index(' . $this->index_id2index_str($index_id) . '/'
-                                                           . $this->_cdata . ') by user(uid=' . $this->_import_item->getVar('uid') . ')');
+                                                           'not permitted access to index('.$this->index_id2index_str($index_id).'/'
+                                                           .$this->_cdata.') by user(uid='.$this->_import_item->getVar('uid').')');
                         }
                     }
                 } else {
@@ -1520,7 +1555,7 @@ class XooNIpsImportItemHandler
                     $id = $this->index_str2index_id($this->_cdata, $xoopsUser, '/', $this->open_level);
                     if (!$id) {
                         $this->_import_item->setErrors(E_XOONIPS_INDEX_NOT_FOUND,
-                                                       'index ' . $this->_cdata . ' is not found.' . $this->_import_item->getErrorAt(__LINE__,
+                                                       'index '.$this->_cdata.' is not found.'.$this->_import_item->getErrorAt(__LINE__,
                                                                                                                                      __FILE__,
                                                                                                                                      __FUNCTION__));
                         break;
@@ -1530,8 +1565,8 @@ class XooNIpsImportItemHandler
                     $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
                     if (!$indexHandler->getPerm($id, $xoopsUser->getVar('uid'), 'register_item')) {
                         $this->_import_item->setErrors(E_XOONIPS_NOT_PERMITTED_ACCESS,
-                                                       'not permitted access to index(' . $this->_cdata . ') by user(uid='
-                                                       . $this->_import_item->getVar('uid') . ')' . $this->_import_item->getErrorAt(__LINE__,
+                                                       'not permitted access to index('.$this->_cdata.') by user(uid='
+                                                       .$this->_import_item->getVar('uid').')'.$this->_import_item->getErrorAt(__LINE__,
                                                                                                                                     __FILE__,
                                                                                                                                     __FUNCTION__));
                         break;
@@ -1542,7 +1577,7 @@ class XooNIpsImportItemHandler
                         $this->_import_item->addImportIndexId($id);
                     } else {
                         $this->_import_item->setErrors(E_XOONIPS_INDEX_NOT_FOUND,
-                                                       'index ' . $this->_cdata . ' is not found.' . $this->_import_item->getErrorAt(__LINE__,
+                                                       'index '.$this->_cdata.' is not found.'.$this->_import_item->getErrorAt(__LINE__,
                                                                                                                                      __FILE__,
                                                                                                                                      __FUNCTION__));
                     }
@@ -1554,20 +1589,19 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     *
      * @param
-     * @return void
      */
     public function cleanup()
     {
     }
 
     /**
-     *
      * change expression of ISO8601 to UTC. return false when we can't change.
      * Usage: _iso8601_to_utc( "2005-08-01T12:00:00Z" );
-     * Usage: _iso8601_to_utc( "2005-08-01" );
+     * Usage: _iso8601_to_utc( "2005-08-01" );.
+     *
      * @param $str
+     *
      * @return bool|int
      */
     public function _iso8601_to_utc($str)
@@ -1632,7 +1666,7 @@ class XooNIpsImportItemHandler
         }
 
         // mm and dd must not overflow
-        if (gmdate('Ymd', gmmktime(0, 0, 0, $match[3], $match[5], $match[1])) != $match[1] . $match[3] . $match[5]) {
+        if (gmdate('Ymd', gmmktime(0, 0, 0, $match[3], $match[5], $match[1])) != $match[1].$match[3].$match[5]) {
             return false;
         }
 
@@ -1649,6 +1683,7 @@ class XooNIpsImportItemHandler
                 $tm -= ($match[13] * 3600 + $match[14] * 60);
             }
         }
+
         return $tm;
     }
 
@@ -1657,18 +1692,19 @@ class XooNIpsImportItemHandler
      */
     public function _get_parser_error_at()
     {
-        return ' at line ' . xml_get_current_line_number($this->_parser) . ', column ' . xml_get_current_column_number($this->_parser);
+        return ' at line '.xml_get_current_line_number($this->_parser).', column '.xml_get_current_column_number($this->_parser);
     }
 
     /**
      * @param $item_type_id
+     *
      * @return bool|mixed
      */
     public function _get_import_itemHandler_by_item_type_id($item_type_id)
     {
         static $itemTypeIdToImportItemHandler = array();
         if (!array_key_exists($item_type_id, $itemTypeIdToImportItemHandler)) {
-            $handler  = xoonips_getOrmHandler('xoonips', 'item_type');
+            $handler = xoonips_getOrmHandler('xoonips', 'item_type');
             $itemtype = $handler->get($item_type_id);
             if (!$itemtype) {
                 return false;
@@ -1676,15 +1712,17 @@ class XooNIpsImportItemHandler
             $itemTypeIdToImportItemHandler[$item_type_id]
                 = xoonips_getHandler($itemtype->get('name'), 'import_item');
         }
+
         return $itemTypeIdToImportItemHandler[$item_type_id];
     }
 
     /**
-     *
      * return index path to the index specified by $index_id
-     * like a '/userA/books', '/Public/Paper/Science'
+     * like a '/userA/books', '/Public/Paper/Science'.
+     *
      * @param          usernameToPrivate use '/Private' instead of '/username'
      * @param bool|use $usernameToPrivate
+     *
      * @return string
      */
     public function _index_id2index_str($index_id, $usernameToPrivate = false)
@@ -1693,11 +1731,12 @@ class XooNIpsImportItemHandler
         $path = array();
 
         do {
-            $sql = 'select t.title as title, parent_index_id, open_level from ' . $xoopsDB->prefix('xoonips_index') . ', '
-                   . $xoopsDB->prefix('xoonips_item_basic') . ' as b, ' . $xoopsDB->prefix('xoonips_item_title') . ' as t '
-                   . 'where index_id=b.item_id and b.item_id = t.item_id ' . " and t.title_id=0 and index_id=${index_id}";
+            $sql = 'select t.title as title, parent_index_id, open_level from '.$xoopsDB->prefix('xoonips_index').', '
+                   .$xoopsDB->prefix('xoonips_item_basic').' as b, '.$xoopsDB->prefix('xoonips_item_title').' as t '
+                   .'where index_id=b.item_id and b.item_id = t.item_id '." and t.title_id=0 and index_id=${index_id}";
             if (!$result = $xoopsDB->query($sql)) {
                 $this->_import_item->setErrors(E_XOONIPS_DB_QUERY, $xoopsDB->error());
+
                 return null;
             }
             if ($xoopsDB->getRowsNum($result) == 1) {
@@ -1708,18 +1747,18 @@ class XooNIpsImportItemHandler
                     $path[] = mb_ereg_replace('/', '\\/', mb_ereg_replace('\\\\', '\\\\', $row['title']));
                 } else {
                     $path[] = str_replace(array(
-                                              "\\",
-                                              '/'
+                                              '\\',
+                                              '/',
                                           ), array(
-                                              "\\\\",
-                                              "\\/"
+                                              '\\\\',
+                                              '\\/',
                                           ), $row['title']);
                 }
                 $index_id = $row['parent_index_id'];
             }
         } while ($row['parent_index_id'] != 0);
-        array_pop($path);//remove '/Root'
-        return '/' . implode('/', array_reverse($path));
+        array_pop($path); //remove '/Root'
+        return '/'.implode('/', array_reverse($path));
     }
 
     /**
@@ -1727,7 +1766,9 @@ class XooNIpsImportItemHandler
      *  to import file and already exists items.
      *
      * @param $import_items
-     * @return int number of import items.
+     *
+     * @return int number of import items
+     *
      * @internal param array $ipmort_items of XooNIpsImportItem
      */
     public function numberOfConflictItem($import_items)
@@ -1739,22 +1780,24 @@ class XooNIpsImportItemHandler
                 || count($i->getDuplicateUnupdatableItemId()) > 0
                 || count($i->getDuplicateLockedItemId()) > 0
             ) {
-                $count++;
+                ++$count;
             }
         }
+
         return $count;
     }
 
     /**
      * @param $import_item
+     *
      * @return string
      */
     public function getItemAbstractTextFromItem($import_item)
     {
-        $basic    =  $import_item->getVar('basic');
-        $titles   =  $import_item->getVar('titles');
-        $indexes  =  $import_item->getVar('indexes');
-        $handler  = xoonips_getOrmHandler('xoonips', 'item_type');
+        $basic = $import_item->getVar('basic');
+        $titles = $import_item->getVar('titles');
+        $indexes = $import_item->getVar('indexes');
+        $handler = xoonips_getOrmHandler('xoonips', 'item_type');
         $itemtype = $handler->get($basic->get('item_type_id'));
 
         $ret = array();
@@ -1770,11 +1813,13 @@ class XooNIpsImportItemHandler
 
     /**
      * @param $item
+     *
      * @return bool
      */
     public function insert($item)
     {
         $handler = xoonips_getOrmCompoHandler('xoonips', 'item');
+
         return $handler->insert($item);
     }
 
@@ -1784,6 +1829,7 @@ class XooNIpsImportItemHandler
     public function setNew($item)
     {
         $handler = xoonips_getOrmCompoHandler('xoonips', 'item');
+
         return $handler->setNew($item);
     }
 
@@ -1793,6 +1839,7 @@ class XooNIpsImportItemHandler
     public function unsetNew($item)
     {
         $handler = xoonips_getOrmCompoHandler('xoonips', 'item');
+
         return $handler->unsetNew($item);
     }
 
@@ -1802,6 +1849,7 @@ class XooNIpsImportItemHandler
     public function setDirty($item)
     {
         $handler = xoonips_getOrmCompoHandler('xoonips', 'item');
+
         return $handler->setDirty($item);
     }
 
@@ -1811,6 +1859,7 @@ class XooNIpsImportItemHandler
     public function unsetDirty($item)
     {
         $handler = xoonips_getOrmCompoHandler('xoonips', 'item');
+
         return $handler->unsetDirty($item);
     }
 
@@ -1841,8 +1890,8 @@ class XooNIpsImportItemHandler
         }
 
         // update xoonips_related_to.item_id from pseudo item id to item id
-        $handler     = xoonips_getOrmHandler('xoonips', 'related_to');
-        $related_tos =  $item->getVar('related_tos');
+        $handler = xoonips_getOrmHandler('xoonips', 'related_to');
+        $related_tos = $item->getVar('related_tos');
 
         $new_related_tos = array();
         foreach (array_keys($related_tos) as $key) {
@@ -1854,7 +1903,7 @@ class XooNIpsImportItemHandler
                 $l->set('parent_id', $related_tos[$key]->get('parent_id'));
                 $l->set('item_id', $item_id);
                 $handler->insert($l);
-                $new_related_tos[] =  $l;
+                $new_related_tos[] = $l;
             }
             $handler->delete($related_tos[$key]);
         }
@@ -1863,13 +1912,13 @@ class XooNIpsImportItemHandler
         // lock if imported items are registered to public/group
         // index and certify required
         $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-        $index_item_links  =  $item->getVar('indexes');
-        $indexHandler      = xoonips_getOrmHandler('xoonips', 'index');
+        $index_item_links = $item->getVar('indexes');
+        $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
         foreach ($index_item_links as $index_item_link) {
             if ($index_item_link->get('certify_state') == CERTIFY_REQUIRED) {
                 $index = $indexHandler->get($index_item_link->get('index_id'));
                 if ($index->get('open_level') == OL_PUBLIC || $index->get('open_level') == OL_GROUP_ONLY) {
-                    $basic =  $item->getVar('basic');
+                    $basic = $item->getVar('basic');
                     $item_basicHandler->lockItemAndIndexes($basic->get('item_id'), $index_item_link->get('index_id'));
                 }
             }
@@ -1877,47 +1926,48 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     *
      * index path strnig to array of each indexes and strip escape char 'yen'
      * (ex:/ABC/XYZ/012 -> array( 'ABC', 'XYZ', '012' ) )
-     * (ex:/ABC/XYZ/012/ -> array( 'ABC', 'XYZ', '012', '' ) )
+     * (ex:/ABC/XYZ/012/ -> array( 'ABC', 'XYZ', '012', '' ) ).
      *
      * @param $str index path like '/Public/Parent/Child' (must be UTF-8)
+     *
      * @return array of indexes;
      */
     public function _decomposite_index_path($str)
     {
         $ret = array();
 
-        $i      = 1;
-        $tok    = '';
+        $i = 1;
+        $tok = '';
         $maxlen = mb_strlen($str, 'UTF-8');
         while ($i < $maxlen) {
             $ch = mb_substr($str, $i, 1, 'UTF-8');
             if ($ch === '/') {
                 $ret[] = $tok;
-                $tok   = '';
-            } elseif ($ch === "\\") {
-                $i++;
+                $tok = '';
+            } elseif ($ch === '\\') {
+                ++$i;
                 $ch = mb_substr($str, $i, 1, 'UTF-8');
                 $tok .= $ch;
             } else {
                 $tok .= $ch;
             }
-            $i++;
+            ++$i;
         }
         $ret[] = $tok;
+
         return $ret;
     }
 
     /**
-     *
      * get index id conrresponds to indexstr
-     *  (that is placed relatively from $base_index_id)
+     *  (that is placed relatively from $base_index_id).
+     *
      * @param $base_index_id integer index_id of base index
      * @param $indexstr      string index path string like 'foo/bar/xxx'
-     * @return integer index id or false
      *
+     * @return int index id or false
      */
     public function _get_index_id($base_index_id, $indexstr)
     {
@@ -1927,7 +1977,7 @@ class XooNIpsImportItemHandler
             return $base_index_id;
         }
 
-        $names    = $this->_decomposite_index_path($indexstr);
+        $names = $this->_decomposite_index_path($indexstr);
         $index_id = $base_index_id;
         foreach ($names as $name) {
             if ($name == '') {
@@ -1935,29 +1985,29 @@ class XooNIpsImportItemHandler
                 break;
             }
             $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-            $base_index   = $indexHandler->get($index_id);
+            $base_index = $indexHandler->get($index_id);
             if (!is_object($base_index)) {
                 return false;
             }
 
             $criteria = new CriteriaCompo(new Criteria('parent_index_id', $index_id));
             $criteria->add(new Criteria('tt.title', $name));
-            $join    = new XooNIpsJoinCriteria('xoonips_item_title', 'index_id', 'item_id', 'LEFT', 'tt');
-            $indexes =  $indexHandler->getObjects($criteria, false, '', false, $join);
+            $join = new XooNIpsJoinCriteria('xoonips_item_title', 'index_id', 'item_id', 'LEFT', 'tt');
+            $indexes = $indexHandler->getObjects($criteria, false, '', false, $join);
             if (count($indexes) == 0) {
                 return false;
             }
 
             $index_id = $indexes[0];
         }
+
         return $index_id;
     }
 
     /**
-     *
      * get an id of index specified by given arguments.
      * if $str is relative path, $base_index_path must be given.
-     * regards as private if $open_level is null
+     * regards as private if $open_level is null.
      *
      *
      * @param                   $str             index path like
@@ -1969,6 +2019,7 @@ class XooNIpsImportItemHandler
      *                                           '/Public/XXX/YYY'(absolute only). default is '/'.
      * @param open_level|string $open_level      open_level of index of
      *                                           base_index_path('private'|'group'|'public'|null). null if not specified.
+     *
      * @return bool|index
      */
     public function index_str2index_id($str, $user, $base_index_path = '/', $open_level = 'private')
@@ -1990,7 +2041,7 @@ class XooNIpsImportItemHandler
             //  $index_path equals to $base_index_path
             // to specify index that items is imported to by relatively.
             //
-            $index_path = $base_index_path . (empty($str) ? '' : '/' . $str);
+            $index_path = $base_index_path.(empty($str) ? '' : '/'.$str);
         }
 
         $indexes = $this->_decomposite_index_path($index_path);
@@ -2010,18 +2061,19 @@ class XooNIpsImportItemHandler
 
         // return index id
         $result = $this->index_array2index_id(IID_ROOT, $indexes, $open_level);
+
         return $result;
     }
 
     /**
-     *
      * get index_id of given an array of index hierarchy
      * (ex: index_array2index_id <id of root index>, array( 'foo', 'bar' ),
-     *  'group' ); you can get group index id of /foo/bar )
+     *  'group' ); you can get group index id of /foo/bar ).
      *
      * @param parent            $index_id
      * @param array             $indexes
      * @param open_level|string $open_level
+     *
      * @return bool|index
      *
      * @internal param parent $index_id index id
@@ -2047,12 +2099,12 @@ class XooNIpsImportItemHandler
         }
 
         $unicode = xoonips_getUtility('unicode');
-        $sql     = 'SELECT i.item_id FROM ' . $xoopsDB->prefix('xoonips_item_basic') . ' AS i, ' . $xoopsDB->prefix('xoonips_item_title') . ' AS t, '
-                   . $xoopsDB->prefix('xoonips_index') . ' AS x ' . "WHERE title_id = 0 AND x.parent_index_id = $index_id"
-                   . ' AND x.index_id = t.item_id AND t.item_id = i.item_id' . ' AND t.title = '
-                   . $xoopsDB->quoteString($unicode->decode_utf8(reset($indexes), xoonips_get_server_charset(), 'h'))
-                   . " AND open_level = ${open_level_val}";
-        $result  = $xoopsDB->query($sql);
+        $sql = 'SELECT i.item_id FROM '.$xoopsDB->prefix('xoonips_item_basic').' AS i, '.$xoopsDB->prefix('xoonips_item_title').' AS t, '
+                   .$xoopsDB->prefix('xoonips_index').' AS x '."WHERE title_id = 0 AND x.parent_index_id = $index_id"
+                   .' AND x.index_id = t.item_id AND t.item_id = i.item_id'.' AND t.title = '
+                   .$xoopsDB->quoteString($unicode->decode_utf8(reset($indexes), xoonips_get_server_charset(), 'h'))
+                   ." AND open_level = ${open_level_val}";
+        $result = $xoopsDB->query($sql);
         if (!$result) {
             return false;
         } elseif ($xoopsDB->getRowsNum($result) == 0) {
@@ -2071,6 +2123,7 @@ class XooNIpsImportItemHandler
      * @param $index_ids
      * @param $certify_auto_flag
      * @param $user
+     *
      * @return array
      */
     public function &_create_index_item_links_from_index_ids($index_ids, $certify_auto_flag, $user)
@@ -2079,10 +2132,10 @@ class XooNIpsImportItemHandler
 
         foreach ($index_ids as $index_id) {
             $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-            $index        = $indexHandler->get($index_id);
+            $index = $indexHandler->get($index_id);
 
             $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-            $index_item_link        = $index_item_linkHandler->create();
+            $index_item_link = $index_item_linkHandler->create();
             $index_item_link->set('index_id', $index_id);
             if (OL_PUBLIC == $index->get('open_level')
                 || OL_GROUP_ONLY == $index->get('open_level')
@@ -2093,11 +2146,11 @@ class XooNIpsImportItemHandler
                     $index_item_link->set('certify_state', $certify_auto_flag ? CERTIFIED : CERTIFY_REQUIRED);
                 } else {
                     $xconfigHandler = xoonips_getOrmHandler('xoonips', 'config');
-                    $certify_item   = $xconfigHandler->getValue(XNP_CONFIG_CERTIFY_ITEM_KEY);
+                    $certify_item = $xconfigHandler->getValue(XNP_CONFIG_CERTIFY_ITEM_KEY);
                     $index_item_link->set('certify_state', $certify_item == XNP_CONFIG_CERTIFY_ITEM_AUTO ? CERTIFIED : CERTIFY_REQUIRED);
                 }
             }
-            $indexes[] =  $index_item_link;
+            $indexes[] = $index_item_link;
         }
 
         return $indexes;
@@ -2106,7 +2159,7 @@ class XooNIpsImportItemHandler
     /**
      * create text search index.
      * update xoonips_search_text.
-     * @access protected
+     *
      * @param $file XooNIpsFile
      */
     public function _create_text_search_index($file)
@@ -2119,16 +2172,15 @@ class XooNIpsImportItemHandler
     /**
      * delete all files of specified item.
      *
-     * @access protected
      * @param $item reference of XooNIpsImportItem
      */
     public function _set_file_delete_flag($item)
     {
         // set true to delete flag of old url_banner_file
-        $basic    = $item->getVar('basic');
-        $handler  = xoonips_getOrmHandler('xoonips', 'file');
+        $basic = $item->getVar('basic');
+        $handler = xoonips_getOrmHandler('xoonips', 'file');
         $criteria = new CriteriaCompo(new Criteria('item_id', $basic->get('item_id')));
-        $old_url  = $handler->getObjects($criteria);
+        $old_url = $handler->getObjects($criteria);
         if ($old_url) {
             foreach ($old_url as $file) {
                 $file->set('is_deleted', 1);
@@ -2142,7 +2194,6 @@ class XooNIpsImportItemHandler
      * item_id is given by $item.
      *
      *
-     * @access protected
      * @param $item reference of XooNIpsImportItem
      * @param $file reference of XooNIpsFile
      */
@@ -2155,7 +2206,7 @@ class XooNIpsImportItemHandler
             $newfile->unsetNew();
             $newfile->setDirty();
 
-            $vars            = $file->getVarArray('n');
+            $vars = $file->getVarArray('n');
             $vars['sess_id'] = null;
             $newfile->setVars($vars, true);
 
@@ -2169,11 +2220,11 @@ class XooNIpsImportItemHandler
      * Get max length of the field.
      * It returns max length in bytes defined in XooNIpsObject.
      *
-     * @access private
      * @param $item
      * @param $ormname    string orm name
      * @param $field_name string field name
-     * @return integer max length of the field in bytes.
+     *
+     * @return int max length of the field in bytes
      */
     public function _get_max_len($item, $ormname, $field_name)
     {
@@ -2193,6 +2244,7 @@ class XooNIpsImportItemHandler
         if (!array_key_exists($field_name, $vars)) {
             return 0;
         }
+
         return $vars[$field_name]['maxlength'];
     }
 
@@ -2211,11 +2263,14 @@ class XooNIpsImportItemHandler
 
     /**
      * create map(associate array title and XooNIpsImportItem)
-     *  from XooNIpsImportItem array
+     *  from XooNIpsImportItem array.
+     *
      * @param $all_import_items array of reference
      *                          of all XooNIpsImportItem objects
+     *
      * @return array associate array
-     *                          (title string => array( pseudo_id => reference of XooNIpsItem, ... ))
+     *               (title string => array( pseudo_id => reference of XooNIpsItem, ... ))
+     *
      * @internal param reference $import_item of XooNIpsImportItem object
      */
     public function &_create_title_item_map($all_import_items)
@@ -2230,6 +2285,7 @@ class XooNIpsImportItemHandler
                     = $all_import_items[$key];
             }
         }
+
         return $title_item_map;
     }
 }

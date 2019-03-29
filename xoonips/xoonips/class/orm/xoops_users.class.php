@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,9 +24,7 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @brief class of XooNIps User.
@@ -82,6 +80,7 @@ class XooNIpsOrmXoopsUsersHandler extends XooNIpsTableObjectHandler
 {
     /**
      * XooNIpsOrmXoopsUsersHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -92,11 +91,12 @@ class XooNIpsOrmXoopsUsersHandler extends XooNIpsTableObjectHandler
 
     /**
      * @param bool $isNew
+     *
      * @return object
      */
     public function create($isNew = true)
     {
-        $obj =  parent::create($isNew);
+        $obj = parent::create($isNew);
         if ($isNew) {
             // override default values
             $obj->set('name', '');
@@ -119,12 +119,14 @@ class XooNIpsOrmXoopsUsersHandler extends XooNIpsTableObjectHandler
             $obj->set('bio', '');
             $obj->set('user_mailok', 0);
         }
+
         return $obj;
     }
 
     /**
      * @param XoopsObject $obj
      * @param bool        $force
+     *
      * @return bool
      */
     public function insert(XoopsObject $obj, $force = false)
@@ -132,6 +134,7 @@ class XooNIpsOrmXoopsUsersHandler extends XooNIpsTableObjectHandler
         if ($obj->isNew()) {
             $obj->set('user_regdate', time());
         }
+
         return parent::insert($obj, $force);
     }
 }

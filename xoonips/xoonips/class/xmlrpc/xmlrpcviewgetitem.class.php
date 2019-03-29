@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.2 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,5 +25,5 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/class/xml/rpc/xmlrpcapi.php';
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonipsview.php';
+require_once XOOPS_ROOT_PATH.'/class/xml/rpc/xmlrpcapi.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xoonipsview.php';

@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.21 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -25,22 +25,19 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
 
-include_once XOOPS_ROOT_PATH . '/modules/xoonips/class/xoonips_compo_item.class.php';
+require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/xoonips_compo_item.class.php';
 
 /**
- *
  * @brief Class that transform associative array of XML-RPC argument(parsed by XoopsXmlRpcParser) to DataObject
- *
- *
  */
 class XooNIpsXmlRpcTransformElement
 {
-
     /**
      * @brief add XooNIpsXmlRpcTransformElement to transform
      *
      * @param string                        $field field name correspond to $child
      * @param XooNIpsXmlRpcTransformElement $child child element
+     *
      * @return XooNIpsXmlRpcTransformEelemnt $child object to transform array
      */
     public function add($field, $child)
@@ -55,12 +52,10 @@ class XooNIpsXmlRpcTransformElement
 }
 
 /**
- *
  * @brief XmlRpcTransform composer class
  *
  * XmlRpcTransformCompo is composed by one or more XmlRpcTransform.
  * It has getObject method.
- *
  */
 class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
 {
@@ -70,8 +65,8 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
     public $iteminfo = null;
 
     /**
-     *
      * @param null $module
+     *
      * @internal param string $itemtype itemtype name to create in getObject
      */
     public function __construct($module = null)
@@ -92,8 +87,8 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
         //        $this->module = $module;
         //        $this->name = $name;
         if (null === $this->iteminfo) {
-            include XOOPS_ROOT_PATH . '/modules/' . $module . '/iteminfo.php';
-            $this->iteminfo =  $iteminfo;
+            require XOOPS_ROOT_PATH.'/modules/'.$module.'/iteminfo.php';
+            $this->iteminfo = $iteminfo;
         }
         //
         // create and add orm accrding to $this -> iteminfo['orm']
@@ -106,10 +101,11 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
      * @brief  check that required fields are filled.
      * empty string('') is seems 'not filled'. Multiple variable must have at least one non-empty value.
      *
-     * @param  [in] $in_array associative array of item
-     * @param  [out] $missing array of string of missing field name
+     * @param [in]  $in_array associative array of item
+     * @param [out] $missing  array of string of missing field name
      * @retval ture filled
      * @retval false not filled
+     *
      * @return bool
      */
     public function isFilledRequired($in_array, $missing)
@@ -121,8 +117,8 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
             if (!isset($input['xmlrpc']['required']) || !$input['xmlrpc']['required']) {
                 continue;
             } // no need to check required
-            $value       = null; //target value
-            $name        = null; //name of variable
+            $value = null; //target value
+            $name = null; //name of variable
             $is_multiple = isset($input['xmlrpc']['multiple']) ? $input['xmlrpc']['multiple'] : false;
             if ($input['xmlrpc']['field'][0] === 'detail_field') { // case of detail_field
                 $name = implode('.', $input['xmlrpc']['field']);
@@ -159,6 +155,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
                 $missing[] = $name;
             }
         }
+
         return count($missing) == 0;
     }
 
@@ -166,10 +163,11 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
      * @brief  check that multiple fields has array and non-multiple field has single value
      * don't check a variable if its value is not specified.
      *
-     * @param  [in] $in_array associative array of item
-     * @param  [out] $fields array of string of field name
+     * @param [in]  $in_array associative array of item
+     * @param [out] $fields   array of string of field name
      * @retval ture filled
      * @retval false not filled
+     *
      * @return bool
      */
     public function checkMultipleFields($in_array, $fields)
@@ -178,8 +176,8 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
             $fields = array();
         }
         foreach ($this->iteminfo['io']['xmlrpc']['item'] as $input) {
-            $value       = null; //target value
-            $name        = null; //name of variable
+            $value = null; //target value
+            $name = null; //name of variable
             $is_multiple = isset($input['xmlrpc']['multiple']) ? $input['xmlrpc']['multiple'] : false;
             if ($input['xmlrpc']['field'][0] === 'detail_field') { // case of detail_field
                 if ($is_multiple) {
@@ -208,7 +206,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
             if (!isset($value)) {
                 continue;
             }
-            //
+
             if ($is_multiple) {
                 if (!is_array($value)) {
                     // error if multiple variable doesn't have an array
@@ -219,16 +217,18 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
                 $fields[] = $name;
             }
         }
+
         return count($fields) == 0;
     }
 
     /**
      * @brief  check that each field has valid value.
      *
-     * @param  [in] $in_array associative array of item
-     * @param  [out] $error XooNIpsError to add error
+     * @param [in]  $in_array associative array of item
+     * @param [out] $error    XooNIpsError to add error
      * @retval ture valid
      * @retval false some invalid fields
+     *
      * @return bool
      */
     public function checkFields($in_array, $error)
@@ -238,8 +238,8 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
             if (!isset($input['xmlrpc']['options'])) {
                 continue;
             }
-            $value       = null; //target value
-            $name        = null; //name of variable
+            $value = null; //target value
+            $name = null; //name of variable
             $is_multiple = isset($input['xmlrpc']['multiple']) ? $input['xmlrpc']['multiple'] : false;
             if ($input['xmlrpc']['field'][0] === 'detail_field') { // case of detail_field
                 if ($is_multiple) {
@@ -284,20 +284,21 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
                 $is_valid = false;
             }
         }
+
         return $is_valid;
     }
 
     /**
-     *
      * get orm composer object( subclass of XooNIpsItemCompo ) from associative array
-     * see also {@link $this -> iteminfo}
+     * see also {@link $this -> iteminfo}.
      *
      * @param array associative array of XML-RPC argument
+     *
      * @return XooNIpsTableObject reference of subclass of XooNIpsTableObject
      */
     public function getObject($in_array)
     {
-        $handler        = xoonips_getOrmCompoHandler($this->iteminfo['ormcompo']['module'], $this->iteminfo['ormcompo']['name']);
+        $handler = xoonips_getOrmCompoHandler($this->iteminfo['ormcompo']['module'], $this->iteminfo['ormcompo']['name']);
         $this->iteminfo = $handler->getIteminfo();
         //
         // get primary key
@@ -326,8 +327,8 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
         $unicode = xoonips_getUtility('unicode');
         foreach ($this->iteminfo['io']['xmlrpc']['item'] as $input) {
             $in_field = null;
-            $in_var   = array();
-            $out_var  = array();
+            $in_var = array();
+            $out_var = array();
             //
             // get reference of orm's information corresnponds to $input
             $orminfo = null;
@@ -348,7 +349,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
                     if (trim($field['name']) == $input['xmlrpc']['field'][1]) {
                         if (isset($in_field) && !is_array($in_field)) {
                             $in_field = array(
-                                $in_field
+                                $in_field,
                             );
                         }
                         if (is_array($in_field)) {
@@ -375,19 +376,18 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
             if ($orminfo['multiple']) {
                 //
                 // get handler of orm to set variable
-                $handler =  $this->handlers[$input['orm']['field'][0]['orm']];
+                $handler = $this->handlers[$input['orm']['field'][0]['orm']];
 
                 // prepare orm array
                 $foreign_key = $orminfo['foreign_key'];
-                $cri         = new CriteriaCompo(new Criteria($foreign_key, $primary_orm->get($this->iteminfo['ormcompo']['primary_key'])));
-                $var_objs    =  $handler->getObjects($cri);
-                array_splice($var_objs, count($in_field));//delete redundant element
+                $cri = new CriteriaCompo(new Criteria($foreign_key, $primary_orm->get($this->iteminfo['ormcompo']['primary_key'])));
+                $var_objs = $handler->getObjects($cri);
+                array_splice($var_objs, count($in_field)); //delete redundant element
                 while (count($var_objs) < count($in_field)) {
                     $var_objs[] = $handler->create();
                 }
 
-                //
-                $pos   = 0;
+                $pos = 0;
                 $array = array();
                 foreach ($in_field as $v) {
                     if (isset($array[$pos])) {
@@ -399,21 +399,20 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
                     // convert to numeric reference
                     if (is_string($v)) {
                         $in = $v;
-                        $v  = $unicode->decode_utf8($v, xoonips_get_server_charset(), 'h');
+                        $v = $unicode->decode_utf8($v, xoonips_get_server_charset(), 'h');
                     }
 
                     // evaluate
-                    $in_var  = array(
-                        $v
+                    $in_var = array(
+                        $v,
                     );
                     $out_var = array();
                     $context = array(
-                        'position' => $pos
+                        'position' => $pos,
                     );
                     eval(isset($input['eval']['xmlrpc2orm']) ? $input['eval']['xmlrpc2orm'] : '$out_var[0] = $in_var[0];');
 
-                    //
-                    for ($i = 0, $iMax = count($input['orm']['field']); $i < $iMax; $i++) {
+                    for ($i = 0, $iMax = count($input['orm']['field']); $i < $iMax; ++$i) {
                         if (isset($out_var[$i])) {
                             $var_objs[$pos]->setVar($input['orm']['field'][$i]['field'], $out_var[$i], true);
                         } else {
@@ -421,7 +420,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
                         }
                     }
                     $array[$pos] = $var_objs[$pos];
-                    $pos++;
+                    ++$pos;
                 }
                 $obj->setVar($input['orm']['field'][0]['orm'], $array);
             } else {
@@ -432,7 +431,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
 
                 //
                 // evaluate
-                $in_var  = array($in_field);
+                $in_var = array($in_field);
                 $out_var = array();
                 eval(isset($input['eval']['xmlrpc2orm']) ? $input['eval']['xmlrpc2orm'] : '$out_var[0] = $in_var[0];');
                 $i = 0;
@@ -447,19 +446,17 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
                         $orm->setVar($field['field'], $out_var[$i], true);
                     }
                     $obj->setVar($field['orm'], $orm);
-                    $i++;
+                    ++$i;
                 }
             }
         }
+
         return $obj;
     }
 }
 
 /**
- *
- * create XooNIpxXmlRpcTransform
- *
- *
+ * create XooNIpxXmlRpcTransform.
  */
 class XooNIpsXmlRpcTransformFactory
 {
@@ -471,7 +468,7 @@ class XooNIpsXmlRpcTransformFactory
     }
 
     /**
-     * return XooNIpsLogicFactory instance
+     * return XooNIpsLogicFactory instance.
      *
      * @return XooNIpsLogicFactory|XooNIpsXmlRpcTransformFactory
      */
@@ -479,48 +476,50 @@ class XooNIpsXmlRpcTransformFactory
     {
         static $singleton = null;
         if (!isset($singleton)) {
-            $singleton = new XooNIpsXmlRpcTransformFactory();
+            $singleton = new self();
         }
+
         return $singleton;
     }
 
     /**
-     * return XooNIpsLogic corresponding to $logic
+     * return XooNIpsLogic corresponding to $logic.
      *
      * @param string $module module name
      * @param string $name   name of Transform
      * @retval XooNIpsXmlRpcTransform corresponding to $module and $name
      * @retval false unknown logic
+     *
      * @return bool|null
      */
     public function create($module, $name)
     {
         static $falseVar = false;
         $logic = null;
-        //
+
         $name = trim($name);
         if (false !== strstr($name, '..')) {
             return $falseVar;
         }
-        $include_file = XOOPS_ROOT_PATH . "/modules/{$module}/class/xmlrpc/xmlrpctransform" . strtolower($name) . '.class.php';
+        $include_file = XOOPS_ROOT_PATH."/modules/{$module}/class/xmlrpc/xmlrpctransform".strtolower($name).'.class.php';
         if (file_exists($include_file)) {
-            include_once $include_file;
+            require_once $include_file;
         } else {
             return $falseVar;
         }
-        //
+
         if (strncmp('xnp', $module, 3) == 0) {
-            $tok   = substr($module, 3);
-            $class = 'XNP' . ucfirst($tok) . 'XmlRpcTransform' . str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
+            $tok = substr($module, 3);
+            $class = 'XNP'.ucfirst($tok).'XmlRpcTransform'.str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
         } else {
-            $class = 'XooNIpsXmlRpcTransform' . str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
+            $class = 'XooNIpsXmlRpcTransform'.str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
         }
         if (class_exists($class)) {
             $logic = new $class();
         }
-        //
+
         if (!isset($logic)) {
-            trigger_error('Handler does not exist. Name: ' . $name, E_USER_ERROR);
+            trigger_error('Handler does not exist. Name: '.$name, E_USER_ERROR);
         }
         // return result
         if (isset($logic)) {
@@ -532,10 +531,7 @@ class XooNIpsXmlRpcTransformFactory
 }
 
 /**
- *
- * create XooNIpxXmlRpcTransformCompo
- *
- *
+ * create XooNIpxXmlRpcTransformCompo.
  */
 class XooNIpsXmlRpcTransformCompoFactory
 {
@@ -547,7 +543,7 @@ class XooNIpsXmlRpcTransformCompoFactory
     }
 
     /**
-     * return XooNIpsLogicFactory instance
+     * return XooNIpsLogicFactory instance.
      *
      * @return XooNIpsLogicFactory|XooNIpsXmlRpcTransformCompoFactory
      */
@@ -555,16 +551,19 @@ class XooNIpsXmlRpcTransformCompoFactory
     {
         static $singleton = null;
         if (!isset($singleton)) {
-            $singleton = new XooNIpsXmlRpcTransformCompoFactory();
+            $singleton = new self();
         }
+
         return $singleton;
     }
 
     /**
-     * return XooNIpsLogic corresponding to $logic
+     * return XooNIpsLogic corresponding to $logic.
      *
      * @param string $module module name
+     *
      * @return bool|null|XooNIpsXmlRpcTransformCompo
+     *
      * @internal param string $name name of TransformCompo
      * @retval   XooNIpsXmlRpcTransformCompo corresponding to $module and $name
      * @retval   false unknown logic
@@ -573,16 +572,16 @@ class XooNIpsXmlRpcTransformCompoFactory
     {
         static $falseVar = false;
         $compo = null;
-        //
-        $module       = trim($module);
-        $include_file = XOOPS_ROOT_PATH . "/modules/{$module}/class/xmlrpc/xmlrpctransformcompo.class.php";
+
+        $module = trim($module);
+        $include_file = XOOPS_ROOT_PATH."/modules/{$module}/class/xmlrpc/xmlrpctransformcompo.class.php";
         if (file_exists($include_file)) {
-            include_once $include_file;
+            require_once $include_file;
         }
-        //
+
         if (strncmp('xnp', $module, 3) == 0) {
-            $tok   = substr($module, 3);
-            $class = 'XNP' . ucfirst($tok) . 'XmlRpcTransformCompo';
+            $tok = substr($module, 3);
+            $class = 'XNP'.ucfirst($tok).'XmlRpcTransformCompo';
         } else {
             return $falseVar;
         }
@@ -592,9 +591,9 @@ class XooNIpsXmlRpcTransformCompoFactory
             //use XooNIpsXmlRpcTransformCompo if item type specific class is not eixsts
             $compo = new XooNIpsXmlRpcTransformCompo($module);
         }
-        //
+
         if (!isset($compo)) {
-            trigger_error('Handler does not exist. Name: ' . $module, E_USER_ERROR);
+            trigger_error('Handler does not exist. Name: '.$module, E_USER_ERROR);
         }
         // return result
         if (isset($compo)) {

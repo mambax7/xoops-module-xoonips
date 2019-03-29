@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -27,233 +27,231 @@
 
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-include XOOPS_ROOT_PATH . '/modules/xoonips/include/iteminfo.inc.php';
+require XOOPS_ROOT_PATH.'/modules/xoonips/include/iteminfo.inc.php';
 
-//
-//
-$iteminfo['description']      = 'XooNIps Memo Item Type';
-$iteminfo['files']['main']    = 'memo_file';
+$iteminfo['description'] = 'XooNIps Memo Item Type';
+$iteminfo['files']['main'] = 'memo_file';
 $iteminfo['files']['preview'] = null;
-$iteminfo['files']['others']  = array();
+$iteminfo['files']['others'] = array();
 
 //
 // define compo
-$iteminfo['ormcompo']['module']      = 'xnpmemo';
-$iteminfo['ormcompo']['name']        = 'item';
+$iteminfo['ormcompo']['module'] = 'xnpmemo';
+$iteminfo['ormcompo']['name'] = 'item';
 $iteminfo['ormcompo']['primary_orm'] = 'basic';
 $iteminfo['ormcompo']['primary_key'] = 'item_id';
 
 //
 // define orm of compo
 $iteminfo['orm'][] = array(
-    'module'      => 'xnpmemo',
-    'name'        => 'item_detail',
-    'field'       => 'detail',
+    'module' => 'xnpmemo',
+    'name' => 'item_detail',
+    'field' => 'detail',
     'foreign_key' => 'memo_id',
-    'multiple'    => false,
-    'required'    => true
+    'multiple' => false,
+    'required' => true,
 );
 $iteminfo['orm'][] = array(
-    'module'      => 'xoonips',
-    'name'        => 'file',
-    'field'       => 'memo_file',
+    'module' => 'xoonips',
+    'name' => 'file',
+    'field' => 'memo_file',
     'foreign_key' => 'item_id',
-    'criteria'    => iteminfo_file_criteria('memo_file'),
-    'multiple'    => false
+    'criteria' => iteminfo_file_criteria('memo_file'),
+    'multiple' => false,
 );
 
 //
 // define database table information
 $iteminfo['ormfield']['detail'] = array(
     array(
-        'name'     => 'memo_id',
-        'type'     => 'int',
-        'required' => ' false'
+        'name' => 'memo_id',
+        'type' => 'int',
+        'required' => ' false',
     ),
     array(
-        'name'     => 'item_link',
-        'type'     => 'string',
-        'required' => ' false'
-    )
+        'name' => 'item_link',
+        'type' => 'string',
+        'required' => ' false',
+    ),
 );
 
 //
 // detail information (modify below for each item types)
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'detail',
-                'field' => 'memo_id'
-            )
-        )
+                'orm' => 'detail',
+                'field' => 'memo_id',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'memo_id'
+            'memo_id',
         ),
         'display_name' => '_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_MEMO_ID',
-        'type'         => 'string',
-        'multiple'     => false,
-        'readonly'     => true
-    )
+        'type' => 'string',
+        'multiple' => false,
+        'readonly' => true,
+    ),
 );
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'detail',
-                'field' => 'item_link'
-            )
-        )
+                'orm' => 'detail',
+                'field' => 'item_link',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'item_link'
+            'item_link',
         ),
         'display_name' => '_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_ITEM_LINK',
-        'type'         => 'string',
-        'multiple'     => false
-    )
+        'type' => 'string',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['item'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'memo_file',
-                'field' => 'file_id'
-            )
-        )
+                'orm' => 'memo_file',
+                'field' => 'file_id',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'        => array(
+        'field' => array(
             'detail_field',
-            'memo_file'
+            'memo_file',
         ),
         'display_name' => '_MD_XNPMEMO_XMLRPC_DISPLAY_NAME_MEMO_FILE',
-        'type'         => 'int',
-        'multiple'     => false
-    )
+        'type' => 'int',
+        'multiple' => false,
+    ),
 );
 
 //-------------------------
 // SimpleItem
 //-------------------------
 $iteminfo['io']['xmlrpc']['simpleitem'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'basic',
-                'field' => 'item_id'
-            )
-        )
+                'orm' => 'basic',
+                'field' => 'item_id',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'    => array('item_id'),
-        'type'     => 'int',
-        'multiple' => false
-    )
+        'field' => array('item_id'),
+        'type' => 'int',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['simpleitem'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'basic',
-                'field' => 'item_type_id'
-            )
-        )
+                'orm' => 'basic',
+                'field' => 'item_type_id',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'    => array('itemtypeid'),
-        'type'     => 'int',
-        'multiple' => false
-    )
+        'field' => array('itemtypeid'),
+        'type' => 'int',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['simpleitem'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'basic',
-                'field' => 'uid'
-            )
-        )
+                'orm' => 'basic',
+                'field' => 'uid',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'    => array('username'),
-        'type'     => 'string',
-        'multiple' => false
+        'field' => array('username'),
+        'type' => 'string',
+        'multiple' => false,
     ),
-    'eval'   => array(
+    'eval' => array(
         'orm2xmlrpc' => '$uHandler= xoops_getHandler("user"); $user=$uHandler->get($in_var[0]); $out_var[0]=$user->getVar("uname");',
-        'xmlrpc2orm' => ';'
-    )
+        'xmlrpc2orm' => ';',
+    ),
 );
 $iteminfo['io']['xmlrpc']['simpleitem'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'titles',
-                'field' => 'title'
-            )
-        )
+                'orm' => 'titles',
+                'field' => 'title',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'    => array('titles'),
-        'type'     => 'string',
-        'multiple' => true
-    )
+        'field' => array('titles'),
+        'type' => 'string',
+        'multiple' => true,
+    ),
 );
 $iteminfo['io']['xmlrpc']['simpleitem'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'basic',
-                'field' => 'last_update_date'
-            )
-        )
+                'orm' => 'basic',
+                'field' => 'last_update_date',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'    => array('last_modified_date'),
-        'type'     => 'dateTime.iso8601',
-        'multiple' => false
-    )
+        'field' => array('last_modified_date'),
+        'type' => 'dateTime.iso8601',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['simpleitem'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'basic',
-                'field' => 'creation_date'
-            )
-        )
+                'orm' => 'basic',
+                'field' => 'creation_date',
+            ),
+        ),
     ),
     'xmlrpc' => array(
-        'field'    => array('registration_date'),
-        'type'     => 'dateTime.iso8601',
-        'multiple' => false
-    )
+        'field' => array('registration_date'),
+        'type' => 'dateTime.iso8601',
+        'multiple' => false,
+    ),
 );
 $iteminfo['io']['xmlrpc']['simpleitem'][] = array(
-    'orm'    => array(
+    'orm' => array(
         'field' => array(
             array(
-                'orm'   => 'titles',
-                'field' => 'title'
+                'orm' => 'titles',
+                'field' => 'title',
             ),
             array(
-                'orm'   => 'detail',
-                'field' => 'item_link'
-            )
-        )
+                'orm' => 'detail',
+                'field' => 'item_link',
+            ),
+        ),
     ),
     'xmlrpc' => array(
         'field' => array('text'),
-        'type'  => 'string'
+        'type' => 'string',
     ),
-    'eval'   => array(
+    'eval' => array(
         'orm2xmlrpc' => '$in_var[0] = implode( ";", $in_var[0] ); $out_var[0] = implode( "/", $in_var );',
-        'xmlrpc2orm' => ';'
-    )
+        'xmlrpc2orm' => ';',
+    ),
 );

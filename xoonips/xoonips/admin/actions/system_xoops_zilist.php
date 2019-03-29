@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.6 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,35 +24,33 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_SYSTEM_XOOPS_ITEM_RESCUE_TITLE;
+$title = _AM_XOONIPS_SYSTEM_XOOPS_ITEM_RESCUE_TITLE;
 $description = _AM_XOONIPS_SYSTEM_XOOPS_ITEM_RESCUE_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_XOOPS_TITLE,
-        'url'   => $xoonips_admin['mypage_url'],
+        'url' => $xoonips_admin['mypage_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
@@ -64,16 +62,16 @@ $uid = $formdata->getValue('get', 'uid', 'i', true);
 
 // is uid really zombie user ?
 $xusersHandler = xoonips_getOrmHandler('xoonips', 'users');
-$usersHandler  = xoonips_getOrmHandler('xoonips', 'xoops_users');
-$xuser_obj     = $xusersHandler->get($uid);
-$user_obj      = $usersHandler->get($uid);
+$usersHandler = xoonips_getOrmHandler('xoonips', 'xoops_users');
+$xuser_obj = $xusersHandler->get($uid);
+$user_obj = $usersHandler->get($uid);
 if (!is_object($xuser_obj) || is_object($user_obj)) {
     die('illegal request');
 }
 
 // get non private item ids
 $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-$item_ids               = $index_item_linkHandler->getNonPrivateItemIds($uid);
+$item_ids = $index_item_linkHandler->getNonPrivateItemIds($uid);
 // merge group and public item ids
 $item_ids = array_unique($item_ids);
 if (count($item_ids) == 0) {
@@ -81,17 +79,17 @@ if (count($item_ids) == 0) {
 }
 
 // get item list
-$item_typeHandler  = xoonips_getOrmHandler('xoonips', 'item_type');
-$titleHandler      = xoonips_getOrmHandler('xoonips', 'title');
+$item_typeHandler = xoonips_getOrmHandler('xoonips', 'item_type');
+$titleHandler = xoonips_getOrmHandler('xoonips', 'title');
 $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
-$items             = array();
-$evenodd           = 'odd';
+$items = array();
+$evenodd = 'odd';
 foreach ($item_ids as $item_id) {
     $item_basic_obj = $item_basicHandler->get($item_id);
-    $criteria       = new Criteria('item_id', $item_id);
+    $criteria = new Criteria('item_id', $item_id);
     $criteria->setSort('title_id');
     $criteria->setOrder('ASC');
-    $title_objs =  $titleHandler->getObjects($criteria);
+    $title_objs = $titleHandler->getObjects($criteria);
     $item_title = '';
     foreach ($title_objs as $title_obj) {
         if ($item_title != '') {
@@ -99,22 +97,22 @@ foreach ($item_ids as $item_id) {
         }
         $item_title .= $title_obj->getVar('title', 's');
     }
-    $item_type_id  = $item_basic_obj->get('item_type_id');
+    $item_type_id = $item_basic_obj->get('item_type_id');
     $item_type_obj = $item_typeHandler->get($item_type_id);
-    $item_type     = $item_type_obj->getVar('display_name', 's');
-    $item_url      = sprintf('%s/transfer_item.php?action=detail_item&item_id=%u', XOONIPS_URL, $item_id);
-    $evenodd       = ($evenodd === 'even') ? 'odd' : 'even';
-    $items[]       = array(
-        'EVENODD'    => $evenodd,
-        'ITEM_ID'    => $item_id,
-        'ITEM_TYPE'  => $item_type,
+    $item_type = $item_type_obj->getVar('display_name', 's');
+    $item_url = sprintf('%s/transfer_item.php?action=detail_item&item_id=%u', XOONIPS_URL, $item_id);
+    $evenodd = ($evenodd === 'even') ? 'odd' : 'even';
+    $items[] = array(
+        'EVENODD' => $evenodd,
+        'ITEM_ID' => $item_id,
+        'ITEM_TYPE' => $item_type,
         'ITEM_TITLE' => $item_title,
-        'ITEM_URL'   => $item_url,
+        'ITEM_URL' => $item_url,
     );
 }
 
 // get to user list
-$to_uid   = $formdata->getValue('get', 'tuid', 'i', false, 0);
+$to_uid = $formdata->getValue('get', 'tuid', 'i', false, 0);
 $to_users = get_user_list('s');
 foreach ($to_users as $key => $to_user) {
     if ($to_uid == 0) {
@@ -128,18 +126,18 @@ if ($to_uid == 0 || count($to_users) == 0) {
 }
 
 // get to index list
-$to_urxid   = get_user_root_index_id($to_uid);
+$to_urxid = get_user_root_index_id($to_uid);
 $to_indexes = get_index_list($to_urxid, 0);
 // override root index name
 $to_indexes[0]['index_title'] = XNP_PRIVATE_INDEX_TITLE;
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
-$ticket_area  = 'xoonips_admin_system_xoops_item_rescue';
+require_once __DIR__.'/../../class/base/gtickets.php';
+$ticket_area = 'xoonips_admin_system_xoops_item_rescue';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_xoops_zilist.tmpl.tpl');
@@ -173,11 +171,11 @@ xoops_cp_footer();
 exit();
 
 /**
- * get user name by index title
+ * get user name by index title.
  *
- * @access public
  * @param int    $uid
  * @param string $fmt
+ *
  * @return string title
  */
 function get_uname_by_index_title($uid, $fmt)
@@ -188,97 +186,101 @@ function get_uname_by_index_title($uid, $fmt)
     $criteria = new CriteriaCompo(new Criteria('uid', $uid));
     $criteria->add(new Criteria('parent_index_id', IID_ROOT));
     $criteria->add(new Criteria('open_level', OL_PRIVATE));
-    $index_objs =  $indexHandler->getObjects($criteria);
+    $index_objs = $indexHandler->getObjects($criteria);
     if (count($index_objs) != 1) {
         return '';
     }
-    $index_obj =  $index_objs[0];
-    $index_id  = $index_obj->get('index_id');
+    $index_obj = $index_objs[0];
+    $index_id = $index_obj->get('index_id');
     // get title
     $criteria = new CriteriaCompo(new Criteria('item_id', $index_id));
     $criteria->add(new Criteria('title_id', DEFAULT_INDEX_TITLE_OFFSET));
-    $title_objs =  $titleHandler->getObjects($criteria);
+    $title_objs = $titleHandler->getObjects($criteria);
     if (count($title_objs) != 1) {
         return '';
     }
-    $title_obj =  $title_objs[0];
+    $title_obj = $title_objs[0];
+
     return $title_obj->getVar('title', $fmt);
 }
 
 /**
- * get activated and certified user list
+ * get activated and certified user list.
  *
- * @access public
  * @param string $fmt
+ *
  * @return array user list
  */
 function get_user_list($fmt)
 {
     $usersHandler = xoonips_getOrmHandler('xoonips', 'xoops_users');
-    $join         = new XooNIpsJoinCriteria('xoonips_users', 'uid', 'uid', 'INNER', 'xu');
-    $criteria     = new CriteriaCompo(new Criteria('level', 0, '>'));
+    $join = new XooNIpsJoinCriteria('xoonips_users', 'uid', 'uid', 'INNER', 'xu');
+    $criteria = new CriteriaCompo(new Criteria('level', 0, '>'));
     $criteria->add(new Criteria('activate', 1, '=', 'xu'));
     $criteria->setSort('uname');
     $criteria->setOrder('ASC');
-    $users_objs =  $usersHandler->getObjects($criteria, false, '', false, $join);
-    $users      = array();
+    $users_objs = $usersHandler->getObjects($criteria, false, '', false, $join);
+    $users = array();
     foreach ($users_objs as $users_obj) {
         $users[] = array(
-            'uid'   => $users_obj->get('uid'),
+            'uid' => $users_obj->get('uid'),
             'uname' => $users_obj->getVar('uname', $fmt),
         );
     }
+
     return $users;
 }
 
 /**
- * get user root index id
+ * get user root index id.
  *
- * @access public
  * @param int $uid user id
+ *
  * @return int root index id
  */
 function get_user_root_index_id($uid)
 {
     $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
-    $criteria     = new CriteriaCompo(new Criteria('parent_index_id', IID_ROOT));
+    $criteria = new CriteriaCompo(new Criteria('parent_index_id', IID_ROOT));
     $criteria->add(new Criteria('uid', $uid));
-    $index_objs =  $indexHandler->getObjects($criteria);
+    $index_objs = $indexHandler->getObjects($criteria);
     if (count($index_objs) != 1) {
         die('unexpected error');
     }
-    $index_obj =  $index_objs[0];
+    $index_obj = $index_objs[0];
+
     return $index_obj->get('index_id');
 }
 
 /**
- * get index list
+ * get index list.
  *
- * @access public
  * @param int $xid   index id
  * @param int $depth index depth
+ *
  * @return array index list
  */
 function get_index_list($xid, $depth)
 {
-    $indexHandler           = xoonips_getOrmHandler('xoonips', 'index');
+    $indexHandler = xoonips_getOrmHandler('xoonips', 'index');
     $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-    $index_obj              = $indexHandler->get($xid);
-    $title                  = $index_obj->getTitle('s');
-    $criteria               = new Criteria('index_id', $xid);
-    $item_count             = $index_item_linkHandler->getCount($criteria);
-    $ret                    = array();
-    $ret[]                  = array(
-        'index_id'    => $xid,
+    $index_obj = $indexHandler->get($xid);
+    $title = $index_obj->getTitle('s');
+    $criteria = new Criteria('index_id', $xid);
+    $item_count = $index_item_linkHandler->getCount($criteria);
+    $ret = array();
+    $ret[] = array(
+        'index_id' => $xid,
         'index_title' => $title,
-        'item_count'  => $item_count,
+        'item_count' => $item_count,
         'indent_html' => str_repeat('&nbsp;&nbsp;', $depth),
     );
-    $cindex_objs            =  $index_obj->getAllChildren();
+    $cindex_objs = $index_obj->getAllChildren();
     foreach ($cindex_objs as $cindex_obj) {
         $cxid = $cindex_obj->get('index_id');
         $cret = get_index_list($cxid, $depth + 1);
-        $ret  = array_merge($ret, $cret);
+        $ret = array_merge($ret, $cret);
     }
+
     return $ret;
 }

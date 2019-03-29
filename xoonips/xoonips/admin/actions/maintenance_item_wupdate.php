@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.12 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,24 +24,22 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // resources
 // get _MD_XOONIPS_NOTIFICATION_*SBJ
 $langman->read('main.php');
 
 // check token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
+require_once __DIR__.'/../../class/base/gtickets.php';
 $ticket_area = 'xoonips_admin_maintenance_item_withdraw';
 if (!$xoopsGTicket->check(true, $ticket_area, false)) {
     redirect_header($xoonips_admin['mypage_url'], 3, $xoopsGTicket->getErrors());
 }
 
 // load libraries
-include_once __DIR__ . '/../../include/libitem.php';
-include_once __DIR__ . '/../../include/notification.inc.php';
+require_once __DIR__.'/../../include/libitem.php';
+require_once __DIR__.'/../../include/notification.inc.php';
 
 // get requests
 $get_keys = array(
@@ -56,34 +54,34 @@ $tree_ids = $get_vals['tree'];
 
 // logic
 $empty_tree_ids = true;
-$results        = array();
-$xnpsid         = $_SESSION['XNPSID'];
+$results = array();
+$xnpsid = $_SESSION['XNPSID'];
 if (count($tree_ids) > 0) {
     $textutil = xoonips_getUtility('text');
 
     $treelist = xnpitmgrListIndexTree(XNPITMGR_LISTMODE_PUBLICONLY);
-    $treemap  = array();
+    $treemap = array();
     foreach ($treelist as $tree) {
         $treemap[$tree['id']] = $tree['fullpath'];
     }
-    $empty_tree_ids         = false;
-    $evenodd                = 'odd';
+    $empty_tree_ids = false;
+    $evenodd = 'odd';
     $index_item_linkHandler = xoonips_getOrmHandler('xoonips', 'index_item_link');
-    $event_logHandler       = xoonips_getOrmHandler('xoonips', 'event_log');
-    $item_lockHandler       = xoonips_getOrmHandler('xoonips', 'item_lock');
-    $item_basicHandler      = xoonips_getOrmHandler('xoonips', 'item_basic');
-    $item_showHandler       = xoonips_getOrmHandler('xoonips', 'item_show');
-    $item_statusHandler     = xoonips_getOrmHandler('xoonips', 'item_status');
+    $event_logHandler = xoonips_getOrmHandler('xoonips', 'event_log');
+    $item_lockHandler = xoonips_getOrmHandler('xoonips', 'item_lock');
+    $item_basicHandler = xoonips_getOrmHandler('xoonips', 'item_basic');
+    $item_showHandler = xoonips_getOrmHandler('xoonips', 'item_show');
+    $item_statusHandler = xoonips_getOrmHandler('xoonips', 'item_status');
 
     $modified_item_ids = array();
 
     // execute item withdraw
     foreach ($tree_ids as $xid) {
-        $succeed     = 0;
-        $failed      = 0;
+        $succeed = 0;
+        $failed = 0;
         $uncertified = 0;
 
-        $index_item_links =  $index_item_linkHandler->getObjects(new Criteria('index_id', $xid));
+        $index_item_links = $index_item_linkHandler->getObjects(new Criteria('index_id', $xid));
         if ($index_item_links === false) {
             // no item in tree
             continue;
@@ -92,30 +90,30 @@ if (count($tree_ids) > 0) {
             $item_id = $index_item_link->get('item_id');
             if ($item_lockHandler->isLocked($item_id)) {
                 // item is not certified
-                $uncertified++;
+                ++$uncertified;
             } else {
                 if ($index_item_linkHandler->delete($index_item_link)) {
                     // succeed
-                    $succeed++;
+                    ++$succeed;
                     $event_logHandler->recordRejectItemEvent($item_id, $xid);
                     $modified_item_ids[$item_id] = $item_id;
                     xoonips_notification_item_rejected($item_id, $xid);
                 } else {
                     // error occured
-                    $failed++;
+                    ++$failed;
                 }
             }
         }
 
         $results[] = array(
-            'id'          => $xid,
-            'evenodd'     => $evenodd,
-            'index'       => $textutil->html_special_chars($treemap[$xid]),
-            'succeed'     => $succeed,
+            'id' => $xid,
+            'evenodd' => $evenodd,
+            'index' => $textutil->html_special_chars($treemap[$xid]),
+            'succeed' => $succeed,
             'uncertified' => $uncertified,
-            'failed'      => $failed,
+            'failed' => $failed,
         );
-        $evenodd   = ($evenodd === 'even') ? 'odd' : 'even';
+        $evenodd = ($evenodd === 'even') ? 'odd' : 'even';
     }
 
     // update item_status and item_basic. delete item_show
@@ -130,8 +128,8 @@ if (count($tree_ids) > 0) {
         $criteria->add(new Criteria('item_id', $item_id));
         $criteria->add(new Criteria('open_level', OL_PUBLIC));
         $criteria->add(new Criteria('certify_state', CERTIFIED));
-        $join             = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
-        $index_item_links =  $index_item_linkHandler->getObjects($criteria, false, '', false, $join);
+        $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
+        $index_item_links = $index_item_linkHandler->getObjects($criteria, false, '', false, $join);
         if (count($index_item_links) === 0) {
             // update item_status
             $item_status = $item_statusHandler->get($item_id);
@@ -141,7 +139,7 @@ if (count($tree_ids) > 0) {
                 $item_statusHandler->insert($item_status);
             }
             // delete item_show
-            $item_shows =  $item_showHandler->getObjects(new Criteria('item_id', $item_id));
+            $item_shows = $item_showHandler->getObjects(new Criteria('item_id', $item_id));
             foreach ($item_shows as $item_show) {
                 $item_showHandler->delete($item_show);
             }
@@ -150,40 +148,40 @@ if (count($tree_ids) > 0) {
 }
 
 // title
-$title       = _AM_XOONIPS_MAINTENANCE_ITEM_WUPDATE_TITLE;
+$title = _AM_XOONIPS_MAINTENANCE_ITEM_WUPDATE_TITLE;
 $description = _AM_XOONIPS_MAINTENANCE_ITEM_WUPDATE_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_TITLE,
-        'url'   => $xoonips_admin['mypage_url'],
+        'url' => $xoonips_admin['mypage_url'],
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_WITHDRAW_TITLE,
-        'url'   => $xoonips_admin['mypage_url'] . '&amp;action=withdraw',
+        'url' => $xoonips_admin['mypage_url'].'&amp;action=withdraw',
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('maintenance_item_wupdate.tmpl.tpl');

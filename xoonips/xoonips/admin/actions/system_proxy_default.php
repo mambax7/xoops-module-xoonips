@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.4.1.2.3 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,40 +24,38 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // title
-$title       = _AM_XOONIPS_SYSTEM_PROXY_TITLE;
+$title = _AM_XOONIPS_SYSTEM_PROXY_TITLE;
 $description = _AM_XOONIPS_SYSTEM_PROXY_DESC;
 
 // breadcrumbs
 $breadcrumbs = array(
     array(
-        'type'  => 'top',
+        'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
-        'url'   => $xoonips_admin['admin_url'] . '/',
+        'url' => $xoonips_admin['admin_url'].'/',
     ),
     array(
-        'type'  => 'link',
+        'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
-        'url'   => $xoonips_admin['myfile_url'],
+        'url' => $xoonips_admin['myfile_url'],
     ),
     array(
-        'type'  => 'label',
+        'type' => 'label',
         'label' => $title,
-        'url'   => '',
+        'url' => '',
     ),
 );
 
 // token ticket
-require_once __DIR__ . '/../../class/base/gtickets.php';
-$ticket_area  = 'xoonips_admin_system_proxy';
+require_once __DIR__.'/../../class/base/gtickets.php';
+$ticket_area = 'xoonips_admin_system_proxy';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys   = array(
+$config_keys = array(
     'proxy_host' => 's',
     'proxy_port' => 'i',
     'proxy_user' => 's',
@@ -66,23 +64,23 @@ $config_keys   = array(
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 // >> proxy_host
 $proxy_host_title = _AM_XOONIPS_SYSTEM_PROXY_PROXY_HOST_TITLE;
-$proxy_host_desc  = _AM_XOONIPS_SYSTEM_PROXY_PROXY_HOST_DESC;
-$proxy_host       = $config_values['proxy_host'];
+$proxy_host_desc = _AM_XOONIPS_SYSTEM_PROXY_PROXY_HOST_DESC;
+$proxy_host = $config_values['proxy_host'];
 // >> proxy_port
 $proxy_port_title = _AM_XOONIPS_SYSTEM_PROXY_PROXY_PORT_TITLE;
-$proxy_port_desc  = _AM_XOONIPS_SYSTEM_PROXY_PROXY_PORT_DESC;
-$proxy_port       = $config_values['proxy_port'];
+$proxy_port_desc = _AM_XOONIPS_SYSTEM_PROXY_PROXY_PORT_DESC;
+$proxy_port = $config_values['proxy_port'];
 // >> proxy_user
 $proxy_user_title = _AM_XOONIPS_SYSTEM_PROXY_PROXY_USER_TITLE;
-$proxy_user_desc  = _AM_XOONIPS_SYSTEM_PROXY_PROXY_USER_DESC;
-$proxy_user       = $config_values['proxy_user'];
+$proxy_user_desc = _AM_XOONIPS_SYSTEM_PROXY_PROXY_USER_DESC;
+$proxy_user = $config_values['proxy_user'];
 // >> proxy_pass
 $proxy_pass_title = _AM_XOONIPS_SYSTEM_PROXY_PROXY_PASS_TITLE;
-$proxy_pass_desc  = _AM_XOONIPS_SYSTEM_PROXY_PROXY_PASS_DESC;
-$proxy_pass       = $config_values['proxy_pass'];
+$proxy_pass_desc = _AM_XOONIPS_SYSTEM_PROXY_PROXY_PASS_DESC;
+$proxy_pass = $config_values['proxy_pass'];
 
 // templates
-require_once __DIR__ . '/../../class/base/pattemplate.class.php';
+require_once __DIR__.'/../../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
 $tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_proxy.tmpl.tpl');

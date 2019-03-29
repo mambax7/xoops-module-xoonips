@@ -1,5 +1,5 @@
 <?php
-// $Revision: 1.1.2.5 $
+
 // ------------------------------------------------------------------------- //
 //  XooNIps - Neuroinformatics Base Platform System                          //
 //  Copyright (C) 2005-2011 RIKEN, Japan All rights reserved.                //
@@ -24,21 +24,19 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 // ------------------------------------------------------------------------- //
-if (!defined('XOOPS_ROOT_PATH')) {
-    exit();
-}
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-require_once __DIR__ . '/abstract_ranking.class.php';
-require_once __DIR__ . '/ranking_contributing_user.class.php';
+require_once __DIR__.'/abstract_ranking.class.php';
+require_once __DIR__.'/ranking_contributing_user.class.php';
 
 /**
  * @brief handler object of ranking sum contributing user
- *
  */
 class XooNIpsOrmRankingSumContributingUserHandler extends XooNIpsOrmRankingContributingUserHandler
 {
     /**
      * XooNIpsOrmRankingSumContributingUserHandler constructor.
+     *
      * @param XoopsDatabase $db
      */
     public function __construct($db)
@@ -48,7 +46,7 @@ class XooNIpsOrmRankingSumContributingUserHandler extends XooNIpsOrmRankingContr
         $this->_set_columns(array(
                                 'item_id',
                                 'uid',
-                                'timestamp'
+                                'timestamp',
                             ));
         $this->_set_sum_table();
     }

@@ -767,7 +767,7 @@ function getResumptionToken($resumption_token)
 
     (method_exists('MyTextSanitizer', 'sGetInstance') and $myts = &MyTextSanitizer::sGetInstance()) || $myts = MyTextSanitizer::getInstance();
     $table = $xoopsDB->prefix('xoonips_oaipmh_resumption_token');
-    $sql = "SELECT resumption_token, metadata_prefix, args, last_item_id, publish_date, expire_date, verb FROM ${table} WHERE resumption_token=\"".$myts->stripSlashesGPC($resumption_token)
+    $sql = "SELECT resumption_token, metadata_prefix, args, last_item_id, publish_date, expire_date, verb FROM ${table} WHERE resumption_token=\"".$resumption_token
         .'"';
     $result = $xoopsDB->query($sql);
     $ret = $xoopsDB->fetchArray($result);
@@ -788,7 +788,7 @@ function expireResumptionToken($resumptionToken)
 
     (method_exists('MyTextSanitizer', 'sGetInstance') and $myts = &MyTextSanitizer::sGetInstance()) || $myts = MyTextSanitizer::getInstance();
     $table = $xoopsDB->prefix('xoonips_oaipmh_resumption_token');
-    $sql = "DELETE FROM ${table} WHERE resumption_token=\"".$myts->stripSlashesGPC($resumptionToken)
+    $sql = "DELETE FROM ${table} WHERE resumption_token=\"".$resumptionToken
         .'" OR expire_date < UNIX_TIMESTAMP( NOW() )';
     $result = $xoopsDB->queryF($sql);
 }

@@ -51,7 +51,7 @@ if (empty($myxoopsConfigUser['allow_register'])) {
 function userCheck($uname, $email, $pass, $vpass)
 {
     global $myxoopsConfigUser;
-    $xoopsDB = Database::getInstance();
+    $xoopsDB = XoopsDatabaseFactory::getDatabaseConnection();
     $stop    = '';
     if (!checkEmail($email)) {
         $stop .= _US_INVALIDMAIL.'<br />';

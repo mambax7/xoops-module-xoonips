@@ -38,7 +38,7 @@ $myts = MyTextSanitizer::getInstance();
 if ($uname == '' || $pass == '') {
     // Record events (login failure)
     $event_handler = &xoonips_getormhandler('xoonips', 'event_log');
-    $event_handler->recordLoginFailureEvent($myts->stripSlashesGPC($uname));
+    $event_handler->recordLoginFailureEvent($uname);
 
     redirect_header(XOOPS_URL.'/modules/xoonips/user.php'.$redirect, 1, _US_INCORRECTLOGIN, false);
     exit();
@@ -47,7 +47,7 @@ if ($uname == '' || $pass == '') {
 $myxoopsConfig = &xoonips_get_xoops_configs(XOOPS_CONF);
 
 $member_handler = xoops_getHandler('member');
-$user           = &$member_handler->loginUser(addslashes($myts->stripSlashesGPC($uname)), $myts->stripSlashesGPC($pass));
+$user           = &$member_handler->loginUser(addslashes($uname), $pass);
 if (false != $user) {
     if (0 == $user->getVar('level')) {
         redirect_header(XOOPS_URL.'/', 5, _US_NOACTTPADM);
@@ -126,7 +126,7 @@ if (false != $user) {
 } else {
     // Record events(login failure)
     $event_handler = &xoonips_getormhandler('xoonips', 'event_log');
-    $event_handler->recordLoginFailureEvent($myts->stripSlashesGPC($uname));
+    $event_handler->recordLoginFailureEvent($uname);
 
     redirect_header(XOOPS_URL.'/modules/xoonips/user.php'.$redirect, 1, _US_INCORRECTLOGIN, false);
 }

@@ -54,7 +54,7 @@ if (!$xoopsUser) {
         $pass = $_SERVER['PHP_AUTH_PW'];
         $member_handler = xoops_getHandler('member');
         $myts = MyTextSanitizer::getInstance();
-        $xoopsUser = &$member_handler->loginUser(addslashes($myts->stripSlashesGPC($uname)), $myts->stripSlashesGPC($pass));
+        $xoopsUser = &$member_handler->loginUser(addslashes($uname), $pass);
         if (!$xoopsUser) {
             echo 'Unauthorized your account';
             exit;

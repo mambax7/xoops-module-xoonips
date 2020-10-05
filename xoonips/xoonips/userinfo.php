@@ -117,7 +117,7 @@ $xoopsTpl->assign('user_occupation', $thisUser->getVar('user_occ', 's'));
 $xoopsTpl->assign('lang_interest', _US_INTEREST);
 $xoopsTpl->assign('user_interest', $thisUser->getVar('user_intrest', 's'));
 $xoopsTpl->assign('lang_extrainfo', _US_EXTRAINFO);
-$xoopsTpl->assign('user_extrainfo', $myts->makeTareaData4Show($thisUser->getVar('bio', 'n'), 0, 1, 1));
+$xoopsTpl->assign('user_extrainfo', $myts->displayTarea($thisUser->getVar('bio', 'n'), 0, 1, 1));
 if ($myuid != UID_GUEST) {
     $xoopsTpl->assign('user_pmlink', '<a href="javascript:openWithSelfMain(\''.XOOPS_URL.'/pmlite.php?send2=1&amp;to_userid='.$thisUser->getVar('uid').'\', \'pmlite\', 450, 380);"><img src="'.XOOPS_URL.'/images/icons/pm.gif" alt="'.sprintf(_SENDPMTO, $thisUser->getVar('uname', 'e')).'"/></a>');
 } else {
@@ -144,7 +144,7 @@ if (!empty($date)) {
 
 // signature
 $xoopsTpl->assign('lang_signature', _US_SIGNATURE);
-$xoopsTpl->assign('user_signature', $myts->makeTareaData4Show($thisUser->getVar('user_sig', 'n'), 0, 1, 1));
+$xoopsTpl->assign('user_signature', $myts->displayTarea($thisUser->getVar('user_sig', 'n'), 0, 1, 1));
 
 // others
 $xoopsTpl->assign('lang_notregistered', _US_NOTREGISTERED);
@@ -224,7 +224,7 @@ foreach ($mids as $mid) {
                     $results[$i]['image'] = '../../images/icons/posticon2.gif';
                 }
                 $results[$i]['link'] = '../'.$dirname.'/'.$results[$i]['link'];
-                $results[$i]['title'] = $myts->makeTboxData4Show($results[$i]['title']);
+                $results[$i]['title'] = $myts->displayTarea($results[$i]['title']);
                 $results[$i]['time'] = $results[$i]['time'] ? formatTimestamp($results[$i]['time']) : '';
             }
             if ($count == 5) {

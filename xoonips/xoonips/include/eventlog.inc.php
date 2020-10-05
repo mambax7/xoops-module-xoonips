@@ -1051,7 +1051,7 @@ function xoonips_eventlog_graph($log_type_id)
             $amount += (int)$count;
             // create x label
             if ($days < 70) {
-                $day_label = (string)intval($day);
+                $day_label = (string)(int)$day;
             } elseif ($days < 190) {
                 if ($day == '01') {
                     $day_label = $year.'.'.$month;

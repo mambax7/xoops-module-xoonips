@@ -111,6 +111,6 @@ class XooNIpsError
      */
     public function get($i = 0)
     {
-        return $this->error[intval($i)] ?? false;
+        return $this->error[(int)$i] ?? false;
     }
 }

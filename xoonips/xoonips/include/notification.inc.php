@@ -36,7 +36,7 @@ function xoonips_notification_get_moderator_uids()
     $xoonips_config_handler = &xoonips_getormhandler('xoonips', 'config');
     $moderator_gid = $xoonips_config_handler->getValue('moderator_gid');
     if (is_null($moderator_gid)) {
-        return array(); // no moderator
+        return []; // no moderator
     }
 
     $xoops_member_handler = xoops_getHandler('member');
@@ -73,7 +73,7 @@ function xoonips_notification_get_item_tags($item_id)
 
     $titles = $compo->getVar('titles');
     $keywords = $compo->getVar('keywords');
-    $keyword_strings = array();
+    $keyword_strings = [];
     for ($i = 0; $i < count($keywords); ++$i) {
         $keyword_strings[] = $keywords[$i]->get('keyword');
     }
@@ -81,7 +81,7 @@ function xoonips_notification_get_item_tags($item_id)
     $xoops_user_handler = xoops_getHandler('user');
     $xoops_user         = $xoops_user_handler->get($item_basic->get('uid'));
 
-    $tags = array(
+    $tags = [
         'ITEM_DOI' => strval($item_basic->get('doi')),
         'ITEM_ITEMTYPE' => strval($item_type->get('display_name')),
         'ITEM_TITLE' => (empty($titles) ? '' : strval($titles[0]->get('title'))),
@@ -89,7 +89,7 @@ function xoonips_notification_get_item_tags($item_id)
         'ITEM_NAME' => strval($xoops_user->getVar('name', 'n')),
         'ITEM_KEYWORDS' => implode(',', $keyword_strings),
         'ITEM_DESCRIPTION' => strval($item_basic->get('description')),
-    );
+    ];
     if ($item_basic->get('doi') == '') {
         $tags['ITEM_DETAIL_URL'] = XOOPS_URL.
             '/modules/xoonips/detail.php?item_id='.$item_id;
@@ -116,7 +116,7 @@ function _xoonips_notification_get_user_tags($user_id)
     $xoops_user = $user_compo->getVar('xoops_user');
     $xoonips_user = $user_compo->getVar('xoonips_user');
 
-    $tags = array(
+    $tags = [
         'USER_UNAME' => $xoops_user->get('uname'),
         'USER_NAME' => $xoops_user->get('name'),
         'USER_EMAIL' => $xoops_user->get('email'),
@@ -126,7 +126,7 @@ function _xoonips_notification_get_user_tags($user_id)
         'USER_COUNTRY' => $xoonips_user->get('country'),
         'USER_CERTIFY_URL' => XOOPS_URL.'/modules/xoonips/certifyuser.php?uid='.$user_id,
         'USER_DETAIL_URL' => XOOPS_URL.'/modules/xoonips/userinfo.php?uid='.$user_id,
-    );
+    ];
 
     return $tags;
 }
@@ -139,7 +139,7 @@ function _xoonips_notification_get_user_tags($user_id)
  * @param[in] $item_ids item id of transferred items
  * @param[in] $uid_to_notify array of user id to send notification.
  */
-function xoonips_notification_item_transfer($from_uid, $to_uid, $item_ids, $uid_to_notify = array())
+function xoonips_notification_item_transfer($from_uid, $to_uid, $item_ids, $uid_to_notify = [])
 {
     $xoops_user_handler = xoops_getHandler('user');
     $to_user            = $xoops_user_handler->get($to_uid);
@@ -148,7 +148,7 @@ function xoonips_notification_item_transfer($from_uid, $to_uid, $item_ids, $uid_
     $item_titles = _xoonips_notification_get_title_of_items($item_ids);
     $item_urls = _xoonips_notification_get_detail_urls($item_ids);
 
-    $item_list = array();
+    $item_list = [];
     while (false !== current($item_titles)
            && false !== current($item_urls)) {
         $item_list[] =
@@ -161,11 +161,11 @@ function xoonips_notification_item_transfer($from_uid, $to_uid, $item_ids, $uid_
         next($item_urls);
     }
 
-    $tags = array(
+    $tags = [
         'FROM_UNAME' => $from_user->getVar('uname'),
         'TO_UNAME' => $to_user->getVar('uname'),
         'ITEM_LIST' => implode("\n\n", $item_list),
-        );
+    ];
 
     $nhandler = &xoonips_gethandler('xoonips', 'notification');
     $nhandler->triggerEvent2(
@@ -239,7 +239,7 @@ function xoonips_notification_get_index_path_string($index_id)
 {
     //    return xnpGetIndexPathServerString( session_id(), $index_id );
     $compo_handler = &xoonips_getormcompohandler('xoonips', 'index');
-    $index_names = array();
+    $index_names = [];
     for ($xid = $index_id; $xid != IID_ROOT;) {
         $compo = $compo_handler->get($xid);
         if (!$compo) {
@@ -270,10 +270,10 @@ function _xoonips_notification_item_certify($item_id, $index_ids, $subject, $tem
     $index_handler = &xoonips_getormhandler('xoonips', 'index');
     $xg_handler = &xoonips_gethandler('xoonips', 'group');
     if (!is_array($index_ids)) {
-        $index_ids = array($index_ids);
+        $index_ids = [$index_ids];
     }
-    $targetUids = array();
-    $targetPaths = array();
+    $targetUids = [];
+    $targetPaths = [];
     foreach ($index_ids as $index_id) {
         $index = $index_handler->get($index_id);
         $gid = 0;
@@ -281,14 +281,14 @@ function _xoonips_notification_item_certify($item_id, $index_ids, $subject, $tem
             // public index
             if (!isset($targetUids[$gid])) {
                 $targetUids[$gid] = xoonips_notification_get_moderator_uids();
-                $targetPaths[$gid] = array();
+                $targetPaths[$gid] = [];
             }
         } elseif ($index->get('open_level') == OL_GROUP_ONLY) {
             // group index
             $gid = $index->get('gid');
             if (!isset($targetUids[$gid])) {
                 $targetUids[$gid] = $xg_handler->getUserIds($gid, true);
-                $targetPaths[$gid] = array();
+                $targetPaths[$gid] = [];
             }
         } else {
             // private index
@@ -337,9 +337,9 @@ function xoonips_notification_item_rejected($item_id, $index_ids)
 
 function xoonips_notification_user_item_transfer_request($to_uid)
 {
-    $tags = array(
+    $tags = [
         'TRANSFER_REQUEST_CONFIRM_URL' => XOOPS_URL.'/modules/xoonips/transfer_item.php?action=list_item',
-    );
+    ];
 
     $nhandler = &xoonips_gethandler('xoonips', 'notification');
     $nhandler->triggerEvent2(
@@ -347,7 +347,7 @@ function xoonips_notification_user_item_transfer_request($to_uid)
         _MD_XOONIPS_USER_ITEM_TRANSFER_REQUEST_NOTIFYSBJ,
         $nhandler->getTemplateDirByMid(),
         'user_item_transfer_request_notify',
-        $tags, array($to_uid)
+        $tags, [$to_uid]
     );
 }
 
@@ -356,10 +356,10 @@ function xoonips_notification_user_item_transfer_accepted($from_uid, $to_uid, $i
     $xoops_user_handler = xoops_getHandler('user');
     $to_user            = $xoops_user_handler->get($to_uid);
 
-    $tags = array(
+    $tags = [
         'TO_UNAME' => $to_user->getVar('uname'),
         'ITEM_LIST' => _xoonips_notification_get_item_list($from_uid, $item_ids),
-    );
+    ];
 
     $nhandler = &xoonips_gethandler('xoonips', 'notification');
     $nhandler->triggerEvent2(
@@ -367,7 +367,7 @@ function xoonips_notification_user_item_transfer_accepted($from_uid, $to_uid, $i
         _MD_XOONIPS_USER_ITEM_TRANSFER_ACCEPTED_NOTIFYSBJ,
         $nhandler->getTemplateDirByMid(),
         'user_item_transfer_accepted_notify',
-        $tags, array($from_uid)
+        $tags, [$from_uid]
     );
 }
 
@@ -377,10 +377,10 @@ function xoonips_notification_user_item_transfer_rejected($from_uid, $to_uid, $i
     $to_user            = $xoops_user_handler->get($to_uid);
     $item_titles = _xoonips_notification_get_title_of_items($item_ids);
 
-    $tags = array(
+    $tags = [
         'TO_UNAME' => $to_user->getVar('uname'),
         'ITEM_LIST' => _xoonips_notification_get_item_list($from_uid, $item_ids),
-    );
+    ];
 
     $nhandler = &xoonips_gethandler('xoonips', 'notification');
     $nhandler->triggerEvent2(
@@ -388,13 +388,13 @@ function xoonips_notification_user_item_transfer_rejected($from_uid, $to_uid, $i
         _MD_XOONIPS_USER_ITEM_TRANSFER_REJECTED_NOTIFYSBJ,
         $nhandler->getTemplateDirByMid(),
         'user_item_transfer_rejected_notify',
-        $tags, array($from_uid)
+        $tags, [$from_uid]
     );
 }
 
 function _xoonips_notification_get_descendant_index_ids($index_id)
 {
-    $result = array($index_id);
+    $result = [$index_id];
     $index_handler = &xoonips_getormhandler('xoonips', 'index');
     $indexes = &$index_handler->getObjects(new Criteria('parent_index_id', $index_id));
     if (!empty($indexes)) {
@@ -412,7 +412,7 @@ function _xoonips_notification_get_affected_items($start_index_id)
     $index_ids = _xoonips_notification_get_descendant_index_ids($start_index_id);
 
     // get all affected item_id
-    $result = array();
+    $result = [];
     $item_basic_handler = &xoonips_getormhandler('xoonips', 'item_basic');
     $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
     foreach ($index_ids as $index_id) {
@@ -420,7 +420,7 @@ function _xoonips_notification_get_affected_items($start_index_id)
         foreach ($links as $link) {
             $item_basic = $item_basic_handler->get($link->get('item_id'));
             if (!isset($result[$item_basic->get('uid')])) {
-                $result[$item_basic->get('uid')] = array();
+                $result[$item_basic->get('uid')] = [];
             }
             $result[$item_basic->get('uid')][] =
                 $item_basic->get('item_id');
@@ -435,7 +435,7 @@ function _xoonips_notification_get_affected_items($start_index_id)
 
 function _xoonips_notification_get_title_of_items($item_ids)
 {
-    $item_titles = array();
+    $item_titles = [];
     $title_handler = &xoonips_getormhandler('xoonips', 'title');
     foreach ($item_ids as $item_id) {
         $titles = &$title_handler->getObjects(new Criteria('item_id', $item_id));
@@ -456,7 +456,7 @@ function xoonips_notification_send_user_index_notification($context, $subject, $
     $new_index_path = xoonips_notification_get_index_path_string($context['index_id']);
 
     foreach ($context['affected_items'] as $uid => $item_ids) {
-        $item_list = array();
+        $item_list = [];
         foreach ($item_ids as $item_id) {
             $tags = xoonips_notification_get_item_tags($item_id);
             $item_list[] =
@@ -467,32 +467,32 @@ function xoonips_notification_send_user_index_notification($context, $subject, $
                 .$tags['ITEM_DETAIL_URL'];
         }
 
-        $tags = array(
+        $tags = [
             'OLD_INDEX_PATH' => $context['old_index_path'],
             'NEW_INDEX_PATH' => $new_index_path,
             'LISTITEM_URL' => XOOPS_URL.
                 '/modules/xoonips/listitem.php?index_id='.
                 $context['listitem_index_id'],
             'ITEM_LIST' => implode("\n\n", $item_list),
-        );
+        ];
 
         $nhandler = &xoonips_gethandler('xoonips', 'notification');
         $nhandler->triggerEvent2(
             'user', 0, 'item_updated',
             $subject, $nhandler->getTemplateDirByMid(),
-            $template_name, $tags, array($uid)
+            $template_name, $tags, [$uid]
         );
     }
 }
 
 function xoonips_notification_before_user_index_renamed($index_id)
 {
-    return array(
+    return [
         'index_id' => $index_id,
         'listitem_index_id' => $index_id,
         'affected_items' => _xoonips_notification_get_affected_items($index_id),
         'old_index_path' => xoonips_notification_get_index_path_string($index_id),
-    );
+    ];
 }
 
 function xoonips_notification_after_user_index_renamed($context)
@@ -502,12 +502,12 @@ function xoonips_notification_after_user_index_renamed($context)
 
 function xoonips_notification_before_user_index_moved($index_id)
 {
-    return array(
+    return [
         'index_id' => $index_id,
         'listitem_index_id' => $index_id,
         'affected_items' => _xoonips_notification_get_affected_items($index_id),
         'old_index_path' => xoonips_notification_get_index_path_string($index_id),
-    );
+    ];
 }
 
 function xoonips_notification_after_user_index_moved($context)
@@ -520,12 +520,12 @@ function xoonips_notification_before_user_index_deleted($index_id)
     $index_handler = &xoonips_getormhandler('xoonips', 'index');
     $index = $index_handler->get($index_id);
 
-    return array(
+    return [
         'index_id' => $index_id,
         'listitem_index_id' => $index->get('parent_index_id'),
         'affected_items' => _xoonips_notification_get_affected_items($index_id),
         'old_index_path' => xoonips_notification_get_index_path_string($index_id),
-    );
+    ];
 }
 
 function xoonips_notification_after_user_index_deleted($context)
@@ -537,7 +537,7 @@ function xoonips_notification_user_item_certified($item_id, $index_ids)
 {
     $tags = xoonips_notification_get_item_tags($item_id);
 
-    $paths = array();
+    $paths = [];
     foreach ($index_ids as $index_id) {
         $paths[] = xoonips_notification_get_index_path_string($index_id);
     }
@@ -552,7 +552,7 @@ function xoonips_notification_user_item_certified($item_id, $index_ids)
         _MD_XOONIPS_USER_ITEM_CERTIFIED_NOTIFYSBJ,
         $nhandler->getTemplateDirByMid(),
         'user_item_certified_notify',
-        $tags, array($item_basic->get('uid'))
+        $tags, [$item_basic->get('uid')]
     );
 }
 
@@ -560,7 +560,7 @@ function xoonips_notification_user_item_rejected($item_id, $index_ids)
 {
     $tags = xoonips_notification_get_item_tags($item_id);
 
-    $paths = array();
+    $paths = [];
     foreach ($index_ids as $index_id) {
         $paths[] = xoonips_notification_get_index_path_string($index_id);
     }
@@ -575,7 +575,7 @@ function xoonips_notification_user_item_rejected($item_id, $index_ids)
         _MD_XOONIPS_USER_ITEM_REJECTED_NOTIFYSBJ,
         $nhandler->getTemplateDirByMid(),
         'user_item_rejected_notify',
-        $tags, array($item_basic->get('uid'))
+        $tags, [$item_basic->get('uid')]
     );
 }
 
@@ -602,13 +602,13 @@ function xoonips_notification_user_file_downloaded($file_id, $downloader_uid)
         _MD_XOONIPS_USER_FILE_DOWNLOADED_NOTIFYSBJ,
         $nhandler->getTemplateDirByMid(),
         'user_file_downloaded_notify',
-        $tags, array($item_basic->get('uid'))
+        $tags, [$item_basic->get('uid')]
     );
 }
 
 function _xoonips_notification_get_detail_urls($item_ids)
 {
-    $result = array();
+    $result = [];
     $handler = &xoonips_getormcompohandler('xoonips', 'item');
     foreach ($item_ids as $id) {
         $result[] = $handler->getItemDetailUrl($id);
@@ -619,11 +619,11 @@ function _xoonips_notification_get_detail_urls($item_ids)
 
 function _xoonips_notification_get_item_list($transfer_uid, $item_ids)
 {
-    $item_list = array();
+    $item_list = [];
     $handler = &xoonips_getormcompohandler('xoonips', 'item');
     foreach ($item_ids as $item_id) {
-        $item_titles = _xoonips_notification_get_title_of_items(array($item_id));
-        $item_urls = _xoonips_notification_get_detail_urls(array($item_id));
+        $item_titles = _xoonips_notification_get_title_of_items([$item_id]);
+        $item_urls = _xoonips_notification_get_detail_urls([$item_id]);
         $item_list[] =
             _MD_XOONIPS_TRANSFER_NOTIFICATION_ITEM_TITLE
             .$item_titles[0]

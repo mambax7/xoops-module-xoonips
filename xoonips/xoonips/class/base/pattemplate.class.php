@@ -64,28 +64,28 @@ if (!class_exists('patTemplate')) {
             $this->basedir = '';
 
             //	counter for template iterations
-            $this->iteration = array();
+            $this->iteration = [];
 
             //	Filenames of the templates
-            $this->filenames = array();
+            $this->filenames = [];
 
             //	HTML/Text of unparsed templates
-            $this->plain_templates = array();
+            $this->plain_templates = [];
 
             //	HTML/Text of parsed templates
-            $this->parsed_templates = array();
+            $this->parsed_templates = [];
 
             //	Amount and names of all templates
             $this->cnt_templates = 0;
-            $this->templates = array();
+            $this->templates = [];
 
             //	These vars will be set for all added Templates
-            $this->subtemplates = array();
+            $this->subtemplates = [];
 
-            $this->variables = array();
-            $this->globals = array();
+            $this->variables = [];
+            $this->globals = [];
 
-            $this->attributes = array();
+            $this->attributes = [];
 
             //	Does one of the templates contain other templates
             $this->uses_dependencies = false;
@@ -178,7 +178,7 @@ if (!class_exists('patTemplate')) {
          */
         public function addTemplate($name, $filename)
         {
-            $this->createTemplate($name, array('type' => 'file', 'filename' => $filename));
+            $this->createTemplate($name, ['type' => 'file', 'filename' => $filename]);
             //	Store the filename
             $this->filenames[$name] = $filename;
         }
@@ -224,14 +224,16 @@ if (!class_exists('patTemplate')) {
             //	Init vars for the new Templates
 
             //	Store all attributes in Array
-            $this->attributes[$name] = array('loop' => 1,
-                                                            'visibility' => 'visible',
-                                                            'unusedvars' => 'strip',
-                                                            'type' => 'STANDARD', );
+            $this->attributes[$name] = [
+                'loop'       => 1,
+                'visibility' => 'visible',
+                'unusedvars' => 'strip',
+                'type'       => 'STANDARD',
+            ];
             $this->iteration[$name] = 0;
 
             //	No vars are set for this template
-            $this->variables[$name] = array();
+            $this->variables[$name] = [];
             //	No subtemplates have been specified
             $this->cnt_subtemplates[$name] = 0;
 
@@ -394,15 +396,15 @@ if (!class_exists('patTemplate')) {
             //	Tag depth
             $this->depth = -1;
             //	Names, extracted from the Tags
-            $this->template_names = array();
+            $this->template_names = [];
             //	All HTML code, that is found between the tags
-            $this->template_data = array();
+            $this->template_data = [];
             //	Attributes, extracted from tags
-            $this->template_types = array();
+            $this->template_types = [];
 
-            $this->last_opened = array();
-            $this->last_keep = array();
-            $this->whitespace = array('trim');
+            $this->last_opened = [];
+            $this->last_keep = [];
+            $this->whitespace = ['trim'];
 
             $this->createParser($file);
 
@@ -844,7 +846,7 @@ if (!class_exists('patTemplate')) {
         public function addRows($template, $rows, $prefix = '')
         {
             //	Store the vars in this array
-            $newvars = array();
+            $newvars = [];
 
             //	get amount of rows
             $cnt_rows = count($rows);
@@ -1101,7 +1103,7 @@ if (!class_exists('patTemplate')) {
          */
         public function getVars($template)
         {
-            $vars = array();
+            $vars = [];
             //	parse all vars
             if (is_array($this->variables[$template])) {
                 //	Pointer im Array auf 0 setzen
@@ -1511,7 +1513,7 @@ if (!class_exists('patTemplate')) {
         {
             //	should the var from a different template be used
             if (stristr($var, '.')) {
-                list($template, $var) = explode('.', $var);
+                [$template, $var] = explode('.', $var);
             }
 
             $var = strtoupper($var);

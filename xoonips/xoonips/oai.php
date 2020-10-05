@@ -39,7 +39,7 @@ require_once 'include/AL.php';
 require_once 'class/base/oaipmh.class.php';
 
 // retrieve admin's e-mail
-$emails         = array();
+$emails         = [];
 $member_handler = xoops_getHandler('member');
 $members        = $member_handler->getUsersByGroup(XOOPS_GROUP_ADMIN, false);
 foreach ($members as $userid) {
@@ -55,8 +55,8 @@ $pmh->addHandler(new JUNIIHandler());
 $pmh->addHandler(new JUNII2Handler());
 $pmh->addHandler(new OAI_DCHandler());
 
-$args = array();
-foreach (array('verb', 'metadataPrefix', 'set', 'from', 'until', 'identifier', 'resumptionToken') as $k) {
+$args = [];
+foreach (['verb', 'metadataPrefix', 'set', 'from', 'until', 'identifier', 'resumptionToken'] as $k) {
     if (isset($_GET[$k])) {
         $args[$k] = $_GET[$k];
     } elseif (isset($_POST[$k])) {

@@ -197,7 +197,7 @@ foreach ($cvitaes_objs as $cvitaes_obj) {
     $cvdata['cvitae_title'] = $textutil->html_special_chars($cvitaes_obj->get('cvitae_title'));
     $xoopsTpl->append('cv_array', $cvdata);
 }
-$xoopsTpl->assign('updown_options', array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10));
+$xoopsTpl->assign('updown_options', [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10]);
 
 require XOOPS_ROOT_PATH.'/footer.php';
 exit();

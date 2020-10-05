@@ -180,9 +180,9 @@ if (is_object($xu_obj)) {
 $cv_handler = &xoonips_getormhandler('xoonips', 'cvitaes');
 $cv_objs = &$cv_handler->getCVs($uid);
 foreach ($cv_objs as $cv_obj) {
-    $cv = array();
-    foreach (array('from', 'to') as $key_pre) {
-        foreach (array('month', 'year') as $key_post) {
+    $cv = [];
+    foreach (['from', 'to'] as $key_pre) {
+        foreach (['month', 'year'] as $key_post) {
             $key = $key_pre.'_'.$key_post;
             $val = $cv_obj->get($key);
             if ($val == 0) {
@@ -232,7 +232,7 @@ foreach ($mids as $mid) {
             } else {
                 $showall_link = '';
             }
-            $xoopsTpl->append('modules', array('name' => $modname, 'results' => $results, 'showall_link' => $showall_link));
+            $xoopsTpl->append('modules', ['name' => $modname, 'results' => $results, 'showall_link' => $showall_link]);
         }
         unset($module);
     }

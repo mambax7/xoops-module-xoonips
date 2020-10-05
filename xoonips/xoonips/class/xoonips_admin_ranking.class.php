@@ -44,12 +44,12 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
      */
     public function deleteGroupRankings($gid)
     {
-        $names = array(
+        $names = [
             'active_group',
             'new_group',
             'sum_active_group',
             'sum_new_group',
-        );
+        ];
         // lock ranking data
         $h = $this->_lock();
         $criteria = new Criteria('gid', $gid);
@@ -117,11 +117,11 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
             return false;
         }
         // set ranking_sum_start, ranking_sum_last_update
-        $config_names = array(
+        $config_names = [
             'sum_start',
             'sum_last_update',
-        );
-        $config = array();
+        ];
+        $config = [];
         foreach ($config_names as $name) {
             $config[$name] = $this->_get_config($name);
         }
@@ -191,7 +191,7 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
             $res = &$this->handlers[$sum_basename]->open();
             while ($obj = &$this->handlers[$sum_basename]->getNext($res)) {
                 $cols = $this->handlers[$sum_basename]->get_columns();
-                $ar = array();
+                $ar = [];
                 foreach ($cols as $col) {
                     $val = $obj->getVar($col, 'n');
                     $ar[] = is_numeric($val) ? $val : urlencode($val);
@@ -234,10 +234,10 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
      */
     public function load_sum_file($file_path)
     {
-        $config_names = array(
+        $config_names = [
             'ranking_sum_last_update',
             'ranking_sum_start',
-        );
+        ];
 
         // lock ranking data
         $h = $this->_lock();
@@ -306,10 +306,10 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
      */
     public function clear_sum_data()
     {
-        $config_names = array(
+        $config_names = [
             'sum_start',
             'sum_last_update',
-        );
+        ];
 
         // lock ranking data
         $h = $this->_lock();

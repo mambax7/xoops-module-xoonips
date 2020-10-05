@@ -72,18 +72,18 @@ $xnpsid = $_SESSION['XNPSID'];
 
 // get variables
 $formdata = &xoonips_getutility('formdata');
-$get_keys = array(
-    'checkbox' => array('type' => 'b', 'default' => false),
-    'url' => array('type' => 's', 'default' => 'listitem.php'),
-    'edit' => array('type' => 'b', 'default' => false),
-    'on_check_private_handler_id' => array('type' => 's', 'default' => ''),
-    'selected_tab' => array('type' => 'i', 'default' => ''),
-    'edit_public' => array('type' => 'b', 'default' => false),
-    'puid' => array('type' => 'i', 'default' => 0),
-    'onclick_title' => array('type' => 's', 'default' => ''),
-    'private_only' => array('type' => 'i', 'default' => 0),
-);
-$get_vals = array();
+$get_keys = [
+    'checkbox' => ['type' => 'b', 'default' => false],
+    'url' => ['type' => 's', 'default' => 'listitem.php'],
+    'edit' => ['type' => 'b', 'default' => false],
+    'on_check_private_handler_id' => ['type' => 's', 'default' => ''],
+    'selected_tab' => ['type' => 'i', 'default' => ''],
+    'edit_public' => ['type' => 'b', 'default' => false],
+    'puid' => ['type' => 'i', 'default' => 0],
+    'onclick_title' => ['type' => 's', 'default' => ''],
+    'private_only' => ['type' => 'i', 'default' => 0],
+];
+$get_vals = [];
 foreach ($get_keys as $key => $meta) {
     $get_vals[$key] = $formdata->getValue('get', $key, $meta['type'], false, $meta['default']);
 }
@@ -149,7 +149,7 @@ if ($get_vals['private_only']) {
 $indexes = genIndexTree1($indexes);
 // get number of items under nodes (by index).
 // use special function.
-$itemCounts = array();
+$itemCounts = [];
 $result = xnp_get_item_count_group_by_index($xnpsid, $itemCounts);
 $ct = count($indexes);
 for ($i = 0; $i < $ct; ++$i) { // can't change value in foreach
@@ -158,14 +158,14 @@ for ($i = 0; $i < $ct; ++$i) { // can't change value in foreach
 }
 unset($index);
 
-$xoonips_tree_nodes_array = array();
-$xoonips_tree_roots_array = array();
+$xoonips_tree_nodes_array = [];
+$xoonips_tree_roots_array = [];
 
 $length = count($indexes);
 foreach ($indexes as $i => $index) {
     $xid = $index['item_id'];
     // tree nodes
-    $node = array();
+    $node = [];
     $node['xid'] = $xid;
     $node['is_last'] = $index['is_last'] ? 1 : 0;
     $node['open_level'] = $index['open_level'];
@@ -190,7 +190,7 @@ unset($index);
 unset($i);
 
 // global attributes
-$attributes = array(
+$attributes = [
     'url' => XOOPS_URL.'/modules/xoonips',
     'target_url' => $xoonips_target_url,
     'link_is_checkbox' => intval($get_vals['checkbox']),
@@ -198,10 +198,10 @@ $attributes = array(
     'onclick_title' => $get_vals['onclick_title'],
     'image_url' => $tree_image_url,
     'image_compat33' => $tree_image_compat33 ? 1 : 0,
-);
-$xoonips_tree_attributes_array = array();
+];
+$xoonips_tree_attributes_array = [];
 foreach ($attributes as $key => $val) {
-    $xoonips_tree_attributes_array[] = array('key' => $key, 'value' => $val);
+    $xoonips_tree_attributes_array[] = ['key' => $key, 'value' => $val];
 }
 
 // start to output html

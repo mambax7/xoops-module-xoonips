@@ -31,23 +31,23 @@ $title = _AM_XOONIPS_SYSTEM_PRINT_TITLE;
 $description = _AM_XOONIPS_SYSTEM_PRINT_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';
@@ -55,9 +55,9 @@ $ticket_area = 'xoonips_admin_system_print';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys = array(
+$config_keys = [
     'printer_friendly_header' => 's',
-);
+];
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 // >> printer_friendly_header
 $printer_friendly_header_title = _AM_XOONIPS_SYSTEM_PRINT_PRINTER_FRIENDLY_HEADER_TITLE;

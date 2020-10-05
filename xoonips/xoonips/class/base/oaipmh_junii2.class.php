@@ -58,7 +58,7 @@ class JUNII2Handler extends OAIPMHHandler
                 return false;
             }        //$identifier is wrong
 
-            $tmparray = array();
+            $tmparray = [];
             if (xnp_get_item_types($tmparray) == RES_OK) {
                 foreach ($tmparray as $i) {
                     if ($i['item_type_id'] == $parsed['item_type_id']) {
@@ -109,38 +109,42 @@ class JUNII2Handler extends OAIPMHHandler
 
         if ($parsed['is_deleted'] == 1) {
             //return only header if item is deleted
-            return array("<record>\n".$this->oaipmh_header($identifier, $index_tree_list)
-                          ."</record>\n", true, );
+            return [
+                "<record>\n" . $this->oaipmh_header($identifier, $index_tree_list)
+                . "</record>\n", true,
+            ];
         }
 
         //return error if nijc_code mismatched
         $nijc_code = $xconfig_handler->getValue('repository_nijc_code');
         if (empty($nijc_code) || $nijc_code != $parsed['nijc_code']) {
-            return array(parent::error('idDoesNotExist', ''), false);
+            return [parent::error('idDoesNotExist', ''), false];
         }
 
         //return error if item_id mismatched
-        $item = array();
+        $item = [];
         $result = xnp_get_item($_SESSION['XNPSID'], $parsed['item_id'], $item);
         if ($result != RES_OK) {
-            return array(parent::error('idDoesNotExist', 'item_id not found'), false);
+            return [parent::error('idDoesNotExist', 'item_id not found'), false];
         }
 
         //return error if item_type_id mismatched
         if ($result == RES_OK && $item['item_type_id'] != $parsed['item_type_id']) {
-            return array(parent::error('idDoesNotExist', 'item_type_id not found'), false);
+            return [parent::error('idDoesNotExist', 'item_type_id not found'), false];
         }
 
         require_once XOOPS_ROOT_PATH.'/modules/'.$parsed['item_type_viewphp'];
 
         $f = $parsed['item_type_name'].'GetMetadata';
         if (!function_exists($f)) {
-            return array(parent::error('idDoesNotExist', "function $f not defined"), false);
+            return [parent::error('idDoesNotExist', "function $f not defined"), false];
         }
 
-        return array("<record>\n".$this->oaipmh_header($identifier, $index_tree_list)
-                      .$f($this->metadataPrefix, $parsed['item_id'])
-                      ."</record>\n", true, );
+        return [
+            "<record>\n" . $this->oaipmh_header($identifier, $index_tree_list)
+            . $f($this->metadataPrefix, $parsed['item_id'])
+            . "</record>\n", true,
+        ];
     }
 
     /**
@@ -159,12 +163,12 @@ class JUNII2Handler extends OAIPMHHandler
         $result = false;
         $id_str = $this->convertIdentifierFormat($args['identifier']);
         $param_identifier = parent::parseIdentifier($id_str);
-        $identifiers = array();
+        $identifiers = [];
         if (RES_OK == xnp_selective_harvesting(0, 0, null, $param_identifier['item_id'], 1, $identifiers) && count($identifiers) > 0) {
             $index_tree_list = xnpListIndexTree(XOONIPS_LISTINDEX_PUBLICONLY, true);
             $identifiers[0]['nijc_code'] = $param_identifier['nijc_code'];
             $identifiers[0]['item_type_id'] = $param_identifier['item_type_id'];
-            list($xml, $result) = $this->record($identifiers[0], $index_tree_list);
+            [$xml, $result] = $this->record($identifiers[0], $index_tree_list);
             if (!$result) {
                 return $xml;
             }
@@ -197,7 +201,7 @@ class JUNII2Handler extends OAIPMHHandler
         $limit_row = REPOSITORY_RESPONSE_LIMIT_ROW;
         $expire_term = REPOSITORY_RESUMPTION_TOKEN_EXPIRE_TERM;
 
-        foreach (array('from', 'until', 'resumptionToken', 'set') as $k) {
+        foreach (['from', 'until', 'resumptionToken', 'set'] as $k) {
             if (isset($args[$k])) {
                 ${$k} = $args[$k];
             }
@@ -235,7 +239,7 @@ class JUNII2Handler extends OAIPMHHandler
             }
             if (isset($result['publish_date'])) {
                 //expire resumptionToken if repository is modified after resumptionToken has published
-                $identifiers = array();
+                $identifiers = [];
                 if (RES_OK == xnp_selective_harvesting((int) $result['publish_date'], 0, null, 0, 1, $identifiers)) {
                     if (count($identifiers) > 0) {
                         expireResumptionToken($resumptionToken);
@@ -246,12 +250,12 @@ class JUNII2Handler extends OAIPMHHandler
             }
         }
 
-        $identifiers = array();
+        $identifiers = [];
         if (RES_OK != xnp_selective_harvesting((int) $from, (int) $until, $set, $start_iid, (int) $limit_row, $identifiers) || count($identifiers) == 0) {
             return parent::error('noRecordsMatch', '');
         }
 
-        $iids = array();
+        $iids = [];
         foreach ($identifiers as $i) {
             $iids[] = $i['item_id'];
         }
@@ -266,7 +270,7 @@ class JUNII2Handler extends OAIPMHHandler
         $index_tree_list = xnpListIndexTree(XOONIPS_LISTINDEX_PUBLICONLY, true);
         $nijc_code = $xconfig_handler->getValue('repository_nijc_code');
         if (!empty($nijc_code)) {
-            $headers = array();
+            $headers = [];
             foreach ($identifiers as $identifier) {
                 $headers[] = $this->oaipmh_header($identifier, $index_tree_list);
             }
@@ -300,7 +304,7 @@ class JUNII2Handler extends OAIPMHHandler
         $limit_row = REPOSITORY_RESPONSE_LIMIT_ROW;
         $expire_term = REPOSITORY_RESUMPTION_TOKEN_EXPIRE_TERM;
 
-        foreach (array('from', 'until', 'resumptionToken', 'set') as $k) {
+        foreach (['from', 'until', 'resumptionToken', 'set'] as $k) {
             if (isset($args[$k])) {
                 ${$k} = $args[$k];
             }
@@ -334,7 +338,7 @@ class JUNII2Handler extends OAIPMHHandler
             }
             if (isset($result['publish_date'])) {
                 //expire resumptionToken if repository is modified after resumptionToken has published
-                $iids = array();
+                $iids = [];
                 if (RES_OK == xnp_selective_harvesting((int) $result['publish_date'], 0, null, 0, 1, $iids)) {
                     if (count($iids) > 0) {
                         expireResumptionToken($resumptionToken);
@@ -345,11 +349,11 @@ class JUNII2Handler extends OAIPMHHandler
             }
         }
 
-        $identifiers = array();
+        $identifiers = [];
         if (RES_OK != xnp_selective_harvesting((int) $from, (int) $until, $set, $start_iid, (int) $limit_row, $identifiers) || count($identifiers) == 0) {
             return parent::error('noRecordsMatch', '');
         }
-        $iids = array();
+        $iids = [];
         foreach ($identifiers as $i) {
             $iids[] = $i['item_id'];
         }
@@ -371,10 +375,10 @@ class JUNII2Handler extends OAIPMHHandler
 
         $nijc_code = $xconfig_handler->getValue('repository_nijc_code');
         if (!empty($nijc_code)) {
-            $records = array();
-            $errurs = array();
+            $records = [];
+            $errurs  = [];
             foreach ($identifiers as $item) {
-                list($xml, $result) = $this->record($item, $index_tree_list);
+                [$xml, $result] = $this->record($item, $index_tree_list);
                 if ($result) {
                     $records[] = $xml;
                 } else {

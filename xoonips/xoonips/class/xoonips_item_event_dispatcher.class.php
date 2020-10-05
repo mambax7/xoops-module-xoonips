@@ -27,7 +27,7 @@
 
 class XooNIpsItemEventDispatcher
 {
-    public $_listeners = array();
+    public $_listeners = [];
 
     public static function &getInstance()
     {

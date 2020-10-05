@@ -55,7 +55,7 @@ class XooNIpsOrmRankingContributingUserHandler extends XooNIpsOrmAbstractRanking
     {
         parent::__construct($db);
         $this->__initHandler('XooNIpsOrmRankingContributingUser', 'xoonips_ranking_contributing_user', 'item_id', false);
-        $this->_set_columns(array('item_id', 'uid', 'timestamp'));
+        $this->_set_columns(['item_id', 'uid', 'timestamp']);
     }
 
     /**

@@ -87,9 +87,9 @@ function xnpitmgrListIndexTree($mode = XNPITMGR_LISTMODE_ALL, $uid = 0)
 
         return false;
     }
-    $tree_items = array();
-    $parent_full_path = array();
-    $result = array();
+    $tree_items = [];
+    $parent_full_path = [];
+    $result = [];
     while ($ar = $xoopsDB->fetchArray($db_result)) {
         $index_id = intval($ar['index_id']);
         $tree_items[$index_id] = $ar;
@@ -115,7 +115,7 @@ function xnpitmgrListIndexTree($mode = XNPITMGR_LISTMODE_ALL, $uid = 0)
         $parent_full_path[$k] = $fullpath;
     }
 
-    $result = array();
+    $result = [];
     // set result from tree_items and parent_full_path.
     foreach ($tree_items as $k => $v) {
         $parent_path = $parent_full_path[$v['parent_index_id']];
@@ -126,7 +126,7 @@ function xnpitmgrListIndexTree($mode = XNPITMGR_LISTMODE_ALL, $uid = 0)
         // delete "ROOT" string.
         $idx = strpos($parent_path, '/');
         $parent_path = substr($parent_path, $idx, strlen($parent_path));
-        $a = array();
+        $a = [];
         $a['id'] = $k;
         $a['fullpath'] = $parent_path.$v['title'];
         $result[] = $a;
@@ -154,7 +154,7 @@ function xnpitmgrListIndexItems($index_ids)
 
         return false;
     }
-    $result = array();
+    $result = [];
     while (list($id) = $xoopsDB->fetchRow($db_result)) {
         $result[] = intval($id);
     }
@@ -187,7 +187,7 @@ function xnpitmgrGetItemBasicInfo($item_id)
     }
     $result = $xoopsDB->fetchArray($db_result);
     if (!$result) {
-        $result = array();
+        $result = [];
     }
 
     return $result;
@@ -247,7 +247,7 @@ function xnpitmgrGetCertifyState($xid, $iid)
 
         return false;
     }
-    list($result) = $xoopsDB->fetchRow($db_result);
+    [$result] = $xoopsDB->fetchRow($db_result);
 
     return $result;
 }
@@ -319,7 +319,7 @@ function xnpitmgrWithDrawItem($xnpsid, $xid, $item_id)
     global $xoopsDB;
     $uid = $_SESSION['xoopsUserId'];
     if (CERTIFIED == xnpitmgrGetCertifyState($xid, $item_id)) {
-        $index = array();
+        $index = [];
         if (xnpitmgrUnregisterItem($xid, $item_id)) {
             $eventlog_handler = &xoonips_getormhandler('xoonips', 'event_log');
             $eventlog_handler->recordRejectItemEvent($item_id, $xid);

@@ -50,7 +50,7 @@ if (!xnp_is_valid_session_id($xnpsid)) {
 // get blocks
 $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
 $item_type_objs = &$item_type_handler->getObjectsSortByWeight();
-$blocks = array();
+$blocks = [];
 foreach ($item_type_objs as $item_type_obj) {
     $name = $item_type_obj->get('name');
     $file = XOOPS_ROOT_PATH.'/modules/'.$item_type_obj->get('viewphp');

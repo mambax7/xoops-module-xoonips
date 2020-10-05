@@ -31,28 +31,28 @@ $title = _AM_XOONIPS_POLICY_ITEM_TYPE_TITLE;
 $description = _AM_XOONIPS_POLICY_ITEM_TYPE_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_ITEM_TITLE,
         'url' => $xoonips_admin['myfile_url'].'?page=item',
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';
@@ -63,7 +63,7 @@ $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 $module_handler = xoops_getHandler('module');
 $it_handler     = &xoonips_getormhandler('xoonips', 'item_type');
 $it_objs = &$it_handler->getObjectsSortByWeight();
-$itemtype_order = array();
+$itemtype_order = [];
 $editicon = '<img src="../images/icon_modify.png" alt="'._AM_XOONIPS_LABEL_PREFERENCES.'" title="'._AM_XOONIPS_LABEL_PREFERENCES.'"/>';
 foreach ($it_objs as $it_obj) {
     // get module id
@@ -88,7 +88,7 @@ foreach ($it_objs as $it_obj) {
     }
     // get module order
     $weight = $module->getVar('weight', 'n');
-    $itemtype_order[] = array(
+    $itemtype_order[] = [
         'mid' => $mid,
         'item_type_id' => $item_type_id,
         'display_name_s' => $display_name_s,
@@ -96,7 +96,7 @@ foreach ($it_objs as $it_obj) {
         'modname' => $modname,
         'weight' => $weight,
         'admin_link' => $adminlink,
-    );
+    ];
     unset($module);
 }
 $num = 0;

@@ -260,7 +260,7 @@ class XooNIpsLogicGetItem extends XooNIpsLogic
     {
         $related_tos = $item->getVar('related_tos');
         $item_compo_handler = &xoonips_getormcompohandler('xoonips', 'item');
-        $new_related_tos = array();
+        $new_related_tos = [];
         foreach ($related_tos as $related_to) {
             $item_id = $related_to->get('item_id');
             if ($item_compo_handler->getPerm($item_id, $uid, 'read')) {

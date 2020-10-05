@@ -54,7 +54,7 @@ if (!is_null($post_id) && 'GET' == $_SERVER['REQUEST_METHOD']) {
     }
 }
 
-foreach (array('item_type_id' => 0, 'scrollX' => 0, 'scrollY' => 0) as $k => $v) {
+foreach (['item_type_id' => 0, 'scrollX' => 0, 'scrollY' => 0] as $k => $v) {
     $$k = $formdata->getValue('both', $k, 'i', false, $v);
 }
 
@@ -70,7 +70,7 @@ if (!$xoopsUser->isAdmin($xoopsModule->getVar('mid'))
     exit();
 }
 
-$select_item_type = array();
+$select_item_type = [];
 $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
 $item_types = &$item_type_handler->getObjectsSortByWeight();
 if ($item_types) {
@@ -151,9 +151,9 @@ $xoopsTpl->assign('scrollY', $scrollY);
 
 $xoopsTpl->assign('invalid_doi_message', sprintf(_MD_XOONIPS_ITEM_DOI_INVALID_ID, XNP_CONFIG_DOI_FIELD_PARAM_MAXLEN));
 
-$account = array();
+$account = [];
 if (RES_OK == xnp_get_account($xnpsid, $uid, $account)) {
-    $iids = array();
+    $iids = [];
     if (RES_OK == xnp_get_private_item_id($xnpsid, $uid, $iids)) {
         $xoopsTpl->assign('num_of_items_current', count($iids));
     } else {
@@ -168,7 +168,7 @@ if (RES_OK == xnp_get_account($xnpsid, $uid, $account)) {
 // rfc2616 10.3.4 303 See Other
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $post_id = uniqid('postid');
-    $_SESSION['post_id'] = array($post_id => serialize($_POST));
+    $_SESSION['post_id'] = [$post_id => serialize($_POST)];
     header('HTTP/1.0 303 See Other');
     header('Location: '.XOOPS_URL."/modules/xoonips/register.php?post_id=$post_id");
     echo sprintf(_IFNOTRELOAD, XOOPS_URL."/modules/xoonips/register.php?post_id=$post_id");

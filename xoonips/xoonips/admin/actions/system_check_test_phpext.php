@@ -60,7 +60,7 @@ function xoonips_admin_system_check_phpext(&$category)
         $name = 'mbstring.detect_order';
         $ans[$name] = mb_detect_order();
         $res = new XooNIpsAdminSystemCheckResult(' &raquo; '.$name);
-        $mb_require_order = array('ASCII', _CHARSET);
+        $mb_require_order = ['ASCII', _CHARSET];
         if (_CHARSET != 'UTF-8') {
             array_push($mb_require_order, 'UTF-8');
         }
@@ -155,7 +155,7 @@ function xoonips_admin_system_check_phpext(&$category)
     $ext = $name;
     if (extension_loaded($ext)) {
         $gd_support_info = gd_info();
-        $gd_support = array(
+        $gd_support = [
             'FreeType Support' => false,
             'GIF Read Support' => false,
             'GIF Create Support' => false,
@@ -163,7 +163,7 @@ function xoonips_admin_system_check_phpext(&$category)
             'PNG Support' => false,
             'WBMP Support' => false,
             'XBM Support' => false,
-        );
+        ];
         if (isset($gd_support_info['JPEG Support'])) {
             $gd_support_info['JPG Support'] = $gd_support_info['JPEG Support'];
         }

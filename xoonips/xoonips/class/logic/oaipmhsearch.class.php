@@ -65,11 +65,11 @@ class XooNIpsLogicOaipmhSearch extends XooNIpsLogic
         if (isset($vars[1]) && isset($vars[2]) && intval($vars[1]) == 0 && empty($vars[2])) {
             $error->add(XNPERR_INVALID_PARAM, 'parameter 2(repository_id) or parameter 3(keyword)'.'is required.');
         }
-        if (isset($vars[3]) && !in_array($vars[3], array('title', 'identifier', 'last_update_date', 'creation_date', 'date'))
+        if (isset($vars[3]) && !in_array($vars[3], ['title', 'identifier', 'last_update_date', 'creation_date', 'date'])
         ) {
             $error->add(XNPERR_INVALID_PARAM, 'invalid parameter 4(order by)');
         }
-        if (isset($vars[4]) && !in_array($vars[4], array('asc', 'desc'))) {
+        if (isset($vars[4]) && !in_array($vars[4], ['asc', 'desc'])) {
             $error->add(XNPERR_INVALID_PARAM, 'invalid parameter 5(order dir)');
         }
 
@@ -85,7 +85,7 @@ class XooNIpsLogicOaipmhSearch extends XooNIpsLogic
             $order_by = $vars[3];
             $order_dir = $vars[4];
         }
-        list($result, $uid, $session) = $this->restoreSession($sessionid);
+        [$result, $uid, $session] = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
@@ -154,7 +154,7 @@ class XooNIpsLogicOaipmhSearch extends XooNIpsLogic
             return $search_cache_id;
         }
 
-        $result = array();
+        $result = [];
         if (strval($keyword) == '') {
             $metadata = &$metadata_handler->getObjects(new Criteria('repository_id', $repository_id));
             foreach ($metadata as $data) {

@@ -53,7 +53,7 @@ class XooNIpsOrmRankingNewGroupHandler extends XooNIpsOrmAbstractRankingHandler
     {
         parent::__construct($db);
         $this->__initHandler('XooNIpsOrmRankingNewGroup', 'xoonips_ranking_new_group', 'gid', false);
-        $this->_set_columns(array('gid', 'timestamp'));
+        $this->_set_columns(['gid', 'timestamp']);
     }
 
     /**

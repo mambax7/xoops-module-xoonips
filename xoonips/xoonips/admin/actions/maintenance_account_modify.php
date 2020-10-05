@@ -27,9 +27,9 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // get variables
-$get_keys = array(
-  'uid' => array('i', false, true),
-);
+$get_keys = [
+    'uid' => ['i', false, true],
+];
 $get_vals = xoonips_admin_get_requests('get', $get_keys);
 $uid = $get_vals['uid'];
 

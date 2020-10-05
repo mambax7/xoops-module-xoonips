@@ -78,7 +78,7 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
             $item = $vars[1];
             $files = $vars[2];
         }
-        list($result, $uid, $session) = $this->restoreSession($sessionid);
+        [$result, $uid, $session] = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
@@ -137,7 +137,7 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
         $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
         $index_item_links = $item->getVar('indexes');
         $add_to_private = false;
-        $add_to_gids = array();
+        $add_to_gids = [];
         $add_to_public = false;
         foreach ($index_item_links as $index_item_link) {
             $index_id = $index_item_link->get('index_id');
@@ -247,13 +247,13 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
         $file_type_handler = &xoonips_getormhandler('xoonips', 'file_type');
         $file_types = &$file_type_handler->getObjects(null, true);
         // $item->setVar( '...', $files[...] ) // check exactly 1:1 ? correct filetype ? multiple files for non-multiple field?
-        $pseudo2files = array();
+        $pseudo2files = [];
         for ($i = 0; $i < count($files); ++$i) {
             $pseudo_file_id = $files[$i]->get('file_id');
             if (isset($pseudo2files[$pseudo_file_id])) {
                 $error->add(XNPERR_INVALID_PARAM, "pseudo file_id conflicts(pseudo file_id=$pseudo_file_id)"); // test e12
             } else {
-                $pseudo2files[$pseudo_file_id] = array('used' => false, 'file' => $files[$i]);
+                $pseudo2files[$pseudo_file_id] = ['used' => false, 'file' => $files[$i]];
             }
         }
         foreach ($detail_item_type->getFileTypeNames() as $field_name) {
@@ -265,7 +265,7 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
                     continue; // this filetype maybe optional and omitted.
                 }
 
-                $detail_files = array($detail_file);
+                $detail_files = [$detail_file];
             }
             for ($i = 0; $i < count($detail_files); ++$i) {
                 $pseudo_id = $detail_files[$i]->get('file_id');

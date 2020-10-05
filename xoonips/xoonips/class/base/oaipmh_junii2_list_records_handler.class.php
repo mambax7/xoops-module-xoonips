@@ -27,7 +27,7 @@
 
 class Junii2ListRecordsHandler extends ListRecordsHandler
 {
-    public $_support_tags = array(
+    public $_support_tags = [
         'ALTERNATIVE',
         'SUBJECT',
         'NIISUBJECT',
@@ -82,7 +82,7 @@ class Junii2ListRecordsHandler extends ListRecordsHandler
         'NIITEMPORAL',
         'RIGHTS',
         'TEXTVERSION',
-        );
+    ];
 
     public function __construct($_parser, $_baseURL)
     {

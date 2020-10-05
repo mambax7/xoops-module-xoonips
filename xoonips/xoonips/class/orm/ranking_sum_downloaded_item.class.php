@@ -38,7 +38,7 @@ class XooNIpsOrmRankingSumDownloadedItemHandler extends XooNIpsOrmRankingDownloa
     {
         parent::__construct($db);
         $this->__initHandler('XooNIpsOrmRankingDownloadedItem', 'xoonips_ranking_sum_downloaded_item', 'item_id', false);
-        $this->_set_columns(array('item_id', 'count'));
+        $this->_set_columns(['item_id', 'count']);
         $this->_set_sum_table();
     }
 }

@@ -63,10 +63,10 @@ if ($mode == 'info') {
     die('fatal error : invalid \'mode\' parameter');
 }
 
-$data = array(
+$data = [
   'mode' => $mode,
   'num' => $num,
-);
+];
 
 // json
 $json = new Services_JSON();

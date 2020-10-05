@@ -42,7 +42,7 @@ class XooNIpsGraphData
      *
      * @var array
      */
-    public $values = array();
+    public $values = [];
 
     /**
      * data color.
@@ -160,7 +160,7 @@ class XooNIpsGraphData
      */
     public function setYAxis($axis)
     {
-        $axis_types = array('left', 'right');
+        $axis_types = ['left', 'right'];
         if (!in_array($axis, $axis_types)) {
             $this->error(__FILE__, __LINE__);
         }
@@ -260,7 +260,7 @@ class XooNIpsGraphDataPoint extends XooNIpsGraphData
      */
     public function setPoint($type)
     {
-        $point_types = array('square', 'square-open', 'circle', 'circle-open', 'diamond', 'diamond-open', 'triangle', 'triangle-open', 'dot', 'none');
+        $point_types = ['square', 'square-open', 'circle', 'circle-open', 'diamond', 'diamond-open', 'triangle', 'triangle-open', 'dot', 'none'];
         if (!in_array($type, $point_types)) {
             $this->error(__FILE__, __LINE__);
         }
@@ -366,7 +366,7 @@ class XooNIpsGraphDataBrushLine extends XooNIpsGraphDataLine
      */
     public function setBrush($type)
     {
-        $brush_types = array('circle', 'square', 'vertical', 'horizontal', 'slash', 'backslash', 'none');
+        $brush_types = ['circle', 'square', 'vertical', 'horizontal', 'slash', 'backslash', 'none'];
         if (!in_array($type, $brush_types)) {
             $this->error(__FILE__, __LINE__);
         }
@@ -426,7 +426,7 @@ class XooNIpsGraphDataBar extends XooNIpsGraphData
      */
     public function setBar($type)
     {
-        $bar_types = array('fill', 'open');
+        $bar_types = ['fill', 'open'];
         if (!in_array($type, $bar_types)) {
             $this->error(__FILE__, __LINE__);
         }
@@ -483,7 +483,7 @@ class XooNIpsGraphDataArea extends XooNIpsGraphData
      */
     public function setArea($type)
     {
-        $area_types = array('fill', 'open');
+        $area_types = ['fill', 'open'];
         if (!in_array($type, $area_types)) {
             $this->error(__FILE__, __LINE__);
         }
@@ -705,7 +705,7 @@ class XooNIpsGraphFrame
      */
     public function setType($type)
     {
-        $frame_types = array('box', 'axis', 'y', 'y-left', 'y-right', 'x', 'u');
+        $frame_types = ['box', 'axis', 'y', 'y-left', 'y-right', 'x', 'u'];
         if (!in_array($type, $frame_types)) {
             $this->error(__FILE__, __LINE__);
         }
@@ -747,14 +747,14 @@ class XooNIpsGraph
      *
      * @var array
      */
-    public $data = array();
+    public $data = [];
 
     /**
      * graph axis array - instance of class XooNIpsGraphAxis.
      *
      * @var array
      */
-    public $axis = array();
+    public $axis = [];
 
     /**
      * inner frame - instance of class XooNIpsGraphFrame.
@@ -773,7 +773,7 @@ class XooNIpsGraph
     {
         $this->module_path = dirname(dirname(__DIR__));
         $this->graph = new XooNIpsGraphLib($width, $height);
-        foreach (array('bottom', 'left', 'right') as $ax) {
+        foreach (['bottom', 'left', 'right'] as $ax) {
             $this->axis[$ax] = new XooNIpsGraphAxis();
         }
         $this->frame = new XooNIpsGraphFrame();
@@ -785,7 +785,7 @@ class XooNIpsGraph
         $langman = &xoonips_getutility('languagemanager');
         $font_path = $langman->font_path($this->font_name);
         $this->graph->parameter['path_to_fonts'] = str_replace($this->font_name, '', $font_path);
-        $font_fields = array('title_font', 'label_font', 'axis_font', 'legend_font');
+        $font_fields = ['title_font', 'label_font', 'axis_font', 'legend_font'];
         foreach ($font_fields as $field) {
             $this->graph->parameter[$field] = $this->font_name;
         }
@@ -862,7 +862,7 @@ class XooNIpsGraph
      */
     public function setLegendPosition($position)
     {
-        $positions = array('top-left', 'top-right', 'bottom-left', 'bottom-right', 'outside-top', 'outside-bottom', 'outside-left', 'outside-right', 'none');
+        $positions = ['top-left', 'top-right', 'bottom-left', 'bottom-right', 'outside-top', 'outside-bottom', 'outside-left', 'outside-right', 'none'];
         if (!in_array($position, $positions)) {
             $this->error(__FILE__, __LINE__);
         }
@@ -897,7 +897,7 @@ class XooNIpsGraph
      */
     public function setAxisAngle($xy, $angle)
     {
-        $xys = array('x', 'y');
+        $xys = ['x', 'y'];
         if (!in_array($xy, $xys)) {
             $this->error(__FILE__, __LINE__);
         }
@@ -913,8 +913,8 @@ class XooNIpsGraph
      */
     public function setAxisGrid($xy, $grid)
     {
-        $xys = array('x', 'y');
-        $grids = array('line', 'dash', 'none');
+        $xys = ['x', 'y'];
+        $grids = ['line', 'dash', 'none'];
         if (!in_array($xy, $xys) || !in_array($grid, $grids)) {
             $this->error(__FILE__, __LINE__);
         }
@@ -929,7 +929,7 @@ class XooNIpsGraph
      */
     public function setAxisGridLines($xy, $lines)
     {
-        $xys = array('x', 'y');
+        $xys = ['x', 'y'];
         if (!in_array($xy, $xys)) {
             $this->error(__FILE__, __LINE__);
         }
@@ -944,7 +944,7 @@ class XooNIpsGraph
      */
     public function setAxisTicksColor($xy, $color)
     {
-        $xys = array('x', 'y');
+        $xys = ['x', 'y'];
         if (!in_array($xy, $xys)) {
             $this->error(__FILE__, __LINE__);
         }
@@ -1023,7 +1023,7 @@ class XooNIpsGraph
         if (count($this->data) == 0) {
             return;
         }
-        $axis = array('left', 'right');
+        $axis = ['left', 'right'];
         foreach ($axis as $ax) {
             $my_max[$ax] = $this->axis[$ax]->max_value;
             $my_min[$ax] = $this->axis[$ax]->min_value;
@@ -1128,7 +1128,7 @@ class XooNIpsGraph
         $this->graph->parameter['y_resolution_right'] = $this->axis['right']->resolution;
         $this->graph->parameter['y_axis_text_right'] = $this->axis['right']->tick_interval;
         // values
-        $this->graph->y_order = array();
+        $this->graph->y_order = [];
         foreach ($this->data as $key => $datum) {
             $key = 'data:'.strval($key);
             $this->graph->y_order[] = $key;

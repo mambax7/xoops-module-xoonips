@@ -63,7 +63,7 @@ function xoops_module_install_xoonips($xoopsMod)
     // define groups
     $member_handler = xoops_getHandler('member');
     $gids           = array_keys($member_handler->getGroupList());
-    $ogids = array_diff($gids, array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS, $mgid));
+    $ogids = array_diff($gids, [XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS, $mgid]);
 
     // set module access permission to all known groups
     foreach ($gids as $gid) {
@@ -72,58 +72,58 @@ function xoops_module_install_xoonips($xoopsMod)
     }
 
     // set block parameters (read permissions and positions)
-    $block_params = array(
-    // 'show_func' => array(
-    //   'rights' => array( 'registered user', 'guest', 'moderator', 'other' ),
-    //   'positions' => array( 'visible', 'side', 'weight' 'show all pages' ),
-    // ),
-        'b_xoonips_quick_search_show' => array(
-            'rights' => array(true, true, false, false),
-            'positions' => array(true, 0, 10, true),
-        ),
-        'b_xoonips_moderator_show' => array(
-            'rights' => array(false, false, true, false),
-            'positions' => array(true, 1, 20, true),
-        ),
-        'b_xoonips_tree_show' => array(
-            'rights' => array(true, true, false, false),
-            'positions' => array(true, 0, 20, true),
-        ),
-        'b_xoonips_login_show' => array(
-            'rights' => array(true, true, false, false),
-            'positions' => array(true, 0, 0, true),
-        ),
-        'b_xoonips_user_show' => array(
-            'rights' => array(true, false, false, false),
-            'positions' => array(true, 1, 0, true),
-        ),
-        'b_xoonips_group_show' => array(
-            'rights' => array(true, false, false, false),
-            'positions' => array(true, 1, 10, true),
-        ),
-        'b_xoonips_itemtypes_show' => array(
-            'rights' => array(true, true, false, false),
-            'positions' => array(true, 5, 20, false),
-        ),
-        'b_xoonips_ranking_new_show' => array(
-            'rights' => array(true, true, false, false),
-            'positions' => array(false, 0, 0, false),
-        ),
-        'b_xoonips_ranking_show' => array(
-            'rights' => array(true, true, false, false),
-            'positions' => array(false, 0, 0, false),
-        ),
-        'b_xoonips_userlist_show' => array(
-            'rights' => array(true, false, false, false),
-            'positions' => array(false, 0, 0, false),
-        ),
-    );
+    $block_params = [
+        // 'show_func' => array(
+        //   'rights' => array( 'registered user', 'guest', 'moderator', 'other' ),
+        //   'positions' => array( 'visible', 'side', 'weight' 'show all pages' ),
+        // ),
+        'b_xoonips_quick_search_show' => [
+            'rights' => [true, true, false, false],
+            'positions' => [true, 0, 10, true],
+        ],
+        'b_xoonips_moderator_show' => [
+            'rights' => [false, false, true, false],
+            'positions' => [true, 1, 20, true],
+        ],
+        'b_xoonips_tree_show' => [
+            'rights' => [true, true, false, false],
+            'positions' => [true, 0, 20, true],
+        ],
+        'b_xoonips_login_show' => [
+            'rights' => [true, true, false, false],
+            'positions' => [true, 0, 0, true],
+        ],
+        'b_xoonips_user_show' => [
+            'rights' => [true, false, false, false],
+            'positions' => [true, 1, 0, true],
+        ],
+        'b_xoonips_group_show' => [
+            'rights' => [true, false, false, false],
+            'positions' => [true, 1, 10, true],
+        ],
+        'b_xoonips_itemtypes_show' => [
+            'rights' => [true, true, false, false],
+            'positions' => [true, 5, 20, false],
+        ],
+        'b_xoonips_ranking_new_show' => [
+            'rights' => [true, true, false, false],
+            'positions' => [false, 0, 0, false],
+        ],
+        'b_xoonips_ranking_show' => [
+            'rights' => [true, true, false, false],
+            'positions' => [false, 0, 0, false],
+        ],
+        'b_xoonips_userlist_show' => [
+            'rights' => [true, false, false, false],
+            'positions' => [false, 0, 0, false],
+        ],
+    ];
     foreach ($block_params as $show_func => $block_param) {
         $bids = $admin_xoops_handler->getBlockIds($mid, $show_func);
         foreach ($bids as $bid) {
             // - rights
             $rights = $block_param['rights'];
-            list($uright, $gright, $mright, $oright) = $block_param['rights'];
+            [$uright, $gright, $mright, $oright] = $block_param['rights'];
             $admin_xoops_handler->setBlockReadRight($bid, XOOPS_GROUP_USERS, $uright);
             $admin_xoops_handler->setBlockReadRight($bid, XOOPS_GROUP_ANONYMOUS, $gright);
             $admin_xoops_handler->setBlockReadRight($bid, $mgid, $mright);
@@ -131,7 +131,7 @@ function xoops_module_install_xoonips($xoopsMod)
                 $admin_xoops_handler->setBlockReadRight($bid, $gid, $oright);
             }
             // - positions
-            list($visible, $side, $weight, $allpage) = $block_param['positions'];
+            [$visible, $side, $weight, $allpage] = $block_param['positions'];
             $admin_xoops_handler->setBlockPosition($bid, $visible, $side, $weight);
             $admin_xoops_handler->setBlockShowPage($bid, 0, $allpage);
             if ($allpage) {
@@ -142,16 +142,16 @@ function xoops_module_install_xoonips($xoopsMod)
     }
 
     // hide 'user' and 'login' blocks
-    $sys_blocks = array();
-    $sys_blocks[] = array('system', 'b_system_user_show');
-    $sys_blocks[] = array('system', 'b_system_login_show');
+    $sys_blocks   = [];
+    $sys_blocks[] = ['system', 'b_system_user_show'];
+    $sys_blocks[] = ['system', 'b_system_login_show'];
     if (defined('XOOPS_CUBE_LEGACY')) {
         // for XOOPS Cube Legacy 2.1
-        $sys_blocks[] = array('legacy', 'b_legacy_usermenu_show');
-        $sys_blocks[] = array('user', 'b_user_login_show');
+        $sys_blocks[] = ['legacy', 'b_legacy_usermenu_show'];
+        $sys_blocks[] = ['user', 'b_user_login_show'];
     }
     foreach ($sys_blocks as $sys_block) {
-        list($dirname, $show_func) = $sys_block;
+        [$dirname, $show_func] = $sys_block;
         $sysmid = $admin_xoops_handler->getModuleId($dirname);
         if ($sysmid === false) {
             // this case will occur when system module does not installed on
@@ -186,16 +186,16 @@ function xoops_module_install_xoonips($xoopsMod)
 
     // set notifications
     $uids = array_keys($member_handler->getUsers(null, true));
-    $notifications = array(
-        'administrator' => array(
+    $notifications = [
+        'administrator' => [
             'item_transfer', 'account_certify', 'item_certify',
             'group_item_certify_request',
-        ),
-        'user' => array(
+        ],
+        'user'          => [
             'item_transfer', 'item_updated', 'item_certified', 'item_rejected',
             'file_downloaded', 'group_item_certified', 'group_item_rejected',
-        ),
-    );
+        ],
+    ];
     foreach ($notifications as $category => $events) {
         foreach ($events as $event) {
             // enable event

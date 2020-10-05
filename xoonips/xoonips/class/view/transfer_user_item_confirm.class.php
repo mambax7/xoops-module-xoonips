@@ -81,7 +81,7 @@ class XooNIpsViewTransferUserItemConfirm extends XooNIpsViewTransfer
 
     public function get_child_item_ids_to_transfer()
     {
-        $item_ids = array();
+        $item_ids = [];
         foreach (array_values($this->_params['child_item_ids_to_transfer']) as $child_item_ids) {
             $item_ids = array_merge($item_ids, $child_item_ids);
         }
@@ -91,7 +91,7 @@ class XooNIpsViewTransferUserItemConfirm extends XooNIpsViewTransfer
 
     public function get_transfer_item_template_vars()
     {
-        $result = array();
+        $result = [];
 
         $item_ids = array_merge($this->_params['item_ids_to_transfer'], $this->get_child_item_ids_to_transfer());
         sort($item_ids);
@@ -116,17 +116,17 @@ class XooNIpsViewTransferUserItemConfirm extends XooNIpsViewTransfer
         $basic = &$item->getVar('basic');
         $itemtype = &$item_type_handler->get($basic->get('item_type_id'));
 
-        return array(
+        return [
             'item_id' => $item_id,
             'item_type_name' => $itemtype->getVar('display_name', 's'),
             'title' => $this->concatenate_titles($item->getVar('titles')),
-        );
+        ];
     }
 
     public function get_gname_csv()
     {
-        $result = array();
-        $gids = array();
+        $result = [];
+        $gids = [];
         foreach ($this->_params['gids_to_subscribe'] as $gid) {
             $gids[] = intval($gid);
         }

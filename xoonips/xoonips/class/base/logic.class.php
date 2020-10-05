@@ -69,7 +69,7 @@ class XooNIpsLogic
         $xoops_sess_handler = xoops_getHandler('session');
         $sess_data          = $xoops_sess_handler->read($sessionid);
         if ('' == $sess_data) {
-            return array(false, false, false);
+            return [false, false, false];
         }
         $prev_sessid = session_id();
         if ($sessionid != $prev_sessid) {
@@ -89,7 +89,7 @@ class XooNIpsLogic
                     session_start();
                 }
 
-                return array(false, false, false);
+                return [false, false, false];
             }
             $session = false;
         } else {
@@ -103,7 +103,7 @@ class XooNIpsLogic
                     session_start();
                 }
 
-                return array(false, false, false);
+                return [false, false, false];
             }
 
             $member_handler = xoops_getHandler('member');
@@ -117,7 +117,7 @@ class XooNIpsLogic
             $sess_handler->insert($session);
         }
 
-        return array(true, $uid, $session);
+        return [true, $uid, $session];
     }
 
     /**
@@ -132,7 +132,7 @@ class XooNIpsLogic
     public function touchItem1(&$error, &$item, $uid)
     {
         // get indexes
-        $index_ids = array();
+        $index_ids = [];
         $index_item_links = $item->getVar('indexes');
         if (!$index_item_links || 0 == count($index_item_links)) {
             $error->add(XNPERR_SERVER_ERROR, 'no indexes');
@@ -253,11 +253,11 @@ class XooNIpsLogic
 
         // notify
         $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
-        $index_item_links = $index_item_link_handler->getByItemId($item_id, array(OL_GROUP_ONLY, OL_PUBLIC));
-        $indexIds = array(
-            CERTIFY_REQUIRED => array(),
-            CERTIFIED => array(),
-        );
+        $index_item_links = $index_item_link_handler->getByItemId($item_id, [OL_GROUP_ONLY, OL_PUBLIC]);
+        $indexIds = [
+            CERTIFY_REQUIRED => [],
+            CERTIFIED => [],
+        ];
         foreach ($index_item_links as $link) {
             $indexId = $link->get('index_id');
             if (CERTIFY_REQUIRED == $link->get('certify_state')) {
@@ -293,7 +293,7 @@ class XooNIpsLogic
         $criteria->add(new Criteria('certify_state', CERTIFIED));
         $criteria->setGroupBy('item_id');
         $index_item_links = &$index_item_link_handler->getObjects($criteria, false, 'item_id', false, $join);
-        $iids = array();
+        $iids = [];
         foreach ($index_item_links as $link) {
             $iids[] = $link->get('item_id');
         }
@@ -361,7 +361,7 @@ class XooNIpsLogic
      * @param old_size[in]  current total file size of item
      * @param old_index_item_links[in]  where item is registered to
      */
-    public function isEnoughSpace(&$error, $uid, $new_size, $new_index_item_links, $old_size = 0, $old_index_item_links = array())
+    public function isEnoughSpace(&$error, $uid, $new_size, $new_index_item_links, $old_size = 0, $old_index_item_links = [])
     {
         $result = true;
         // check private index limit
@@ -387,7 +387,7 @@ class XooNIpsLogic
         }
         // get group ids
         $index_handler = &xoonips_getormhandler('xoonips', 'index');
-        $new_gids = array();
+        $new_gids = [];
         foreach ($new_index_item_links as $link) {
             $index_id = $link->get('index_id');
             $index = $index_handler->get($index_id);
@@ -399,7 +399,7 @@ class XooNIpsLogic
                 $new_gids[$index->get('gid')] = true;
             }
         }
-        $old_gids = array();
+        $old_gids = [];
         foreach ($old_index_item_links as $link) {
             $index_id = $link->get('index_id');
             $index = $index_handler->get($index_id);

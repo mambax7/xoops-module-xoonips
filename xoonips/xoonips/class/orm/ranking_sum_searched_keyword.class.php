@@ -38,7 +38,7 @@ class XooNIpsOrmRankingSumSearchedKeywordHandler extends XooNIpsOrmRankingSearch
     {
         parent::__construct($db);
         $this->__initHandler('XooNIpsOrmRankingSearchedKeyword', 'xoonips_ranking_sum_searched_keyword', 'keyword', false, true);
-        $this->_set_columns(array('keyword', 'count'));
+        $this->_set_columns(['keyword', 'count']);
         $this->_set_sum_table();
     }
 }

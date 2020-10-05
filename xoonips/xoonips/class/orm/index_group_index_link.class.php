@@ -81,7 +81,7 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
             }
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -94,7 +94,7 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
     public function getObjectsByGroupIndexId($group_index_id)
     {
         if (IID_ROOT == $group_index_id) {
-            return array();
+            return [];
         }
 
         $result = $this->getObjects(new Criteria('group_index_id', $group_index_id));
@@ -105,7 +105,7 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
         $index_handler = &xoonips_getormhandler('xoonips', 'index');
         $index = &$index_handler->get($group_index_id);
         if (!$index) {
-            return array();
+            return [];
         }
 
         return $this->getObjectsByGroupIndexId($index->get('parent_index_id'));
@@ -119,7 +119,7 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
      *
      * @return array of index_group_index_link object(s)
      */
-    public function getByItemId($item_id, $open_levels = array(OL_PRIVATE, OL_GROUP_ONLY, OL_PUBLIC))
+    public function getByItemId($item_id, $open_levels = [OL_PRIVATE, OL_GROUP_ONLY, OL_PUBLIC])
     {
         $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'LEFT', 'tindex');
         $criteria = new CriteriaCompo();
@@ -144,8 +144,8 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
         $join = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id');
         $criteria = new Criteria('uid', $uid);
         $index_group_index_links = &$index_group_index_link_handler->getObjects($criteria, false, '', null, $join);
-        $iids = array();
-        $certified_iids = array();
+        $iids = [];
+        $certified_iids = [];
         foreach ($index_group_index_links as $index_group_index_link) {
             $item_id = $index_group_index_link->get('item_id');
             $iids[$item_id] = $item_id;
@@ -168,7 +168,7 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
     public function getByIndexId($index_id)
     {
         $criteria = new Criteria('index_id', intval($index_id));
-        $result = array();
+        $result = [];
         $links = &$this->getObjects($criteria);
         foreach ($links as $link) {
             $result[$link->get('index_group_index_link_id')] = $link;
@@ -187,7 +187,7 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
     public function getByGroupIndexId($group_index_id)
     {
         $criteria = new Criteria('group_index_id', intval($group_index_id));
-        $result = array();
+        $result = [];
         $links = &$this->getObjects($criteria);
         foreach ($links as $link) {
             $result[$link->get('index_group_index_link_id')] = $link;
@@ -270,9 +270,9 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
 
             $item_lock_handler = &xoonips_getormhandler('xoonips', 'item_lock');
             $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
-            $descendents = array(
+            $descendents = [
             $group_index_id,
-            );
+            ];
             foreach ($index_handler->getAllDescendents($group_index_id) as $index) {
                 $descendents[] = $index->get('index_id');
             }
@@ -408,9 +408,9 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
 
         $item_lock_handler = &xoonips_getormhandler('xoonips', 'item_lock');
         $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
-        $descendents = array(
+        $descendents = [
         $index_id,
-        );
+        ];
         foreach ($index_handler->getAllDescendents($index_id) as $index) {
             $descendents[] = $index->get('index_id');
         }
@@ -475,7 +475,7 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
         // get administrator uids
         $moderator_uids = $member_handler->getUsersByGroup($config_handler->getValue('moderator_gid'));
         if (!is_array($moderator_uids)) {
-            $moderator_uids = array();
+            $moderator_uids = [];
         }
 
         if ($notification_name == 'group_item_certify_request') {
@@ -503,7 +503,7 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
     {
         $index_compo_handler = &xoonips_getormcompohandler('xoonips', 'index');
         $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
-        $result = array();
+        $result = [];
 
         foreach ($index_ids as $index_id) {
             // store for notification

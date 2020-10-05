@@ -48,17 +48,17 @@ function xoops_module_uninstall_xoonips($xoopsMod)
     $admin_xoops_handler = &xoonips_gethandler('xoonips', 'admin_xoops');
 
     // show original 'user' and 'login' blocks
-    $sys_blocks = array('user' => array(), 'login' => array());
+    $sys_blocks = ['user' => [], 'login' => []];
     if (defined('XOOPS_CUBE_LEGACY')) {
         // for XOOPS Cube Legacy 2.1
-        $sys_blocks['user'][] = array('legacy', 'b_legacy_usermenu_show');
-        $sys_blocks['login'][] = array('user', 'b_user_login_show');
+        $sys_blocks['user'][] = ['legacy', 'b_legacy_usermenu_show'];
+        $sys_blocks['login'][] = ['user', 'b_user_login_show'];
     }
-    $sys_blocks['user'][] = array('system', 'b_system_user_show');
-    $sys_blocks['login'][] = array('system', 'b_system_login_show');
+    $sys_blocks['user'][] = ['system', 'b_system_user_show'];
+    $sys_blocks['login'][] = ['system', 'b_system_login_show'];
     foreach ($sys_blocks as $type => $sys_type_blocks) {
         foreach ($sys_type_blocks as $sys_block) {
-            list($dirname, $show_func) = $sys_block;
+            [$dirname, $show_func] = $sys_block;
             $sysmid = $admin_xoops_handler->getModuleId($dirname);
             if ($sysmid === false) {
                 continue; // module not found

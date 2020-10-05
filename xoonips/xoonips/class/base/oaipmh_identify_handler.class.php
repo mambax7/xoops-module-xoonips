@@ -37,7 +37,7 @@ class IdentifyHandler extends HarvesterHandler
         parent::__construct($_parser);
         $this->_earliestDatestamp = null;
         $this->_dateFormat = null;
-        $this->_tagstack = array();
+        $this->_tagstack = [];
         $this->_repositoryName = '';
     }
 

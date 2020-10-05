@@ -100,7 +100,7 @@ class XooNIpsAdminXoopsHandler
         if (!$result) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         while ($myrow = $xoopsDB->fetchArray($result)) {
             $ret[] = $myrow['bid'];
         }
@@ -280,7 +280,7 @@ class XooNIpsAdminXoopsHandler
         if (count($configs) != 1) {
             return false;
         }
-        list($config) = $configs;
+        [$config] = $configs;
         $config->setConfValueForInput($dirname);
 
         return $config_handler->insertConfig($config);
@@ -353,7 +353,7 @@ class XooNIpsAdminXoopsHandler
         if (!$result) {
             return false;
         }
-        $gids = array();
+        $gids = [];
         while ($myrow = $xoopsDB->fetchArray($result)) {
             $gids[] = $myrow['gperm_groupid'];
         }

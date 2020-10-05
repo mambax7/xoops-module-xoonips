@@ -35,7 +35,7 @@ class XooNIpsRankingHandler
      *
      * @var array
      */
-    public $handlers = array();
+    public $handlers = [];
 
     /**
      * ranking table base names.
@@ -50,7 +50,7 @@ class XooNIpsRankingHandler
     public function __construct()
     {
         // set base name of ranking tables
-        $this->basenames = array(
+        $this->basenames = [
             'viewed_item',       /* most accessed items */
             'downloaded_item',   /* most downloaded items */
             'contributing_user', /* most active contributors */
@@ -58,7 +58,7 @@ class XooNIpsRankingHandler
             'active_group',      /* most active groups */
             'new_item',          /* newly arrived items */
             'new_group',         /* newly created groups */
-        );
+        ];
         // load object handlers
         foreach ($this->basenames as $basename) {
             $name = $basename;
@@ -114,14 +114,14 @@ class XooNIpsRankingHandler
      */
     public function _recalc($is_update)
     {
-        $config_names = array(
+        $config_names = [
             'last_update',
             'days',
             'days_enabled',
             'sum_last_update',
-        );
+        ];
 
-        $config = array();
+        $config = [];
         foreach ($config_names as $name) {
             $config[$name] = $this->_get_config($name);
         }
@@ -196,13 +196,13 @@ class XooNIpsRankingHandler
     public function _recalc_sql(&$add_days_criteria, &$sub_days_criteria, $update_sum)
     {
         global $xoopsDB;
-        $config_names = array(
+        $config_names = [
             'visible',
             'new_visible',
             'num_rows',
             'new_num_rows',
-        );
-        $config = array();
+        ];
+        $config = [];
         foreach ($config_names as $name) {
             $config[$name] = $this->_get_config($name);
         }
@@ -224,7 +224,7 @@ class XooNIpsRankingHandler
             $sub_days_sql = '0';
         }
 
-        $etids = array();
+        $etids = [];
         if ($config['visible'][0] || $update_sum) {
             $etids[] = ETID_VIEW_ITEM;
         }
@@ -241,7 +241,7 @@ class XooNIpsRankingHandler
         if ($config['visible'][4] || $update_sum) {
             $etids[] = ETID_REQUEST_CERTIFY_ITEM;
         }
-        $new_etids = array();
+        $new_etids = [];
         if ($config['new_visible'][0] || $update_sum) {
             $new_etids[] = ETID_CERTIFY_ITEM;
         }
@@ -342,7 +342,7 @@ class XooNIpsRankingHandler
                         $keyword = $obj->getVar('search_keyword', 'n');
                         $delta = $obj->getExtraVar('count');
                         // extract keywords from log
-                        $matches = array();
+                        $matches = [];
                         if (0 == preg_match('/(?:^|&)keyword=([^&]*)(?:&|$)/', $keyword, $matches)) {
                             continue;
                         }

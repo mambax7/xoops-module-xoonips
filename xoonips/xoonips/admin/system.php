@@ -30,36 +30,36 @@ require_once '../../../include/cp_header.php';
 require 'actions/common.inc.php';
 
 // page definition
-$pages = array();
-$pages['main'] = array();
-$pages['basic'] = array(
-    'post' => array('update'),
-);
-$pages['tree'] = array(
-    'post' => array('update'),
-);
-$pages['print'] = array(
-    'post' => array('update'),
-);
-$pages['rss'] = array(
-    'post' => array('update'),
-);
-$pages['oaipmh'] = array(
-    'post' => array('rupdate', 'hupdate'),
-);
-$pages['proxy'] = array(
-    'post' => array('update'),
-);
-$pages['module'] = array(
-    'post' => array('update'),
-);
-$pages['xoops'] = array(
-    'post' => array('pickup', 'zudelete', 'zirescue'),
-    'get' => array('zilist'),
-);
-$pages['check'] = array(
-    'post' => array('test'),
-);
+$pages = [];
+$pages['main'] = [];
+$pages['basic'] = [
+    'post' => ['update'],
+];
+$pages['tree'] = [
+    'post' => ['update'],
+];
+$pages['print'] = [
+    'post' => ['update'],
+];
+$pages['rss'] = [
+    'post' => ['update'],
+];
+$pages['oaipmh'] = [
+    'post' => ['rupdate', 'hupdate'],
+];
+$pages['proxy'] = [
+    'post' => ['update'],
+];
+$pages['module'] = [
+    'post' => ['update'],
+];
+$pages['xoops'] = [
+    'post' => ['pickup', 'zudelete', 'zirescue'],
+    'get' => ['zilist'],
+];
+$pages['check'] = [
+    'post' => ['test'],
+];
 
 // initialize
 xoonips_admin_initialize(__FILE__, 'system', $pages);

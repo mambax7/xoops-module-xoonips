@@ -79,16 +79,16 @@ function genIndexTreeAdd($parentXID, &$indexFinder, &$childFinder, &$out, $depth
 
 function genIndexTree0($xnpsid)
 {
-    $criteria = array(
-        'orders' => array(
-            array('name' => 'parent_index_id', 'order' => 'ASC'),
-            array('name' => 'sort_number', 'order' => 'ASC'),
-        ),
-    );
-    $indexes = array();
+    $criteria = [
+        'orders' => [
+            ['name' => 'parent_index_id', 'order' => 'ASC'],
+            ['name' => 'sort_number', 'order' => 'ASC'],
+        ],
+    ];
+    $indexes = [];
     xnp_get_all_indexes($xnpsid, $criteria, $indexes);
     if (empty($indexes)) {
-        return array();
+        return [];
     }
 
     return $indexes;
@@ -97,15 +97,15 @@ function genIndexTree0($xnpsid)
 function genIndexTree1(&$indexes)
 {
     // divide into every parents
-    $indexFinder = array(); // index_id -> index
-    $childFinder = array(); // index_id -> child_index_id
+    $indexFinder = []; // index_id -> index
+    $childFinder = []; // index_id -> child_index_id
     foreach ($indexes as $index) {
         if ($index === false) {
             continue;
         }
         $parent_xid = $index['parent_index_id'];
         if (!isset($childFinder[$parent_xid])) {
-            $childFinder[$parent_xid] = array();
+            $childFinder[$parent_xid] = [];
         }
         $childFinder[$parent_xid][] = $index['item_id'];
 
@@ -113,7 +113,7 @@ function genIndexTree1(&$indexes)
     }
 
     // add recursively from ROOT
-    $out = array();
+    $out = [];
     genIndexTreeAdd(IID_ROOT, $indexFinder, $childFinder, $out, 0);
 
     return $out;

@@ -32,7 +32,7 @@ class XooNIpsXmlRpcTransformChangelog extends XooNIpsXmlRpcTransformElement
     {
         $obj = new XooNIpsChangelog();
 
-        $fields = array();
+        $fields = [];
         foreach ($fields as $f) {
             $obj->assignVar($f, $array[$f]);
         }

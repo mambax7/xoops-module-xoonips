@@ -42,7 +42,7 @@ function xoonips_admin_system_check_xoonips(&$category)
     unset($res);
 
     // file upload dir
-    $keys = array('upload_dir' => 's');
+    $keys = ['upload_dir' => 's'];
     $vals = xoonips_admin_get_configs($keys, 'n');
     $upload_dir = $vals['upload_dir'];
     $name = 'File upload directory';
@@ -123,7 +123,7 @@ function xoonips_admin_system_check_xoonips(&$category)
     unset($res);
 
     // magic file path
-    $keys = array('magic_file_path' => 's');
+    $keys = ['magic_file_path' => 's'];
     $vals = xoonips_admin_get_configs($keys, 'n');
     $magic_file_path = $vals['magic_file_path'];
     $name = 'Magic file path';
@@ -153,8 +153,8 @@ function xoonips_admin_system_check_xoonips(&$category)
             $ans['error'] = _XASC_STATUS_FAIL;
         } else {
             $val = @finfo_file($finfo, __DIR__.'/index.html');
-            $val = preg_replace(array('/;.*$/', '/ +.*$/'), array('', ''), $val);
-            if (!in_array($val, array('text/html', 'text/plain'))) {
+            $val = preg_replace(['/;.*$/', '/ +.*$/'], ['', ''], $val);
+            if (!in_array($val, ['text/html', 'text/plain'])) {
                 $ans['status'] = _XASC_STATUS_FAIL;
                 $ans['result'] = _AM_XOONIPS_SYSTEM_CHECK_LABEL_FAIL;
                 $ans['message'] = 'Broken magic database';

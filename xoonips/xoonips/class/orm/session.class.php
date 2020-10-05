@@ -187,7 +187,7 @@ class XooNIpsOrmSessionHandler extends XooNIpsTableObjectHandler
         }
         if (!$ret) {
             if ($do_logout) {
-                $_SESSION = array();
+                $_SESSION = [];
                 session_destroy();
                 if ($myxoopsConfig['use_mysession'] && '' != $myxoopsConfig['session_name']) {
                     setcookie($myxoopsConfig['session_name'], '', time() - 3600, '/', '', 0);

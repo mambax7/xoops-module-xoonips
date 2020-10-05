@@ -39,10 +39,10 @@ class XooNIpsAction
 
     public function __construct()
     {
-        $this->_params = array();
+        $this->_params = [];
         $this->_response = new XooNIpsResponse();
         $this->_error = &$this->_response->getError();
-        $this->_view_params = array();
+        $this->_view_params = [];
         $this->_formdata = &xoonips_getutility('formdata');
     }
 

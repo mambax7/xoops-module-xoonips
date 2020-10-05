@@ -31,12 +31,12 @@ $title = _AM_XOONIPS_TITLE;
 
 // load menu
 require './menu.php';
-$menu = array();
+$menu = [];
 foreach ($adminmenu as $item) {
-    $menu[] = array(
+    $menu[] = [
         'label' => $item['title'],
         'url' => $xoonips_admin['mod_url'].'/'.$item['link'],
-    );
+    ];
 }
 
 // templates

@@ -35,18 +35,18 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 }
 
 // get requests
-$post_keys = array(
-    'proxy_host' => array('s', false, true),
-    'proxy_port' => array('i', false, true),
-    'proxy_user' => array('s', false, true),
-    'proxy_pass' => array('s', false, true),
-);
+$post_keys = [
+    'proxy_host' => ['s', false, true],
+    'proxy_port' => ['i', false, true],
+    'proxy_user' => ['s', false, true],
+    'proxy_pass' => ['s', false, true],
+];
 $post_vals = xoonips_admin_get_requests('post', $post_keys);
 
 // set config keys
-$config_keys = array();
+$config_keys = [];
 foreach ($post_keys as $key => $attributes) {
-    list($data_type, $is_array, $required) = $attributes;
+    [$data_type, $is_array, $required] = $attributes;
     $config_keys[$key] = $data_type;
 }
 

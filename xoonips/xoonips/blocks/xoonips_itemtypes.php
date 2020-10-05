@@ -52,8 +52,8 @@ function b_xoonips_itemtypes_show()
     require_once XOOPS_ROOT_PATH.'/modules/xoonips/include/lib.php';
 
     // get installed itemtypes
-    $block = array();
-    $block['explain'] = array();
+    $block = [];
+    $block['explain'] = [];
     $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
     $item_type_objs = &$item_type_handler->getObjectsSortByWeight();
     foreach ($item_type_objs as $item_type_obj) {

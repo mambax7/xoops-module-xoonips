@@ -31,23 +31,23 @@ $title = _AM_XOONIPS_MAINTENANCE_FILESEARCH_TITLE;
 $description = _AM_XOONIPS_MAINTENANCE_FILESEARCH_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 $textutil = &xoonips_getutility('text');
 
@@ -58,7 +58,7 @@ function filesearch_adddot($str)
 
 $admin_file_handler = &xoonips_gethandler('xoonips', 'admin_file');
 $modules = $admin_file_handler->getFileSearchPlugins();
-$plugins = array();
+$plugins = [];
 $evenodd = 'odd';
 foreach ($modules as $module) {
     $plugin['plugin'] = $textutil->html_special_chars($module['display_name']);

@@ -61,7 +61,7 @@ function getUserPosiList()
     $criteria->setSort('posi_order');
     $criteria->setOrder(ASC);
     $posi_objs = &$posi_handler->getObjects($criteria, false, 'posi_id, posi_title');
-    $ret = array();
+    $ret = [];
     foreach ($posi_objs as $posi_obj) {
         $posi_id = $posi_obj->getVar('posi_id', 's');
         $posi_title = $posi_obj->getVar('posi_title', 'e');
@@ -87,7 +87,7 @@ $myxoopsConfig = &xoonips_get_xoops_configs(XOOPS_CONF);
 $myxoopsConfigUser = &xoonips_get_xoops_configs(XOOPS_CONF_USER);
 
 $xconfig_handler = &xoonips_getormhandler('xoonips', 'config');
-$xconfig_keys = array(
+$xconfig_keys = [
     'realname' => _US_REALNAME,
     'address' => _MD_XOONIPS_ACCOUNT_ADDRESS,
     'company_name' => _MD_XOONIPS_ACCOUNT_COMPANY_NAME,
@@ -96,8 +96,8 @@ $xconfig_keys = array(
     'country' => _MD_XOONIPS_ACCOUNT_COUNTRY,
     'zipcode' => _MD_XOONIPS_ACCOUNT_ZIPCODE,
     'fax' => _MD_XOONIPS_ACCOUNT_FAX,
-);
-$xconfig_vars = array();
+];
+$xconfig_vars = [];
 foreach ($xconfig_keys as $key => $label) {
     $xconfig_vars[$key] = $xconfig_handler->getValue('account_'.$key.'_optional');
 }
@@ -112,7 +112,7 @@ if (!is_object($u_obj) || !is_object($xu_obj)) {
     exit();
 }
 
-$errors = array();
+$errors = [];
 
 if ('saveuser' == $op) {
     if (!$xoopsGTicket->check(true, 'saveuser', false)) {
@@ -120,39 +120,39 @@ if ('saveuser' == $op) {
         exit();
     }
 
-    $request_vars = array(
+    $request_vars = [
         // xoops user information
-        'realname' => array('s', true),
-        'email' => array('s', false),
-        'url' => array('s', true),
-        'user_sig' => array('s', true),
-        'user_viewemail' => array('i', false),
-        'password' => array('s', true),
-        'vpass' => array('s', true),
-        'attachsig' => array('i', false),
-        'timezone_offset' => array('f', true),
-        'umode' => array('s', true),
-        'uorder' => array('i', true),
-        'notify_method' => array('i', true),
-        'notify_mode' => array('i', true),
-        'user_intrest' => array('s', true),
-        'user_mailok' => array('i', true),
+        'realname' => ['s', true],
+        'email' => ['s', false],
+        'url' => ['s', true],
+        'user_sig' => ['s', true],
+        'user_viewemail' => ['i', false],
+        'password' => ['s', true],
+        'vpass' => ['s', true],
+        'attachsig' => ['i', false],
+        'timezone_offset' => ['f', true],
+        'umode' => ['s', true],
+        'uorder' => ['i', true],
+        'notify_method' => ['i', true],
+        'notify_mode' => ['i', true],
+        'user_intrest' => ['s', true],
+        'user_mailok' => ['i', true],
         // xoonips user information
-        'address' => array('s', true),
-        'company_name' => array('s', true),
-        'division' => array('s', true),
-        'tel' => array('s', true),
-        'country' => array('s', true),
-        'zipcode' => array('s', true),
-        'fax' => array('s', true),
-        'notice_mail' => array('i', true),
-        'posi' => array('i', true),
-        'appeal' => array('s', true),
+        'address' => ['s', true],
+        'company_name' => ['s', true],
+        'division' => ['s', true],
+        'tel' => ['s', true],
+        'country' => ['s', true],
+        'zipcode' => ['s', true],
+        'fax' => ['s', true],
+        'notice_mail' => ['i', true],
+        'posi' => ['i', true],
+        'appeal' => ['s', true],
         // others
-        'usecookie' => array('i', false),
-    );
+        'usecookie' => ['i', false],
+    ];
     foreach ($request_vars as $key => $meta) {
-        list($type, $is_required) = $meta;
+        [$type, $is_required] = $meta;
         $$key = $formdata->getValue('post', $key, $type, $is_required);
     }
 
@@ -173,7 +173,7 @@ if ('saveuser' == $op) {
 
     // acquire required flags of XooNIps user information
     $val = '';
-    $required = array();
+    $required = [];
     foreach ($xconfig_keys as $key => $label) {
         if ('on' != $xconfig_vars[$key] && '' == ${$key}) {
             $errors[] = sprintf(_MD_XOONIPS_ACCOUNT_MUST_BE_FILLED_IN, $label);
@@ -255,7 +255,7 @@ if ('editprofile' == $op) {
     require_once XOOPS_ROOT_PATH.'/include/notification_constants.php';
 
     // required mark, and required flag
-    $required = array();
+    $required = [];
     foreach ($xconfig_keys as $key => $label) {
         if ('on' != $xconfig_vars[$key]) {
             $required[$key]['mark'] = _MD_XOONIPS_ACCOUNT_REQUIRED_MARK;
@@ -396,22 +396,22 @@ if ('editprofile' == $op) {
 
     // umode
     $umode_select = new XoopsFormSelect(_US_CDISPLAYMODE, 'umode', $u_obj->getVar('umode', 'e'));
-    $umode_select->addOptionArray(array('nest' => _NESTED, 'flat' => _FLAT, 'thread' => _THREADED));
+    $umode_select->addOptionArray(['nest' => _NESTED, 'flat' => _FLAT, 'thread' => _THREADED]);
     $form->addElement($umode_select);
 
     // uorder
     $uorder_select = new XoopsFormSelect(_US_CSORTORDER, 'uorder', $u_obj->getVar('uorder', 'e'));
-    $uorder_select->addOptionArray(array(XOOPS_COMMENT_OLD1ST => _OLDESTFIRST, XOOPS_COMMENT_NEW1ST => _NEWESTFIRST));
+    $uorder_select->addOptionArray([XOOPS_COMMENT_OLD1ST => _OLDESTFIRST, XOOPS_COMMENT_NEW1ST => _NEWESTFIRST]);
     $form->addElement($uorder_select);
 
     // notify method
     $notify_method_select = new XoopsFormSelect(_NOT_NOTIFYMETHOD, 'notify_method', $u_obj->getVar('notify_method', 'e'));
-    $notify_method_select->addOptionArray(array(XOOPS_NOTIFICATION_METHOD_DISABLE => _NOT_METHOD_DISABLE, XOOPS_NOTIFICATION_METHOD_PM => _NOT_METHOD_PM, XOOPS_NOTIFICATION_METHOD_EMAIL => _NOT_METHOD_EMAIL));
+    $notify_method_select->addOptionArray([XOOPS_NOTIFICATION_METHOD_DISABLE => _NOT_METHOD_DISABLE, XOOPS_NOTIFICATION_METHOD_PM => _NOT_METHOD_PM, XOOPS_NOTIFICATION_METHOD_EMAIL => _NOT_METHOD_EMAIL]);
     $form->addElement($notify_method_select);
 
     // notify mode
     $notify_mode_select = new XoopsFormSelect(_NOT_NOTIFYMODE, 'notify_mode', $u_obj->getVar('notify_mode', 'e'));
-    $notify_mode_select->addOptionArray(array(XOOPS_NOTIFICATION_MODE_SENDALWAYS => _NOT_MODE_SENDALWAYS, XOOPS_NOTIFICATION_MODE_SENDONCETHENDELETE => _NOT_MODE_SENDONCE, XOOPS_NOTIFICATION_MODE_SENDONCETHENWAIT => _NOT_MODE_SENDONCEPERLOGIN));
+    $notify_mode_select->addOptionArray([XOOPS_NOTIFICATION_MODE_SENDALWAYS => _NOT_MODE_SENDALWAYS, XOOPS_NOTIFICATION_MODE_SENDONCETHENDELETE => _NOT_MODE_SENDONCE, XOOPS_NOTIFICATION_MODE_SENDONCETHENWAIT => _NOT_MODE_SENDONCEPERLOGIN]);
     $form->addElement($notify_mode_select);
 
     // uid
@@ -482,8 +482,8 @@ if ('avatarupload' == $op) {
     }
     if (1 == $myxoopsConfigUser['avatar_allow_upload'] && $u_obj->getVar('posts', 's') >= $myxoopsConfigUser['avatar_minposts']) {
         require_once XOOPS_ROOT_PATH.'/class/uploader.php';
-        $uploader = new XoopsMediaUploader(XOOPS_UPLOAD_PATH, array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png'), $myxoopsConfigUser['avatar_maxsize'], $myxoopsConfigUser['avatar_width'], $myxoopsConfigUser['avatar_height']);
-        $uploader->setAllowedExtensions(array('gif', 'jpeg', 'jpg', 'png'));
+        $uploader = new XoopsMediaUploader(XOOPS_UPLOAD_PATH, ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png'], $myxoopsConfigUser['avatar_maxsize'], $myxoopsConfigUser['avatar_width'], $myxoopsConfigUser['avatar_height']);
+        $uploader->setAllowedExtensions(['gif', 'jpeg', 'jpg', 'png']);
         $xoops_upload_file = $formdata->getValueArray('post', 'xoops_upload_file', 's', true);
         if ($uploader->fetchMedia($xoops_upload_file[0])) {
             $uploader->setPrefix('cavt');

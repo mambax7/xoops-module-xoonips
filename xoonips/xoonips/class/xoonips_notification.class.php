@@ -38,7 +38,7 @@ class XooNIpsNotificationHandler extends XoopsNotificationHandler
         parent::__construct($db);
     }
 
-    public function triggerEvent2($category, $item_id, $event, $subject, $template_dir, $template, $extra_tags = array(), $user_list = array(), $module_id = null, $omit_user_id = null)
+    public function triggerEvent2($category, $item_id, $event, $subject, $template_dir, $template, $extra_tags = [], $user_list = [], $module_id = null, $omit_user_id = null)
     {
         if (!isset($module_id)) {
             global $xoopsModule;
@@ -94,7 +94,7 @@ class XooNIpsNotificationHandler extends XoopsNotificationHandler
         // Add some tag substitutions here
 
         $not_config = $module->getInfo('notification');
-        $tags = array();
+        $tags = [];
         if (!empty($not_config)) {
             if (!empty($not_config['tags_file'])) {
                 $tags_file = XOOPS_ROOT_PATH.'/modules/'

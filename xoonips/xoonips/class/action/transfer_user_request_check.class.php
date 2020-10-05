@@ -92,9 +92,9 @@ class XooNIpsActionTransferUserRequestCheck extends XooNIpsActionTransfer
     public function get_child_item_ids_to_transfer($from_uid, $item_id_to_transfer)
     {
         $items = xoonips_transfer_get_transferrable_item_information($from_uid, $item_id_to_transfer);
-        $result = array();
+        $result = [];
         foreach ($items as $item) {
-            $result[$item['item_id']] = array();
+            $result[$item['item_id']] = [];
             foreach ($item['child_items'] as $child_item) {
                 $result[$item['item_id']][] = $child_item['item_id'];
             }

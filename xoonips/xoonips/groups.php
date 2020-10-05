@@ -34,15 +34,15 @@ if ($uid == UID_GUEST) {
     exit();
 }
 
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'name' => _MD_XOONIPS_BREADCRUMBS_USER,
-    ),
-    array(
+    ],
+    [
         'name' => _MD_XOONIPS_TITLE_GROUP_LIST,
         'url' => 'groups.php',
-    ),
-);
+    ],
+];
 
 $xgroup_handler = &xoonips_gethandler('xoonips', 'group');
 $gids = $xgroup_handler->getGroupIds();

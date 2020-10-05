@@ -123,7 +123,7 @@ class XooNIpsGroupHandler
             $criteria = new CriteriaCompo(new Criteria('gid', GID_DEFAULT, '!='));
             $xg_objs = &$this->_xg_handler->getObjects($criteria, false, 'gid');
         }
-        $gids = array();
+        $gids = [];
         foreach ($xg_objs as $xg_obj) {
             $gids[] = $xg_obj->get('gid');
         }
@@ -149,7 +149,7 @@ class XooNIpsGroupHandler
         $criteria->setSort('u.uname');
         $criteria->setOrder('ASC');
         $xgl_objs = &$this->_xgl_handler->getObjects($criteria, false, 'u.uid', false, $join);
-        $uids = array();
+        $uids = [];
         foreach ($xgl_objs as $xgl_obj) {
             $uids[] = $xgl_obj->get('uid');
         }
@@ -193,7 +193,7 @@ class XooNIpsGroupHandler
         }
         $join = new XooNIpsJoinCriteria('xoonips_groups', 'gid', 'gid', 'INNER', 'xg');
         $xgl_objs = &$this->_xgl_handler->getObjects($criteria, false, 'xg.group_index_id AS gxid', false, $join);
-        $gxids = array();
+        $gxids = [];
         foreach ($xgl_objs as $xgl_obj) {
             $gxids[] = $xgl_obj->getExtraVar('gxid');
         }
@@ -219,7 +219,7 @@ class XooNIpsGroupHandler
             $criteria->add(new Criteria('uid', $uid, '=', 'ib'));
         }
         $res = &$index_item_link_handler->open($criteria, 'ib.item_id', true, $join);
-        $iids = array();
+        $iids = [];
         while ($xil_obj = &$index_item_link_handler->getNext($res)) {
             $iids[] = $xil_obj->get('item_id');
         }

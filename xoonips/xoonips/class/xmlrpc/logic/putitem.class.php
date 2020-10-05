@@ -55,7 +55,7 @@ class XooNIpsXmlRpcLogicPutItem extends XooNIpsXmlRpcLogic
         }
 
         $params = &$request->getParams();
-        $vars = array();
+        $vars = [];
         if (count($params) < 3) {
             $response->setResult(false);
             $error = &$response->getError();
@@ -89,7 +89,7 @@ class XooNIpsXmlRpcLogicPutItem extends XooNIpsXmlRpcLogic
         $factory = &XooNIpsXmlRpcTransformCompoFactory::getInstance();
         $trans = &$factory->create($itemtype->get('name'));
         // check that all required fields is filled
-        $missing = array();
+        $missing = [];
         if (!$trans->isFilledRequired($params[1], $missing)) {
             $response->setResult(false);
             $err = &$response->getError();
@@ -100,7 +100,7 @@ class XooNIpsXmlRpcLogicPutItem extends XooNIpsXmlRpcLogic
             return false;
         }
         // check mulitple of each variable
-        $fields = array();
+        $fields = [];
         if (!$trans->checkMultipleFields($params[1], $fields)) {
             $response->setResult(false);
             $err = &$response->getError();
@@ -126,7 +126,7 @@ class XooNIpsXmlRpcLogicPutItem extends XooNIpsXmlRpcLogic
         $factory = &XooNIpsXmlRpcTransformFactory::getInstance();
         $trans = &$factory->create('xoonips', 'file');
         if (is_array($params[2])) {
-            $vars[2] = array();
+            $vars[2] = [];
             foreach ($params[2] as $p) {
                 $fileobj = $trans->getObject($p);
                 if (!$fileobj) {

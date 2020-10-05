@@ -209,12 +209,12 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
     public function getPerm($item_id, $uid, $operation)
     {
         if (!in_array(
-            $operation, array(
+            $operation, [
             'read',
             'write',
             'delete',
             'export',
-            )
+                      ]
         )
         ) {
             return false; // bad operation
@@ -368,7 +368,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
     public function search($query, $limit, $offset, $uid)
     {
         if (!$this->iteminfo) {
-            return array();
+            return [];
         }
 
         $modulename = $this->iteminfo['ormcompo']['module'];
@@ -384,7 +384,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
         $member_handler       = xoops_getHandler('member');
         $GLOBALS['xoopsUser'] = $member_handler->getUser($uid);
         // search
-        $item_ids = array();
+        $item_ids = [];
         if (xnpSearchExec('quicksearch', $query, $modulename, false, $dummy, $dummy, $dummy, $search_cache_id, false, 'item_metadata')) {
             $search_cache_item_handler = &xoonips_getormhandler('xoonips', 'search_cache_item');
             $criteria = new Criteria('search_cache_id', $search_cache_id);
@@ -450,15 +450,15 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
     {
         if (!in_array(
             $type,
-            array(
+            [
                 XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL,
                 XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST,
                 XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL,
                 XOONIPS_TEMPLATE_TYPE_ITEM_LIST,
-            )
+            ]
         )
         ) {
-            return array();
+            return [];
         }
         $item = &$this->get($item_id);
 
@@ -482,23 +482,23 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
     {
         if (!in_array(
             $type,
-            array(
+            [
                 XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_DETAIL,
                 XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST,
                 XOONIPS_TEMPLATE_TYPE_ITEM_DETAIL,
                 XOONIPS_TEMPLATE_TYPE_ITEM_LIST,
-            )
+            ]
         )
         ) {
-            return array();
+            return [];
         }
         $textutil = &xoonips_getutility('text');
         $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
 
         $basic = &$item->getVar('basic');
         $item_id = $basic->get('item_id');
-        $result = array(
-            'basic' => array(
+        $result = [
+            'basic' => [
                 'item_id' => $basic->getVar('item_id', 's'),
                 'description' => $basic->getVar('description', 's'),
                 'doi' => $basic->getVar('doi', 's'),
@@ -507,14 +507,16 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
                 'publication_year' => $this->get_year_template_var($basic->get('publication_year'), $basic->get('publication_month'), $basic->get('publication_mday')),
                 'publication_month' => $this->get_month_template_var($basic->get('publication_year'), $basic->get('publication_month'), $basic->get('publication_mday')),
                 'publication_mday' => $this->get_mday_template_var($basic->get('publication_year'), $basic->get('publication_month'), $basic->get('publication_mday')),
-                'lang' => $this->get_lang_label($basic->get('lang')), ),
-            'contributor' => array(),
-            'item_type' => array(),
-            'titles' => array(),
-            'keywords' => array(),
-            'changelogs' => array(),
-            'indexes' => array(),
-            'related_tos' => array(), );
+                'lang' => $this->get_lang_label($basic->get('lang')),
+            ],
+            'contributor' => [],
+            'item_type' => [],
+            'titles' => [],
+            'keywords' => [],
+            'changelogs' => [],
+            'indexes' => [],
+            'related_tos' => [],
+        ];
 
         $user_handler = &xoonips_getormhandler('xoonips', 'xoops_users');
         $user = &$user_handler->get($basic->get('uid'));
@@ -530,18 +532,20 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
         $result['item_type']['display_name'] = $item_type->getVar('display_name', 's');
 
         foreach ($item->getVar('titles') as $title) {
-            $result['titles'][] = array('title' => $title->getVar('title', 's'));
+            $result['titles'][] = ['title' => $title->getVar('title', 's')];
         }
 
         foreach ($item->getVar('keywords') as $keyword) {
-            $result['keywords'][] = array('keyword' => $keyword->getVar('keyword', 's'));
+            $result['keywords'][] = ['keyword' => $keyword->getVar('keyword', 's')];
         }
 
         $changelogs = $item->getVar('changelogs');
-        usort($changelogs, array('XooNIpsItemInfoCompoHandler', 'usort_desc_by_log_date'));
+        usort($changelogs, ['XooNIpsItemInfoCompoHandler', 'usort_desc_by_log_date']);
         foreach ($changelogs as $changelog) {
-            $result['changelogs'][] = array('log_date' => $changelog->getVar('log_date', 's'),
-                                            'log' => $changelog->getVar('log', 's'), );
+            $result['changelogs'][] = [
+                'log_date' => $changelog->getVar('log_date', 's'),
+                'log'      => $changelog->getVar('log', 's'),
+            ];
         }
 
         // get indexes only not item listing for loading performance improvement
@@ -550,9 +554,9 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
             $xoonips_user = &$xoonips_user_handler->get($basic->get('uid'));
             $private_index_id = $xoonips_user->get('private_index_id');
             foreach ($item->getVar('indexes') as $link) {
-                $result['indexes'][] = array(
+                $result['indexes'][] = [
                     'path' => $this->get_index_path_by_index_id($link->get('index_id'), $private_index_id, 's'),
-                  );
+                ];
             }
         }
 
@@ -571,12 +575,13 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
                 } // ignore index id
                 $item_compo_handler = &xoonips_getormcompohandler($related_item_type->getVar('name', 's'), 'item');
                 if ($item_compo_handler->getPerm($item_id, $uid, 'read')) {
-                    $result['related_tos'][] = array(
+                    $result['related_tos'][] = [
                         'filename' => 'db:'.$item_compo_handler->getTemplateFileName(XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST),
                         'var' => $item_compo_handler->getTemplateVar(
                             XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST,
                             $related_basic->get('item_id'), $uid
-                        ), );
+                        ),
+                    ];
                 }
             }
         }
@@ -608,7 +613,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
 
     public function array_combine($keys, $values)
     {
-        $result = array();
+        $result = [];
         reset($keys);
         reset($values);
         while (current($keys) && current($values)) {
@@ -655,7 +660,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
      */
     public function get_date_template_var($year, $month, $mday)
     {
-        $result = array('year' => '', 'month' => '', 'mday' => '');
+        $result = ['year' => '', 'month' => '', 'mday' => ''];
         $int_year = intval($year);
         $int_month = intval($month);
         $int_mday = intval($mday);
@@ -713,7 +718,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
 
         $file_type = &$file_type_handler->get($file->get('file_type_id'));
 
-        return array(
+        return [
             'file_id' => $file->getVar('file_id', 's'),
             'file_name' => $file->getVar('original_file_name', 's'),
             'mime_type' => $file->getVar('mime_type', 's'),
@@ -721,7 +726,8 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
             'last_update_date' => $file->get('timestamp'),
             'download_count' => $file->get('download_count'),
             'item_creation_date' => $basic->get('creation_date'),
-            'total_download_count' => $file_handler->getTotalDownloadCount($file->get('item_id'), $file_type->get('name')), );
+            'total_download_count' => $file_handler->getTotalDownloadCount($file->get('item_id'), $file_type->get('name')),
+        ];
     }
 
     /**
@@ -733,11 +739,11 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
      */
     public function getPreviewTemplateVar($preview)
     {
-        return array(
+        return [
             'thumbnail_url' => XOOPS_URL.'/modules/xoonips/image.php?file_id='.$preview->get('file_id').'&amp;thumbnail=1',
             'image_url' => XOOPS_URL.'/modules/xoonips/image.php?file_id='.$preview->get('file_id'),
             'caption' => $preview->getVar('caption', 's'),
-        );
+        ];
     }
 
     /**
@@ -751,7 +757,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
      */
     public function getParentItemIds($item_id)
     {
-        $result = array();
+        $result = [];
         $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
         $item_types = &$item_type_handler->getObjects(new Criteria('item_type_id', ITID_INDEX, '<>'));
         foreach ($item_types as $item_type) {
@@ -771,7 +777,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
      */
     public function getItemTypeSpecificParentItemIds($item_id)
     {
-        return array();
+        return [];
     }
 
     /**
@@ -896,11 +902,11 @@ class XooNIpsItemCompo extends XooNIpsRelatedObject
         // basic
         $basic_handler = &xoonips_getormhandler('xoonips', 'item_basic');
         $this->initVar('basic', $basic_handler->create(), true);
-        $this->initVar('titles', $titles = array(), true);
-        $this->initVar('keywords', $keywrods = array());
-        $this->initVar('related_tos', $related_tos = array());
-        $this->initVar('changelogs', $changelogs = array());
-        $this->initVar('indexes', $indexes = array());
+        $this->initVar('titles', $titles = [], true);
+        $this->initVar('keywords', $keywrods = []);
+        $this->initVar('related_tos', $related_tos = []);
+        $this->initVar('changelogs', $changelogs = []);
+        $this->initVar('indexes', $indexes = []);
     }
 
     public function getItemAbstractText()
@@ -914,7 +920,7 @@ class XooNIpsItemCompo extends XooNIpsRelatedObject
         $user_handler = xoops_getHandler('user');
         $user         = $user_handler->get($basic->get('uid'));
 
-        $ret = array();
+        $ret = [];
         foreach ($titles as $title) {
             $ret[] = $title->get('title');
         }
@@ -954,7 +960,7 @@ class XooNIpsItemInfoCompo extends XooNIpsRelatedObject
             foreach ($this->iteminfo['orm'] as $orminfo) {
                 $handler = &xoonips_getormhandler($orminfo['module'], $orminfo['name']);
                 if (isset($orminfo['multiple']) ? $orminfo['multiple'] : false) {
-                    $ary = array();
+                    $ary = [];
                     $this->initVar($orminfo['field'], $ary, isset($orminfo['required']) ? $orminfo['required'] : false);
                     unset($ary);
                 } else {
@@ -979,6 +985,6 @@ class XooNIpsItemInfoCompo extends XooNIpsRelatedObject
      */
     public function getChildItemIds()
     {
-        return array();
+        return [];
     }
 }

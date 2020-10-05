@@ -65,7 +65,7 @@ class XooNIpsViewTransfer extends XooNIpsView
      */
     public function concatenate_titles($titles, $delimiter = '/')
     {
-        $result = array();
+        $result = [];
         foreach ($titles as $t) {
             $result[] = $t->getVar('title', 's');
         }

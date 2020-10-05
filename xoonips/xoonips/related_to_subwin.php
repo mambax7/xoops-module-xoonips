@@ -56,7 +56,7 @@ $block_handler  = xoops_getHandler('block');
 $xoopsModule = $module_handler->getByDirname('xoonips');
 $mod_blocks  = $block_handler->getByModule($xoopsModule->getVar('mid'));
 
-$blocks = array();
+$blocks = [];
 //copy only necessary block from mod_block to blocks.
 foreach ($mod_blocks as $b) {
     if ($b->getVar('mid') == $xoopsModule->getVar('mid')) {
@@ -97,8 +97,10 @@ $tpl = new XoopsTpl();
 $bl = $blocks['b_xoonips_quick_search_show']->buildBlock();
 $bl['submit_url'] = XOOPS_URL.'/modules/xoonips/related_to_subwin.php';
 $bl['advanced_search_enable'] = false;
-$bl['search_itemtypes'] = array('all' => _MD_XOONIPS_SEARCH_ALL,
-                                 'basic' => _MD_XOONIPS_SEARCH_TITLE_AND_KEYWORD, );
+$bl['search_itemtypes'] = [
+    'all'   => _MD_XOONIPS_SEARCH_ALL,
+    'basic' => _MD_XOONIPS_SEARCH_TITLE_AND_KEYWORD,
+];
 $itemtype_handler = &xoonips_getormhandler('xoonips', 'item_type');
 foreach ($itemtype_handler->getObjects(new Criteria('item_type_id', ITID_INDEX, '!=')) as $itemtype) {
     if (ITID_INDEX != $itemtype->getVar('item_type_id', 'n')) {

@@ -66,11 +66,11 @@ function userCheck($uname, $email, $pass, $vpass)
         $stop .= _US_EMAILNOSPACES.'<br />';
     }
     $uname = xoops_trim($uname);
-    $restrictions = array(
+    $restrictions = [
         0 => '/[^a-zA-Z0-9\_\-]/', // strict
         1 => '/[^a-zA-Z0-9\_\-\<\>\,\.\$\%\#\@\!\\\'\"]/', // medium
         2 => '/[\000-\040]/', // loose
-    );
+    ];
     $restriction = $restrictions[$myxoopsConfigUser['uname_test_level']];
     if (empty($uname) || preg_match($restriction, $uname)) {
         $stop .= _US_INVALIDNICKNAME.'<br />';
@@ -116,33 +116,33 @@ function userCheck($uname, $email, $pass, $vpass)
 function userCheckXooNIps($realname, $address, $company_name, $division, $tel, $country, $zipcode, $fax, $notice_mail)
 {
     global $required;
-    $errors = array();
+    $errors = [];
     // acquire required flags of XooNIps user information
-    $check_fields = array(
+    $check_fields = [
         // 'post key' => array( 'label', maxlength, 'error message' ),
-        'realname' => array(_US_REALNAME, null, null),
-        'address' => array(_MD_XOONIPS_ACCOUNT_ADDRESS, 255, _MD_XOONIPS_ACCOUNT_REG_TOO_LONG_ADDRESS),
-        'company_name' => array(_MD_XOONIPS_ACCOUNT_COMPANY_NAME, 255, _MD_XOONIPS_ACCOUNT_REG_TOO_LONG_COMPANY_NAME),
-        'division' => array(_MD_XOONIPS_ACCOUNT_DIVISION, 255, _MD_XOONIPS_ACCOUNT_REG_TOO_LONG_DIVISION),
-        'tel' => array(_MD_XOONIPS_ACCOUNT_TEL, 32, _MD_XOONIPS_ACCOUNT_REG_TOO_LONG_TEL),
-        'country' => array(_MD_XOONIPS_ACCOUNT_COUNTRY, 255, _MD_XOONIPS_ACCOUNT_REG_TOO_LONG_COUNTRY),
-        'zipcode' => array(_MD_XOONIPS_ACCOUNT_ZIPCODE, 32, _MD_XOONIPS_ACCOUNT_REG_TOO_LONG_ZIPCODE),
-        'fax' => array(_MD_XOONIPS_ACCOUNT_FAX, 32, _MD_XOONIPS_ACCOUNT_REG_TOO_LONG_FAX),
-    );
+        'realname' => [_US_REALNAME, null, null],
+        'address' => [_MD_XOONIPS_ACCOUNT_ADDRESS, 255, _MD_XOONIPS_ACCOUNT_REG_TOO_LONG_ADDRESS],
+        'company_name' => [_MD_XOONIPS_ACCOUNT_COMPANY_NAME, 255, _MD_XOONIPS_ACCOUNT_REG_TOO_LONG_COMPANY_NAME],
+        'division' => [_MD_XOONIPS_ACCOUNT_DIVISION, 255, _MD_XOONIPS_ACCOUNT_REG_TOO_LONG_DIVISION],
+        'tel' => [_MD_XOONIPS_ACCOUNT_TEL, 32, _MD_XOONIPS_ACCOUNT_REG_TOO_LONG_TEL],
+        'country' => [_MD_XOONIPS_ACCOUNT_COUNTRY, 255, _MD_XOONIPS_ACCOUNT_REG_TOO_LONG_COUNTRY],
+        'zipcode' => [_MD_XOONIPS_ACCOUNT_ZIPCODE, 32, _MD_XOONIPS_ACCOUNT_REG_TOO_LONG_ZIPCODE],
+        'fax' => [_MD_XOONIPS_ACCOUNT_FAX, 32, _MD_XOONIPS_ACCOUNT_REG_TOO_LONG_FAX],
+    ];
     // -- notice mail
     if ($notice_mail < 0) {
         $errors[] = _MD_XOONIPS_ACCOUNT_NOTICE_MAIL_TOO_LITTLE;
     }
     // -- requirements
     foreach ($check_fields as $key => $info) {
-        list($label, $maxlength, $errmes) = $info;
+        [$label, $maxlength, $errmes] = $info;
         if ($required[$key]['flag'] && ${$key} == '') {
             $errors[] = sprintf(_MD_XOONIPS_ACCOUNT_MUST_BE_FILLED_IN, $label);
         }
     }
     // -- field length
     foreach ($check_fields as $key => $info) {
-        list($label, $maxlength, $errmes) = $info;
+        [$label, $maxlength, $errmes] = $info;
         if (!is_null($maxlength) && strlen(${$key}) > $maxlength) {
             $errors[] = $errmes;
         }
@@ -157,29 +157,29 @@ function userCheckXooNIps($realname, $address, $company_name, $division, $tel, $
 
 $formdata = &xoonips_getutility('formdata');
 $op = $formdata->getValue('post', 'op', 'n', false, 'register');
-xoonips_validate_request(in_array($op, array('register', 'newuser', 'finish')));
+xoonips_validate_request(in_array($op, ['register', 'newuser', 'finish']));
 
-$post_keys = array(
-    'uname' => array('type' => 's', 'default' => ''),
-    'email' => array('type' => 's', 'default' => ''),
-    'url' => array('type' => 's', 'default' => ''),
-    'pass' => array('type' => 'n', 'default' => ''),
-    'vpass' => array('type' => 'n', 'default' => ''),
-    'timezone_offset' => array('type' => 'f', 'default' => $myxoopsConfig['default_TZ']),
-    'user_viewemail' => array('type' => 'b', 'default' => 0),
-    'user_mailok' => array('type' => 'b', 'default' => 0),
-    'agree_disc' => array('type' => 'b', 'default' => 0),
+$post_keys       = [
+    'uname'           => ['type' => 's', 'default' => ''],
+    'email'           => ['type' => 's', 'default' => ''],
+    'url'             => ['type' => 's', 'default' => ''],
+    'pass'            => ['type' => 'n', 'default' => ''],
+    'vpass'           => ['type' => 'n', 'default' => ''],
+    'timezone_offset' => ['type' => 'f', 'default' => $myxoopsConfig['default_TZ']],
+    'user_viewemail'  => ['type' => 'b', 'default' => 0],
+    'user_mailok'     => ['type' => 'b', 'default' => 0],
+    'agree_disc'      => ['type' => 'b', 'default' => 0],
     // for xoonips user information
-    'realname' => array('type' => 's', 'default' => ''),
-    'address' => array('type' => 's', 'default' => ''),
-    'company_name' => array('type' => 's', 'default' => ''),
-    'division' => array('type' => 's', 'default' => ''),
-    'tel' => array('type' => 's', 'default' => ''),
-    'country' => array('type' => 's', 'default' => ''),
-    'zipcode' => array('type' => 's', 'default' => ''),
-    'fax' => array('type' => 's', 'default' => ''),
-    'notice_mail' => array('type' => 'i', 'default' => 0),
-);
+    'realname'        => ['type' => 's', 'default' => ''],
+    'address'         => ['type' => 's', 'default' => ''],
+    'company_name'    => ['type' => 's', 'default' => ''],
+    'division'        => ['type' => 's', 'default' => ''],
+    'tel'             => ['type' => 's', 'default' => ''],
+    'country'         => ['type' => 's', 'default' => ''],
+    'zipcode'         => ['type' => 's', 'default' => ''],
+    'fax'             => ['type' => 's', 'default' => ''],
+    'notice_mail'     => ['type' => 'i', 'default' => 0],
+];
 foreach ($post_keys as $key => $meta) {
     $val = $formdata->getValue('post', $key, $meta['type'], false, $meta['default']);
     $$key = $val;
@@ -188,13 +188,13 @@ foreach ($post_keys as $key => $meta) {
 // get and check xoonips configuration
 $certify_user = $xconfig_handler->getValue('certify_user');
 $is_certify_auto = ($certify_user == 'auto');
-$required = array();
-foreach (array('realname', 'address', 'division', 'tel', 'company_name', 'country', 'zipcode', 'fax') as $key) {
+$required        = [];
+foreach (['realname', 'address', 'division', 'tel', 'company_name', 'country', 'zipcode', 'fax'] as $key) {
     $optional = $xconfig_handler->getValue('account_'.$key.'_optional');
     if ($optional == 'on') {
-        $required[$key] = array('flag' => false, 'mark' => '');
+        $required[$key] = ['flag' => false, 'mark' => ''];
     } else {
-        $required[$key] = array('flag' => true, 'mark' => _MD_XOONIPS_ACCOUNT_REQUIRED_MARK);
+        $required[$key] = ['flag' => true, 'mark' => _MD_XOONIPS_ACCOUNT_REQUIRED_MARK];
     }
 }
 

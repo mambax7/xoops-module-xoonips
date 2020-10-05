@@ -109,13 +109,13 @@ class XooNIpsXmlRpcLogic
         $user = $user_handler->get($_SESSION['xoopsUserId']);
         $paths = $index_compo_handler->getIndexPathNames($index->get('index_id'), $user ? $user->get('private_index_id') : false);
 
-        return array(
+        return [
             'id' => $index->get('index_id'),
             'name' => $title,
             'parent' => $index->get('parent_index_id'),
             'open_level' => $open_level,
             'path' => '/'.implode('/', $paths),
-        );
+        ];
     }
 }
 class XooNIpsXmlRpcLogicFactory

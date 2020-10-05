@@ -191,7 +191,7 @@ function &xoonips_getormcompohandler($module, $name)
  */
 function &xoonips_getutility($name)
 {
-    static $instances = array();
+    static $instances = [];
     if (isset($instances[$name])) {
         return $instances[$name];
     }
@@ -220,7 +220,7 @@ function &xoonips_getutility($name)
  */
 function &xoonips_get_xoops_configs($category)
 {
-    static $cache_configs = array();
+    static $cache_configs = [];
     if (isset($cache_configs[$category])) {
         return $cache_configs[$category];
     }
@@ -246,7 +246,7 @@ function &xoonips_get_xoops_configs($category)
             $tmp = &$config_handler->getConfigsByDirname('user');
             $configs['usercookie'] = $tmp['usercookie'];
             // override duplicated configs in 'user' module
-            $keys = array('avatar_minposts', 'maxuname', 'sslloginlink', 'sslpost_name', 'use_ssl');
+            $keys = ['avatar_minposts', 'maxuname', 'sslloginlink', 'sslpost_name', 'use_ssl'];
             foreach ($keys as $key) {
                 $configs[$key] = $tmp[$key];
             }
@@ -286,7 +286,7 @@ function &xoonips_get_xoops_configs($category)
  */
 function xoonips_error_exit($code)
 {
-    static $status = array(
+    static $status = [
         400 => '400 Bad Request',
         401 => '401 Unauthorized',
         402 => '402 Payment Required',
@@ -311,7 +311,7 @@ function xoonips_error_exit($code)
         503 => '503 Service Unavailable',
         504 => '504 Gateway Time-out',
         505 => '505 HTTP Version Not Supported',
-    );
+    ];
     if (!isset($status[$code])) {
         $code = 500;
     }
@@ -432,7 +432,7 @@ function xoonips_get_server_charset()
  */
 function xoonips_get_conversion_map()
 {
-    return array(0, 0x10ffff, 0, 0x1fffff);
+    return [0, 0x10ffff, 0, 0x1fffff];
 }
 
 /**
@@ -443,7 +443,7 @@ function xoonips_get_conversion_map()
  */
 function xoonips_get_conversion_map_to_ascii()
 {
-    return array(0x80, 0x10ffff, 0, 0x1fffff);
+    return [0x80, 0x10ffff, 0, 0x1fffff];
 }
 
 /**
@@ -640,7 +640,7 @@ function xoonips_is_user_export_enabled()
 function xoonips_get_multi_field_array_from_post($module, $name)
 {
     $formdata = &xoonips_getutility('formdata');
-    $result = array();
+    $result = [];
 
     $field_handler = &xoonips_getormhandler($module, $name);
     $objs = &$formdata->getObjectArray('post', $field_handler->getTableName(), $field_handler, false);
@@ -668,7 +668,7 @@ function xoonips_is_multiple_field_too_long($ormObjects, $module, $name)
     $field_handler = &xoonips_getormhandler($module, $name);
     $lengths = xnpGetColumnLengths($field_handler->getTableName());
     foreach ($ormObjects as $orm) {
-        list($within, $without) = xnpTrimString($orm->get($name), $lengths[$name], _CHARSET);
+        [$within, $without] = xnpTrimString($orm->get($name), $lengths[$name], _CHARSET);
         if ($without) {
             return true;
         }
@@ -690,31 +690,31 @@ function xoonips_get_multiple_field_template_vars($ormObjects, $module, $name)
     $field_handler = &xoonips_getormhandler($module, $name);
     $lengths = xnpGetColumnLengths($field_handler->getTableName());
 
-    $vars = array(
+    $vars = [
         'table_name' => $field_handler->getTableName(),
-        'name' => array(
+        'name'       => [
             'primary_key' => $field_handler->getKeyName(),
-            'text' => $name,
-            'order' => $name.'_order',
-        ),
-        'objects' => array(),
-    );
+            'text'        => $name,
+            'order'       => $name.'_order',
+        ],
+        'objects'    => [],
+    ];
     foreach ($ormObjects as $orm) {
-        list($within, $without) = xnpTrimString($orm->getVar($name, 's'), $lengths[$name], _CHARSET);
-        $vars['objects'][] = array(
-            'primary_key' => array(
-                'name' => $field_handler->getKeyName(),
-                'value' => $orm->getVar($field_handler->getKeyName(), 's'), ),
-            'text' => array(
-                'name' => $name,
-                'within' => empty($within) ? '' : $within,
+        [$within, $without] = xnpTrimString($orm->getVar($name, 's'), $lengths[$name], _CHARSET);
+        $vars['objects'][] = [
+            'primary_key' => [
+                'name'  => $field_handler->getKeyName(),
+                'value' => $orm->getVar($field_handler->getKeyName(), 's'), ],
+            'text'        => [
+                'name'    => $name,
+                'within'  => empty($within) ? '' : $within,
                 'without' => empty($without) ? '' : $without,
-                'value' => $orm->getVar($name, 's'), ),
-            'order' => array(
-                'name' => "{$name}_order",
+                'value'   => $orm->getVar($name, 's'), ],
+            'order'       => [
+                'name'  => "{$name}_order",
                 'value' => $orm->get("{$name}_order"),
-            ),
-        );
+            ],
+        ];
     }
     $vars['num'] = count($vars['objects']);
 
@@ -729,10 +729,10 @@ function xoonips_get_multiple_field_template_vars($ormObjects, $module, $name)
  */
 function xoonips_get_orm_from_post($module, $name)
 {
-    $formdata = &xoonips_getutility('formdata');
-    $result = array();
+    $formdata      = &xoonips_getutility('formdata');
+    $result        = [];
     $field_handler = &xoonips_getormhandler($module, $name);
-    $objs = &$formdata->getObjectArray('post', $field_handler->getTableName(), $field_handler, false);
+    $objs          = &$formdata->getObjectArray('post', $field_handler->getTableName(), $field_handler, false);
 
     return $objs;
 }
@@ -750,9 +750,9 @@ function xoonips_is_same_objects(&$objs1, &$objs2)
     if (count($objs1) != count($objs2)) {
         return false;
     }
-    $sorted_objs1 = array();
-    $sorted_objs2 = array();
-    $matches = array();
+    $sorted_objs1 = [];
+    $sorted_objs2 = [];
+    $matches      = [];
     foreach ($objs1 as $num1 => $obj1) {
         $found = false;
         foreach ($objs2 as $num2 => $obj2) {
@@ -785,18 +785,18 @@ function xoonips_is_same_objects(&$objs1, &$objs2)
  */
 function xoonips_get_cc_license($cc_commercial_use, $cc_modification, $version, $region)
 {
-    static $cc_condition_map = array(
+    static $cc_condition_map = [
         '00' => 'BY-NC-ND',
         '01' => 'BY-NC-SA',
         '02' => 'BY-NC',
         '10' => 'BY-ND',
         '11' => 'BY-SA',
         '12' => 'BY',
-    );
-    static $cc_region_map = array(
-        'INTERNATIONAL' => array('40'),
-    );
-    static $cc_cache = array();
+    ];
+    static $cc_region_map = [
+        'INTERNATIONAL' => ['40'],
+    ];
+    static $cc_cache = [];
     $condtion = sprintf('%u%u', $cc_commercial_use, $cc_modification);
     $region = strtoupper($region);
     $version = sprintf('%u', $version * 10);

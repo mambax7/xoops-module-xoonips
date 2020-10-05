@@ -33,14 +33,14 @@
  * @li set/get result(success or failure) using get/setResult
  * @li set/get error information using get/setError
  * @li set/get result of logic using set/getSuccess
- * @li content of setError¡¢setSuccess is not defined here(depends each logics)
+ * @li content of setErrorï¿½ï¿½setSuccess is not defined here(depends each logics)
  */
 class XooNIpsXmlRpcResponse
 {
     /**
      * @protected
      */
-    public $vars = array();
+    public $vars = [];
 
     public function __construct()
     {

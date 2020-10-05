@@ -89,11 +89,11 @@ function xoonips_ranking_show($is_arrival)
     }
 
     // get configs
-    $config_names = array(
+    $config_names = [
         'num_rows',
         'visible',
         'order',
-    );
+    ];
     $new_str = $is_arrival ? 'new_' : '';
     foreach ($config_names as $name) {
         $config[$name] = $xconfig_handler->getValue('ranking_'.$new_str.$name);
@@ -117,12 +117,12 @@ function xoonips_ranking_show($is_arrival)
     $iperm_join->cascade(new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'tx'), 'txil', true);
     // - set ranking number label
     $rank_tmp = explode(',', _MB_XOONIPS_RANKING_RANK_STR);
-    $rank_str = array();
+    $rank_str = [];
     for ($i = 0; $i < $config['num_rows']; ++$i) {
         $rank_str[] = ($i + 1).$rank_tmp[min($i, count($rank_tmp) - 1)];
     }
 
-    $block['rankings'] = array();
+    $block['rankings'] = [];
     if ($is_arrival) {
         // new arrival block
         // ranking new item
@@ -139,7 +139,7 @@ function xoonips_ranking_show($is_arrival)
 
             $handler = &xoonips_getormhandler('xoonips', $table);
             $res = &$handler->open($criteria, $fields, false, $join);
-            $items = array();
+            $items = [];
             $i = 0;
             while ($obj = &$handler->getNext($res)) {
                 $item_id = $obj->getVar('item_id', 'n');
@@ -149,19 +149,19 @@ function xoonips_ranking_show($is_arrival)
                 $doi = $textutil->html_special_chars($obj->getExtraVar('doi'));
                 $id = ('' == $doi && XNP_CONFIG_DOI_FIELD_PARAM_NAME != '') ? 'item_id='.$item_id : XNP_CONFIG_DOI_FIELD_PARAM_NAME.'='.urlencode($doi);
                 $url = XOOPS_URL.'/modules/xoonips/detail.php?'.$id;
-                $items[] = array(
+                $items[] = [
                     'title' => $title,
                     'url' => $url,
                     'num' => $count,
                     'rank_str' => $rank_str[$i],
-                );
+                ];
                 ++$i;
             }
             $handler->close($res);
-            $block['rankings'][$config['order'][0]] = array(
+            $block['rankings'][$config['order'][0]] = [
                 'items' => $items,
                 'title' => $label,
-            );
+            ];
             unset($items);
         }
 
@@ -178,7 +178,7 @@ function xoonips_ranking_show($is_arrival)
 
             $handler = &xoonips_getormhandler('xoonips', $table);
             $res = &$handler->open($criteria, $fields, false, $join);
-            $items = array();
+            $items = [];
             $i = 0;
             while ($obj = &$handler->getNext($res)) {
                 $gid = $obj->getVar('gid', 'n');
@@ -186,19 +186,19 @@ function xoonips_ranking_show($is_arrival)
                 $title = $textutil->truncate($title, $maxlen, $etc);
                 $count = $textutil->html_special_chars($obj->getExtraVar('DATE_FORMAT(timestamp,\'%m/%d\')'));
                 $url = XOOPS_URL.'/modules/xoonips/groups.php';
-                $items[] = array(
+                $items[] = [
                     'title' => $title,
                     'url' => $url,
                     'num' => $count,
                     'rank_str' => $rank_str[$i],
-                );
+                ];
                 ++$i;
             }
             $handler->close($res);
-            $block['rankings'][$config['order'][1]] = array(
+            $block['rankings'][$config['order'][1]] = [
                 'items' => $items,
                 'title' => $label,
-            );
+            ];
             unset($items);
         }
     } else {
@@ -216,7 +216,7 @@ function xoonips_ranking_show($is_arrival)
             $join = $iperm_join;
             $handler = &xoonips_getormhandler('xoonips', $table);
             $res = &$handler->open($criteria, $fields, true, $join);
-            $items = array();
+            $items = [];
             $i = 0;
             while ($obj = &$handler->getNext($res)) {
                 $item_id = $obj->getVar('item_id', 'n');
@@ -226,19 +226,19 @@ function xoonips_ranking_show($is_arrival)
                 $doi = $textutil->html_special_chars($obj->getExtraVar('doi'));
                 $id = ('' == $doi && XNP_CONFIG_DOI_FIELD_PARAM_NAME != '') ? 'item_id='.$item_id : XNP_CONFIG_DOI_FIELD_PARAM_NAME.'='.urlencode($doi);
                 $url = XOOPS_URL.'/modules/xoonips/detail.php?'.$id;
-                $items[] = array(
+                $items[] = [
                     'title' => $title,
                     'url' => $url,
                     'num' => $count,
                     'rank_str' => $rank_str[$i],
-                );
+                ];
                 ++$i;
             }
             $handler->close($res);
-            $block['rankings'][$config['order'][0]] = array(
+            $block['rankings'][$config['order'][0]] = [
                 'items' => $items,
                 'title' => $label,
-            );
+            ];
             unset($items);
         }
 
@@ -255,7 +255,7 @@ function xoonips_ranking_show($is_arrival)
             $join = $iperm_join;
             $handler = &xoonips_getormhandler('xoonips', $table);
             $res = &$handler->open($criteria, $fields, true, $join);
-            $items = array();
+            $items = [];
             $i = 0;
             while ($obj = &$handler->getNext($res)) {
                 $item_id = $obj->getVar('item_id', 'n');
@@ -265,19 +265,19 @@ function xoonips_ranking_show($is_arrival)
                 $doi = $textutil->html_special_chars($obj->getExtraVar('doi'));
                 $id = ('' == $doi && XNP_CONFIG_DOI_FIELD_PARAM_NAME != '') ? 'item_id='.$item_id : XNP_CONFIG_DOI_FIELD_PARAM_NAME.'='.urlencode($doi);
                 $url = XOOPS_URL.'/modules/xoonips/detail.php?'.$id;
-                $items[] = array(
+                $items[] = [
                     'title' => $title,
                     'url' => $url,
                     'num' => $count,
                     'rank_str' => $rank_str[$i],
-                );
+                ];
                 ++$i;
             }
             $handler->close($res);
-            $block['rankings'][$config['order'][1]] = array(
+            $block['rankings'][$config['order'][1]] = [
                 'items' => $items,
                 'title' => $label,
-            );
+            ];
             unset($items);
         }
 
@@ -294,7 +294,7 @@ function xoonips_ranking_show($is_arrival)
             $join = new XooNIpsJoinCriteria('users', 'uid', 'uid', 'INNER', 'tu');
             $handler = &xoonips_getormhandler('xoonips', $table);
             $res = &$handler->open($criteria, $fields, true, $join);
-            $items = array();
+            $items = [];
             $i = 0;
             while ($obj = &$handler->getNext($res)) {
                 $uid = $obj->getVar('uid', 'n');
@@ -302,19 +302,19 @@ function xoonips_ranking_show($is_arrival)
                 $title = $textutil->truncate($title, $maxlen, $etc);
                 $count = intval($obj->getExtraVar('count'));
                 $url = XOOPS_URL.'/modules/xoonips/showusers.php?uid='.$uid;
-                $items[] = array(
+                $items[] = [
                     'title' => $title,
                     'url' => $url,
                     'num' => $count,
                     'rank_str' => $rank_str[$i],
-                );
+                ];
                 ++$i;
             }
             $handler->close($res);
-            $block['rankings'][$config['order'][2]] = array(
+            $block['rankings'][$config['order'][2]] = [
                 'items' => $items,
                 'title' => $label,
-            );
+            ];
             unset($items);
         }
 
@@ -331,7 +331,7 @@ function xoonips_ranking_show($is_arrival)
             $criteria->setOrder('DESC');
             $handler = &xoonips_getormhandler('xoonips', $table);
             $res = &$handler->open($criteria, $fields, true);
-            $items = array();
+            $items = [];
             $i = 0;
             while ($obj = &$handler->getNext($res)) {
                 $keyword = $obj->getVar('keyword', 'n');
@@ -344,19 +344,19 @@ function xoonips_ranking_show($is_arrival)
                 $title = $textutil->truncate($title, $maxlen, $etc);
                 $count = $obj->getVar('count', 'n');
                 $url = XOOPS_URL.'/modules/xoonips/itemselect.php?op=quicksearch&amp;search_itemtype=all&amp;keyword='.urlencode($keyword);
-                $items[] = array(
+                $items[] = [
                     'title' => $title,
                     'url' => $url,
                     'num' => $count,
                     'rank_str' => $rank_str[$i],
-                );
+                ];
                 ++$i;
             }
             $handler->close($res);
-            $block['rankings'][$config['order'][3]] = array(
+            $block['rankings'][$config['order'][3]] = [
                 'items' => $items,
                 'title' => $label,
-            );
+            ];
             unset($items);
         }
 
@@ -372,7 +372,7 @@ function xoonips_ranking_show($is_arrival)
             $join = new XooNIpsJoinCriteria('xoonips_groups', 'gid', 'gid', 'INNER', 'tg');
             $handler = &xoonips_getormhandler('xoonips', $table);
             $res = &$handler->open($criteria, $fields, false, $join);
-            $items = array();
+            $items = [];
             $i = 0;
             while ($obj = &$handler->getNext($res)) {
                 $gid = $obj->getVar('gid', 'n');
@@ -380,19 +380,19 @@ function xoonips_ranking_show($is_arrival)
                 $title = $textutil->truncate($title, $maxlen, $etc);
                 $count = $obj->getVar('count', 'n');
                 $url = XOOPS_URL.'/modules/xoonips/groups.php';
-                $items[] = array(
+                $items[] = [
                     'title' => $title,
                     'url' => $url,
                     'num' => $count,
                     'rank_str' => $rank_str[$i],
-                );
+                ];
                 ++$i;
             }
             $handler->close($res);
-            $block['rankings'][$config['order'][4]] = array(
+            $block['rankings'][$config['order'][4]] = [
                 'items' => $items,
                 'title' => $label,
-            );
+            ];
             unset($items);
         }
     }

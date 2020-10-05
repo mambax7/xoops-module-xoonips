@@ -28,7 +28,7 @@ require 'include/common.inc.php';
 
 $formdata = &xoonips_getutility('formdata');
 $type = $formdata->getValue('get', 'type', 's', false, 'rss');
-if (!in_array($type, array('rdf', 'rss', 'atom'))) {
+if (!in_array($type, ['rdf', 'rss', 'atom'])) {
     $type = 'rss';
 }
 
@@ -57,10 +57,10 @@ function _create_item_description($item_id)
     $criteria = new CriteriaCompo(new Criteria('certify_state', CERTIFIED));
     $criteria->add(new Criteria('item_id', $item_id));
     $link_objs = &$index_item_link_handler->getObjects($criteria);
-    $indexes = array();
+    $indexes = [];
     foreach ($link_objs as $link_obj) {
         $xid = $link_obj->getVar('index_id', 'n');
-        $titles = array();
+        $titles = [];
         while ($xid != IID_ROOT) {
             $idx_obj = &$index_handler->get($xid);
             $idx = $idx_obj->getVarArray('n');

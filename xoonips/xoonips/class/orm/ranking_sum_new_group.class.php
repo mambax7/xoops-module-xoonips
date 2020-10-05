@@ -38,7 +38,7 @@ class XooNIpsOrmRankingSumNewGroupHandler extends XooNIpsOrmRankingNewGroupHandl
     {
         parent::__construct($db);
         $this->__initHandler('XooNIpsOrmRankingNewGroup', 'xoonips_ranking_sum_new_group', 'gid', false);
-        $this->_set_columns(array('gid', 'timestamp'));
+        $this->_set_columns(['gid', 'timestamp']);
         $this->_set_sum_table();
     }
 }

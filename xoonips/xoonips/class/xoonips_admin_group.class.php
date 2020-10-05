@@ -185,7 +185,7 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
      */
     public function createGroup($name, $desc, $admin_uids, $max_item, $max_index, $max_size)
     {
-        if (in_array(strtolower($name), array('public', 'private', 'root'))) {
+        if (in_array(strtolower($name), ['public', 'private', 'root'])) {
             // doesn't accept system reserved name
             return false;
         }
@@ -250,7 +250,7 @@ class XooNIpsAdminGroupHandler extends XooNIpsGroupHandler
             return false;
         }
         // check status
-        if (in_array(strtolower($name), array('public', 'private', 'root'))) {
+        if (in_array(strtolower($name), ['public', 'private', 'root'])) {
             // doesn't accept system reserved name
             return false;
         }

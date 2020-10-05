@@ -224,10 +224,10 @@ class XooNIpsUtilityDownload extends XooNIpsUtility
      */
     public function _detect_browser_encoding()
     {
-        static $windows1252_map = array(
+        static $windows1252_map = [
         // English
         'en',
-        );
+        ];
         $encoding = 'ASCII';
         if (strstr($this->ua, 'Mac OS X')) {
             $encoding = 'UTF-8';
@@ -318,7 +318,7 @@ class XooNIpsUtilityDownload extends XooNIpsUtility
         }
         $text = mb_convert_encoding($text, 'UTF-8', $encoding);
         $text = $textutil->html_numeric_entities($text);
-        $text = mb_decode_numericentity($text, array(0, 0x10ffff, 0, 0x1fffff), 'UTF-8');
+        $text = mb_decode_numericentity($text, [0, 0x10ffff, 0, 0x1fffff], 'UTF-8');
 
         return $text;
     }

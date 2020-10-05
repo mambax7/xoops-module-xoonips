@@ -61,7 +61,7 @@ function _xnpal_getNewSortNumber($parentXID, &$sortNumber)
 
         return RES_DB_QUERY_ERROR;
     }
-    list($sortNumber) = $xoopsDB->fetchRow($result);
+    [$sortNumber] = $xoopsDB->fetchRow($result);
     $sortNumber = (int) $sortNumber;
     if (0 == (int) $sortNumber) { // NULL if parentXID is leaf node.
         $sortNumber = 1; // sort_number have to be more than 1, because 0 is reserved number.
@@ -133,7 +133,7 @@ function _xnpal_updateTitles($caller, $item_id, $titles)
     global $xoopsDB;
 
     if (!is_array($titles)) {
-        $titles = array($titles);
+        $titles = [$titles];
     }
 
     //1. remove titles
@@ -182,7 +182,7 @@ function _xnpal_updateKeywords($caller, $item_id, $keywords)
     global $xoopsDB;
 
     if (!is_array($keywords)) {
-        $keywords = array($keywords);
+        $keywords = [$keywords];
     }
 
     //1. remove keywords
@@ -245,17 +245,17 @@ function _xnpal_insertItemInternal($sid, $item, &$itemid, $direct)
         .' (item_type_id, description, doi, uid, creation_date, last_update_date, publication_year, publication_month, publication_mday, lang) VALUES ('
         .implode(
             ', ',
-            array(isset($item['item_type_id']) ? (int) $item['item_type_id'] : 0,
+            [isset($item['item_type_id']) ? (int)$item['item_type_id'] : 0,
                 "'".addslashes(isset($item['description']) ? $item['description'] : '')."'",
                 "'".addslashes(isset($item['doi']) ? $item['doi'] : '')."'",
                 $item['uid'],
-                ($direct ? $item['creation_date'] : 'UNIX_TIMESTAMP(NOW())'),
-                ($direct ? $item['last_update_date'] : 'UNIX_TIMESTAMP(NOW())'),
-                isset($item['publication_year']) ? (int) $item['publication_year'] : 0,
-                isset($item['publication_month']) ? (int) $item['publication_month'] : 0,
-                isset($item['publication_mday']) ? (int) $item['publication_mday'] : 0,
-            "'".addslashes(isset($item['lang']) ? $item['lang'] : '')."'", )
-        ).')';
+             ($direct ? $item['creation_date'] : 'UNIX_TIMESTAMP(NOW())'),
+             ($direct ? $item['last_update_date'] : 'UNIX_TIMESTAMP(NOW())'),
+             isset($item['publication_year']) ? (int) $item['publication_year'] : 0,
+             isset($item['publication_month']) ? (int) $item['publication_month'] : 0,
+             isset($item['publication_mday']) ? (int) $item['publication_mday'] : 0,
+            "'".addslashes(isset($item['lang']) ? $item['lang'] : '')."'", ]
+           ) . ')';
     $result = $xoopsDB->queryF($sql);
     if ($result) {
         // get inserted item id
@@ -263,7 +263,7 @@ function _xnpal_insertItemInternal($sid, $item, &$itemid, $direct)
         //insert titles and keywords
         if (isset($item['titles'])) {
             if (!is_array($item['titles'])) {
-                $item['titles'] = array($item['titles']);
+                $item['titles'] = [$item['titles']];
             }
             if (count($item['titles']) > 0) {
                 if (!_xnpal_updateTitles(__FUNCTION__, $itemid, $item['titles'])) {
@@ -276,7 +276,7 @@ function _xnpal_insertItemInternal($sid, $item, &$itemid, $direct)
         }
         if (isset($item['keywords'])) {
             if (!is_array($item['keywords'])) {
-                $item['keywords'] = array($item['keywords']);
+                $item['keywords'] = [$item['keywords']];
             }
             if (count($item['keywords']) > 0) {
                 if (!_xnpal_updateKeywords(__FUNCTION__, $itemid, $item['keywords'])) {
@@ -295,7 +295,7 @@ function _xnpal_insertItemInternal($sid, $item, &$itemid, $direct)
             //insert into private index
             $sql = 'SELECT private_index_id FROM '.$xoopsDB->prefix('xoonips_users').' WHERE uid='.$item['uid'];
             if ($result = $xoopsDB->query($sql)) {
-                list($private_xid) = $xoopsDB->fetchRow($result);
+                [$private_xid] = $xoopsDB->fetchRow($result);
                 $ret = xnp_register_item($sid, $private_xid, $itemid);
             } else {
                 _xnpal_setLastErrorString("error can't retrieve private_index_id in xnp_insert_item ".' at '.__LINE__.' in '.__FILE__."\n".xnp_get_last_error_string());
@@ -340,8 +340,8 @@ function _xnpal_updateIndexInternal($sess_id, $uid, $newIndex, $oldIndex, $newPa
     }
     // check duplication of sort_number except moving
     if (!$move && $newIndex['sort_number'] != $oldIndex['sort_number']) {
-        $conflictIndexes = array();
-        $cond = 'tx.sort_number='.$newIndex['sort_number'];
+        $conflictIndexes = [];
+        $cond            = 'tx.sort_number=' . $newIndex['sort_number'];
         $result = _xnpal_getIndexesInternal($sess_id, $cond, $uid, $conflictIndexes, '');
         if (RES_OK == $result) {
             if (count($conflictIndexes)) {
@@ -361,7 +361,7 @@ function _xnpal_updateIndexInternal($sess_id, $uid, $newIndex, $oldIndex, $newPa
     }
 
     if ($move) {
-        $descXID = array();
+        $descXID = [];
         // recursion check for descendant index ids
         $result = _xnpal_getDescendantIndexID($oldIndex['item_id'], $descXID);
         if (RES_OK != $result) {
@@ -432,8 +432,8 @@ function _xnpal_updateIndexInternal($sess_id, $uid, $newIndex, $oldIndex, $newPa
         ) {
             // if parent index location will changed, then this index and descendant
             // indexes will be changed respectively.
-            $descXID = array();
-            $result = _xnpal_getDescendantIndexID($oldIndex['item_id'], $descXID);
+            $descXID = [];
+            $result  = _xnpal_getDescendantIndexID($oldIndex['item_id'], $descXID);
             if (RES_OK != $result) {
                 _xnpal_setLastErrorString('in _xnpal_updateIndexInternal: _xnpal_getDescendantIndexID failed');
 
@@ -453,8 +453,8 @@ function _xnpal_updateIndexInternal($sess_id, $uid, $newIndex, $oldIndex, $newPa
 
     if (OL_PUBLIC == $newIndex['open_level']) {
         // call insertMetadataEventAuto() for certified items under newIndex
-        $descXID = array();
-        $result = _xnpal_getDescendantIndexID($newIndex['item_id'], $descXID);
+        $descXID = [];
+        $result  = _xnpal_getDescendantIndexID($newIndex['item_id'], $descXID);
         if (RES_OK != $result) {
             _xnpal_setLastErrorString('in updateIndex: _xnpal_getDescendantIndexID failed');
 
@@ -611,7 +611,7 @@ function _xnpal_queryGetUnsignedInt($functionName, $sql, &$uint)
     if (0 == $xoopsDB->getRowsNum($result)) {
         return RES_ERROR;
     }
-    list($uint) = $xoopsDB->fetchRow($result);
+    [$uint] = $xoopsDB->fetchRow($result);
     _xnpal_setLastErrorString('');
 
     return RES_OK;
@@ -628,9 +628,9 @@ function _xnpal_getDescendantIndexID($xid, &$descXID)
     global $xoopsDB;
     // descXID[0] - descXID[i-1] : searched nodes
     // descXID[i] 〜 descXID[iFill-1] : not searched nodes
-    $descXID = array($xid);
-    $i = 0;
-    $iFill = 1;
+    $descXID = [$xid];
+    $i       = 0;
+    $iFill   = 1;
     while ($i < $iFill) {
         $xid = $descXID[$i++]; // get a not searched node
         // add child list to not searched not
@@ -658,7 +658,7 @@ function _xnpal_getDescendantIndexID($xid, &$descXID)
 function _xnpal_getCsvStr($descXID)
 {
     if (count($descXID)) {
-        $ar = array();
+        $ar = [];
         foreach ($descXID as $val) {
             $ar[] = (int) $val;
         }
@@ -809,7 +809,7 @@ function _xnpal_sessionID2UID($sess_id, &$sess_uid)
             return RES_DB_QUERY_ERROR;
         }
         if ($xoopsDB->getRowsNum($result)) {
-            list($sess_data) = $xoopsDB->fetchRow($result);
+            [$sess_data] = $xoopsDB->fetchRow($result);
             $bak = $_SESSION;
             session_decode($sess_data);
             $s = $_SESSION;
@@ -843,9 +843,9 @@ function _xnpal_deleteIndexInternal($sess_id, $xid, &$index, &$descXID, &$affect
     global $xoopsDB;
     $uid = $_SESSION['xoopsUserId'];
 
-    $affectedIIDs = array();
-    $index = array();
-    $result = xnp_get_index($sess_id, $xid, $index);
+    $affectedIIDs = [];
+    $index        = [];
+    $result       = xnp_get_index($sess_id, $xid, $index);
     if (RES_OK != $result) {
         return $result;
     }
@@ -871,7 +871,7 @@ function _xnpal_deleteIndexInternal($sess_id, $xid, &$index, &$descXID, &$affect
         return RES_ERROR;
     }
 
-    $affectedIIDs = array();
+    $affectedIIDs = [];
     if (OL_PUBLIC == $index['open_level']) {
         // save certified items under newIndex for run insertMetadataEventAuto()
         $sql = 'select count(*) from '.$xoopsDB->prefix('xoonips_item_basic');
@@ -1004,27 +1004,27 @@ function _xnpal_getIndexesInternal($sess_id, $cond, $uid, &$indexes, $criteriaSt
         return RES_DB_QUERY_ERROR;
     }
 
-    $index_buf = array();
-    $orderd_ids = array(); //array of sorted item_id(s) to sort $index_buf in the end of this function
+    $index_buf  = [];
+    $orderd_ids = []; //array of sorted item_id(s) to sort $index_buf in the end of this function
     while (list($index_id, $parent_index_id, $owner_uid, $gid, $open_level, $sort_number,
             $item_type_id, $creation_date, $contributor_uid, $description, $last_update_date) = $xoopsDB->fetchRow($result)) {
-        $index = array(
-            'item_id' => $index_id,
-            'parent_index_id' => $parent_index_id,
-            'owner_uid' => (null == $owner_uid) ? 0 : $owner_uid,
-            'owner_gid' => (null == $gid) ? 0 : $gid,
-            'open_level' => $open_level,
-            'sort_number' => $sort_number,
-            'item_type_id' => $item_type_id,
-            'creation_date' => $creation_date,
-            'contributor_uid' => $contributor_uid,
-            'titles' => array(),
-            'keywords' => array(),
-            'description' => $description,
+        $index                = [
+            'item_id'          => $index_id,
+            'parent_index_id'  => $parent_index_id,
+            'owner_uid'        => (null == $owner_uid) ? 0 : $owner_uid,
+            'owner_gid'        => (null == $gid) ? 0 : $gid,
+            'open_level'       => $open_level,
+            'sort_number'      => $sort_number,
+            'item_type_id'     => $item_type_id,
+            'creation_date'    => $creation_date,
+            'contributor_uid'  => $contributor_uid,
+            'titles'           => [],
+            'keywords'         => [],
+            'description'      => $description,
             'last_update_date' => $last_update_date,
-        );
+        ];
         $index_buf[$index_id] = $index;
-        $orderd_ids[] = $index_id;
+        $orderd_ids[]         = $index_id;
     }
 
     if (count($index_buf) > 0) {
@@ -1100,9 +1100,9 @@ function xnp_criteria2str($cri)
 {
     $sql = '';
     if (isset($cri['orders']) && count($cri['orders']) > 0) {
-        $orders = array();
+        $orders = [];
         foreach ($cri['orders'] as $o) {
-            if (isset($o['name']) && isset($o['order']) && in_array($o['order'], array(0, 1))) {
+            if (isset($o['name']) && isset($o['order']) && in_array($o['order'], [0, 1])) {
                 if (strlen($o['name']) > 64 || !preg_match('/\A[0-9a-z-+_]+\z/i', $o['name'])) {
                     xoonips_error_exit(500);
                 }
@@ -1161,7 +1161,7 @@ function xnp_get_own_public_item_id($sid, $uid, &$iids)
 {
     global $xoopsDB;
 
-    $iids = array();
+    $iids = [];
 
     if (!xnp_is_valid_session_id($sid)) {
         return RES_NO_SUCH_SESSION;
@@ -1217,7 +1217,7 @@ function xnp_get_private_item_id($sid, $uid, &$iids)
 {
     global $xoopsDB;
 
-    $iids = array();
+    $iids = [];
 
     if (!xnp_is_valid_session_id($sid)) {
         return RES_NO_SUCH_SESSION;
@@ -1242,7 +1242,7 @@ function xnp_get_private_item_id($sid, $uid, &$iids)
         ." OR is_admin=1 AND tgulink.uid=${sess_uid} )";
 
     if ($result = $xoopsDB->query($sql)) {
-        $notin = array();
+        $notin = [];
         while (list($iid) = $xoopsDB->fetchRow($result)) {
             $notin[] = $iid;
         }
@@ -1289,7 +1289,7 @@ function xnp_get_related_to($sid, $parentid, &$itemids)
 {
     global $xoopsDB;
 
-    $itemids = array();
+    $itemids = [];
 
     if (!xnp_is_valid_session_id($sid)) {
         return RES_NO_SUCH_SESSION;
@@ -1335,7 +1335,7 @@ function xnp_get_uncertified_link($sid, &$xids, &$iids)
 {
     global $xoopsDB;
 
-    $iids = array();
+    $iids = [];
 
     if (!xnp_is_valid_session_id($sid)) {
         return RES_NO_SUCH_SESSION;
@@ -1441,8 +1441,8 @@ function xnp_insert_index($sid, $index, &$xid)
     }
 
     // parentXID のアクセス権を調べる
-    $parentIndex = array();
-    $result = xnp_get_index($sid, $index['parent_index_id'], $parentIndex);
+    $parentIndex = [];
+    $result      = xnp_get_index($sid, $index['parent_index_id'], $parentIndex);
     if (RES_OK == $result) {
         if (!_xnpal_isWritableInternal($sid, $uid, $parentIndex)) {
             _xnpal_setLastErrorString('in xnp_insert_index: cannot write to parentindex'.' at '.__LINE__.' in '.__FILE__."\n".xnp_get_last_error_string());
@@ -1556,7 +1556,7 @@ function xnp_is_moderator($sid, $uid)
     $sql = 'SELECT value FROM '.$xoopsDB->prefix('xoonips_config')
         ." WHERE name='moderator_gid'";
     if ($result = $xoopsDB->query($sql)) {
-        list($moderator_gid) = $xoopsDB->fetchRow($result);
+        [$moderator_gid] = $xoopsDB->fetchRow($result);
         $sql = 'SELECT * from '.$xoopsDB->prefix('groups_users_link')
             ." WHERE groupid=${moderator_gid}"
             ." AND uid=${uid}";
@@ -1597,13 +1597,13 @@ function xnp_is_valid_session_id($sid)
     if ($result = $xoopsDB->query($sql)) {
         if ($xoopsDB->getRowsNum($result) > 0) {
             //sess_dataをunserialize
-            $session_old = array();
+            $session_old = [];
             foreach (array_keys($_SESSION) as $key) { // avoid bug http://bugs.php.net/bug.php?id=37926
                 $session_old[$key] = $_SESSION[$key];
             }
-            list($sess_data) = $xoopsDB->fetchRow($result);
+            [$sess_data] = $xoopsDB->fetchRow($result);
             if (!session_decode($sess_data)) {
-                $_SESSION = array();
+                $_SESSION = [];
                 foreach (array_keys($session_old) as $key) {  // avoid bug http://bugs.php.net/bug.php?id=36239
                     $_SESSION[$key] = $session_old[$key];
                 }
@@ -1616,7 +1616,7 @@ function xnp_is_valid_session_id($sid)
             //ゲストか否か
             if (array_key_exists('xoopsUserId', $_SESSION)) {
                 //ログインユーザである->valid
-                $_SESSION = array();
+                $_SESSION = [];
                 foreach (array_keys($session_old) as $key) {
                     $_SESSION[$key] = $session_old[$key];
                 }
@@ -1624,7 +1624,7 @@ function xnp_is_valid_session_id($sid)
                 return true;
             } else {
                 //設定でゲストがアクセスOKか？
-                $_SESSION = array();
+                $_SESSION = [];
                 foreach (array_keys($session_old) as $key) {
                     $_SESSION[$key] = $session_old[$key];
                 }
@@ -1731,7 +1731,7 @@ function xnp_selective_harvesting($from, $until, $set, $startIID, $limit, &$iids
 {
     global $xoopsDB;
 
-    $iids = array();
+    $iids = [];
 
     $ret = RES_ERROR;
 
@@ -1747,7 +1747,7 @@ function xnp_selective_harvesting($from, $until, $set, $startIID, $limit, &$iids
         .$xoopsDB->prefix('xoonips_item_basic').' AS basic '
         .' LEFT JOIN '.$xoopsDB->prefix('xoonips_item_type').' AS itemtype on basic.item_type_id=itemtype.item_type_id ';
     $where = '';
-    $child_xids = array();
+    $child_xids = [];
     if ($set && 'index' != substr($set, 0, 5)) {  // item type mode
         $itid = 0;
         $sql = 'SELECT item_type_id FROM '.
@@ -1848,8 +1848,8 @@ function xnp_swap_index_sort_number($sid, $xid1, $xid2)
             x2.sort_number = tmp1;
             x1.sort_number = tmp2;
         */
-        $index1 = array();
-        $index2 = array();
+        $index1 = [];
+        $index2 = [];
         $result = xnp_get_index($sid, $xid1, $index1);
         if (RES_OK == $result) {
             $result = xnp_get_index($sid, $xid2, $index2);
@@ -1971,18 +1971,19 @@ function xnp_update_account($sid, $account)
 
     $ret = RES_ERROR;
 
-    $keys = array(
-        'uname',           'name',           'email',    'url',
-        'user_avatar',     'user_regdate',   'user_icq', 'user_from',
-        'user_sig',        'user_viewemail', 'actkey',   'user_aim',
-        'user_yim',        'user_msnm',      'pass',     'posts',
-        'attachsig',       'rank',           'level',    'theme',
-        'timezone_offset', 'last_login',     'umode',    'uorder',
-        'notify_method',   'notify_mode',    'user_occ', 'bio',
-        'user_intrest',    'user_mailok',
-    );
+    $keys = [
+        'uname',
+        'name', 'email', 'url',
+        'user_avatar', 'user_regdate', 'user_icq', 'user_from',
+        'user_sig', 'user_viewemail', 'actkey', 'user_aim',
+        'user_yim', 'user_msnm', 'pass', 'posts',
+        'attachsig', 'rank', 'level', 'theme',
+        'timezone_offset', 'last_login', 'umode', 'uorder',
+        'notify_method', 'notify_mode', 'user_occ', 'bio',
+        'user_intrest', 'user_mailok',
+    ];
 
-    $sets = array();
+    $sets = [];
     foreach ($keys as $k) {
         if (array_key_exists($k, $account)) {
             $sets[] = $k."='".addslashes($account[$k])."'";
@@ -2002,7 +2003,7 @@ function xnp_update_account($sid, $account)
     }
 
     //xoonipsのユーザテーブルに残りの情報を上書きする
-    $keys = array(
+    $keys = [
         'activate' => 'activate',
         'address' => 'address',
         'division' => 'division',
@@ -2016,8 +2017,8 @@ function xnp_update_account($sid, $account)
         'private_item_number_limit' => 'item_number_limit',
         'private_index_number_limit' => 'index_number_limit',
         'private_item_storage_limit' => 'item_storage_limit',
-    );
-    $sets = array();
+    ];
+    $sets = [];
     foreach ($keys as $col => $k) {
         if (array_key_exists($k, $account)) {
             $sets[] = $col."='".addslashes($account[$k])."'";
@@ -2062,18 +2063,18 @@ function xnp_update_index($sid, $newIndex)
         return $result;
     }
 
-    $oldIndex = array();
+    $oldIndex = [];
     $result = xnp_get_index($sid, $newIndex['item_id'], $oldIndex);
     if (RES_OK == $result) {
-        $newParentIndex = array();
+        $newParentIndex = [];
         $result = xnp_get_index($sid, $newIndex['parent_index_id'], $newParentIndex);
         if (RES_OK == $result) {
-            $oldParentIndex = array();
+            $oldParentIndex = [];
             $result = xnp_get_index($sid, $oldIndex['parent_index_id'], $oldParentIndex);
             if (RES_OK == $result) {
-                $newIndex['titles'] = isset($newIndex['titles']) && is_array($newIndex['titles']) ? $newIndex['titles'] : array();
-                $newIndex['keywords'] = isset($newIndex['keywords']) && is_array($newIndex['keywords']) ? $newIndex['keywords'] : array();
-                $newIndex['item_id'] = isset($newIndex['item_id']) ? (int) $newIndex['item_id'] : 0;
+                $newIndex['titles']       = isset($newIndex['titles']) && is_array($newIndex['titles']) ? $newIndex['titles'] : [];
+                $newIndex['keywords']     = isset($newIndex['keywords']) && is_array($newIndex['keywords']) ? $newIndex['keywords'] : [];
+                $newIndex['item_id']      = isset($newIndex['item_id']) ? (int)$newIndex['item_id'] : 0;
                 $newIndex['item_type_id'] = isset($newIndex['item_type_id']) ? (int) $newIndex['item_type_id'] : 0;
                 $newIndex['contributor_uid'] = isset($newIndex['contributor_uid']) ? (int) $newIndex['contributor_uid'] : 0;
                 $newIndex['description'] = isset($newIndex['description']) ? (string) $newIndex['description'] : '';
@@ -2110,7 +2111,7 @@ function insertMetadataEventAuto($iid, $isCreate = false)
 {
     global $xoopsDB;
 
-    $status = array();
+    $status = [];
     $res = xnp_get_item_status($iid, $status);
     if (RES_OK != $res) {
         if (RES_NO_SUCH_ITEM == $res) {
@@ -2208,9 +2209,9 @@ function public_item_target_user_all()
  */
 function xnp_delete_index($sess_id, $index_id)
 {
-    $index = array();
-    $descXID = array();
-    $affectedIIDs = array();
+    $index = [];
+    $descXID = [];
+    $affectedIIDs = [];
 
     return _xnpal_deleteIndexInternal($sess_id, (int) $index_id, $index, $descXID, $affectedIIDs);
 }
@@ -2280,7 +2281,7 @@ function xnp_dump_item_id($sess_id, $criteria, &$iids)
         return RES_DB_QUERY_ERROR;
     }
 
-    $iids = array();
+    $iids = [];
     while (list($iid) = $xoopsDB->fetchRow($result)) {
         $iids[] = $iid;
     }
@@ -2316,7 +2317,7 @@ function xnp_dump_uids($sess_id, $criteria, &$uids)
     $sql .= ' '.xnp_criteria2str($criteria);
     $result = $xoopsDB->query($sql);
     if ($result) {
-        $uids = array();
+        $uids = [];
         while (list($uid) = $xoopsDB->fetchRow($result)) {
             $uids[] = $uid;
         }
@@ -2347,7 +2348,7 @@ function xnp_dump_uids($sess_id, $criteria, &$uids)
 function xnp_extract_public_item_id($sess_id, $iids, &$public_iids)
 {
     global $xoopsDB;
-    $public_iids = array();
+    $public_iids = [];
 
     if (!xnp_is_valid_session_id($sess_id)) {
         return RES_NO_SUCH_SESSION;
@@ -2359,7 +2360,7 @@ function xnp_extract_public_item_id($sess_id, $iids, &$public_iids)
     }
     $iids_str = _xnpal_getCsvStr($iids);
 
-    $public_iids = array();
+    $public_iids = [];
     if (0 == count($iids)) {
         return RES_OK;
     }
@@ -2392,9 +2393,9 @@ function xnp_extract_public_item_id($sess_id, $iids, &$public_iids)
  */
 function xnp_get_account($sess_id, $uid, &$account)
 {
-    $accounts = array();
-    $account = array();
-    $result = xnp_get_accounts($sess_id, array((int) $uid), array(), $accounts);
+    $accounts = [];
+    $account = [];
+    $result = xnp_get_accounts($sess_id, [(int) $uid], [], $accounts);
     if (isset($accounts[0])) {
         $account = $accounts[0];
     }
@@ -2410,12 +2411,12 @@ function xnp_get_account($sess_id, $uid, &$account)
 function xnp_get_accounts($sess_id, $uids, $criteria, &$accounts)
 {
     global $xoopsDB;
-    $accounts = array();
+    $accounts = [];
     if (!xnp_is_valid_session_id($sess_id)) {
         return RES_NO_SUCH_SESSION;
     }
 
-    $accounts = array();
+    $accounts = [];
     if (0 == count($uids)) {
         return RES_OK;
     }
@@ -2437,7 +2438,7 @@ function xnp_get_accounts($sess_id, $uids, $criteria, &$accounts)
     }
 
     while ($row = $xoopsDB->fetchRow($result)) {
-        $account = array();
+        $account = [];
         $account['uid'] = $row[0];
         $account['name'] = $row[1];
         $account['uname'] = $row[2];
@@ -2502,7 +2503,7 @@ function xnp_get_accounts($sess_id, $uids, $criteria, &$accounts)
  */
 function xnp_get_all_indexes($sess_id, $criteria, &$indexes)
 {
-    $indexes = array();
+    $indexes = [];
 
     $result = _xnpal_sessionID2UID($sess_id, $uid); // sid から uid を得る
     if (RES_OK == $result) {
@@ -2556,9 +2557,9 @@ function xnp_get_certify_state($sess_id, $xid, $iid, &$state)
 function xnp_get_change_logs($sess_id, $item_id, &$logs)
 {
     global $xoopsDB;
-    $logs = array();
+    $logs = [];
 
-    $item_id = (int) $item_id;
+    $item_id = (int)$item_id;
 
     if (!xnp_is_valid_session_id($sess_id)) {
         return RES_NO_SUCH_SESSION;
@@ -2576,7 +2577,7 @@ function xnp_get_change_logs($sess_id, $item_id, &$logs)
         return RES_DB_QUERY_ERROR;
     }
 
-    $logs = array();
+    $logs = [];
     while ($row = $xoopsDB->fetchArray($result)) {
         $logs[] = $row;
     }
@@ -2610,7 +2611,7 @@ function xnp_get_config_value($key, &$value)
     }
     $value = null;
     if ($xoopsDB->getRowsNum($result) > 0) {
-        list($value) = $xoopsDB->fetchRow($result);
+        [$value] = $xoopsDB->fetchRow($result);
         _xnpal_setLastErrorString('');
 
         return RES_OK;
@@ -2634,12 +2635,12 @@ function xnp_get_config_value($key, &$value)
 function xnp_get_index($sess_id, $index_id, &$index)
 {
     $index_id = (int) $index_id;
-    $index = array();
+    $index = [];
 
     $result = _xnpal_sessionID2UID($sess_id, $uid); // sid から uid を得る
     if (RES_OK == $result) {
         $cond = " index_id = $index_id ";
-        $indexes = array();
+        $indexes = [];
         $result = _xnpal_getIndexesInternal($sess_id, $cond, $uid, $indexes, '');
         if (RES_OK == $result && !isset($indexes[0])) {
             _xnpal_setLastErrorString("error can't found index(id=${index_id}) in xnp_get_index");
@@ -2655,7 +2656,7 @@ function xnp_get_index($sess_id, $index_id, &$index)
 function xnp_get_index_id_by_item_id($sess_id, $item_id, &$xids)
 {
     $item_id = (int) $item_id;
-    $xids = array();
+    $xids = [];
 
     global $xoopsDB;
     if (!xnp_is_valid_session_id($sess_id)) {
@@ -2696,7 +2697,7 @@ function xnp_get_index_id_by_item_id($sess_id, $item_id, &$xids)
 function xnp_get_indexes($sess_id, $parent_xid, $criteria, &$indexes)
 {
     $parent_xid = (int) $parent_xid;
-    $indexes = array();
+    $indexes = [];
 
     $result = _xnpal_sessionID2UID($sess_id, $uid); // sid から uid を得る
     if (RES_OK == $result) {
@@ -2723,9 +2724,9 @@ function xnp_get_indexes($sess_id, $parent_xid, $criteria, &$indexes)
  */
 function xnp_get_item($sess_id, $iid, &$item)
 {
-    $items = array();
-    $item = array();
-    $result = xnp_get_items($sess_id, array((int) $iid), array(), $items);
+    $items = [];
+    $item = [];
+    $result = xnp_get_items($sess_id, [(int) $iid], [], $items);
 
     if (0 == count($items)) {
         return RES_NO_SUCH_ITEM;
@@ -2741,7 +2742,7 @@ function xnp_get_item($sess_id, $iid, &$item)
 function xnp_get_item_count_group_by_index($sess_id, &$counts)
 {
     global $xoopsDB;
-    $counts = array();
+    $counts = [];
 
     $ret = _xnpal_sessionID2UID($sess_id, $uid);
     if (RES_OK != $ret) {
@@ -2781,7 +2782,7 @@ function xnp_get_item_count_group_by_index($sess_id, &$counts)
 
         return RES_DB_QUERY_ERROR;
     }
-    $counts = array();
+    $counts = [];
     while (list($xid, $count) = $xoopsDB->fetchRow($result)) {
         $counts[$xid] = $count;
     }
@@ -2941,10 +2942,10 @@ function xnp_get_item_status($iid, &$status)
         return RES_NO_SUCH_ITEM;
     }
 
-    list($status['created_timestamp'],
+    [$status['created_timestamp'],
           $status['modified_timestamp'],
           $status['deleted_timestamp'],
-          $status['is_deleted']) = $xoopsDB->fetchRow($result);
+          $status['is_deleted']] = $xoopsDB->fetchRow($result);
     _xnpal_setLastErrorString('');
 
     return RES_OK;
@@ -2970,7 +2971,7 @@ function xnp_get_item_types(&$types)
 
         return RES_DB_QUERY_ERROR;
     }
-    $types = array();
+    $types = [];
     while ($row = $xoopsDB->fetchArray($result)) {
         $types[] = $row;
     }
@@ -2995,7 +2996,7 @@ function xnp_get_item_types(&$types)
 function xnp_get_items($sess_id, $iids, $criteria, &$items)
 {
     global $xoopsDB;
-    $items = array();
+    $items = [];
 
     if (!xnp_is_valid_session_id($sess_id)) {
         return RES_NO_SUCH_SESSION;
@@ -3006,7 +3007,7 @@ function xnp_get_items($sess_id, $iids, $criteria, &$items)
         return $ret;
     }
 
-    $items = array();
+    $items = [];
     if (!isset($iids) || 0 == count($iids)) {
         return RES_OK;
     }
@@ -3028,17 +3029,17 @@ function xnp_get_items($sess_id, $iids, $criteria, &$items)
 
         return RES_DB_QUERY_ERROR;
     }
-    $items_buf = array();
-    $ordered_ids = array(); //array of sorted item_id(s) to sort $items_buf in the end of this function
+    $items_buf = [];
+    $ordered_ids = []; //array of sorted item_id(s) to sort $items_buf in the end of this function
     $item_compo_handler = &xoonips_getormcompohandler('xoonips', 'item');
     while ($row = $xoopsDB->fetchArray($result)) {
         if (!$item_compo_handler->getPerm($row['item_id'], $uid, 'read')) {
             continue;
         }
-        $items_buf[$row['item_id']] = $row;
-        $items_buf[$row['item_id']]['titles'] = array();
-        $items_buf[$row['item_id']]['keywords'] = array();
-        $ordered_ids[] = $row['item_id'];
+        $items_buf[$row['item_id']]             = $row;
+        $items_buf[$row['item_id']]['titles']   = [];
+        $items_buf[$row['item_id']]['keywords'] = [];
+        $ordered_ids[]                          = $row['item_id'];
     }
 
     //get titles of selected item

@@ -42,7 +42,7 @@ $xoopsTpl = new XoopsTpl();
 $xoopsTpl->clear_all_cache();
 // regenerate admin menu file
 xoops_module_write_admin_menu(xoops_module_get_admin_menu());
-$conf_ids = (!empty($_POST['conf_ids'])) ? $_POST['conf_ids'] : array();
+$conf_ids = (!empty($_POST['conf_ids'])) ? $_POST['conf_ids'] : [];
 $count = count($conf_ids);
 $tpl_updated = false;
 $theme_updated = false;

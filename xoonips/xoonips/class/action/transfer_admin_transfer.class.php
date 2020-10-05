@@ -95,8 +95,8 @@ class XooNIpsActionTransferAdminTransfer extends XooNIpsActionTransfer
 
     public function is_equals_group_ids($gids1, $gids2)
     {
-        $a = is_array($gids1) ? $gids1 : array();
-        $b = is_array($gids2) ? $gids2 : array();
+        $a = is_array($gids1) ? $gids1 : [];
+        $b = is_array($gids2) ? $gids2 : [];
 
         return count(array_diff($a, $b)) == 0 && count(array_diff($b, $a)) == 0;
     }
@@ -105,13 +105,13 @@ class XooNIpsActionTransferAdminTransfer extends XooNIpsActionTransfer
     {
         $result = $this->_formdata->getValueArray('post', 'item_ids_to_transfer', 'i', false);
 
-        return is_array($result) ? $result : array();
+        return is_array($result) ? $result : [];
     }
 
     public function get_child_item_ids_to_transfer()
     {
         $result = $this->_formdata->getValueArray('post', 'child_item_ids_to_transfer', 'i', false);
 
-        return is_array($result) ? $result : array();
+        return is_array($result) ? $result : [];
     }
 }

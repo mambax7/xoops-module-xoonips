@@ -82,14 +82,14 @@ class XooNIpsViewTransferUserItemList extends XooNIpsViewTransfer
 
     public function get_transfer_item_template_vars()
     {
-        $result = array();
+        $result = [];
 
         foreach ($this->_params['items_to_transfer'] as $item) {
             $item_vars = $this->get_item_template_vars($item['item_id']);
             $item_vars['transfer_enable'] = $item['transfer_enable'];
             $item_vars['lock_type'] = $item['lock_type'];
             $item_vars['have_another_parent'] = $item['have_another_parent'];
-            $item_vars['child_items'] = array();
+            $item_vars['child_items'] = [];
             foreach ($item['child_items'] as $child_item) {
                 $child = $this->get_item_template_vars($child_item['item_id']);
                 $child['lock_type'] = $child_item['lock_type'];
@@ -114,10 +114,10 @@ class XooNIpsViewTransferUserItemList extends XooNIpsViewTransfer
         $basic = &$item->getVar('basic');
         $itemtype = &$item_type_handler->get($basic->get('item_type_id'));
 
-        return array(
+        return [
             'item_id' => $item_id,
             'item_type_name' => $itemtype->getVar('display_name', 's'),
             'title' => $this->concatenate_titles($item->getVar('titles')),
-        );
+        ];
     }
 }

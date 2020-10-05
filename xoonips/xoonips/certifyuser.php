@@ -47,7 +47,7 @@ if (!$xoopsUser->isAdmin($xoopsModule->getVar('mid'))
 $textutil = &xoonips_getutility('text');
 $formdata = &xoonips_getutility('formdata');
 
-$op_list = array('certify', 'uncertify_confirm', 'uncertify');
+$op_list = ['certify', 'uncertify_confirm', 'uncertify'];
 $op = $formdata->getValue('post', 'op', 's', false, '');
 $certify_uid = $formdata->getValue('post', 'certify_uid', 'i', false, 0);
 
@@ -70,7 +70,7 @@ if ('certify' == $op) {
         exit();
     }
     //certify user
-    $user = array();
+    $user = [];
     $result = xnp_get_account($xnpsid, $certify_uid, $user);
     if (RES_OK != $result) {
         xoonips_error_exit(500);
@@ -133,7 +133,7 @@ if ('certify' == $op) {
 
     $comment = isset($_POST['comment']) ? $_POST['comment'] : '';
 
-    $user = array();
+    $user = [];
     $result_get_account = xnp_get_account($xnpsid, $certify_uid, $user);
     if (RES_OK != $result_get_account) {
         redirect_header('certifyuser.php', 3, _MD_XOONIPS_ACCOUNT_CANNOT_ACQUIRE_USER_INFO);
@@ -161,7 +161,7 @@ if ('certify' == $op) {
     $xoopsMailer->assign('ADMINMAIL', $xoopsConfig['adminmail']);
     $xoopsMailer->assign('SITEURL', XOOPS_URL.'/');
     $xoopsMailer->assign('UNCERTIFY_COMMENT', $comment);
-    $xoopsMailer->setToEmails(array($user['email']));
+    $xoopsMailer->setToEmails([$user['email']]);
     $xoopsMailer->setFromEmail($xoopsConfig['adminmail']);
     $xoopsMailer->setFromName($xoopsConfig['sitename']);
     $xoopsMailer->setSubject(_MD_XOONIPS_ACCOUNT_REJECTED);
@@ -176,24 +176,24 @@ if ('certify' == $op) {
 $xoopsTpl->assign('op', $op);
 $xoopsOption['template_main'] = 'xoonips_certifyuser.html';
 
-$users = array();
-$uids = array();
-if (0 != xnp_dump_uids($xnpsid, array(), $uids)) {
+$users = [];
+$uids = [];
+if (0 != xnp_dump_uids($xnpsid, [], $uids)) {
     redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_MODERATOR_ERROR_SELECT_USER);
     exit();
 }
 if (count($uids) > 0) {
     foreach ($uids as $i) {
-        $user = array();
+        $user = [];
         if (0 == xnp_get_account($xnpsid, $i, $user)) {
             if (1 != @$user['activate'] && 0 != @$user['level']) {
                 // list acitvated & uncertified users only
-                $users[] = array(
+                $users[] = [
                     'uid' => $user['uid'],
                     'uname' => $textutil->html_special_chars($user['uname']),
                     'name' => $textutil->html_special_chars($user['name']),
                     'email' => $textutil->html_special_chars($user['email']),
-                );
+                ];
             }
         }
     }

@@ -82,14 +82,15 @@ class XooNIpsActionOaipmhSearchDefault extends XooNIpsAction
         $criteria->add(new Criteria('deleted', 0));
         $rows = &$handler->getObjects($criteria);
         if (!$rows) {
-            return array();
+            return [];
         }
-        $result = array();
+        $result = [];
         foreach ($rows as $row) {
-            $result[] = array(
+            $result[] = [
                 'repository_id' => $row->getVar('repository_id', 's'),
                 'repository_name' => $textutil->truncate((trim($row->getVar('repository_name', 's')) != '' ? $row->getVar('repository_name', 's') : $row->getVar('URL', 's')), 70, '...'),
-                'metadata_count' => $row->getVar('metadata_count', 's'), );
+                'metadata_count' => $row->getVar('metadata_count', 's'),
+            ];
         }
 
         return $result;

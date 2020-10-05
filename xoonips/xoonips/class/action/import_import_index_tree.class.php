@@ -86,14 +86,14 @@ class XooNIpsActionImportImportIndexTree extends XooNIpsAction
 
         $error = false; //true if error
         $fnames = $unzip->get_file_list();
-        $created_xids = array();
+        $created_xids = [];
         foreach ($fnames as $fname) {
             //
             // import index tree and exit.
             //
             $xml = $unzip->get_data($fname);
             foreach ($import_index_ids as $index_id) {
-                $id_table = array();
+                $id_table = [];
                 if (xnpImportIndex($xml, $index_id, $id_table, $error_message)) {
                     $created_xids = array_merge($created_xids, $id_table);
                 } else {
@@ -136,7 +136,7 @@ class XooNIpsActionImportImportIndexTree extends XooNIpsAction
     {
         global $xoopsDB;
 
-        $path = array();
+        $path = [];
 
         if ($uid) {
             $user_handler = &xoonips_getormhandler('xoonips', 'users');

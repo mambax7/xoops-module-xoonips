@@ -27,7 +27,7 @@
 
 function filesize_private()
 {
-    $iids = array();
+    $iids = [];
     if (xnp_get_private_item_id($_SESSION['XNPSID'], $_SESSION['xoopsUserId'], $iids) != RES_OK) {
         return 0;
     }
@@ -48,7 +48,7 @@ function filesize_by_item_id($iids)
     if (count($iids) == 0) {
         return 0;
     }
-    $itemtypes = array();
+    $itemtypes = [];
     if (xnp_get_item_types($itemtypes) != RES_OK) {
         return 0;
     }
@@ -66,7 +66,7 @@ function filesize_by_item_id($iids)
         $query = "SELECT ${id_name} FROM $table where ${id_name} IN (".implode(', ', $iids).')';
         $result = $xoopsDB->query($query);
         if ($result) {
-            $mod_iids = array();
+            $mod_iids = [];
             while (list($id) = $xoopsDB->fetchRow($result)) {
                 $mod_iids[] = $id;
             }
@@ -90,9 +90,9 @@ function available_space_of_private_item()
 {
     $xnpsid = $_SESSION['XNPSID'];
     $uid = $_SESSION['xoopsUserId'];
-    $account = array();
+    $account = [];
     if (xnp_get_account($xnpsid, $uid, $account) == RES_OK) {
-        $iids = array();
+        $iids = [];
         if (xnp_get_private_item_id($xnpsid, $uid, $iids) == RES_OK) {
             return max(0, $account['item_number_limit'] - count($iids));
         }
@@ -109,7 +109,7 @@ function check_private_item_storage_limit()
 {
     $xnpsid = $_SESSION['XNPSID'];
     $uid = $_SESSION['xoopsUserId'];
-    $account = array();
+    $account = [];
     if (xnp_get_account($xnpsid, $uid, $account) == RES_OK) {
         if (filesize_private() >= $account['item_storage_limit']) {
             return false;

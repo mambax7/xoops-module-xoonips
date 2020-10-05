@@ -59,7 +59,7 @@ class XooNIpsOrmPositionsHandler extends XooNIpsTableObjectHandler
         $criteria = new CriteriaElement();
         $criteria->setSort('posi_order');
         $objs = &$this->getObjects($criteria);
-        $positionlist = array();
+        $positionlist = [];
         foreach ($objs as $obj) {
             $posi_id = $obj->getVar('posi_id', 'n');
             $positionlist[$posi_id] = $obj->getVarArray($fmt);

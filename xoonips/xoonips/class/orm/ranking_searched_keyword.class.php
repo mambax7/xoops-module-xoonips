@@ -53,7 +53,7 @@ class XooNIpsOrmRankingSearchedKeywordHandler extends XooNIpsOrmAbstractRankingH
     {
         parent::__construct($db);
         $this->__initHandler('XooNIpsOrmRankingSearchedKeyword', 'xoonips_ranking_searched_keyword', 'keyword', false, true);
-        $this->_set_columns(array('keyword', 'count'));
+        $this->_set_columns(['keyword', 'count']);
     }
 
     /**

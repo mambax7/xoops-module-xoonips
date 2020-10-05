@@ -56,10 +56,10 @@ $mode = $formdata->getValue($method, 'mode', 's', false, '');
 $page = $formdata->getValue($method, 'page', 'i', false, 1);
 $limit = $formdata->getValue($method, 'limit', 'i', false, 20);
 
-$breadcrumbs = array(
-    array('name' => _MD_XOONIPS_BREADCRUMBS_MODERATOR),
-    array('name' => _MD_XOONIPS_BREADCRUMBS_EVENTLOG, 'url' => 'event_log.php'),
-);
+$breadcrumbs = [
+    ['name' => _MD_XOONIPS_BREADCRUMBS_MODERATOR],
+    ['name' => _MD_XOONIPS_BREADCRUMBS_EVENTLOG, 'url' => 'event_log.php'],
+];
 
 switch ($mode) {
 case 'download':
@@ -81,7 +81,7 @@ case 'graphview':
     if ($start_time > $end_time) {
         die('invalid time range');
     }
-    $breadcrumbs[] = array('name' => _MD_XOONIPS_BREADCRUMBS_EVENTLOG_GRAPH);
+    $breadcrumbs[] = ['name' => _MD_XOONIPS_BREADCRUMBS_EVENTLOG_GRAPH];
     $xoopsOption['template_main'] = 'xoonips_event_graph.html';
     require XOOPS_ROOT_PATH.'/header.php';
     $xoopsTpl->assign('xoops_breadcrumbs', $breadcrumbs);
@@ -99,8 +99,8 @@ case 'list':
         die('Illegal request');
     }
     $is_users = ($log_type_id == 20) ? true : false;
-    $users = array();
-    $items = array();
+    $users = [];
+    $items = [];
     if ($is_users) {
         $total = xoonips_eventlog_count_users();
     } else {
@@ -113,7 +113,7 @@ case 'list':
     if ($is_users) {
         $objs = &xoonips_eventlog_get_users($start, $limit);
         foreach ($objs as $obj) {
-            $user = array();
+            $user = [];
             $uname = $obj->getExtraVar('uname');
             $email = $obj->getExtraVar('email');
             $user['uname'] = $textutil->html_special_chars($uname);
@@ -125,7 +125,7 @@ case 'list':
     } else {
         $objs = &xoonips_eventlog_get_items($start, $limit);
         foreach ($objs as $obj) {
-            $item = array();
+            $item = [];
             $item_id = $obj->getVar('item_id', 's');
             $title = xoonips_eventlog_get_item_title($item_id);
             $display_name = $obj->getExtraVar('display_name');
@@ -138,12 +138,12 @@ case 'list':
         }
     }
     $navi = $pagenavi->getTemplateVars(10);
-    $breadcrumbs[] = array('name' => _MD_XOONIPS_BREADCRUMBS_EVENTLOG_LIST);
+    $breadcrumbs[] = ['name' => _MD_XOONIPS_BREADCRUMBS_EVENTLOG_LIST];
     $xoopsOption['template_main'] = 'xoonips_event_view.html';
     require XOOPS_ROOT_PATH.'/header.php';
     $xoopsTpl->assign('xoops_breadcrumbs', $breadcrumbs);
     $xoopsTpl->assign('navi', $navi);
-    $xoopsTpl->assign('navi_limits', array(20, 50, 100));
+    $xoopsTpl->assign('navi_limits', [20, 50, 100]);
     $xoopsTpl->assign('is_users', $is_users);
     $xoopsTpl->assign('users', $users);
     $xoopsTpl->assign('items', $items);

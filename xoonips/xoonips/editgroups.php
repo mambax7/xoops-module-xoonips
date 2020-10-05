@@ -48,21 +48,21 @@ $groups_show = true;
 $gname_forbidden = false;
 $gname_exists = false;
 $gadmins_empty = false;
-$gname_system = array(
+$gname_system = [
     'public',
     'private',
     'root',
-);
+];
 
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'name' => _MD_XOONIPS_BREADCRUMBS_MODERATOR,
-    ),
-    array(
+    ],
+    [
         'name' => _MD_XOONIPS_TITLE_GROUP_EDIT,
         'url' => 'editgroups.php',
-    ),
-);
+    ],
+];
 
 switch ($op) {
 case 'edit':
@@ -80,10 +80,10 @@ case 'edit':
     $gxlimit = $xg_obj->get('group_index_number_limit');
     $gslimit = $xg_obj->get('group_item_storage_limit') / 1000 / 1000;
     $gadmin_uids = $admin_xgroup_handler->getUserIds($gid, true);
-    $breadcrumbs[] = array(
+    $breadcrumbs[] = [
       'name' => $xg_obj->getVar('gname', 's'),
       'url' => 'editgroups.php?op=edit&amp;gid='.$gid,
-    );
+    ];
     $groups_show = false;
     break;
 case 'update':
@@ -185,10 +185,10 @@ if ($op == '') {
     $gilimit = $xconfig_handler->getValue('group_item_number_limit');
     $gxlimit = $xconfig_handler->getValue('group_index_number_limit');
     $gslimit = $xconfig_handler->getValue('group_item_storage_limit') / 1000 / 1000;
-    $gadmin_uids = array();
+    $gadmin_uids = [];
 }
 
-$groups = ($groups_show) ? xoonips_group_get_groups($uid) : array();
+$groups = ($groups_show) ? xoonips_group_get_groups($uid) : [];
 $gadmins = xoonips_group_get_users($gadmin_uids);
 $msg_locked = sprintf(_MD_XOONIPS_WARNING_CANNOT_EDIT_LOCKED_GROUP, _MD_XOONIPS_LOCK_TYPE_STRING_CERTIFY_REQUEST);
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);

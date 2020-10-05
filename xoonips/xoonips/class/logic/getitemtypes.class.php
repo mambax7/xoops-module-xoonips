@@ -80,7 +80,7 @@ class XooNIpsLogicGetItemtypes extends XooNIpsLogic
 
             return false;
         }
-        $result = array();
+        $result = [];
         foreach ($item_types as $item_type) {
             $item_type_name = $item_type->get('name');
             $detail_item_type_handler = &xoonips_getormhandler($item_type_name, 'item_type');

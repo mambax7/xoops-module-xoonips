@@ -73,12 +73,12 @@ class OAIPMH
         $this->baseURL = $baseURL;
         $this->repositoryName = $repositoryName;
         if (!is_array($adminEmails)) {
-            $this->adminEmails = array($adminEmails);
+            $this->adminEmails = [$adminEmails];
         } else {
             $this->adminEmails = $adminEmails;
         }
 
-        $this->handlers = array();
+        $this->handlers = [];
     }
 
     /**
@@ -136,7 +136,7 @@ class OAIPMH
     public function request($attrs)
     {
         $request = '<request';
-        foreach (array('verb', 'identifier', 'metadataPrefix', 'from', 'until', 'set', 'resumptionToken') as $k) {
+        foreach (['verb', 'identifier', 'metadataPrefix', 'from', 'until', 'set', 'resumptionToken'] as $k) {
             if (array_key_exists($k, $attrs)) {
                 // keio igarashi add 2007.10.01 from
                 // remove ["]
@@ -159,7 +159,7 @@ class OAIPMH
      */
     public function ListMetadataFormats($attrs)
     {
-        $lines = array();
+        $lines = [];
         foreach ($this->handlers as $hdl) {
             $fmt = false;
             if (isset($attrs['identifier'])) {
@@ -190,7 +190,7 @@ class OAIPMH
         }
 
         return $this->header()
-            .$this->request(array('verb' => 'ListMetadataFormats', 'identifier' => $identifier))
+            .$this->request(['verb' => 'ListMetadataFormats', 'identifier' => $identifier])
             ."<ListMetadataFormats>\n".implode("\n", $lines)
             ."</ListMetadataFormats>\n".$this->footer();
     }
@@ -215,7 +215,7 @@ class OAIPMH
         }
 
         return $this->header()
-            .$this->request(array('verb' => 'Identify'))
+            .$this->request(['verb' => 'Identify'])
             ."<Identify>\n".$xml."</Identify>\n".$this->footer();
     }
 
@@ -251,7 +251,7 @@ class OAIPMH
     //The errors occered in handler aren't concerned(Handler return <error>.
     public function GetRecord($args)
     {
-        $attrs = array_merge($args, array('verb' => 'GetRecord'));
+        $attrs = array_merge($args, ['verb' => 'GetRecord']);
         if (count($args) == 3 && isset($args['verb']) && isset($args['metadataPrefix']) && isset($args['identifier'])) {
             // keio igarashi add 2007.10.01 from
             // ["] is error in identifier. and fix badArguments -> badArgument
@@ -291,7 +291,7 @@ class OAIPMH
 
     public function ListIdentifiers($args)
     {
-        $attrs = array_merge($args, array('verb' => 'ListIdentifiers'));
+        $attrs = array_merge($args, ['verb' => 'ListIdentifiers']);
         if (!isset($args['metadataPrefix']) && !isset($args['resumptionToken'])) {
             return $this->header()
                 .$this->request($attrs)
@@ -328,7 +328,7 @@ class OAIPMH
 
     public function ListRecords($args)
     {
-        $attrs = array_merge($args, array('verb' => 'ListRecords'));
+        $attrs = array_merge($args, ['verb' => 'ListRecords']);
         if (!isset($args['metadataPrefix']) && !isset($args['resumptionToken'])) {
             return $this->header()
                 .$this->request($attrs)
@@ -395,7 +395,7 @@ class OAIPMH
 
     public function ListSets($args)
     {
-        $attrs = array_merge($args, array('verb' => 'ListSets'));
+        $attrs = array_merge($args, ['verb' => 'ListSets']);
         $limit_row = REPOSITORY_RESPONSE_LIMIT_ROW;
         $path_alllist = null;
         $msg = null;
@@ -535,12 +535,12 @@ class OAIPMHHandler
      */
     public function parseIdentifier($identifier)
     {
-        $match = array();
+        $match = [];
         if (preg_match("/([^\/]+)\/([0-9]+)\.([0-9]+)/", $identifier, $match) == 0) {
             return false;
         }
 
-        return array('nijc_code' => $match[1], 'item_type_id' => $match[2], 'item_id' => $match[3]);
+        return ['nijc_code' => $match[1], 'item_type_id' => $match[2], 'item_id' => $match[3]];
     }
 
     /**
@@ -554,12 +554,12 @@ class OAIPMHHandler
      */
     public function parseIdentifier2($identifier)
     {
-        $match = array();
+        $match = [];
         if (preg_match("/([^\/]+):".XNP_CONFIG_DOI_FIELD_PARAM_NAME.'\\/([^<>]+)/', $identifier, $match) == 0) {
             return false;
         }
 
-        return array('nijc_code' => $match[1], 'doi' => $match[2]);
+        return ['nijc_code' => $match[1], 'doi' => $match[2]];
     }
 
     /**
@@ -584,7 +584,7 @@ class OAIPMHHandler
                 return '';
             }
 
-            $iids = array();
+            $iids = [];
             $item_info = '';
             $res = xnpGetItemIdByDoi($parsed['doi'], $iids);
             if ($res == RES_OK && isset($iids[0])
@@ -604,8 +604,8 @@ class OAIPMHHandler
         global $xoopsDB;
         $xconfig_handler = &xoonips_getormhandler('xoonips', 'config');
         $parsed = $identifier;
-        $lines = array();
-        $status = array();
+        $lines = [];
+        $status = [];
         if (xnp_get_item_status($parsed['item_id'], $status) == RES_OK) {
             $datestamp = max($status['created_timestamp'], $status['modified_timestamp'], $status['deleted_timestamp']);
             if ($status['is_deleted'] == 1) {

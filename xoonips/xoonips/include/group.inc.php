@@ -34,14 +34,14 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
  */
 function xoonips_group_error($url, $reason)
 {
-    $messages = array(
+    $messages = [
         'select' => _MD_XOONIPS_ERROR_GROUP_SELECT,
         'insert' => _MD_XOONIPS_ERROR_GROUP_INSERT,
         'update' => _MD_XOONIPS_ERROR_GROUP_UPDATE,
         'delete' => _MD_XOONIPS_ERROR_GROUP_DELETE,
         'lock_edit' => sprintf(_MD_XOONIPS_ERROR_CANNOT_EDIT_LOCKED_GROUP, _MD_XOONIPS_LOCK_TYPE_STRING_CERTIFY_REQUEST),
         'lock_delete' => sprintf(_MD_XOONIPS_ERROR_CANNOT_DELETE_LOCKED_GROUP, _MD_XOONIPS_LOCK_TYPE_STRING_CERTIFY_REQUEST),
-    );
+    ];
     $msg = isset($messages[$reason]) ? $messages[$reason] : 'fatal error';
     redirect_header($url, 3, $msg);
     exit();
@@ -59,30 +59,30 @@ function xoonips_group_get_groups($uid, $gids = null)
     $u_handler = &xoonips_getormhandler('xoonips', 'xoops_users');
     $is_admin = $xmember_handler->isAdmin($uid);
     $xg_objs = &$xgroup_handler->getGroupObjects($gids);
-    $groups = array();
+    $groups = [];
     foreach ($xg_objs as $xg_obj) {
         $gid = $xg_obj->get('gid');
         $gadmin_uids = $xgroup_handler->getUserIds($gid, true);
         $is_gadmin = in_array($uid, $gadmin_uids);
-        $gadmins = array();
+        $gadmins = [];
         foreach ($gadmin_uids as $gadmin_uid) {
             $u_obj = &$u_handler->get($gadmin_uid);
             if (!is_object($u_obj)) {
                 continue;
             }
-            $gadmins[] = array(
+            $gadmins[] = [
                 'uid' => $gadmin_uid,
                 'uname' => $u_obj->getVar('uname', 's'),
-            );
+            ];
         }
-        $groups[] = array(
+        $groups[] = [
             'gid' => $gid,
             'gname' => $xg_obj->get('gname', 's'),
             'gdesc' => $xg_obj->get('gdesc', 's'),
             'locked' => (!xoonips_group_check_perm($gid)),
             'gadmins' => $gadmins,
             'is_admin' => ($is_admin || $is_gadmin),
-        );
+        ];
     }
 
     return $groups;
@@ -104,14 +104,14 @@ function xoonips_group_get_users($gadmin_uids)
     $criteria->setSort('uname');
     $criteria->setOrder('ASC');
     $u_objs = &$u_handler->getObjects($criteria, false, '', false, $join);
-    $gadmins = array();
+    $gadmins = [];
     foreach ($u_objs as $u_obj) {
         $uid = $u_obj->get('uid');
-        $gadmins[] = array(
+        $gadmins[] = [
             'uid' => $uid,
             'uname' => $u_obj->getVar('uname', 's'),
             'isadmin' => in_array($uid, $gadmin_uids),
-        );
+        ];
     }
 
     return $gadmins;

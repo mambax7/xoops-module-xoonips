@@ -63,21 +63,21 @@ function b_xoonips_quick_search_show()
         return false;
     }
 
-    $search_itemtypes = array(
+    $search_itemtypes = [
         'all' => _MB_XOONIPS_SEARCH_ALL,
         'basic' => _MB_XOONIPS_SEARCH_TITLE_AND_KEYWORD,
         'metadata' => _MB_XOONIPS_SEARCH_METADATA,
-    );
+    ];
 
     // get installed itemtypes
     // TODO: xoonips_item_type table should have itemtype sort order.
     $module_handler       = xoops_getHandler('module');
     $itemtype_handler     = &xoonips_getormhandler('xoonips', 'item_type');
     $itemtype_objs = &$itemtype_handler->getObjects();
-    $itemtypes = array();
+    $itemtypes = [];
     foreach ($itemtype_objs as $itemtype_obj) {
         $name = $itemtype_obj->getVar('name', 'e');
-        if (!in_array($name, array('xoonips_index'))) {
+        if (!in_array($name, ['xoonips_index'])) {
             $mid = $itemtype_obj->getVar('mid', 'n');
             $display_name = $itemtype_obj->getVar('display_name', 'e');
             $module       = $module_handler->get($mid);
@@ -85,12 +85,12 @@ function b_xoonips_quick_search_show()
                 continue;
             }
             $weight = $module->getVar('weight', 'n');
-            $itemtypes[] = array(
+            $itemtypes[] = [
                 'mid' => $mid,
                 'name' => $name,
                 'display_name' => $display_name,
                 'weight' => $weight,
-            );
+            ];
         }
     }
     if (!empty($itemtypes)) {
@@ -113,7 +113,7 @@ function b_xoonips_quick_search_show()
     }
 
     // assign block template variables
-    $block = array();
+    $block = [];
     $block['lang_search'] = _MB_XOONIPS_SEARCH_QUICK;
     $block['lang_advanced_search'] = _MB_XOONIPS_SEARCH_ADVANCED;
     $block['search_itemtypes'] = $search_itemtypes;

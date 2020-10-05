@@ -136,7 +136,7 @@ class XooNIpsActionImportResolveConflict extends XooNIpsAction
     {
         $updatable_pseudo_id = $this->_formdata->getValueArray('post', 'updatable_pseudo_id', 'i', false);
         if (is_null($updatable_pseudo_id) || !is_array($updatable_pseudo_id)) {
-            return array();
+            return [];
         }
 
         return $updatable_pseudo_id;
@@ -151,7 +151,7 @@ class XooNIpsActionImportResolveConflict extends XooNIpsAction
     {
         $update_pseudo_id = $this->_formdata->getValueArray('post', 'update_pseudo_id', 'i', false);
         if (is_null($update_pseudo_id) || !is_array($update_pseudo_id)) {
-            return array();
+            return [];
         }
 
         return $update_pseudo_id;

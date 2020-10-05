@@ -92,7 +92,7 @@ if (!is_readable($file_path)) {
 }
 
 // check rights of access
-$item = array();
+$item = [];
 if ($xnpsid == $sess_id) {
     // same sid
 } else {
@@ -157,9 +157,9 @@ if (!empty($thumbnail)) {
             } elseif ($matches[1] == 'text') {
                 $img_type = 'text';
             } elseif ($matches[1] == 'application') {
-                $text_types = array('pdf', 'xml', 'msword', 'vnd.ms-excel');
-                $image_types = array('vnd.ms-powerpoint', 'postscript');
-                $audio_types = array('vnd.rn-realmedia');
+                $text_types = ['pdf', 'xml', 'msword', 'vnd.ms-excel'];
+                $image_types = ['vnd.ms-powerpoint', 'postscript'];
+                $audio_types = ['vnd.rn-realmedia'];
                 if (in_array($matches[2], $text_types)) {
                     $img_type = 'text';
                 } elseif (in_array($matches[2], $audio_types)) {
@@ -214,7 +214,7 @@ if (!empty($thumbnail)) {
         imagealphablending($im, true);
         $imicon = imagecreatefrompng($img_file);
         imagecopy($im, $imicon, $w / 2 - 48 / 2, $h / 2 - 48 / 2, 0, 0, 48, 48);
-        imagepolygon($im, array(0, 0, $w - 1, 0, $w - 1, $h - 1, 0, $h - 1), 4, $col_gray);
+        imagepolygon($im, [0, 0, $w - 1, 0, $w - 1, $h - 1, 0, $h - 1], 4, $col_gray);
         if (strlen($label) != 0) {
             imagestring($im, $f, $lx, $ly, $label, $black);
         }
@@ -233,7 +233,7 @@ if (!empty($thumbnail)) {
         if (empty($items)) {
             image_error(500);
         }
-        list($item) = $items;
+        [$item] = $items;
         $item_type_id = $item->getVar('item_type_id', 'n');
         $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
         $item_type = &$item_type_handler->get($item_type_id);
@@ -253,12 +253,12 @@ if (!empty($thumbnail)) {
     }
     $strip_mime_types = explode(';', $mime_type);
     $strip_mime_type = trim($strip_mime_types[0]);
-    $show_mime_types = array(
+    $show_mime_types = [
         'image/jpeg',
         'image/png',
         'image/gif',
         'text/plain',
-    );
+    ];
     if (in_array($strip_mime_type, $show_mime_types)) {
         // acceptable to show directly in the browser
         header("Content-Type: $mime_type");

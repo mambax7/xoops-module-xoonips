@@ -28,7 +28,7 @@
 class JuniiListRecordsHandler extends ListRecordsHandler
 {
     public $_identifierTypeAttr;
-    public $_support_tags = array(
+    public $_support_tags = [
         'CODE',
         'USERID',
         'FANO',
@@ -74,7 +74,8 @@ class JuniiListRecordsHandler extends ListRecordsHandler
         'RIGHTS',
         'COMMENT',
         'AHDNG',
-        'AID', );
+        'AID',
+    ];
 
     public function __construct($_parser, $_baseURL)
     {

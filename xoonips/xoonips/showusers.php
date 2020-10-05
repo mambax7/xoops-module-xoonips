@@ -73,16 +73,16 @@ $avatar = '../../uploads/'.$u_obj->getVar('user_avatar', 'e');
 $textutil = &xoonips_getutility('text');
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
        'name' => _MD_XOONIPS_USERLIST_TITLE,
        'url' => XOONIPS_URL.'/userlist.php',
-    ),
-    array(
+    ],
+    [
        'name' => $u_obj->getVar('uname', 's'),
        'url' => XOONIPS_URL.'/showusers.php?uid='.$uid,
-    ),
-);
+    ],
+];
 
 // publication list
 $item_counts = _xoonips_showusers_get_count_items($uid);
@@ -107,18 +107,18 @@ if (count($item_counts) != 0) {
     $pagenavi = $navi->getTemplateVars(10);
     $pagenavi['onclick'] = 'xoonips_showusers_select_page';
     // set page tabs
-    $pagetabs = array();
+    $pagetabs = [];
     foreach ($item_counts as $itid => $item_type) {
-        $pagetabs[] = array(
+        $pagetabs[] = [
             'id' => $itid,
             'label' => sprintf('%s(%u)', $item_type['label'], $item_type['count']),
             'selected' => ($itid == $item_type_id),
             'onclick' => 'xoonips_showusers_select_itemtype',
-        );
+        ];
     }
 } else {
     // publication item not found
-    $item_ids = array();
+    $item_ids = [];
     $pagenavi = false;
     $pagetabs = false;
 }
@@ -158,13 +158,13 @@ function _xoonips_showusers_get_cvitaes($uid)
 {
     $cvitaes_handler = &xoonips_getormhandler('xoonips', 'cvitaes');
     $cvitaes_objs = &$cvitaes_handler->getCVs($uid);
-    $cvitaes = array();
+    $cvitaes = [];
     foreach ($cvitaes_objs as $cvitaes_obj) {
         $from_year = $cvitaes_obj->get('from_year');
         $from_month = (empty($from_year) ? 0 : $cvitaes_obj->get('from_month'));
         $to_year = $cvitaes_obj->get('to_year');
         $to_month = (empty($to_year) ? 0 : $cvitaes_obj->get('to_month'));
-        $cv = array();
+        $cv = [];
         $cv['title'] = $cvitaes_obj->getVar('cvitae_title', 's');
         $cv['from_year'] = (($from_year == 0) ? '' : date('Y', mktime(0, 0, 0, 1, 1, $from_year)));
         $cv['from_month'] = (($from_month == 0) ? '' : date('M.', mktime(0, 0, 0, $from_month, 1, 0)));
@@ -182,14 +182,14 @@ function _xoonips_showusers_get_count_items($uid)
     $nums = $item_show_handler->getCountPublications($uid);
     $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
     $item_type_objs = &$item_type_handler->getObjectsSortByWeight();
-    $ret = array();
+    $ret = [];
     foreach ($item_type_objs as $item_type_obj) {
         $item_type_id = $item_type_obj->get('item_type_id');
         if (isset($nums[$item_type_id])) {
-            $ret[$item_type_id] = array(
+            $ret[$item_type_id] = [
                 'label' => $item_type_obj->getVar('display_name', 's'),
                 'count' => $nums[$item_type_id],
-            );
+            ];
         }
     }
 
@@ -200,7 +200,7 @@ function _xoonips_showusers_get_item_types($fmt)
 {
     $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
     $item_type_objs = &$item_type_handler->getObjectsSortByWeight();
-    $ret = array();
+    $ret = [];
     foreach ($item_type_objs as $item_type_obj) {
         $item_type_id = $obj->get('item_type_id');
         $ret[$item_type_id] = $item_type_obj->getVar('display_name', $fmt);
@@ -221,25 +221,25 @@ function _xoonips_showusers_get_item_ids($item_type_id, $uid, &$navi)
     $limit = $navi->getLimit();
     $sort = $navi->getSort();
     $order = $navi->getOrder();
-    $def_sort = array(
+    $def_sort = [
         'title' => 'it.title',
         'item_id' => 'its.item_id',
         'ext_id' => 'doi',
         'last_update' => 'last_updated_date',
         'creation_date' => 'creation_date',
         'publication_date' => 'publication_year',
-    );
-    $def_order = array(
+    ];
+    $def_order = [
         'ASC' => 'ASC',
         'DESC' => 'DESC',
-    );
+    ];
     $sort = isset($def_sort[$sort]) ? $def_sort[$sort] : 'it.title';
     $order = isset($def_order[$order]) ? $def_order[$order] : 'ASC';
     $criteria->setStart($start);
     $criteria->setLimit($limit);
     $criteria->setSort($sort);
     $criteria->setOrder($order);
-    $item_ids = array();
+    $item_ids = [];
     $res = &$item_basic_handler->open($criteria, 'its.item_id', true, $join);
     while ($item_basic_obj = &$item_basic_handler->getNext($res)) {
         $item_ids[] = $item_basic_obj->get('item_id');
@@ -295,7 +295,7 @@ $inid = '';
 $itid = '';
 $num_of_data = '';
 $sum_of_data = '';
-$item_htmls = array();
+$item_htmls = [];
 while ($row = $xoopsDB->fetchArray($res)) {
     $inid = intval($row['index_id']);
     $sql2 = 'SELECT item_id FROM '.$xoopsDB->prefix('xoonips_index_item_link').' WHERE index_id='.$inid.' ';
@@ -349,7 +349,7 @@ if ($w_page > 1) {
 }
 
 if (!isset($pages)) {
-    $pages = array(min(max(0, $w_page - 4), max(0, $w_last - 9)));
+    $pages = [min(max(0, $w_page - 4), max(0, $w_last - 9))];
 }
 
 // decide number of iteration
@@ -375,7 +375,7 @@ for ($i = 0; $i < $times; ++$i) {
     default:
         $link = '&nbsp;<a href="showusers.php?uid='.$uid.'&page='.$pag.'">'.$pag.'</a>&nbsp;';
     }
-    $w_link[] = array('link' => $link);
+    $w_link[] = ['link' => $link];
 }
 $xoopsTpl->assign('w_link', $w_link);
 
@@ -399,7 +399,7 @@ while ($itop = $xoopsDB->fetchArray($res)) {
     }
 }
 
-$item_htmls = array();
+$item_htmls = [];
 if ($sum_of_data !== 0) {
     $tab_name1 = $xoopsDB->prefix('xoonips_item_show');
     $tab_name2 = $xoopsDB->prefix('xoonips_item_basic');
@@ -433,12 +433,12 @@ if ($sum_of_data !== 0) {
             $trow = $xoopsDB->fetchArray($tres);
             $item_type_title = $ts->htmlSpecialChars($trow['display_name']);
             $title_t = '<table><tr><td>&nbsp;&nbsp;'.$item_type_title.'</td></tr></table>';
-            $item_htmls[] = array('html' => $title_t, 'th' => 'on');
+            $item_htmls[] = ['html' => $title_t, 'th' => 'on'];
         }
         // make item block
         $tmp = itemid2ListBlock(intval($row['item_id']));
         foreach ($tmp as $key => $value) {
-            $item_htmls[] = array('html' => $value);
+            $item_htmls[] = ['html' => $value];
         }
         $ch_a = intval($row['item_type_id']);
     }

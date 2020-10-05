@@ -32,7 +32,7 @@ function xoonips_extra_param_restore()
 {
     $formdata = &xoonips_getutility('formdata');
     $extra_param_name = $formdata->getValueArray('post', 'extra_param_name', 's', false);
-    $extra_params = array();
+    $extra_params = [];
     foreach ($extra_param_name as $name) {
         if (!isset($_POST[$name])) {
             continue;
@@ -53,5 +53,5 @@ function xoonips_extra_param_restore()
         return $extra_params;
     }
 
-    return array();
+    return [];
 }

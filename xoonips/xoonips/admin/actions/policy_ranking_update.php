@@ -35,23 +35,23 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 }
 
 // get requests
-$post_keys = array(
-    'ranking_num_rows' => array('i', false, true),
-    'ranking_new_num_rows' => array('i', false, true),
-    'ranking_days' => array('i', false, true),
-    'ranking_days_enabled' => array('s', false, false),
+$post_keys = [
+    'ranking_num_rows' => ['i', false, true],
+    'ranking_new_num_rows' => ['i', false, true],
+    'ranking_days' => ['i', false, true],
+    'ranking_days_enabled' => ['s', false, false],
     // checkbox
-    'ranking_visible' => array('i', true, false),
+    'ranking_visible' => ['i', true, false],
     // checkbox
-    'ranking_new_visible' => array('i', true, false),
+    'ranking_new_visible' => ['i', true, false],
     // checkbox,
-);
+];
 $post_vals = xoonips_admin_get_requests('post', $post_keys);
 
 // set config keys
-$config_keys = array();
+$config_keys = [];
 foreach ($post_keys as $key => $attributes) {
-    list($data_type, $is_array, $required) = $attributes;
+    [$data_type, $is_array, $required] = $attributes;
     $config_keys[$key] = $data_type;
 }
 
@@ -60,10 +60,10 @@ if (is_null($post_vals['ranking_days_enabled'])) {
     $post_vals['ranking_days_enabled'] = '';
 }
 // >> visible
-$post_array_keys = array(
-    'ranking_visible' => 5,
+$post_array_keys = [
+    'ranking_visible'     => 5,
     'ranking_new_visible' => 2,
-);
+];
 foreach ($post_array_keys as $key => $max_num) {
     $val = $post_vals[$key];
     for ($i = 0; $i < $max_num; ++$i) {

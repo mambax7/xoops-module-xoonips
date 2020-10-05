@@ -101,7 +101,7 @@ class XooNIps_UserPreloadFunctions
                 // clear session
                 $root = &XCube_Root::getSingleton();
                 $root->mSession->regenerate();
-                $_SESSION = array();
+                $_SESSION = [];
             }
         }
     }

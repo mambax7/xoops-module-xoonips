@@ -63,18 +63,18 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
         $this->_view_params['to_uid'] = $this->_formdata->getValue('post', 'to_uid', 'i', false);
         $this->_view_params['to_index_id'] = $this->_formdata->getValue('post', 'to_index_id', 'i', false);
         $tmp = $this->_formdata->getValueArray('post', 'checked_item_ids', 'i', false);
-        $this->_view_params['selected_item_ids'] = !is_null($tmp) ? $tmp : array();
+        $this->_view_params['selected_item_ids'] = !is_null($tmp) ? $tmp : [];
         $this->_view_params['page'] = $this->_formdata->getValue('post', 'page', 's', false);
         $this->_view_params['from_user_options'] = $this->get_from_user_options();
 
         switch ($this->_formdata->getValue('post', 'op', 's', false)) {
         case 'from_uid_changed':
             $this->_view_params['from_index_id'] = $this->get_private_index_id($this->_view_params['from_uid']);
-            $this->_view_params['selected_item_ids'] = array();
+            $this->_view_params['selected_item_ids'] = [];
             $this->_view_params['page'] = 1;
             break;
         case 'from_index_id_changed':
-            $this->_view_params['selected_item_ids'] = array();
+            $this->_view_params['selected_item_ids'] = [];
             $this->_view_params['page'] = 1;
             break;
         case 'to_uid_changed':
@@ -88,7 +88,7 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
             $this->_view_params['from_index_id'] = $this->get_private_index_id($uids[0]);
             $this->_view_params['to_uid'] = $uids[1];
             $this->_view_params['to_index_id'] = $this->get_private_index_id($uids[1]);
-            $this->_view_params['selected_item_ids'] = array();
+            $this->_view_params['selected_item_ids'] = [];
             $this->_view_params['page'] = 1;
             break;
         }
@@ -112,9 +112,9 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
         $this->_view_params['can_not_transfer_items'] =
             $this->get_untransferrable_reasons_and_items($this->_view_params['from_uid'], $this->get_from_index_item_ids());
 
-        $this->_view_params['child_items'] = array();
+        $this->_view_params['child_items'] = [];
         foreach (xoonips_transfer_get_transferrable_item_information($this->_view_params['from_uid'], $this->get_from_index_item_ids()) as $info) {
-            $this->_view_params['child_items'][$info['item_id']] = array();
+            $this->_view_params['child_items'][$info['item_id']] = [];
             foreach ($info['child_items'] as $child_item) {
                 $this->_view_params['child_items'][$info['item_id']][] = $child_item['item_id'];
             }
@@ -123,7 +123,7 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
 
     public function get_from_index_item_ids()
     {
-        $result = array();
+        $result = [];
 
         $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
         $criteria = new Criteria('index_id', $this->_view_params['from_index_id']);
@@ -144,7 +144,7 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
         $criteria->setSort('uname');
         $criteria->setOrder('ASC');
         $res = &$u_handler->open($criteria, 'xu.uid, uname', false, $join);
-        $result = array();
+        $result = [];
         while ($obj = &$u_handler->getNext($res)) {
             $uid = $obj->get('uid');
             $result[$uid] = $obj->getVar('uname', 's');
@@ -164,7 +164,7 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
         $criteria->setSort('uname');
         $criteria->setOrder('ASC');
         $res = &$u_handler->open($criteria, 'xu.uid, uname', false, $join);
-        $result = array();
+        $result = [];
         while ($obj = &$u_handler->getNext($res)) {
             $uid = $obj->get('uid');
             $result[$uid] = $obj->getVar('uname', 's');

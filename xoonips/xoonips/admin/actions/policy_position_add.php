@@ -35,10 +35,10 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 }
 
 // get variables
-$post_keys = array(
-    'title' => array('s', false, true),
-    'order' => array('i', false, true),
-);
+$post_keys = [
+    'title' => ['s', false, true],
+    'order' => ['i', false, true],
+];
 $post_vals = xoonips_admin_get_requests('post', $post_keys);
 
 // insert value into db

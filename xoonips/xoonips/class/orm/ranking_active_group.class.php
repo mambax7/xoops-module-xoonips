@@ -53,7 +53,7 @@ class XooNIpsOrmRankingActiveGroupHandler extends XooNIpsOrmAbstractRankingHandl
     {
         parent::__construct($db);
         $this->__initHandler('XooNIpsOrmRankingActiveGroup', 'xoonips_ranking_active_group', 'gid', false);
-        $this->_set_columns(array('gid', 'count'));
+        $this->_set_columns(['gid', 'count']);
     }
 
     /**

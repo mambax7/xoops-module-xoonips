@@ -103,10 +103,10 @@ class XooNIpsActionImportImport extends XooNIpsAction
         $this->_view_params['finish_time'] = $this->_finish_time;
         $this->_view_params['filename'] = $this->_collection->getImportFileName();
         $this->_view_params['uname'] = $xoopsUser->getVar('uname');
-        $this->_view_params['errors'] = array();
+        $this->_view_params['errors'] = [];
         foreach ($success['import_items'] as $item) {
             foreach (array_unique($item->getErrorCodes()) as $code) {
-                $this->_view_params['errors'][] = array('code' => $code, 'extra' => $item->getPseudoId());
+                $this->_view_params['errors'][] = ['code' => $code, 'extra' => $item->getPseudoId()];
             }
         }
     }

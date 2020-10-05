@@ -35,10 +35,10 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 }
 
 // get variables
-$post_keys = array(
-    'activate_user' => array('i', false, true),
-    'certify_user' => array('s', false, true),
-);
+$post_keys = [
+    'activate_user' => ['i', false, true],
+    'certify_user' => ['s', false, true],
+];
 $post_vals = xoonips_admin_get_requests('post', $post_keys);
 
 // activate user

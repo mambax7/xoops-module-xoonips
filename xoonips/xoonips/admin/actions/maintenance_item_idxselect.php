@@ -50,7 +50,7 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 // load libraries
 require_once '../include/libitem.php';
 
-$treelist = array();
+$treelist = [];
 switch ($index_mode) {
 case 'private':
     $treelist = xnpitmgrListIndexTree(XNPITMGR_LISTMODE_PRIVATEONLY, $uid);
@@ -68,28 +68,28 @@ require_once '../class/base/gtickets.php';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_TITLE,
         'url' => $xoonips_admin['mypage_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // templates
 require_once '../class/base/pattemplate.class.php';

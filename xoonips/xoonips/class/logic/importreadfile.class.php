@@ -47,7 +47,7 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
     /**
      * array of items to import.
      */
-    public $_items = array();
+    public $_items = [];
 
     public function __construct()
     {
@@ -78,7 +78,7 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
             return false;
         }
 
-        $items = array();
+        $items = [];
         foreach ($fnames as $fname) {
             // read from extract_dir(not sub directories)
             if (dirname($fname) == '.' && ctype_digit(basename($fname, '.xml'))) {
@@ -106,7 +106,7 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
 
         $this->_check_import_items_and_set_errors();
 
-        $success = array('import_items' => $this->_items);
+        $success = ['import_items' => $this->_items];
         $response->setResult(true);
         $response->setSuccess($success);
 
@@ -121,7 +121,7 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
     public function _check_import_items_and_set_errors()
     {
         // every item has unique pseudo_id ?
-        $pseudo_id2i = array();
+        $pseudo_id2i = [];
         foreach ($this->_items as $i => $item) {
             $pseudo_id = $item->getPseudoId();
             if (isset($pseudo_id2i[$pseudo_id])) {
@@ -131,12 +131,12 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
                 }
                 $pseudo_id2i[$pseudo_id][] = $i;
             } else {
-                $pseudo_id2i[$pseudo_id] = array($i);
+                $pseudo_id2i[$pseudo_id] = [$i];
             }
         }
 
         // every related_to has valid pseudo_id ?
-        $valid_pseudo_ids = array();
+        $valid_pseudo_ids = [];
         foreach ($this->_items as $item) {
             $valid_pseudo_ids[$item->getPseudoId()] = true;
         }
@@ -152,7 +152,7 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
         }
 
         //doi conflict in import file
-        $doi2i = array();
+        $doi2i = [];
         foreach ($this->_items as $i => $item) {
             $basic = &$item->getVar('basic');
             $doi = $basic->get('doi');
@@ -166,7 +166,7 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
                 }
                 $doi2i[$doi][] = $i;
             } else {
-                $doi2i[$doi] = array($i);
+                $doi2i[$doi] = [$i];
             }
         }
     }

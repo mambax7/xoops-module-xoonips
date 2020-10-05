@@ -46,7 +46,7 @@ $langman->read('modinfo.php');
 function xoonips_admin_initialize($myfile, $preference, $pages)
 {
     global $xoonips_admin;
-    $xoonips_admin = array();
+    $xoonips_admin = [];
     $xoonips_admin['mydirname'] = basename(dirname(dirname($myfile)));
     $xoonips_admin['mod_url'] = XOOPS_URL.'/modules/'.$xoonips_admin['mydirname'];
     $xoonips_admin['mod_path'] = XOOPS_ROOT_PATH.'/modules/'.$xoonips_admin['mydirname'];
@@ -81,9 +81,9 @@ function xoonips_admin_get_requests($method, $keys)
 {
     global $xoonips_admin;
     $formdata = &xoonips_getutility('formdata');
-    $ret = array();
+    $ret = [];
     foreach ($keys as $key => $attributes) {
-        list($type, $is_array, $required) = $attributes;
+        [$type, $is_array, $required] = $attributes;
         if ($method == 'files') {
             $value = $formdata->getFile($key, $required);
         } else {
@@ -106,7 +106,7 @@ function xoonips_admin_get_configs($keys, $fmt)
 {
     $textutil = &xoonips_getutility('text');
     $xconfig_handler = &xoonips_getormhandler('xoonips', 'config');
-    $ret = array();
+    $ret = [];
     foreach ($keys as $key => $key_fmt) {
         $val = $xconfig_handler->getValue($key);
         if (is_null($val)) {

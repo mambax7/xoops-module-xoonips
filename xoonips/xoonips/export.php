@@ -70,16 +70,16 @@ $formdata = &xoonips_getutility('formdata');
 
 $textutil = &xoonips_getutility('text');
 
-$request_vars = array(
-    'op' => array('s', ''),
-    'index_id' => array('i', ''),
-    'export_type' => array('s', ''),
-    'recursive_item' => array('i', 0),
-    'recursive_index' => array('i', 0),
-    'attachment' => array('i', 0),
-);
+$request_vars = [
+    'op' => ['s', ''],
+    'index_id' => ['i', ''],
+    'export_type' => ['s', ''],
+    'recursive_item' => ['i', 0],
+    'recursive_index' => ['i', 0],
+    'attachment' => ['i', 0],
+];
 foreach ($request_vars as $key => $meta) {
-    list($type, $default) = $meta;
+    [$type, $default] = $meta;
     $$key = $formdata->getValue('both', $key, $type, false, $default);
 }
 $ids = $formdata->getValueArray('both', 'ids', 'i', false);
@@ -109,8 +109,8 @@ if ($op == 'export') {
             //
             // exprot index tree structure only
             //
-            $index = array();
-            $res = xnp_get_index($_SESSION['XNPSID'], intval($index_id), $index);
+            $index = [];
+            $res   = xnp_get_index($_SESSION['XNPSID'], intval($index_id), $index);
             if ($res != RES_OK) {
                 $system_message = "can't get indexes";
                 $op = 'list';
@@ -167,8 +167,8 @@ if ($op == 'export') {
             }
         }
 
-        $zippedFiles = array();
-        $removeFiles = array();
+        $zippedFiles = [];
+        $removeFiles = [];
         if ($dh = opendir($export_dir)) {
             while (false !== ($f = readdir($dh))) {
                 if ($f == '.' || $f == '..' || $f == 'files') {
@@ -272,10 +272,10 @@ EOT;
             $ids = xoonips_get_all_item_ids_to_export($index_id, $xoopsUser->getVar('uid'), $recursive_item);
         }
 
-        $ids = array_unique($ids);
-        $tmp = array();
-        $itemtypes = array();
-        $res = xnp_get_item_types($tmp);
+        $ids       = array_unique($ids);
+        $tmp       = [];
+        $itemtypes = [];
+        $res       = xnp_get_item_types($tmp);
         foreach ($tmp as $i) {
             $itemtypes[$i['item_type_id']] = $i;
         }
@@ -283,10 +283,10 @@ EOT;
         // split items between required to agree license and no needs.
         // $items['export'] = array( does not required items  );
         // $items['license_required'] = array( required items );
-        $items = array();
+        $items = [];
         foreach ($ids as $i) {
-            $item_basic = array();
-            $res = xnp_get_item($_SESSION['XNPSID'], $i, $item_basic); //TODO TO FIX THAT XNP_GET_ITEM CAN'T GET ITEM
+            $item_basic = [];
+            $res        = xnp_get_item($_SESSION['XNPSID'], $i, $item_basic); //TODO TO FIX THAT XNP_GET_ITEM CAN'T GET ITEM
             if ($res == RES_OK
                 && array_key_exists($item_basic['item_type_id'], $itemtypes)
             ) {
@@ -296,7 +296,7 @@ EOT;
                 $func_export = $itemtypes[$item_basic['item_type_id']]['name'].'ExportItem';
                 require_once XOOPS_ROOT_PATH.'/modules/'.$itemtypes[$item_basic['item_type_id']]['viewphp'];
                 $license_required = function_exists($func_license_required) ? $func_license_required($i) : false;
-                list($license, $use_cc) = function_exists($func_license) ? $func_license($i) : array('', false);
+                [$license, $use_cc] = function_exists($func_license) ? $func_license($i) : ['', false];
                 $html = function_exists($func_html) ? $func_html($item_basic) : '';
                 if (!function_exists($func_export) || !export_item_enable($i)) {
                     $key = 'not_export';
@@ -306,15 +306,15 @@ EOT;
                     $key = 'export';
                 }
                 if (!array_key_exists($key, $items)) {
-                    $items[$key] = array();
+                    $items[$key] = [];
                 }
-                $items[$key][] = array('item_id' => $i,
-                                        //'license_required' => $license_required,
-                                        'license' => ($use_cc ? $license : $textutil->html_special_chars($license)),
-                                        'use_cc' => $use_cc,
-                                        'detail_html' => $html,
-                                        //'export_flag' => function_exists( $func_export )
-                );
+                $items[$key][] = ['item_id'     => $i,
+                                  //'license_required' => $license_required,
+                                  'license'     => ($use_cc ? $license : $textutil->html_special_chars($license)),
+                                  'use_cc'      => $use_cc,
+                                  'detail_html' => $html,
+                                  //'export_flag' => function_exists( $func_export )
+                ];
             }
         }
         if ($index_id != '') {
@@ -350,7 +350,7 @@ EOT;
     //   $func = $itemtype -> get( 'name' ).'GetExportItemId( $id )';
     //   $ids = arraymerge( $func( $item_id ) );
     // done
-    $add_export_ids = array();
+    $add_export_ids = [];
     foreach ($ids as $id) {
         $basic_handler = &xoonips_getormhandler('xoonips', 'item_basic');
         $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
@@ -561,8 +561,8 @@ function xoonips_export_index_xml($fp, $index_id, $recursive)
  */
 function xoonips_get_all_item_ids_to_export($index_id, $uid, $recursive_item = false)
 {
-    $ids = array();
-    $tmp_idx = array($index_id);
+    $ids     = [];
+    $tmp_idx = [$index_id];
     while (count($tmp_idx) > 0) {
         $i = array_shift($tmp_idx);
 
@@ -576,8 +576,8 @@ function xoonips_get_all_item_ids_to_export($index_id, $uid, $recursive_item = f
             return $ids;
         }
 
-        $child = array();
-        $res = xnp_get_indexes($_SESSION['XNPSID'], $i, array(), $child);
+        $child = [];
+        $res   = xnp_get_indexes($_SESSION['XNPSID'], $i, [], $child);
         if ($res == RES_OK) {
             foreach ($child as $c) {
                 array_push($tmp_idx, $c['item_id']);

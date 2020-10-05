@@ -31,23 +31,23 @@ $title = _AM_XOONIPS_POLICY_POSITION_TITLE;
 $description = _AM_XOONIPS_POLICY_POSITION_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';
@@ -57,10 +57,10 @@ $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 // >> positions
 $posi_handler = &xoonips_getormhandler('xoonips', 'positions');
 $posi_array = $posi_handler->getPositionList('e');
-$positions = array();
+$positions = [];
 $evenodd = 'odd';
 foreach ($posi_array as $posi_id => $posi) {
-    $positions[] = array(
+    $positions[] = [
         'id' => $posi_id,
         'order' => $posi['posi_order'],
         'title_e' => $posi['posi_title'],
@@ -68,7 +68,7 @@ foreach ($posi_array as $posi_id => $posi) {
         'title_js' => str_replace('&#039;', '\\\'', $posi['posi_title']),
         'evenodd' => $evenodd,
         'delete' => _AM_XOONIPS_LABEL_DELETE,
-    );
+    ];
     $evenodd = ($evenodd == 'even') ? 'odd' : 'even';
 }
 

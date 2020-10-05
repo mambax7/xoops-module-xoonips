@@ -58,7 +58,7 @@ define('XNPERR_STORAGE_OF_ITEM_LIMIT_EXCEEDS', 112);
  */
 class XooNIpsError
 {
-    public $error = array();
+    public $error = [];
 
     /**
      * @brief create XooNIpsError with error code and error message
@@ -81,10 +81,10 @@ class XooNIpsError
      */
     public function add($code, $extra = null)
     {
-        $this->error[] = array(
+        $this->error[] = [
             'code' => intval($code),
             'extra' => is_null($extra) ? '' : $extra,
-        );
+        ];
     }
 
     /**

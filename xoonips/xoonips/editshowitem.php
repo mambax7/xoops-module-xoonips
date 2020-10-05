@@ -50,18 +50,18 @@ if (!$xmember_handler->isAdmin($uid) && $uid != $myuid) {
     exit();
 }
 
-$breadcrumbs = array(
-  array(
+$breadcrumbs = [
+    [
     'name' => _MD_XOONIPS_BREADCRUMBS_USER,
-  ),
-  array(
+    ],
+    [
     'name' => _MD_XOONIPS_SHOW_USER_TITLE,
     'url' => 'showusers.php'.'?uid='.$uid,
-  ),
-  array(
+    ],
+    [
     'name' => _MD_XOONIPS_ITEM_SHOW_EDIT_TITLE,
-  ),
-);
+    ],
+];
 
 $op = $formdata->getValue('post', 'op', 's', false, '');
 switch ($op) {
@@ -119,7 +119,7 @@ $item_show_optional = $xconfig_handler->getValue('item_show_optional');
 $is_owner_only = ($item_show_optional != 'on');
 
 // calculate page navigation
-$page_navi = array();
+$page_navi = [];
 $total_item_count = 0;
 // - get page number in each item types
 $page = $formdata->getValueArray('post', 'page', 'i', false);
@@ -146,29 +146,29 @@ $xoopsOption['template_main'] = 'xoonips_editshowitem.html';
 require XOOPS_ROOT_PATH.'/header.php';
 // create item list block after loaded header.php,
 // because $GLOBALS['xoopsTpl'] variable is used in item list block generator
-$item_types = array();
+$item_types = [];
 $hidden_checked_item_ids = $checked_item_ids;
 foreach ($item_type_ids as $it_id) {
     $navi = &$page_navi[$it_id];
-    $items = array();
+    $items = [];
     if ($item_type_id == $it_id) {
         // current selected item type
         $item_ids = _xoonips_editshowitem_get_item_ids($it_id, $uid, $is_owner_only, $navi->getSort(), $navi->getOrder(), $navi->getStart(), $navi->getLimit());
         foreach ($item_ids as $item_id) {
-            $items[] = array(
+            $items[] = [
                 'item_id' => $item_id,
                 'checked' => in_array($item_id, $checked_item_ids),
                 'html' => _xoonips_editshowitem_get_item_html($item_id),
-            );
+            ];
         }
         $hidden_checked_item_ids = array_diff($hidden_checked_item_ids, $item_ids);
     }
-    $item_types[$it_id] = array(
+    $item_types[$it_id] = [
         'item_type_id' => $it_id,
         'name' => $item_type_names[$it_id],
         'navi' => $navi->getTemplateVars(10),
         'items' => $items,
-    );
+    ];
 }
 $xoopsTpl->assign('xoops_breadcrumbs', $breadcrumbs);
 $xoopsTpl->assign('token_ticket', $token_ticket);
@@ -194,7 +194,7 @@ function _xoonips_editshowitem_get_item_ids_by_uid($uid)
     $is_handler = &xoonips_getormhandler('xoonips', 'item_show');
     $criteria = new Criteria('uid', $uid);
     $objs = &$is_handler->getObjects($criteria);
-    $iids = array();
+    $iids = [];
     foreach ($objs as $obj) {
         $iids[] = $obj->get('item_id');
     }
@@ -223,7 +223,7 @@ function _xoonips_editshowitem_update_item_ids($uid, $item_ids)
             $is_handler->delete($obj);
         } else {
             // already exists
-            $item_ids = array_diff($item_ids, array($iid));
+            $item_ids = array_diff($item_ids, [$iid]);
         }
     }
     // insert non existant item ids
@@ -248,7 +248,7 @@ function _xoonips_editshowitem_get_item_type_names($fmt)
 {
     $it_handler = &xoonips_getormhandler('xoonips', 'item_type');
     $objs = &$it_handler->getObjectsSortByWeight();
-    $res = array();
+    $res = [];
     foreach ($objs as $obj) {
         $item_type_id = $obj->get('item_type_id');
         $res[$item_type_id] = $obj->getVar('display_name', $fmt);
@@ -305,7 +305,7 @@ function _xoonips_editshowitem_get_item_html($item_id)
 function _xoonips_editshowitem_get_item_ids($item_type_id, $uid, $is_owner_only, $sort, $order, $start, $limit)
 {
     $objs = &_xoonips_editshowitem_get_item_objects($item_type_id, $uid, $is_owner_only, $sort, $order, $start, $limit);
-    $item_ids = array();
+    $item_ids = [];
     foreach ($objs as $obj) {
         $item_ids[] = $obj->get('item_id');
     }
@@ -342,17 +342,17 @@ function &_xoonips_editshowitem_get_item_objects($item_type_id, $uid, $is_owner_
     $criteria->add(new Criteria('item_type_id', $item_type_id, '=', 'ib'));
     $criteria->add(new Criteria('title_id', 0, '=', 'it'));
     if (!is_null($start)) {
-        $def_sort = array(
+        $def_sort = [
             'title' => 'it.title',
             'item_id' => 'ib.item_id',
             'ext_id' => 'ib.doi',
             'last_update' => 'last_updated_date',
             'creation_date' => 'creation_date',
-        );
-        $def_order = array(
+        ];
+        $def_order = [
             'ASC' => 'ASC',
             'DESC' => 'DESC',
-        );
+        ];
         $sort = isset($def_sort[$sort]) ? $def_sort[$sort] : 'it.title';
         $order = isset($def_order[$order]) ? $def_order[$order] : 'ASC';
         $criteria->setSort($sort);

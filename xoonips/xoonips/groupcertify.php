@@ -80,7 +80,7 @@ if ($op == 'certify') {
     exit();
 }
 
-$group_indexes = array();
+$group_indexes = [];
 $index_compo_handler = &xoonips_getormcompohandler('xoonips', 'index');
 $index_group_index_link_handler = &xoonips_getormhandler('xoonips', 'index_group_index_link');
 foreach ($index_group_index_link_handler->getObjects() as $link) {
@@ -89,13 +89,13 @@ foreach ($index_group_index_link_handler->getObjects() as $link) {
         if (!$group_index_path) {
             continue;
         }
-        $group_indexes[$link->get('group_index_id')] = array(
-        'group_index_id' => $link->get('group_index_id'),
-        'indexes' => array(),
-        'group_index_path' => $textutil->html_special_chars('/'.join('/', $group_index_path)),
-        );
+        $group_indexes[$link->get('group_index_id')] = [
+            'group_index_id' => $link->get('group_index_id'),
+            'indexes' => [],
+            'group_index_path' => $textutil->html_special_chars('/'.join('/', $group_index_path)),
+        ];
     }
-    array_push($group_indexes[$link->get('group_index_id')]['indexes'], array('id' => $link->get('index_id'), 'path' => $textutil->html_special_chars('/'.join('/', $index_compo_handler->getIndexPathNames($link->get('index_id'))))));
+    array_push($group_indexes[$link->get('group_index_id')]['indexes'], ['id' => $link->get('index_id'), 'path' => $textutil->html_special_chars('/' . join('/', $index_compo_handler->getIndexPathNames($link->get('index_id'))))]);
 }
 
 $xoopsOption['template_main'] = 'xoonips_groupcertify.html';
@@ -125,7 +125,7 @@ function certify($to_index_ids, $group_index_id)
 
     $index_group_index_link_handler = &xoonips_getormhandler('xoonips', 'index_group_index_link');
     foreach ($to_index_ids as $to_index_id) {
-        if (!$index_group_index_link_handler->makePublic($to_index_id, array($group_index_id))) {
+        if (!$index_group_index_link_handler->makePublic($to_index_id, [$group_index_id])) {
             $transaction->rollback();
             redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_GROUP_TREE_TO_PUBLIC_INDEX_TREE_FAILED);
             exit();
@@ -135,7 +135,7 @@ function certify($to_index_ids, $group_index_id)
     $eventlog_handler->recordCertifyGroupIndexEvent($group_index_id);
 
     $transaction->commit();
-    $index_group_index_link_handler->notifyMakePublicGroupIndex($to_index_ids, array($group_index_id), 'group_item_certified');
+    $index_group_index_link_handler->notifyMakePublicGroupIndex($to_index_ids, [$group_index_id], 'group_item_certified');
     redirect_header(XOOPS_URL.'/modules/xoonips/groupcertify.php', 3, 'Succeed');
 }
 
@@ -148,13 +148,13 @@ function uncertify($to_index_ids, $group_index_id)
 
     $index_group_index_link_handler = &xoonips_getormhandler('xoonips', 'index_group_index_link');
     foreach ($to_index_ids as $to_index_id) {
-        if (!$index_group_index_link_handler->rejectMakePublic($to_index_id, array($group_index_id))) {
+        if (!$index_group_index_link_handler->rejectMakePublic($to_index_id, [$group_index_id])) {
             $transaction->rollback();
             redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_GROUP_TREE_TO_PUBLIC_INDEX_TREE_FAILED);
             exit();
         }
     }
-    $index_group_index_link_handler->notifyMakePublicGroupIndex($to_index_ids, array($group_index_id), 'group_item_rejected');
+    $index_group_index_link_handler->notifyMakePublicGroupIndex($to_index_ids, [$group_index_id], 'group_item_rejected');
 
     $eventlog_handler = &xoonips_getormhandler('xoonips', 'event_log');
     $eventlog_handler->recordRejectGroupIndexEvent($group_index_id);

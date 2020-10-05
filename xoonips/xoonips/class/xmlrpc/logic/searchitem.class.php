@@ -72,7 +72,7 @@ class XooNIpsXmlRpcLogicSearchItem extends XooNIpsXmlRpcLogic
 
             return false;
         }
-        $vars = array();
+        $vars = [];
         $vars[0] = $params[0];
         $unicode = &xoonips_getutility('unicode');
         $vars[1] = $unicode->decode_utf8($params[1], xoonips_get_server_charset(), 'h');

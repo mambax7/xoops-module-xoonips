@@ -142,7 +142,7 @@ class XooNIpsMemberHandler
         // set dummy variable to required field
         $dummy_field = 'required';
         $xconfig_handler = &xoonips_getormhandler('xoonips', 'config');
-        $keys = array(
+        $keys = [
             // config key name => field name of 'xoonips_users' table
             'account_address_optional' => 'address',
             'account_division_optional' => 'division',
@@ -151,7 +151,7 @@ class XooNIpsMemberHandler
             'account_country_optional' => 'country',
             'account_zipcode_optional' => 'zipcode',
             'account_fax_optional' => 'fax',
-        );
+        ];
         foreach ($keys as $key => $field) {
             $val = $xconfig_handler->getValue($key);
             if ($val == 'off') {

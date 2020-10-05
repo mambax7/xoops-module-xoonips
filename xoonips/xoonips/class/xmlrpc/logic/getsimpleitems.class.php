@@ -73,10 +73,10 @@ class XooNIpsXmlRpcLogicGetSimpleItems extends XooNIpsXmlRpcLogic
 
             return false;
         }
-        $vars = array();
+        $vars = [];
         $vars[0] = $params[0];
         $unicode = &xoonips_getutility('unicode');
-        $vars[1] = array();
+        $vars[1] = [];
         foreach ($params[1] as $key => $val) {
             $vars[1][$key] = $unicode->decode_utf8($val, xoonips_get_server_charset(), 'h');
         }

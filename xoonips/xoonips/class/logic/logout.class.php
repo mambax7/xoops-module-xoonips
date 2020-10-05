@@ -81,7 +81,7 @@ class XooNIpsLogicLogout extends XooNIpsLogic
             $session_handler->delete($session);
         }
         // delete XOOPS session and forbid future session.write()
-        $_SESSION = array();
+        $_SESSION = [];
         session_destroy();
         $response->setResult(true);
 

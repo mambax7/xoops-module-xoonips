@@ -35,7 +35,7 @@ class ListMetadataFormatsHandler extends HarvesterHandler
         parent::__construct($_parser);
 
         $this->metadataPrefix = 'oai_dc';
-        $this->tagstack = array();
+        $this->tagstack = [];
     }
 
     public function startElementHandler($parser, $name, $attribs)

@@ -73,7 +73,7 @@ class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
             redirect_header(XOOPS_URL.'/', 3, _MD_XOONIPS_TRANSFER_USER_ACCEPT_ERROR_NO_ITEM);
         }
 
-        $result = array();
+        $result = [];
         foreach ($this->get_item_ids_to_transfer() as $item_id) {
             foreach ($this->get_notify_uids($item_id) as $uid) {
                 $result[$uid][$this->get_transferer_uid($item_id)][$this->get_transferee_uid($item_id)][] = $item_id;
@@ -114,7 +114,7 @@ class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
     {
         $result = $this->_formdata->getValueArray('post', 'item_ids_to_transfer', 'i', false);
         if (is_null($result)) {
-            return array();
+            return [];
         }
 
         return $result;
@@ -128,7 +128,7 @@ class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
         foreach ($this->_notify_uid_transferer_transferee_item_ids_map as $uid_to_notify => $value) {
             foreach ($value as $transferer_uid => $transferee_and_item_ids) {
                 foreach ($transferee_and_item_ids as $transferee_uid => $item_ids) {
-                    xoonips_notification_item_transfer($transferer_uid, $transferee_uid, $item_ids, array($uid_to_notify));
+                    xoonips_notification_item_transfer($transferer_uid, $transferee_uid, $item_ids, [$uid_to_notify]);
                 }
             }
         }
@@ -173,15 +173,15 @@ class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
     {
         global $xoopsDB;
 
-        $result = array();
+        $result = [];
         $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
 
-        $links = $index_item_link_handler->getByItemid($item_id, array(OL_PUBLIC));
+        $links = $index_item_link_handler->getByItemid($item_id, [OL_PUBLIC]);
         if (is_array($links) && count($links) > 0) {
             $result = xoonips_notification_get_moderator_uids();
         }
 
-        $links = $index_item_link_handler->getByItemid($item_id, array(OL_GROUP_ONLY));
+        $links = $index_item_link_handler->getByItemid($item_id, [OL_GROUP_ONLY]);
         if (!is_array($links) && count($links) == 0) {
             return $result;
         }

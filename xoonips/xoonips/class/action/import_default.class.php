@@ -56,13 +56,13 @@ class XooNIpsActionImportDefault extends XooNIpsAction
 
         $zipfile = $this->_formdata->getFile('zipfile', false);
 
-        $result = array(
+        $result = [
             'max_file_size_bytes' => $this->_get_upload_max_filesize(),
             'max_file_size' => ini_get('upload_max_filesize'),
             'xoonips_checked_xid' => $this->_formdata->getValue('post', 'xoonipsCheckedXID', 's', false),
             'zipfile_is_given' => ($zipfile !== null || is_array($zipfile) && !array_key_exists('name', $zipfile) || $zipfile['tmp_name'] == '' || $zipfile['size'] == 0),
             'admin' => isset($_SESSION['xoonips_old_uid']) || $xoopsUser->isAdmin(),
-        );
+        ];
         //$this -> _response -> setResult( true );
         //$this -> _response -> setSuccess( $result );
         $this->_view_params['max_file_size_bytes'] = $this->_get_upload_max_filesize();

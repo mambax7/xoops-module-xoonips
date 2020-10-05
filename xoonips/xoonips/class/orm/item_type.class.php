@@ -65,7 +65,7 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
             $this->previewFileName = isset($iteminfo['files']['preview']) ? $iteminfo['files']['preview'] : null;
         }
 
-        $this->fields = array();
+        $this->fields = [];
         if (isset($this->iteminfo['ormfield']['detail'])) {
             $this->fields = array_merge($this->fields, $this->iteminfo['ormfield']['detail']);
         }
@@ -140,7 +140,7 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
      */
     public function getFileTypeNames()
     {
-        $ar = array();
+        $ar = [];
         if (isset($this->iteminfo['files']['main'])) {
             $ar[] = $this->iteminfo['files']['main'];
         }
@@ -148,7 +148,7 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
             $ar[] = $this->iteminfo['files']['preview'];
         }
 
-        return array_merge($ar, isset($this->iteminfo['files']['others']) ? $this->iteminfo['files']['others'] : array());
+        return array_merge($ar, isset($this->iteminfo['files']['others']) ? $this->iteminfo['files']['others'] : []);
     }
 
     /**
@@ -217,7 +217,7 @@ class XooNIpsOrmItemTypeHandler extends XooNIpsTableObjectHandler
         $fields = sprintf('item_type_id, %s.name, %s.mid, display_name, viewphp, weight', $table, $table);
         $objs = &$this->getObjects($criteria, false, $fields, false, $join);
         if (count($objs) != 0) {
-            usort($objs, array($this, '_order_weight_cmp'));
+            usort($objs, [$this, '_order_weight_cmp']);
         }
 
         return $objs;

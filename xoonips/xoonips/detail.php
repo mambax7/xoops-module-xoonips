@@ -71,7 +71,7 @@ if ($doi_column_name != '') {
 
 // update $item_id by the ID specified by given doi if exists $$doi_column_name param.
 if ($doi != '') {
-    $new_item_ids = array();
+    $new_item_ids = [];
     $result = xnpGetItemIdByDoi($doi, $new_item_ids);
     // error check. $new_item_ids must be one.
     if (count($new_item_ids) == 0) {
@@ -108,8 +108,8 @@ $basic = &$item->getVar('basic');
 $item_type_id = $basic->get('item_type_id');
 
 //retrieve module name to $modname
-$tmp = array();
-$itemtypes = array();
+$tmp = [];
+$itemtypes = [];
 if (xnp_get_item_types($tmp) != RES_OK) {
     redirect_header(XOOPS_URL.'/', 3, 'ERROR xnp_get_item_types');
     exit();
@@ -124,7 +124,7 @@ if (xnp_get_item_types($tmp) != RES_OK) {
 
 if ($op == 'reject_certify' || $op == 'accept_certify' || $op == 'withdraw') {
     $item_lock_handler = &xoonips_getormhandler('xoonips', 'item_lock');
-    $succeeded_index_ids = array();
+    $succeeded_index_ids = [];
     foreach ($formdata->getValueArray('post', 'index_ids', 'i', true) as $index_id) {
         if ($op == 'withdraw' && $item_lock_handler->isLocked($item_id)) {
             redirect_header(XOOPS_URL.'/modules/xoonips/detail.php?item_id='.$item_id, 5, sprintf(_MD_XOONIPS_ERROR_CANNOT_WITHDRAW_LOCKED_ITEM, xoonips_get_lock_type_string($item_lock_handler->getLockType($item_id))));
@@ -253,7 +253,7 @@ function genSelectLabels(&$index)
 if ($op == '' || $op == 'download') {
     // Display only 'Binder -> Binders'. Display 'Not Binder -> Public not Binders'.
     require_once 'include/gentree.php';
-    $index = array('open_level' => OL_PUBLIC);
+    $index = ['open_level' => OL_PUBLIC];
     $indexTree = genSameAreaIndexTree($xnpsid, $uid, $index);
     array_walk($indexTree, 'genSelectLabels');
     $xoopsTpl->assign('index_tree', $indexTree);
@@ -302,7 +302,7 @@ require XOOPS_ROOT_PATH.'/footer.php';
 
 function xoonips_delete_item($item_id)
 {
-    $params = array(session_id(), $item_id, 'item_id');
+    $params = [session_id(), $item_id, 'item_id'];
     $response = new XooNIpsResponse();
     $factory = &XooNIpsLogicFactory::getInstance();
     $logic = &$factory->create('removeItem');

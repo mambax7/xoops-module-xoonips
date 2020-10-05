@@ -47,7 +47,7 @@ $langman = &xoonips_getutility('languagemanager');
 $langman->read('main.php');
 
 // get requests
-$get_keys = array('tree' => array('i', true, false));
+$get_keys = ['tree' => ['i', true, false]];
 $get_vals = xoonips_admin_get_requests('post', $get_keys);
 $tree_ids = $get_vals['tree'];
 
@@ -56,7 +56,7 @@ function xoonips_admin_maintenance_item_delete_item($iid)
 {
     $factory = new XooNIpsLogicFactory();
     $remove_item_logic = &$factory->create('removeItem');
-    $vars = array($_SESSION['XNPSID'], $iid, 'item_id');
+    $vars = [$_SESSION['XNPSID'], $iid, 'item_id'];
     $response = new XooNIpsResponse();
     $remove_item_logic->execute($vars, $response);
 
@@ -79,7 +79,7 @@ function xoonips_admin_maintenance_item_unlock_item($item_id)
     if ($item_lock_handler->isLocked($item_id)) {
         $lock_type = $item_lock_handler->getLockType($item_id);
         if ($lock_type == XOONIPS_LOCK_TYPE_CERTIFY_REQUEST) {
-            $indexIds = array();
+            $indexIds = [];
             $index_item_links = &$index_item_link_handler->getObjects(new Criteria('item_id', $item_id));
             foreach ($index_item_links as $index_item_link) {
                 if ($index_item_link->get('certify_state') == CERTIFY_REQUIRED) {
@@ -104,13 +104,13 @@ function xoonips_admin_maintenance_item_unlock_item($item_id)
 
 // logic
 $empty_tree_ids = true;
-$results = array();
+$results = [];
 $xnpsid = $_SESSION['XNPSID'];
 
 if (count($tree_ids) > 0) {
     $textutil = &xoonips_getutility('text');
     $treelist = xnpitmgrListIndexTree(XNPITMGR_LISTMODE_PRIVATEONLY);
-    $treemap = array();
+    $treemap = [];
     foreach ($treelist as $tree) {
         $treemap[$tree['id']] = $tree['fullpath'];
     }
@@ -121,7 +121,7 @@ if (count($tree_ids) > 0) {
     foreach ($tree_ids as $xid) {
         $succeed = 0;
         $failed = 0;
-        $iids = xnpitmgrListIndexItems(array($xid));
+        $iids = xnpitmgrListIndexItems([$xid]);
         if ($iids === false) {
             // no item in tree
             continue;
@@ -137,13 +137,13 @@ if (count($tree_ids) > 0) {
                 ++$failed;
             }
         }
-        $results[] = array(
+        $results[] = [
             'id' => $xid,
             'evenodd' => $evenodd,
             'index' => $textutil->html_special_chars($treemap[$xid]),
             'succeed' => $succeed,
             'failed' => $failed,
-            );
+        ];
         $evenodd = ($evenodd == 'even') ? 'odd' : 'even';
     }
 }
@@ -152,33 +152,33 @@ if (count($tree_ids) > 0) {
 $title = _AM_XOONIPS_MAINTENANCE_ITEM_DUPDATE_TITLE;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_TITLE,
         'url' => $xoonips_admin['mypage_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_TITLE,
         'url' => $xoonips_admin['mypage_url'].'&amp;action=delete',
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // templates
 require_once '../class/base/pattemplate.class.php';

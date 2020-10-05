@@ -52,7 +52,7 @@ class XooNIpsUtilityZip extends XooNIpsUtility
      *
      * @var array
      */
-    public $ctrl_dir = array();
+    public $ctrl_dir = [];
 
     /**
      * End of central directory record.
@@ -267,7 +267,7 @@ class XooNIpsUtilityZip extends XooNIpsUtility
 
         // reset runtime variables
         $this->datasec_handle = false;
-        $this->ctrl_dir = array();
+        $this->ctrl_dir = [];
         $this->old_offset = 0;
 
         return true;

@@ -31,23 +31,23 @@ $title = _AM_XOONIPS_SYSTEM_BASIC_TITLE;
 $description = _AM_XOONIPS_SYSTEM_BASIC_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';
@@ -55,25 +55,25 @@ $ticket_area = 'xoonips_admin_system_basic';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys = array(
+$config_keys = [
     'moderator_gid' => 'i',
     'upload_dir' => 's',
     'magic_file_path' => 's',
-);
+];
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 // >> moderator_gid
 $moderator_gid_title = _AM_XOONIPS_SYSTEM_BASIC_MODERATOR_GROUP_TITLE;
 $moderator_gid_desc = _AM_XOONIPS_SYSTEM_BASIC_MODERATOR_GROUP_DESC;
 $xmember_handler = xoops_getHandler('member');
 $grouplist = &$xmember_handler->getGroupList(new Criteria('groupid', XOOPS_GROUP_ANONYMOUS, '!='));
-$moderator_gid = array();
+$moderator_gid = [];
 foreach ($grouplist as $gid => $name) {
     $selected = ($gid == $config_values['moderator_gid']) ? 'yes' : 'no';
-    $moderator_gid[] = array(
+    $moderator_gid[] = [
         'label' => $name,
         'value' => $gid,
         'selected' => $selected,
-    );
+    ];
 }
 // >> upload_dir
 $upload_dir_title = _AM_XOONIPS_SYSTEM_BASIC_UPLOAD_DIR_TITLE;

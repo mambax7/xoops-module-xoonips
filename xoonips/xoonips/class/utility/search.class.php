@@ -217,7 +217,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
             return $this->_make_force_unmatch_criteria($field, $prefix);
         }
         $is_utf8 = ($encoding == 'UTF-8');
-        $stack = array();
+        $stack = [];
         foreach ($tokens as $token) {
             if ($this->_is_operator($token)) {
                 if (count($stack) < 2) {
@@ -231,8 +231,8 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
                     // 'OR' operator
                     $op = $this->OP_OR;
                 }
-                list($op1, $val1) = array_pop($stack);
-                list($op2, $val2) = array_pop($stack);
+                [$op1, $val1] = array_pop($stack);
+                [$op2, $val2] = array_pop($stack);
                 if ($op1 === false && $op2 === false) {
                     $val = new CriteriaCompo($val2);
                     $val->add($val1);
@@ -257,7 +257,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
                 $op = false;
                 $val = new Criteria($field, $token, $cr_op, $prefix);
             }
-            $stack[] = array($op, $val);
+            $stack[] = [$op, $val];
             unset($op, $val);
         }
         $cnt = count($stack);
@@ -270,7 +270,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
             // fatal error : invalid RPN data found
             return $this->_make_force_unmatch_criteria($field, $prefix);
         }
-        list($op, $val) = array_pop($stack);
+        [$op, $val] = array_pop($stack);
 
         return $val;
     }
@@ -291,15 +291,15 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
             return $this->_make_force_unmatch_criteria($field, $prefix);
         }
         $is_utf8 = ($this->ENCODING == 'UTF-8');
-        $stack = array();
+        $stack = [];
         foreach ($tokens as $token) {
             if ($this->_is_operator($token)) {
                 if (count($stack) < 2) {
                     // fatal error : invalid RPN data found
                     return $this->_make_force_unmatch_criteria($field, $prefix);
                 }
-                list($op1, $val1) = array_pop($stack);
-                list($op2, $val2) = array_pop($stack);
+                [$op1, $val1] = array_pop($stack);
+                [$op2, $val2] = array_pop($stack);
                 if ($this->_is_and_op($token)) {
                     // 'AND' operator
                     $op = $this->OP_AND;
@@ -330,7 +330,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
                 $op = false;
                 $val = sprintf($fmt, addslashes($token));
             }
-            $stack[] = array($op, $val);
+            $stack[] = [$op, $val];
         }
         $cnt = count($stack);
         if ($cnt == 0) {
@@ -342,7 +342,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
             // fatal error : invalid RPN data found
             return $this->_make_force_unmatch_criteria($field, $prefix);
         }
-        list($op, $expr) = array_pop($stack);
+        [$op, $expr] = array_pop($stack);
         $criteria = new XooNIpsFulltextCriteria($field, $expr, true, $prefix);
 
         return $criteria;
@@ -374,7 +374,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
     {
         $is_utf8 = ($this->ENCODING == 'UTF-8');
         $trailing = ($this->WINDOW_SIZE > 2);
-        $windowed = array();
+        $windowed = [];
         foreach ($tokens as $token) {
             $this->_strip_double_quote($token);
             if (!$this->_is_multibyte_word($token)) {
@@ -402,7 +402,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
      */
     public function _split_to_tokens($text)
     {
-        $tokens = array();
+        $tokens = [];
 
         // set search token patterns
         // 1. double quoted phrase
@@ -459,7 +459,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
         $text = $textutil->html_numeric_entities($text);
 
         // convert all html numeric entities to UTF-8 character
-        $text = mb_decode_numericentity($text, array(0x0, 0xffff, 0, 0xffff), 'UTF-8');
+        $text = mb_decode_numericentity($text, [0x0, 0xffff, 0, 0xffff], 'UTF-8');
 
         // sanitize non printable characters
         $pattern = sprintf('%s+', $this->_regex_patterns['noprint']);
@@ -472,7 +472,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
         $text = mb_convert_kana($text, 'asKV', 'UTF-8');
 
         // convert latin1 suppliment characters to html numeric entities
-        $text = mb_encode_numericentity($text, array(0x0080, 0x00ff, 0, 0xffff), 'UTF-8');
+        $text = mb_encode_numericentity($text, [0x0080, 0x00ff, 0, 0xffff], 'UTF-8');
 
         // trim string
         $text = trim($text);
@@ -493,7 +493,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
      */
     public function _normalize_search_tokens($tokens)
     {
-        $tmp = array();
+        $tmp = [];
         $ptoken = false;
         $pdepth = 0;
         foreach ($tokens as $token) {
@@ -579,8 +579,8 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
             return false;
         }
         // get reverse polish notation from expression tokens
-        $operands = array();
-        $operators = array();
+        $operands = [];
+        $operators = [];
         foreach ($tokens as $token) {
             if ($token == '(') {
                 $operators[] = $token;
@@ -632,7 +632,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
      */
     public function _ngram($word, $n, $encoding, $leading, $trailing)
     {
-        $words = array();
+        $words = [];
         $word = trim($word);
         if (empty($word) || $n < 1) {
             return $words;
@@ -737,22 +737,22 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
     public function _initialize_regex_patterns()
     {
         // latin1 character codes - http://en.wikipedia.org/wiki/Latin-1
-        $latin1 = array();
-        $ascii = array(
-            'letter' => '0-9a-zA-Z',
-            'symbol' => '\\x21\\x23-\\x2f\\x3a-\\x40\\x5b-\\x60\\x7b-\\x7e',
+        $latin1 = [];
+        $ascii = [
+            'letter'  => '0-9a-zA-Z',
+            'symbol'  => '\\x21\\x23-\\x2f\\x3a-\\x40\\x5b-\\x60\\x7b-\\x7e',
             'noprint' => '\\x00-\\x1f\\x7f',
-        );
-        $ranges = array(
-            'letter' => array(array(0xc0, 0xd6), array(0xd8, 0xf6), array(0xf8, 0xff)),
-            'symbol' => array(array(0xa0, 0xbf), 0xd7, 0xf7),
-            'noprint' => array(array(0x80, 0x9f)),
-        );
+        ];
+        $ranges = [
+            'letter'  => [[0xc0, 0xd6], [0xd8, 0xf6], [0xf8, 0xff]],
+            'symbol'  => [[0xa0, 0xbf], 0xd7, 0xf7],
+            'noprint' => [[0x80, 0x9f]],
+        ];
         foreach ($ranges as $name => $range) {
-            $chars = array();
+            $chars = [];
             foreach ($range as $code) {
                 if (is_array($code)) {
-                    list($from, $to) = $code;
+                    [$from, $to] = $code;
                     for ($i = $from; $i <= $to; ++$i) {
                         $chars[] = chr($i);
                     }
@@ -788,7 +788,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
      */
     public function _load_stopwords()
     {
-        $stop_words = array();
+        $stop_words = [];
         if (defined('XOONIPS_STOPWORD_FILE_PATH')) {
             $words = array_map('trim', file(XOONIPS_STOPWORD_FILE_PATH));
             foreach ($words as $word) {

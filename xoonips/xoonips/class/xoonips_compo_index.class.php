@@ -60,7 +60,7 @@ class XooNIpsIndexCompoHandler extends XooNIpsItemCompoHandler
      */
     public function getIndexPathNames($index_id, $private_index_id = false, $fmt = 'n')
     {
-        $ret = array();
+        $ret = [];
         $index_handler = &xoonips_getormhandler('xoonips', 'index');
         for ($index_obj = &$index_handler->get($index_id); is_object($index_obj); $index_obj = &$index_handler->get($index_id)) {
             if ($index_id === $private_index_id) {
@@ -86,7 +86,7 @@ class XooNIpsIndexCompoHandler extends XooNIpsItemCompoHandler
      */
     public function getPathIndexes($index_id)
     {
-        $indexes = array();
+        $indexes = [];
         do {
             $xoonips_index = $this->get($index_id);
             if (!$xoonips_index) {

@@ -74,7 +74,7 @@ function b_xoonips_moderator_show()
     }
 
     // assign block template variables
-    $block = array();
+    $block = [];
     $block['lang_edit_group'] = _MB_XOONIPS_MODERATOR_EDIT_GROUPS;
     $block['lang_certify_users'] = _MB_XOONIPS_MODERATOR_CERTIFY_USERS;
     $block['lang_certify_users_count'] = $cu_count;

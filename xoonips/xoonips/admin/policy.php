@@ -30,27 +30,27 @@ require_once '../../../include/cp_header.php';
 require 'actions/common.inc.php';
 
 // page definition
-$pages = array();
-$pages['main'] = array();
-$pages['account'] = array(
-    'post' => array('rupdate', 'iupdate', 'vupdate'),
-);
-$pages['group'] = array(
-    'post' => array('vupdate'),
-);
-$pages['item'] = array(
-    'get' => array('public', 'type', 'imexport', 'comment'),
-    'post' => array('pmupdate', 'poupdate', 'tupdate', 'imexeupdate', 'imexiupdate', 'compmupdate'),
-);
-$pages['moderator'] = array(
-    'post' => array('update'),
-);
-$pages['position'] = array(
-    'post' => array('delete', 'update', 'add'),
-);
-$pages['ranking'] = array(
-    'post' => array('update', 'sort'),
-);
+$pages = [];
+$pages['main'] = [];
+$pages['account'] = [
+    'post' => ['rupdate', 'iupdate', 'vupdate'],
+];
+$pages['group'] = [
+    'post' => ['vupdate'],
+];
+$pages['item'] = [
+    'get' => ['public', 'type', 'imexport', 'comment'],
+    'post' => ['pmupdate', 'poupdate', 'tupdate', 'imexeupdate', 'imexiupdate', 'compmupdate'],
+];
+$pages['moderator'] = [
+    'post' => ['update'],
+];
+$pages['position'] = [
+    'post' => ['delete', 'update', 'add'],
+];
+$pages['ranking'] = [
+    'post' => ['update', 'sort'],
+];
 
 // initialize
 xoonips_admin_initialize(__FILE__, 'policy', $pages);

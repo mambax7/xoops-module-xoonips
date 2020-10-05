@@ -51,7 +51,7 @@ $uid = $_SESSION['xoopsUserId'];
 // get request variables
 $formdata = &xoonips_getutility('formdata');
 $op = $formdata->getValue('both', 'op', 's', false, '');
-xoonips_validate_request(in_array($op, array('', 'su', 'end')));
+xoonips_validate_request(in_array($op, ['', 'su', 'end']));
 
 // change uid.
 // don't preserve old uid.
@@ -69,10 +69,10 @@ if ('' == $op) {
         exit();
     }
 
-    $users = array();
-    $uids = array();
-    xnp_dump_uids($xnpsid, array(), $uids);
-    xnp_get_accounts($xnpsid, $uids, array(), $users);
+    $users = [];
+    $uids = [];
+    xnp_dump_uids($xnpsid, [], $uids);
+    xnp_get_accounts($xnpsid, $uids, [], $users);
     // Sort by user account name
     foreach ($users as $key => $values) {
         $unameValues[$key] = $values['uname'];

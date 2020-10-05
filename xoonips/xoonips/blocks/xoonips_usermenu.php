@@ -44,7 +44,7 @@ function b_xoonips_user_show()
         return false;
     }
 
-    $block = array();
+    $block = [];
 
     // get xoonips module id
     $module_handler = xoops_getHandler('module');

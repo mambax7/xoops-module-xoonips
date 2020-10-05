@@ -46,7 +46,7 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 ini_set('error_log', 'syslog');
 
-$allow_methods = array(
+$allow_methods = [
     'XooNIps.getChildIndexes',
     'XooNIps.getFile',
     'XooNIps.getFileMetadata',
@@ -64,7 +64,7 @@ $allow_methods = array(
     'XooNIps.removeItem',
     'XooNIps.searchItem',
     'XooNIps.updateItem2',
-);
+];
 
 $rpc_response = new XoopsXmlRpcResponse();
 $parser = new XooNIpsXmlRpcParser(file_get_contents('php://input'));

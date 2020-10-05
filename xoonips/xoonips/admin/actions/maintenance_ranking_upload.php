@@ -34,9 +34,9 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
     exit();
 }
 
-$keys = array(
-    'ranking_upload_file' => array('d', true, true),
-);
+$keys = [
+    'ranking_upload_file' => ['d', true, true],
+];
 $vals = xoonips_admin_get_requests('files', $keys);
 // uploaded file check
 $uploaded_file = $vals['ranking_upload_file'];

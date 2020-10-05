@@ -31,23 +31,23 @@ $title = _AM_XOONIPS_MAINTENANCE_POSITION_TITLE;
 $description = _AM_XOONIPS_MAINTENANCE_POSITION_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';
@@ -66,8 +66,8 @@ function &positions_get_userlist()
     $join_criteria = new XooNIpsJoinCriteria('users', 'uid', 'uid');
     $join_criteria->cascade(new XooNIpsJoinCriteria('xoonips_positions', 'posi', 'posi_id'), 'xoonips_users');
     $criteria = new Criteria($tables['xusers'].'.posi', '0', '>');
-    $criteria->setSort(array($tables['positions'].'.posi_order', $tables['xusers'].'.user_order'));
-    $fields = array();
+    $criteria->setSort([$tables['positions'] . '.posi_order', $tables['xusers'] . '.user_order']);
+    $fields = [];
     $fields[] = $tables['xusers'].'.uid';
     $fields[] = $tables['xusers'].'.user_order';
     $fields[] = $tables['users'].'.name';
@@ -80,7 +80,7 @@ function &positions_get_userlist()
 
 $textutil = &xoonips_getutility('text');
 $xusers_objs = &positions_get_userlist();
-$positions = array();
+$positions = [];
 $evenodd = 'odd';
 foreach ($xusers_objs as $xusers_obj) {
     $uid = $xusers_obj->getVar('uid', 'e');
@@ -88,13 +88,13 @@ foreach ($xusers_objs as $xusers_obj) {
     $posi = $textutil->html_special_chars($xusers_obj->getExtraVar('posi_title'));
     $name = $textutil->html_special_chars($xusers_obj->getExtraVar('name'));
     $uname = $textutil->html_special_chars($xusers_obj->getExtraVar('uname'));
-    $positions[] = array(
+    $positions[] = [
         'uid' => $uid,
         'position' => $posi,
         'name' => ($name == '') ? $uname : $name,
         'order' => $order,
         'evenodd' => $evenodd,
-    );
+    ];
     $evenodd = ($evenodd == 'even') ? 'odd' : 'even';
 }
 $is_user_empty = (count($positions) == 0);

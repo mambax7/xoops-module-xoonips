@@ -35,18 +35,18 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 }
 
 // get variables
-$post_keys = array(
-    'private_item_number_limit' => array('i', false, true),
-    'private_index_number_limit' => array('i', false, true),
-    'private_item_storage_limit' => array('f', false, true),
-);
+$post_keys = [
+    'private_item_number_limit' => ['i', false, true],
+    'private_index_number_limit' => ['i', false, true],
+    'private_item_storage_limit' => ['f', false, true],
+];
 $post_vals = xoonips_admin_get_requests('post', $post_keys);
 $post_vals['private_item_storage_limit'] *= 1000000.0;
 
 // set config keys
-$config_keys = array();
+$config_keys = [];
 foreach ($post_keys as $key => $attributes) {
-    list($data_type, $is_array, $required) = $attributes;
+    [$data_type, $is_array, $required] = $attributes;
     $config_keys[$key] = $data_type;
 }
 

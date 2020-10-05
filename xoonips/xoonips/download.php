@@ -39,11 +39,11 @@
 // local functions
 function download_error($num, $msg = '')
 {
-    $header_message = array(
+    $header_message = [
         '403' => 'Forbidden',
         '404' => 'Not Found',
         '500' => 'Internal Server Error',
-    );
+    ];
     $error = sprintf('%d %s', $num, $header_message[$num]);
     header('HTTP/1.0 '.$error);
     if (empty($msg)) {

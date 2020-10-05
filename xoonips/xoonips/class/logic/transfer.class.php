@@ -105,7 +105,7 @@ class XooNIpsLogicTransfer extends XooNIpsLogic
     {
         // remove from private index
         $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
-        $index_item_links = $index_item_link_handler->getByItemId($item_id, array(OL_PRIVATE));
+        $index_item_links = $index_item_link_handler->getByItemId($item_id, [OL_PRIVATE]);
         foreach ($index_item_links as $index_item_link) {
             if (false == $index_item_link_handler->delete($index_item_link)) {
                 $error->add(XNPERR_SERVER_ERROR, 'cannot remove from private index');
@@ -138,7 +138,7 @@ class XooNIpsLogicTransfer extends XooNIpsLogic
     public function _is_public_certified_item($item_id)
     {
         $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
-        $index_item_links = $index_item_link_handler->getByItemId($item_id, array(OL_PUBLIC));
+        $index_item_links = $index_item_link_handler->getByItemId($item_id, [OL_PUBLIC]);
         foreach ($index_item_links as $index_item_link) {
             if ($index_item_link->get('certify_state') == CERTIFIED) {
                 return true;

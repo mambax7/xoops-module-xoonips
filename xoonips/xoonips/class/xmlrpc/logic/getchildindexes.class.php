@@ -73,7 +73,7 @@ class XooNIpsXmlRpcLogicGetChildIndexes extends XooNIpsXmlRpcLogic
 
             return false;
         }
-        $vars = array();
+        $vars = [];
         $vars[0] = $params[0];
         $vars[1] = $params[1];
 
@@ -82,7 +82,7 @@ class XooNIpsXmlRpcLogicGetChildIndexes extends XooNIpsXmlRpcLogic
         $response->setResult($xoonips_response->getResult());
         $response->setError($xoonips_response->getError());
         if ($xoonips_response->getResult()) {
-            $result = array();
+            $result = [];
             foreach ($xoonips_response->getSuccess() as $index_compo) {
                 $result[] = $this->convertIndexObjectToIndexStructure($index_compo, $response);
             }

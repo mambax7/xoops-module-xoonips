@@ -30,8 +30,8 @@ require '../../../include/cp_header.php';
 require 'actions/common.inc.php';
 
 // page definition
-$pages = array();
-$pages['main'] = array();
+$pages = [];
+$pages['main'] = [];
 
 // initialize
 xoonips_admin_initialize(__FILE__, 'index', $pages);

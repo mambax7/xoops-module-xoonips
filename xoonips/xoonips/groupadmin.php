@@ -41,15 +41,15 @@ $formdata = &xoonips_getutility('formdata');
 
 $op = $formdata->getValue('both', 'op', 's', false, '');
 
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
        'name' => _MD_XOONIPS_BREADCRUMBS_GROUPADMIN,
-    ),
-    array(
+    ],
+    [
        'name' => _MD_XOONIPS_TITLE_GROUP_MEMBER_EDIT,
        'url' => XOOPS_URL.'/modules/xoonips/groupadmin.php',
-    ),
-);
+    ],
+];
 
 $ticket_area = 'xoonips_group_member_edit';
 
@@ -59,12 +59,12 @@ case 'edit':
     if (!$xmember_handler->isAdmin($uid) && !$admin_xgroup_handler->isGroupAdmin($uid, $gid)) {
         xoonips_group_error('groupadmin.php', 'select');
     }
-    $gids = array($gid);
+    $gids = [$gid];
     $xg_obj = &$admin_xgroup_handler->getGroupObject($gid);
-    $breadcrumbs[] = array(
+    $breadcrumbs[] = [
         'name' => $xg_obj->getVar('gname', 's'),
         'url' => XOOPS_URL.'/modules/xoonips/groupadmin.php?op=edit&amp;gid='.$gid,
-    );
+    ];
     break;
 case 'update':
     $gid = $formdata->getValue('post', 'gid', 'i', true);
@@ -73,7 +73,7 @@ case 'update':
     }
     $mode = $formdata->getValue('post', 'mode', 's', true);
     $guids = $formdata->getValueArray('post', 'uids', 'i', false);
-    if (!in_array($mode, array('add', 'delete'))) {
+    if (!in_array($mode, ['add', 'delete'])) {
         xoonips_group_error('groupadmin.php', 'update');
     }
     foreach ($guids as $guid) {
@@ -89,12 +89,12 @@ case 'update':
             $admin_xgroup_handler->deleteUserFromXooNIpsGroup($gid, $guid);
         }
     }
-    $gids = array($gid);
+    $gids = [$gid];
     $xg_obj = &$admin_xgroup_handler->getGroupObject($gid);
-    $breadcrumbs[] = array(
+    $breadcrumbs[] = [
         'name' => $xg_obj->getVar('gname', 's'),
         'url' => XOOPS_URL.'/modules/xoonips/groupadmin.php?op=edit&amp;gid='.$gid,
-    );
+    ];
     break;
 case '':
     $gid = 0;
@@ -106,10 +106,10 @@ case '':
     break;
 }
 $groups = xoonips_group_get_groups($uid, $gids);
-$admin_members = array();
-$locked_members = array();
-$members = array();
-$non_members = array();
+$admin_members = [];
+$locked_members = [];
+$members = [];
+$non_members = [];
 if ($gid != 0) {
     $gadmin_uids = $admin_xgroup_handler->getUserIds($gid, true);
     $member_uids = $admin_xgroup_handler->getUserIds($gid);

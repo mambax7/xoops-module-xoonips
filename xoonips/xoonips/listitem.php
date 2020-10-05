@@ -49,27 +49,27 @@ $textutil = &xoonips_getutility('text');
 
 $sess_orderby = isset($_SESSION['xoonips_order_by']) ? $_SESSION['xoonips_order_by'] : 'title';
 $sess_orderdir = isset($_SESSION['xoonips_order_dir']) ? $_SESSION['xoonips_order_dir'] : ASC;
-$request_vars = array(
-    'page' => array('i', 1),
-    'orderby' => array('s', $sess_orderby),
-    'order_dir' => array('i', $sess_orderdir),
-    'itemcount' => array('i', 20),
-    'selected' => array('i', array()),
-    'initially_selected' => array('i', array()),
-    'print' => array('b', false),
-    'add_to_index' => array('b', false),
-    'num_of_items' => array('i', null),
-    'index_id' => array('i', null),
-);
+$request_vars = [
+    'page' => ['i', 1],
+    'orderby' => ['s', $sess_orderby],
+    'order_dir' => ['i', $sess_orderdir],
+    'itemcount' => ['i', 20],
+    'selected' => ['i', []],
+    'initially_selected' => ['i', []],
+    'print' => ['b', false],
+    'add_to_index' => ['b', false],
+    'num_of_items' => ['i', null],
+    'index_id' => ['i', null],
+];
 
 $formdata = &xoonips_getutility('formdata');
 foreach ($request_vars as $key => $meta) {
-    list($type, $default) = $meta;
+    [$type, $default] = $meta;
     $$key = $formdata->getValue('both', $key, $type, false, $default);
 }
 
 // check 'orderby' value
-if (!in_array($orderby, array('title', 'doi', 'last_update_date', 'creation_date', 'publication_date'))) {
+if (!in_array($orderby, ['title', 'doi', 'last_update_date', 'creation_date', 'publication_date'])) {
     unset($_SESSION['xoonips_order_by']);
     unset($_SESSION['xoonips_order_dir']);
     xoonips_error_exit(400);
@@ -78,8 +78,8 @@ if (!in_array($orderby, array('title', 'doi', 'last_update_date', 'creation_date
 $_SESSION['xoonips_order_by'] = $orderby;
 $_SESSION['xoonips_order_dir'] = $order_dir;
 
-$itemtypes = array();
-$tmp = array();
+$itemtypes = [];
+$tmp       = [];
 if (xnp_get_item_types($tmp) != RES_OK) {
     xoonips_error_exit(500);
 } else {
@@ -126,37 +126,37 @@ $xoopsTpl->assign('item_count_label', _MD_XOONIPS_ITEM_NUM_OF_ITEM_PER_PAGE);
 //order_by_select: array( "variable name" => "name for view", ... )
 $xoopsTpl->assign(
     'order_by_select',
-    array(
-        'title' => _MD_XOONIPS_ITEM_TITLE_LABEL,
-        'doi' => _MD_XOONIPS_ITEM_DOI_LABEL,
+    [
+        'title'            => _MD_XOONIPS_ITEM_TITLE_LABEL,
+        'doi'              => _MD_XOONIPS_ITEM_DOI_LABEL,
         'last_update_date' => _MD_XOONIPS_ITEM_LAST_UPDATE_DATE_LABEL,
-        'creation_date' => _MD_XOONIPS_ITEM_CREATION_DATE_LABEL,
+        'creation_date'    => _MD_XOONIPS_ITEM_CREATION_DATE_LABEL,
         'publication_date' => _MD_XOONIPS_ITEM_PUBLICATION_DATE_LABEL,
-    )
+    ]
 );
 $xoopsTpl->assign('order_by', $textutil->html_special_chars($orderby));
 
-$xoopsTpl->assign('item_count_select', array('20', '50', '100'));
+$xoopsTpl->assign('item_count_select', ['20', '50', '100']);
 
-$iids = array();
-$items = array();
-$cri = array();
+$iids        = [];
+$items       = [];
+$cri         = [];
 if ($orderby == 'publication_date') {
-    $cri = array(
-        'start' => ($page - 1) * $itemcount,
-        'rows' => $itemcount,
-        'orders' => array(
-            array('name' => 'publication_year', 'order' => $order_dir),
-            array('name' => 'publication_month', 'order' => $order_dir),
-            array('name' => 'publication_mday', 'order' => $order_dir),
-        ),
-    );
+    $cri = [
+        'start'  => ($page - 1) * $itemcount,
+        'rows'   => $itemcount,
+        'orders' => [
+            ['name' => 'publication_year', 'order' => $order_dir],
+            ['name' => 'publication_month', 'order' => $order_dir],
+            ['name' => 'publication_mday', 'order' => $order_dir],
+        ],
+    ];
 } else {
-    $cri = array(
-        'start' => ($page - 1) * $itemcount,
-        'rows' => $itemcount,
-        'orders' => array(array('name' => $orderby, 'order' => $order_dir)),
-    );
+    $cri = [
+        'start'  => ($page - 1) * $itemcount,
+        'rows'   => $itemcount,
+        'orders' => [['name' => $orderby, 'order' => $order_dir]],
+    ];
 }
 if (isset($index_id)) {
     $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
@@ -166,7 +166,7 @@ if (isset($index_id)) {
         $iids[] = $link->get('item_id');
     }
 } else {
-    $ret = xnp_dump_item_id($xnpsid, array(), $iids);
+    $ret = xnp_dump_item_id($xnpsid, [], $iids);
     $num_of_items = count($iids);
     if ($ret != RES_OK) {
         xoonips_error_exit(500);
@@ -177,7 +177,7 @@ function my_xoonips_get_child_index(&$db, $index_id)
 {
     $sql = 'SELECT index_id FROM '.$db->prefix('xoonips_index').' WHERE parent_index_id='.$index_id.' ORDER BY sort_number';
     $results = &$db->query($sql);
-    $cids = array();
+    $cids    = [];
     while ($row = $db->fetchArray($results)) {
         $cids[] = $row['index_id'];
     }
@@ -187,22 +187,22 @@ function my_xoonips_get_child_index(&$db, $index_id)
 
 if (isset($index_id)) {
     // add index list
-    $my_indexes = array();
-    $cids = my_xoonips_get_child_index($xoopsDB, $index_id);
+    $my_indexes = [];
+    $cids       = my_xoonips_get_child_index($xoopsDB, $index_id);
     if (count($cids) > 0) {
-        $item_counts = array();
+        $item_counts = [];
         xnp_get_item_count_group_by_index($xnpsid, $item_counts);
         foreach ($cids as $cid) {
-            $info = array();
+            $info  = [];
             $cicnt = count(my_xoonips_get_child_index($xoopsDB, $cid));
             if (xnp_get_index($xnpsid, $cid, $info) == RES_OK) {
-                $cnt = isset($item_counts[$cid]) ? $item_counts[$cid] : 0;
-                $my_index = array(
-                     'index_id' => $cid,
-                     'title' => $info['html_title'],
-                     'child_index_num' => $cicnt,
-                     'child_item_num' => $cnt,
-                );
+                $cnt       = isset($item_counts[$cid]) ? $item_counts[$cid] : 0;
+                $my_index  = [
+                    'index_id'        => $cid,
+                    'title'           => $info['html_title'],
+                    'child_index_num' => $cicnt,
+                    'child_item_num'  => $cnt,
+                ];
                 $index_tpl = new XoopsTpl();
                 $index_tpl->assign('index', $my_index);
                 $my_indexes[] = $index_tpl->fetch('db:xoonips_index_list_block.html');
@@ -212,10 +212,10 @@ if (isset($index_id)) {
 
     // making character strings in display current place (Root/Private/Tools&Techniques etc)
     // -> index_path
-    $dirArray = array();
+    $dirArray = [];
     for ($p_xid = $index_id; $p_xid != IID_ROOT; $p_xid = (int) ($index['parent_index_id'])) {
         // get $index
-        $index = array();
+        $index  = [];
         $result = xnp_get_index($xnpsid, $p_xid, $index);
         if ($result != RES_OK) {
             xoonips_error_exit(500);
@@ -225,7 +225,7 @@ if (isset($index_id)) {
     $indexes = array_reverse($dirArray);
     $xoopsTpl->assign('index_path', $indexes);
     $xoopsTpl->assign('my_indexes', $my_indexes);
-    $index_titles = array();
+    $index_titles = [];
     foreach ($indexes as $i) {
         $index_titles[] = $i['titles'][DEFAULT_INDEX_TITLE_OFFSET];
     }
@@ -266,7 +266,7 @@ if (xnp_get_items($xnpsid, $iids, $cri, $items) != RES_OK) {
     xoonips_error_exit(500);
 }
 
-$item_htmls = array();
+$item_htmls = [];
 foreach ($items as $i) {
     if (array_key_exists($i['item_type_id'], $itemtypes)) {
         $itemtype = $itemtypes[$i['item_type_id']];
@@ -279,7 +279,7 @@ foreach ($items as $i) {
         } else {
             $html = '';
         }
-        $item_htmls[] = array('html' => $html);
+        $item_htmls[] = ['html' => $html];
     }
 }
 
@@ -321,7 +321,7 @@ if ($print) {
 function xoonips_get_selectable_page_number($page, $maxpage)
 {
     //centering current page number(5th of $pages)
-    $pages = array(min(max(1, $page - 4), max(1, $maxpage - 9)));
+    $pages = [min(max(1, $page - 4), max(1, $maxpage - 9))];
     for ($i = 1; $i < 10 && $pages[$i - 1] < $maxpage; ++$i) {
         $pages[$i] = $pages[$i - 1] + 1;
     }

@@ -30,27 +30,27 @@ require_once '../../../include/cp_header.php';
 require 'actions/common.inc.php';
 
 // page definition
-$pages = array();
-$pages['main'] = array();
-$pages['account'] = array(
-    'get' => array('modify', 'add', 'dconfirm'),
-    'post' => array('update', 'activate', 'delete'),
-);
-$pages['item'] = array(
-    'get' => array('withdraw', 'delete', 'transfer'),
-    'post' => array('wupdate', 'dupdate', 'transfer', 'tconfirm', 'tupdate'),
-);
-$pages['ranking'] = array(
-    'get' => array('download'),
-    'post' => array('download', 'upload', 'clear'),
-);
-$pages['position'] = array(
-    'post' => array('update'),
-);
-$pages['filesearch'] = array(
-    'post' => array('rescan'),
-);
-$pages['oaipmh'] = array();
+$pages = [];
+$pages['main'] = [];
+$pages['account'] = [
+    'get' => ['modify', 'add', 'dconfirm'],
+    'post' => ['update', 'activate', 'delete'],
+];
+$pages['item'] = [
+    'get' => ['withdraw', 'delete', 'transfer'],
+    'post' => ['wupdate', 'dupdate', 'transfer', 'tconfirm', 'tupdate'],
+];
+$pages['ranking'] = [
+    'get' => ['download'],
+    'post' => ['download', 'upload', 'clear'],
+];
+$pages['position'] = [
+    'post' => ['update'],
+];
+$pages['filesearch'] = [
+    'post' => ['rescan'],
+];
+$pages['oaipmh'] = [];
 
 // initialize
 xoonips_admin_initialize(__FILE__, 'maintenance', $pages);

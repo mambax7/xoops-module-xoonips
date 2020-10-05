@@ -27,9 +27,9 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // get requsts
-$get_keys = array(
-    'navi' => array('i', false, false),
-);
+$get_keys = [
+    'navi' => ['i', false, false],
+];
 $get_vals = xoonips_admin_get_requests('get', $get_keys);
 
 // class files
@@ -40,23 +40,23 @@ $title = _AM_XOONIPS_MAINTENANCE_ACCOUNT_TITLE;
 $description = _AM_XOONIPS_MAINTENANCE_ACCOUNT_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // TODO: set sort, start and limit
 // TODO: implement this into object handler
@@ -67,7 +67,7 @@ function &account_get_userlist($limit, $start, $sort)
     $tables['users'] = $xoopsDB->prefix('users');
     $join_criteria = new XooNIpsJoinCriteria('xoonips_users', 'uid', 'uid', 'INNER');
     $criteria = new CriteriaElement();
-    $sort_arr = array();
+    $sort_arr = [];
     foreach ($sort as $so) {
         $sort_arr[] = $tables['users'].'.'.$so;
     }
@@ -76,7 +76,7 @@ function &account_get_userlist($limit, $start, $sort)
     }
     $criteria->setLimit($limit);
     $criteria->setStart($start);
-    $fields = array();
+    $fields = [];
     $fields[] = $tables['users'].'.uid';
     $fields[] = $tables['users'].'.name';
     $fields[] = $tables['users'].'.uname';
@@ -98,27 +98,27 @@ function count_users()
 $page = (is_null($get_vals['navi'])) ? 1 : $get_vals['navi'];
 $limit = 20;
 $pagenavi = new XooNIpsPageNavi(count_users(), $limit, $page);
-$pagenavi->setSort(array('uname'));
+$pagenavi->setSort(['uname']);
 $navi = &$pagenavi->getTemplateVars(10);
 $navi_title = sprintf(_AM_XOONIPS_MAINTENANCE_ACCOUNT_PAGENAVI_FORMAT, $navi['start'], $navi['end'], $navi['total']);
-$navi_body = array();
+$navi_body = [];
 foreach ($navi['navi'] as $body) {
-    $navi_body[] = array(
+    $navi_body[] = [
         'has_link' => ($navi['page'] == $body) ? 'no' : 'yes',
         'link' => $xoonips_admin['mypage_url'],
         'page' => $body,
-    );
+    ];
 }
 
 $users_objs = &account_get_userlist($limit, $pagenavi->getStart(), $pagenavi->getSort());
-$users = array();
+$users = [];
 $evenodd = 'odd';
 foreach ($users_objs as $users_obj) {
     $uid = $users_obj->getVar('uid', 'e');
     $name = $users_obj->getVar('name', 's');
     $uname = $users_obj->getVar('uname', 's');
     $email = $users_obj->getVar('email', 's');
-    $users[] = array(
+    $users[] = [
         'uid' => $uid,
         'name' => $name,
         'uname' => $uname,
@@ -126,7 +126,7 @@ foreach ($users_objs as $users_obj) {
         'evenodd' => $evenodd,
         'modify' => _AM_XOONIPS_LABEL_MODIFY,
         'delete' => _AM_XOONIPS_LABEL_DELETE,
-    );
+    ];
     $evenodd = ($evenodd == 'even') ? 'odd' : 'even';
 }
 

@@ -40,7 +40,7 @@ class XooNIpsLogicImportCheckConflict extends XooNIpsLogic
         $handler = &xoonips_gethandler('xoonips', 'import_item');
         $handler->findDuplicateItems($this->_import_items);
 
-        $success = array('import_items' => $this->_import_items, 'is_conflict' => $this->_is_conflict($this->_import_items));
+        $success = ['import_items' => $this->_import_items, 'is_conflict' => $this->_is_conflict($this->_import_items)];
         $response->setResult(true);
         $response->setSuccess($success);
     }

@@ -31,28 +31,28 @@ $title = _AM_XOONIPS_POLICY_ITEM_COMMENT_TITLE;
 $description = _AM_XOONIPS_POLICY_ITEM_COMMENT_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_ITEM_TITLE,
         'url' => $xoonips_admin['myfile_url'].'?page=item',
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';
@@ -60,10 +60,10 @@ $ticket_area = 'xoonips_admin_policy_item_comment';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys = array(
+$config_keys = [
     'item_comment_dirname' => 's',
     'item_comment_forum_id' => 'i',
-);
+];
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 
 // get d3forum module list
@@ -71,17 +71,17 @@ require XOOPS_ROOT_PATH.'/class/xoopslists.php';
 $module_handler    = xoops_getHandler('module');
 $mod_dirnames      = XoopsLists::getModulesList();
 $d3forum_not_found = true;
-$d3forums = array();
+$d3forums = [];
 // set empty d3forum module name
 $selected = ($config_values['item_comment_dirname'] == '');
 if ($selected) {
     $d3forum_not_found = false;
 }
-$d3forums[] = array(
+$d3forums[] = [
     'dirname' => '',
     'label' => '----------',
     'selected' => $selected,
-);
+];
 foreach ($mod_dirnames as $mod_dirname) {
     $trustdir_php = XOOPS_ROOT_PATH.'/modules/'.$mod_dirname.'/mytrustdirname.php';
     if (file_exists($trustdir_php)) {
@@ -94,11 +94,11 @@ foreach ($mod_dirnames as $mod_dirname) {
                 if ($selected) {
                     $d3forum_not_found = false;
                 }
-                $d3forums[] = array(
+                $d3forums[] = [
                     'dirname' => $mod_dirname,
                     'label' => $mod_dirname,
                     'selected' => $selected,
-                );
+                ];
             }
         }
     }
@@ -123,7 +123,7 @@ if ($d3forum_not_found) {
         if ($res === false) {
             die('unexpected error');
         }
-        list($forum_id) = $xoopsDB->fetchRow($res);
+        [$forum_id] = $xoopsDB->fetchRow($res);
         $xoopsDB->freeRecordSet($res);
         if (empty($forum_id)) {
             $d3forum_forumid_notfound = _AM_XOONIPS_POLICY_ITEM_COMMENT_FORUMID_NOTFOUND.' : '.$config_values['item_comment_forum_id'];

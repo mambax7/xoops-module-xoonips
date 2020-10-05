@@ -67,7 +67,7 @@ class OAIPMHHarvester
                 $repository[0]->set('repository_name', $unicode->decode_utf8($this->_repositoryName, xoonips_get_server_charset(), 'h'));
                 $handler->insert($repository[0], true);
                 if ($this->ListMetadataFormats()) {
-                    $args = array('metadataPrefix' => $this->_metadataPrefix);
+                    $args = ['metadataPrefix' => $this->_metadataPrefix];
                     if ('' == $repository[0]->get('last_success_date')) {
                         $args['from'] = gmdate($this->_dateFormat, $this->_earliestDatestamp);
                     } else {
@@ -199,7 +199,7 @@ class OAIPMHHarvester
         do {
             $url = $this->_baseUrl.'?verb=ListRecords';
             if ($resumptionToken == null) {
-                foreach (array('metadataPrefix', 'from', 'until', 'set') as $k) {
+                foreach (['metadataPrefix', 'from', 'until', 'set'] as $k) {
                     if (isset($args[$k])) {
                         $url .= '&'.urlencode($k).'='.urlencode($args[$k]);
                     }

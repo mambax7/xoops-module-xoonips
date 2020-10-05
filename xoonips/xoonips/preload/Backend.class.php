@@ -6,7 +6,7 @@ class Xoonips_Backend extends XCube_ActionFilter
 {
     public function postFilter()
     {
-        $this->mController->mRoot->mDelegateManager->add('Legacy_BackendAction.GetRSSItems', array(&$this, 'getRSSItems'));
+        $this->mController->mRoot->mDelegateManager->add('Legacy_BackendAction.GetRSSItems', [&$this, 'getRSSItems']);
     }
 
     public function getRSSItems(&$items)
@@ -43,14 +43,14 @@ class Xoonips_Backend extends XCube_ActionFilter
             $title = $this->_getItemTitle($item_id, 's');
             $url = $this->_getItemUrl($item_id, $doi, 's');
             $description = $obj->get('description');
-            $items[] = array(
+            $items[] = [
             'pubdate' => $obj->getExtraVar('pubdate'),
             'title' => $title,
             'link' => $url,
             'guid' => $url,
             'description' => $description,
             'category' => $category,
-            );
+            ];
         }
         $ib_handler->close($res);
     }

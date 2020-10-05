@@ -31,23 +31,23 @@ $title = _AM_XOONIPS_SYSTEM_RSS_TITLE;
 $description = _AM_XOONIPS_SYSTEM_RSS_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';
@@ -55,9 +55,9 @@ $ticket_area = 'xoonips_admin_system_rss';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys = array(
+$config_keys = [
     'rss_item_max' => 'i',
-);
+];
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 // >> rss_item_max
 $feed_item_max_title = _AM_XOONIPS_SYSTEM_RSS_FEED_ITEM_MAX_TITLE;

@@ -34,39 +34,39 @@ $title = _AM_XOONIPS_MAINTENANCE_ITEM_TITLE;
 $description = _AM_XOONIPS_MAINTENANCE_ITEM_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // menu
-$menu = array(
-    array(
+$menu = [
+    [
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_WITHDRAW_TITLE,
         'url' => $xoonips_admin['myfile_url'].'?page=item&amp;action=withdraw',
-    ),
-    array(
+    ],
+    [
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_TITLE,
         'url' => $xoonips_admin['myfile_url'].'?page=item&amp;action=delete',
-    ),
-    array(
+    ],
+    [
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_TRANSFER_TITLE,
         'url' => $xoonips_admin['myfile_url'].'?page=item&amp;action=transfer',
-    ),
-);
+    ],
+];
 
 // templates
 $tmpl = new PatTemplate();

@@ -93,7 +93,7 @@ class XooNIpsJoinCriteria
         $this->_main_field = $main_field;
         $this->_sub_field = $sub_field;
         $this->_join_type = $join_type;
-        $this->_next_join = array();
+        $this->_next_join = [];
         $this->_subtable_alias = $subtable_alias;
     }
 
@@ -109,11 +109,11 @@ class XooNIpsJoinCriteria
      **/
     public function cascade(&$join_criteria, $next_maintable_name = false, $next_maintable_is_alias = false)
     {
-        $this->_next_join[] = array(
+        $this->_next_join[] = [
         'join_criteria' => &$join_criteria,
         'main_table' => $next_maintable_name,
         'is_alias' => $next_maintable_is_alias,
-        );
+        ];
     }
 
     /**
@@ -245,8 +245,8 @@ class XooNIpsFulltextCriteria extends CriteriaElement
      **/
     public function render()
     {
-        $columns = is_array($this->_column) ? $this->_column : array($this->_column);
-        $clauses = array();
+        $columns = is_array($this->_column) ? $this->_column : [$this->_column];
+        $clauses = [];
         foreach ($columns as $key => $column) {
             $prefix = is_array($this->_prefix) ? $this->_prefix[$key] : $this->_prefix;
             $clauses[] = empty($prefix) ? sprintf('`%s`', $column) : sprintf('`%s`.`%s`', $prefix, $column);

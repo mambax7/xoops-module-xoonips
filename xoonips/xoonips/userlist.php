@@ -38,10 +38,10 @@ $criteria = new Criteria('posi_order', 0, '>=');
 $criteria->setSort('posi_order');
 $criteria->setOrder('ASC');
 $posi_objs = &$posi_handler->getObjects($criteria);
-$users = array();
+$users = [];
 // get user list by positions
 $xu_handler = &xoonips_getormhandler('xoonips', 'users');
-$userslist = array();
+$userslist = [];
 foreach ($posi_objs as $posi_obj) {
     $posi_id = $posi_obj->get('posi_id');
     $posi_title = $posi_obj->get('posi_title');
@@ -54,20 +54,20 @@ foreach ($posi_objs as $posi_obj) {
     $criteria->setSort('user_order');
     $criteria->setOrder('ASC');
     $xu_objs = &$xu_handler->getObjects($criteria, false, 'u.uid, u.name, u.uname, company_name', false, $join_criteria);
-    $users = array();
+    $users = [];
     foreach ($xu_objs as $xu_obj) {
-        $users[] = array(
+        $users[] = [
             'uid' => $xu_obj->get('uid'),
             'name' => $textutil->html_special_chars($xu_obj->getExtraVar('name')),
             'uname' => $textutil->html_special_chars($xu_obj->getExtraVar('uname')),
             'company_name' => $textutil->html_special_chars($xu_obj->getVar('company_name')),
-        );
+        ];
     }
     if (count($xu_objs) > 0) {
-        $userslist[] = array(
+        $userslist[] = [
             'title' => $textutil->html_special_chars($posi_title),
             'users' => $users,
-        );
+        ];
     }
 }
 

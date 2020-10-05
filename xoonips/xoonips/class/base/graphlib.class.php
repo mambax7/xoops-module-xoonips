@@ -27,112 +27,112 @@ class XooNIpsGraphLib
 {
     public $image;
     public $debug = false;        // be careful!!
-    public $calculated = array(); // array of computed values for chart
-    public $parameter = array(    // input parameters
-        'width' => 320,                // default width of image
-        'height' => 240,               // default height of image
-        'file_name' => 'none',         // name of file for file to be saved as.
-                                       //  NOTE: no suffix required. this is determined from output_format below.
-        'output_format' => 'PNG',      // image output format. 'GIF', 'PNG', 'JPEG'. default 'PNG'.
+    public $calculated = []; // array of computed values for chart
+    public $parameter = [    // input parameters
+                             'width' => 320,                // default width of image
+                             'height' => 240,               // default height of image
+                             'file_name' => 'none',         // name of file for file to be saved as.
+                             //  NOTE: no suffix required. this is determined from output_format below.
+                             'output_format' => 'PNG',      // image output format. 'GIF', 'PNG', 'JPEG'. default 'PNG'.
 
-        'seconds_to_live' => 0,        // expiry time in seconds (for HTTP header)
-        'hours_to_live' => 0,          // expiry time in hours (for HTTP header)
-        'path_to_fonts' => 'fonts/',   // path to fonts folder. don't forget *trailing* slash!!
-                                       //   for WINDOZE this may need to be the full path, not relative.
+                             'seconds_to_live' => 0,        // expiry time in seconds (for HTTP header)
+                             'hours_to_live' => 0,          // expiry time in hours (for HTTP header)
+                             'path_to_fonts' => 'fonts/',   // path to fonts folder. don't forget *trailing* slash!!
+                             //   for WINDOZE this may need to be the full path, not relative.
 
-        'title' => 'Graph Title',      // text for graph title
-        'title_font' => 'ARIALBD.TTF', // title text font. don't forget to set 'path_to_fonts' above.
-        'title_size' => 14,            // title text point size
-        'title_colour' => 'black',     // colour for title text
+                             'title' => 'Graph Title',      // text for graph title
+                             'title_font' => 'ARIALBD.TTF', // title text font. don't forget to set 'path_to_fonts' above.
+                             'title_size' => 14,            // title text point size
+                             'title_colour' => 'black',     // colour for title text
 
-        'x_label' => '',               // if this is set then this text is printed on bottom axis of graph.
-        'y_label_left' => '',          // if this is set then this text is printed on left axis of graph.
-        'y_label_right' => '',         // if this is set then this text is printed on right axis of graph.
+                             'x_label' => '',               // if this is set then this text is printed on bottom axis of graph.
+                             'y_label_left' => '',          // if this is set then this text is printed on left axis of graph.
+                             'y_label_right' => '',         // if this is set then this text is printed on right axis of graph.
 
-        'label_size' => 10,            // label text point size
-        'label_font' => 'ARIALBD.TTF', // label text font. don't forget to set 'path_to_fonts' above.
-        'label_colour' => 'gray33',    // label text colour
-        'y_label_angle' => 90,         // rotation of y axis label
+                             'label_size' => 10,            // label text point size
+                             'label_font' => 'ARIALBD.TTF', // label text font. don't forget to set 'path_to_fonts' above.
+                             'label_colour' => 'gray33',    // label text colour
+                             'y_label_angle' => 90,         // rotation of y axis label
 
-        'x_label_angle' => 0,          // rotation of y axis label
+                             'x_label_angle' => 0,          // rotation of y axis label
 
-        'outer_padding' => 8,          // padding around outer text. i.e. title, y label, and x label.
-        'inner_padding' => 6,          // padding beteen axis text and graph.
-        'outer_border' => 'none',      // colour of border aound image, or 'none'.
-        'inner_border' => 'black',     // colour of border around actual graph, or 'none'.
-        'inner_border_type' => 'box',  // 'box' for all four sides, 'axis' for x/y axis only,
-                                       // 'y' or 'y-left' for y axis only, 'y-right' for right y axis only,
-                                       // 'x' for x axis only, 'u' for both left and right y axis and x axis.
-        'outer_background' => 'none',  // background colour of entire image.
-        'inner_background' => 'none',  // background colour of plot area.
+                             'outer_padding' => 8,          // padding around outer text. i.e. title, y label, and x label.
+                             'inner_padding' => 6,          // padding beteen axis text and graph.
+                             'outer_border' => 'none',      // colour of border aound image, or 'none'.
+                             'inner_border' => 'black',     // colour of border around actual graph, or 'none'.
+                             'inner_border_type' => 'box',  // 'box' for all four sides, 'axis' for x/y axis only,
+                             // 'y' or 'y-left' for y axis only, 'y-right' for right y axis only,
+                             // 'x' for x axis only, 'u' for both left and right y axis and x axis.
+                             'outer_background' => 'none',  // background colour of entire image.
+                             'inner_background' => 'none',  // background colour of plot area.
 
-        'y_min_left' => 0,             // this will be reset to minimum value if there is a value lower than this.
-        'y_max_left' => 0,             // this will be reset to maximum value if there is a value higher than this.
-        'y_min_right' => 0,            // this will be reset to minimum value if there is a value lower than this.
-        'y_max_right' => 0,            // this will be reset to maximum value if there is a value higher than this.
-        'x_min' => 0,                  // only used if x axis is numeric.
-        'x_max' => 0,                  // only used if x axis is numeric.
+                             'y_min_left' => 0,             // this will be reset to minimum value if there is a value lower than this.
+                             'y_max_left' => 0,             // this will be reset to maximum value if there is a value higher than this.
+                             'y_min_right' => 0,            // this will be reset to minimum value if there is a value lower than this.
+                             'y_max_right' => 0,            // this will be reset to maximum value if there is a value higher than this.
+                             'x_min' => 0,                  // only used if x axis is numeric.
+                             'x_max' => 0,                  // only used if x axis is numeric.
 
-        'y_resolution_left' => 2,      // scaling for rounding of y axis max value.
-                                       // if max y value is 8645 then
-                                       // if y_resolution is 0, then y_max becomes 9000.
-                                       // if y_resolution is 1, then y_max becomes 8700.
-                                       // if y_resolution is 2, then y_max becomes 8650.
-                                       // if y_resolution is 3, then y_max becomes 8645.
-                                       // get it?
-        'y_decimal_left' => 0,         // number of decimal places for y_axis text.
-        'y_resolution_right' => 2,     // ... same for right hand side
-        'y_decimal_right' => 0,        // ... same for right hand side
-        'x_resolution' => 2,           // only used if x axis is numeric.
-        'x_decimal' => 0,              // only used if x axis is numeric.
+                             'y_resolution_left' => 2,      // scaling for rounding of y axis max value.
+                             // if max y value is 8645 then
+                             // if y_resolution is 0, then y_max becomes 9000.
+                             // if y_resolution is 1, then y_max becomes 8700.
+                             // if y_resolution is 2, then y_max becomes 8650.
+                             // if y_resolution is 3, then y_max becomes 8645.
+                             // get it?
+                             'y_decimal_left' => 0,         // number of decimal places for y_axis text.
+                             'y_resolution_right' => 2,     // ... same for right hand side
+                             'y_decimal_right' => 0,        // ... same for right hand side
+                             'x_resolution' => 2,           // only used if x axis is numeric.
+                             'x_decimal' => 0,              // only used if x axis is numeric.
 
-        'point_size' => 4,             // default point size. use even number for diamond or triangle to get nice look.
-        'brush_size' => 4,             // default brush size for brush line.
-        'brush_type' => 'circle',      // type of brush to use to draw line. choose from the following
-                                       //   'circle', 'square', 'horizontal', 'vertical', 'slash', 'backslash'
-        'bar_size' => 0.8,             // size of bar to draw. <1 bars won't touch
-                                       //   1 is full width - i.e. bars will touch.
-                                       //   >1 means bars will overlap.
-        'bar_spacing' => 10,           // space in pixels between group of bars for each x value.
-        'shadow_offset' => 3,          // draw shadow at this offset, unless overidden by data parameter.
-        'shadow' => 'grayCC',          // 'none' or colour of shadow.
-        'shadow_below_axis' => false,  // whether to draw shadows of bars and areas below the x/zero axis.
+                             'point_size' => 4,             // default point size. use even number for diamond or triangle to get nice look.
+                             'brush_size' => 4,             // default brush size for brush line.
+                             'brush_type' => 'circle',      // type of brush to use to draw line. choose from the following
+                             //   'circle', 'square', 'horizontal', 'vertical', 'slash', 'backslash'
+                             'bar_size' => 0.8,             // size of bar to draw. <1 bars won't touch
+                             //   1 is full width - i.e. bars will touch.
+                             //   >1 means bars will overlap.
+                             'bar_spacing' => 10,           // space in pixels between group of bars for each x value.
+                             'shadow_offset' => 3,          // draw shadow at this offset, unless overidden by data parameter.
+                             'shadow' => 'grayCC',          // 'none' or colour of shadow.
+                             'shadow_below_axis' => false,  // whether to draw shadows of bars and areas below the x/zero axis.
 
-        'x_axis_gridlines' => 'auto',  // if set to a number then x axis is treated as numeric.
-        'y_axis_gridlines' => 6,       // number of gridlines on y axis.
-        'zero_axis' => 'none',         // colour to draw zero-axis, or 'none'.
+                             'x_axis_gridlines' => 'auto',  // if set to a number then x axis is treated as numeric.
+                             'y_axis_gridlines' => 6,       // number of gridlines on y axis.
+                             'zero_axis' => 'none',         // colour to draw zero-axis, or 'none'.
 
-        'axis_font' => 'ARIAL.TTF',    // axis text font. don't forget to set 'path_to_fonts' above.
-        'axis_size' => 9,              // axis text font size in points
-        'axis_colour' => 'gray33',     // colour of axis text.
-        'y_axis_angle' => 0,           // rotation of axis text.
-        'x_axis_angle' => 90,          // rotation of axis text.
+                             'axis_font' => 'ARIAL.TTF',    // axis text font. don't forget to set 'path_to_fonts' above.
+                             'axis_size' => 9,              // axis text font size in points
+                             'axis_colour' => 'gray33',     // colour of axis text.
+                             'y_axis_angle' => 0,           // rotation of axis text.
+                             'x_axis_angle' => 90,          // rotation of axis text.
 
-        'y_axis_text_left' => 1,       // whether to print left hand y axis text. if 0 no text, if 1 all ticks have text,
-        'x_axis_text' => 1,            //   if 4 then print every 4th tick and text, etc...
-        'y_axis_text_right' => 0,      // behaviour same as above for right hand y axis.
+                             'y_axis_text_left' => 1,       // whether to print left hand y axis text. if 0 no text, if 1 all ticks have text,
+                             'x_axis_text' => 1,            //   if 4 then print every 4th tick and text, etc...
+                             'y_axis_text_right' => 0,      // behaviour same as above for right hand y axis.
 
-        'x_offset' => 0.5,             // x axis tick offset from y axis as fraction of tick spacing.
-        'y_ticks_colour' => 'black',   // colour to draw y ticks, or 'none'.
-        'x_ticks_colour' => 'black',   // colour to draw x ticks, or 'none'.
-        'y_grid' => 'line',            // grid lines. set to 'line' or 'dash'...
-        'x_grid' => 'line',            //   or if set to 'none' print nothing.
-        'grid_colour' => 'grayEE',     // default grid colour.
-        'tick_length' => 4,            // length of ticks in pixels. can be negative. i.e. outside data drawing area.
+                             'x_offset' => 0.5,             // x axis tick offset from y axis as fraction of tick spacing.
+                             'y_ticks_colour' => 'black',   // colour to draw y ticks, or 'none'.
+                             'x_ticks_colour' => 'black',   // colour to draw x ticks, or 'none'.
+                             'y_grid' => 'line',            // grid lines. set to 'line' or 'dash'...
+                             'x_grid' => 'line',            //   or if set to 'none' print nothing.
+                             'grid_colour' => 'grayEE',     // default grid colour.
+                             'tick_length' => 4,            // length of ticks in pixels. can be negative. i.e. outside data drawing area.
 
-        'legend' => 'none',            // default. no legend.
-                                       // otherwise: 'top-left', 'top-right', 'bottom-left', 'bottom-right',
-                                       //   'outside-top', 'outside-bottom', 'outside-left', or 'outside-right'.
-        'legend_offset' => 10,         // offset in pixels from graph or outside border.
-        'legend_padding' => 5,         // padding around legend text.
-        'legend_font' => 'ARIAL.TTF',  // legend text font. don't forget to set 'path_to_fonts' above.
-        'legend_size' => 9,            // legend text point size.
-        'legend_colour' => 'black',    // legend text colour.
-        'legend_border' => 'none',     // legend border colour, or 'none'.
+                             'legend' => 'none',            // default. no legend.
+                             // otherwise: 'top-left', 'top-right', 'bottom-left', 'bottom-right',
+                             //   'outside-top', 'outside-bottom', 'outside-left', or 'outside-right'.
+                             'legend_offset' => 10,         // offset in pixels from graph or outside border.
+                             'legend_padding' => 5,         // padding around legend text.
+                             'legend_font' => 'ARIAL.TTF',  // legend text font. don't forget to set 'path_to_fonts' above.
+                             'legend_size' => 9,            // legend text point size.
+                             'legend_colour' => 'black',    // legend text colour.
+                             'legend_border' => 'none',     // legend border colour, or 'none'.
 
-        'decimal_point' => '.',        // symbol for decimal separation  '.' or ',' *european support.
-        'thousand_sep' => ',',         // symbol for thousand separation ',' or ''
-    );
+                             'decimal_point' => '.',        // symbol for decimal separation  '.' or ',' *european support.
+                             'thousand_sep' => ',',         // symbol for thousand separation ',' or ''
+    ];
 
     // XooNIps - renamed class name
     public function __construct()
@@ -141,12 +141,12 @@ class XooNIpsGraphLib
             $this->parameter['width'] = func_get_arg(0);
             $this->parameter['height'] = func_get_arg(1);
         }
-        $this->calculated['boundary_box'] = array(
+        $this->calculated['boundary_box'] = [
             'left' => 0,
             'top' => 0,
             'right' => $this->parameter['width'] - 1,
             'bottom' => $this->parameter['height'] - 1,
-        );
+        ];
 
         $this->init_colours();
     }
@@ -249,7 +249,7 @@ class XooNIpsGraphLib
         $yOrder = $this->y_order; // save y_order data.
         // iterate over each data set. order is very important if you want to see data correctly. remember shadows!!
         foreach ($yOrder as $set) {
-            $this->y_order = array($set);
+            $this->y_order = [$set];
             $this->init_data();
             $this->draw_data();
         }
@@ -446,21 +446,22 @@ class XooNIpsGraphLib
         // legend border
         if ($borderColour != 'none') {
             $this->draw_rectangle(
-                array(
+                [
                 'top' => $top,
                 'left' => $left,
                 'bottom' => $bottom,
-                'right' => $right, ), $this->parameter['legend_border'], 'box'
+                'right' => $right,
+                ], $this->parameter['legend_border'], 'box'
             );
         }
 
         // legend text
-        $legendText = array(
+        $legendText = [
             'points' => $this->parameter['legend_size'],
             'angle' => 0,
             'font' => $this->parameter['legend_font'],
             'colour' => $this->parameter['legend_colour'],
-        );
+        ];
 
         $box = $this->calculated['legend']['boundary_box_max']['height']; // use max height for legend square size.
         $x = $left + $padding;
@@ -477,7 +478,7 @@ class XooNIpsGraphLib
                 imagefilledrectangle($this->image, $x, $y, $x + $box, $y + $box, $boxColour);
 
                 // draw text
-                $coords = array('x' => $x + $box * 2, 'y' => $y, 'reference' => 'top-left');
+                $coords = ['x' => $x + $box * 2, 'y' => $y, 'reference' => 'top-left'];
                 $legendText['boundary_box'] = $this->calculated['legend']['boundary_box'][$set];
                 $this->update_boundaryBox($legendText['boundary_box'], $coords);
                 $this->print_TTF($legendText);
@@ -499,7 +500,7 @@ class XooNIpsGraphLib
         $y = ($this->calculated['boundary_box']['bottom'] + $this->calculated['boundary_box']['top']) / 2;
 
         $label = $this->calculated['y_label_right'];
-        $coords = array('x' => $x, 'y' => $y, 'reference' => 'left-center');
+        $coords = ['x' => $x, 'y' => $y, 'reference' => 'left-center'];
         $this->update_boundaryBox($label['boundary_box'], $coords);
         $this->print_TTF($label);
     }
@@ -517,7 +518,7 @@ class XooNIpsGraphLib
         $y = ($this->calculated['boundary_box']['bottom'] + $this->calculated['boundary_box']['top']) / 2;
 
         $label = $this->calculated['y_label_left'];
-        $coords = array('x' => $x, 'y' => $y, 'reference' => 'right-center');
+        $coords = ['x' => $x, 'y' => $y, 'reference' => 'right-center'];
         $this->update_boundaryBox($label['boundary_box'], $coords);
         $this->print_TTF($label);
     }
@@ -531,7 +532,7 @@ class XooNIpsGraphLib
         $y = $this->calculated['boundary_box']['top'] - $this->parameter['outer_padding'];
         $x = ($this->calculated['boundary_box']['right'] + $this->calculated['boundary_box']['left']) / 2;
         $label = $this->calculated['title'];
-        $coords = array('x' => $x, 'y' => $y, 'reference' => 'bottom-center');
+        $coords = ['x' => $x, 'y' => $y, 'reference' => 'bottom-center'];
         $this->update_boundaryBox($label['boundary_box'], $coords);
         $this->print_TTF($label);
     }
@@ -548,7 +549,7 @@ class XooNIpsGraphLib
         }
         $x = ($this->calculated['boundary_box']['right'] + $this->calculated['boundary_box']['left']) / 2;
         $label = $this->calculated['x_label'];
-        $coords = array('x' => $x, 'y' => $y, 'reference' => 'top-center');
+        $coords = ['x' => $x, 'y' => $y, 'reference' => 'top-center'];
         $this->update_boundaryBox($label['boundary_box'], $coords);
         $this->print_TTF($label);
     }
@@ -612,7 +613,7 @@ class XooNIpsGraphLib
         }
 
         //generic tag information. applies to all axis text.
-        $axisTag = array('points' => $axis_size, 'angle' => $axis_angle, 'font' => $axis_font, 'colour' => $axis_colour);
+        $axisTag = ['points' => $axis_size, 'angle' => $axis_angle, 'font' => $axis_font, 'colour' => $axis_colour];
 
         foreach ($this->calculated['x_axis']['tick_x'] as $set => $tickX) {
             // draw x grid if colour specified
@@ -634,7 +635,7 @@ class XooNIpsGraphLib
                 }
 
                 // draw axis text
-                $coords = array('x' => $tickX, 'y' => $textBottom, 'reference' => $reference);
+                $coords = ['x' => $tickX, 'y' => $textBottom, 'reference' => $reference];
                 $axisTag['text'] = $this->calculated['x_axis']['text'][$set];
                 $axisTag['boundary_box'] = $this->calculated['x_axis']['boundary_box'][$set];
                 $this->update_boundaryBox($axisTag['boundary_box'], $coords);
@@ -656,7 +657,7 @@ class XooNIpsGraphLib
         $axis_font = $this->parameter['axis_font'];
         $axis_size = $this->parameter['axis_size'];
         $axis_angle = $this->parameter['y_axis_angle'];
-        $axisTag = array('points' => $axis_size, 'angle' => $axis_angle, 'font' => $axis_font, 'colour' => $axis_colour);
+        $axisTag = ['points' => $axis_size, 'angle' => $axis_angle, 'font' => $axis_font, 'colour' => $axis_colour];
 
         if ($this->calculated['y_axis_left']['has_data']) {
             // LEFT HAND SIDE
@@ -704,7 +705,7 @@ class XooNIpsGraphLib
                     }
 
                     // draw axis text...
-                    $coords = array('x' => $textRight, 'y' => $tickY, 'reference' => $reference);
+                    $coords = ['x' => $textRight, 'y' => $tickY, 'reference' => $reference];
                     $axisTag['text'] = $this->calculated['y_axis_left']['text'][$set];
                     $axisTag['boundary_box'] = $this->calculated['y_axis_left']['boundary_box'][$set];
                     $this->update_boundaryBox($axisTag['boundary_box'], $coords);
@@ -757,7 +758,7 @@ class XooNIpsGraphLib
                     }
 
                     // draw axis text...
-                    $coords = array('x' => $textLeft, 'y' => $tickY, 'reference' => $reference);
+                    $coords = ['x' => $textLeft, 'y' => $tickY, 'reference' => $reference];
                     $axisTag['text'] = $this->calculated['y_axis_right']['text'][$set];
                     $axisTag['boundary_box'] = $this->calculated['y_axis_left']['boundary_box'][$set];
                     $this->update_boundaryBox($axisTag['boundary_box'], $coords);
@@ -769,7 +770,7 @@ class XooNIpsGraphLib
 
     public function init_data()
     {
-        $this->calculated['y_plot'] = array(); // array to hold pixel plotting coords for y axis
+        $this->calculated['y_plot'] = []; // array to hold pixel plotting coords for y axis
         $height = $this->calculated['boundary_box']['bottom'] - $this->calculated['boundary_box']['top'];
         $width = $this->calculated['boundary_box']['right'] - $this->calculated['boundary_box']['left'];
 
@@ -914,11 +915,12 @@ class XooNIpsGraphLib
     {
         if ($this->parameter['title']) {
             $size = $this->get_boundaryBox(
-                array(
+                [
                 'points' => $this->parameter['title_size'],
                 'angle' => 0,
                 'font' => $this->parameter['title_font'],
-                'text' => $this->parameter['title'], )
+                'text' => $this->parameter['title'],
+                ]
             );
             $this->calculated['title']['boundary_box'] = $size;
             $this->calculated['title']['text'] = $this->parameter['title'];
@@ -981,7 +983,7 @@ class XooNIpsGraphLib
 
     public function init_legend()
     {
-        $this->calculated['legend'] = array(); // array to hold calculated values for legend.
+        $this->calculated['legend'] = []; // array to hold calculated values for legend.
         //$this->calculated['legend']['boundary_box_max'] = array('height' => 0, 'width' => 0);
         $this->calculated['legend']['boundary_box_max'] = $this->get_null_size();
         if ($this->parameter['legend'] == 'none') {
@@ -997,11 +999,12 @@ class XooNIpsGraphLib
         foreach ($this->y_order as $set) {
             $text = isset($this->y_format[$set]['legend']) ? $this->y_format[$set]['legend'] : 'none';
             $size = $this->get_boundaryBox(
-                array(
+                [
                 'points' => $this->parameter['legend_size'],
                 'angle' => 0,
                 'font' => $this->parameter['legend_font'],
-                'text' => $text, )
+                'text' => $text,
+                ]
             );
 
             $this->calculated['legend']['boundary_box'][$set] = $size;
@@ -1027,10 +1030,12 @@ class XooNIpsGraphLib
         $width = $padding * 2 + $textWidth + $textHeight * 2;  // left and right padding + maximum text width + space for square
         $height = $padding * ($numSets + 1) + $sumTextHeight; // top and bottom padding + padding between text + text.
 
-        $this->calculated['legend']['boundary_box_all'] = array('width' => $width,
-                                                        'height' => $height,
-                                                        'offset' => $offset,
-                                                        'reference' => $position, );
+        $this->calculated['legend']['boundary_box_all'] = [
+            'width'     => $width,
+            'height'    => $height,
+            'offset'    => $offset,
+            'reference' => $position,
+        ];
 
         switch ($position) { // move in right or bottom if legend is outside data plotting area.
         case 'outside-top':
@@ -1053,9 +1058,9 @@ class XooNIpsGraphLib
 
     public function init_y_axis()
     {
-        $this->calculated['y_axis_left'] = array(); // array to hold calculated values for y_axis on left.
+        $this->calculated['y_axis_left'] = []; // array to hold calculated values for y_axis on left.
         $this->calculated['y_axis_left']['boundary_box_max'] = $this->get_null_size();
-        $this->calculated['y_axis_right'] = array(); // array to hold calculated values for y_axis on right.
+        $this->calculated['y_axis_right'] = []; // array to hold calculated values for y_axis on right.
         $this->calculated['y_axis_right']['boundary_box_max'] = $this->get_null_size();
 
         $axis_font = $this->parameter['axis_font'];
@@ -1071,8 +1076,8 @@ class XooNIpsGraphLib
         $maxLeft = $this->parameter['y_max_left'];
         $minRight = $this->parameter['y_min_right'];
         $maxRight = $this->parameter['y_max_right'];
-        $dataLeft = array();
-        $dataRight = array();
+        $dataLeft = [];
+        $dataRight = [];
         foreach ($this->y_order as $order => $set) {
             if (isset($this->y_format[$set]['y_axis']) && $this->y_format[$set]['y_axis'] == 'right') {
                 $this->calculated['y_axis_right']['has_data'] = true;
@@ -1107,12 +1112,13 @@ class XooNIpsGraphLib
                 $this->calculated['y_axis_left']['text'][$i] = $value; // text is formatted raw data
 
                 $size = $this->get_boundaryBox(
-                    array(
+                    [
                     'points' => $axis_size,
                     'font' => $axis_font,
                     'angle' => $axis_angle,
                     'colour' => $axis_colour,
-                    'text' => $value, )
+                    'text' => $value,
+                    ]
                 );
                 $this->calculated['y_axis_left']['boundary_box'][$i] = $size;
 
@@ -1136,12 +1142,13 @@ class XooNIpsGraphLib
                 $this->calculated['y_axis_right']['data'][$i] = $start_right;
                 $this->calculated['y_axis_right']['text'][$i] = $value; // text is formatted raw data
                 $size = $this->get_boundaryBox(
-                    array(
+                    [
                     'points' => $axis_size,
                     'font' => $axis_font,
                     'angle' => $axis_angle,
                     'colour' => $axis_colour,
-                    'text' => $value, )
+                    'text' => $value,
+                    ]
                 );
                 $this->calculated['y_axis_right']['boundary_box'][$i] = $size;
 
@@ -1161,8 +1168,8 @@ class XooNIpsGraphLib
 
     public function init_x_axis()
     {
-        $this->calculated['x_axis'] = array(); // array to hold calculated values for x_axis.
-        $this->calculated['x_axis']['boundary_box_max'] = array('height' => 0, 'width' => 0);
+        $this->calculated['x_axis'] = []; // array to hold calculated values for x_axis.
+        $this->calculated['x_axis']['boundary_box_max'] = ['height' => 0, 'width' => 0];
 
         $axis_font = $this->parameter['axis_font'];
         $axis_size = $this->parameter['axis_size'];
@@ -1178,12 +1185,13 @@ class XooNIpsGraphLib
                 $this->calculated['x_axis']['data'][$i] = $value;
                 $this->calculated['x_axis']['text'][$i] = $value; // raw data and text are both the same in this case
                 $size = $this->get_boundaryBox(
-                    array(
+                    [
                     'points' => $axis_size,
                     'font' => $axis_font,
                     'angle' => $axis_angle,
                     'colour' => $axis_colour,
-                    'text' => $value, )
+                    'text' => $value,
+                    ]
                 );
                 $this->calculated['x_axis']['boundary_box'][$i] = $size;
                 if ($size['height'] > $this->calculated['x_axis']['boundary_box_max']['height']) {
@@ -1195,7 +1203,7 @@ class XooNIpsGraphLib
 
             $min = $this->parameter['x_min'];
             $max = $this->parameter['x_max'];
-            $data = array();
+            $data = [];
             $data = $this->find_range($this->x_data, $min, $max, $this->parameter['x_resolution']);
             $min = $data['min'];
             $max = $data['max'];
@@ -1211,11 +1219,13 @@ class XooNIpsGraphLib
                 $this->calculated['x_axis']['text'][$i] = $value; // text is formatted raw data
 
                 $size = $this->get_boundaryBox(
-                    array('points' => $axis_size,
-                    'font' => $axis_font,
-                    'angle' => $axis_angle,
-                    'colour' => $axis_colour,
-                    'text' => $value, )
+                    [
+                        'points' => $axis_size,
+                        'font'   => $axis_font,
+                        'angle'  => $axis_angle,
+                        'colour' => $axis_colour,
+                        'text'   => $value,
+                    ]
                 );
                 $this->calculated['x_axis']['boundary_box'][$i] = $size;
 
@@ -1236,7 +1246,7 @@ class XooNIpsGraphLib
     public function find_range($data, $min, $max, $resolution)
     {
         if (sizeof($data) == 0) {
-            return array('min' => 0, 'max' => 0);
+            return ['min' => 0, 'max' => 0];
         }
         foreach ($data as $key => $value) {
             if ($value == 'none') {
@@ -1268,7 +1278,7 @@ class XooNIpsGraphLib
 
           //print "max=$max, min=$min<BR>";
 
-          return array('min' => $min, 'max' => $max);
+          return ['min' => $min, 'max' => $max];
     }
 
     public function print_TTF($message)
@@ -1394,7 +1404,7 @@ class XooNIpsGraphLib
         }
 
         $boundaryBox = array_merge(
-            $boundaryBox, array(
+            $boundaryBox, [
                 'top' => $top,
                 'bottom' => $bottom,
                 'left' => $left,
@@ -1402,19 +1412,19 @@ class XooNIpsGraphLib
                 'x' => $x,
                 'y' => $y,
                 'reference' => $reference,
-            )
+                        ]
         );
     }
 
     public function get_null_size()
     {
-        return array(
+        return [
             'width' => 0,
             'height' => 0,
             'offsetX' => 0,
             'offsetY' => 0,
             //'fontHeight' => 0
-        );
+        ];
     }
 
     public function get_boundaryBox($message)
@@ -1458,12 +1468,13 @@ class XooNIpsGraphLib
         }
 
         //return values
-        return array('width' => $width,
-                 'height' => $height,
-                 'offsetX' => $offsetX,
-                 'offsetY' => $offsetY,
-                 //'fontHeight' => $fontHeight
-                 );
+        return [
+            'width'   => $width,
+            'height'  => $height,
+            'offsetX' => $offsetX,
+            'offsetY' => $offsetY,
+            //'fontHeight' => $fontHeight
+        ];
     }
 
     public function draw_rectangle($border, $colour, $type)
@@ -1621,16 +1632,16 @@ class XooNIpsGraphLib
             imagearc($this->image, $u, $v, $size, $size, 0, 360, $this->colour[$colour]);
             break;
         case 'diamond':
-            imagefilledpolygon($this->image, array($u, $v - $half, $u + $half, $v, $u, $v + $half, $u - $half, $v), 4, $this->colour[$colour]);
+            imagefilledpolygon($this->image, [$u, $v - $half, $u + $half, $v, $u, $v + $half, $u - $half, $v], 4, $this->colour[$colour]);
             break;
         case 'diamond-open':
-            imagepolygon($this->image, array($u, $v - $half, $u + $half, $v, $u, $v + $half, $u - $half, $v), 4, $this->colour[$colour]);
+            imagepolygon($this->image, [$u, $v - $half, $u + $half, $v, $u, $v + $half, $u - $half, $v], 4, $this->colour[$colour]);
             break;
         case 'triangle':
-            imagefilledpolygon($this->image, array($u, $v - $half, $u + $half, $v + $half, $u - $half, $v + $half), 3, $this->colour[$colour]);
+            imagefilledpolygon($this->image, [$u, $v - $half, $u + $half, $v + $half, $u - $half, $v + $half], 3, $this->colour[$colour]);
             break;
         case 'triangle-open':
-            imagepolygon($this->image, array($u, $v - $half, $u + $half, $v + $half, $u - $half, $v + $half), 3, $this->colour[$colour]);
+            imagepolygon($this->image, [$u, $v - $half, $u + $half, $v + $half, $u - $half, $v + $half], 3, $this->colour[$colour]);
             break;
         case 'dot':
             imagesetpixel($this->image, $u, $v, $this->colour[$colour]);
@@ -1721,8 +1732,8 @@ class XooNIpsGraphLib
             switch ($type) {
             case 'fill':
                 // draw it this way 'cos the FilledPolygon routine seems a bit buggy.
-                imagefilledpolygon($this->image, array($u_start, $v_start, $u_end, $v_end, $u_end, $zero, $u_start, $zero), 4, $this->colour[$colour]);
-                imagepolygon($this->image, array($u_start, $v_start, $u_end, $v_end, $u_end, $zero, $u_start, $zero), 4, $this->colour[$colour]);
+                imagefilledpolygon($this->image, [$u_start, $v_start, $u_end, $v_end, $u_end, $zero, $u_start, $zero], 4, $this->colour[$colour]);
+                imagepolygon($this->image, [$u_start, $v_start, $u_end, $v_end, $u_end, $zero, $u_start, $zero], 4, $this->colour[$colour]);
                 break;
             case 'open':
                 //ImagePolygon($this->image, array($u_start, $v_start, $u_end, $v_end, $u_end, $zero, $u_start, $zero), 4, $this->colour[$colour]);
@@ -1746,10 +1757,10 @@ class XooNIpsGraphLib
             } // 1 pixel above bottom if border is to be drawn.
                 switch ($type) {
             case 'fill':
-                imagefilledpolygon($this->image, array($u_start, $v_start, $u_end, $v_end, $u_end, $bottom, $u_start, $bottom), 4, $this->colour[$colour]);
+                imagefilledpolygon($this->image, [$u_start, $v_start, $u_end, $v_end, $u_end, $bottom, $u_start, $bottom], 4, $this->colour[$colour]);
                 break;
             case 'open':
-                imagepolygon($this->image, array($u_start, $v_start, $u_end, $v_end, $u_end, $bottom, $u_start, $bottom), 4, $this->colour[$colour]);
+                imagepolygon($this->image, [$u_start, $v_start, $u_end, $v_end, $u_end, $bottom, $u_start, $bottom], 4, $this->colour[$colour]);
                 break;
                 }
         }
@@ -1847,22 +1858,22 @@ class XooNIpsGraphLib
             break;
         case 'slash':
               imagefilledpolygon(
-                  $this->image, array(
+                  $this->image, [
                       $x + $half, $y - $half,
                       $x + $half + 1, $y - $half,
                       $x - $half + 1, $y + $half,
                       $x - $half, $y + $half,
-                  ), 4, $this->colour[$colour]
+              ], 4, $this->colour[$colour]
               );
             break;
         case 'backslash':
               imagefilledpolygon(
-                  $this->image, array(
+                  $this->image, [
                       $x - $half, $y - $half,
                       $x - $half + 1, $y - $half,
                       $x + $half + 1, $y + $half,
                       $x + $half, $y + $half,
-                  ), 4, $this->colour[$colour]
+              ], 4, $this->colour[$colour]
               );
             break;
         default:

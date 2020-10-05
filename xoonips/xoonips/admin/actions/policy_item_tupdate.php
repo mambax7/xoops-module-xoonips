@@ -35,10 +35,10 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 }
 
 // get variables
-$post_keys = array(
-    'weight' => array('i', true, false),
-    'display_name' => array('s', true, false),
-);
+$post_keys = [
+    'weight' => ['i', true, false],
+    'display_name' => ['s', true, false],
+];
 $post_vals = xoonips_admin_get_requests('post', $post_keys);
 
 // update db values

@@ -73,7 +73,7 @@ class XooNIpsXmlRpcLogicGetIndex extends XooNIpsXmlRpcLogic
 
             return false;
         }
-        $vars = array();
+        $vars = [];
         $vars[0] = $params[0];
         $vars[1] = $params[1];
 

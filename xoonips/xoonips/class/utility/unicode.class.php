@@ -40,7 +40,7 @@ class XooNIpsUtilityUnicode extends XooNIpsUtility
      *
      * @var array
      */
-    public $unicode_map = array();
+    public $unicode_map = [];
 
     /**
      * constructor.

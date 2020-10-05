@@ -83,7 +83,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
      */
     public function getValueArray($method, $name, $type, $is_required)
     {
-        $ret = array();
+        $ret = [];
         $vals = $this->_get_request_data($method, $name, $is_required);
         if (is_null($vals)) {
             return $ret;
@@ -173,7 +173,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
      */
     public function &getObjectArray($method, $name, &$handler, $is_required)
     {
-        $ret = array();
+        $ret = [];
         $vals = $this->_get_request_data($method, $name, $is_required);
         if (is_null($vals)) {
             return $ret;
@@ -233,10 +233,10 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
      */
     public function copy($src_method, $dst_method)
     {
-        $accept = array(
+        $accept = [
         'get',
         'post',
-        );
+        ];
         if (!in_array($src_method, $accept) || !in_array($dst_method, $accept) || $src_method == $dst_method) {
             $this->_form_error(__LINE__);
         }
@@ -433,13 +433,13 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
         // convert JIS X 0212 to numeric character reference
         if (_CHARSET == 'EUC-JP') {
             $len = strlen($val);
-            $chars = array();
-            $convmap = array(
+            $chars = [];
+            $convmap = [
             0x0,
             0xffff,
             0,
             0xffff,
-            );
+            ];
             for ($i = 0; $i < $len; ++$i) {
                 if (ord($val[$i]) <= 127) {
                     $chars[] = $val[$i];

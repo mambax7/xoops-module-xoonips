@@ -52,7 +52,7 @@ class XooNIpsXMLParser
      *
      * @var array
      */
-    public $_fetch_arguments = array();
+    public $_fetch_arguments = [];
 
     /**
      * the parser character set.
@@ -120,7 +120,7 @@ class XooNIpsXMLParser
             return false;
         }
         // create fetch url
-        $arguments = array();
+        $arguments = [];
         if (!empty($this->_fetch_arguments)) {
             foreach ($this->_fetch_arguments as $k => $v) {
                 $arguments[] = $this->encode_url($k).'='.$this->encode_url($v);

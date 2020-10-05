@@ -56,7 +56,7 @@ class XooNIpsXmlRpcLogicUpdateFile extends XooNIpsXmlRpcLogic
         }
 
         $params = &$request->getParams();
-        $vars = array();
+        $vars = [];
         if (count($params) < 5) {
             $response->setResult(false);
             $error->add(XNPERR_MISSING_PARAM);

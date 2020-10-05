@@ -84,7 +84,7 @@ class XooNIpsViewImportFinish extends XooNIpsView
 
     public function _get_item_urls()
     {
-        $result = array();
+        $result = [];
 
         $log = '';
         $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
@@ -100,10 +100,10 @@ class XooNIpsViewImportFinish extends XooNIpsView
             } else {
                 $basic = &$item->getVar('basic');
             }
-            $result[] = array(
+            $result[] = [
                 'pseudo_id' => $item->getPseudoId(),
                 'url' => xnpGetItemDetailURL($basic->get('item_id')),
-            );
+            ];
         }
 
         return $result;

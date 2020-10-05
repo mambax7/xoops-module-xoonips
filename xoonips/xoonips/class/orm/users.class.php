@@ -142,12 +142,12 @@ class XooNIpsOrmUsersHandler extends XooNIpsTableObjectHandler
         if ($isNew) {
             // set default private index/item/storage limit
             $xconfig_handler = &xoonips_getormhandler('xoonips', 'config');
-            $keys = array(
+            $keys = [
             // config key name  => field name of 'xoonips_users' table
             'private_index_number_limit' => 'private_index_number_limit',
             'private_item_number_limit' => 'private_item_number_limit',
             'private_item_storage_limit' => 'private_item_storage_limit',
-            );
+            ];
             foreach ($keys as $key => $field) {
                 $value = $xconfig_handler->getValue($key);
                 $obj->set($field, $value);

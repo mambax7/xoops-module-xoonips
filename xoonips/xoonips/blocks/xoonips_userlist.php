@@ -49,7 +49,7 @@ function b_xoonips_userlist_show()
     $criteria->setSort('posi_order');
     $criteria->setOrder('ASC');
     $position_objs = &$positions_handler->getObjects($criteria);
-    $positions = array();
+    $positions = [];
     foreach ($position_objs as $position_obj) {
         $posi_id = $position_obj->getVar('posi_id', 'n');
         $posi_title = $position_obj->getVar('posi_title', 's');
@@ -59,27 +59,27 @@ function b_xoonips_userlist_show()
         $criteria->add(new Criteria($tables['users'].'.level', '0', '>'));
         $criteria->add(new Criteria($tables['xusers'].'.activate', '1'));
         $criteria->add(new Criteria($tables['xusers'].'.posi', $posi_id));
-        $sort = array(
+        $sort = [
             $tables['users'].'.uid',
             $tables['xusers'].'.user_order',
-        );
+        ];
         $criteria->setSort($sort);
         $criteria->setOrder('ASC');
-        $fields = array(
+        $fields = [
             $tables['users'].'.uid',
             $tables['users'].'.uname',
             $tables['users'].'.name',
-        );
+        ];
         $user_objs = &$user_handler->getObjects($criteria, false, implode(',', $fields), false, $join_criteria);
         if (!empty($user_objs)) {
             $position['title'] = $posi_title;
-            $position['users'] = array();
+            $position['users'] = [];
             foreach ($user_objs as $user_obj) {
-                $position['users'][] = array(
+                $position['users'][] = [
                     'uid' => $user_obj->getVar('uid', 'e'),
                     'name' => $user_obj->getVar('name', 's'),
                     'uname' => $user_obj->getVar('uname', 's'),
-                );
+                ];
             }
             $positions[] = $position;
         }
@@ -90,7 +90,7 @@ function b_xoonips_userlist_show()
     }
 
     // assign block template variables
-    $block = array();
+    $block = [];
     $block['positions'] = $positions;
 
     return $block;

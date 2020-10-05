@@ -66,16 +66,16 @@ class XooNIpsActionOaipmhSearchDetail extends XooNIpsAction
         $this->_view_params['url_to_back'] = 'oaipmh_search.php?action=search';
         $this->_view_params['repository_name'] = $this->getRepositoryName($this->_formdata->getValue('post', 'identifier', 's', false));
         $this->_view_params['metadata'] = $this->getMetadataArray($this->_formdata->getValue('post', 'identifier', 's', false));
-        $this->_view_params['hidden'] = array(
-            array('name' => 'search_cache_id', 'value' => $this->_formdata->getValue('post', 'search_cache_id', 'i', false)),
-            array('name' => 'search_flag', 'value' => '0'),
-            array('name' => 'repository_id', 'value' => $this->_formdata->getValue('post', 'repository_id', 'i', false)),
-            array('name' => 'keyword', 'value' => $textutil->html_special_chars($this->_formdata->getValue('post', 'keyword', 's', false))),
-            array('name' => 'order_by', 'value' => $textutil->html_special_chars($this->_formdata->getValue('post', 'order_by', 's', false))),
-            array('name' => 'order_dir', 'value' => $textutil->html_special_chars($this->_formdata->getValue('post', 'order_dir', 's', false))),
-            array('name' => 'page', 'value' => $this->_formdata->getValue('post', 'page', 'i', false)),
-            array('name' => 'metadata_per_page', 'value' => $this->_formdata->getValue('post', 'metadata_per_page', 'i', false)),
-        );
+        $this->_view_params['hidden'] = [
+            ['name' => 'search_cache_id', 'value' => $this->_formdata->getValue('post', 'search_cache_id', 'i', false)],
+            ['name' => 'search_flag', 'value' => '0'],
+            ['name' => 'repository_id', 'value' => $this->_formdata->getValue('post', 'repository_id', 'i', false)],
+            ['name' => 'keyword', 'value' => $textutil->html_special_chars($this->_formdata->getValue('post', 'keyword', 's', false))],
+            ['name' => 'order_by', 'value' => $textutil->html_special_chars($this->_formdata->getValue('post', 'order_by', 's', false))],
+            ['name' => 'order_dir', 'value' => $textutil->html_special_chars($this->_formdata->getValue('post', 'order_dir', 's', false))],
+            ['name' => 'page', 'value' => $this->_formdata->getValue('post', 'page', 'i', false)],
+            ['name' => 'metadata_per_page', 'value' => $this->_formdata->getValue('post', 'metadata_per_page', 'i', false)],
+        ];
     }
 
     /**
@@ -90,7 +90,7 @@ class XooNIpsActionOaipmhSearchDetail extends XooNIpsAction
         $metadata_handler = &xoonips_getormhandler('xoonips', 'oaipmh_metadata');
         $metadata = &$metadata_handler->getObjects(new Criteria('identifier', $identifier));
         if (!$metadata) {
-            return array();
+            return [];
         }
 
         $metadata_field_handler = &xoonips_getormhandler('xoonips', 'oaipmh_metadata_field');
@@ -98,10 +98,10 @@ class XooNIpsActionOaipmhSearchDetail extends XooNIpsAction
         $criteria->setSort('ordernum');
         $fields = &$metadata_field_handler->getObjects($criteria);
         if (!$fields) {
-            return array();
+            return [];
         }
 
-        $result = array();
+        $result = [];
         foreach ($fields as $field) {
             $result[] = $field->getVarArray('s');
         }

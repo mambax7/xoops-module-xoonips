@@ -70,7 +70,7 @@ class XooNIpsActionTransferUserRequestSelectItem extends XooNIpsActionTransfer
             $this->_view_params['to_uid'] = $extra_params['to_uid'];
         }
 
-        $item_ids_to_transfer = array();
+        $item_ids_to_transfer = [];
         if ('add_selected_item' == $this->_formdata->getValue('post', 'op', 's', false)) {
             $item_ids_to_transfer = array_merge($this->get_selected(), $this->get_selected_hidden());
         } else {
@@ -90,13 +90,13 @@ class XooNIpsActionTransferUserRequestSelectItem extends XooNIpsActionTransfer
     {
         $result = $this->_formdata->getValueArray('post', 'selected', 'i', false);
 
-        return is_array($result) ? $result : array();
+        return is_array($result) ? $result : [];
     }
 
     public function get_selected_hidden()
     {
         $result = $this->_formdata->getValueArray('post', 'selected_hidden', 'i', false);
 
-        return is_array($result) ? $result : array();
+        return is_array($result) ? $result : [];
     }
 }

@@ -72,7 +72,7 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
             $sessionid = $vars[0];
             $item = $vars[1];
         }
-        list($result, $uid, $session) = $this->restoreSession($sessionid);
+        [$result, $uid, $session] = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
@@ -170,8 +170,8 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
 
             return false;
         }
-        $old_file_ids = array();
-        $new_file_ids = array();
+        $old_file_ids = [];
+        $new_file_ids = [];
         foreach ($detail_item_type->getFileTypeNames() as $file_type_name) {
             $old_files = $old_item->getVar($file_type_name);
             $new_files = $item->getVar($file_type_name);
@@ -350,11 +350,11 @@ class XooNIpsLogicUpdateItem extends XooNIpsLogic
             }
         }
         $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
-        $new_index_ids = array();
+        $new_index_ids = [];
         foreach ($new_item->getVar('indexes') as $link) {
             $new_index_ids[] = $link->get('index_id');
         }
-        $old_index_ids = array();
+        $old_index_ids = [];
         foreach ($old_item->getVar('indexes') as $link) {
             $old_index_ids[] = $link->get('index_id');
         }

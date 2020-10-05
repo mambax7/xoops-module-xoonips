@@ -39,7 +39,7 @@ class XooNIpsViewImportConflict extends XooNIpsView
     public function render()
     {
         global $xoopsOption, $xoopsConfig, $xoopsUser, $xoopsUserIsAdmin, $xoopsLogger, $xoopsTpl;
-        $conflict_items = array();
+        $conflict_items = [];
         $c = 0;
         foreach ($this->_params['import_items'] as $item) {
             // skip no conflict item.
@@ -55,57 +55,57 @@ class XooNIpsViewImportConflict extends XooNIpsView
                 break;
             }
 
-            $vars = array();
+            $vars = [];
             $handler = &xoonips_gethandler('xoonips', 'import_item');
-            $vars['import_item'] = array(
+            $vars['import_item'] = [
                 'pseudo_id' => $item->getPseudoId(),
                 'update_flag' => $item->getUpdateFlag(),
                 'item_text' => $item->getItemAbstractText(),
-            );
+            ];
 
-            $vars['conflict_updatable_items'] = array();
+            $vars['conflict_updatable_items'] = [];
             $handler = &xoonips_getormcompohandler('xoonips', 'item');
             foreach ($item->getDuplicateUpdatableItemId() as $id) {
-                $vars['conflict_updatable_items'][] = array(
+                $vars['conflict_updatable_items'][] = [
                     'item_id' => $id,
                     'item_text' => $handler->getItemAbstractTextById($id),
-                );
+                ];
             }
 
-            $vars['conflict_import_items'] = array();
+            $vars['conflict_import_items'] = [];
             $handler = &xoonips_gethandler('xoonips', 'import_item');
             foreach ($item->getDuplicatePseudoId() as $id) {
                 foreach ($this->_params['import_items'] as $item) {
                     if ($item->getPseudoId() == $id) {
-                        $vars['conflict_import_items'][] = array(
+                        $vars['conflict_import_items'][] = [
                             'item_id' => $id,
                             'item_text' => $item->getItemAbstractText(),
-                        );
+                        ];
                         break;
                     }
                 }
             }
 
-            $vars['conflict_unupdatable_items'] = array();
+            $vars['conflict_unupdatable_items'] = [];
             $handler = &xoonips_getormcompohandler('xoonips', 'item');
             foreach ($item->getDuplicateUnupdatableItemId() as $id) {
-                $vars['conflict_unupdatable_items'][] = array(
+                $vars['conflict_unupdatable_items'][] = [
                     'item_id' => $id,
                     'item_text' => $handler->getItemAbstractTextById($id),
-                );
+                ];
             }
 
             $handler = &xoonips_getormcompohandler('xoonips', 'item');
             $lock_handler = &xoonips_getormhandler('xoonips', 'item_lock');
-            $vars['conflict_certify_request_locked_items'] = array();
+            $vars['conflict_certify_request_locked_items'] = [];
             foreach ($item->getDuplicateLockedItemId() as $id) {
                 if ($lock_handler->isLocked($id)) {
                     if ($lock_handler->getLockType($id) == XOONIPS_LOCK_TYPE_CERTIFY_REQUEST
                     ) {
-                        $vars['conflict_certify_request_locked_items'][] = array(
+                        $vars['conflict_certify_request_locked_items'][] = [
                             'item_id' => $id,
                             'item_text' => $handler->getItemAbstractTextById($id),
-                        );
+                        ];
                     } else {
                         die('unknown lock type:'.$lock_handler->getLockType($id));
                     }

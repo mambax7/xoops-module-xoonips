@@ -29,9 +29,9 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 require_once '../class/base/gtickets.php';
 
 // get requests
-$request_keys = array(
-    'ranking_download_file' => array('s', false, true),
-);
+$request_keys = [
+    'ranking_download_file' => ['s', false, true],
+];
 $request_vals = xoonips_admin_get_requests('both', $request_keys);
 $filename = $request_vals['ranking_download_file'];
 if ($filename == '') {

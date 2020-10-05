@@ -40,12 +40,12 @@ function xoonips_admin_system_check_mysql(&$category)
     unset($res);
 
     if ($mysqlinfo->isVersion41orHigher()) {
-        $keys = array(
+        $keys = [
             'character_set_database' => true,
             'character_set_client' => false,
             'character_set_connection' => false,
             'character_set_results' => false,
-        );
+        ];
         foreach ($keys as $key => $is_database) {
             $res = new XooNIpsAdminSystemCheckResult($key);
             $charset = $mysqlinfo->getVariable($key);

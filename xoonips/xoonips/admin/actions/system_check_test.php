@@ -43,7 +43,7 @@ class XooNIpsAdminSystemCheckResult
     public $status;
     public $label;
     public $result;
-    public $messages = array();
+    public $messages = [];
 
     public function __construct($name)
     {
@@ -67,20 +67,20 @@ class XooNIpsAdminSystemCheckResult
         $textutil = &xoonips_getutility('text');
 
         $arrow = '<span style="font-weight: bold;">&raquo;</span>';
-        $stat = array(
-            _XASC_STATUS_OK => array(
+        $stat = [
+            _XASC_STATUS_OK => [
                 'image' => 'icon_ok.png',
                 'color' => 'black',
-            ),
-            _XASC_STATUS_NOTICE => array(
+            ],
+            _XASC_STATUS_NOTICE => [
                 'image' => 'icon_notice.png',
                 'color' => 'red',
-             ),
-            _XASC_STATUS_FAIL => array(
+            ],
+            _XASC_STATUS_FAIL => [
                 'image' => 'icon_error.png',
                 'color' => 'red',
-            ),
-        );
+            ],
+        ];
         // status
         $html = '<img src="../images/'.$stat[$this->status]['image'].'" alt=""/>';
         $html .= '&nbsp;';
@@ -104,7 +104,7 @@ class XooNIpsAdminSystemCheckResult
 class XooNIpsAdminSystemCheckCategory
 {
     public $name;
-    public $results = array();
+    public $results = [];
     public $errortype = _XASC_ERRORTYPE_NONE;
     public $errorlevel = _XASC_STATUS_OK;
 
@@ -139,7 +139,7 @@ class XooNIpsAdminSystemCheckCategory
 }
 class XooNIpsAdminSystemCheck
 {
-    public $categories = array();
+    public $categories = [];
 
     public function __construct()
     {
@@ -154,36 +154,36 @@ class XooNIpsAdminSystemCheck
     {
         $textutil = &xoonips_getutility('text');
         $arrow = '<span style="font-weight: bold;">&raquo;</span>';
-        $stat = array(
-            _XASC_STATUS_OK => array(
+        $stat = [
+            _XASC_STATUS_OK => [
                 'image' => 'icon_ok.png',
                 'color' => 'black',
                 'label' => _AM_XOONIPS_SYSTEM_CHECK_LABEL_OK,
-            ),
-            _XASC_STATUS_NOTICE => array(
+            ],
+            _XASC_STATUS_NOTICE => [
                 'image' => 'icon_notice.png',
                 'color' => 'black',
                 'label' => _AM_XOONIPS_SYSTEM_CHECK_LABEL_NOTICE,
-            ),
-            _XASC_STATUS_FAIL => array(
+            ],
+            _XASC_STATUS_FAIL => [
                 'image' => 'icon_error.png',
                 'color' => 'red',
                 'label' => _AM_XOONIPS_SYSTEM_CHECK_LABEL_FAIL,
-            ),
-        );
-        $messages = array(
+            ],
+        ];
+        $messages = [
             _XASC_ERRORTYPE_PHP => _AM_XOONIPS_SYSTEM_CHECK_MSG_PHP,
             _XASC_ERRORTYPE_MYSQL => _AM_XOONIPS_SYSTEM_CHECK_MSG_MYSQL,
             _XASC_ERRORTYPE_COMMAND => _AM_XOONIPS_SYSTEM_CHECK_MSG_COMMAND,
             _XASC_ERRORTYPE_XOONIPS => _AM_XOONIPS_SYSTEM_CHECK_MSG_XOONIPS,
-        );
+        ];
         // status
         $html = '<img src="../images/'.$stat[$errorlevel]['image'].'" alt=""/>';
         $html .= '&nbsp;';
         // name
         $html .= '<span style="font-weight: bold; color: '.$stat[$errorlevel]['color'].';">'.$textutil->html_special_chars($stat[$errorlevel]['label']).'</span>';
         // message
-        foreach (array(1, 2, 4, 8) as $type) {
+        foreach ([1, 2, 4, 8] as $type) {
             if ($errortype & $type) {
                 $html .= '<br />&nbsp;&nbsp;'.$arrow.'&nbsp;&nbsp;';
                 $html .= $textutil->html_special_chars($messages[$type]);
@@ -195,34 +195,34 @@ class XooNIpsAdminSystemCheck
 
     public function getResults()
     {
-        $ret = array();
+        $ret = [];
         $errortype = _XASC_ERRORTYPE_NONE;
         $errorlevel = _XASC_STATUS_OK;
         foreach ($this->categories as $category) {
-            $ret[] = array(
+            $ret[] = [
                 'name' => $category->name,
                 'result' => $category->renderResults(),
-            );
+            ];
             $errortype |= $category->errortype;
             $errorlevel = max($category->errorlevel, $errorlevel);
         }
         // total result
-        $ret[] = array(
+        $ret[] = [
             'name' => _AM_XOONIPS_SYSTEM_CHECK_LABEL_RESULTS,
             'result' => $this->renderTotalResult($errortype, $errorlevel),
-        );
+        ];
 
         return $ret;
     }
 }
 
-$check_categories = array(
+$check_categories = [
     'phpini' => _AM_XOONIPS_SYSTEM_CHECK_CATEGORY_PHPINI,
     'phpext' => _AM_XOONIPS_SYSTEM_CHECK_CATEGORY_PHPEXT,
     'mysql' => _AM_XOONIPS_SYSTEM_CHECK_CATEGORY_MYSQL,
     'command' => _AM_XOONIPS_SYSTEM_CHECK_CATEGORY_COMMAND,
     'xoonips' => _AM_XOONIPS_SYSTEM_CHECK_CATEGORY_XOONIPS,
-);
+];
 
 $check_results_obj = new XooNIpsAdminSystemCheck();
 foreach ($check_categories as $category => $label) {
@@ -241,23 +241,23 @@ $title = _AM_XOONIPS_SYSTEM_CHECK_TITLE;
 $description = _AM_XOONIPS_SYSTEM_CHECK_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';

@@ -52,21 +52,21 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
      *
      * @var array
      */
-    public $_ecdirecty = array();
+    public $_ecdirecty = [];
 
     /**
      * central directories.
      *
      * @var array
      */
-    public $_cdirecties = array();
+    public $_cdirecties = [];
 
     /**
      * zip file entries.
      *
      * @var array
      */
-    public $_entries = array();
+    public $_entries = [];
 
     /**
      * open zip file.
@@ -112,9 +112,9 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
         // initialize local resouces
         $this->_zfname = '';
         $this->_zfhandle = false;
-        $this->_ecdirectory = array();
-        $this->_cdirectories = array();
-        $this->_entries = array();
+        $this->_ecdirectory = [];
+        $this->_cdirectories = [];
+        $this->_entries = [];
 
         return true;
     }
@@ -444,7 +444,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
             }
             $sig = substr($sig, 1).fread($this->_zfhandle, 1);
         }
-        $entry = array();
+        $entry = [];
         // number of this disk
         $entry['numofdisk'] = $this->_fread_unpack('us');
         // number of the disk with the start of the central directory
@@ -479,7 +479,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
         if ($sig != $signature) {
             return false;
         }
-        $cdir = array();
+        $cdir = [];
         // version made by
         $cdir['versionmadeby'] = $this->_fread_unpack('us');
         // version needed to extract
@@ -534,7 +534,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
     private function _read_local_file_header()
     {
         static $signature = "\x50\x4b\x03\x04";
-        $entry = array();
+        $entry = [];
         $entry['offset'] = ftell($this->_zfhandle);
         $sig = fread($this->_zfhandle, 4);
         if ($sig != $signature) {
@@ -598,18 +598,18 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
      */
     private function _fread_unpack($type)
     {
-        static $types = array(
-        // unsigned short integer of little endian
-        'us' => array(
+        static $types = [
+            // unsigned short integer of little endian
+            'us' => [
         'format' => 'v',
         'length' => 2,
-        ),
-        // unsigned long integer of little endian
-        'ul' => array(
+            ],
+            // unsigned long integer of little endian
+            'ul' => [
         'format' => 'V',
         'length' => 4,
-        ),
-        );
+            ],
+        ];
         if (!isset($types[$type])) {
             return false;
         }

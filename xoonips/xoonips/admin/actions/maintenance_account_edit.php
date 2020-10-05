@@ -57,132 +57,132 @@ function get_user_info($uid)
     // groups
     $grouplist = $m_handler->getGroupList(new Criteria('groupid', XOOPS_GROUP_ANONYMOUS, '!='));
     if ($uid == 0) {
-        $groups = array(XOOPS_GROUP_USERS);
+        $groups = [XOOPS_GROUP_USERS];
     } else {
         $groups = $m_handler->getGroupsByUser($user['xoops']['uid']);
     }
-    $user['groups'] = array();
+    $user['groups'] = [];
     foreach ($grouplist as $gid => $name) {
-        $user['groups'][] = array(
+        $user['groups'][] = [
             'gid' => $gid,
             'name' => $textutil->html_special_chars($name),
             'selected' => in_array($gid, $groups) ? 'selected="selected"' : '',
-        );
+        ];
     }
     // position
     $positionlist = &$p_handler->getPositionList('s');
-    $user['position'] = array();
-    $user['position'][] = array(
+    $user['position'] = [];
+    $user['position'][] = [
         'posi_id' => 0,
         'title' => '--------------',
         'selected' => (empty($user['xoonips']['posi'])) ? 'selected="selected"' : '',
-    );
+    ];
     foreach ($positionlist as $posi_id => $vars) {
-        $user['position'][] = array(
+        $user['position'][] = [
             'posi_id' => $posi_id,
             'title' => $vars['posi_title'],
             'selected' => ($user['xoonips']['posi'] == $posi_id) ? 'selected="selected"' : '',
-        );
+        ];
     }
     // timezone
     $timezones = XoopsLists::getTimeZoneList();
-    $user['timezone'] = array();
+    $user['timezone'] = [];
     foreach ($timezones as $offset => $name) {
-        $user['timezone'][] = array(
+        $user['timezone'][] = [
             'offset' => $offset,
             'name' => $textutil->html_special_chars($name),
             'selected' => ($offset == $user['xoops']['timezone_offset']) ? 'selected="selected"' : '',
-        );
+        ];
     }
     // umode - comment display mode
-    $user['umode'] = array();
-    $umodes = array(
+    $user['umode'] = [];
+    $umodes = [
         'nest' => _NESTED,
         'flat' => _FLAT,
         'thread' => _THREADED,
-    );
+    ];
     foreach ($umodes as $key => $name) {
-        $user['umode'][] = array(
+        $user['umode'][] = [
             'umode' => $key,
             'name' => $textutil->html_special_chars($name),
             'selected' => ($key == $user['xoops']['umode']) ? 'selected="selected"' : '',
-        );
+        ];
     }
     // uorder - comment sort order
-    $user['uorder'] = array();
-    $uorders = array(
+    $user['uorder'] = [];
+    $uorders = [
         '0' => _OLDESTFIRST,
         '1' => _NEWESTFIRST,
-    );
+    ];
     foreach ($uorders as $key => $name) {
-        $user['uorder'][] = array(
+        $user['uorder'][] = [
             'uorder' => $key,
             'name' => $textutil->html_special_chars($name),
             'selected' => ($key == $user['xoops']['uorder']) ? 'selected="selected"' : '',
-        );
+        ];
     }
     // rank
     $ranklist = XoopsLists::getUserRankList();
     if (count($ranklist) > 0) {
-        $user['rank'][] = array(
+        $user['rank'][] = [
             'rank' => 0,
             'name' => '--------------',
             'selected' => ($user['xoops']['rank'] == 0) ? 'selected="selected"' : '',
-        );
+        ];
         foreach ($ranklist as $rank => $name) {
-            $user['rank'][] = array(
+            $user['rank'][] = [
               'rank' => $rank,
               'name' => $textutil->html_special_chars($name),
               'selected' => ($user['xoops']['rank'] == $rank) ? 'selected="selected"' : '',
-            );
+            ];
         }
     } else {
-        $user['rank'][] = array(
+        $user['rank'][] = [
             'rank' => 0,
             'name' => $textutil->html_special_chars(_AM_NSRID),
             'selected' => 'selected="selected"',
-        );
+        ];
     }
     // notify method
-    $user['notify_method'] = array();
-    $notify_methods = array(
+    $user['notify_method'] = [];
+    $notify_methods = [
         XOOPS_NOTIFICATION_METHOD_DISABLE => _NOT_METHOD_DISABLE,
         XOOPS_NOTIFICATION_METHOD_PM => _NOT_METHOD_PM,
         XOOPS_NOTIFICATION_METHOD_EMAIL => _NOT_METHOD_EMAIL,
-    );
+    ];
     foreach ($notify_methods as $key => $name) {
-        $user['notify_method'][] = array(
+        $user['notify_method'][] = [
             'notify_method' => $key,
             'name' => $textutil->html_special_chars($name),
             'selected' => ($key == $user['xoops']['notify_method']) ? 'selected="selected"' : '',
-        );
+        ];
     }
     // notify mode
-    $user['notify_mode'] = array();
-    $notify_modes = array(
+    $user['notify_mode'] = [];
+    $notify_modes = [
         XOOPS_NOTIFICATION_MODE_SENDALWAYS => _NOT_MODE_SENDALWAYS,
         XOOPS_NOTIFICATION_MODE_SENDONCETHENDELETE => _NOT_MODE_SENDONCE,
         XOOPS_NOTIFICATION_MODE_SENDONCETHENWAIT => _NOT_MODE_SENDONCEPERLOGIN,
-    );
+    ];
     foreach ($notify_modes as $key => $name) {
-        $user['notify_mode'][] = array(
+        $user['notify_mode'][] = [
             'notify_mode' => $key,
             'name' => $textutil->html_special_chars($name),
             'selected' => ($key == $user['xoops']['notify_mode']) ? 'selected="selected"' : '',
-        );
+        ];
     }
     // mailok
-    $user['user_mailok'] = array();
-    $user_mailoks = array(
+    $user['user_mailok'] = [];
+    $user_mailoks = [
         1 => _AM_XOONIPS_LABEL_YES,
         0 => _AM_XOONIPS_LABEL_NO,
-    );
+    ];
     foreach ($user_mailoks as $key => $name) {
-        $user['user_mailok'][] = array(
+        $user['user_mailok'][] = [
           'user_mailok' => $key,
           'title' => $textutil->html_special_chars($name),
           'checked' => ($key == $user['xoops']['user_mailok']) ? 'checked="checked"' : '',
-        );
+        ];
     }
 
     return $user;
@@ -190,7 +190,7 @@ function get_user_info($uid)
 
 function get_requirements($uid)
 {
-    $requirements = array(
+    $requirements = [
         'uname',
         'email',
         'umode',
@@ -202,12 +202,12 @@ function get_requirements($uid)
         'private_item_number_limit',
         'private_index_number_limit',
         'private_item_storage_limit',
-    );
+    ];
     if ($uid == 0) {
         array_push($requirements, 'pass');
         array_push($requirements, 'pass2');
     }
-    $keys = array(
+    $keys = [
         // config key => array name
         'account_realname_optional' => 'name',
         'account_address_optional' => 'address',
@@ -217,8 +217,8 @@ function get_requirements($uid)
         'account_country_optional' => 'country',
         'account_zipcode_optional' => 'zipcode',
         'account_fax_optional' => 'fax',
-    );
-    $config_keys = array();
+    ];
+    $config_keys = [];
     foreach (array_keys($keys) as $key) {
         $config_keys[$key] = 's';
     }
@@ -253,7 +253,7 @@ if ($uid != 0 && $user['xoops']['level'] == 0) {
 }
 
 // labels
-$userinfo_labels = array(
+$userinfo_labels = [
     'uname' => _US_NICKNAME,
     'name' => _US_REALNAME,
     'email' => _US_EMAIL,
@@ -286,43 +286,43 @@ $userinfo_labels = array(
     'notify_mode' => _NOT_NOTIFYMODE,
     'user_mailok' => _US_MAILOK,
     'submit' => _AM_XOONIPS_LABEL_UPDATE,
-);
+];
 
 // requirements
 $userinfo_requirements = get_requirements($uid);
 
 // validate
-$validate = array();
+$validate = [];
 foreach ($userinfo_requirements as $key) {
-    $validate[] = array(
+    $validate[] = [
         'name' => $key,
         'message' => sprintf(_FORM_ENTER, $userinfo_labels[$key]),
-    );
+    ];
 }
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_ACCOUNT_TITLE,
         'url' => $xoonips_admin['mypage_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';

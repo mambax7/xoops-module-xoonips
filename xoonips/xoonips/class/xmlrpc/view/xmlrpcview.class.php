@@ -173,7 +173,7 @@ class XooNIpsXmlRpcItemView extends XooNIpsXmlRpcViewElement
         }
         $resp = new XoopsXmlRpcStruct();
 
-        $tags = array();
+        $tags = [];
         $tags['detail_field'] = new XoopsXmlRpcArray();
         foreach ($iteminfo as $output) {
             foreach ($this->render_field($output) as $result) {
@@ -207,7 +207,7 @@ class XooNIpsXmlRpcItemView extends XooNIpsXmlRpcViewElement
      */
     public function render_field($output)
     {
-        $result = array();
+        $result = [];
         if (isset($output['xmlrpc']['multiple']) ? $output['xmlrpc']['multiple'] : false
         ) {
             $orm = $this->item->getVar($output['orm']['field'][0]['orm']);
@@ -217,9 +217,9 @@ class XooNIpsXmlRpcItemView extends XooNIpsXmlRpcViewElement
             if (is_array($orm)) {
                 $pos = 0;
                 foreach ($orm as $o) {
-                    $in_var = array($o->get($output['orm']['field'][0]['field']));
-                    $out_var = array();
-                    $context = array('position' => $pos);
+                    $in_var = [$o->get($output['orm']['field'][0]['field'])];
+                    $out_var = [];
+                    $context = ['position' => $pos];
                     eval(isset($output['eval']['orm2xmlrpc']) ? $output['eval']['orm2xmlrpc'] : '$out_var[0] = $in_var[0];');
                     if ($output['xmlrpc']['field'][0] == 'detail_field') {
                         $struct = new XoopsXmlRpcStruct();
@@ -235,14 +235,14 @@ class XooNIpsXmlRpcItemView extends XooNIpsXmlRpcViewElement
         } else {
             $froms = $output['orm']['field'];
             if (isset($froms['orm']) && isset($froms['field'])) {
-                $froms = array($froms);
+                $froms = [$froms];
             }
-            $in_var = array();
-            $out_var = array();
+            $in_var = [];
+            $out_var = [];
             foreach ($froms as $from) {
                 $orm = $this->item->getVar($from['orm']);
                 if (is_array($orm)) {
-                    $array_vars = array();
+                    $array_vars = [];
                     foreach ($orm as $o) {
                         $array_vars[] = $o->get($from['field']);
                     }

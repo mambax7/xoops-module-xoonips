@@ -55,7 +55,7 @@ class XooNIpsXmlRpcLogicUpdateItem extends XooNIpsXmlRpcLogic
         }
 
         $params = &$request->getParams();
-        $vars = array();
+        $vars = [];
         if (count($params) < 2) {
             $response->setResult(false);
             $error = &$response->getError();
@@ -88,7 +88,7 @@ class XooNIpsXmlRpcLogicUpdateItem extends XooNIpsXmlRpcLogic
 
         $factory = &XooNIpsXmlRpcTransformCompoFactory::getInstance();
         $trans = &$factory->create($itemtype->get('name'));
-        $missing = array();
+        $missing = [];
         if (!$trans->isFilledRequired($params[1], $missing)) {
             $response->setResult(false);
             $err = &$response->getError();
@@ -99,7 +99,7 @@ class XooNIpsXmlRpcLogicUpdateItem extends XooNIpsXmlRpcLogic
             return false;
         }
         // check mulitple of each variable
-        $fields = array();
+        $fields = [];
         if (!$trans->checkMultipleFields($params[1], $fields)) {
             $response->setResult(false);
             $err = &$response->getError();

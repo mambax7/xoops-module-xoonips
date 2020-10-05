@@ -35,9 +35,9 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 }
 
 // get requests
-$keys = array(
-    'uid' => array('i', false, true),
-);
+$keys = [
+    'uid' => ['i', false, true],
+];
 $vals = xoonips_admin_get_requests('post', $keys);
 
 function user_reactivate($uid)

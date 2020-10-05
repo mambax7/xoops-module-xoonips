@@ -82,7 +82,7 @@ class XooNIpsLogicGetPreference extends XooNIpsLogic
         } else {
             $users_handler = &xoonips_getormhandler('xoonips', 'users');
             $user = $users_handler->get($uid);
-            $preference = array();
+            $preference = [];
             // count private_index_number
             $index_handler = &xoonips_getormhandler('xoonips', 'index');
             $preference['private_index_number'] = $index_handler->getCount(new Criteria('uid', $uid));

@@ -42,7 +42,7 @@ $text = 'Button';
 $text_shadow = false;
 $font_size = 8;
 $font_angle = 0;
-$font_color = array(0, 0, 0);
+$font_color = [0, 0, 0];
 $font_file = 'default.ttf';
 $padding_x = 10;
 $padding_y = 6;
@@ -97,10 +97,10 @@ if (!extension_loaded('gd')) {
     fatal_error('PHP GD extension does not loaded');
 }
 $gdinfo = gd_info();
-$gd_required = array(
+$gd_required = [
     'FreeType Support',
     'PNG Support',
-);
+];
 foreach ($gd_required as $req_type) {
     if (!$gdinfo[$req_type]) {
         fatal_error('GD : '.$req_type.' disabled');
@@ -136,7 +136,7 @@ $transparent = imagecolorallocatealpha($im, 255, 255, 255, 0);
 imagefill($im, 0, 0, $transparent);
 
 // stretch and copy background image
-list($imbg_width, $imbg_height) = getimagesize($background_image_path);
+[$imbg_width, $imbg_height] = getimagesize($background_image_path);
 $imbg = imagecreatefrompng($background_image_path);
 if (!imagecopyresampled($im, $imbg, 0, 0, 0, 0, $image_width, $image_height, $imbg_width, $imbg_height)) {
     fatal_error('imagecopyresampled() failed');

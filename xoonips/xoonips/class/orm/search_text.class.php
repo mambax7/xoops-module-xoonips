@@ -91,7 +91,7 @@ class XooNIpsOrmSearchTextHandler extends XooNIpsTableObjectHandler
             if (false === $files) {
                 return false;
             }
-            $item_ids = array();
+            $item_ids = [];
             foreach ($files as $file) {
                 $item_ids[] = $file->get('item_id');
             }

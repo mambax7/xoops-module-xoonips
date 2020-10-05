@@ -57,23 +57,23 @@ $textutil = &xoonips_getutility('text');
 
 $xid = $formdata->getValue('both', 'index_id', 'i', false, 0);
 
-$post_keys = array(
-    'op' => array('type' => 's', 'default' => 'open'),
-    'new_index_name' => array('type' => 's', 'default' => ''),
-    'moveto' => array('type' => 'i', 'default' => 0),
-    'updown_xid' => array('type' => 'i', 'default' => 0),
-    'add_to_index_id_sel' => array('type' => 'i', 'default' => 0),
-);
+$post_keys = [
+    'op' => ['type' => 's', 'default' => 'open'],
+    'new_index_name' => ['type' => 's', 'default' => ''],
+    'moveto' => ['type' => 'i', 'default' => 0],
+    'updown_xid' => ['type' => 'i', 'default' => 0],
+    'add_to_index_id_sel' => ['type' => 'i', 'default' => 0],
+];
 foreach ($post_keys as $key => $meta) {
     $type = $meta['type'];
     $default = $meta['default'];
     $$key = $formdata->getValue('post', $key, $type, false, $default);
 }
-$post_akeys = array(
-    'steps' => array('type' => 'i', 'default' => array()),
-    'rename' => array('type' => 's', 'default' => array()),
-    'check' => array('type' => 'i', 'default' => array()),
-);
+$post_akeys = [
+    'steps' => ['type' => 'i', 'default' => []],
+    'rename' => ['type' => 's', 'default' => []],
+    'check' => ['type' => 'i', 'default' => []],
+];
 foreach ($post_akeys as $key => $meta) {
     $type = $meta['type'];
     $default = $meta['default'];
@@ -81,7 +81,7 @@ foreach ($post_akeys as $key => $meta) {
 }
 
 // check request
-if (!in_array($op, array('open', 'register', 'up', 'down', 'rename', 'delete', 'moveto', 'add_to_public'))) {
+if (!in_array($op, ['open', 'register', 'up', 'down', 'rename', 'delete', 'moveto', 'add_to_public'])) {
     die('illegal reuest');
 }
 if ('up' == $op || 'down' == $op) {
@@ -95,7 +95,7 @@ if ('moveto' == $op && 0 == $moveto) {
 
 // get current place
 $uid = $xoopsUser->getVar('uid');
-$account = array();
+$account = [];
 if (RES_OK == xnp_get_account($xnpsid, $uid, $account)) {
     $privateXID = $account['private_index_id'];
 } else {
@@ -113,7 +113,7 @@ if (1 == $xid) {
 }
 
 // check the right to access.
-$index = array();
+$index = [];
 $result = xnp_get_index($xnpsid, $xid, $index);
 if (RES_OK != $result) {
     redirect_header(XOOPS_URL.'/index.php', 3, 'ERROR');
@@ -135,14 +135,14 @@ function xoonipsGetTopIndex($xid)
 {
     global $xnpsid;
 
-    $index = array();
+    $index = [];
     $result = xnp_get_index($xnpsid, $xid, $index);
     if (RES_OK != $result) {
         return 0;
     }
 
-    $indexes = array();
-    $criteria = array();
+    $indexes = [];
+    $criteria = [];
     $result = xnp_get_indexes($xnpsid, IID_ROOT, $criteria, $indexes);
     if (RES_OK != $result) {
         return 0;
@@ -170,7 +170,7 @@ $xoonipsSelectedTab = xoonipsGetTopIndex($xid);
 $xoopsOption['template_main'] = 'xoonips_editindex.html';
 require XOOPS_ROOT_PATH.'/header.php';
 
-$error_messages = array();
+$error_messages = [];
 
 unset($indexCount);
 
@@ -222,7 +222,7 @@ if ('add_to_public' == $op && isset($check)) {
         }
 
         $xoopsDB->queryF('COMMIT');
-        $index_group_index_link_handler->notifyMakePublicGroupIndex(array($add_to_index_id_sel), $check, 'group_item_certify_request');
+        $index_group_index_link_handler->notifyMakePublicGroupIndex([$add_to_index_id_sel], $check, 'group_item_certify_request');
         redirect_header(XOOPS_URL.'/modules/'.$xoopsModule->dirname().'/editindex.php?index_id='.$xid, 5, "Succeed\n<br />"._MD_XOONIPS_ITEM_NEED_TO_BE_CERTIFIED);
     } elseif ('auto' == $config_handler->getValue('certify_item')) {
         if (!$index_group_index_link_handler->makePublic($add_to_index_id_sel, $check)) {
@@ -236,7 +236,7 @@ if ('add_to_public' == $op && isset($check)) {
         }
 
         $xoopsDB->queryF('COMMIT');
-        $index_group_index_link_handler->notifyMakePublicGroupIndex(array($add_to_index_id_sel), $check, 'group_item_certified');
+        $index_group_index_link_handler->notifyMakePublicGroupIndex([$add_to_index_id_sel], $check, 'group_item_certified');
         redirect_header(XOOPS_URL.'/modules/'.$xoopsModule->dirname().'/editindex.php?index_id='.$xid, 3, 'Succeed');
     } else {
         $xoopsDB->queryF('ROLLBACK');
@@ -249,13 +249,13 @@ if ('add_to_public' == $op && isset($check)) {
         exit();
     }
 
-    $indexes = array();
-    $result = xnp_get_indexes($xnpsid, $xid, array(), $indexes);
+    $indexes = [];
+    $result = xnp_get_indexes($xnpsid, $xid, [], $indexes);
     if (RES_OK != $result) {
         xoonips_error_exit(400);
     }
     do {
-        list($limitLabel, $indexCount, $indexNumberLimit) = xoonipsGetIndexCountInfo($xnpsid, $xid);
+        [$limitLabel, $indexCount, $indexNumberLimit] = xoonipsGetIndexCountInfo($xnpsid, $xid);
         if ('' != "$indexNumberLimit" && $indexNumberLimit <= $indexCount) {
             $error_messages[] = _MD_XOONIPS_INDEX_TOO_MANY_INDEXES;
             break;
@@ -268,7 +268,7 @@ if ('add_to_public' == $op && isset($check)) {
         }
 
         $lengths = xnpGetColumnLengths('xoonips_item_title');
-        list($within, $without) = xnpTrimString($new_index_name, $lengths['title']);
+        [$within, $without] = xnpTrimString($new_index_name, $lengths['title']);
 
         // warn if string is too long
         if (strlen($without)) {
@@ -284,7 +284,7 @@ if ('add_to_public' == $op && isset($check)) {
             }
         }
 
-        $index = array();
+        $index  = [];
         $result = xnp_get_index($xnpsid, $xid, $index);
         if (RES_OK != $result) {
             redirect_header(XOOPS_URL.'/index.php', 3, 'ERROR');
@@ -293,7 +293,7 @@ if ('add_to_public' == $op && isset($check)) {
 
         // register index
         $index['parent_index_id'] = $xid;
-        $index['titles'] = array($new_index_name);
+        $index['titles'] = [$new_index_name];
         if (RES_OK == xnp_insert_index($xnpsid, $index, $new_xid)) {
             ++$indexCount;
             // Record events(insert index)
@@ -316,9 +316,9 @@ if ('add_to_public' == $op && isset($check)) {
     }
 
     // get children
-    $childIndexes = array();
-    $criteria = array('orders' => array(array('name' => 'sort_number', 'order' => 'ASC')));
-    $result = xnp_get_indexes($xnpsid, $xid, $criteria, $childIndexes);
+    $childIndexes = [];
+    $criteria     = ['orders' => [['name' => 'sort_number', 'order' => 'ASC']]];
+    $result       = xnp_get_indexes($xnpsid, $xid, $criteria, $childIndexes);
     if (RES_OK == $result) {
         $childIndexesLen = count($childIndexes);
 
@@ -369,8 +369,8 @@ if ('add_to_public' == $op && isset($check)) {
 
     foreach ($check as $index_id) {
         $index_id = (int) $index_id;
-        $index = array();
-        $result = xnp_get_index($xnpsid, $index_id, $index);
+        $index    = [];
+        $result   = xnp_get_index($xnpsid, $index_id, $index);
         if (RES_OK != $result) {
             redirect_header(XOOPS_URL.'/index.php', 3, 'ERROR');
             exit;
@@ -380,7 +380,7 @@ if ('add_to_public' == $op && isset($check)) {
         if ('rename' == $op) {
             $notification_context = xoonips_notification_before_user_index_renamed($index_id);
             $new_index_name = $rename[$index_id];
-            list($within, $without) = xnpTrimString($new_index_name, $lengths['title']);
+            [$within, $without] = xnpTrimString($new_index_name, $lengths['title']);
 
             // warning, if string length is too long
             if (strlen($without)) {
@@ -395,8 +395,8 @@ if ('add_to_public' == $op && isset($check)) {
             }
 
             // Warning, if there is the same name of index.
-            $indexes = array();
-            $result = xnp_get_indexes($xnpsid, $xid, array(), $indexes);
+            $indexes = [];
+            $result  = xnp_get_indexes($xnpsid, $xid, [], $indexes);
             if (RES_OK != $result) {
                 redirect_header(XOOPS_URL.'/index.php', 3, 'ERROR');
                 exit;
@@ -409,8 +409,8 @@ if ('add_to_public' == $op && isset($check)) {
                 }
             }
 
-            $old_index = $index;
-            $index['titles'] = array($within);
+            $old_index        = $index;
+            $index['titles']  = [$within];
             $index['without'] = $without;
 
             if (RES_OK == xnp_update_index($xnpsid, $index)) {
@@ -441,10 +441,10 @@ if ('add_to_public' == $op && isset($check)) {
             $notification_context = xoonips_notification_before_user_index_moved($index_id);
 
             // Can't move to another area(Public/Group/Private)
-            $destIndex = array();
-            $result1 = xnp_get_index($xnpsid, $moveto, $destIndex);
-            $srcIndex = array();
-            $result2 = xnp_get_index($xnpsid, $index_id, $srcIndex);
+            $destIndex = [];
+            $result1   = xnp_get_index($xnpsid, $moveto, $destIndex);
+            $srcIndex  = [];
+            $result2   = xnp_get_index($xnpsid, $index_id, $srcIndex);
             if ($destIndex['open_level'] != $srcIndex['open_level']
                 || $destIndex['owner_uid'] != $srcIndex['owner_uid']
                 || $destIndex['owner_gid'] != $srcIndex['owner_gid']
@@ -484,7 +484,7 @@ if ('add_to_public' == $op && isset($check)) {
 //////////////////////// display
 $index_handler = &xoonips_getormhandler('xoonips', 'index');
 if (!isset($indexCount)) {
-    list($limitLabel, $indexCount, $indexNumberLimit) = xoonipsGetIndexCountInfo($xnpsid, $xid);
+    [$limitLabel, $indexCount, $indexNumberLimit] = xoonipsGetIndexCountInfo($xnpsid, $xid);
 }
 $xoopsTpl->assign('limitLabel', $limitLabel);
 $xoopsTpl->assign('indexCount', $indexCount);
@@ -500,7 +500,7 @@ $xoopsTpl->assign('write_permission', $index_handler->getPerm($xid, @$_SESSION['
 function xoonipsGetPathString($xnpsid, $xid)
 {
     $dirArray = xoonipsGetPathArray($xnpsid, $xid);
-    $ar = array();
+    $ar = [];
     foreach ($dirArray as $key => $val) {
         $ar[] = $val['titles'][DEFAULT_INDEX_TITLE_OFFSET];
     }
@@ -513,10 +513,10 @@ function xoonipsGetPathString($xnpsid, $xid)
  */
 function xoonipsGetPathArray($xnpsid, $xid)
 {
-    $dirArrayR = array();
+    $dirArrayR = [];
     for ($p_xid = $xid; IID_ROOT != $p_xid; $p_xid = (int) ($index['parent_index_id'])) {
         // get $index
-        $index = array();
+        $index = [];
         $result = xnp_get_index($xnpsid, $p_xid, $index);
         if (RES_OK != $result) {
             redirect_header(XOOPS_URL.'/index.php', 3, 'ERROR');
@@ -526,7 +526,7 @@ function xoonipsGetPathArray($xnpsid, $xid)
         $dirArrayR[] = $index;
     }
     $ct = count($dirArrayR);
-    $dirArray = array();
+    $dirArray = [];
     for ($i = 0; $i < $ct; ++$i) {
         $dirArray[] = $dirArrayR[$ct - $i - 1];
     }
@@ -538,9 +538,9 @@ $dirArray = xoonipsGetPathArray($xnpsid, $xid);
 
 // get Children
 // -> childIndexes
-$childIndexes = array();
+$childIndexes        = [];
 $index_compo_handler = &xoonips_getormcompohandler('xoonips', 'index');
-$join = new XooNIpsJoinCriteria('xoonips_index', 'item_id', 'index_id');
+$join                = new XooNIpsJoinCriteria('xoonips_index', 'item_id', 'index_id');
 $criteria2 = new Criteria('parent_index_id', $xid);
 $criteria2->setSort('sort_number');
 foreach ($index_compo_handler->getObjects($criteria2, true, '', false, $join) as $index_id => $childindex) {
@@ -548,15 +548,15 @@ foreach ($index_compo_handler->getObjects($criteria2, true, '', false, $join) as
     $index_group_index_link_handler = &xoonips_getormhandler('xoonips', 'index_group_index_link');
 
     $titles = &$childindex->getVar('titles');
-    $childIndexes[$index_id] = array(
-        'isLocked' => $item_lock_handler->isLocked($index_id),
-        'titles' => array($titles[0]->getVar('title', 's')),
-        'item_id' => $index_id,
-        'lockTypeString' => $textutil->html_special_chars(get_lock_type_string($index_id)),
-        'write_permission' => $index_handler->getPerm($index_id, @$_SESSION['xoopsUserId'], 'write'),
-        'public_index_string' => '',
+    $childIndexes[$index_id] = [
+        'isLocked'                    => $item_lock_handler->isLocked($index_id),
+        'titles'                      => [$titles[0]->getVar('title', 's')],
+        'item_id'                     => $index_id,
+        'lockTypeString'              => $textutil->html_special_chars(get_lock_type_string($index_id)),
+        'write_permission'            => $index_handler->getPerm($index_id, @$_SESSION['xoopsUserId'], 'write'),
+        'public_index_string'         => '',
         'public_index_pending_string' => '',
-    );
+    ];
 
     foreach ($index_group_index_link_handler->getByGroupIndexId($index_id, @$_SESSION['xoopsUserId']) as $link) {
         $childIndexes[$index_id]['public_index_string'] .= xnpGetIndexPathString($xnpsid, $link->get('index_id')).'<br />';
@@ -593,16 +593,16 @@ function genSelectLabels(&$index)
     $index['select_label'] = $textutil->html_special_chars($select_label);
 }
 
-$index = array();
+$index = [];
 xnp_get_index($xnpsid, $xid, $index);
 
 $indexTree = genSameAreaIndexTree($xnpsid, $uid, $index);
 array_walk($indexTree, 'genSelectLabels');
 
 //public index tree set
-$public_index = array('open_level' => OL_PUBLIC);
+$public_index    = ['open_level' => OL_PUBLIC];
 $publicindexTree = genSameAreaIndexTree($xnpsid, $uid, $public_index);
-$len = count($publicindexTree);
+$len             = count($publicindexTree);
 for ($i = 0; $i < $len; ++$i) {
     if (!isset($item_type_id)) {
         $item_type_id = null; //Notice undefined variable
@@ -611,12 +611,12 @@ for ($i = 0; $i < $len; ++$i) {
 array_walk($publicindexTree, 'genSelectLabels');
 
 // escape error message
-$err_mes = array();
+$err_mes = [];
 foreach ($error_messages as $mes) {
     $err_mes[] = $textutil->html_special_chars($mes);
 }
 
-$xoopsTpl->assign('updown_options', array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10));
+$xoopsTpl->assign('updown_options', [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10]);
 $xoopsTpl->assign('childCount', count($childIndexes));
 $xoopsTpl->assign('open_level', $index['open_level']);
 $xoopsTpl->assign('xid', $xid);
@@ -636,16 +636,16 @@ $xoopsTpl->assign('token_ticket', $token_ticket);
 // sum of numbers index(private/group) that specified xid, maximum of numbers index.
 function xoonipsGetIndexCountInfo($xnpsid, $xid)
 {
-    $index = array();
-    $result = xnp_get_index($xnpsid, $xid, $index);
+    $index = [];
+    $result      = xnp_get_index($xnpsid, $xid, $index);
     if (RES_OK != $result) {
         redirect_header(XOOPS_URL.'/index.php', 3, 'ERROR');
         exit();
     }
     $openLevel = $index['open_level'];
 
-    $indexes = array();
-    $result = xnp_get_all_indexes($xnpsid, array(), $indexes);
+    $indexes = [];
+    $result      = xnp_get_all_indexes($xnpsid, [], $indexes);
     if (RES_OK != $result) {
         redirect_header(XOOPS_URL.'/index.php', 3, 'ERROR');
         exit();
@@ -680,10 +680,10 @@ function xoonipsGetIndexCountInfo($xnpsid, $xid)
         $indexNumberLimit = $xg_obj->get('group_index_number_limit');
         $limitLabel = _MD_XOONIPS_INDEX_NUMBER_OF_GROUP_INDEX_LABEL;
     } else {
-        return array(false, false, false);
+        return [false, false, false];
     }
 
-    return array($limitLabel, $indexCount, $indexNumberLimit);
+    return [$limitLabel, $indexCount, $indexNumberLimit];
 }
 
 /**

@@ -31,28 +31,28 @@ $title = _AM_XOONIPS_SYSTEM_XOOPS_ITEM_RESCUE_TITLE;
 $description = _AM_XOONIPS_SYSTEM_XOOPS_ITEM_RESCUE_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_XOOPS_TITLE,
         'url' => $xoonips_admin['mypage_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // logic
 $formdata = &xoonips_getutility('formdata');
@@ -82,7 +82,7 @@ if (count($item_ids) == 0) {
 $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
 $title_handler = &xoonips_getormhandler('xoonips', 'title');
 $item_basic_handler = &xoonips_getormhandler('xoonips', 'item_basic');
-$items = array();
+$items = [];
 $evenodd = 'odd';
 foreach ($item_ids as $item_id) {
     $item_basic_obj = &$item_basic_handler->get($item_id);
@@ -102,13 +102,13 @@ foreach ($item_ids as $item_id) {
     $item_type = $item_type_obj->getVar('display_name', 's');
     $item_url = sprintf('%s/transfer_item.php?action=detail_item&item_id=%u', XOONIPS_URL, $item_id);
     $evenodd = ($evenodd == 'even') ? 'odd' : 'even';
-    $items[] = array(
+    $items[] = [
         'EVENODD' => $evenodd,
         'ITEM_ID' => $item_id,
         'ITEM_TYPE' => $item_type,
         'ITEM_TITLE' => $item_title,
         'ITEM_URL' => $item_url,
-    );
+    ];
 }
 
 // get to user list
@@ -220,12 +220,12 @@ function get_user_list($fmt)
     $criteria->setSort('uname');
     $criteria->setOrder('ASC');
     $users_objs = &$users_handler->getObjects($criteria, false, '', false, $join);
-    $users = array();
+    $users = [];
     foreach ($users_objs as $users_obj) {
-        $users[] = array(
+        $users[] = [
             'uid' => $users_obj->get('uid'),
             'uname' => $users_obj->getVar('uname', $fmt),
-        );
+        ];
     }
 
     return $users;
@@ -268,13 +268,13 @@ function get_index_list($xid, $depth)
     $title = $index_obj->getTitle('s');
     $criteria = new Criteria('index_id', $xid);
     $item_count = $index_item_link_handler->getCount($criteria);
-    $ret = array();
-    $ret[] = array(
+    $ret = [];
+    $ret[] = [
         'index_id' => $xid,
         'index_title' => $title,
         'item_count' => $item_count,
         'indent_html' => str_repeat('&nbsp;&nbsp;', $depth),
-    );
+    ];
     $cindex_objs = &$index_obj->getAllChildren();
     foreach ($cindex_objs as $cindex_obj) {
         $cxid = $cindex_obj->get('index_id');

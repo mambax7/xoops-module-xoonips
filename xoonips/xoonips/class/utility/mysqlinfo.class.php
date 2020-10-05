@@ -45,14 +45,14 @@ class XooNIpsUtilityMysqlinfo extends XooNIpsUtility
      *
      * @var array
      */
-    public $_version = array();
+    public $_version = [];
 
     /**
      * mysql acceptable charsets.
      *
      * @var array
      */
-    public $_charsets = array();
+    public $_charsets = [];
 
     /**
      * constructor.
@@ -64,17 +64,17 @@ class XooNIpsUtilityMysqlinfo extends XooNIpsUtility
         $this->setSingleton();
 
         $this->_db = $GLOBALS['xoopsDB'];
-        $support_http_charset = array(
+        $support_http_charset = [
         'EUC-JP',
         'Shift_JIS',
         'ISO-8859-1',
         'UTF-8',
-        );
+        ];
 
         // get server version
         $sql = 'SHOW VARIABLES LIKE \'version\'';
         $res = $this->_db->queryF($sql);
-        list($key, $value) = $this->_db->fetchRow($res);
+        [$key, $value] = $this->_db->fetchRow($res);
         $this->_version['full'] = $value;
         if (!preg_match('/^(\\d+)\\.(\\d+)\\.(\\d+)(.*)$/', $this->_version['full'], $regs)) {
             die('Could not get version number : '.$this->_version['full']);
@@ -85,30 +85,30 @@ class XooNIpsUtilityMysqlinfo extends XooNIpsUtility
         $this->_version['additional'] = $regs[4];
 
         // get acceptable charsets
-        $this->_charsets['client'] = array(
-        'EUC-JP' => array(
-        'ujis',
-        ),
-        'Shift_JIS' => array(
-        'sjis',
-        ),
-        'ISO-8859-1' => array(
-        'latin1',
-        ),
-        'UTF-8' => array(),
-        );
-        $this->_charsets['database'] = array(
-        'EUC-JP' => array(
-        'ujis',
-        ),
-        'Shift_JIS' => array(
-        'sjis',
-        ),
-        'ISO-8859-1' => array(
-        'latin1',
-        ),
-        'UTF-8' => array(),
-        );
+        $this->_charsets['client']   = [
+            'EUC-JP'     => [
+                'ujis',
+            ],
+            'Shift_JIS'  => [
+                'sjis',
+            ],
+            'ISO-8859-1' => [
+                'latin1',
+            ],
+            'UTF-8'      => [],
+        ];
+        $this->_charsets['database'] = [
+            'EUC-JP'     => [
+                'ujis',
+            ],
+            'Shift_JIS'  => [
+                'sjis',
+            ],
+            'ISO-8859-1' => [
+                'latin1',
+            ],
+            'UTF-8'      => [],
+        ];
         // -- set version depending charsets
         if ($this->isVersion41orHigher()) {
             // for 4.1 or higher
@@ -119,14 +119,14 @@ class XooNIpsUtilityMysqlinfo extends XooNIpsUtility
             $this->_charsets['client']['UTF-8'][] = 'utf8';
             if ($this->isMSJapaneseSupport()) {
                 // for 5.0.3 or higher
-                $japanese_http_charsets = array(
-                'EUC-JP',
-                'Shift_JIS',
-                );
-                $japanese_mysql_charsets = array(
-                'cp932',
-                'eucjpms',
-                );
+                $japanese_http_charsets  = [
+                    'EUC-JP',
+                    'Shift_JIS',
+                ];
+                $japanese_mysql_charsets = [
+                    'cp932',
+                    'eucjpms',
+                ];
                 foreach ($japanese_http_charsets as $http_charset) {
                     foreach ($japanese_mysql_charsets as $mysql_charset) {
                         $this->_charsets['database'][$http_charset][] = $mysql_charset;

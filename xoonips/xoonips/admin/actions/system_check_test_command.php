@@ -64,12 +64,12 @@ function system_check_find_path($command)
 
 function xoonips_admin_system_check_command(&$category)
 {
-    $commands = array(
+    $commands = [
         'pdftotext' => 'PDF',
         'wvText' => 'MS-Word',
         'xlhtml' => 'MS-Excel',
         'ppthtml' => 'MS-PowerPoint',
-    );
+    ];
     foreach ($commands as $command => $filetype) {
         $res = new XooNIpsAdminSystemCheckResult($command);
         $path = system_check_find_path($command);

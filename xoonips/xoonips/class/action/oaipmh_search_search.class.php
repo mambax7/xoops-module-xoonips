@@ -59,19 +59,19 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
         xoonips_validate_request($this->isValidRepositoryId($repository_id));
 
         $order_by = $this->_formdata->getValue('post', 'order_by', 's', false);
-        xoonips_validate_request(in_array($order_by, array('title', 'identifier', 'last_update_date', 'creation_date', 'date')));
+        xoonips_validate_request(in_array($order_by, ['title', 'identifier', 'last_update_date', 'creation_date', 'date']));
 
         $order_dir = $this->_formdata->getValue('post', 'order_dir', 's', false);
-        xoonips_validate_request(in_array($order_dir, array('asc', 'desc')));
+        xoonips_validate_request(in_array($order_dir, ['asc', 'desc']));
 
         $metadata_per_page = $this->_formdata->getValue('post', 'metadata_per_page', 'i', false);
-        xoonips_validate_request(in_array($metadata_per_page, array(20, 50, 100)));
+        xoonips_validate_request(in_array($metadata_per_page, [20, 50, 100]));
 
         $page = $this->_formdata->getValue('post', 'page', 'i', false);
         xoonips_validate_request($page > 0);
 
         $search_flag = $this->_formdata->getValue('post', 'search_flag', 'i', false);
-        xoonips_validate_request(in_array($search_flag, array(0, 1)));
+        xoonips_validate_request(in_array($search_flag, [0, 1]));
 
         $search_cache_id = $this->_formdata->getValue('post', 'search_cache_id', 'i', false);
         if (!is_null($search_cache_id)) {
@@ -174,7 +174,7 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
         $repository_handler = &xoonips_getormhandler('xoonips', 'oaipmh_repositories');
 
         if (!$cache_handler->get($search_cache_id)) {
-            return array();
+            return [];
         }
 
         $criteria = new Criteria('search_cache_id', $search_cache_id);
@@ -187,17 +187,17 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
 
         $metadata_cache = &$cache_metadata_handler->getObjects($criteria, false, '', false, $join);
         if (!$metadata_cache) {
-            return array();
+            return [];
         }
 
-        $result = array();
+        $result = [];
         foreach ($metadata_cache as $cache) {
             $repository = &$repository_handler->get($cache->getExtraVar('repository_id'));
             if (!$repository) {
                 continue;
             }
 
-            $result[] = array(
+            $result[] = [
                 'id' => $cache->getVar('identifier', 's'),
                 'metadata_id' => $textutil->html_special_chars($cache->getExtraVar('metadata_id')),
                 'title' => $textutil->html_special_chars($cache->getExtraVar('title')),
@@ -206,7 +206,7 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
                 'creation_date' => $textutil->html_special_chars($cache->getExtraVar('creation_date')),
                 'date' => $textutil->html_special_chars($cache->getExtraVar('date')),
                 'link' => $textutil->html_special_chars($cache->getExtraVar('link')),
-            );
+            ];
         }
 
         return $result;
@@ -254,7 +254,7 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
         // this events modify search result.
         // if one of this event is newer than search cache,
         // don't use search cache.
-        $event_type_ids = array(
+        $event_type_ids = [
             ETID_INSERT_ITEM,
             ETID_UPDATE_ITEM,
             ETID_DELETE_ITEM,
@@ -265,7 +265,7 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
             ETID_CERTIFY_ITEM,
             ETID_REJECT_ITEM,
             ETID_TRANSFER_ITEM,
-        );
+        ];
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('event_type_id', '('.implode(',', $event_type_ids).')', 'IN'));
         $criteria->add(new Criteria('timestamp', $timestamp, '>='));
@@ -282,7 +282,7 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
         global $xoopsDB;
         $metadata_handler = &xoonips_getormhandler('xoonips', 'oaipmh_metadata');
 
-        $esc_id = array();
+        $esc_id = [];
         foreach ($identifiers as $id) {
             $esc_id[] = $xoopsDB->quoteString($esc_id);
         }
@@ -290,10 +290,10 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
         $criteria->setSort($order_by);
         $criteria->setOrder($order_dir);
 
-        $result = array();
+        $result = [];
         $metadata = &$metadata_handler->getObjects($criteria);
         if (!$metadata) {
-            return array();
+            return [];
         }
         foreach ($metadata as $meta) {
             $result[] = $meta->get('identifier');
@@ -332,7 +332,7 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
     public function getSelectablePageNumber($page, $maxpage)
     {
         //centering current page number(5th of $pages)
-        $pages = array(min(max(1, $page - 4), max(1, $maxpage - 9)));
+        $pages = [min(max(1, $page - 4), max(1, $maxpage - 9))];
         for ($i = 1; $i < 10 && $pages[$i - 1] < $maxpage; ++$i) {
             $pages[$i] = $pages[$i - 1] + 1;
         }

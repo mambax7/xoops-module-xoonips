@@ -38,7 +38,7 @@ class XooNIpsUtilityText extends XooNIpsUtility
      *
      * @var array strings of html character entity reference
      */
-    public $_html_char_entity_ref = array(
+    public $_html_char_entity_ref = [
         '&quot;',     '&amp;',      '&apos;',     '&lt;',       '&gt;',
         '&nbsp;',     '&iexcl;',    '&cent;',     '&pound;',    '&curren;',
         '&yen;',      '&brvbar;',   '&sect;',     '&uml;',      '&copy;',
@@ -90,14 +90,14 @@ class XooNIpsUtilityText extends XooNIpsUtility
         '&perp;',     '&sdot;',     '&lceil;',    '&rceil;',    '&lfloor;',
         '&rfloor;',   '&lang;',     '&rang;',     '&loz;',      '&spades;',
         '&clubs;',    '&hearts;',   '&diams;',
-    );
+    ];
 
     /**
      * html numeric character references.
      *
      * @var array strings of html numeric character reference
      */
-    public $_html_numeric_char_ref = array(
+    public $_html_numeric_char_ref = [
         '&#34;',   '&#38;',   '&#39;',   '&#60;',   '&#62;',
         '&#160;',  '&#161;',  '&#162;',  '&#163;',  '&#164;',
         '&#165;',  '&#166;',  '&#167;',  '&#168;',  '&#169;',
@@ -149,7 +149,7 @@ class XooNIpsUtilityText extends XooNIpsUtility
         '&#8869;', '&#8901;', '&#8968;', '&#8969;', '&#8970;',
         '&#8971;', '&#9001;', '&#9002;', '&#9674;', '&#9824;',
         '&#9827;', '&#9829;', '&#9830;',
-    );
+    ];
 
     /**
      * constructor.
@@ -193,7 +193,7 @@ class XooNIpsUtilityText extends XooNIpsUtility
             $replace['url'] = '<a href="\\0" target="_blank">\\0</a>';
         }
         $text = preg_replace($pattern['url'], $replace['url'], $text);
-        $text = preg_replace_callback($pattern['email'], array($this, $replace['email']), $text);
+        $text = preg_replace_callback($pattern['email'], [$this, $replace['email']], $text);
 
         return $text;
     }
@@ -302,18 +302,18 @@ class XooNIpsUtilityText extends XooNIpsUtility
      */
     public function html_special_chars($text)
     {
-        static $s = array(
+        static $s = [
             '/&amp;#([xX][0-9a-fA-F]+|[0-9]+);/',
             '/&nbsp;/',
-        );
-        static $r = array(
+        ];
+        static $r = [
             '&#\\1;',
             '&amp;nbsp;',
-        );
+        ];
 
         $text = preg_replace($s, $r, htmlspecialchars($text, ENT_QUOTES));
 
-        return preg_replace_callback('/&amp;([a-zA-Z][0-9a-zA-Z]+);/', array($this, '_html_special_chars_char_entity'), $text);
+        return preg_replace_callback('/&amp;([a-zA-Z][0-9a-zA-Z]+);/', [$this, '_html_special_chars_char_entity'], $text);
     }
 
     /**
@@ -353,13 +353,13 @@ class XooNIpsUtilityText extends XooNIpsUtility
         );
         $text = preg_replace('/&amp;#([0-9]+);/', '&#$1;', $text);
         // decode numeric entity
-        $text = mb_decode_numericentity($text, array(0x0, 0x10000, 0, 0xfffff), 'UTF-8');
+        $text = mb_decode_numericentity($text, [0x0, 0x10000, 0, 0xfffff], 'UTF-8');
         // convert &amp; to '&' for htmlspecialchars()
         $text = preg_replace('/&amp;/', '&', $text);
         // eacape html special character
         $text = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
         // trim control character and convert &#039; to &apos;
-        return preg_replace(array('/[\\x00-\\x09\\x0b\\x0c\\x0e-\\x1f\\x7f]/', '/&#039;/'), array('', '&apos;'), $text);
+        return preg_replace(['/[\\x00-\\x09\\x0b\\x0c\\x0e-\\x1f\\x7f]/', '/&#039;/'], ['', '&apos;'], $text);
     }
 
     /**
@@ -371,8 +371,8 @@ class XooNIpsUtilityText extends XooNIpsUtility
      */
     public function javascript_special_chars($text)
     {
-        static $searches = array('\\', '"', '\'', '<', '>', "\r", "\n");
-        static $replaces = array('\\\\', '\\x22', '\\x27', '\\x3c', '\\x3e', '\\r', '\\n');
+        static $searches = ['\\', '"', '\'', '<', '>', "\r", "\n"];
+        static $replaces = ['\\\\', '\\x22', '\\x27', '\\x3c', '\\x3e', '\\r', '\\n'];
         // trim control character
         $text = mb_ereg_replace('/[\\x00-\\x09\\x0b\\x0c\\x0e-\\x1f]/', '', $text);
         // convert \"'<>\r\n" char to escaped chars

@@ -378,13 +378,13 @@ $modversion['notification']['lookup_func'] = 'xoonips_notify_iteminfo';
 $modversion['notification']['category'][1]['name'] = 'administrator';
 $modversion['notification']['category'][1]['title'] = _MI_XOONIPS_ADMINISTRATOR_NOTIFY;
 $modversion['notification']['category'][1]['description'] = _MI_XOONIPS_ADMINISTRATOR_NOTIFYDSC;
-$modversion['notification']['category'][1]['subscribe_from'] = array('notifications.php');
+$modversion['notification']['category'][1]['subscribe_from'] = ['notifications.php'];
 $modversion['notification']['category'][1]['allow_bookmark'] = 0;
 
 $modversion['notification']['category'][2]['name'] = 'user';
 $modversion['notification']['category'][2]['title'] = _MI_XOONIPS_USER_NOTIFY;
 $modversion['notification']['category'][2]['description'] = _MI_XOONIPS_USER_NOTIFYDSC;
-$modversion['notification']['category'][2]['subscribe_from'] = array('notifications.php');
+$modversion['notification']['category'][2]['subscribe_from'] = ['notifications.php'];
 
 $modversion['notification']['event'][1]['name'] = 'item_transfer';
 $modversion['notification']['event'][1]['category'] = 'administrator';

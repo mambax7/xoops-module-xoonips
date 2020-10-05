@@ -50,26 +50,26 @@ function item_get_userlist($upage)
     $join_criteria = new XooNIpsJoinCriteria('users', 'uid', 'uid');
     $criteria = new Criteria($tables['users'].'.level', 0, '>');
     $criteria->setSort($tables['users'].'.uname');
-    $fields = array();
+    $fields = [];
     $fields[] = $tables['xusers'].'.uid';
     $fields[] = $tables['users'].'.uname';
     $xusers_objs = &$xusers_handler->getObjects($criteria, false, implode(',', $fields), false, $join_criteria);
 
     $textutil = &xoonips_getutility('text');
-    $users = array();
-    $users[] = array(
+    $users = [];
+    $users[] = [
         'uid' => 0,
         'uname' => $textutil->html_special_chars(_AM_XOONIPS_MAINTENANCE_ITEM_LABEL_ALLUSERS),
         'selected' => 'selected="selected"',
-    );
+    ];
     foreach ($xusers_objs as $xusers_obj) {
         $uid = $xusers_obj->getVar('uid', 'e');
         $uname = $textutil->html_special_chars($xusers_obj->getExtraVar('uname'));
-        $users[] = array(
+        $users[] = [
           'uid' => $uid,
           'uname' => $uname,
           'selected' => '',
-        );
+        ];
     }
 
     return $users;
@@ -78,28 +78,28 @@ function item_get_userlist($upage)
 $userlist = item_get_userlist($upage);
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_TITLE,
         'url' => $xoonips_admin['mypage_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // templates
 require_once '../class/base/pattemplate.class.php';

@@ -57,7 +57,7 @@ class XooNIpsLogicTransferUserAccept extends XooNIpsLogicTransfer
             return false;
         }
 
-        $from_uid_of_item = array();
+        $from_uid_of_item = [];
         foreach ($item_ids as $item_id) {
             if (false == $this->remove_item_from_transfer_request($error, $item_id)) {
                 return false;

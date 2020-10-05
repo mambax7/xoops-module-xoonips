@@ -90,9 +90,9 @@ class XooNIpsActionTransferAdminCheck extends XooNIpsActionTransfer
 
     public function get_child_items($from_uid, $item_ids)
     {
-        $result = array();
+        $result = [];
         foreach (xoonips_transfer_get_transferrable_item_information($from_uid, $item_ids) as $info) {
-            $result[$info['item_id']] = array();
+            $result[$info['item_id']] = [];
             foreach ($info['child_items'] as $child_item) {
                 $result[$info['item_id']][] = $child_item['item_id'];
             }
@@ -114,7 +114,7 @@ class XooNIpsActionTransferAdminCheck extends XooNIpsActionTransfer
 
     public function get_transfer_disabled_item_ids($from_uid, $item_ids)
     {
-        $result = array();
+        $result = [];
         foreach (xoonips_transfer_get_transferrable_item_information($from_uid, $item_ids) as $info) {
             if (!$info['transfer_enable']) {
                 $result[] = $info['item_id'];
@@ -126,7 +126,7 @@ class XooNIpsActionTransferAdminCheck extends XooNIpsActionTransfer
 
     public function get_cause_of_transfer_disable($from_uid, $item_ids)
     {
-        $result = array();
+        $result = [];
         foreach (xoonips_transfer_get_transferrable_item_information($from_uid, $item_ids) as $info) {
             if (!$info['transfer_enable']) {
                 $result[] = $info['item_id'];

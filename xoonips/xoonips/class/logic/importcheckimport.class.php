@@ -70,11 +70,11 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
             }
         }
 
-        $success = array(
+        $success = [
             'import_items' => $vars[0],
             'private_item_number_limit_over' => $this->_is_private_item_number_limit_over($vars[0], $vars[1]),
             'private_item_storage_limit_over' => $this->_is_private_item_storage_limit_over($vars[0], $vars[1]),
-        );
+        ];
         $response->setResult(true);
         $response->setSuccess($success);
     }
@@ -155,7 +155,7 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
 
     public function _filesize_private()
     {
-        $iids = array();
+        $iids = [];
         if (xnp_get_private_item_id($_SESSION['XNPSID'], $_SESSION['xoopsUserId'], $iids) != RES_OK) {
             return 0;
         }
@@ -168,7 +168,7 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
         if (count($iids) == 0) {
             return 0;
         }
-        $itemtypes = array();
+        $itemtypes = [];
         if (xnp_get_item_types($itemtypes) != RES_OK) {
             return 0;
         }
@@ -189,7 +189,7 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
                 ')';
             $result = $xoopsDB->query($query);
             if ($result) {
-                $mod_iids = array();
+                $mod_iids = [];
                 while (list($id) = $xoopsDB->fetchRow($result)) {
                     $mod_iids[] = $id;
                 }

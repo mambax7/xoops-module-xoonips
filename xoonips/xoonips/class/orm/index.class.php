@@ -175,7 +175,7 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
      */
     public function getPerm($id, $uid, $operation)
     {
-        if (!in_array($operation, array('read', 'write', 'delete', 'create', 'export', 'register_item'))) {
+        if (!in_array($operation, ['read', 'write', 'delete', 'create', 'export', 'register_item'])) {
             // bad operation.
             return false;
         }
@@ -500,13 +500,13 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
     {
         $current = $this->get($index_id);
         if (!$current || $current->get('index_id') == IID_ROOT) {
-            return array();
+            return [];
         }
         $parent = $current->getParentIndex();
         if ($parent) {
-            return array_merge($this->getAllParents($parent->get('index_id')), array($current));
+            return array_merge($this->getAllParents($parent->get('index_id')), [$current]);
         } else {
-            return array($current);
+            return [$current];
         }
     }
 
@@ -522,12 +522,12 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
         $index_handler = &xoonips_getormhandler('xoonips', 'index');
         $index = &$index_handler->get($index_id);
         if (!$index) {
-            return array();
+            return [];
         }
 
-        $result = array();
+        $result = [];
         foreach ($index->getAllChildren() as $child) {
-            $result = array_merge($result, array($child), $index_handler->getAllDescendents($child->get('index_id')));
+            $result = array_merge($result, [$child], $index_handler->getAllDescendents($child->get('index_id')));
         }
 
         return $result;

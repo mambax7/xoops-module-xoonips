@@ -31,23 +31,23 @@ $title = _AM_XOONIPS_SYSTEM_XOOPS_TITLE;
 $description = _AM_XOONIPS_SYSTEM_XOOPS_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';
@@ -70,7 +70,7 @@ function &get_xoonips_unregistered_users()
     // $criteria = new Criteria( 'level', '0', '>' );
     $criteria->setSort('uname');
     $users_objs = &$users_handler->getObjects($criteria);
-    $users = array();
+    $users = [];
     $evenodd = 'odd';
     foreach ($users_objs as $users_obj) {
         $uid = $users_obj->getVar('uid', 's');
@@ -137,10 +137,10 @@ function render_zombie_list()
     $tmpl->addVar('main', 'ZOMBIELIST_LABEL_ITEMCOUNT', _AM_XOONIPS_SYSTEM_XOOPS_ZOMBIELIST_LABEL_ITEMCOUNT);
     $tmpl->addVar('zombies_empty', 'ZOMBIELIST_MSG_EMPTY', _AM_XOONIPS_SYSTEM_XOOPS_ZOMBIELIST_MSG_EMPTY);
 
-    $zombies = array();
+    $zombies = [];
     $evenodd = 'odd';
     foreach (get_zombie_user_ids() as $zombie_id) {
-        $zombie = array();
+        $zombie = [];
         $zombie['uid'] = $zombie_id;
         $zombie['uname'] = get_uname_by_index_title($zombie_id, 's');
         $zombie['delete'] = _AM_XOONIPS_LABEL_DELETE;

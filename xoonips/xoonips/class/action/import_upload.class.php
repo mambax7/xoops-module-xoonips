@@ -107,10 +107,10 @@ class XooNIpsActionImportUpload extends XooNIpsAction
             $this->_view_params['import_items'] = $success['import_items'];
             $this->_view_params['uname'] = $xoopsUser->getVar('uname');
             $this->_view_params['filename'] = $filetype == 'localfile' ? $zipfile['name'] : $remotefile;
-            $this->_view_params['errors'] = array();
+            $this->_view_params['errors'] = [];
             foreach ($success['import_items'] as $item) {
                 foreach (array_unique($item->getErrorCodes()) as $code) {
-                    $this->_view_params['errors'][] = array('code' => $code, 'extra' => $item->getPseudoId());
+                    $this->_view_params['errors'][] = ['code' => $code, 'extra' => $item->getPseudoId()];
                 }
             }
             $this->_view_name = 'import_log';
@@ -125,7 +125,7 @@ class XooNIpsActionImportUpload extends XooNIpsAction
         //
         // check conflict below
         //
-        $this->_params = array($success['import_items']);
+        $this->_params = [$success['import_items']];
         $factory = &XooNIpsLogicFactory::getInstance();
         $logic = &$factory->create('importCheckConflict');
         $logic->execute($this->_params, $this->_response);
@@ -140,10 +140,10 @@ class XooNIpsActionImportUpload extends XooNIpsAction
             $this->_view_params['uname'] = $xoopsUser->getVar('uname');
             $this->_view_params['filename'] = $filetype == 'localfile' ? $zipfile['name'] : $remotefile;
             $this->_view_params['import_items'] = $success['import_items'];
-            $this->_view_params['errors'] = array();
+            $this->_view_params['errors'] = [];
             foreach ($success['import_items'] as $item) {
                 foreach (array_unique($item->getErrorCodes()) as $code) {
-                    $this->_view_params['errors'][] = array('code' => $code, 'extra' => $item->getPseudoId());
+                    $this->_view_params['errors'][] = ['code' => $code, 'extra' => $item->getPseudoId()];
                 }
             }
             $this->_view_name = 'import_log';
@@ -154,8 +154,10 @@ class XooNIpsActionImportUpload extends XooNIpsAction
             $this->_view_name = 'import_conflict';
         } else {
             // importCheckImport logic
-            $this->_params = array($success['import_items'],
-                                      $xoopsUser->getVar('uid'), false, );
+            $this->_params = [
+                $success['import_items'],
+                $xoopsUser->getVar('uid'), false,
+            ];
             $factory = &XooNIpsLogicFactory::getInstance();
             $logic = &$factory->create('importCheckImport');
             $logic->execute($this->_params, $this->_response);
@@ -172,15 +174,15 @@ class XooNIpsActionImportUpload extends XooNIpsAction
                 $this->_view_params['result'] = false;
                 $this->_view_params['uname'] = $xoopsUser->getVar('uname');
                 $this->_view_params['filename'] = $filetype == 'localfile' ? $zipfile['name'] : $remotefile;
-                $this->_view_params['errors'] = array();
+                $this->_view_params['errors'] = [];
                 $this->_view_params['import_items'] = $success['import_items'];
                 foreach ($success['import_items'] as $item) {
                     foreach (array_unique($item->getErrorCodes()) as $code) {
-                        $this->_view_params['errors'][] = array('code' => $code, 'extra' => $item->getPseudoId());
+                        $this->_view_params['errors'][] = ['code' => $code, 'extra' => $item->getPseudoId()];
                     }
                 }
                 foreach ($collection->getErrors() as $err) {
-                    $this->_view_params['errors'][] = array('extra' => $err);
+                    $this->_view_params['errors'][] = ['extra' => $err];
                 }
 
                 $this->_view_name = 'import_log';
@@ -230,7 +232,7 @@ class XooNIpsActionImportUpload extends XooNIpsAction
 
     public function _get_xoonips_checked_index_ids($index_id_csv)
     {
-        $result = array();
+        $result = [];
         foreach (explode(',', $index_id_csv) as $id) {
             if (is_numeric($id)) {
                 $result[] = (int) $id;
@@ -292,7 +294,7 @@ class XooNIpsActionImportUpload extends XooNIpsAction
      * @param $uploadfile string import file path
      * @pram $error_check_only string 'on' or else
      */
-    public function _read_index_tree($uploadfile, $error_check_only, $import_index_ids = array())
+    public function _read_index_tree($uploadfile, $error_check_only, $import_index_ids = [])
     {
         global $xoopsDB, $xoopsConfig, $xoopsUser,$xoopsLogger, $xoopsUserIsAdmin;
         //
@@ -320,20 +322,20 @@ class XooNIpsActionImportUpload extends XooNIpsAction
             // and show the structures
             //
             $xml = $unzip->get_data($fname);
-            $indexes = array();
+            $indexes = [];
             xnpImportIndexCheck($xml, $indexes);
 
             // To construct tree structure from given indexes by $indexes
-            $c2p = array(); //associative array (child ID -> parent ID)
-            $p2c = array(); //associative array (parent ID -> array of child ID)
-            $index_by_id = array(); // $index_by_id[ index_id ] => index array;
+            $c2p = []; //associative array (child ID -> parent ID)
+            $p2c = []; //associative array (parent ID -> array of child ID)
+            $index_by_id = []; // $index_by_id[ index_id ] => index array;
             foreach ($indexes as $i) {
                 if (empty($i)) {
                     continue;
                 }
                 $c2p[$i['index_id']] = $i['parent_id'];
                 if (!isset($p2c[$i['parent_id']])) {
-                    $p2c[$i['parent_id']] = array();
+                    $p2c[$i['parent_id']] = [];
                 }
                 $p2c[$i['parent_id']][] = $i['index_id'];
                 $index_by_id[$i['index_id']] = $i;
@@ -354,10 +356,10 @@ class XooNIpsActionImportUpload extends XooNIpsAction
                 }
 
                 //index_id already visited(to detect cyclic reference)
-                $visited = array($index['index_id']);
+                $visited = [$index['index_id']];
 
                 // $index is not parent of all indexes
-                $path = array();
+                $path = [];
                 array_push($path, $index['titles'][0]);
                 while (isset($index_by_id[$index['parent_id']])) {
                     $parent = $index_by_id[$index['parent_id']];

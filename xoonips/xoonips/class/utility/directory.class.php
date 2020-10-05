@@ -64,11 +64,11 @@ class XooNIpsUtilityDirectory extends XooNIpsUtility
             }
         }
         // try to get temporary directory by environment variables
-        $envs = array(
+        $envs = [
         'TMP',
         'TMPDIR',
         'TEMP',
-        );
+        ];
         foreach ($envs as $env) {
             if (!empty($_ENV[$env])) {
                 $path = $this->realpath($_ENV[$env]);

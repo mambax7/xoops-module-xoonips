@@ -43,21 +43,21 @@ require_once '../include/libitem.php';
 require_once '../include/notification.inc.php';
 
 // get requests
-$get_keys = array(
-  'tree' => array('i', true, false),
-);
+$get_keys = [
+    'tree' => ['i', true, false],
+];
 $get_vals = xoonips_admin_get_requests('post', $get_keys);
 $tree_ids = $get_vals['tree'];
 
 // logic
 $empty_tree_ids = true;
-$results = array();
+$results = [];
 $xnpsid = $_SESSION['XNPSID'];
 if (count($tree_ids) > 0) {
     $textutil = &xoonips_getutility('text');
 
     $treelist = xnpitmgrListIndexTree(XNPITMGR_LISTMODE_PUBLICONLY);
-    $treemap = array();
+    $treemap = [];
     foreach ($treelist as $tree) {
         $treemap[$tree['id']] = $tree['fullpath'];
     }
@@ -70,9 +70,9 @@ if (count($tree_ids) > 0) {
     $item_show_handler = &xoonips_getormhandler('xoonips', 'item_show');
     $item_status_handler = &xoonips_getormhandler('xoonips', 'item_status');
 
-    $modified_item_ids = array();
+    $modified_item_ids = [];
 
-    $targetIndexIds = array();
+    $targetIndexIds = [];
     // execute item withdraw
     foreach ($tree_ids as $xid) {
         $succeed = 0;
@@ -96,7 +96,7 @@ if (count($tree_ids) > 0) {
                     $event_log_handler->recordRejectItemEvent($item_id, $xid);
                     $modified_item_ids[$item_id] = $item_id;
                     if (!isset($targetIndexIds[$item_id])) {
-                        $targetIndexIds[$item_id] = array();
+                        $targetIndexIds[$item_id] = [];
                     }
                     $targetIndexIds[$item_id][] = $xid;
                 } else {
@@ -106,14 +106,14 @@ if (count($tree_ids) > 0) {
             }
         }
 
-        $results[] = array(
+        $results[] = [
             'id' => $xid,
             'evenodd' => $evenodd,
             'index' => $textutil->html_special_chars($treemap[$xid]),
             'succeed' => $succeed,
             'uncertified' => $uncertified,
             'failed' => $failed,
-        );
+        ];
         $evenodd = ($evenodd == 'even') ? 'odd' : 'even';
     }
     foreach ($targetIndexIds as $item_id => $indexIds) {
@@ -155,33 +155,33 @@ $title = _AM_XOONIPS_MAINTENANCE_ITEM_WUPDATE_TITLE;
 $description = _AM_XOONIPS_MAINTENANCE_ITEM_WUPDATE_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_TITLE,
         'url' => $xoonips_admin['mypage_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_ITEM_WITHDRAW_TITLE,
         'url' => $xoonips_admin['mypage_url'].'&amp;action=withdraw',
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // templates
 require_once '../class/base/pattemplate.class.php';

@@ -67,7 +67,7 @@ class XooNIpsActionTransferUserRequest extends XooNIpsActionTransfer
             redirect_header(XOOPS_URL.'/modules/xoonips/transfer_item.php', 3, _MD_XOONIPS_TRANSFER_USER_REQUEST_ERROR_BAD_SUBSCRIBE_GROUP);
         }
 
-        $this->_params = array($all_of_item_ids_to_transfer, $xoopsUser->getVar('uid'), $this->get_to_uid());
+        $this->_params = [$all_of_item_ids_to_transfer, $xoopsUser->getVar('uid'), $this->get_to_uid()];
     }
 
     public function postAction()
@@ -89,13 +89,13 @@ class XooNIpsActionTransferUserRequest extends XooNIpsActionTransfer
     {
         $result = $this->_formdata->getValueArray('post', 'item_ids_to_transfer', 'i', false);
 
-        return is_array($result) ? $result : array();
+        return is_array($result) ? $result : [];
     }
 
     public function get_child_item_ids_to_transfer()
     {
         $result = $this->_formdata->getValueArray('post', 'child_item_ids_to_transfer', 'i', false);
 
-        return is_array($result) ? $result : array();
+        return is_array($result) ? $result : [];
     }
 }

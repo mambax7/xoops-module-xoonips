@@ -47,7 +47,7 @@ if (isset($post_id) && 'GET' == $_SERVER['REQUEST_METHOD']) {
     }
 }
 
-foreach (array('item_id' => 0, 'scrollX' => 0, 'scrollY' => 0) as $k => $v) {
+foreach (['item_id' => 0, 'scrollX' => 0, 'scrollY' => 0] as $k => $v) {
     $$k = $formdata->getValue('both', $k, 'i', false);
 }
 
@@ -81,7 +81,7 @@ if (!$item_compo_handler->getPerm($item_id, $xoopsUser->getVar('uid'), 'write'))
     exit();
 }
 
-$item = array();
+$item = [];
 if (RES_OK != xnp_get_item($xnpsid, $item_id, $item)) {
     redirect_header(XOOPS_URL.'/modules/xoonips/index.php', 3, _MD_XOONIPS_ITEM_CANNOT_ACCESS_ITEM);
     exit();
@@ -110,7 +110,7 @@ $xoonipsCheckedXID = $formdata->getValue('post', 'xoonipsCheckedXID', 's', false
 if (null !== $xoonipsCheckedXID) {
     $xoopsTpl->assign('xoonipsCheckedXID', $xoonipsCheckedXID);
 } else {
-    $index_ids = array();
+    $index_ids = [];
     xnp_get_index_id_by_item_id($xnpsid, $item_id, $index_ids);
     $xoopsTpl->assign('xoonipsCheckedXID', implode(',', $index_ids));
 }
@@ -132,9 +132,9 @@ $xoopsTpl->assign('scrollY', isset($scrollY) ? (int) $scrollY : 0);
 
 $xoopsTpl->assign('invalid_doi_message', sprintf(_MD_XOONIPS_ITEM_DOI_INVALID_ID, XNP_CONFIG_DOI_FIELD_PARAM_MAXLEN));
 
-$account = array();
+$account = [];
 if (RES_OK == xnp_get_account($xnpsid, $uid, $account)) {
-    $iids = array();
+    $iids = [];
     if (RES_OK == xnp_get_private_item_id($xnpsid, $uid, $iids)) {
         $xoopsTpl->assign('num_of_items_current', count($iids));
     }
@@ -147,7 +147,7 @@ if (RES_OK == xnp_get_account($xnpsid, $uid, $account)) {
 // If the page is made by POST, $_POST is made to save somewhere and page redirects.
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
     $post_id = uniqid('postid');
-    $_SESSION['post_id'] = array($post_id => serialize($_POST));
+    $_SESSION['post_id'] = [$post_id => serialize($_POST)];
     header('HTTP/1.0 303 See Other');
     header('Location: '.XOOPS_URL."/modules/xoonips/edit.php?post_id=$post_id");
     echo sprintf(_IFNOTRELOAD, XOOPS_URL."/modules/xoonips/edit.php?post_id=$post_id");

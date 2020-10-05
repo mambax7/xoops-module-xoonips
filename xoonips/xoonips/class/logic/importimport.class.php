@@ -39,7 +39,7 @@ class XooNIpsLogicImportImport extends XooNIpsLogic
     {
         global $xoopsUser;
 
-        $success = array();
+        $success = [];
         $error = false;
 
         $transaction = XooNIpsTransaction::getInstance();

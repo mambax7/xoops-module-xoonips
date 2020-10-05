@@ -38,7 +38,7 @@ class XooNIpsOrmRankingSumViewedItemHandler extends XooNIpsOrmRankingViewedItemH
     {
         parent::__construct($db);
         $this->__initHandler('XooNIpsOrmRankingViewedItem', 'xoonips_ranking_sum_viewed_item', 'item_id', false);
-        $this->_set_columns(array('item_id', 'count'));
+        $this->_set_columns(['item_id', 'count']);
         $this->_set_sum_table();
     }
 }

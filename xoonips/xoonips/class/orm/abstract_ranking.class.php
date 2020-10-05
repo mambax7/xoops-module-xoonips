@@ -36,7 +36,7 @@ class XooNIpsOrmAbstractRankingHandler extends XooNIpsTableObjectHandler
      *
      * @var array
      */
-    public $columns = array();
+    public $columns = [];
 
     /**
      * flag of sum table handler.

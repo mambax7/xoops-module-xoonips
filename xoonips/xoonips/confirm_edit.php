@@ -49,8 +49,8 @@ if (isset($add_to_index_id)) {
 }
 $formdata->set('post', 'xoonipsCheckedXID', $xoonipsCheckedXID);
 
-foreach (array('item_id' => array('i', 0), 'op' => array('s', '')) as $k => $meta) {
-    list($type, $default) = $meta;
+foreach (['item_id' => ['i', 0], 'op' => ['s', '']] as $k => $meta) {
+    [$type, $default] = $meta;
     $$k = $formdata->getValue('both', $k, $type, false, $default);
 }
 
@@ -68,14 +68,14 @@ if ($item_lock_handler->isLocked($item_id)) {
 }
 
 //retrieve item detail and set item type id to $item_type_id;
-$item = array();
+$item = [];
 if (RES_OK != xnp_get_item($xnpsid, $item_id, $item)) {
     xoonips_error_exit(400);
 }
 $item_type_id = $item['item_type_id'];
 
 //retrive module name to $itemtype
-$itemtypes = array();
+$itemtypes = [];
 if (RES_OK != xnp_get_item_types($itemtypes)) {
     xoonips_error_exit(500);
 } else {
@@ -109,12 +109,12 @@ if (!check_private_item_storage_limit()) {
 if ('' != $xoonipsCheckedXID) {
     $checked_xids = explode(',', $xoonipsCheckedXID);
 } else {
-    $checked_xids = array();
+    $checked_xids = [];
 }
 
-$gids = array();
+$gids = [];
 foreach ($checked_xids as $xid) {
-    $index = array();
+    $index  = [];
     $result = xnp_get_index($xnpsid, $xid, $index);
     if (RES_OK != $result) {
         continue;
@@ -140,7 +140,7 @@ foreach (array_unique($gids) as $gid) {
     }
     if (!check_group_item_storage_limit($gid)) {
         $op = '';
-        $group = array();
+        $group = [];
         if (is_object($xgroup_obj)) {
             $system_message .= '<span style="color: red;">'._MD_XOONIPS_ITEM_WARNING_ITEM_STORAGE_LIMIT.'(group='.$gname.')</span><br />';
         } else {
@@ -151,12 +151,12 @@ foreach (array_unique($gids) as $gid) {
 
 //check registration to Private Index
 //if there is no registration, registration of items are forbidden.
-$user = array();
+$user               = [];
 $private_index_flag = false; // true if private index is selected
 $public_index_flag = false; // true if public index is selected
 $group_index_flag = false; // true if group index is selected
 foreach ($checked_xids as $xid) {
-    $index = array();
+    $index  = [];
     $result = xnp_get_index($xnpsid, $xid, $index);
     if (RES_OK != $result) {
         continue;
@@ -179,8 +179,8 @@ if (XNP_CONFIG_DOI_FIELD_PARAM_NAME != '') {
     //check doi field format and length(basic information)
     $doi = $formdata->getValue('post', 'doi', 's', false);
     if ('' != $doi) {
-        $matches = array();
-        $res = preg_match('/'.XNP_CONFIG_DOI_FIELD_PARAM_PATTERN.'/', $doi, $matches);
+        $matches = [];
+        $res     = preg_match('/' . XNP_CONFIG_DOI_FIELD_PARAM_PATTERN . '/', $doi, $matches);
         if (strlen($doi) > XNP_CONFIG_DOI_FIELD_PARAM_MAXLEN
             || 0 == $res || $matches[0] != $doi
         ) {
@@ -210,7 +210,7 @@ if ('update' == $op) {
 
     $f = $itemtype['name'].'GetModifiedFields';
     $modified = xnpGetModifiedFields($item_id)
-        + (function_exists($f) ? $f($item_id) : array());
+        + (function_exists($f) ? $f($item_id) : []);
     if (0 == count($modified)) {
         //no modified fields.don't update.
         redirect_header(xnpGetItemDetailURL($item_id, $doi), 3, 'Succeed');
@@ -261,7 +261,7 @@ if ('update' == $op) {
     //confirm
     $check_xids = array_unique(
         array_merge(
-            array($formdata->getValue('post', 'add_to_index_id', 'i', false)),
+            [$formdata->getValue('post', 'add_to_index_id', 'i', false)],
             explode(',', $formdata->getValue('post', 'xoonipsCheckedXID', 's', false))
         )
     );
@@ -327,8 +327,8 @@ if ('update' == $op) {
     $hidden = $itemlib_obj->getHiddenHtml();
     $xoopsTpl->assign('hidden', $hidden);
     // - index form data
-    $http_vars = array();
-    $k = 'xoonipsCheckedXID';
+    $http_vars = [];
+    $k         = 'xoonipsCheckedXID';
     $tmp = $formdata->getValue('post', $k, 's', false);
     if (isset($tmp)) {
         $http_vars[$k] = $textutil->html_special_chars($tmp);

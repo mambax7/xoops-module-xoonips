@@ -31,23 +31,23 @@ $title = _AM_XOONIPS_POLICY_ACCOUNT_TITLE;
 $description = _AM_XOONIPS_POLICY_ACCOUNT_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';
@@ -55,10 +55,10 @@ $ticket_area = 'xoonips_admin_policy_account';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys = array(
+$config_keys = [
     'certify_user' => 's',
-);
-$userinfo_config_keys = array(
+];
+$userinfo_config_keys = [
     'account_realname_optional' => _AM_XOONIPS_LABEL_NAME,
     'account_company_name_optional' => _AM_XOONIPS_LABEL_COMPANY_NAME,
     'account_division_optional' => _AM_XOONIPS_LABEL_DIVISION,
@@ -67,24 +67,24 @@ $userinfo_config_keys = array(
     'account_zipcode_optional' => _AM_XOONIPS_LABEL_ZIPCODE,
     'account_tel_optional' => _AM_XOONIPS_LABEL_TEL,
     'account_fax_optional' => _AM_XOONIPS_LABEL_FAX,
-);
-$initvals_config_keys = array(
-    'private_item_number_limit' => array(
+];
+$initvals_config_keys = [
+    'private_item_number_limit' => [
         'title' => _AM_XOONIPS_LABEL_ITEM_NUMBER_LIMIT,
         'desc' => _AM_XOONIPS_POLICY_ACCOUNT_INITIAL_MAX_ITEM_DESC,
         'type' => 'i',
-    ),
-    'private_index_number_limit' => array(
+    ],
+    'private_index_number_limit' => [
         'title' => _AM_XOONIPS_LABEL_INDEX_NUMBER_LIMIT,
         'desc' => _AM_XOONIPS_POLICY_ACCOUNT_INITIAL_MAX_INDEX_DESC,
         'type' => 'i',
-    ),
-    'private_item_storage_limit' => array(
+    ],
+    'private_item_storage_limit' => [
         'title' => _AM_XOONIPS_LABEL_ITEM_STORAGE_LIMIT,
         'desc' => _AM_XOONIPS_POLICY_ACCOUNT_INITIAL_MAX_DISK_DESC,
         'type' => 'f',
-    ),
-);
+    ],
+];
 foreach (array_keys($userinfo_config_keys) as $key) {
     $config_keys[$key] = 's';
 }
@@ -118,9 +118,9 @@ $cu['selected'] = ($config_values['certify_user'] == 'auto') ? 'yes' : 'no';
 $certify_user[] = $cu;
 
 // user information requirements
-$info_requirement = array();
+$info_requirement = [];
 foreach ($userinfo_config_keys as $name => $label) {
-    $ir = array();
+    $ir = [];
     $ir['title'] = $label;
     $ir['name'] = $name;
     $ir['require'] = _AM_XOONIPS_LABEL_REQUIRED;
@@ -130,9 +130,9 @@ foreach ($userinfo_config_keys as $name => $label) {
 }
 
 // initial values
-$initil_values = array();
+$initil_values = [];
 foreach ($initvals_config_keys as $name => $value) {
-    $iv = array();
+    $iv = [];
     $iv['title'] = $value['title'];
     $iv['desc'] = $value['desc'];
     $iv['name'] = $name;

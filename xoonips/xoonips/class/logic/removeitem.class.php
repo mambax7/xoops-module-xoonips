@@ -93,7 +93,7 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
             $id = $vars[1];
             $id_type = $vars[2];
         }
-        list($result, $uid, $session) = $this->restoreSession($sessionid);
+        [$result, $uid, $session] = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
@@ -181,16 +181,16 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
             return false;
         }
         // get files
-        $delete_later = array();
+        $delete_later             = [];
         $detail_item_type_handler = &xoonips_getormhandler($item_type_name, 'item_type');
         $detail_item_type = $detail_item_type_handler->get($item_type_id);
         foreach ($detail_item_type->getFileTypeNames() as $field_name) {
             $files = $detail_item->getVar($field_name);
             if ($files) {
                 if (!$detail_item_type->getMultiple($field_name)) {
-                    $files = array(
+                    $files = [
                         $files,
-                    );
+                    ];
                 }
                 foreach ($files as $file) {
                     $delete_later[] = $file;

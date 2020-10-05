@@ -31,23 +31,23 @@ $title = _AM_XOONIPS_SYSTEM_MODULE_TITLE;
 $description = _AM_XOONIPS_SYSTEM_MODULE_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';
@@ -63,10 +63,10 @@ $textutil = &xoonips_getutility('text');
 // - $op = 'showmod'
 $criteria = new CriteriaCompo(new Criteria('conf_modid', $module_id));
 // select notification configulations only
-$append_confnames = array(
+$append_confnames = [
     'notification_enabled',
     'notification_events',
-);
+];
 if (count($append_confnames) > 0) {
     $criteria_append = new CriteriaCompo();
     foreach ($append_confnames as $confname) {

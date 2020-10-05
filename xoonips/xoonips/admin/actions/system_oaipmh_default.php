@@ -31,23 +31,23 @@ $title = _AM_XOONIPS_SYSTEM_OAIPMH_TITLE;
 $description = _AM_XOONIPS_SYSTEM_OAIPMH_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_SYSTEM_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';
@@ -59,13 +59,13 @@ $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 $repository_title = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_TITLE;
 
 // get repository configs
-$config_keys = array(
+$config_keys = [
     'repository_name' => 's',
     'repository_nijc_code' => 's',
     'repository_deletion_track' => 'i',
     'repository_institution' => 's',
     'repository_publisher' => 's',
-);
+];
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 // >> repository instatution
 $repository_institution_title = _AM_XOONIPS_SYSTEM_OAIPMH_REPOSITORY_INSTITUTION_TITLE;

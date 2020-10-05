@@ -87,7 +87,7 @@ class XooNIpsLogicLogin extends XooNIpsLogic
             }
             $user = false;
             $uid = UID_GUEST;
-            $groups = array();
+            $groups = [];
         } else {
             $user = &$member_handler->loginUser($id, $pass);
             if (!$user) {
@@ -145,7 +145,7 @@ class XooNIpsLogicLogin extends XooNIpsLogic
             return false;
         }
         // record $uid
-        $_SESSION = array();
+        $_SESSION = [];
         $_SESSION['xoopsUserId'] = $uid;
         $_SESSION['xoopsUserGroups'] = $groups;
 

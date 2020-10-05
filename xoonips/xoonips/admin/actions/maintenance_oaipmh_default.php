@@ -31,23 +31,23 @@ $title = _AM_XOONIPS_MAINTENANCE_OAIPMH_TITLE;
 $description = _AM_XOONIPS_MAINTENANCE_OAIPMH_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_MAINTENANCE_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // logic
 $repo_handler = &xoonips_getormhandler('xoonips', 'oaipmh_repositories');

@@ -113,11 +113,11 @@ class XooNIpsLogicGetItemPermission extends XooNIpsLogic
         $item_id = $item_basic->get('item_id');
 
         // get permission
-        $result = array(
+        $result = [
             'read' => $item_compo_handler->getPerm($item_id, $uid, 'read'),
             'write' => $item_compo_handler->getPerm($item_id, $uid, 'write'),
             'delete' => $item_compo_handler->getPerm($item_id, $uid, 'delete'),
-        );
+        ];
         $response->setSuccess($result);
         $response->setResult(true);
 

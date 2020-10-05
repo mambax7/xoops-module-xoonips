@@ -47,8 +47,8 @@ $checked_xids = explode(',', $xoonipsCheckedXID);
 
 $xoonipsURL = ''; // disable to link for index tree
 
-foreach (array('item_type_id' => array('i', true, 0), 'op' => array('s', false, '')) as $k => $meta) {
-    list($type, $is_required, $default) = $meta;
+foreach (['item_type_id' => ['i', true, 0], 'op' => ['s', false, '']] as $k => $meta) {
+    [$type, $is_required, $default] = $meta;
     $$k = $formdata->getValue('both', $k, $type, $is_required, $default);
 }
 
@@ -57,7 +57,7 @@ xoonips_deny_guest_access();
 $uid = $_SESSION['xoopsUserId'];
 
 //retrive module name to $modname
-$itemtypes = array();
+$itemtypes = [];
 if (RES_OK != xnp_get_item_types($itemtypes)) {
     xoonips_error_exit(500);
 } else {
@@ -100,9 +100,9 @@ if (!check_private_item_storage_limit()) {
 
 //check group_item_number_limit
 //check group_item_storage_limit
-$gids = array();
+$gids = [];
 foreach ($checked_xids as $xid) {
-    $index = array();
+    $index  = [];
     $result = xnp_get_index($xnpsid, (int) $xid, $index);
     if (RES_OK == $result && OL_GROUP_ONLY == $index['open_level']) {
         $gids[] = $index['owner_gid'];
@@ -132,12 +132,12 @@ foreach (array_unique($gids) as $gid) {
 
 //check registration to Private Index
 //if there is no registration, registration of items are forbidden.
-$user = array();
+$user               = [];
 $private_index_flag = false; // true if private index is selected
 $public_index_flag = false; // true if public index is selected
 $group_index_flag = false; // true if group index is selected
 foreach ($checked_xids as $xid) {
-    $index = array();
+    $index  = [];
     $result = xnp_get_index($xnpsid, (int) $xid, $index);
     if (RES_OK == $result) {
         if (OL_PRIVATE == $index['open_level']) {
@@ -157,8 +157,8 @@ if (XNP_CONFIG_DOI_FIELD_PARAM_NAME != '') {
     //check doi field format and length(basic information)
     $doi = $formdata->getValue('post', 'doi', 's', false);
     if ('' != $doi) {
-        $matches = array();
-        $res = preg_match('/'.XNP_CONFIG_DOI_FIELD_PARAM_PATTERN.'/', $doi, $matches);
+        $matches = [];
+        $res     = preg_match('/' . XNP_CONFIG_DOI_FIELD_PARAM_PATTERN . '/', $doi, $matches);
         if (strlen($doi) > XNP_CONFIG_DOI_FIELD_PARAM_MAXLEN
             || 0 == $res || $matches[0] != $doi
         ) {
@@ -241,7 +241,7 @@ if (isset($op) && 'register' == $op) {
     }
 
     //confirm
-    $check_xids = empty($xoonipsCheckedXID) ? array() : explode(',', $xoonipsCheckedXID);
+    $check_xids = empty($xoonipsCheckedXID) ? [] : explode(',', $xoonipsCheckedXID);
 
     //prepare template
     $xoopsOption['template_main'] = 'xoonips_confirm_register.html';
@@ -252,7 +252,7 @@ if (isset($op) && 'register' == $op) {
         // select /Private and notice
         // that /Private is selected automatically
         // if any private indexes are not selected.
-        $account = array();
+        $account = [];
         if (RES_OK != xnp_get_account($xnpsid, $uid, $account)) {
             xoonips_error_exit(500);
         }
@@ -269,8 +269,8 @@ if (isset($op) && 'register' == $op) {
     $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 600, 'register');
     $xoopsTpl->assign('token_hidden', $token_ticket);
 
-    $select_item_type = array();
-    $itemtypes = array();
+    $select_item_type = [];
+    $itemtypes        = [];
     if (RES_OK != xnp_get_item_types($itemtypes)) {
         redirect_header(XOOPS_URL.'/', 3, 'ERROR xnp_get_item_types');
         exit();
@@ -294,19 +294,19 @@ if (isset($op) && 'register' == $op) {
     eval('$body = '.$modname.'GetConfirmBlock(false);');
     $xoopsTpl->assign('body', $body);
     ////send basic information using hidden to next(before)page.
-    $http_vars = array();
-    foreach (array('item_type_id',
-                    'title',
-                    'keywords',
-                    'description',
-                    'doi',
-                    'publicationDateYear',
-                    'publicationDateMonth',
-                    'publicationDateDay',
-                    'change_log',
-                    'xoonipsCheckedXID',
-                    'lang',
-                    'related_to', ) as $k) {
+    $http_vars = [];
+    foreach (['item_type_id',
+              'title',
+              'keywords',
+              'description',
+              'doi',
+              'publicationDateYear',
+              'publicationDateMonth',
+              'publicationDateDay',
+              'change_log',
+              'xoonipsCheckedXID',
+              'lang',
+              'related_to', ] as $k) {
         $tmp = $formdata->getValue('post', $k, 'n', false);
         if (isset($tmp)) {
             $http_vars[$k] = $textutil->html_special_chars($tmp);

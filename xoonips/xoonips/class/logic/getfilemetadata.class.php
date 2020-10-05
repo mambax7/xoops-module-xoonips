@@ -165,7 +165,7 @@ class XooNIpsLogicGetFileMetadata extends XooNIpsLogic
             $thumbnail = '';
         }
 
-        $result = array(
+        $result = [
             'id' => $file_id,
             'filetype' => $file_type->get('name'),
             'originalname' => $file->get('original_file_name'),
@@ -177,7 +177,7 @@ class XooNIpsLogicGetFileMetadata extends XooNIpsLogic
             'last_modified_date' => $file->get('timestamp'),
             'download_count' => $download_count,
             'download_count_sum' => $download_count_sum,
-        );
+        ];
         $response->setSuccess($result);
         $response->setResult(true);
 

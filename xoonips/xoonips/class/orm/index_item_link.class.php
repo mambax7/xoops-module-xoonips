@@ -65,7 +65,7 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
      *
      * @return array of index id(s)
      */
-    public function getIndexIdsByItemId($item_id, $open_levels = array(OL_PRIVATE, OL_GROUP_ONLY, OL_PUBLIC))
+    public function getIndexIdsByItemId($item_id, $open_levels = [OL_PRIVATE, OL_GROUP_ONLY, OL_PUBLIC])
     {
         $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'LEFT', 'tindex');
         $criteria = new CriteriaCompo();
@@ -73,7 +73,7 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
         $criteria->add(new Criteria('open_level', '('.implode(',', $open_levels).')', 'IN'));
         $indexes = &$this->getObjects($criteria, false, '', false, $join);
 
-        $ret = array();
+        $ret = [];
         foreach ($indexes as $i) {
             $ret[] = $i->get('index_id');
         }
@@ -89,7 +89,7 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
      *
      * @return array of index_item_link object(s)
      */
-    public function getByItemId($item_id, $open_levels = array(OL_PRIVATE, OL_GROUP_ONLY, OL_PUBLIC))
+    public function getByItemId($item_id, $open_levels = [OL_PRIVATE, OL_GROUP_ONLY, OL_PUBLIC])
     {
         $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'LEFT', 'tindex');
         $criteria = new CriteriaCompo();
@@ -111,12 +111,12 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
     {
         // for xnp_get_private_item_id
         require_once XOOPS_ROOT_PATH.'/modules/xoonips/include/AL.php';
-        $iids = array();
+        $iids = [];
         if (RES_OK == xnp_get_private_item_id($_SESSION['XNPSID'], $uid, $iids)) {
             return $iids;
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -133,8 +133,8 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
         $join = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id');
         $criteria = new Criteria('uid', $uid);
         $index_item_links = &$index_item_link_handler->getObjects($criteria, false, '', null, $join);
-        $iids = array();
-        $certified_iids = array();
+        $iids = [];
+        $certified_iids = [];
         foreach ($index_item_links as $index_item_link) {
             $item_id = $index_item_link->get('item_id');
             $iids[$item_id] = $item_id;
@@ -159,7 +159,7 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
     public function getByIndexId($index_id, $uid)
     {
         $criteria = new CriteriaCompo(new Criteria('index_id', intval($index_id)));
-        $result = array();
+        $result = [];
         $links = &$this->getObjects($criteria);
         foreach ($links as $link) {
             $xoonips_item_handler = &xoonips_getormcompohandler('xoonips', 'item');
@@ -207,7 +207,7 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
      */
     public function getPerm($index_id, $item_id, $uid, $operation)
     {
-        if (!in_array($operation, array('accept', 'reject', 'withdraw'))) {
+        if (!in_array($operation, ['accept', 'reject', 'withdraw'])) {
             // bad operation
             return false;
         }
@@ -293,9 +293,9 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
      */
     public function getNonPrivateItemIds($uid)
     {
-        $result = array();
+        $result = [];
         $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('open_level', '('.implode(',', array(OL_GROUP_ONLY, OL_PUBLIC)).')', 'IN'));
+        $criteria->add(new Criteria('open_level', '('.implode(',', [OL_GROUP_ONLY, OL_PUBLIC]) . ')', 'IN'));
         $criteria->add(new Criteria('uid', $uid, '=', 'basic'));
         $criteria->setSort('basic.item_id');
         $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
@@ -319,7 +319,7 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
      */
     public function add($index_id, $item_id, $certify_state)
     {
-        if (!in_array($certify_state, array(NOT_CERTIFIED, CERTIFY_REQUIRED, CERTIFIED))) {
+        if (!in_array($certify_state, [NOT_CERTIFIED, CERTIFY_REQUIRED, CERTIFIED])) {
             trigger_error("unknown certify_state: $certify_state");
 
             return false;

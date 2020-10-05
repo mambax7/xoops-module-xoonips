@@ -35,16 +35,16 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 }
 
 // get variables
-$post_keys = array(
-    'certify_item' => array('s', false, true),
-    'public_item_target_user' => array('s', false, true),
-);
+$post_keys = [
+    'certify_item' => ['s', false, true],
+    'public_item_target_user' => ['s', false, true],
+];
 $post_vals = xoonips_admin_get_requests('post', $post_keys);
 
 // set config keys
-$config_keys = array();
+$config_keys = [];
 foreach ($post_keys as $key => $attributes) {
-    list($data_type, $is_array, $required) = $attributes;
+    [$data_type, $is_array, $required] = $attributes;
     $config_keys[$key] = $data_type;
 }
 

@@ -38,14 +38,14 @@ class XooNIpsTableObject extends XoopsObject
      *
      * @var array
      */
-    public $_extra_vars = array();
+    public $_extra_vars = [];
 
     /**
      * default vars holder.
      *
      * @var array
      */
-    public $_default_vars = array();
+    public $_default_vars = [];
 
     /**
      * do you want to replace object?
@@ -59,14 +59,14 @@ class XooNIpsTableObject extends XoopsObject
      *
      * @var array
      */
-    public $_data_types = array(
+    public $_data_types = [
     XOBJ_DTYPE_TXTBOX,
     XOBJ_DTYPE_TXTAREA,
     XOBJ_DTYPE_INT,
     XOBJ_DTYPE_ARRAY,
     XOBJ_DTYPE_OTHER,
     XOBJ_DTYPE_BINARY,
-    );
+    ];
 
     /**
      * constructor.
@@ -157,14 +157,14 @@ class XooNIpsTableObject extends XoopsObject
                 die('fatal error : you should not use data_type '.$data_type);
             }
         }
-        $this->vars[$key] = array(
+        $this->vars[$key] = [
         'value' => $value,
         'required' => $required,
         'data_type' => $data_type,
         'maxlength' => $maxlength,
         'changed' => false,
         'options' => $options,
-        );
+        ];
         $this->_default_vars[$key] = $value;
     }
 
@@ -296,7 +296,7 @@ class XooNIpsTableObject extends XoopsObject
                     $selected = explode('|', $ret);
                     $options = explode('|', $this->vars[$key]['options']);
                     $i = 1;
-                    $ret = array();
+                    $ret = [];
                     foreach ($options as $op) {
                         if (in_array($i, $selected)) {
                             $ret[] = $op;
@@ -329,7 +329,7 @@ class XooNIpsTableObject extends XoopsObject
      */
     public function getVarArray($format)
     {
-        $vars_array = array();
+        $vars_array = [];
         $keys_array = &$this->getKeysArray();
         foreach ($keys_array as $k) {
             $vars_array[$k] = $this->getVar($k, $format);
@@ -345,12 +345,12 @@ class XooNIpsTableObject extends XoopsObject
      */
     public function &getKeysArray()
     {
-        $ignore_keys = array(
+        $ignore_keys = [
         'dohtml',
         'doxcode',
         'dosmiley',
         'dobr',
-        );
+        ];
         $keys_array = array_diff(array_keys($this->vars), $ignore_keys);
 
         return $keys_array;
@@ -378,7 +378,7 @@ class XooNIpsTableObject extends XoopsObject
      */
     public function isFilledRequired(&$missing)
     {
-        $missing = array();
+        $missing = [];
         foreach (array_keys($this->vars) as $field) {
             if (!$this->vars[$field]['required']) {
                 continue;
@@ -849,8 +849,8 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
             } else {
                 $myid = $sql_arr[$this->__key_name];
             }
-            $sql_fields = array();
-            $sql_values = array();
+            $sql_fields = [];
+            $sql_values = [];
             foreach (array_keys($sql_arr) as $name) {
                 $sql_fields[] = '`'.$name.'`';
                 if ($name == $this->__key_name) {
@@ -868,8 +868,8 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
         } else {
             $sql_arr = &$this->_makeVarsArray4SQL($obj, $obj->cleanVars);
             $myid = $sql_arr[$this->__key_name];
-            $sql_keyl = array();
-            $sql_setl = array();
+            $sql_keyl = [];
+            $sql_setl = [];
             foreach (array_keys($sql_arr) as $name) {
                 if ($name == $this->__key_name) {
                     $sql_keyl[] = '`'.$name.'`='.$sql_arr[$name];
@@ -934,7 +934,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
      */
     public function &getObjects($criteria = null, $id_as_key = false, $fieldlist = '', $distinct = false, $joindef = null)
     {
-        $ret = array();
+        $ret = [];
         $result = &$this->open($criteria, $fieldlist, $distinct, $joindef);
         if (!$result) {
             return $ret;
@@ -1031,7 +1031,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
         if (!$result = &$this->_query($sql)) {
             return 0;
         }
-        list($count) = $this->db->fetchRow($result);
+        [$count] = $this->db->fetchRow($result);
         $this->db->freeRecordSet($result);
 
         return $count;
@@ -1070,7 +1070,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
      */
     public function &getUnionObjects($vars, $id_as_key = false, $unionall = false, $unioncriteria = null)
     {
-        $ret = array();
+        $ret = [];
         foreach ($vars as $var) {
             $criteria = isset($var[0]) ? $var[0] : null;
             $fieldlist = isset($var[1]) ? $var[1] : '';
@@ -1108,7 +1108,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
     {
         $limit = $start = 0;
         $order_by = '';
-        $sqls = array();
+        $sqls = [];
         foreach ($vars as $var) {
             $criteria = isset($var[0]) ? $var[0] : null;
             $fieldlist = isset($var[1]) ? $var[1] : '';
@@ -1161,7 +1161,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
     public function updateAllObjectsByForeignKey($foreign_key, $foreign_value, &$objects)
     {
         // insert/update creator
-        $inserted_primary_ids = array();
+        $inserted_primary_ids = [];
         foreach ($objects as $obj) {
             $obj->set($foreign_key, $foreign_value);
             if (!$this->insert($obj)) {
@@ -1196,7 +1196,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
      */
     public function &_makeVarsArray4SQL(&$obj, &$vars)
     {
-        $ret = array();
+        $ret        = [];
         $keys_array = &$obj->getKeysArray();
         foreach ($keys_array as $k) {
             switch ($obj->vars[$k]['data_type']) {

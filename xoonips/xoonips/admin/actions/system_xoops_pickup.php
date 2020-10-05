@@ -35,16 +35,16 @@ if (!$xoopsGTicket->check(true, $ticket_area, false)) {
 }
 
 // get requests
-$post_keys = array(
-    'uid' => array('i', false, true),
-);
+$post_keys = [
+    'uid' => ['i', false, true],
+];
 $post_vals = xoonips_admin_get_requests('post', $post_keys);
 $uid = $post_vals['uid'];
 
 // get user certification mode
-$config_keys = array(
+$config_keys = [
     'certify_user' => 's',
-);
+];
 $config_values = xoonips_admin_get_configs($config_keys, 'n');
 $is_certified = ($config_values['certify_user'] == 'on') ? false : true;
 

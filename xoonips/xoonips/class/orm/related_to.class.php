@@ -100,7 +100,7 @@ class XooNIpsOrmRelatedToHandler extends XooNIpsTableObjectHandler
     public function insertChildItemIds($parent_id, $item_ids)
     {
         $objs_old = $this->_getObjectsByParentItemId($parent_id);
-        $objs_new = array();
+        $objs_new = [];
         foreach ($item_ids as $item_id) {
             if ($parent_id == $item_id) {
                 continue;
@@ -144,7 +144,7 @@ class XooNIpsOrmRelatedToHandler extends XooNIpsTableObjectHandler
     {
         $criteria = new Criteria('parent_id', $parent_id);
         $res = &$this->open($criteria);
-        $objs = array();
+        $objs = [];
         while ($obj = &$this->getNext($res)) {
             $item_id = $obj->get('item_id');
             $objs[$item_id] = &$obj;

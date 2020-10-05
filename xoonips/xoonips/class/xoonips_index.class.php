@@ -53,7 +53,7 @@ class XooNIpsIndexHandler
      */
     public function getIndexTitle($index_id, $fmt)
     {
-        $titles = $this->_get_index_titles_by_index_ids(array($index_id), $fmt);
+        $titles = $this->_get_index_titles_by_index_ids([$index_id], $fmt);
 
         return $titles[$index_id];
     }
@@ -84,7 +84,7 @@ class XooNIpsIndexHandler
      */
     public function getChildIndexIds($index_id)
     {
-        $mcxids = $this->_get_child_index_ids_by_index_ids(array($index_id));
+        $mcxids = $this->_get_child_index_ids_by_index_ids([$index_id]);
 
         return $mcxids[$index_id];
     }
@@ -101,9 +101,9 @@ class XooNIpsIndexHandler
     public function getItemIds($index_id, $uid, $perm)
     {
         // set empty item permission cache first
-        $iid_perm_cache = array();
+        $iid_perm_cache = [];
         // get item ids
-        $miids = $this->_get_item_ids_by_index_ids(array($index_id), $uid, $perm, $iid_perm_cache);
+        $miids = $this->_get_item_ids_by_index_ids([$index_id], $uid, $perm, $iid_perm_cache);
 
         return $miids[$index_id];
     }
@@ -143,15 +143,15 @@ class XooNIpsIndexHandler
     public function getIndexPathArray($index_id, $fmt)
     {
         if ($index_id == IID_ROOT) {
-            return array();
+            return [];
         }
         $pxid = $this->getParentIndexId($index_id);
         $ret = $this->getIndexPathArray($pxid, $fmt);
         $title = $this->getIndexTitle($index_id, $fmt);
-        $ret[] = array(
+        $ret[] = [
             'index_id' => $index_id,
             'title' => $title,
-        );
+        ];
 
         return $ret;
     }
@@ -182,19 +182,19 @@ class XooNIpsIndexHandler
             $this->_fatal_error('unknown index found', __LINE__);
         }
         // set empty item permission cache first
-        $iid_perm_cache = array();
+        $iid_perm_cache = [];
         // get current index information
         $depth = 0;
-        $mcxids = $this->_get_child_index_ids_by_index_ids(array($index_id));
-        $mciids = $this->_get_item_ids_by_index_ids(array($index_id), $uid, $perm, $iid_perm_cache);
-        $xinfo = array();
-        $xinfo[] = array(
+        $mcxids = $this->_get_child_index_ids_by_index_ids([$index_id]);
+        $mciids = $this->_get_item_ids_by_index_ids([$index_id], $uid, $perm, $iid_perm_cache);
+        $xinfo = [];
+        $xinfo[] = [
             'index_id' => $index_id,
             'title' => $this->getIndexTitle($index_id, $fmt),
             'number_of_indexes' => count($mcxids[$index_id]),
             'number_of_items' => count($mciids[$index_id]),
             'depth' => $depth,
-        );
+        ];
         $xinfo = array_merge($xinfo, $this->_get_descendant_index_structure($mcxids[$index_id], $fmt, $depth, $uid, $perm, $iid_perm_cache));
 
         return $xinfo;
@@ -231,7 +231,7 @@ class XooNIpsIndexHandler
         $criteria = new CriteriaCompo(new Criteria('item_id', '('.implode(',', $xids).')', 'IN'));
         $criteria->add(new Criteria('title_id', DEFAULT_INDEX_TITLE_OFFSET));
         // hold returning index order
-        $mtitles = array();
+        $mtitles = [];
         foreach ($xids as $xid) {
             $mtitles[$xid] = '';
         }
@@ -272,9 +272,9 @@ class XooNIpsIndexHandler
         $join->cascade(new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'ib'));
         $criteria = new Criteria('index_id', '('.implode(',', $xids).')', 'IN', 'idx');
         // hold returning index order
-        $miids = array();
+        $miids = [];
         foreach ($xids as $xid) {
-            $miids[$xid] = array();
+            $miids[$xid] = [];
         }
         // get child item ids
         $item_chandler = &xoonips_getormcompohandler('xoonips', 'item');
@@ -315,9 +315,9 @@ class XooNIpsIndexHandler
         $criteria = new Criteria('parent_index_id', '('.implode(',', $xids).')', 'IN');
         $criteria->setSort('sort_number');
         // hold returning index order
-        $mcxids = array();
+        $mcxids = [];
         foreach ($xids as $xid) {
-            $mcxids[$xid] = array();
+            $mcxids[$xid] = [];
         }
         // get child index ids
         $res = $this->_x_handler->open($criteria, 'index_id, parent_index_id');
@@ -355,21 +355,21 @@ class XooNIpsIndexHandler
     public function _get_descendant_index_structure($xids, $fmt, $depth, $uid, $perm, &$iid_perm_cache)
     {
         if (empty($xids)) {
-            return array();
+            return [];
         }
         $cdepth = $depth + 1;
         $mcxids = $this->_get_child_index_ids_by_index_ids($xids);
         $mciids = $this->_get_item_ids_by_index_ids($xids, $uid, $perm, $iid_perm_cache);
         $mctitles = $this->_get_index_titles_by_index_ids($xids, $fmt);
-        $cxinfo = array();
+        $cxinfo = [];
         foreach ($xids as $xid) {
-            $cxinfo[] = array(
+            $cxinfo[] = [
                 'index_id' => $xid,
                 'title' => $mctitles[$xid],
                 'number_of_indexes' => count($mcxids[$xid]),
                 'number_of_items' => count($mciids[$xid]),
                 'depth' => $cdepth,
-            );
+            ];
             $cxinfo = array_merge($cxinfo, $this->_get_descendant_index_structure($mcxids[$xid], $fmt, $cdepth, $uid, $perm, $iid_perm_cache));
         }
 

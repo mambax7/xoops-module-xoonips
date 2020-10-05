@@ -53,19 +53,19 @@ class ListRecordsHandler extends HarvesterHandler
 
         $this->resumptionToken = null;
         $this->identifier = null;
-        $this->title = array();
+        $this->title = [];
         $this->metadataPrefix = $_metadataPrefix;
-        $this->search_text = array();
-        $this->tagstack = array();
+        $this->search_text = [];
+        $this->tagstack = [];
         $this->baseURL = $_baseURL;
         $this->delete_flag = false;
-        $this->_creator = array();
+        $this->_creator = [];
         $this->_last_update_date = '';
         $this->_creation_date = '';
         $this->_date = '';
-        $this->_resource_url = array();
-        $this->_namespaces = array();
-        $this->_metadata = array();
+        $this->_resource_url = [];
+        $this->_namespaces = [];
+        $this->_metadata = [];
         $this->_cdata_buf = '';
         $this->_datestamp = '';
     }
@@ -80,7 +80,7 @@ class ListRecordsHandler extends HarvesterHandler
 
             // initialize following value for each records
             $this->title = null;
-            $this->search_text = array();
+            $this->search_text = [];
         }
         if ($name == 'HEADER') {
             if (isset($attribs['STATUS'])
@@ -138,7 +138,7 @@ class ListRecordsHandler extends HarvesterHandler
             $criteria = new Criteria('URL', $this->baseURL);
             $repositories = &$repository_handler->getObjects($criteria);
             if (!$repositories) {
-                $this->search_text = array();
+                $this->search_text = [];
                 array_pop($this->tagstack);
 
                 return;
@@ -148,7 +148,7 @@ class ListRecordsHandler extends HarvesterHandler
             if ($metadata && $this->delete_flag) {
                 $this->deleteMetadataFields($metadata->get('metadata_id'));
                 $metadata_handler->delete($metadata);
-                $this->search_text = array();
+                $this->search_text = [];
                 array_pop($this->tagstack);
 
                 return;
@@ -186,15 +186,15 @@ class ListRecordsHandler extends HarvesterHandler
 
             // cleanup members
             $this->identifier = null;
-            $this->title = array();
-            $this->search_text = array();
+            $this->title = [];
+            $this->search_text = [];
             $this->delete_flag = false;
-            $this->_creator = array();
+            $this->_creator = [];
             $this->_last_update_date = '';
             $this->_creation_date = '';
             $this->_date = '';
-            $this->_resource_url = array();
-            $this->_metadata = array();
+            $this->_resource_url = [];
+            $this->_metadata = [];
             $this->_cdata_buf = '';
             $this->_datestamp = '';
 
@@ -240,7 +240,7 @@ class ListRecordsHandler extends HarvesterHandler
      */
     public function getNamespaceArray($attrs)
     {
-        $result = array();
+        $result = [];
         foreach ($attrs as $key => $val) {
             $tmp = explode(':', $key);
             // skip other attribute
@@ -305,13 +305,13 @@ class ListRecordsHandler extends HarvesterHandler
      */
     public function addMetadataField($elementname, $value, $categoryname = '')
     {
-        $this->_metadata[] = array(
+        $this->_metadata[] = [
             'name' => $this->getElementName($elementname),
             'category_name' => $categoryname,
             'value' => $value,
             'namespace' => $this->getNamespacePrefix($elementname),
             'namespace_uri' => $this->getNamespaceUri($this->getNamespacePrefix($elementname)),
-        );
+        ];
     }
 
     /**

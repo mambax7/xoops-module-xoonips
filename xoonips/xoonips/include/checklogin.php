@@ -71,7 +71,7 @@ if (false != $user) {
     }
     require_once __DIR__.'/session.php';
     xoonips_session_regenerate();
-    $_SESSION = array();
+    $_SESSION = [];
     $_SESSION['xoopsUserId'] = $user->getVar('uid');
     $_SESSION['xoopsUserGroups'] = $user->getGroups();
     if ($myxoopsConfig['use_mysession'] && $myxoopsConfig['session_name'] != '') {

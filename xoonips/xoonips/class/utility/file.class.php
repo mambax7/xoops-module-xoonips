@@ -45,20 +45,20 @@ class XooNIpsUtilityFile extends XooNIpsUtility
      *
      * @var array
      */
-    public $mimetype_map = array(
-    '' => array(
+    public $mimetype_map = [
+        '' => [
       'dtd' => 'application/xml-dtd',
       'jnlp' => 'application/x-java-jnlp-file',
       'html' => 'text/html',
       'xhtml' => 'application/xhtml+xml',
       'xml' => 'application/xml',
       'xsl' => 'application/xml',
-    ),
-    'application/msword' => array(
+        ],
+        'application/msword' => [
       'ppt' => 'application/vnd.ms-powerpoint',
       'xls' => 'application/vnd.ms-excel',
-    ),
-    'application/x-zip' => array(
+        ],
+        'application/x-zip' => [
       'jar' => 'x-java-archive',
       'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
@@ -87,19 +87,19 @@ class XooNIpsUtilityFile extends XooNIpsUtility
       'sti' => 'application/vnd.sun.xml.impress.template',
       'sxg' => 'application/vnd.sun.xml.writer.global',
       'sxm' => 'application/vnd.sun.xml.math',
-    ),
-    'application/octet-stream' => array(
+        ],
+        'application/octet-stream' => [
       'wmv' => 'video/x-ms-wmv',
-    ),
-    'text/html' => array(
+        ],
+        'text/html' => [
       'css' => 'text/css',
       'dtd' => 'application/xml-dtd',
       'sgml' => 'text/sgml',
       'sgm' => 'text/sgml',
       'xml' => 'application/xml',
       'xsl' => 'application/xml',
-    ),
-    'text/plain' => array(
+        ],
+        'text/plain' => [
       'c' => 'text/x-c',
       'cc' => 'text/x-c++',
       'cpp' => 'text/x-c++',
@@ -116,8 +116,8 @@ class XooNIpsUtilityFile extends XooNIpsUtility
       'tex' => 'application/x-tex',
       'xml' => 'application/xml',
       'xsl' => 'application/xml',
-    ),
-    'text/x-c' => array(
+        ],
+        'text/x-c' => [
       'cc' => 'text/x-c++',
       'cpp' => 'text/x-c++',
       'css' => 'text/css',
@@ -131,8 +131,8 @@ class XooNIpsUtilityFile extends XooNIpsUtility
       'sgm' => 'text/sgml',
       'xml' => 'application/xml',
       'xsl' => 'application/xml',
-    ),
-    'text/x-c++' => array(
+        ],
+        'text/x-c++' => [
       'c' => 'text/x-c',
       'css' => 'text/css',
       'dtd' => 'application/xml-dtd',
@@ -144,8 +144,8 @@ class XooNIpsUtilityFile extends XooNIpsUtility
       'sgm' => 'text/sgml',
       'xml' => 'application/xml',
       'xsl' => 'application/xml',
-    ),
-    );
+        ],
+    ];
 
     /**
      * constructor.

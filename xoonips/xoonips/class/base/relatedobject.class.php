@@ -45,7 +45,7 @@ class XooNIpsRelatedObjectHandler
     /**
      * associative array.
      */
-    public $handlers = array();
+    public $handlers = [];
 
     /**
      * handler's name of primary table.
@@ -153,7 +153,7 @@ class XooNIpsRelatedObjectHandler
                 $objs = &$obj->getVar($key); //orm objects to insert
                 //
                 // delete orm that is not in $objs and is in database.
-                $is_in_ids = array();
+                $is_in_ids = [];
                 foreach ($objs as $o) {
                     if (!$o->isNew()) {
                         $is_in_ids[] = $o->get($this->handlers[$key]['handler']->getKeyName());
@@ -177,7 +177,7 @@ class XooNIpsRelatedObjectHandler
                 }
                 //
                 // insert each orms in array
-                $insert_ids = array(); //array of ids that is inserted below
+                $insert_ids = []; //array of ids that is inserted below
                 foreach ($objs as $k => $v) {
                     if (!$objs[$k]->isDirty()) {
                         continue;
@@ -273,7 +273,7 @@ class XooNIpsRelatedObjectHandler
      */
     public function &getObjects($criteria = null, $id_as_key = false, $fieldlist = '', $distinct = false, $joindef = null)
     {
-        $ret_objs = array();
+        $ret_objs = [];
         static $falseVar = false;
         if (isset($this->primary_handler_name)) {
             $primary_objs = &$this->handlers[$this->primary_handler_name]['handler']->getObjects($criteria, false, $this->handlers[$this->primary_handler_name]['foreign_key'], $distinct, $joindef);
@@ -338,13 +338,13 @@ class XooNIpsRelatedObjectHandler
      */
     public function addHandler($key, &$handler, $foreign_key, $multiple = false, $criteria = null)
     {
-        $this->handlers[$key] = array(
+        $this->handlers[$key] = [
             'name' => $key,
             'handler' => &$handler,
             'foreign_key' => $foreign_key,
             'multiple' => $multiple,
             'criteria' => &$criteria,
-        );
+        ];
     }
 
     /**
@@ -418,7 +418,7 @@ class XooNIpsRelatedObjectHandler
  */
 class XooNIpsRelatedObject
 {
-    public $vars = array();
+    public $vars = [];
 
     public function __construct()
     {
@@ -433,11 +433,11 @@ class XooNIpsRelatedObject
      */
     public function initVar($key, &$val, $required = false)
     {
-        $this->vars[$key] = array(
+        $this->vars[$key] = [
             'key' => $key,
             'value' => &$val,
             'required' => $required,
-        );
+        ];
     }
 
     /**
@@ -486,7 +486,7 @@ class XooNIpsRelatedObject
     public function isFilledRequired(&$missing)
     {
         if (!isset($missing) || !is_array($missing)) {
-            $missing = array();
+            $missing = [];
         }
         foreach ($this->vars as $field => $value) {
             if (!$value['required']) {
@@ -523,7 +523,7 @@ class XooNIpsRelatedObject
             }
             if (is_array($this->getVar($key))) {
                 $objs = &$this->getVar($key);
-                $clone_objs = array();
+                $clone_objs = [];
                 for ($i = 0; $i < count($objs); ++$i) {
                     if (is_subclass_of($objs[$i], 'XoopsObject')) {
                         $clone_objs[$i] = $objs[$i]->xoopsClone();

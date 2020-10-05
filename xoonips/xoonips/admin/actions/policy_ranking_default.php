@@ -37,23 +37,23 @@ $title = _AM_XOONIPS_POLICY_RANKING_TITLE;
 $description = _AM_XOONIPS_POLICY_RANKING_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';
@@ -61,7 +61,7 @@ $ticket_area = 'xoonips_admin_policy_ranking';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys = array(
+$config_keys = [
     'ranking_num_rows' => 'i',
     'ranking_order' => 's',
     'ranking_visible' => 's',
@@ -70,7 +70,7 @@ $config_keys = array(
     'ranking_new_visible' => 's',
     'ranking_days' => 'i',
     'ranking_days_enabled' => 's',
-);
+];
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 
 // functions
@@ -109,13 +109,13 @@ function ranking_create_array($names, $order_conf, $visible_conf)
     $orders = array_map('intval', explode(',', $order_conf));
     $visibles = array_map('intval', explode(',', $visible_conf));
     $cnt = count($names);
-    $ranking = array();
+    $ranking = [];
     for ($i = 0; $i < $cnt; ++$i) {
-        $ranking[$orders[$i]] = array(
+        $ranking[$orders[$i]] = [
             'id' => $i,
             'name' => $names[$i], 'order' => $orders[$i], 'checked' => (1 == $visibles[$i]) ? 'checked="checked"' : '',
             'up' => _AM_XOONIPS_LABEL_UP, 'down' => _AM_XOONIPS_LABEL_DOWN,
-        );
+        ];
     }
     ksort($ranking);
     $evenodd = 'odd';
@@ -136,22 +136,22 @@ if (false === $xoonips_mid) {
 
 // >> general ranking block
 $general_ranking_title = _AM_XOONIPS_POLICY_RANKING_BLOCK_TITLE.'&nbsp;:&nbsp;'.get_block_title($xoonips_mid, 'xoonips_blocks.php', 'b_xoonips_ranking_show');
-$general_ranking_names = array(
+$general_ranking_names = [
     _MB_XOONIPS_RANKING_VIEWED_ITEM,
     _MB_XOONIPS_RANKING_DOWNLOADED_ITEM,
     _MB_XOONIPS_RANKING_CONTRIBUTING_USER,
     _MB_XOONIPS_RANKING_SEARCHED_KEYWORD,
     _MB_XOONIPS_RANKING_CONTRIBUTED_GROUP,
-);
+];
 $general_ranking = ranking_create_array($general_ranking_names, $config_values['ranking_order'], $config_values['ranking_visible']);
 $general_ranking_numrows = $config_values['ranking_num_rows'];
 
 // >> recent ranking block
 $recent_ranking_title = _AM_XOONIPS_POLICY_RANKING_BLOCK_TITLE.'&nbsp;&nbsp;:&nbsp;&nbsp;'.get_block_title($xoonips_mid, 'xoonips_blocks.php', 'b_xoonips_ranking_new_show');
-$recent_ranking_names = array(
+$recent_ranking_names = [
     _MB_XOONIPS_RANKING_NEW_ITEM,
     _MB_XOONIPS_RANKING_NEW_GROUP,
-);
+];
 $recent_ranking = ranking_create_array($recent_ranking_names, $config_values['ranking_new_order'], $config_values['ranking_new_visible']);
 $recent_ranking_numrows = $config_values['ranking_new_num_rows'];
 

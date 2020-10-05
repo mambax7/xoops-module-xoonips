@@ -79,7 +79,7 @@ class XooNIpsActionTransfer extends XooNIpsAction
         $xgroup_handler = &xoonips_gethandler('xoonips', 'group');
         $gids = $xgroup_handler->getGroupIds($uid);
         // return array_diff( $item_group_ids, $gids );
-        $result = array();
+        $result = [];
         foreach ($item_group_ids as $gid) {
             if (!in_array($gid, $gids)) {
                 $result[] = $gid;
@@ -109,16 +109,16 @@ class XooNIpsActionTransfer extends XooNIpsAction
      */
     public function getMapOfUidTOItemId($item_ids)
     {
-        $result = array();
+        $result = [];
         $handler = &xoonips_getormhandler('xoonips', 'item_basic');
 
         if (!is_array($item_ids) || count($item_ids) == 0) {
-            return array();
+            return [];
         }
 
         foreach ($handler->getObjects(new Criteria('item_id', '('.implode(', ', $item_ids).')', 'IN')) as $row) {
             if (!array_key_exists($row->get('uid'), $result)) {
-                $result[$row->get('uid')] = array();
+                $result[$row->get('uid')] = [];
             }
             $result[$row->get('uid')][] = $row->get('item_id');
         }
@@ -136,7 +136,7 @@ class XooNIpsActionTransfer extends XooNIpsAction
     public function sort_item_ids_by_title($item_ids)
     {
         if (empty($item_ids)) {
-            return array();
+            return [];
         }
         $title_handler = &xoonips_getormhandler('xoonips', 'title');
         $criteria = new CriteriaCompo();
@@ -146,7 +146,7 @@ class XooNIpsActionTransfer extends XooNIpsAction
         $criteria->setSort('title');
         $titles = &$title_handler->getObjects($criteria);
 
-        $result = array();
+        $result = [];
         foreach ($titles as $title) {
             $result[] = $title->get('item_id');
         }
@@ -169,13 +169,13 @@ class XooNIpsActionTransfer extends XooNIpsAction
      */
     public function get_untransferrable_reasons_and_items($from_uid, $item_ids)
     {
-        $result = array();
-        $result['request_certify'] = array();
-        $result['request_transfer'] = array();
-        $result['have_another_parent'] = array();
-        $result['child_request_certify'] = array();
-        $result['child_request_transfer'] = array();
-        $result['child_have_another_parent'] = array();
+        $result = [];
+        $result['request_certify'] = [];
+        $result['request_transfer'] = [];
+        $result['have_another_parent'] = [];
+        $result['child_request_certify'] = [];
+        $result['child_request_transfer'] = [];
+        $result['child_have_another_parent'] = [];
 
         foreach (xoonips_transfer_get_transferrable_item_information($from_uid, $item_ids) as $info) {
             if ($info['lock_type'] == XOONIPS_LOCK_TYPE_CERTIFY_REQUEST) {

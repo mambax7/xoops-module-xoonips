@@ -35,8 +35,8 @@ require_once XOOPS_ROOT_PATH.'/modules/xoonips/include/functions.php';
  */
 function xoonips_insert_default_configs($ver)
 {
-    $configs = array(
-        330 => array(
+    $configs = [
+        330 => [
             // --------------------------------------------
             // System Configurations
             // --------------------------------------------
@@ -106,12 +106,12 @@ function xoonips_insert_default_configs($ver)
             'ranking_last_update' => '0',
             'ranking_sum_start' => '0',
             'ranking_sum_last_update' => '0',
-        ),
-        340 => array(
+        ],
+        340 => [
             'item_comment_dirname' => '',
             'item_comment_forum_id' => '0',
-        ),
-    );
+        ],
+    ];
     if (!isset($configs[$ver])) {
         return;
     }
@@ -135,14 +135,14 @@ function xoonips_insert_default_configs($ver)
  */
 function xoonips_delete_obsolete_configs($ver)
 {
-    $configs = array(
-        330 => array(
+    $configs = [
+        330 => [
             'amazon_associates_id',
-        ),
-        340 => array(
+        ],
+        340 => [
             'rss_file_path',
-        ),
-    );
+        ],
+    ];
     if (!isset($configs[$ver])) {
         return;
     }
@@ -162,7 +162,7 @@ function xoonips_remove_zombie_related_to_ids()
     $criteria = new Criteria('ISNULL(`ib`.`item_id`)', 1);
     $join = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'LEFT', 'ib');
     $res = &$rto_handler->open($criteria, 'related_to_id', false, $join);
-    $rto_ids = array();
+    $rto_ids = [];
     while ($obj = &$rto_handler->getNext($res)) {
         $rto_ids[] = $obj->get('related_to_id');
     }
@@ -183,7 +183,7 @@ function xoonips_remove_duplicated_private_item_ids()
     $criteria->add(new Criteria('open_level', OL_PRIVATE, '=', 'idx'));
     $criteria->add(new Criteria('ib.uid', '(idx.uid)', 'NOT IN'));
     $ixil_objs = &$ixil_handler->getObjects($criteria, false, '', false, $join);
-    $ixil_ids = array();
+    $ixil_ids = [];
     foreach ($ixil_objs as $ixil_obj) {
         $ixil_ids[] = $ixil_obj->get('index_item_link_id');
     }
@@ -561,26 +561,26 @@ SQL;
     $admin_xoops_handler = &xoonips_gethandler('xoonips', 'admin_xoops');
     $member_handler      = xoops_getHandler('member');
     $uids                = array_keys($member_handler->getUsers(null, true));
-    $notifications = array(
-        'administrator' => array(
-            'subscribe' => array(
+    $notifications = [
+        'administrator' => [
+            'subscribe' => [
                 'item_transfer', 'account_certify', 'item_certify',
                 'group_item_certify_request',
-            ),
-            'unsubscribe' => array(
+            ],
+            'unsubscribe' => [
                 'binder_content_empty', 'item_certify_request',
-            ),
-        ),
-        'user' => array(
-            'subscribe' => array(
+            ],
+        ],
+        'user' => [
+            'subscribe' => [
                 'item_transfer', 'item_updated', 'item_certified', 'item_rejected',
                 'file_downloaded', 'group_item_certified', 'group_item_rejected',
-            ),
-            'unsubscribe' => array(
+            ],
+            'unsubscribe' => [
                 'index_renamed', 'index_moved', 'index_deleted',
-            ),
-        ),
-    );
+            ],
+        ],
+    ];
     foreach ($notifications as $category => $events) {
         // enable module event
         foreach ($events['subscribe'] as $event) {
@@ -617,11 +617,11 @@ function xoonips_sql_queries($sqls)
 {
     global $xoopsDB;
     $textutil = &xoonips_getutility('text');
-    $pieces = array();
+    $pieces = [];
     SqlUtility::splitMySqlFile($pieces, $sqls);
-    $created_tables = array();
-    $errs = array();
-    $msgs = array();
+    $created_tables = [];
+    $errs = [];
+    $msgs = [];
     $error = false;
     $ret = '';
     foreach ($pieces as $piece) {

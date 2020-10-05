@@ -61,21 +61,23 @@ class XooNIpsViewTransferUserRequestedItemDetail extends XooNIpsViewTransfer
     {
         $xoops_user = &$this->_params['user']->getVar('xoops_user');
 
-        return array('uname' => $xoops_user->get('uname'),
-                      'name' => $xoops_user->get('name'), );
+        return [
+            'uname' => $xoops_user->get('uname'),
+            'name'  => $xoops_user->get('name'),
+        ];
     }
 
     public function get_xoonips_item_type_template_vars()
     {
-        return array('display_name' => $this->_params['item_type']->getVar('display_name', 's'));
+        return ['display_name' => $this->_params['item_type']->getVar('display_name', 's')];
     }
 
     public function get_xoonips_item_template_vars()
     {
         $basic = &$this->_params['item']->getVar('basic');
 
-        $result = array(
-            'basic' => array(
+        $result = [
+            'basic' => [
             'item_id' => $basic->get('item_id'),
             'description' => $basic->getVar('description', 's'),
             'doi' => $basic->get('doi'),
@@ -84,29 +86,32 @@ class XooNIpsViewTransferUserRequestedItemDetail extends XooNIpsViewTransfer
             'publication_year' => $basic->get('publication_year'),
             'publication_month' => $basic->get('publication_month'),
             'publication_mday' => $basic->get('publication_mday'),
-            'lang' => $this->get_lang_label(), ),
-            'title' => array(),
-            'keyword' => array(),
-            'changelog' => array(),
-            'index_item_link' => array(),
-            'related_tos' => array(), );
+            'lang' => $this->get_lang_label(),
+            ],
+            'title' => [],
+            'keyword' => [],
+            'changelog' => [],
+            'index_item_link' => [],
+            'related_tos' => [],
+        ];
 
         foreach ($this->_params['item']->getVar('titles') as $title) {
-            $result['title'][] = array('title' => $title->getVar('title', 's'));
+            $result['title'][] = ['title' => $title->getVar('title', 's')];
         }
 
         foreach ($this->_params['item']->getVar('keywords') as $keyword) {
-            $result['keyword'][] = array('keyword' => $keyword->getVar('keyword', 's'));
+            $result['keyword'][] = ['keyword' => $keyword->getVar('keyword', 's')];
         }
 
         foreach ($this->_params['item']->getVar('changelogs') as $changelog) {
-            $result['changelog'][] = array(
+            $result['changelog'][] = [
                 'log_date' => $changelog->get('log_date'),
-                'log' => $changelog->getVar('log', 's'), );
+                'log' => $changelog->getVar('log', 's'),
+            ];
         }
 
         foreach ($this->_params['item']->getVar('indexes') as $link) {
-            $result['index_item_link'][] = array('path' => $this->get_index_path_by_index_id($link->get('index_id')), 's');
+            $result['index_item_link'][] = ['path' => $this->get_index_path_by_index_id($link->get('index_id')), 's'];
         }
 
         $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
@@ -115,10 +120,10 @@ class XooNIpsViewTransferUserRequestedItemDetail extends XooNIpsViewTransfer
             $related_basic = &$basic_handler->get($related_to->get('item_id'));
             $related_item_type = &$item_type_handler->get($related_basic->get('item_type_id'));
             $item_compo_handler = &xoonips_getormcompohandler($related_item_type->get('name'), 'item');
-            $result['related_tos'][] = array(
+            $result['related_tos'][] = [
                 'filename' => 'db:'.$item_compo_handler->getTemplateFileName(XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST),
                 'var' => $item_compo_handler->getTemplateVar(XOONIPS_TEMPLATE_TYPE_TRANSFER_ITEM_LIST, $related_basic->get('item_id')),
-            );
+            ];
         }
 
         return $result;
@@ -134,7 +139,7 @@ class XooNIpsViewTransferUserRequestedItemDetail extends XooNIpsViewTransfer
 
     public function array_combine($keys, $values)
     {
-        $result = array();
+        $result = [];
         reset($keys);
         reset($values);
         while (current($keys) && current($values)) {

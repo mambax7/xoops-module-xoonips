@@ -39,8 +39,8 @@ $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
 $itemtypes = &$item_type_handler->getObjectsSortByWeight();
 
 // making block, search_var
-$search_blocks = array();
-$search_var = array();
+$search_blocks = [];
+$search_var = [];
 foreach ($itemtypes as $itemtype) {
     $modname = $itemtype->get('name');
     require_once XOOPS_ROOT_PATH.'/modules/'.$itemtype->get('viewphp');
@@ -61,7 +61,7 @@ $textutil = &xoonips_getutility('text');
 
 $xoopsTpl->assign('itemselect_url', $textutil->html_special_chars($itemselect_url));
 $xoopsTpl->assign('pankuzu', $pankuzu);
-$escaped_search_var = array();
+$escaped_search_var = [];
 foreach ($search_var as $val) {
     $escaped_search_var[] = $textutil->html_special_chars($val);
 }

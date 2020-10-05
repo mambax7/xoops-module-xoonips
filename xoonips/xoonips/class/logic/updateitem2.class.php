@@ -94,7 +94,7 @@ class XooNIpsLogicUpdateItem2 extends XooNIpsLogic
             $add_files = $vars[2];
             $delete_file_ids = $vars[3];
         }
-        list($result, $uid, $session) = $this->restoreSession($sessionid);
+        [$result, $uid, $session] = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);
@@ -494,11 +494,11 @@ class XooNIpsLogicUpdateItem2 extends XooNIpsLogic
             }
         }
         $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
-        $new_index_ids = array();
+        $new_index_ids = [];
         foreach ($new_item->getVar('indexes') as $link) {
             $new_index_ids[] = $link->get('index_id');
         }
-        $old_index_ids = array();
+        $old_index_ids = [];
         foreach ($old_item->getVar('indexes') as $link) {
             $old_index_ids[] = $link->get('index_id');
         }
@@ -530,7 +530,7 @@ class XooNIpsLogicUpdateItem2 extends XooNIpsLogic
      */
     public function extractFileIdToTypesFromItem($item_type, $item_compo)
     {
-        $file_id_to_filetypes = array();
+        $file_id_to_filetypes = [];
         foreach ($item_type->getFileTypeNames() as $file_type_name) {
             $files = $item_compo->getVar($file_type_name);
             if (is_array($files)) {
@@ -560,7 +560,7 @@ class XooNIpsLogicUpdateItem2 extends XooNIpsLogic
     {
         $file_type_handler = &xoonips_getormhandler('xoonips', 'file_type');
         $file_handler = &xoonips_getormhandler('xoonips', 'file');
-        $add_file_id_to_types = array();
+        $add_file_id_to_types = [];
         foreach ($add_files as $file) {
             $file_type = $file_type_handler->get($file->get('file_type_id'));
             $add_file_id_to_types[intval($file->get('file_id'))] = $file_type->get('name');

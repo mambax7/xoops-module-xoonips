@@ -53,7 +53,7 @@ class XooNIpsOrmRankingNewItemHandler extends XooNIpsOrmAbstractRankingHandler
     {
         parent::__construct($db);
         $this->__initHandler('XooNIpsOrmRankingNewItem', 'xoonips_ranking_new_item', 'item_id', false);
-        $this->_set_columns(array('item_id', 'timestamp'));
+        $this->_set_columns(['item_id', 'timestamp']);
     }
 
     /**

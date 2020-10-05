@@ -94,7 +94,7 @@ if ('certify' == $op || 'uncertify' == $op) {
     if (!$xoopsGTicket->check(true, 'xoonips_certify_item')) {
         exit();
     }
-    $succeeded_index_ids = array();
+    $succeeded_index_ids = [];
     if (1 == $bulk) {
         $item_ids = $formdata->getValueArray('post', 'item_ids', 'i', false);
         $xil_objs = getIndexItemLinks($is_moderator, $admin_gids, $menu_id, $item_ids);
@@ -139,9 +139,9 @@ if ('certify' == $op || 'uncertify' == $op) {
     }
 }
 
-$xil_objs = getIndexItemLinks($is_moderator, $admin_gids, $menu_id, array());
-$items = array();
-$indexes = array();
+$xil_objs = getIndexItemLinks($is_moderator, $admin_gids, $menu_id, []);
+$items = [];
+$indexes = [];
 require XOOPS_ROOT_PATH.'/header.php';
 foreach ($xil_objs as $xil_obj) {
     $iid = $xil_obj->get('item_id');
@@ -152,17 +152,17 @@ foreach ($xil_objs as $xil_obj) {
         if (!is_object($itemlib_obj)) {
             continue;
         }
-        $items[$iid] = array(
-          'item_id' => $iid,
-          'indexes' => array(),
-          'item_body' => $itemlib_obj->getItemListBlock(),
-        );
+        $items[$iid] = [
+            'item_id' => $iid,
+            'indexes' => [],
+            'item_body' => $itemlib_obj->getItemListBlock(),
+        ];
     }
     if (!isset($indexes[$xid])) {
-        $indexes[$xid] = array(
+        $indexes[$xid] = [
           'id' => $xid,
           'path' => xnpGetIndexPathString($xnpsid, $xid),
-       );
+        ];
     }
     $items[$iid]['indexes'][] = $indexes[$xid];
 }
@@ -187,7 +187,7 @@ $xoopsTpl->assign('token_ticket', $token_ticket);
 
 require XOOPS_ROOT_PATH.'/footer.php';
 
-function getIndexItemLinks($is_moderator, $admin_gids, $menu_id, $item_ids = array())
+function getIndexItemLinks($is_moderator, $admin_gids, $menu_id, $item_ids = [])
 {
     $xil_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
     $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'x');

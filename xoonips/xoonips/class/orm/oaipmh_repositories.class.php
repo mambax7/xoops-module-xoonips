@@ -73,14 +73,14 @@ class XooNIpsOrmOaipmhRepositoriesHandler extends XooNIpsTableObjectHandler
         $criteria = new Criteria('deleted', '1', '!=');
         $criteria->setSort('sort');
         $objs = &$this->getObjects($criteria, true, 'repository_id,URL,enabled');
-        $urls = array();
+        $urls = [];
         foreach ($objs as $id => $obj) {
             $url = $obj->getVar('URL', $fmt);
             $enabled = $obj->getVar('enabled', $fmt);
-            $urls[$id] = array(
+            $urls[$id] = [
             'URL' => $url,
             'enabled' => $enabled,
-            );
+            ];
         }
 
         return $urls;
@@ -89,9 +89,9 @@ class XooNIpsOrmOaipmhRepositoriesHandler extends XooNIpsTableObjectHandler
     public function setRepositories(&$repositories)
     {
         // parse new repositories
-        $new_repos_url = array();
-        $new_repos_enabled = array();
-        $new_repos_exist = array();
+        $new_repos_url = [];
+        $new_repos_enabled = [];
+        $new_repos_exist = [];
         foreach ($repositories as $repo) {
             $url = trim($repo);
             // remove empty line
@@ -167,16 +167,16 @@ class XooNIpsOrmOaipmhRepositoriesHandler extends XooNIpsTableObjectHandler
         $criteria->add(new Criteria('enabled', '1'));
         $criteria->add(new Criteria('last_access_date', 'NULL', '!='));
         $criteria->setSort('sort');
-        $fields = array(
+        $fields = [
         'repository_id',
         'URL',
         'last_access_date',
         'last_access_result',
-        );
+        ];
         $objs = &$this->getObjects($criteria, true, implode(',', $fields));
-        $logs = array();
+        $logs = [];
         foreach ($objs as $id => $obj) {
-            $log = array();
+            $log = [];
             foreach ($fields as $field) {
                 $log[$field] = $obj->getVar($field, $fmt);
             }

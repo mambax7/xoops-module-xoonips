@@ -40,7 +40,7 @@ class XooNIpsXmlRpcRequest
     /**
      * @protected
      */
-    public $params = array();
+    public $params = [];
 
     /**
      * @param[in] string $request logic name

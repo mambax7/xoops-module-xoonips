@@ -66,7 +66,7 @@ function b_xoonips_group_show()
     $ci_count = $xil_handler->getCount($criteria, $join);
 
     // assign block template variables
-    $block = array();
+    $block = [];
     $block['lang_edit_group'] = _MB_XOONIPS_GROUP_EDIT_GROUP_MEMBERS;
     $block['lang_certify_group_items'] = _MB_XOONIPS_GROUP_CERTIFY_GROUP_ITEMS;
     $block['lang_certify_group_items_count'] = $ci_count;

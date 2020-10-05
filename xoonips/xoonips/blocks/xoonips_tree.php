@@ -99,7 +99,7 @@ function b_xoonips_tree_show()
     $public_item_target_user = $xconfig_handler->getValue('public_item_target_user');
 
     // set query for tree.php of inline frame
-    $query = array();
+    $query = [];
     if (!empty($xoonipsTreeCheckBox)) {
         $query[] = 'checkbox=1';
     }
@@ -142,7 +142,7 @@ function b_xoonips_tree_show()
     $is_moderator = $xmember_handler->isModerator($uid);
 
     // get indexes
-    $xids = array();
+    $xids = [];
     if ($uid == UID_GUEST) {
         if ($public_item_target_user == 'all') {
             // guest user can view public index
@@ -172,7 +172,7 @@ function b_xoonips_tree_show()
             }
         }
     }
-    $indexes = array();
+    $indexes = [];
     foreach ($xids as $xid) {
         if ($xid == $pxid && $puid == $uid) {
             $title = XNP_PRIVATE_INDEX_TITLE;
@@ -182,14 +182,14 @@ function b_xoonips_tree_show()
             $title_objs = &$title_handler->getObjects($criteria);
             $title = $textutil->html_special_chars($title_objs[0]->get('title'));
         }
-        $indexes[] = array(
+        $indexes[] = [
             'item_id' => $xid,
             'title' => $title,
-        );
+        ];
     }
 
     // assign block template variables
-    $block = array();
+    $block = [];
     $block['tree_frame_width'] = $tree_frame_width;
     $block['tree_frame_height'] = $tree_frame_height;
     $block['query'] = implode('&amp;', $query);

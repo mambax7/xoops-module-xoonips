@@ -52,5 +52,5 @@ exit(0);
 
 function is_valid_action($action)
 {
-    return in_array($action, array('accept', 'detail_item', 'list_item', 'reject', 'request', 'request_check', 'request_initialize', 'request_select_item', 'request_unselect_item'));
+    return in_array($action, ['accept', 'detail_item', 'list_item', 'reject', 'request', 'request_check', 'request_initialize', 'request_select_item', 'request_unselect_item']);
 }

@@ -35,7 +35,7 @@ if (is_null($op)) {
     header('Location: '.XOOPS_URL.'/modules/xoonips/oaipmh_search.php?action=default');
 }
 
-xoonips_validate_request(in_array($op, array('default', 'detail', 'search', 'metadata_detail')));
+xoonips_validate_request(in_array($op, ['default', 'detail', 'search', 'metadata_detail']));
 
 $factory = &XooNIpsActionFactory::getInstance();
 if ($op == 'metadata_detail') {

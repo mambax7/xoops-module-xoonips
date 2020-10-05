@@ -91,6 +91,6 @@ class XooNIpsActionTransferUserRequestUnselectItem extends XooNIpsActionTransfer
             return $item_ids;
         }
 
-        return array_diff($item_ids, array($item_id));
+        return array_diff($item_ids, [$item_id]);
     }
 }

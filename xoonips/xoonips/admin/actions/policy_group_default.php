@@ -31,23 +31,23 @@ $title = _AM_XOONIPS_POLICY_GROUP_TITLE;
 $description = _AM_XOONIPS_POLICY_GROUP_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';
@@ -55,33 +55,33 @@ $ticket_area = 'xoonips_admin_policy_group';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys = array();
-$initvals_config_keys = array(
-    'group_item_number_limit' => array(
+$config_keys = [];
+$initvals_config_keys = [
+    'group_item_number_limit' => [
         'title' => _AM_XOONIPS_LABEL_ITEM_NUMBER_LIMIT,
         'desc' => _AM_XOONIPS_POLICY_GROUP_INITIAL_MAX_ITEM_DESC,
         'type' => 'i',
-    ),
-    'group_index_number_limit' => array(
+    ],
+    'group_index_number_limit' => [
         'title' => _AM_XOONIPS_LABEL_INDEX_NUMBER_LIMIT,
         'desc' => _AM_XOONIPS_POLICY_GROUP_INITIAL_MAX_INDEX_DESC,
         'type' => 'i',
-    ),
-    'group_item_storage_limit' => array(
+    ],
+    'group_item_storage_limit' => [
         'title' => _AM_XOONIPS_LABEL_ITEM_STORAGE_LIMIT,
         'desc' => _AM_XOONIPS_POLICY_GROUP_INITIAL_MAX_DISK_DESC,
         'type' => 'f',
-    ),
-);
+    ],
+];
 foreach ($initvals_config_keys as $key => $value) {
     $config_keys[$key] = $value['type'];
 }
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 
 // initial values
-$initil_values = array();
+$initil_values = [];
 foreach ($initvals_config_keys as $name => $value) {
-    $iv = array();
+    $iv = [];
     $iv['title'] = $value['title'];
     $iv['desc'] = $value['desc'];
     $iv['name'] = $name;

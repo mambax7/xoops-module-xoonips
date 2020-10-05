@@ -104,7 +104,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
     public function isFilledRequired($in_array, &$missing)
     {
         if (!isset($missing) || !is_array($missing)) {
-            $missing = array();
+            $missing = [];
         }
         foreach ($this->iteminfo['io']['xmlrpc']['item'] as $input) {
             if (!isset($input['xmlrpc']['required']) || !$input['xmlrpc']['required']) {
@@ -164,7 +164,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
     public function checkMultipleFields($in_array, &$fields)
     {
         if (!isset($fields) || !is_array($fields)) {
-            $fields = array();
+            $fields = [];
         }
         foreach ($this->iteminfo['io']['xmlrpc']['item'] as $input) {
             $value = null; //target value
@@ -172,13 +172,13 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
             $is_multiple = isset($input['xmlrpc']['multiple']) ? $input['xmlrpc']['multiple'] : false;
             if ($input['xmlrpc']['field'][0] == 'detail_field') { // case of detail_field
                 if ($is_multiple) {
-                    $value = array();
+                    $value = [];
                 }
                 $name = implode('.', $input['xmlrpc']['field']);
                 foreach ($in_array['detail_field'] as $field) {
                     if (trim($field['name']) == $input['xmlrpc']['field'][1]) {
                         if (isset($value) && !is_array($value)) {
-                            $value = array($value);
+                            $value = [$value];
                         }
                         if (is_array($value)) {
                             $value[] = $field['value'];
@@ -232,13 +232,13 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
             $is_multiple = isset($input['xmlrpc']['multiple']) ? $input['xmlrpc']['multiple'] : false;
             if ($input['xmlrpc']['field'][0] == 'detail_field') { // case of detail_field
                 if ($is_multiple) {
-                    $value = array();
+                    $value = [];
                 }
                 $name = implode('.', $input['xmlrpc']['field']);
                 foreach ($in_array['detail_field'] as $field) {
                     if (trim($field['name']) == $input['xmlrpc']['field'][1]) {
                         if (isset($value) && !is_array($value)) {
-                            $value = array($value);
+                            $value = [$value];
                         }
                         if (is_array($value)) {
                             $value[] = $field['value'];
@@ -254,7 +254,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
                 }
             }
 
-            $valid_option_values = array();
+            $valid_option_values = [];
             foreach ($input['xmlrpc']['options'] as $option) {
                 $valid_option_values[] = $option['option'];
             }
@@ -314,8 +314,8 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
         $unicode = &xoonips_getutility('unicode');
         foreach ($this->iteminfo['io']['xmlrpc']['item'] as $input) {
             $in_field = null;
-            $in_var = array();
-            $out_var = array();
+            $in_var = [];
+            $out_var = [];
             //
             // get reference of orm's information corresnponds to $input
             $orminfo = null;
@@ -330,12 +330,12 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
             $is_multiple = isset($input['xmlrpc']['multiple']) ? $input['xmlrpc']['multiple'] : false;
             if ($input['xmlrpc']['field'][0] == 'detail_field') {
                 if ($is_multiple) {
-                    $in_field = array();
+                    $in_field = [];
                 }
                 foreach ($in_array['detail_field'] as $field) {
                     if (trim($field['name']) == $input['xmlrpc']['field'][1]) {
                         if (isset($in_field) && !is_array($in_field)) {
-                            $in_field = array($in_field);
+                            $in_field = [$in_field];
                         }
                         if (is_array($in_field)) {
                             $in_field[] = $field['value'];
@@ -351,7 +351,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
                         $in_field = $in_field[$field];
                     } else {
                         // set empty array if $field is not given in $in_array
-                        $in_field = array();
+                        $in_field = [];
                         break;
                     }
                 }
@@ -373,7 +373,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
                 }
 
                 $pos = 0;
-                $array = array();
+                $array = [];
                 foreach ($in_field as $v) {
                     if (isset($array[$pos])) {
                         $var_obj = $array[$pos];
@@ -388,9 +388,9 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
                     }
 
                     // evaluate
-                    $in_var = array($v);
-                    $out_var = array();
-                    $context = array('position' => $pos);
+                    $in_var = [$v];
+                    $out_var = [];
+                    $context = ['position' => $pos];
                     eval(isset($input['eval']['xmlrpc2orm']) ? $input['eval']['xmlrpc2orm'] : '$out_var[0] = $in_var[0];');
 
                     for ($i = 0; $i < count($input['orm']['field']); ++$i) {
@@ -412,8 +412,8 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
 
                 //
                 // evaluate
-                $in_var = array($in_field);
-                $out_var = array();
+                $in_var = [$in_field];
+                $out_var = [];
                 eval(isset($input['eval']['xmlrpc2orm']) ? $input['eval']['xmlrpc2orm'] : '$out_var[0] = $in_var[0];');
                 $i = 0;
                 foreach ($input['orm']['field'] as $field) {

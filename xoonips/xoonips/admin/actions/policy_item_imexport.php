@@ -31,28 +31,28 @@ $title = _AM_XOONIPS_POLICY_ITEM_IMEXPORT_TITLE;
 $description = _AM_XOONIPS_POLICY_ITEM_IMEXPORT_DESC;
 
 // breadcrumbs
-$breadcrumbs = array(
-    array(
+$breadcrumbs = [
+    [
         'type' => 'top',
         'label' => _AM_XOONIPS_TITLE,
         'url' => $xoonips_admin['admin_url'].'/',
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_TITLE,
         'url' => $xoonips_admin['myfile_url'],
-    ),
-    array(
+    ],
+    [
         'type' => 'link',
         'label' => _AM_XOONIPS_POLICY_ITEM_TITLE,
         'url' => $xoonips_admin['myfile_url'].'?page=item',
-    ),
-    array(
+    ],
+    [
         'type' => 'label',
         'label' => $title,
         'url' => '',
-    ),
-);
+    ],
+];
 
 // token ticket
 require_once '../class/base/gtickets.php';
@@ -60,27 +60,27 @@ $ticket_area = 'xoonips_admin_policy_item_imexport';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // get configs
-$config_keys = array(
+$config_keys = [
     'export_enabled' => 's',
     'export_attachment' => 's',
     'private_import_enabled' => 's',
-);
+];
 $config_values = xoonips_admin_get_configs($config_keys, 'e');
 
 // >> export enabled
-$export_enabled = array();
+$export_enabled = [];
 $ee['yes'] = _AM_XOONIPS_LABEL_YES;
 $ee['no'] = _AM_XOONIPS_LABEL_NO;
 $ee['checked'] = $config_values['export_enabled'];
 $export_enabled[] = $ee;
 // >> export attachment
-$export_attachment = array();
+$export_attachment = [];
 $ea['yes'] = _AM_XOONIPS_LABEL_YES;
 $ea['no'] = _AM_XOONIPS_LABEL_NO;
 $ea['checked'] = $config_values['export_attachment'];
 $export_attachment[] = $ea;
 // >> private import enabled
-$import_enabled = array();
+$import_enabled = [];
 $ie['yes'] = _AM_XOONIPS_LABEL_YES;
 $ie['no'] = _AM_XOONIPS_LABEL_NO;
 $ie['checked'] = $config_values['private_import_enabled'];

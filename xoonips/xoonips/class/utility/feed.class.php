@@ -107,7 +107,7 @@ class XooNIpsUtilityFeed extends XooNIpsUtility
         $this->site_author = $this->textutil->xml_special_chars($myxoopsConfigMetaFooter['meta_author']);
         $this->site_description = $this->textutil->xml_special_chars($myxoopsConfigMetaFooter['meta_description']);
         $this->site_copyright = $this->textutil->xml_special_chars($myxoopsConfigMetaFooter['meta_copyright']);
-        $this->items = array();
+        $this->items = [];
     }
 
     /**
@@ -121,13 +121,13 @@ class XooNIpsUtilityFeed extends XooNIpsUtility
      */
     public function addItem($category, $title, $description, $link, $timestamp)
     {
-        $this->items[] = array(
+        $this->items[] = [
         'category' => $this->textutil->xml_special_chars($category),
         'title' => $this->textutil->xml_special_chars($title),
         'description' => $this->textutil->xml_special_chars($description),
         'link' => $link,
         'timestamp' => $timestamp,
-        );
+        ];
     }
 
     /**
@@ -143,7 +143,7 @@ class XooNIpsUtilityFeed extends XooNIpsUtility
     {
         // sort by timestamp
         if (count($this->items) > 1) {
-            usort($this->items, array('XooNIpsUtilityFeed', '_compare_items'));
+            usort($this->items, ['XooNIpsUtilityFeed', '_compare_items']);
         }
         switch ($type) {
         case 'rdf':
@@ -288,7 +288,7 @@ class XooNIpsUtilityFeed extends XooNIpsUtility
             $domain = $matches[2];
             $subdir = $matches[3];
         }
-        $date_count = array();
+        $date_count = [];
         foreach ($this->items as $item) {
             $date = gmdate(XOONIPS_FEED_DATE_ATOM, $item['timestamp']);
             // generate uniq id

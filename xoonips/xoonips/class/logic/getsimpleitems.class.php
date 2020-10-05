@@ -75,7 +75,7 @@ class XooNIpsLogicGetSimpleItems extends XooNIpsLogic
         }
         //
         // validate session
-        list($result, $uid, $session) = $this->restoreSession($sessionid);
+        [$result, $uid, $session] = $this->restoreSession($sessionid);
         if (!$result) {
             $error->add(XNPERR_INVALID_SESSION);
         }
@@ -93,7 +93,7 @@ class XooNIpsLogicGetSimpleItems extends XooNIpsLogic
         }
         //
         // escape each id
-        $esc_ids = array();
+        $esc_ids = [];
         foreach ($ids as $id) {
             if ($id_type == 'item_id') {
                 $esc_ids[] = intval($id);
@@ -112,11 +112,11 @@ class XooNIpsLogicGetSimpleItems extends XooNIpsLogic
         $xoonipsitem_handler = &xoonips_getormcompohandler('xoonips', 'item');
         $items = &$xoonipsitem_handler->getObjects($criteria);
 
-        $ret = array(); // return array of items
+        $ret = []; // return array of items
         if ($items) {
             //
             // creat mapping of ext_id or item_id => item object
-            $map = array();
+            $map = [];
             for ($i = 0; $i < count($items); ++$i) {
                 $basic = $items[$i]->getVar('basic');
                 if ($id_type == 'item_id') {

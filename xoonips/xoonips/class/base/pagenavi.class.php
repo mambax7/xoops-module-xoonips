@@ -130,7 +130,7 @@ class XooNIpsPageNavi
 
     public function &getTemplateVars($show_cols)
     {
-        $vars = array();
+        $vars = [];
         $vars['sort'] = $this->_sort;
         $vars['order'] = $this->_order;
         $vars['limit'] = $this->_limit;
@@ -163,7 +163,7 @@ class XooNIpsPageNavi
             }
             $show_minpage = 1;
         }
-        $navi = array();
+        $navi = [];
         for ($ii = $show_minpage; $ii <= $show_maxpage; ++$ii) {
             $navi[] = $ii;
         }

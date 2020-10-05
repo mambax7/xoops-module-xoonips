@@ -125,7 +125,7 @@ class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
      */
     public function read_pagetype($pagetype, $read_once = true)
     {
-        $accept_pagetype = array(
+        $accept_pagetype = [
         // Note: don't load global.php and pmsg.php files manually. these files
         //       are not exists on CUBE 2.1 Legacy
         'admin.php',
@@ -137,7 +137,7 @@ class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
         'search.php',
         'timezone.php',
         'user.php',
-        );
+        ];
         if (!in_array($pagetype, $accept_pagetype)) {
             die('invalid pagetype message catalog');
         }
@@ -204,7 +204,7 @@ class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
         }
         $_basepath = empty($mytrustdirname) ? XOOPS_ROOT_PATH : XOOPS_TRUST_PATH;
         $_dirname = empty($mytrustdirname) ? $mydirname : $mytrustdirname;
-        $langfiles = array();
+        $langfiles = [];
         $langfiles[] = $_basepath.'/modules/'.$_dirname.'/language/'.$this->language.'/'.$resource;
         if (!empty($alternative)) {
             $langfiles[] = $_basepath.'/modules/'.$_dirname.'/language/'.$alternative.'/'.$resource;

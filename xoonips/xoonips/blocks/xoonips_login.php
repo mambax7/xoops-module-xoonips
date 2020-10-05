@@ -43,7 +43,7 @@ function b_xoonips_login_show()
     $sslloginlink = $myxoopsConfig['sslloginlink'];
 
     // set variables
-    $block = array();
+    $block = [];
     $block['lang_username'] = _MB_XOONIPS_LOGIN_USERNAME;
     if ($usercookie != '' && isset($_COOKIE[$usercookie])) {
         $block['unamevalue'] = $_COOKIE[$usercookie];

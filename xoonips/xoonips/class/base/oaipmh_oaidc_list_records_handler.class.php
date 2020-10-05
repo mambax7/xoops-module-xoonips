@@ -44,7 +44,7 @@ class OaidcListRecordsHandler extends ListRecordsHandler
 
     public function endElementHandler($parser, $name)
     {
-        $support_tags = array(
+        $support_tags = [
             'SUBJECT',
             'DESCRIPTION',
             'PUBLISHER',
@@ -58,7 +58,7 @@ class OaidcListRecordsHandler extends ListRecordsHandler
             'RELATION',
             'COVERAGE',
             'RIGHTS',
-        );
+        ];
         if (isset($this->tagstack[3]) && $this->getElementName($this->tagstack[3]) == 'HEADER' || !in_array($this->getElementName(end($this->tagstack)), $support_tags)
         ) {
             parent::endElementHandler($parser, $name);

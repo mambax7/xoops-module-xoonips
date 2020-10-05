@@ -178,7 +178,7 @@ class XooNIpsAdminFileHandler extends XooNIpsFileHandler
             return false;
         }
         // register callback function to remove temporary file
-        register_shutdown_function(array($this, '_unlink_file_onshutdown'), $tmpfile);
+        register_shutdown_function([$this, '_unlink_file_onshutdown'], $tmpfile);
 
         // write first field 'file_id'
         fwrite($fp, $file_id."\t");
@@ -263,17 +263,17 @@ class XooNIpsAdminFileHandler extends XooNIpsFileHandler
      */
     public function _load_file_search_plugins()
     {
-        $this->fsearch_plugins = array();
+        $this->fsearch_plugins = [];
         require_once __DIR__.'/base/filesearchplugin.class.php';
         $fs_path = dirname(__DIR__).'/filesearch';
-        $plugins = array();
+        $plugins = [];
         if ($dir = opendir($fs_path)) {
             while ($file = readdir($dir)) {
                 if (!preg_match('/^def_.+\\.php$/', $file)) {
                     continue;
                 }
                 // load module definition
-                $module = array();
+                $module = [];
                 require $fs_path.'/'.$file;
                 $fs_name = $module['name'];
                 $plugins[$fs_name] = $module;
@@ -282,7 +282,7 @@ class XooNIpsAdminFileHandler extends XooNIpsFileHandler
             }
             closedir($dir);
         }
-        uasort($plugins, array(&$this, '_sort_file_search_plugins'));
+        uasort($plugins, [&$this, '_sort_file_search_plugins']);
         $this->fsearch_plugins = $plugins;
 
         return true;

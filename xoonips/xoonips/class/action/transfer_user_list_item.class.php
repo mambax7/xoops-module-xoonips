@@ -87,10 +87,10 @@ class XooNIpsActionTransferUserListItem extends XooNIpsActionTransfer
 
         $transfers = &$transfer_handler->getObjects(new Criteria('to_uid', $uid));
         if (false === $transfers) {
-            return array();
+            return [];
         }
 
-        $result = array();
+        $result = [];
         foreach ($transfers as $t) {
             $result[] = $t->get('item_id');
         }
@@ -112,7 +112,7 @@ class XooNIpsActionTransferUserListItem extends XooNIpsActionTransfer
 
         $xgroup_handler = &xoonips_gethandler('xoonips', 'group');
         $gids = $xgroup_handler->getGroupIds($uid);
-        $result = array();
+        $result = [];
         foreach ($item_group_ids as $gid) {
             if (!in_array($gid, $gids)) {
                 $xg_obj = &$xgroup_handler->getGroupObject($gid);

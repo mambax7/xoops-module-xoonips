@@ -51,10 +51,10 @@ $xoonipsURL = '';
 
 $formdata = &xoonips_getutility('formdata');
 $op = $formdata->getValue('both', 'op', 's', false, '');
-$onclickidx_ops = array(
+$onclickidx_ops = [
     'select_item_index',
     'select_item_index_pagenavi',
-);
+];
 if (in_array($op, $onclickidx_ops)) {
     $xoonipsTree['onclick_title'] = 'xoonips_itemselect_index';
 }

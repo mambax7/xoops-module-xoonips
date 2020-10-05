@@ -38,7 +38,7 @@ class XooNIpsView
     public $_params = null;
 
     /**
-     * @param $params associative array
+     * @param associative $params array
      */
     public function __construct($params)
     {

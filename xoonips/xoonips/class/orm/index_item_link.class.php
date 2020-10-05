@@ -60,8 +60,8 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
     /**
      * get index_id(s) that the item is registerd(certify state is ignored).
      *
-     * @param $item_id id of item
-     * @param $open_levels array of open levels of index to get
+     * @param id    $item_id     of item
+     * @param array $open_levels of open levels of index to get
      *
      * @return array of index id(s)
      */
@@ -84,8 +84,8 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
     /**
      * get index_item_link object(s) that the item is registerd(certify state is ignored).
      *
-     * @param $item_id id of item
-     * @param $open_levels array of open levels of index to get
+     * @param id    $item_id     of item
+     * @param array $open_levels of open levels of index to get
      *
      * @return array of index_item_link object(s)
      */
@@ -104,7 +104,7 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
      * Get array of item id of private items.
      * Its returns private items except public and group shared items.
      *
-     * @param $uid int user id
+     * @param int $uid user id
      * @param array of integer of item id(s)
      */
     public function getAllPrivateOnlyItemId($uid)

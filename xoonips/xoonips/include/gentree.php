@@ -35,13 +35,13 @@
 /**
  * A child is added recursively. (Caution) not add parentXID.
  *
- * @param int $parentXID parentXID
- * @param $in  XID->index Conversion table
- * @param $childFinder  XID->array(childXID) Conversion table
- * @param $out Output place. Priority is given to the depth when searching.
+ * @param int    $parentXID   parentXID
+ * @param XID    $in          ->index Conversion table
+ * @param XID    $childFinder ->array(childXID) Conversion table
+ * @param Output $out         place. Priority is given to the depth when searching.
  *             Brothers output in result sorted by sort_number.  $out[] = index
  *             ROOT's depth = 0 ($out don't contain ROOT.)
- * @param int $depth
+ * @param int    $depth
  *
  * @return nothing
  */
@@ -122,7 +122,7 @@ function genIndexTree1(&$indexes)
 /**
  * get Index tree.
  *
- * @param $xnpsid XNPSID
+ * @param XNPSID $xnpsid
  *
  * @return tree empty array in error
  */
@@ -136,7 +136,7 @@ function genIndexTree($xnpsid)
 /**
  * get Public index tree.
  *
- * @param $xnpsid XNPSID
+ * @param XNPSID $xnpsid
  *
  * @return tree empty array in error
  */
@@ -165,7 +165,7 @@ function filterPublicIndex(&$indexes)
  * get Index tree for moderator
  *  not contain other's private index, and not contain group-index of group which he does not belong.
  *
- * @param $xnpsid XNPSID
+ * @param XNPSID $xnpsid
  *
  * @return tree empty array in error
  */
@@ -219,7 +219,7 @@ function filterPrivateIndex(&$indexes, $uid)
  * get Index tree.
  *  get same index as $refIndex ($refIndex have same open_level and same owner_gid, and  same owner_uid).
  *
- * @param $xnpsid XNPSID
+ * @param XNPSID $xnpsid
  *
  * @return tree empty array in error
  */
@@ -250,7 +250,7 @@ function filterSameAreaIndex(&$indexes, &$refIndex)
 /**
  * get Index tree contains Public and Private Index.
  *
- * @param $xnpsid XNPSID
+ * @param XNPSID $xnpsid
  *
  * @return tree empty array in error
  */

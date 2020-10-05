@@ -213,7 +213,7 @@ class XooNIpsActionImportUpload extends XooNIpsAction
     /**
      * move uploaded file($src) to temporary file.
      *
-     * @param $src string uploaded file path
+     * @param string $src uploaded file path
      *
      * @return string temporary file path string
      */
@@ -291,7 +291,7 @@ class XooNIpsActionImportUpload extends XooNIpsAction
     }
 
     /**
-     * @param $uploadfile string import file path
+     * @param string $uploadfile import file path
      * @pram $error_check_only string 'on' or else
      */
     public function _read_index_tree($uploadfile, $error_check_only, $import_index_ids = [])
@@ -463,7 +463,7 @@ EOT;
     }
 
     /**
-     * @param $import_items array of XooNIpsImportItem
+     * @param array $import_items of XooNIpsImportItem
      *
      * @return bool true(doi conflict) or false(no doi conflicts)
      */

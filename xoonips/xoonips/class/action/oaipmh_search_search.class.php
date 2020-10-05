@@ -324,7 +324,7 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
     }
 
     /**
-     * @param $page           int current page number
+     * @param int    $page    current page number
      * @param double $maxpage integer max page number
      *
      * @return array of integer page numbers
@@ -357,7 +357,7 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
     }
 
     /**
-     * @param $id repository id
+     * @param repository $id id
      *
      * @return bool true if valid repository id or zero
      */

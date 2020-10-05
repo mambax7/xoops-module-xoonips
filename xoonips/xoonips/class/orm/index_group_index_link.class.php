@@ -114,8 +114,8 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
     /**
      * get index_group_index_link object(s) that the item is registerd(certify state is ignored).
      *
-     * @param $item_id id of item
-     * @param $open_levels array of open levels of index to get (default is OL_PRIVATE, OL_GROUP_ONLY and OL_PUBLIC)
+     * @param id    $item_id     of item
+     * @param array $open_levels of open levels of index to get (default is OL_PRIVATE, OL_GROUP_ONLY and OL_PUBLIC)
      *
      * @return array of index_group_index_link object(s)
      */

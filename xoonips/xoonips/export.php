@@ -504,8 +504,8 @@ function xoonips_create_temporary_dir()
 /**
  * convert file encoding.
  *
- * @param $infile input file path(any encoindg)
- * @param $outfile output file path(UTF-8)
+ * @param input  $infile  file path(any encoindg)
+ * @param output $outfile file path(UTF-8)
  *
  * @return bool true(succeed) or false(failed)
  */
@@ -537,9 +537,9 @@ function xoonips_convert_file_encoding_to_utf8($tmpfile, $filename)
 /**
  * export index tree XML to file.
  *
- * @param $fp file handle
- * @param $index_id int index id to export
- * @param $recursive bool true if recursive export
+ * @param file $fp        handle
+ * @param int  $index_id  index id to export
+ * @param bool $recursive true if recursive export
  */
 function xoonips_export_index_xml($fp, $index_id, $recursive)
 {

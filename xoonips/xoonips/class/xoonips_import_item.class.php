@@ -108,7 +108,7 @@ class XooNIpsImportItemCollection
     /**
      * add import item.
      *
-     * @param $item int pseudo item id of duplicate item to add
+     * @param int $item pseudo item id of duplicate item to add
      */
     public function addItem(&$item)
     {
@@ -118,7 +118,7 @@ class XooNIpsImportItemCollection
     /**
      * remove import item.
      *
-     * @param $item int pseudo item id of duplicate item to remove
+     * @param int $item pseudo item id of duplicate item to remove
      */
     public function removeItem(&$item)
     {
@@ -133,7 +133,7 @@ class XooNIpsImportItemCollection
     /**
      * remove import item by indexed value.
      *
-     * @param $index int that index item to remove
+     * @param int $index that index item to remove
      */
     public function removeItemAt($index)
     {
@@ -292,7 +292,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * add duplicate pseudo id to set.
      *
-     * @param $item_id int pseudo item id of duplicate item to add
+     * @param int $item_id pseudo item id of duplicate item to add
      */
     public function addDuplicatePseudoId($item_id)
     {
@@ -313,7 +313,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * add duplicate updatable item id to set.
      *
-     * @param $item_id int pseudo item id of duplicate item to add
+     * @param int $item_id pseudo item id of duplicate item to add
      */
     public function addDuplicateUpdatableItemId($item_id)
     {
@@ -334,7 +334,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * add duplicate item id to set.
      *
-     * @param $item_id int pseudo item id of duplicate item to add
+     * @param int $item_id pseudo item id of duplicate item to add
      */
     public function addDuplicateUnupdatableItemId($item_id)
     {
@@ -355,7 +355,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * add duplicate item id to set.
      *
-     * @param $item_id int pseudo item id of duplicate item to add
+     * @param int $item_id pseudo item id of duplicate item to add
      */
     public function addDuplicateLockedItemId($item_id)
     {
@@ -376,7 +376,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * add index id item to be imported to.
      *
-     * @param $index_id int
+     * @param int $index_id
      */
     public function addImportIndexId($index_id)
     {
@@ -457,7 +457,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * set item id of update import.
      *
-     * @param $flag int item id to update
+     * @param int $flag item id to update
      */
     public function setUpdateItemId($item_id)
     {
@@ -517,7 +517,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * set XML filename.
      *
-     * @param $filename string
+     * @param string $filename
      */
     public function setFilename($filename)
     {
@@ -677,7 +677,7 @@ class XooNIpsImportItemHandler
     /**
      * create XooNIpsImportItem object from XML.
      *
-     * @param $xml string xml text to parse
+     * @param string $xml xml text to parse
      *
      * @return XooNIpsImportItem
      */
@@ -698,7 +698,7 @@ class XooNIpsImportItemHandler
     /**
      * add index id item to be imported to.
      *
-     * @param $index_id int
+     * @param int $index_id
      */
     public function addImportIndexId($index_id)
     {
@@ -709,7 +709,7 @@ class XooNIpsImportItemHandler
     /**
      * remove index id item to be imported to.
      *
-     * @param $index_id int
+     * @param int $index_id
      */
     public function removeImportIndexId($index_id)
     {
@@ -749,9 +749,9 @@ class XooNIpsImportItemHandler
     /**
      * set certify auto opution to all XooNIpsImportItems.
      *
-     * @param $all_import_items array of reference
+     * @param array $all_import_items of reference
      * of all XooNIpsImportItem objects
-     * @param $option           bool certify auto option
+     * @param bool  $option           certify auto option
      * (true means auto, false means maually)
      */
     public function setCertifyAutoOption(&$all_import_items, $option)
@@ -764,7 +764,7 @@ class XooNIpsImportItemHandler
     /**
      * find all duplicate items.
      *
-     * @param $all_import_items array of reference
+     * @param array $all_import_items of reference
      * of all XooNIpsImportItem objects
      */
     public function findDuplicateItems($all_import_items)
@@ -845,7 +845,7 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     * @param $import_item reference of XooNIpsImportItem object
+     * @param reference $import_item of XooNIpsImportItem object
      *
      * @return bool integer of item ids
      */
@@ -934,7 +934,7 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     * @param $import_item reference of XooNIpsImportItem object
+     * @param reference $import_item of XooNIpsImportItem object
      *
      * @return array integer of item ids
      */
@@ -964,7 +964,7 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     * @param $import_item reference of XooNIpsImportItem object
+     * @param reference $import_item of XooNIpsImportItem object
      *
      * @return array integer of item ids
      */
@@ -1011,7 +1011,7 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     * @param $import_item reference of XooNIpsImportItem object
+     * @param reference $import_item of XooNIpsImportItem object
      *
      * @return array integer of item ids
      */
@@ -1039,7 +1039,7 @@ class XooNIpsImportItemHandler
     /**
      * get item ids of doi conflict with import item and exits item.
      *
-     * @param $import_item import_item to check a doi conflict
+     * @param import_item $import_item to check a doi conflict
      *
      * @return array of integer item id of doi conflict existing item
      */
@@ -1067,7 +1067,7 @@ class XooNIpsImportItemHandler
     }
 
     /**
-     * @param $item reference of XooNIpsImportItem object
+     * @param reference $item of XooNIpsImportItem object
      */
     public function import(&$item)
     {
@@ -1142,7 +1142,7 @@ class XooNIpsImportItemHandler
     /**
      * return import log text of import item.
      *
-     * @param $import_item reference of XooNIpsImportItem object
+     * @param reference $import_item of XooNIpsImportItem object
      *
      * @return string import log text
      */
@@ -1601,7 +1601,7 @@ class XooNIpsImportItemHandler
      * get number of import items that conflict
      *  to import file and already exists items.
      *
-     * @param $ipmort_items array of XooNIpsImportItem
+     * @param array $ipmort_items of XooNIpsImportItem
      *
      * @return int number of import items
      */
@@ -1733,7 +1733,7 @@ class XooNIpsImportItemHandler
      * (ex:/ABC/XYZ/012 -> array( 'ABC', 'XYZ', '012' ) )
      * (ex:/ABC/XYZ/012/ -> array( 'ABC', 'XYZ', '012', '' ) ).
      *
-     * @param $str index path like '/Public/Parent/Child' (must be UTF-8)
+     * @param index $str path like '/Public/Parent/Child' (must be UTF-8)
      *
      * @return string[] of indexes;
      */
@@ -1767,8 +1767,8 @@ class XooNIpsImportItemHandler
      * get index id conrresponds to indexstr
      *  (that is placed relatively from $base_index_id).
      *
-     * @param $base_index_id   int index_id of base index
-     * @param string $indexstr string index path string like 'foo/bar/xxx'
+     * @param int    $base_index_id index_id of base index
+     * @param string $indexstr      string index path string like 'foo/bar/xxx'
      *
      * @return int index id or false
      */
@@ -1812,13 +1812,13 @@ class XooNIpsImportItemHandler
      * if $str is relative path, $base_index_path must be given.
      * regards as private if $open_level is null.
      *
-     * @param string $str index path like
+     * @param string     $str             index path like
      * '/Public/Parent/Child'(absolute)
-     * @param $user XoopsUser of import user(need to convert
+     * @param XoopsUser  $user            of import user(need to convert
      * /Private to user's private index)
-     * @param $base_index_path base index path like
+     * @param base       $base_index_path index path like
      * '/Public/XXX/YYY'(absolute only). default is '/'.
-     * @param $open_level open_level of index of
+     * @param open_level $open_level      of index of
      * base_index_path('private'|'group'|'public'|null). null if not specified.
      *
      * @return index id or false if failed
@@ -1955,7 +1955,7 @@ class XooNIpsImportItemHandler
      * create text search index.
      * update xoonips_search_text.
      *
-     * @param $file XooNIpsFile
+     * @param XooNIpsFile $file
      */
     public function _create_text_search_index($file)
     {
@@ -1967,7 +1967,7 @@ class XooNIpsImportItemHandler
     /**
      * delete all files of specified item.
      *
-     * @param $item reference of XooNIpsImportItem
+     * @param reference $item of XooNIpsImportItem
      */
     public function _set_file_delete_flag(&$item)
     {
@@ -1988,8 +1988,8 @@ class XooNIpsImportItemHandler
      * Update item_id and sess_id of xoonips_file.
      * item_id is given by $item.
      *
-     * @param $item reference of XooNIpsImportItem
-     * @param $file reference of XooNIpsFile
+     * @param reference $item of XooNIpsImportItem
+     * @param reference $file of XooNIpsFile
      */
     public function _fix_item_id_of_file(&$item, &$file)
     {
@@ -2055,8 +2055,8 @@ class XooNIpsImportItemHandler
      * create map(associate array title and XooNIpsImportItem)
      *  from XooNIpsImportItem array.
      *
-     * @param $import_item reference of XooNIpsImportItem object
-     * @param $all_import_items array of reference
+     * @param reference $import_item      of XooNIpsImportItem object
+     * @param array     $all_import_items of reference
      *  of all XooNIpsImportItem objects
      *
      * @return array associate array

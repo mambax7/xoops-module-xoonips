@@ -150,9 +150,9 @@ function xnpExportItem($export_path, $item_id, $attachment = false, $is_absolute
 /**
  * export index.
  *
- * @param $fhdl     file handle that indexes are exported to
- * @param $index_id id of index to display
- * @param $recurse  true:export recursively index that hangs under index_id
+ * @param file $fhdl     handle that indexes are exported to
+ * @param id   $index_id of index to display
+ * @param true $recurse  :export recursively index that hangs under index_id
  *
  * @return true:success, false:failure
  */
@@ -257,8 +257,8 @@ function xnpExportFile($export_path, $fhdl, $item_id)
 /**
  * export Basic information of item.
  *
- * @param $fhdl          file handle that items are exported to
- * @param $item_id       id of the item to change into XML
+ * @param file $fhdl    handle that items are exported to
+ * @param id   $item_id of the item to change into XML
  * @param $is_absolute
  * @param $base_index_id
  *
@@ -285,8 +285,8 @@ function xnpExportBasic($fhdl, $item_id, $is_absolute, $base_index_id = false)
 /**
  * export ChangeLog of item.
  *
- * @param $fhdl    file handle that changelogs are exported to
- * @param $item_id item id of the item to export
+ * @param file $fhdl    handle that changelogs are exported to
+ * @param item $item_id id of the item to export
  *
  * @return true:success, false:failure
  */
@@ -323,7 +323,7 @@ function xnpExportChangeLog($fhdl, $item_id)
 /**
  * export 'Related to' information of an item.
  *
- * @param $parent_id id of the item to export
+ * @param id $parent_id of the item to export
  *
  * @return string|null XML or NULL
  */

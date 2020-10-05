@@ -501,11 +501,11 @@ if (isset($index_id)) {
 //
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /**
- * @param $keyword search keyword
- * @param $search_itemtype 'all'/'basic'/each item type name(ex:xnppaper)
- * @param $search_only_private bool true if search only private items
- * @param $errorMessage reference of string to write errorMessage
- * @param $search_content_type 'item'/'metadata'/'file'
+ * @param search    $keyword             keyword
+ * @param $search_itemtype               'all'/'basic'/each item type name(ex:xnppaper)
+ * @param bool      $search_only_private true if search only private items
+ * @param reference $errorMessage        of string to write errorMessage
+ * @param $search_content_type           'item'/'metadata'/'file'
  *
  * @return array id of content of search result
  */
@@ -628,8 +628,8 @@ function xoonips_itemsubtype_search($keyword, $search_itemtype, $search_only_pri
 /**
  * return array of XooNIpsItemCompo that is registerd to the index.
  *
- * @param $index_id int index id
- * @param $uid int uid (for permission check)
+ * @param int $index_id index id
+ * @param int $uid      uid (for permission check)
  *
  * @return array XooNIpsItemCompo(s)
  */
@@ -657,8 +657,8 @@ function xoonips_get_indexed_items($index_id, $uid)
 /**
  * add item to index, set certify_state and lock item and indexes.
  *
- * @param $index_id int id of index item is registerd to
- * @param $uid int user id of executor
+ * @param int $index_id id of index item is registerd to
+ * @param int $uid      user id of executor
  * @param old_selected_item_ids array id of all of already registerd items to the index( $index_id)
  * @param new_selected_item_ids array id of all of items to be registered to the index(  $index_id)
  */
@@ -798,8 +798,8 @@ function xoonips_get_page_number_label($total, $offset, $limit)
 }
 
 /**
- * @param $page int current page number
- * @param $maxpage int max page number
+ * @param int $page    current page number
+ * @param int $maxpage max page number
  *
  * @return array of integer page numbers
  */
@@ -817,7 +817,7 @@ function xoonips_get_selectable_page_number($page, $maxpage)
 /**
  * return number of items of the file search cache.
  *
- * @param $search_cache_id int cache id
+ * @param int $search_cache_id cache id
  *
  * @return int number of items
  */
@@ -848,7 +848,7 @@ function xoonips_get_file_count_from_search_cache($search_cache_id)
 /**
  * return number of items of the item search cache.
  *
- * @param $search_cache_id int cache id
+ * @param int $search_cache_id cache id
  *
  * @return int number of items
  */
@@ -885,7 +885,7 @@ function xoonips_get_item_count_from_search_cache($search_cache_id)
 /**
  * return number of items of the metadata search cache.
  *
- * @param $search_cache_id int cache id
+ * @param int $search_cache_id cache id
  *
  * @return int number of metadata
  */

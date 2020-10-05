@@ -126,7 +126,7 @@ class XooNIpsActionXoonipsSearchMetadataDetail extends XooNIpsAction
     }
 
     /**
-     * @param $id metadata identifier
+     * @param metadata $id identifier
      *
      * @return bool true if valid metadata identifier
      */

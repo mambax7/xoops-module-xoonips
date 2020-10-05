@@ -449,8 +449,8 @@ function xoonips_get_conversion_map_to_ascii()
 /**
  * deny guest access and redirect.
  *
- * @param $url string redurect URL(default is modules/xoonips/user.php)
- * @param $msg string message of redirect(default is _MD_XOONIPS_ITEM_FORBIDDEN)
+ * @param string $url redurect URL(default is modules/xoonips/user.php)
+ * @param string $msg message of redirect(default is _MD_XOONIPS_ITEM_FORBIDDEN)
  */
 function xoonips_deny_guest_access($url = null, $msg = _MD_XOONIPS_ITEM_FORBIDDEN)
 {

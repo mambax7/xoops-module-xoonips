@@ -80,8 +80,8 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
     /**
      * get field information by name.
      *
-     * @param $ormName field name of orm
-     * @param $fieldName field name
+     * @param field $ormName   name of orm
+     * @param field $fieldName name
      *
      * @return field information if found. false if not found.
      */

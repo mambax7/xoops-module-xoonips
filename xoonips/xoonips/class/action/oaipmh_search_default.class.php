@@ -122,7 +122,7 @@ class XooNIpsActionOaipmhSearchDefault extends XooNIpsAction
     }
 
     /**
-     * @param $id repository id
+     * @param repository $id id
      *
      * @return bool true if valid repository id
      */

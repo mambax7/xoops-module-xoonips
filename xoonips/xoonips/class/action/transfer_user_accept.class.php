@@ -26,9 +26,9 @@
 // ------------------------------------------------------------------------- //
 
 require_once 'transfer.class.php';
-require_once dirname(dirname(__DIR__)).'/include/transfer.inc.php';
+require_once dirname(__DIR__, 2) . '/include/transfer.inc.php';
 require_once dirname(__DIR__).'/base/gtickets.php';
-require_once dirname(dirname(__DIR__)).'/include/notification.inc.php';
+require_once dirname(__DIR__, 2) . '/include/notification.inc.php';
 
 class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
 {

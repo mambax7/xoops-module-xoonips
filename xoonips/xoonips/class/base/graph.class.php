@@ -771,7 +771,7 @@ class XooNIpsGraph
      */
     public function __construct($width, $height)
     {
-        $this->module_path = dirname(dirname(__DIR__));
+        $this->module_path = dirname(__DIR__, 2);
         $this->graph = new XooNIpsGraphLib($width, $height);
         foreach (['bottom', 'left', 'right'] as $ax) {
             $this->axis[$ax] = new XooNIpsGraphAxis();

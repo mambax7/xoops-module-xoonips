@@ -64,7 +64,7 @@ class XooNIpsActionImportUpload extends XooNIpsAction
     {
         global $xoopsUser;
 
-        require_once dirname(dirname(__DIR__)).'/include/imexport.php';
+        require_once dirname(__DIR__, 2) . '/include/imexport.php';
 
         $filetype = $this->_formdata->getValue('post', 'filetype', 's', false);
         $remotefile = $this->_formdata->getValue('post', 'remotefile', 's', false);

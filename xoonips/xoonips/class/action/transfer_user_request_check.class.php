@@ -26,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 
 require_once 'transfer.class.php';
-require_once dirname(dirname(__DIR__)).'/include/transfer.inc.php';
+require_once dirname(__DIR__, 2) . '/include/transfer.inc.php';
 
 class XooNIpsActionTransferUserRequestCheck extends XooNIpsActionTransfer
 {

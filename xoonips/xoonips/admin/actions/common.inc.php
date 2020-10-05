@@ -47,7 +47,7 @@ function xoonips_admin_initialize($myfile, $preference, $pages)
 {
     global $xoonips_admin;
     $xoonips_admin = [];
-    $xoonips_admin['mydirname'] = basename(dirname(dirname($myfile)));
+    $xoonips_admin['mydirname'] = basename(dirname($myfile, 2));
     $xoonips_admin['mod_url'] = XOOPS_URL.'/modules/'.$xoonips_admin['mydirname'];
     $xoonips_admin['mod_path'] = XOOPS_ROOT_PATH.'/modules/'.$xoonips_admin['mydirname'];
     $xoonips_admin['admin_url'] = $xoonips_admin['mod_url'].'/admin';

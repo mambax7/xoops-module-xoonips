@@ -28,7 +28,7 @@
 require_once dirname(__DIR__).'/base/action.class.php';
 require_once dirname(__DIR__).'/base/logicfactory.class.php';
 require_once dirname(__DIR__).'/base/gtickets.php';
-require_once dirname(dirname(__DIR__)).'/include/imexport.php';
+require_once dirname(__DIR__, 2) . '/include/imexport.php';
 
 class XooNIpsActionImportImportIndexTree extends XooNIpsAction
 {
@@ -58,7 +58,7 @@ class XooNIpsActionImportImportIndexTree extends XooNIpsAction
 
     public function doAction()
     {
-        require_once dirname(dirname(__DIR__)).'/include/imexport.php';
+        require_once dirname(__DIR__, 2) . '/include/imexport.php';
         global $xoopsDB, $xoopsConfig, $xoopsUser,$xoopsLogger, $xoopsUserIsAdmin;
 
         if (!isset($_SESSION['xoonips_import_file_path']) || !isset($_SESSION['xoonips_import_index_ids'])) {

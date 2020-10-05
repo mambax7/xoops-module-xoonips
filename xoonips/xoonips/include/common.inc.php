@@ -27,7 +27,7 @@
 $mydirname = basename(dirname(__DIR__));
 
 // load mainfile.php
-require dirname(dirname(dirname(__DIR__))).'/mainfile.php';
+require dirname(__DIR__, 3) . '/mainfile.php';
 
 // set other D3 variables
 $mod_path = XOOPS_ROOT_PATH.'/modules/'.$mydirname;

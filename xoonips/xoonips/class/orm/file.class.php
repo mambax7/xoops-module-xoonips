@@ -27,7 +27,7 @@
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 // for xnpGetFileInfo
-require_once dirname(dirname(__DIR__)).'/include/lib.php';
+require_once dirname(__DIR__, 2) . '/include/lib.php';
 
 /**
  * @brief data object of file

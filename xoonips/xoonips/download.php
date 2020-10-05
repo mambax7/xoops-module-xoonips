@@ -203,7 +203,7 @@ if (function_exists($dllimit_func) && $dllimit_func($item_id)) {
     if ($uid == UID_GUEST) {
         // if user is guest than redirect to login page
         $parsed = parse_url(XOOPS_URL);
-        $xoops_path = isset($parsed['path']) ? $parsed['path'] : '';
+        $xoops_path = $parsed['path'] ?? '';
         $xoops_redirect = str_replace(XOOPS_URL, $xoops_path, $detail_url);
         header('Location:'.XOOPS_URL.'/modules/xoonips/user.php?xoops_redirect='.urlencode($xoops_redirect));
         exit();

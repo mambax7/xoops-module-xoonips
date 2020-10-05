@@ -590,7 +590,7 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
             $startpage_script = $matches[3];
         }
         // get current script name
-        $current_script = (isset($_SERVER['SCRIPT_NAME'])) ? $_SERVER['SCRIPT_NAME'] : '';
+        $current_script = $_SERVER['SCRIPT_NAME'] ?? '';
         // compare start page script name with current script name
         if ($startpage_script != $current_script) {
             // current url is not top page

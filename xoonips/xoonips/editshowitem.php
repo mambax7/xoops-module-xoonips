@@ -129,7 +129,7 @@ foreach ($item_type_ids as $it_id) {
     // - maximum number of items per page
     $item_limit = 20;
     // - current page
-    $item_page = isset($page[$it_id]) ? $page[$it_id] : 1;
+    $item_page = $page[$it_id] ?? 1;
     $navi = new XooNIpsPageNavi($item_count, $item_limit, $item_page);
     // - sort
     $navi->setSort('title');
@@ -353,8 +353,8 @@ function &_xoonips_editshowitem_get_item_objects($item_type_id, $uid, $is_owner_
             'ASC' => 'ASC',
             'DESC' => 'DESC',
         ];
-        $sort = isset($def_sort[$sort]) ? $def_sort[$sort] : 'it.title';
-        $order = isset($def_order[$order]) ? $def_order[$order] : 'ASC';
+        $sort = $def_sort[$sort] ?? 'it.title';
+        $order = $def_order[$order] ?? 'ASC';
         $criteria->setSort($sort);
         $criteria->setOrder($order);
         $criteria->setStart($start);

@@ -54,7 +54,7 @@ function b_xoonips_tree_show()
         if (preg_match('/^(\\S+):\\/\\/([^\\/]+)((\\/[^\\/]+)*\\/)$/', $site_url, $matches)) {
             $site_url_base = $matches[3];
         }
-        $current_script = (isset($_SERVER['SCRIPT_NAME'])) ? $_SERVER['SCRIPT_NAME'] : '';
+        $current_script = $_SERVER['SCRIPT_NAME'] ?? '';
         if ($current_script == $site_url_base.'register.php') {
             header('Location: modules/xoonips/registeruser.php');
             exit();

@@ -246,15 +246,15 @@ function _xnpal_insertItemInternal($sid, $item, &$itemid, $direct)
         .implode(
             ', ',
             [isset($item['item_type_id']) ? (int)$item['item_type_id'] : 0,
-                "'".addslashes(isset($item['description']) ? $item['description'] : '')."'",
-                "'".addslashes(isset($item['doi']) ? $item['doi'] : '')."'",
+                "'".addslashes($item['description'] ?? '') . "'",
+                "'".addslashes($item['doi'] ?? '') . "'",
                 $item['uid'],
              ($direct ? $item['creation_date'] : 'UNIX_TIMESTAMP(NOW())'),
              ($direct ? $item['last_update_date'] : 'UNIX_TIMESTAMP(NOW())'),
              isset($item['publication_year']) ? (int) $item['publication_year'] : 0,
              isset($item['publication_month']) ? (int) $item['publication_month'] : 0,
              isset($item['publication_mday']) ? (int) $item['publication_mday'] : 0,
-            "'".addslashes(isset($item['lang']) ? $item['lang'] : '')."'", ]
+            "'".addslashes($item['lang'] ?? '') . "'", ]
            ) . ')';
     $result = $xoopsDB->queryF($sql);
     if ($result) {

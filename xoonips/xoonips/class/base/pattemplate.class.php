@@ -336,11 +336,7 @@ if (!class_exists('patTemplate')) {
         {
             $template = strtoupper($template);
             $attribute = strtolower($attribute);
-            if (!isset($this->attributes[$template][$attribute])) {
-                return false;
-            }
-
-            return    $this->attributes[$template][$attribute];
+            return $this->attributes[$template][$attribute] ?? false;
         }
 
         /**
@@ -1521,7 +1517,7 @@ if (!class_exists('patTemplate')) {
             if ($scope = $this->getAttribute($template, 'varscope')) {
                 $val = $this->getVar(strtoupper($scope), $var);
             } else {
-                $val = (isset($this->variables[$template][$var])) ? $this->variables[$template][$var] : '';
+                $val = $this->variables[$template][$var] ?? '';
             }
 
             //	check, if global var should be used

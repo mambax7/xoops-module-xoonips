@@ -189,7 +189,7 @@ class XooNIpsUtilityFile extends XooNIpsUtility
         $mimetype = preg_replace('/[,; ].*$/', '', $mimetype);
         // get original extension
         $pathi = pathinfo($file_name);
-        $ext = isset($pathi['extension']) ? $pathi['extension'] : '';
+        $ext = $pathi['extension'] ?? '';
         // override mimetype
         if ($ext != '' && isset($this->mimetype_map[$mimetype][$ext])) {
             $mimetype = $this->mimetype_map[$mimetype][$ext];

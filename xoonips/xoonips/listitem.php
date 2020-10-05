@@ -47,8 +47,8 @@ $myxoopsConfigMetaFooter = &xoonips_get_xoops_configs(XOOPS_CONF_METAFOOTER);
 
 $textutil = &xoonips_getutility('text');
 
-$sess_orderby = isset($_SESSION['xoonips_order_by']) ? $_SESSION['xoonips_order_by'] : 'title';
-$sess_orderdir = isset($_SESSION['xoonips_order_dir']) ? $_SESSION['xoonips_order_dir'] : ASC;
+$sess_orderby = $_SESSION['xoonips_order_by'] ?? 'title';
+$sess_orderdir = $_SESSION['xoonips_order_dir'] ?? ASC;
 $request_vars = [
     'page' => ['i', 1],
     'orderby' => ['s', $sess_orderby],
@@ -196,7 +196,7 @@ if (isset($index_id)) {
             $info  = [];
             $cicnt = count(my_xoonips_get_child_index($xoopsDB, $cid));
             if (xnp_get_index($xnpsid, $cid, $info) == RES_OK) {
-                $cnt       = isset($item_counts[$cid]) ? $item_counts[$cid] : 0;
+                $cnt       = $item_counts[$cid] ?? 0;
                 $my_index  = [
                     'index_id'        => $cid,
                     'title'           => $info['html_title'],

@@ -167,7 +167,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
                 if ($orminfo['field'] == $this->iteminfo['ormcompo']['primary_orm']) { //orm of primary table
                     parent::__init_handler($orminfo['field'], xoonips_getormhandler($orminfo['module'], $orminfo['name']), $orminfo['foreign_key']);
                 } else {
-                    $this->addHandler($orminfo['field'], xoonips_getormhandler($orminfo['module'], $orminfo['name']), $orminfo['foreign_key'], isset($orminfo['multiple']) ? $orminfo['multiple'] : false, isset($orminfo['criteria']) ? $orminfo['criteria'] : null);
+                    $this->addHandler($orminfo['field'], xoonips_getormhandler($orminfo['module'], $orminfo['name']), $orminfo['foreign_key'], $orminfo['multiple'] ?? false, $orminfo['criteria'] ?? null);
                 }
             }
         }
@@ -375,11 +375,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
         $dummy = false;
         $search_cache_id = false;
         // save xoopsUser
-        if (isset($GLOBALS['xoopsUser'])) {
-            $old_xoopsUser = $GLOBALS['xoopsUser'];
-        } else {
-            $old_xoopsUser = null;
-        }
+        $old_xoopsUser = $GLOBALS['xoopsUser'] ?? null;
         // prepare for xnpSearchExec
         $member_handler       = xoops_getHandler('member');
         $GLOBALS['xoopsUser'] = $member_handler->getUser($uid);
@@ -959,12 +955,12 @@ class XooNIpsItemInfoCompo extends XooNIpsRelatedObject
             // add orm object according to $this -> iteminfo['orm']
             foreach ($this->iteminfo['orm'] as $orminfo) {
                 $handler = &xoonips_getormhandler($orminfo['module'], $orminfo['name']);
-                if (isset($orminfo['multiple']) ? $orminfo['multiple'] : false) {
+                if ($orminfo['multiple'] ?? false) {
                     $ary = [];
-                    $this->initVar($orminfo['field'], $ary, isset($orminfo['required']) ? $orminfo['required'] : false);
+                    $this->initVar($orminfo['field'], $ary, $orminfo['required'] ?? false);
                     unset($ary);
                 } else {
-                    $this->initVar($orminfo['field'], $handler->create(), isset($orminfo['required']) ? $orminfo['required'] : false);
+                    $this->initVar($orminfo['field'], $handler->create(), $orminfo['required'] ?? false);
                 }
             }
         }

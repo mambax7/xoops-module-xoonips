@@ -128,11 +128,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
      */
     public function get_zip_information($key)
     {
-        if (!isset($this->_ecdirectory[$key])) {
-            return false;
-        }
-
-        return $this->_ecdirectory[$key];
+        return $this->_ecdirectory[$key] ?? false;
     }
 
     /**
@@ -192,11 +188,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
         if (!isset($this->_entries[$fname])) {
             return $data;
         }
-        if (isset($this->_cdirectories[$fname])) {
-            $entry = &$this->_cdirectories[$fname];
-        } else {
-            $entry = &$this->_entries[$fname];
-        }
+        $entry       = $this->_cdirectories[$fname] ?? $this->_entries[$fname];
         $data_offset = $this->_entries[$fname]['data_offset'];
         if (substr($entry['filename'], -1) == '/') {
             // this is directory
@@ -244,11 +236,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
         if (!isset($this->_entries[$fname])) {
             return false;
         }
-        if (isset($this->_cdirectories[$fname])) {
-            $entry = &$this->_cdirectories[$fname];
-        } else {
-            $entry = &$this->_entries[$fname];
-        }
+        $entry       = $this->_cdirectories[$fname] ?? $this->_entries[$fname];
         $data_offset = $this->_entries[$fname]['data_offset'];
         // use unix path separator
         $basedir = str_replace('\\', '/', $basedir);

@@ -672,7 +672,7 @@ function xoonips_eventlog_download($is_post, $log_type_id)
             $line[] = $obj->getVar('uid', 'n');
             $line[] = $obj->getVar('gid', 'n');
             $line[] = $obj->getVar('search_keyword', 'n');
-            $line[] = isset($uid2uname[$exec_uid]) ? $uid2uname[$exec_uid] : '';
+            $line[] = $uid2uname[$exec_uid] ?? '';
             $line[] = $obj->getVar('additional_info', 'n');
             echo _xoonips_eventlog_array2csv($download, $line);
         }
@@ -754,7 +754,7 @@ function xoonips_eventlog_download($is_post, $log_type_id)
             $line[] = $names[$item_id]['name'];
             $line[] = $names[$item_id]['item_type'];
             foreach ($month_labels as $label) {
-                $line[] = isset($logs[$item_id][$label]) ? $logs[$item_id][$label] : '';
+                $line[] = $logs[$item_id][$label] ?? '';
             }
             $line[] = $obj->getExtraVar('cnt');
             echo _xoonips_eventlog_array2csv($download, $line);
@@ -795,7 +795,7 @@ function xoonips_eventlog_download($is_post, $log_type_id)
             $line[] = $file_info[$file_id]['uname'];
             $line[] = $file_info[$file_id]['itemtype'];
             foreach ($month_labels as $label) {
-                $line[] = isset($file_months[$file_id][$label]) ? $file_months[$file_id][$label] : '';
+                $line[] = $file_months[$file_id][$label] ?? '';
             }
             $line[] = $total;
             echo _xoonips_eventlog_array2csv($download, $line);
@@ -882,7 +882,7 @@ function xoonips_eventlog_download($is_post, $log_type_id)
                 $line[] = $names[$item_id]['title'];
                 $line[] = $names[$item_id]['item_type'];
                 foreach ($month_labels as $label) {
-                    $line[] = isset($item_months[$label]) ? $item_months[$label] : '';
+                    $line[] = $item_months[$label] ?? '';
                 }
                 $line[] = $total;
                 echo _xoonips_eventlog_array2csv($download, $line);

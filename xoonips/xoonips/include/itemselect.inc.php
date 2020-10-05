@@ -45,8 +45,8 @@ require_once 'include/extra_param.inc.php';
  */
 
 // TODO: check uncommented NOT USED variables
-$sess_orderby = isset($_SESSION['xoonips_order_by']) ? $_SESSION['xoonips_order_by'] : 'title';
-$sess_orderdir = isset($_SESSION['xoonips_order_dir']) ? $_SESSION['xoonips_order_dir'] : ASC;
+$sess_orderby = $_SESSION['xoonips_order_by'] ?? 'title';
+$sess_orderdir = $_SESSION['xoonips_order_dir'] ?? ASC;
 $request_vars = [
     'op' => ['s', ''],
     'checkbox' => ['s', 'off'], // 'on' or 'off'

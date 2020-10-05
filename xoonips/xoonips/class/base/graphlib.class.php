@@ -272,23 +272,19 @@ class XooNIpsGraphLib
         // defaults
 
         if ($offset) {
-            if (isset($this->y_format[$set]['shadow'])) {
-                $colour = $this->y_format[$set]['shadow'];
-            } else {
-                $colour = $this->parameter['shadow'];
-            }
+            $colour = $this->y_format[$set]['shadow'] ?? $this->parameter['shadow'];
         } else {
             $colour = $this->y_format[$set]['colour'];
         }
 
-        $point = isset($this->y_format[$set]['point']) ? $this->y_format[$set]['point'] : 'none';
-        $pointSize = isset($this->y_format[$set]['point_size']) ? $this->y_format[$set]['point_size'] : $this->parameter['point_size'];
-        $line = isset($this->y_format[$set]['line']) ? $this->y_format[$set]['line'] : 'none';
-        $brushType = isset($this->y_format[$set]['brush_type']) ? $this->y_format[$set]['brush_type'] : $this->parameter['brush_type'];
-        $brushSize = isset($this->y_format[$set]['brush_size']) ? $this->y_format[$set]['brush_size'] : $this->parameter['brush_size'];
-        $bar = isset($this->y_format[$set]['bar']) ? $this->y_format[$set]['bar'] : 'none';
-        $barSize = isset($this->y_format[$set]['bar_size']) ? $this->y_format[$set]['bar_size'] : $this->parameter['bar_size'];
-        $area = isset($this->y_format[$set]['area']) ? $this->y_format[$set]['area'] : 'none';
+        $point = $this->y_format[$set]['point'] ?? 'none';
+        $pointSize = $this->y_format[$set]['point_size'] ?? $this->parameter['point_size'];
+        $line = $this->y_format[$set]['line'] ?? 'none';
+        $brushType = $this->y_format[$set]['brush_type'] ?? $this->parameter['brush_type'];
+        $brushSize = $this->y_format[$set]['brush_size'] ?? $this->parameter['brush_size'];
+        $bar = $this->y_format[$set]['bar'] ?? 'none';
+        $barSize = $this->y_format[$set]['bar_size'] ?? $this->parameter['bar_size'];
+        $area = $this->y_format[$set]['area'] ?? 'none';
 
         $lastX = 0;
         $lastY = 'none';
@@ -340,15 +336,9 @@ class XooNIpsGraphLib
         // cycle thru y data to be plotted
         // first check for drop shadows...
         foreach ($this->y_order as $order => $set) {
-            $offset = $this->parameter['shadow_offset'];
-            if (isset($this->y_format[$set]['shadow_offset'])) {
-                $offset = $this->y_format[$set]['shadow_offset'];
-            }
+            $offset = $this->y_format[$set]['shadow_offset'] ?? $this->parameter['shadow_offset'];
 
-            $colour = $this->parameter['shadow'];
-            if (isset($this->y_format[$set]['shadow'])) {
-                $colour = $this->y_format[$set]['shadow'];
-            }
+            $colour = $this->y_format[$set]['shadow'] ?? $this->parameter['shadow'];
 
             if (isset($colour)) {
                 if ($colour != 'none') {
@@ -997,7 +987,7 @@ class XooNIpsGraphLib
         $height = 0;
 
         foreach ($this->y_order as $set) {
-            $text = isset($this->y_format[$set]['legend']) ? $this->y_format[$set]['legend'] : 'none';
+            $text = $this->y_format[$set]['legend'] ?? 'none';
             $size = $this->get_boundaryBox(
                 [
                 'points' => $this->parameter['legend_size'],

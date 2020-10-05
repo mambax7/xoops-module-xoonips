@@ -302,7 +302,7 @@ function xnpitmgrUnregisterItem($xid, $iid)
  */
 function getRemoteHost()
 {
-    return isset($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : $_SERVER['REMOTE_ADDR'];
+    return $_SERVER['REMOTE_HOST'] ?? $_SERVER['REMOTE_ADDR'];
 }
 
 /**

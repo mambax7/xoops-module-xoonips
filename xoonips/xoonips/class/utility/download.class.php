@@ -66,9 +66,9 @@ class XooNIpsUtilityDownload extends XooNIpsUtility
      */
     public function __construct()
     {
-        $this->ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-        $this->al = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '';
-        $this->pi = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
+        $this->ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
+        $this->al = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '';
+        $this->pi = $_SERVER['PATH_INFO'] ?? '';
         if (!preg_match('/^\\/.*$/', $this->pi)) {
             $this->pi = '';
             // invalid path info

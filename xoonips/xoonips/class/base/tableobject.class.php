@@ -650,11 +650,7 @@ class XooNIpsTableObject extends XoopsObject
             // must be mysql data type 'text' or 'blob'
             return 65535;
         }
-        if (isset($this->vars[$key]['maxlength'])) {
-            return $this->vars[$key]['maxlength'];
-        }
-
-        return false;
+        return $this->vars[$key]['maxlength'] ?? false;
     }
 }
 
@@ -1072,10 +1068,10 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
     {
         $ret = [];
         foreach ($vars as $var) {
-            $criteria = isset($var[0]) ? $var[0] : null;
-            $fieldlist = isset($var[1]) ? $var[1] : '';
-            $distinct = isset($var[2]) ? $var[2] : false;
-            $joindef = isset($var[3]) ? $var[3] : null;
+            $criteria = $var[0] ?? null;
+            $fieldlist = $var[1] ?? '';
+            $distinct = $var[2] ?? false;
+            $joindef = $var[3] ?? null;
         }
         $result = &$this->openUnion($vars, $unionall, $unioncriteria);
         if (!$result) {
@@ -1110,10 +1106,10 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
         $order_by = '';
         $sqls = [];
         foreach ($vars as $var) {
-            $criteria = isset($var[0]) ? $var[0] : null;
-            $fieldlist = isset($var[1]) ? $var[1] : '';
-            $distinct = isset($var[2]) ? $var[2] : false;
-            $joindef = isset($var[3]) ? $var[3] : null;
+            $criteria = $var[0] ?? null;
+            $fieldlist = $var[1] ?? '';
+            $distinct = $var[2] ?? false;
+            $joindef = $var[3] ?? null;
             $sqls[] = $this->_makeSQL($criteria, $fieldlist, $distinct, $joindef);
         }
         if (count($sqls) > 1) {

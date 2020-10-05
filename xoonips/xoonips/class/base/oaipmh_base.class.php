@@ -183,11 +183,7 @@ class OAIPMH
                 .$this->footer();
         }
 
-        if (isset($attrs['identifier'])) {
-            $identifier = $attrs['identifier'];
-        } else {
-            $identifier = null;
-        }
+        $identifier = $attrs['identifier'] ?? null;
 
         return $this->header()
             .$this->request(['verb' => 'ListMetadataFormats', 'identifier' => $identifier])

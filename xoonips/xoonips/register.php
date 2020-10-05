@@ -83,11 +83,7 @@ if ($item_types) {
 
 if (empty($item_type_id)) {
     // set default item type id
-    if (isset($_SESSION['xoonipsITID'])) {
-        $item_type_id = $_SESSION['xoonipsITID'];
-    } else {
-        $item_type_id = $item_types[0]->get('item_type_id');
-    }
+    $item_type_id = $_SESSION['xoonipsITID'] ?? $item_types[0]->get('item_type_id');
 }
 $_SESSION['xoonipsITID'] = $item_type_id; // setting of default value in item_type_id to display next time
 

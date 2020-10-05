@@ -131,7 +131,7 @@ if ('certify' == $op) {
         exit();
     }
 
-    $comment = isset($_POST['comment']) ? $_POST['comment'] : '';
+    $comment = $_POST['comment'] ?? '';
 
     $user = [];
     $result_get_account = xnp_get_account($xnpsid, $certify_uid, $user);

@@ -112,7 +112,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
             } // no need to check required
             $value = null; //target value
             $name = null; //name of variable
-            $is_multiple = isset($input['xmlrpc']['multiple']) ? $input['xmlrpc']['multiple'] : false;
+            $is_multiple = $input['xmlrpc']['multiple'] ?? false;
             if ($input['xmlrpc']['field'][0] == 'detail_field') { // case of detail_field
                 $name = implode('.', $input['xmlrpc']['field']);
                 if (!empty($in_array['detail_field'])) {
@@ -169,7 +169,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
         foreach ($this->iteminfo['io']['xmlrpc']['item'] as $input) {
             $value = null; //target value
             $name = null; //name of variable
-            $is_multiple = isset($input['xmlrpc']['multiple']) ? $input['xmlrpc']['multiple'] : false;
+            $is_multiple = $input['xmlrpc']['multiple'] ?? false;
             if ($input['xmlrpc']['field'][0] == 'detail_field') { // case of detail_field
                 if ($is_multiple) {
                     $value = [];
@@ -229,7 +229,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
             }
             $value = null; //target value
             $name = null; //name of variable
-            $is_multiple = isset($input['xmlrpc']['multiple']) ? $input['xmlrpc']['multiple'] : false;
+            $is_multiple = $input['xmlrpc']['multiple'] ?? false;
             if ($input['xmlrpc']['field'][0] == 'detail_field') { // case of detail_field
                 if ($is_multiple) {
                     $value = [];
@@ -294,7 +294,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
         $primary_id = false;
         foreach ($this->iteminfo['io']['xmlrpc']['item'] as $input) {
             if ($input['orm']['field'][0]['orm'] == $this->iteminfo['ormcompo']['primary_orm'] && $input['orm']['field'][0]['field'] == $this->iteminfo['ormcompo']['primary_key']) {
-                $primary_id = isset($in_array[$input['xmlrpc']['field'][0]]) ? $in_array[$input['xmlrpc']['field'][0]] : false;
+                $primary_id = $in_array[$input['xmlrpc']['field'][0]] ?? false;
                 break;
             }
         }
@@ -327,7 +327,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
             }
             //
             // get variable in $in_var according to $this -> iteminfo['input'] rule
-            $is_multiple = isset($input['xmlrpc']['multiple']) ? $input['xmlrpc']['multiple'] : false;
+            $is_multiple = $input['xmlrpc']['multiple'] ?? false;
             if ($input['xmlrpc']['field'][0] == 'detail_field') {
                 if ($is_multiple) {
                     $in_field = [];
@@ -375,11 +375,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
                 $pos = 0;
                 $array = [];
                 foreach ($in_field as $v) {
-                    if (isset($array[$pos])) {
-                        $var_obj = $array[$pos];
-                    } else {
-                        $var_obj = $handler->create();
-                    }
+                    $var_obj = $array[$pos] ?? $handler->create();
 
                     // convert to numeric reference
                     if (is_string($v)) {
@@ -391,7 +387,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
                     $in_var = [$v];
                     $out_var = [];
                     $context = ['position' => $pos];
-                    eval(isset($input['eval']['xmlrpc2orm']) ? $input['eval']['xmlrpc2orm'] : '$out_var[0] = $in_var[0];');
+                    eval($input['eval']['xmlrpc2orm'] ?? '$out_var[0] = $in_var[0];');
 
                     for ($i = 0; $i < count($input['orm']['field']); ++$i) {
                         if (isset($out_var[$i])) {
@@ -414,7 +410,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
                 // evaluate
                 $in_var = [$in_field];
                 $out_var = [];
-                eval(isset($input['eval']['xmlrpc2orm']) ? $input['eval']['xmlrpc2orm'] : '$out_var[0] = $in_var[0];');
+                eval($input['eval']['xmlrpc2orm'] ?? '$out_var[0] = $in_var[0];');
                 $i = 0;
                 foreach ($input['orm']['field'] as $field) {
                     $orm = $obj->getVar($field['orm']);
@@ -498,11 +494,7 @@ class XooNIpsXmlRpcTransformFactory
             trigger_error('Handler does not exist. Name: '.$name, E_USER_ERROR);
         }
         // return result
-        if (isset($logic)) {
-            return $logic;
-        } else {
-            return $falseVar;
-        }
+        return $logic ?? $falseVar;
     }
 }
 
@@ -565,10 +557,6 @@ class XooNIpsXmlRpcTransformCompoFactory
             trigger_error('Handler does not exist. Name: '.$module, E_USER_ERROR);
         }
         // return result
-        if (isset($compo)) {
-            return $compo;
-        } else {
-            return $falseVar;
-        }
+        return $compo ?? $falseVar;
     }
 }

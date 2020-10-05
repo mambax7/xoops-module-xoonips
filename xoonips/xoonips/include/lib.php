@@ -502,10 +502,7 @@ function xnpGetAttachmentDetailBlock($item_id, $name)
     $textutil = &xoonips_getutility('text');
     // get attachment file
     // generate html
-    $uid = UID_GUEST;
-    if (isset($_SESSION['xoopsUserId'])) {
-        $uid = $_SESSION['xoopsUserId'];
-    }
+    $uid = $_SESSION['xoopsUserId'] ?? UID_GUEST;
 
     $item = [];
     $res  = xnp_get_item($_SESSION['XNPSID'], $item_id, $item);
@@ -803,10 +800,7 @@ function xnpGetIndexDetailBlock($item_id, $button_flag = true)
 {
     $xnpsid = $_SESSION['XNPSID'];
 
-    $uid = 0;
-    if (isset($_SESSION['xoopsUserId'])) {
-        $uid = $_SESSION['xoopsUserId'];
-    }
+    $uid = $_SESSION['xoopsUserId'] ?? 0;
 
     $indexes = [];
     $result  = xnpGetIndexes($xnpsid, $item_id, $indexes);
@@ -2833,7 +2827,7 @@ function xnpGetModifiedFields($item_id)
     (is_string($related_to_check) ? preg_split("/[\r\n]+/", $related_to_check) :
     $related_to_check);
     $related_to = $formdata->getValue('post', 'related_to', 's', false);
-    $related_to = (isset($related_to) ? $related_to : '');
+    $related_to = ($related_to ?? '');
     foreach (preg_split("/[\r\n]+/", $related_to) as $id) {
         $tmp_item = [];
         if (RES_OK != xnp_get_item($xnpsid, (int) $id, $tmp_item)) {
@@ -3444,7 +3438,7 @@ function xnpGetColumnLengths($table_wo_prefix)
                 'medium' => 16777215,
                 'long' => 4294967295,
             ];
-            $ret[$name] = isset($sizes[$matches[1]]) ? $sizes[$matches[1]] : 65535;
+            $ret[$name] = $sizes[$matches[1]] ?? 65535;
         }
     }
 
@@ -3904,7 +3898,7 @@ class XooNIpsItemLibraryObject
             $lang_map[$lang_id] = $lang_names[$num];
         }
         $lang = $this->_item_basic_obj->get('lang');
-        $language = isset($lang_map[$lang]) ? $lang_map[$lang] : '';
+        $language = $lang_map[$lang] ?? '';
         // change log
         if ('e' == $fmt || 's' == $fmt) {
             $change_log = $textutil->html_special_chars($this->_changelog);
@@ -4851,11 +4845,7 @@ class XooNIpsItemLibraryHandler
                 if ('' == $val) {
                     continue;
                 }
-                if (isset($objs_old[$num])) {
-                    $obj = &$objs_old[$num];
-                } else {
-                    $obj = &$this->_item_title_handler->create();
-                }
+                $obj = $objs_old[$num] ?? $this->_item_title_handler->create();
                 $obj->set('title', $val);
                 $obj->set('title_id', $num);
                 $objs_new[] = &$obj;
@@ -4876,11 +4866,7 @@ class XooNIpsItemLibraryHandler
                 if ('' == $val) {
                     continue;
                 }
-                if (isset($objs_old[$num])) {
-                    $obj = &$objs_old[$num];
-                } else {
-                    $obj = &$this->_item_keyword_handler->create();
-                }
+                $obj = $objs_old[$num] ?? $this->_item_keyword_handler->create();
                 $obj->set('keyword', $val);
                 $obj->set('keyword_id', $num);
                 $objs_new[] = &$obj;

@@ -66,10 +66,8 @@ $formdata = &xoonips_getutility('formdata');
 $submit_url = $formdata->getValue('post', 'submit_url', 's', false, '');
 
 $item_list_header = xoonips_item_list_header();
-$item_list_header['order_by'] = (isset($_SESSION['xoonips_order_by'])
-                                  ? $_SESSION['xoonips_order_by'] : 'title');
-$item_list_header['order_dir'] = (isset($_SESSION['xoonips_order_dir'])
-                                   ? $_SESSION['xoonips_order_dir'] : ASC);
+$item_list_header['order_by'] = ($_SESSION['xoonips_order_by'] ?? 'title');
+$item_list_header['order_dir'] = ($_SESSION['xoonips_order_dir'] ?? ASC);
 $xoopsTpl->assign('item_list_header', $item_list_header);
 $xoopsTpl->assign('submit_url', $submit_url);
 if (isset($search_itemtype)) {

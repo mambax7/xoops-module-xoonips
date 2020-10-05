@@ -244,7 +244,7 @@ class XooNIpsAdminFileHandler extends XooNIpsFileHandler
     public function _detect_file_search_plugin($file_name, $file_mimetype)
     {
         $file_pathinfo = pathinfo($file_name);
-        $file_ext = isset($file_pathinfo['extension']) ? $file_pathinfo['extension'] : '';
+        $file_ext = $file_pathinfo['extension'] ?? '';
         $fs_name = null;
         foreach ($this->fsearch_plugins as $module) {
             if (in_array($file_ext, $module['extensions']) && in_array($file_mimetype, $module['mime_type'])) {

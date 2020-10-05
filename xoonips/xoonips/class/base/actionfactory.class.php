@@ -78,10 +78,6 @@ class XooNIpsActionFactory
             trigger_error('Handler does not exist. Name: '.$name, E_USER_ERROR);
         }
         // return result
-        if (isset($action)) {
-            return $action;
-        } else {
-            return $falseVar;
-        }
+        return $action ?? $falseVar;
     }
 }

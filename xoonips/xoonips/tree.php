@@ -170,7 +170,7 @@ foreach ($indexes as $i => $index) {
     $node['is_last'] = $index['is_last'] ? 1 : 0;
     $node['open_level'] = $index['open_level'];
     $node['title'] = $textutil->javascript_special_chars($index['titles'][DEFAULT_INDEX_TITLE_OFFSET]);
-    $itemCount = isset($itemCounts[$xid]) ? $itemCounts[$xid] : null;
+    $itemCount = $itemCounts[$xid] ?? null;
     if ($itemCount) {
         $node['title'] .= sprintf('(%d)', $itemCount);
     }

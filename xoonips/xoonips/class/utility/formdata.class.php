@@ -108,7 +108,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
      */
     public function getFile($name, $is_required)
     {
-        $val = isset($_FILES[$name]) ? $_FILES[$name] : null;
+        $val = $_FILES[$name] ?? null;
         if (null === $val) {
             if ($is_required) {
                 $this->_form_error(__LINE__);
@@ -277,15 +277,15 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
         $val = null;
         switch ($method) {
         case 'get':
-            $val = isset($_GET[$name]) ? $_GET[$name] : null;
+            $val = $_GET[$name] ?? null;
             break;
         case 'post':
-            $val = isset($_POST[$name]) ? $_POST[$name] : null;
+            $val = $_POST[$name] ?? null;
         case 'both':
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $val = isset($_POST[$name]) ? $_POST[$name] : (isset($_GET[$name]) ? $_GET[$name] : null);
+                $val = $_POST[$name] ?? (isset($_GET[$name]) ? $_GET[$name] : null);
             } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                $val = isset($_GET[$name]) ? $_GET[$name] : (isset($_POST[$name]) ? $_POST[$name] : null);
+                $val = $_GET[$name] ?? (isset($_POST[$name]) ? $_POST[$name] : null);
             } else {
                 $this->_form_error(__LINE__);
             }

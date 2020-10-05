@@ -81,10 +81,6 @@ class XooNIpsLogicFactory
             trigger_error('Handler does not exist. Name: '.$name, E_USER_ERROR);
         }
         // return result
-        if (isset($logic)) {
-            return $logic;
-        } else {
-            return $falseVar;
-        }
+        return $logic ?? $falseVar;
     }
 }

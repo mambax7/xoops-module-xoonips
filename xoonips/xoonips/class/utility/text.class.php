@@ -479,17 +479,17 @@ class XooNIpsUtilityText extends XooNIpsUtility
                 // unsupported year
                 return false;
             }
-            $month = intval(isset($matches[2]) ? $matches[2] : 1);
-            $mday = intval(isset($matches[3]) ? $matches[3] : 1);
-            $week = intval(isset($matches[4]) ? $matches[4] : 0);
-            $wday = intval(isset($matches[5]) ? $matches[5] : 0);
-            $oday = intval(isset($matches[6]) ? $matches[6] : 0);
-            $hour = intval(isset($matches[7]) ? $matches[7] : 0);
-            $min = intval(isset($matches[8]) ? $matches[8] : 0);
-            $sec = intval(isset($matches[9]) ? $matches[9] : 0);
+            $month = intval($matches[2] ?? 1);
+            $mday = intval($matches[3] ?? 1);
+            $week = intval($matches[4] ?? 0);
+            $wday = intval($matches[5] ?? 0);
+            $oday = intval($matches[6] ?? 0);
+            $hour = intval($matches[7] ?? 0);
+            $min = intval($matches[8] ?? 0);
+            $sec = intval($matches[9] ?? 0);
             $pm = intval(isset($matches[10]) ? $matches[10].'1' : 1);
-            $tz_hour = intval(isset($matches[11]) ? $matches[11] : 0);
-            $tz_min = intval(isset($matches[12]) ? $matches[12] : 0);
+            $tz_hour = intval($matches[11] ?? 0);
+            $tz_min = intval($matches[12] ?? 0);
             $tz_offset = $pm * ($tz_hour * 3600 + $tz_min * 60);
             if ($week == 0 && $wday == 0 && $oday == 0) {
                 // calendar dates

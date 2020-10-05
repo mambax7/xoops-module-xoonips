@@ -71,11 +71,11 @@ if ($op == 'open' || $op == '') {
         $xoopsTpl->assign('ent', $ent);
     } else {
         $cvitae_from_date = $formdata->getValueArray('post', 'cvitae_from_date', 'i', true);
-        $from_month = isset($cvitae_from_date['Date_Month']) ? $cvitae_from_date['Date_Month'] : 0;
-        $from_year = isset($cvitae_from_date['Date_Year']) ? $cvitae_from_date['Date_Year'] : 0;
+        $from_month = $cvitae_from_date['Date_Month'] ?? 0;
+        $from_year = $cvitae_from_date['Date_Year'] ?? 0;
         $cvitae_to_date = $formdata->getValueArray('post', 'cvitae_to_date', 'i', true);
-        $to_month = isset($cvitae_to_date['Date_Month']) ? $cvitae_to_date['Date_Month'] : 0;
-        $to_year = isset($cvitae_to_date['Date_Year']) ? $cvitae_to_date['Date_Year'] : 0;
+        $to_month = $cvitae_to_date['Date_Month'] ?? 0;
+        $to_year = $cvitae_to_date['Date_Year'] ?? 0;
         if (0 > $from_month || 12 < $from_month || 0 > $from_year || 0 > $to_month || 12 < $to_month || 0 > $to_year) {
             // out of date range
             xoonips_error_exit(400);
@@ -106,11 +106,11 @@ if ($op == 'open' || $op == '') {
             xoonips_error_exit(400);
         }
         $cvitae_from_date = $formdata->getValueArray('post', $cvitae_id.'_from', 'i', true);
-        $from_month = isset($cvitae_from_date['Date_Month']) ? $cvitae_from_date['Date_Month'] : 0;
-        $from_year = isset($cvitae_from_date['Date_Year']) ? $cvitae_from_date['Date_Year'] : 0;
+        $from_month = $cvitae_from_date['Date_Month'] ?? 0;
+        $from_year = $cvitae_from_date['Date_Year'] ?? 0;
         $cvitae_to_date = $formdata->getValueArray('post', $cvitae_id.'_to', 'i', true);
-        $to_month = isset($cvitae_to_date['Date_Month']) ? $cvitae_to_date['Date_Month'] : 0;
-        $to_year = isset($cvitae_to_date['Date_Year']) ? $cvitae_to_date['Date_Year'] : 0;
+        $to_month = $cvitae_to_date['Date_Month'] ?? 0;
+        $to_year = $cvitae_to_date['Date_Year'] ?? 0;
         if (0 > $from_month || 12 < $from_month || 0 > $from_year || 0 > $to_month || 12 < $to_month || 0 > $to_year) {
             // out of date range
             xoonips_error_exit(400);
@@ -145,7 +145,7 @@ if ($op == 'open' || $op == '') {
 } elseif ($op == 'up' || $op == 'down') {
     $move_id = $formdata->getValue('post', 'updown_cvitae', 'i', true);
     $steps = $formdata->getValueArray('post', 'steps', 'i', true);
-    $step = isset($steps[$move_id]) ? $steps[$move_id] : 0;
+    $step = $steps[$move_id] ?? 0;
     if (0 > $step || 10 < $step) {
         // out of step range
         xoonips_error_exit(400);

@@ -61,8 +61,8 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
             require XOOPS_ROOT_PATH.'/modules/'.$module.'/iteminfo.php';
             $this->iteminfo = &$iteminfo;
             $this->description = $iteminfo['description'];
-            $this->mainFileName = isset($iteminfo['files']['main']) ? $iteminfo['files']['main'] : null;
-            $this->previewFileName = isset($iteminfo['files']['preview']) ? $iteminfo['files']['preview'] : null;
+            $this->mainFileName = $iteminfo['files']['main'] ?? null;
+            $this->previewFileName = $iteminfo['files']['preview'] ?? null;
         }
 
         $this->fields = [];
@@ -148,7 +148,7 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
             $ar[] = $this->iteminfo['files']['preview'];
         }
 
-        return array_merge($ar, isset($this->iteminfo['files']['others']) ? $this->iteminfo['files']['others'] : []);
+        return array_merge($ar, $this->iteminfo['files']['others'] ?? []);
     }
 
     /**
@@ -162,7 +162,7 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
     {
         foreach ($this->iteminfo['orm'] as $i) {
             if ($i['field'] == $fieldname) {
-                return isset($i['multiple']) ? $i['multiple'] : false;
+                return $i['multiple'] ?? false;
             }
         }
 
@@ -180,7 +180,7 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
     {
         foreach ($this->iteminfo['orm'] as $i) {
             if ($i['field'] == $fieldname) {
-                return isset($i['required']) ? $i['required'] : false;
+                return $i['required'] ?? false;
             }
         }
 

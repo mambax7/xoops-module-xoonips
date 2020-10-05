@@ -89,9 +89,9 @@ class XooNIpsXmlRpcViewGetItemtype extends XooNIpsXmlRpcViewElement
                 $field->add('options', $options);
                 unset($options);
             }
-            $field->add('required', new XoopsXmlRpcBoolean(isset($i['xmlrpc']['required']) ? $i['xmlrpc']['required'] : false));
-            $field->add('multiple', new XoopsXmlRpcBoolean(isset($i['xmlrpc']['multiple']) ? $i['xmlrpc']['multiple'] : false));
-            $field->add('readonly', new XoopsXmlRpcBoolean(isset($i['xmlrpc']['readonly']) ? $i['xmlrpc']['readonly'] : false));
+            $field->add('required', new XoopsXmlRpcBoolean($i['xmlrpc']['required'] ?? false));
+            $field->add('multiple', new XoopsXmlRpcBoolean($i['xmlrpc']['multiple'] ?? false));
+            $field->add('readonly', new XoopsXmlRpcBoolean($i['xmlrpc']['readonly'] ?? false));
             $fields->add($field);
             unset($field);
         }

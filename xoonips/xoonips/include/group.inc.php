@@ -42,7 +42,7 @@ function xoonips_group_error($url, $reason)
         'lock_edit' => sprintf(_MD_XOONIPS_ERROR_CANNOT_EDIT_LOCKED_GROUP, _MD_XOONIPS_LOCK_TYPE_STRING_CERTIFY_REQUEST),
         'lock_delete' => sprintf(_MD_XOONIPS_ERROR_CANNOT_DELETE_LOCKED_GROUP, _MD_XOONIPS_LOCK_TYPE_STRING_CERTIFY_REQUEST),
     ];
-    $msg = isset($messages[$reason]) ? $messages[$reason] : 'fatal error';
+    $msg = $messages[$reason] ?? 'fatal error';
     redirect_header($url, 3, $msg);
     exit();
 }

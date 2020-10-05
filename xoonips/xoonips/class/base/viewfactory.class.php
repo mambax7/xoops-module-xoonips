@@ -84,10 +84,6 @@ class XooNIpsViewFactory
             trigger_error('View does not exist. Name: '.$name, E_USER_ERROR);
         }
         // return result
-        if (isset($view)) {
-            return $view;
-        } else {
-            return $falseVar;
-        }
+        return $view ?? $falseVar;
     }
 }

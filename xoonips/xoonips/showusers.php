@@ -233,8 +233,8 @@ function _xoonips_showusers_get_item_ids($item_type_id, $uid, &$navi)
         'ASC' => 'ASC',
         'DESC' => 'DESC',
     ];
-    $sort = isset($def_sort[$sort]) ? $def_sort[$sort] : 'it.title';
-    $order = isset($def_order[$order]) ? $def_order[$order] : 'ASC';
+    $sort = $def_sort[$sort] ?? 'it.title';
+    $order = $def_order[$order] ?? 'ASC';
     $criteria->setStart($start);
     $criteria->setLimit($limit);
     $criteria->setSort($sort);

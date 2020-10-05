@@ -526,7 +526,7 @@ function xoonips_convert_file_encoding_to_utf8($tmpfile, $filename)
     }
     while (!feof($fp_r)) {
         $unicode = &xoonips_getutility('unicode');
-        fputs($fp_w, $unicode->encode_utf8(fgets($fp_r, 131072), xoonips_get_server_charset()));
+        fwrite($fp_w, $unicode->encode_utf8(fgets($fp_r, 131072), xoonips_get_server_charset()));
     }
     fclose($fp_r);
     fclose($fp_w);

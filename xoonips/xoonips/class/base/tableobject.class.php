@@ -1172,7 +1172,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria($foreign_key, $foreign_value));
         if (!empty($inserted_primary_ids)) {
-            $criteria->add(new Criteria($this->getKeyName(), '('.join(',', $inserted_primary_ids).')', 'NOT IN'));
+            $criteria->add(new Criteria($this->getKeyName(), '(' . implode(',', $inserted_primary_ids) . ')', 'NOT IN'));
         }
         if (!$this->deleteAll($criteria)) {
             trigger_error('cannot delete redundant '.get_class($obj));

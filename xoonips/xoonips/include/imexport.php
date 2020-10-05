@@ -138,7 +138,7 @@ function xnpExportItem($export_path, $item_id, $attachment = false, $is_absolute
     }
     $unicode = &xoonips_getutility('unicode');
     while (!feof($fp_r)) {
-        fputs($fp_w, $unicode->encode_utf8(fgets($fp_r, 131072), xoonips_get_server_charset()));
+        fwrite($fp_w, $unicode->encode_utf8(fgets($fp_r, 131072), xoonips_get_server_charset()));
     }
     fclose($fp_r);
     fclose($fp_w);

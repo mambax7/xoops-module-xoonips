@@ -196,7 +196,7 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
                     $val = $obj->getVar($col, 'n');
                     $ar[] = is_numeric($val) ? $val : urlencode($val);
                 }
-                fputs($fh, implode(',', $ar)."\n");
+                fwrite($fh, implode(',', $ar) . "\n");
             }
             fclose($fh);
             $this->handlers[$sum_basename]->close($res);
@@ -214,7 +214,7 @@ class XooNIpsAdminRankingHandler extends XooNIpsRankingHandler
             return false;
         }
         foreach ($config_names as $key) {
-            fputs($fh, 'ranking_'.$key.','.$config[$key]."\n");
+            fwrite($fh, 'ranking_' . $key . ',' . $config[$key] . "\n");
         }
         fclose($fh);
         $zip->add($tmp_file_path, 'config');

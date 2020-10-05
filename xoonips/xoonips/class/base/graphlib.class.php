@@ -1168,7 +1168,7 @@ class XooNIpsGraphLib
 
         // check whether to treat x axis as numeric
         if ($this->parameter['x_axis_gridlines'] == 'auto') { // auto means text based x_axis, not numeric...
-                $this->calculated['x_axis']['num_ticks'] = sizeof($this->x_data);
+                $this->calculated['x_axis']['num_ticks'] = count($this->x_data);
             $data = $this->x_data;
             for ($i = 0; $i < $this->calculated['x_axis']['num_ticks']; ++$i) {
                 $value = array_shift($data); // grab value from begin of array
@@ -1235,7 +1235,7 @@ class XooNIpsGraphLib
     // find max and min values for a data array given the resolution.
     public function find_range($data, $min, $max, $resolution)
     {
-        if (sizeof($data) == 0) {
+        if (count($data) == 0) {
             return ['min' => 0, 'max' => 0];
         }
         foreach ($data as $key => $value) {

@@ -884,7 +884,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
         // set the read timeout if needed
         if ($this->read_timeout > 0) {
-            socket_set_timeout($fp, $this->read_timeout);
+            stream_set_timeout($fp, $this->read_timeout);
         }
         $this->timed_out = false;
 
@@ -907,7 +907,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
             // if a header begins with Location: or URI:, set the redirect
             if (preg_match('/^(Location:|URI:)/i', $currentHeader)) {
                 // get URL portion of the redirect
-                preg_match('/^(Location:|URI:)[ ]+(.*)/i', chop($currentHeader), $matches);
+                preg_match('/^(Location:|URI:)[ ]+(.*)/i', rtrim($currentHeader), $matches);
                 // look for :// in the Location header to see if hostname is included
                 if (!preg_match("|\:\/\/|", $matches[2])) {
                     // no host in the path, so prepend
@@ -1088,7 +1088,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
             // if a header begins with Location: or URI:, set the redirect
             if (preg_match('/^(Location: |URI: )/i', $result_headers[$currentHeader])) {
                 // get URL portion of the redirect
-                preg_match("/^(Location: |URI:)\s+(.*)/", chop($result_headers[$currentHeader]), $matches);
+                preg_match("/^(Location: |URI:)\s+(.*)/", rtrim($result_headers[$currentHeader]), $matches);
                 // look for :// in the Location header to see if hostname is included
                 if (!preg_match("|\:\/\/|", $matches[2])) {
                     // no host in the path, so prepend
@@ -1167,7 +1167,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
     public function _check_timeout($fp)
     {
         if ($this->read_timeout > 0) {
-            $fp_status = socket_get_status($fp);
+            $fp_status = stream_get_meta_data($fp);
             if ($fp_status['timed_out']) {
                 $this->timed_out = true;
 

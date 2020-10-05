@@ -257,8 +257,8 @@ class XooNIpsUtilityZip extends XooNIpsUtility
             $this->datasec_handle,
             $ctrldir.
             $this->eof_ctrl_dir.
-            pack('v', sizeof($this->ctrl_dir)).  // total # of entries "on this disk"
-            pack('v', sizeof($this->ctrl_dir)).  // total # of entries overall
+            pack('v', count($this->ctrl_dir)) .  // total # of entries "on this disk"
+            pack('v', count($this->ctrl_dir)) .  // total # of entries overall
             pack('V', strlen($ctrldir)).           // size of central dir
             pack('V', $datasec_len).               // offset to start of central dir
             "\x00\x00"                              // .zip file comment length

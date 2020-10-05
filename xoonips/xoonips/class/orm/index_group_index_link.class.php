@@ -277,7 +277,7 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
                 $descendents[] = $index->get('index_id');
             }
             $criteria1 = new CriteriaCompo();
-            $criteria1->add(new Criteria('index_id', '('.join(',', $descendents).')', 'IN'));
+            $criteria1->add(new Criteria('index_id', '(' . implode(',', $descendents) . ')', 'IN'));
             $criteria1->add(new Criteria('certify_state', CERTIFIED));
             foreach ($index_item_link_handler->getObjects($criteria1) as $row) {
                 if (!$item_lock_handler->lock($row->get('item_id'))) {
@@ -414,7 +414,7 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
         foreach ($index_handler->getAllDescendents($index_id) as $index) {
             $descendents[] = $index->get('index_id');
         }
-        foreach ($index_item_link_handler->getObjects(new Criteria('index_id', '('.join(',', $descendents).')', 'IN')) as $row) {
+        foreach ($index_item_link_handler->getObjects(new Criteria('index_id', '(' . implode(',', $descendents) . ')', 'IN')) as $row) {
             if (!$item_lock_handler->unlock($row->get('item_id'))) {
                 trigger_error('cannot unlock item: '.$row->get('item_id'));
 
@@ -463,12 +463,12 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
         // define tags here for notification message
         $tags['ORIGIN_GROUP_NAME'] = $group->get('gname');
         $tags['ORIGIN_GROUP_ADMIN_NAME'] = $xoopsUser->getVar('name');
-        $tags['GROUP_INDEX_SUMMARY'] = join("\n", $this->get_index_summaries($group_index_ids));
+        $tags['GROUP_INDEX_SUMMARY'] = implode("\n", $this->get_index_summaries($group_index_ids));
         $tags['CERTIFY_URL'] = XOOPS_URL.'/modules/'.$xoopsModule->dirname().'/groupcertify.php';
-        $tags['NEW_PUBLIC_INDEX'] = join("\n", $this->get_index_summaries($to_index_ids));
+        $tags['NEW_PUBLIC_INDEX'] = implode("\n", $this->get_index_summaries($to_index_ids));
         $tags['INDEX'] = '';
         foreach ($to_index_ids as $id) {
-            $tags['INDEX'] .= '/'.join('/', $index_compo_handler->getIndexPathNames($id))."\n";
+            $tags['INDEX'] .= '/' . implode('/', $index_compo_handler->getIndexPathNames($id)) . "\n";
         }
 
         // send message using notification
@@ -509,9 +509,9 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
             // store for notification
             $rows = &$index_item_link_handler->getObjects(new Criteria('index_id', $index_id), false, 'count(*)');
             if ($rows && $rows[0]->getExtraVar('count(*)') > 0) {
-                $result[] = sprintf('%s(%d)', '/'.join('/', $index_compo_handler->getIndexPathNames($index_id)), $rows[0]->getExtraVar('count(*)'));
+                $result[] = sprintf('%s(%d)', '/' . implode('/', $index_compo_handler->getIndexPathNames($index_id)), $rows[0]->getExtraVar('count(*)'));
             } else {
-                $result[] = sprintf('%s', '/'.join('/', $index_compo_handler->getIndexPathNames($index_id)));
+                $result[] = sprintf('%s', '/' . implode('/', $index_compo_handler->getIndexPathNames($index_id)));
             }
         }
 

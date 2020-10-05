@@ -474,31 +474,31 @@ class XooNIpsUtilityText extends XooNIpsUtility
         $tz_offset = 0;
         $tm = false;
         if (preg_match('/^(-?\\d{4}|[+-]\\d{6})(?:-?(?:(\\d{2})(?:-?(\\d{2})?)?|W([0-5]\\d)-?([1-7])|([0-3]\\d\\d)))?(?:T(\\d{2})(?::(\\d{2})(?::(\\d{2}))?)?(?:Z|([-+])(\\d{2})(?::?(\\d{2}))?)?)?$/', $value, $matches)) {
-            $year = intval($matches[1]);
+            $year = (int)$matches[1];
             if ($year < 1970 || $year > 2038) {
                 // unsupported year
                 return false;
             }
-            $month = intval($matches[2] ?? 1);
-            $mday = intval($matches[3] ?? 1);
-            $week = intval($matches[4] ?? 0);
-            $wday = intval($matches[5] ?? 0);
-            $oday = intval($matches[6] ?? 0);
-            $hour = intval($matches[7] ?? 0);
-            $min = intval($matches[8] ?? 0);
-            $sec = intval($matches[9] ?? 0);
-            $pm = intval(isset($matches[10]) ? $matches[10].'1' : 1);
-            $tz_hour = intval($matches[11] ?? 0);
-            $tz_min = intval($matches[12] ?? 0);
+            $month = (int)(isset($matches[2]) ? $matches[2] : 1);
+            $mday = (int)(isset($matches[3]) ? $matches[3] : 1);
+            $week = (int)(isset($matches[4]) ? $matches[4] : 0);
+            $wday = (int)(isset($matches[5]) ? $matches[5] : 0);
+            $oday = (int)(isset($matches[6]) ? $matches[6] : 0);
+            $hour = (int)(isset($matches[7]) ? $matches[7] : 0);
+            $min = (int)(isset($matches[8]) ? $matches[8] : 0);
+            $sec = (int)(isset($matches[9]) ? $matches[9] : 0);
+            $pm = (int)(isset($matches[10]) ? $matches[10] . '1' : 1);
+            $tz_hour = (int)(isset($matches[11]) ? $matches[11] : 0);
+            $tz_min = (int)(isset($matches[12]) ? $matches[12] : 0);
             $tz_offset = $pm * ($tz_hour * 3600 + $tz_min * 60);
             if ($week == 0 && $wday == 0 && $oday == 0) {
                 // calendar dates
-                $tm = intval(gmmktime($hour, $min, $sec, $month, $mday, $year));
+                $tm = (int)gmmktime($hour, $min, $sec, $month, $mday, $year);
             } else {
-                $tsm = intval(gmmktime(0, 0, 0, 1, 1, $year));
+                $tsm = (int)gmmktime(0, 0, 0, 1, 1, $year);
                 if ($week != 0 && $wday != 0) {
                     // week dates
-                    $days = ($week - 1) * 7 - intval(gmdate('w', $tsm)) + $wday;
+                    $days = ($week - 1) * 7 - (int)gmdate('w', $tsm) + $wday;
                 } else {
                     // ordinal dates
                     $days = $oday - 1;
@@ -506,7 +506,7 @@ class XooNIpsUtilityText extends XooNIpsUtility
                 $tm = $tsm + $days * 86400 + $hour * 3600 + $min * 60 + $sec;
             }
         }
-        $tm = intval($tm) - $tz_offset;
+        $tm = (int)$tm - $tz_offset;
 
         return $tm;
     }

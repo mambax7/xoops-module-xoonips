@@ -67,7 +67,7 @@ class XooNIpsLogicRemoveFile extends XooNIpsLogic
             return;
         } else {
             $sessionid = $vars[0];
-            $file_id = intval($vars[1]);
+            $file_id = (int)$vars[1];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {

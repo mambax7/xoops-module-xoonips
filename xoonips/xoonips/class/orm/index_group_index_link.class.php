@@ -167,7 +167,7 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
      */
     public function getByIndexId($index_id)
     {
-        $criteria = new Criteria('index_id', intval($index_id));
+        $criteria = new Criteria('index_id', (int)$index_id);
         $result = [];
         $links = &$this->getObjects($criteria);
         foreach ($links as $link) {
@@ -186,7 +186,7 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
      */
     public function getByGroupIndexId($group_index_id)
     {
-        $criteria = new Criteria('group_index_id', intval($group_index_id));
+        $criteria = new Criteria('group_index_id', (int)$group_index_id);
         $result = [];
         $links = &$this->getObjects($criteria);
         foreach ($links as $link) {

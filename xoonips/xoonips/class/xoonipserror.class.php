@@ -82,7 +82,7 @@ class XooNIpsError
     public function add($code, $extra = null)
     {
         $this->error[] = [
-            'code' => intval($code),
+            'code' => (int)$code,
             'extra' => null === $extra ? '' : $extra,
         ];
     }

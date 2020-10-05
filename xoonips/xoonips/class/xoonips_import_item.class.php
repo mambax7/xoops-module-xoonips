@@ -461,7 +461,7 @@ class XooNIpsImportItem extends XoopsObject
      */
     public function setUpdateItemId($item_id)
     {
-        $this->_update_item_id = intval($item_id);
+        $this->_update_item_id = (int)$item_id;
     }
 
     /**
@@ -501,7 +501,7 @@ class XooNIpsImportItem extends XoopsObject
      */
     public function setPseudoId($id)
     {
-        $this->_pseudo_id = intval($id);
+        $this->_pseudo_id = (int)$id;
     }
 
     /**
@@ -1217,7 +1217,7 @@ class XooNIpsImportItemHandler
             } elseif (!ctype_digit($attribs['ID'])) {
                 $this->_import_item->setErrors(E_XOONIPS_ATTR_INVALID_VALUE, "ID is not integer(${attribs['ID']})".$this->_get_parser_error_at());
             } else {
-                $this->_import_item->setPseudoId(intval($attribs['ID']));
+                $this->_import_item->setPseudoId((int)$attribs['ID']);
             }
             break;
         case 'ITEM/BASIC/RELATED_TO':
@@ -1370,15 +1370,15 @@ class XooNIpsImportItemHandler
             break;
         case 'ITEM/BASIC/PUBLICATION_YEAR':
             $basic = &$this->_import_item->getVar('basic');
-            $basic->set('publication_year', intval($this->_cdata));
+            $basic->set('publication_year', (int)$this->_cdata);
             break;
         case 'ITEM/BASIC/PUBLICATION_MONTH':
             $basic = &$this->_import_item->getVar('basic');
-            $basic->set('publication_month', intval($this->_cdata));
+            $basic->set('publication_month', (int)$this->_cdata);
             break;
         case 'ITEM/BASIC/PUBLICATION_MDAY':
             $basic = &$this->_import_item->getVar('basic');
-            $basic->set('publication_mday', intval($this->_cdata));
+            $basic->set('publication_mday', (int)$this->_cdata);
             break;
         case 'ITEM/BASIC/URL':
             // url don't any effect to item

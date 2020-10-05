@@ -70,9 +70,9 @@ class XooNIpsNotificationHandler extends XoopsNotificationHandler
             }
         }
         $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('not_modid', intval($module_id)));
+        $criteria->add(new Criteria('not_modid', (int)$module_id));
         $criteria->add(new Criteria('not_category', $category));
-        $criteria->add(new Criteria('not_itemid', intval($item_id)));
+        $criteria->add(new Criteria('not_itemid', (int)$item_id));
         $criteria->add(new Criteria('not_event', $event));
         $mode_criteria = new CriteriaCompo();
         $mode_criteria->add(new Criteria('not_mode', XOOPS_NOTIFICATION_MODE_SENDALWAYS), 'OR');
@@ -106,7 +106,7 @@ class XooNIpsNotificationHandler extends XoopsNotificationHandler
                         $tags_func = $not_config['tags_func'];
                         if (function_exists($tags_func)) {
                             $tags = $tags_func($category,
-                                               intval($item_id), $event);
+                                               (int)$item_id, $event);
                         }
                     }
                 }
@@ -120,7 +120,8 @@ class XooNIpsNotificationHandler extends XoopsNotificationHandler
                         $lookup_func = $not_config['lookup_func'];
                         if (function_exists($lookup_func)) {
                             $item_info = $lookup_func($category,
-                                                      intval($item_id));
+                                                      (int)$item_id
+                            );
                         }
                     }
                 }

@@ -344,7 +344,7 @@ class ListRecordsHandler extends HarvesterHandler
             $orm->set('format', $this->metadataPrefix);
             $orm->set('category_name', $field['category_name']);
             $orm->set('value', $unicode->decode_utf8($field['value'], xoonips_get_server_charset(), 'h'));
-            $orm->set('ordernum', intval($key) + 1);
+            $orm->set('ordernum', (int)$key + 1);
             $orm->set('namespace', $field['namespace']);
             $orm->set('namespace_uri', $field['namespace_uri']);
             $result = $handler->insert($orm, true);
@@ -359,7 +359,7 @@ class ListRecordsHandler extends HarvesterHandler
     public function deleteMetadataFields($metadata_id)
     {
         $handler = &xoonips_getormhandler('xoonips', 'oaipmh_metadata_field');
-        $criteria = new Criteria('metadata_id', intval($metadata_id));
+        $criteria = new Criteria('metadata_id', (int)$metadata_id);
         $handler->deleteAll($criteria, true);
     }
 }

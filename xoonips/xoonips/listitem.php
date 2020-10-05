@@ -255,7 +255,7 @@ $xoopsTpl->assign('maxpage', ceil($num_of_items / $itemcount));
 $xoopsTpl->assign('orderby', $textutil->html_special_chars($orderby));
 $xoopsTpl->assign('order_dir', $order_dir);
 $xoopsTpl->assign('page', $page);
-$xoopsTpl->assign('itemcount', intval($itemcount));
+$xoopsTpl->assign('itemcount', (int)$itemcount);
 $xoopsTpl->assign('num_of_items', $textutil->html_special_chars($num_of_items));
 $xoopsTpl->assign('page_no_label', $textutil->html_special_chars($page_no_label));
 

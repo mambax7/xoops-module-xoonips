@@ -49,7 +49,7 @@ function xoonips_get_version()
     if (!is_object($module_obj)) {
         return 0;
     }
-    $version = intval($module_obj->getVar('version', 'n'));
+    $version = (int)$module_obj->getVar('version', 'n');
 
     return $version;
 }
@@ -543,7 +543,7 @@ function xoonips_get_transfer_request_item_detail_url($item_id)
 {
     return XOOPS_URL.'/modules/xoonips/transfer_item.php?'
         .'action=detail_item&item_id='
-        .intval($item_id);
+           . (int)$item_id;
 }
 
 /**

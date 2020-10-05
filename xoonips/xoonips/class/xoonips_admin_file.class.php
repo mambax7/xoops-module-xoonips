@@ -138,7 +138,7 @@ class XooNIpsAdminFileHandler extends XooNIpsFileHandler
                     // file search is not supported
                     return true;
                 }
-                if (floatval($fs_version) <= floatval($old_fs_version)) {
+                if ((float)$fs_version <= (float)$old_fs_version) {
                     // no need to update search text
                     return true;
                 }

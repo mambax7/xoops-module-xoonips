@@ -657,9 +657,9 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
     public function get_date_template_var($year, $month, $mday)
     {
         $result = ['year' => '', 'month' => '', 'mday' => ''];
-        $int_year = intval($year);
-        $int_month = intval($month);
-        $int_mday = intval($mday);
+        $int_year = (int)$year;
+        $int_month = (int)$month;
+        $int_mday = (int)$mday;
 
         $result['year'] = date('Y', mktime(0, 0, 0, 1, 1, $int_year));
         $result['month'] = date('M', mktime(0, 0, 0, $int_month, 1, $int_year));
@@ -794,7 +794,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
         if ($basic->get('doi') == ''
             || XNP_CONFIG_DOI_FIELD_PARAM_NAME == ''
         ) {
-            return $base_url.'?item_id='.intval($item_id);
+            return $base_url.'?item_id=' . (int)$item_id;
         }
 
         return $base_url.'?'.XNP_CONFIG_DOI_FIELD_PARAM_NAME.'='.urlencode($basic->get('doi'));

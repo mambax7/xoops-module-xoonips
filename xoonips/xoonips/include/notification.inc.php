@@ -82,13 +82,13 @@ function xoonips_notification_get_item_tags($item_id)
     $xoops_user         = $xoops_user_handler->get($item_basic->get('uid'));
 
     $tags = [
-        'ITEM_DOI' => strval($item_basic->get('doi')),
-        'ITEM_ITEMTYPE' => strval($item_type->get('display_name')),
-        'ITEM_TITLE' => (empty($titles) ? '' : strval($titles[0]->get('title'))),
-        'ITEM_UNAME' => strval($xoops_user->getVar('uname', 'n')),
-        'ITEM_NAME' => strval($xoops_user->getVar('name', 'n')),
+        'ITEM_DOI' => (string)$item_basic->get('doi'),
+        'ITEM_ITEMTYPE' => (string)$item_type->get('display_name'),
+        'ITEM_TITLE' => (empty($titles) ? '' : (string)$titles[0]->get('title')),
+        'ITEM_UNAME' => (string)$xoops_user->getVar('uname', 'n'),
+        'ITEM_NAME' => (string)$xoops_user->getVar('name', 'n'),
         'ITEM_KEYWORDS' => implode(',', $keyword_strings),
-        'ITEM_DESCRIPTION' => strval($item_basic->get('description')),
+        'ITEM_DESCRIPTION' => (string)$item_basic->get('description'),
     ];
     if ($item_basic->get('doi') == '') {
         $tags['ITEM_DETAIL_URL'] = XOOPS_URL.

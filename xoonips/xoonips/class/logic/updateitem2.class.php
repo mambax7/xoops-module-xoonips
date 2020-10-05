@@ -535,10 +535,10 @@ class XooNIpsLogicUpdateItem2 extends XooNIpsLogic
             $files = $item_compo->getVar($file_type_name);
             if (is_array($files)) {
                 foreach ($files as $file) {
-                    $file_id_to_filetypes[intval($file->get('file_id'))] = $file_type_name;
+                    $file_id_to_filetypes[(int)$file->get('file_id')] = $file_type_name;
                 }
             } elseif ($files && $files->get('file_id')) {
-                $file_id_to_filetypes[intval($files->get('file_id'))] = $file_type_name;
+                $file_id_to_filetypes[(int)$files->get('file_id')] = $file_type_name;
             }
         }
 
@@ -562,8 +562,8 @@ class XooNIpsLogicUpdateItem2 extends XooNIpsLogic
         $file_handler = &xoonips_getormhandler('xoonips', 'file');
         $add_file_id_to_types = [];
         foreach ($add_files as $file) {
-            $file_type = $file_type_handler->get($file->get('file_type_id'));
-            $add_file_id_to_types[intval($file->get('file_id'))] = $file_type->get('name');
+            $file_type                                        = $file_type_handler->get($file->get('file_type_id'));
+            $add_file_id_to_types[(int)$file->get('file_id')] = $file_type->get('name');
         }
 
         $all_file_ids = array_merge(

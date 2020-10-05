@@ -1130,7 +1130,7 @@ class XooNIpsGraph
         // values
         $this->graph->y_order = [];
         foreach ($this->data as $key => $datum) {
-            $key = 'data:'.strval($key);
+            $key = 'data:' . (string)$key;
             $this->graph->y_order[] = $key;
             $this->graph->y_data[$key] = &$datum->values;
             switch ($datum->data_type) {

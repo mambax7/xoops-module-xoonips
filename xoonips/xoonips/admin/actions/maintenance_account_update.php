@@ -140,7 +140,7 @@ function check_variables(&$vals)
     $missing_fields = [];
     foreach ($requirements as $type => $reqs) {
         foreach ($reqs as $name) {
-            $value = trim(strval($vals[$type][$name]));
+            $value = trim((string)$vals[$type][$name]);
             if ($value === '') {
                 $missing_fields = $name;
             }

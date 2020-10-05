@@ -126,9 +126,9 @@ function _xoonips_eventlog_array2csv(&$download, $oneline)
  */
 function _xoonips_eventlog_date2time($is_from, $year, $month, $day = 0)
 {
-    $year = intval($year);
-    $month = intval($month);
-    $day = intval($day);
+    $year = (int)$year;
+    $month = (int)$month;
+    $day = (int)$day;
     if ($is_from) {
         if ($day == 0) {
             $day = 1;
@@ -685,7 +685,7 @@ function xoonips_eventlog_download($is_post, $log_type_id)
             $event_count = $obj->getExtraVar('cnt');
             $logs[$event_date] = $event_count;
         }
-        $days = intval(($end_time - $start_time) / 86400);
+        $days = (int)(($end_time - $start_time) / 86400);
         $total = 0;
         for ($i = 0; $i < $days; ++$i) {
             $label = date('Y-m-d', $start_time + 86400 * $i);
@@ -1040,7 +1040,7 @@ function xoonips_eventlog_graph($log_type_id)
             $logs[$event_date] = $event_count;
         }
         // prepare for days
-        $days = intval(($end_time - $start_time) / 86400);
+        $days = (int)(($end_time - $start_time) / 86400);
         // create access log of all days from $arr variable
         $amount = 0;
         for ($i = 0; $i < $days; ++$i) {
@@ -1048,10 +1048,10 @@ function xoonips_eventlog_graph($log_type_id)
             [$year, $month, $day] = explode('-', $label);
             // get access count if given.
             $count = (array_key_exists($label, $logs)) ? $logs[$label] : 0;
-            $amount += intval($count);
+            $amount += (int)$count;
             // create x label
             if ($days < 70) {
-                $day_label = strval(intval($day));
+                $day_label = (string)intval($day);
             } elseif ($days < 190) {
                 if ($day == '01') {
                     $day_label = $year.'.'.$month;
@@ -1059,7 +1059,7 @@ function xoonips_eventlog_graph($log_type_id)
                     $day_label = '';
                 }
             } else {
-                if ($day == '01' && ((intval($month) % 3 == 1))) {
+                if ($day == '01' && (((int)$month % 3 == 1))) {
                     $day_label = $year.'.'.$month;
                 } else {
                     $day_label = '';
@@ -1080,17 +1080,17 @@ function xoonips_eventlog_graph($log_type_id)
         // get each day, month, year
         $month_arr = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
         // calc months
-        $years = intval($en_year) - intval($st_year);
+        $years = (int)$en_year - (int)$st_year;
         if ($years <= 0) {
-            $months = intval($en_month) - intval($st_month) + 1;
+            $months = (int)$en_month - (int)$st_month + 1;
         } else {
-            $months = intval($en_month) - intval($st_month) + 1 + $years * 12;
+            $months = (int)$en_month - (int)$st_month + 1 + $years * 12;
         }
         $amount = 0;
         for ($i = 0; $i < $months; ++$i) {
             $tmp = $st_month + $i - 1;
             $month = ($tmp % 12) + 1;
-            $year = $st_year + intval($tmp / 12);
+            $year = $st_year + (int)($tmp / 12);
             // create x label
             $month_label = $year.'-'.$month_arr[$month - 1];
             // get access count if given.

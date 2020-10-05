@@ -180,7 +180,7 @@ class XooNIpsOrmOaipmhRepositoriesHandler extends XooNIpsTableObjectHandler
             foreach ($fields as $field) {
                 $log[$field] = $obj->getVar($field, $fmt);
             }
-            $log['last_access_date'] = date('Y-m-d H:i:s', intval($log['last_access_date']));
+            $log['last_access_date'] = date('Y-m-d H:i:s', (int)$log['last_access_date']);
             $logs[] = &$log;
             unset($log);
         }

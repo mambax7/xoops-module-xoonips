@@ -627,7 +627,7 @@ class OAIPMHHandler
             $sql = 'SELECT link.index_id FROM '
                 .$xoopsDB->prefix('xoonips_index_item_link').' as link LEFT JOIN '
                 .$xoopsDB->prefix('xoonips_index').' as idx on link.index_id=idx.index_id '
-                .' WHERE link.item_id='.intval($parsed['item_id'])
+                .' WHERE link.item_id=' . (int)$parsed['item_id']
                 .' AND open_level='.OL_PUBLIC;
             $result = $xoopsDB->query($sql);
             if ($result) {

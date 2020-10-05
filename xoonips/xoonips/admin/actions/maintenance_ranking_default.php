@@ -58,11 +58,11 @@ $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 $max_file_size = ini_get('upload_max_filesize');
 if (!is_numeric($max_file_size)) {
     if (strpos($max_file_size, 'M') !== false) {
-        $max_file_size = intval($max_file_size) * 1024 * 1024;
+        $max_file_size = (int)$max_file_size * 1024 * 1024;
     } elseif (strpos($max_file_size, 'K') !== false) {
-        $max_file_size = intval($max_file_size) * 1024;
+        $max_file_size = (int)$max_file_size * 1024;
     } elseif (strpos($max_file_size, 'G') !== false) {
-        $max_file_size = intval($max_file_size) * 1024 * 1024 * 1024;
+        $max_file_size = (int)$max_file_size * 1024 * 1024 * 1024;
     } else {
         exit();
     }

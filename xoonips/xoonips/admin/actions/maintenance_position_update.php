@@ -44,7 +44,7 @@ $post_vals = xoonips_admin_get_requests('post', $post_keys);
 $xusers_handler = &xoonips_getormhandler('xoonips', 'users');
 foreach ($post_vals['order'] as $uid => $order) {
     $xusers_obj = $xusers_handler->get($uid);
-    $old_order = intval($xusers_obj->getVar('user_order', 'n'));
+    $old_order = (int)$xusers_obj->getVar('user_order', 'n');
     if ($order != $old_order) {
         $xusers_obj->set('user_order', $order);
         $xusers_handler->insert($xusers_obj);

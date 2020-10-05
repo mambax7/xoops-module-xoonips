@@ -475,7 +475,7 @@ function xnpGetPreviewDetailBlock($item_id)
         $imageFileName = XOOPS_URL."/modules/xoonips/image.php?file_id=$fileID";
         $htmlCaption = $textutil->html_special_chars($caption);
         $imageHtml1[] = '<a href="'.$imageFileName.'" target="_blank"><img src="'.$thumbnailFileName.'" alt="'.$htmlCaption.'"/></a>';
-        $imageHtml2[] = "$htmlCaption";
+        $imageHtml2[] = (string)$htmlCaption;
         $fileIDs[] = $fileID;
     }
 
@@ -723,7 +723,7 @@ function xnpGetAttachmentFilenameBlock($item_id, $name)
             $fileName = mb_substr($fileName, 0, mb_strrpos($fileName, '.'));
         }
         $htmlFileName = $textutil->html_special_chars($fileName);
-        $html = "$htmlFileName";
+        $html = (string)$htmlFileName;
     }
 
     return ['name' => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL, 'value' => $html];
@@ -772,7 +772,7 @@ function xnpGetAttachmentFiletypeBlock($item_id, $name)
             $fileType = mb_substr($fileType, mb_strrpos($fileType, '.') + 1);
         }
         $htmlFileType = $textutil->html_special_chars($fileType);
-        $html = "$htmlFileType";
+        $html = (string)$htmlFileType;
     }
 
     return ['name' => _MD_XOONIPS_ITEM_ATTACHMENT_LABEL, 'value' => $html];
@@ -1099,7 +1099,7 @@ function xnpGetPreviewEditBlock($item_id)
         $imageFileName = XOOPS_URL."/modules/xoonips/image.php?file_id=$fileID";
         $htmlCaption = $textutil->html_special_chars($caption);
         $imageHtml1[] = '<a href="'.$imageFileName.'" target="_blank"><img src="'.$thumbnailFileName.'" alt="thumbnail"/></a>';
-        $imageHtml2[] = "$htmlCaption";
+        $imageHtml2[] = (string)$htmlCaption;
         $imageHtml3[] = '<input class="formButton" type="button" name="preview_delete_button_'.$fileID.'" value="'._MD_XOONIPS_ITEM_DELETE_BUTTON_LABEL.'" onclick="xnpSubmitFileDelete( this.form, \'preview\', '.$fileID.' )"/>';
     }
     $html = xnpMakeTable([$imageHtml1, $imageHtml2, $imageHtml3], 3);
@@ -1426,7 +1426,7 @@ function xnpGetPreviewConfirmBlock($item_id)
             $imageFileName = XOOPS_URL."/modules/xoonips/image.php?file_id=$fileID";
             $htmlCaption = $textutil->html_special_chars($caption);
             $imageHtml1[] = "<a href='$imageFileName' target='_blank'><img src='$thumbnailFileName' alt='thumbnail'/></a>";
-            $imageHtml2[] = "$htmlCaption";
+            $imageHtml2[] = (string)$htmlCaption;
         }
         $html = xnpMakeTable([$imageHtml1, $imageHtml2], 3)."<input type='hidden' name='previewFileID' value='$previewFileID' />";
     }
@@ -1527,7 +1527,7 @@ function xnpGetIndexConfirmBlock($item_id)
             continue;
         }
         $str = xnpGetIndexPathString($xnpsid, $xid);
-        $indexes[$xid] = "$str";
+        $indexes[$xid] = (string)$str;
     }
 
     return ['name' => _MD_XOONIPS_ITEM_INDEX_LABEL, 'value' => implode('<br />', array_values($indexes))];
@@ -1569,7 +1569,7 @@ function xnpGetIndexRegisterBlock()
                     continue;
                 }
                 $str = xnpGetIndexPathString($xnpsid, $xid);
-                $indexes[$xid] = "$str";
+                $indexes[$xid] = (string)$str;
             }
         }
     }
@@ -2966,7 +2966,7 @@ function xnpGetBasicInformationMetadata($metadataPrefix, $item_id)
                     $result = xnp_get_index($_SESSION['XNPSID'], $xid, $index);
                     if (0 == $result) {
                         $str = xnpGetIndexPathServerString($_SESSION['XNPSID'], $xid);
-                        $subject[] = "$str";
+                        $subject[] = (string)$str;
                     }
                 }
             }
@@ -3012,7 +3012,7 @@ function xnpGetBasicInformationMetadata($metadataPrefix, $item_id)
                     $result = xnp_get_index($_SESSION['XNPSID'], $xid, $index);
                     if (0 == $result) {
                         $str = xnpGetIndexPathServerString($_SESSION['XNPSID'], $xid);
-                        $subject[] = "$str";
+                        $subject[] = (string)$str;
                     }
                 }
             }
@@ -3050,7 +3050,7 @@ function xnpGetRightsDetailBlock($item_id, $use_cc = 1, $text = '', $cc_commerci
         return
         [
             'name'   => _MD_XOONIPS_ITEM_TEXTFILE_LABEL,
-            'value'  => "$text",
+            'value'  => (string)$text,
             'hidden' => $hidden, ];
     } else {
         return
@@ -3144,7 +3144,7 @@ function xnpGetRightsPrinterFriendlyBlock($item_id, $use_cc, $text)
         return
         [
             'name'  => _MD_XOONIPS_ITEM_TEXTFILE_LABEL,
-            'value' => "$text", ];
+            'value' => (string)$text, ];
     } else {
         return
         [
@@ -3499,9 +3499,9 @@ function xnpConfirmHtml(&$assoc, $table_wo_prefix, $names = null, $enc = null)
 
 function xnpDate($year, $month, $day)
 {
-    $int_year = intval($year);
-    $int_month = intval($month);
-    $int_day = intval($day);
+    $int_year = (int)$year;
+    $int_month = (int)$month;
+    $int_day = (int)$day;
     if (0 == $int_month) {
         $date = date(YEAR_FORMAT, mktime(0, 0, 0, 1, 1, $int_year));
     } else {
@@ -3512,12 +3512,12 @@ function xnpDate($year, $month, $day)
         }
     }
     if ($int_year < 0) {
-        $date = str_replace('1970', strval(abs($int_year)), $date);
+        $date = str_replace('1970', (string)abs($int_year), $date);
         $date .= 'B.C.';
     } elseif ($int_year < 1970) {
-        $date = str_replace('1970', strval($int_year), $date);
+        $date = str_replace('1970', (string)$int_year, $date);
     } elseif ($int_year >= 2070) {
-        $date = str_replace('1970', strval($int_year), $date);
+        $date = str_replace('1970', (string)$int_year, $date);
     }
 
     return $date;
@@ -3525,9 +3525,9 @@ function xnpDate($year, $month, $day)
 
 function xnpISO8601($year, $month, $day)
 {
-    $int_year = intval($year);
-    $int_month = intval($month);
-    $int_day = intval($day);
+    $int_year = (int)$year;
+    $int_month = (int)$month;
+    $int_day = (int)$day;
     if (0 == $int_month) {
         $date = sprintf('%04s', $int_year);
     } elseif (0 == $int_day) {
@@ -3587,7 +3587,7 @@ function xnpGetDoiByItemId($item_id, &$doi)
     global $xoopsDB;
     $doi = '';
     $sql = 'SELECT doi FROM '.$xoopsDB->prefix('xoonips_item_basic');
-    $sql .= ' WHERE item_id = '.intval($item_id);
+    $sql .= ' WHERE item_id = ' . (int)$item_id;
     $result = $xoopsDB->query($sql);
     if (false === $result) {
         xoonips_error_exit(500);
@@ -3723,9 +3723,9 @@ function xnpListIndexTree($mode = XOONIPS_LISTINDEX_MODE_ALL, $assoc_array_mode 
     $parent_id_full_path = [];
     $result = [];
     while ($ar = $xoopsDB->fetchArray($db_result)) {
-        $index_id = intval($ar['index_id']);
+        $index_id = (int)$ar['index_id'];
         $tree_items[$index_id] = $ar;
-        $pid = intval($ar['parent_index_id']);
+        $pid = (int)$ar['parent_index_id'];
         if (!isset($parent_full_path[$pid])) {
             $parent_full_path[$pid] = '';
         }
@@ -3773,7 +3773,7 @@ function xnpListIndexTree($mode = XOONIPS_LISTINDEX_MODE_ALL, $assoc_array_mode 
         $a['fullpath'] = $parent_path.$v['title'];
         $a['id_fullpath'] = $parent_id_path.$v['index_id'];
         if ($assoc_array_mode) {
-            $result[intval($k)] = $a;
+            $result[(int)$k] = $a;
         } else {
             $result[] = $a;
         }
@@ -4037,9 +4037,9 @@ class XooNIpsItemLibraryObject
         }
         // publication date (year, month, mday)
         $tpl = new XoopsTpl();
-        $pubyear = isset($basic['publication_year']) ? intval($basic['publication_year']) : 0;
-        $pubmonth = isset($basic['publication_month']) ? intval($basic['publication_month']) : 0;
-        $pubmday = isset($basic['publication_mday']) ? intval($basic['publication_mday']) : 0;
+        $pubyear = isset($basic['publication_year']) ? (int)$basic['publication_year'] : 0;
+        $pubmonth = isset($basic['publication_month']) ? (int)$basic['publication_month'] : 0;
+        $pubmday = isset($basic['publication_mday']) ? (int)$basic['publication_mday'] : 0;
         $gmtime = 0 == $pubyear ? '' : sprintf('%04d-%02d-%02d', $pubyear, $pubmonth, $pubmday);
         $tpl->assign('gmtime', $gmtime);
         $publcation_date = $tpl->fetch('db:xoonips_publication_date.html');
@@ -4439,7 +4439,7 @@ class XooNIpsItemLibraryObject
         $ids = preg_split("/[\r\n]+/", $related_to);
         $related_to_ids = [];
         foreach ($ids as $id) {
-            $id = intval($id);
+            $id = (int)$id;
             if (0 != $id) {
                 $related_to_ids[] = $id;
             }

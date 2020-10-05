@@ -52,7 +52,7 @@ class XooNIpsUserCompoHandler extends XooNIpsRelatedObjectHandler
     public function isCertifiedUser($uid)
     {
         $c = new CriteriaCompo();
-        $c->add(new Criteria('uid', intval($uid)));
+        $c->add(new Criteria('uid', (int)$uid));
         $c->add(new Criteria('level', 1, '>='));
         $rows = &$this->getObjects($c);
         if ($rows && count($rows) == 1) {
@@ -77,7 +77,7 @@ class XooNIpsUserCompoHandler extends XooNIpsRelatedObjectHandler
      */
     public function deleteAccount($uid)
     {
-        $criteria = new Criteria('uid', intval($uid));
+        $criteria = new Criteria('uid', (int)$uid);
 
         //delete user's item
         $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
@@ -112,7 +112,7 @@ class XooNIpsUserCompoHandler extends XooNIpsRelatedObjectHandler
 
         //remove user from notifications
         $notification_handler = xoops_getHandler('notification');
-        $notification_handler->deleteAll(new Criteria('not_uid', intval($uid)));
+        $notification_handler->deleteAll(new Criteria('not_uid', (int)$uid));
 
         //delete xoonips user
         $xu_handler = &xoonips_getormhandler('xoonips', 'users');

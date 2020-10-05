@@ -189,7 +189,7 @@ class XooNIpsRelatedObjectHandler
                         return false;
                     }
                     // add value of primary_key to insert_ids
-                    $insert_ids[] = intval($objs[$k]->get($this->handlers[$key]['handler']->getKeyName()));
+                    $insert_ids[] = (int)$objs[$k]->get($this->handlers[$key]['handler']->getKeyName());
                 }
             } else {
                 // insert orm

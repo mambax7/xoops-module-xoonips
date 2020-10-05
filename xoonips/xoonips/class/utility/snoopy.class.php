@@ -1079,7 +1079,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
         $results = implode("\r\n", $results);
 
-        $result_headers = file("$headerfile");
+        $result_headers = file((string)$headerfile);
 
         $this->_redirectaddr = false;
         unset($this->headers);
@@ -1139,7 +1139,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
             $this->results = $results;
         }
 
-        unlink("$headerfile");
+        unlink((string)$headerfile);
 
         return true;
     }
@@ -1252,9 +1252,9 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
      */
     public function _prepare_post_body($formvars, $formfiles)
     {
-        settype($formvars, 'array');
-        settype($formfiles, 'array');
-        $postdata = '';
+        $formvars  = (array)$formvars;
+        $formfiles = (array)$formfiles;
+        $postdata  = '';
 
         if (count($formvars) == 0 && count($formfiles) == 0) {
             return;
@@ -1294,7 +1294,7 @@ class XooNIpsUtilitySnoopy extends XooNIpsUtility
 
             reset($formfiles);
             while (list($field_name, $file_names) = each($formfiles)) {
-                settype($file_names, 'array');
+                $file_names = (array)$file_names;
                 while (list(, $file_name) = each($file_names)) {
                     if (!is_readable($file_name)) {
                         continue;

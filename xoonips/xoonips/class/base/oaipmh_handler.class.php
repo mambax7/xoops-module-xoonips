@@ -276,7 +276,7 @@ class OAIPMHHarvester
     {
         $metadata_handler = &xoonips_getormhandler('xoonips', 'oaipmh_metadata');
 
-        $metadata_criteria = new Criteria('repository_id', intval($repository_id));
+        $metadata_criteria = new Criteria('repository_id', (int)$repository_id);
         $rows = &$metadata_handler->getObjects($metadata_criteria, false, 'count(*)');
         if (!$rows) {
             return 0;

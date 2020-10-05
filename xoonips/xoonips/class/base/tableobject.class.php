@@ -478,8 +478,8 @@ class XooNIpsTableObject extends XoopsObject
                         continue 2;
                     }
                         $cleanv = $ts->censorString($cleanv);
-                    if (isset($v['maxlength']) && mb_strlen($cleanv, _CHARSET) > intval($v['maxlength'])) {
-                        $this->setErrors("$k must be shorter than ".intval($v['maxlength']).' characters.');
+                    if (isset($v['maxlength']) && mb_strlen($cleanv, _CHARSET) > (int)$v['maxlength']) {
+                        $this->setErrors("$k must be shorter than " . (int)$v['maxlength'] . ' characters.');
                         continue 2;
                     }
                     break;
@@ -495,7 +495,7 @@ class XooNIpsTableObject extends XoopsObject
                     break;
                 case XOBJ_DTYPE_INT:
                     if (null !== $cleanv) {
-                        $cleanv = intval($cleanv);
+                        $cleanv = (int)$cleanv;
                     }
                     break;
                 case XOBJ_DTYPE_EMAIL:
@@ -523,7 +523,7 @@ class XooNIpsTableObject extends XoopsObject
                 case XOBJ_DTYPE_STIME:
                 case XOBJ_DTYPE_MTIME:
                 case XOBJ_DTYPE_LTIME:
-                        $cleanv = !is_string($cleanv) ? intval($cleanv) : strtotime($cleanv);
+                        $cleanv = !is_string($cleanv) ? (int)$cleanv : strtotime($cleanv);
                     break;
                 case XOBJ_DTYPE_BINARY:
                         $cleanv = $v['value'];
@@ -531,8 +531,8 @@ class XooNIpsTableObject extends XoopsObject
                         $this->setErrors($k.' is required.');
                         continue 2;
                     }
-                    if (isset($v['maxlength']) && strlen($cleanv) > intval($v['maxlength'])) {
-                        $this->setErrors("$k must be shorter than ".intval($v['maxlength']).' characters.');
+                    if (isset($v['maxlength']) && strlen($cleanv) > (int)$v['maxlength']) {
+                        $this->setErrors("$k must be shorter than " . (int)$v['maxlength'] . ' characters.');
                         continue 2;
                     }
                     break;
@@ -798,7 +798,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
     public function &get($id)
     {
         $ret = false;
-        if (intval($id) > 0 || $this->__is_string_primary_key) {
+        if ((int)$id > 0 || $this->__is_string_primary_key) {
             if ($this->__is_string_primary_key) {
                 $id_str = $this->db->quoteString($id);
             } else {

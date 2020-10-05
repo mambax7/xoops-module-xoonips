@@ -45,7 +45,7 @@ class XooNIpsXmlRpcTransformFile extends XooNIpsXmlRpcTransformElement
         $obj->assignVar('file_id', $array['id']);
         $obj->assignVar('file_type_id', $filetypes[0]->get('file_type_id'));
         $obj->assignVar('original_file_name', $unicode->decode_utf8($array['originalname'], xoonips_get_server_charset(), 'h'));
-        $obj->assignVar('file_size', intval($array['size']));
+        $obj->assignVar('file_size', (int)$array['size']);
         $obj->assignVar('mime_type', $array['mimetype']);
         $obj->assignVar('caption', $unicode->decode_utf8($array['caption'], xoonips_get_server_charset(), 'h'));
         $obj->assignVar('thumbnail_file', $array['thumbnail']);

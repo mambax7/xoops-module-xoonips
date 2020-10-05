@@ -300,7 +300,7 @@ function xoonips_ranking_show($is_arrival)
                 $uid = $obj->getVar('uid', 'n');
                 $title = $textutil->html_special_chars($obj->getExtraVar('uname'));
                 $title = $textutil->truncate($title, $maxlen, $etc);
-                $count = intval($obj->getExtraVar('count'));
+                $count = (int)$obj->getExtraVar('count');
                 $url = XOOPS_URL.'/modules/xoonips/showusers.php?uid='.$uid;
                 $items[] = [
                     'title' => $title,

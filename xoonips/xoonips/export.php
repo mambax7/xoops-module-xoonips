@@ -110,7 +110,7 @@ if ($op == 'export') {
             // exprot index tree structure only
             //
             $index = [];
-            $res   = xnp_get_index($_SESSION['XNPSID'], intval($index_id), $index);
+            $res   = xnp_get_index($_SESSION['XNPSID'], (int)$index_id, $index);
             if ($res != RES_OK) {
                 $system_message = "can't get indexes";
                 $op = 'list';
@@ -174,7 +174,7 @@ if ($op == 'export') {
                 if ($f == '.' || $f == '..' || $f == 'files') {
                     continue;
                 }
-                $zippedFiles[] = "$f";
+                $zippedFiles[] = (string)$f;
                 $removeFiles[] = "${export_dir}/${f}";
             }
             closedir($dh);

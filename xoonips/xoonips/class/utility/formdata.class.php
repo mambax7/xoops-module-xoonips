@@ -324,7 +324,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
             break;
         case 'b':
             // boolean
-            $val = (intval($val) != 0);
+            $val = ((int)$val != 0);
             break;
         case 'i':
             // integer
@@ -333,7 +333,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
                     $this->_form_error(__LINE__);
                 }
             }
-            $val = intval($val);
+            $val = (int)$val;
             break;
         case 'f':
             // float
@@ -342,7 +342,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
                     $this->_form_error(__LINE__);
                 }
             }
-            $val = floatval($val);
+            $val = (float)$val;
             break;
         case 'n':
             // none

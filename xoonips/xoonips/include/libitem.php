@@ -91,9 +91,9 @@ function xnpitmgrListIndexTree($mode = XNPITMGR_LISTMODE_ALL, $uid = 0)
     $parent_full_path = [];
     $result = [];
     while ($ar = $xoopsDB->fetchArray($db_result)) {
-        $index_id = intval($ar['index_id']);
+        $index_id = (int)$ar['index_id'];
         $tree_items[$index_id] = $ar;
-        $pid = intval($ar['parent_index_id']);
+        $pid = (int)$ar['parent_index_id'];
         if (!isset($parent_full_path[$pid])) {
             $parent_full_path[$pid] = '';
         }
@@ -156,7 +156,7 @@ function xnpitmgrListIndexItems($index_ids)
     }
     $result = [];
     while (list($id) = $xoopsDB->fetchRow($db_result)) {
-        $result[] = intval($id);
+        $result[] = (int)$id;
     }
 
     return $result;

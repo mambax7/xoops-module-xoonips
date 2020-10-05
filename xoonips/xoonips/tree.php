@@ -193,7 +193,7 @@ unset($i);
 $attributes = [
     'url' => XOOPS_URL.'/modules/xoonips',
     'target_url' => $xoonips_target_url,
-    'link_is_checkbox' => intval($get_vals['checkbox']),
+    'link_is_checkbox' => (int)$get_vals['checkbox'],
     'selected_tab' => $get_vals['selected_tab'],
     'onclick_title' => $get_vals['onclick_title'],
     'image_url' => $tree_image_url,

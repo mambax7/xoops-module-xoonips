@@ -474,11 +474,11 @@ if ('metadata' == $search_tab || 'metadata' == $search_itemtype) {
     $xoopsTpl->assign('selected_original', $selected_original);
 }
 
-$xoopsTpl->assign('page', intval($page));
+$xoopsTpl->assign('page', (int)$page);
 $xoopsTpl->assign('order_by', $order_by);
-$xoopsTpl->assign('order_dir', intval($order_dir));
-$xoopsTpl->assign('item_per_page', intval($item_per_page));
-$xoopsTpl->assign('search_cache_id', intval($search_cache_id));
+$xoopsTpl->assign('order_dir', (int)$order_dir);
+$xoopsTpl->assign('item_per_page', (int)$item_per_page);
+$xoopsTpl->assign('search_cache_id', (int)$search_cache_id);
 $xoopsTpl->assign('search_itemtype', $textutil->html_special_chars($search_itemtype));
 $xoopsTpl->assign('search_tab', $search_tab);
 $xoopsTpl->assign('submit_url', $textutil->html_special_chars($submit_url));
@@ -953,7 +953,7 @@ function _xoonips_filter_add_items($index_id, $iids)
     if (is_array($iids) && !empty($iids)) {
         $idx_obj = &$idx_handler->get($index_id);
         if (false !== $idx_obj && OL_PRIVATE == $idx_obj->get('open_level')) {
-            $uid = intval($idx_obj->get('uid'));
+            $uid = (int)$idx_obj->get('uid');
             $criteria = new CriteriaCompo(new Criteria('uid', $uid));
             $criteria->add(new Criteria('item_id', '('.implode(',', $iids).')', 'IN'));
             $ib_objs = $ib_handler->getObjects($criteria, 'item_id');

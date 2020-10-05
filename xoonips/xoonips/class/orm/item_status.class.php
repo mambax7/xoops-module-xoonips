@@ -73,7 +73,7 @@ class XooNIpsOrmItemStatusHandler extends XooNIpsTableObjectHandler
         $criteria1 = new CriteriaCompo();
         $criteria1->add(new Criteria('certify_state', CERTIFIED));
         $criteria1->add(new Criteria('open_level', OL_PUBLIC));
-        $criteria1->add(new Criteria('item_id', intval($item_id), '=', 'txil'));
+        $criteria1->add(new Criteria('item_id', (int)$item_id, '=', 'txil'));
         $join = new XooNIpsJoinCriteria('xoonips_index_item_link', 'index_id', 'index_id', 'LEFT', 'txil');
         $join->cascade(new XooNIpsJoinCriteria('xoonips_item_status', 'item_id', 'item_id', 'LEFT', 'tis'), 'txil', true);
         $results = &$index_handler->getObjects($criteria1, false, 'txil.item_id, tis.is_deleted', true, $join);
@@ -102,7 +102,7 @@ class XooNIpsOrmItemStatusHandler extends XooNIpsTableObjectHandler
         $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
         $criteria2 = new CriteriaCompo();
         $criteria2->add(new Criteria('is_deleted', 0));
-        $criteria2->add(new Criteria('item_id', intval($item_id)));
+        $criteria2->add(new Criteria('item_id', (int)$item_id));
         $rows = &$item_status_handler->getObjects($criteria2);
         if (!$rows) {
             return false;

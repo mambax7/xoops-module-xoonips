@@ -158,12 +158,12 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
      */
     public function getByIndexId($index_id, $uid)
     {
-        $criteria = new CriteriaCompo(new Criteria('index_id', intval($index_id)));
+        $criteria = new CriteriaCompo(new Criteria('index_id', (int)$index_id));
         $result = [];
         $links = &$this->getObjects($criteria);
         foreach ($links as $link) {
             $xoonips_item_handler = &xoonips_getormcompohandler('xoonips', 'item');
-            if (!$xoonips_item_handler->getPerm($link->get('item_id'), intval($uid), 'read')) {
+            if (!$xoonips_item_handler->getPerm($link->get('item_id'), (int)$uid, 'read')) {
                 continue;
             }
             $result[$link->get('index_item_link_id')] = $link;
@@ -272,7 +272,7 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
         $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER');
         $index_handler = &xoonips_getormhandler('xoonips', 'index');
         $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
-        $criteria = new CriteriaCompo(new Criteria('item_id', intval($item_id)));
+        $criteria = new CriteriaCompo(new Criteria('item_id', (int)$item_id));
         $criteria->add(new Criteria('open_level', OL_PRIVATE));
         $index_item_links = &$index_item_link_handler->getObjects($criteria, false, '', false, $join);
         foreach ($index_item_links as $link) {

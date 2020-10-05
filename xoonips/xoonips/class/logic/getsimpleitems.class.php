@@ -96,7 +96,7 @@ class XooNIpsLogicGetSimpleItems extends XooNIpsLogic
         $esc_ids = [];
         foreach ($ids as $id) {
             if ($id_type == 'item_id') {
-                $esc_ids[] = intval($id);
+                $esc_ids[] = (int)$id;
             } elseif ($id_type == 'ext_id') {
                 $esc_ids[] = $GLOBALS['xoopsDB']->quoteString($id);
             }

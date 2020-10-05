@@ -55,7 +55,7 @@ class XooNIpsPageNavi
         }
         $this->_count = $count;
         $this->_limit = $limit;
-        $this->_maxpage = intval(ceil($count / $limit));
+        $this->_maxpage = (int)ceil($count / $limit);
         if ($this->_maxpage == 0) {
             $page = 1;
         } elseif ($this->_maxpage < $page) {

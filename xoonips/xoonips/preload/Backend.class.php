@@ -38,7 +38,7 @@ class Xoonips_Backend extends XCube_ActionFilter
         $join->cascade(new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'idx'), 'iil', true);
         $res = &$ib_handler->open($criteria, $fields, false, $join);
         while ($obj = &$ib_handler->getNext($res)) {
-            $item_id = intval($obj->get('item_id'));
+            $item_id = (int)$obj->get('item_id');
             $doi = $obj->get('doi');
             $title = $this->_getItemTitle($item_id, 's');
             $url = $this->_getItemUrl($item_id, $doi, 's');

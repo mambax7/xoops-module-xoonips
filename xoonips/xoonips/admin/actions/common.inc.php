@@ -129,11 +129,11 @@ function xoonips_admin_get_configs($keys, $fmt)
                 break;
             case 'i':
                 // int
-                $ret[$key] = intval($val);
+                $ret[$key] = (int)$val;
                 break;
             case 'f':
                 // float
-                $ret[$key] = floatval($val);
+                $ret[$key] = (float)$val;
                 break;
             default:
                 die('unknown key type');
@@ -156,11 +156,11 @@ function xoonips_admin_set_config($key, &$val, $type)
         break;
     case 'i':
         // int
-        $cleanv = intval($val);
+        $cleanv = (int)$val;
         break;
     case 'f':
         // float
-        $cleanv = floatval($val);
+        $cleanv = (float)$val;
         break;
     }
     if (null === $cleanv) {

@@ -54,18 +54,18 @@ class XooNIpsActionXoonipsSearchMetadataDetail extends XooNIpsAction
     public function doAction()
     {
         $this->_view_params['url_to_back'] = 'itemselect.php';
-        $this->_view_params['repository_name'] = $this->getRepositoryName(strval($this->_formdata->getValue('post', 'identifier', 's', false)));
-        $this->_view_params['metadata'] = $this->getMetadataArray(strval($this->_formdata->getValue('post', 'identifier', 's', false)));
+        $this->_view_params['repository_name'] = $this->getRepositoryName((string)$this->_formdata->getValue('post', 'identifier', 's', false));
+        $this->_view_params['metadata'] = $this->getMetadataArray((string)$this->_formdata->getValue('post', 'identifier', 's', false));
         $this->_view_params['hidden'] = [
-            ['name' => 'op', 'value' => strval($this->_formdata->getValue('post', 'op', 's', false))],
-            ['name' => 'keyword', 'value' => strval($this->_formdata->getValue('post', 'keyword', 's', false))],
-            ['name' => 'search_itemtype', 'value' => strval($this->_formdata->getValue('post', 'search_itemtype', 's', false))],
-            ['name' => 'search_cache_id', 'value' => intval($this->_formdata->getValue('post', 'search_cache_id', 'i', false))],
-            ['name' => 'order_by', 'value' => strval($this->_formdata->getValue('post', 'order_by', 's', false))],
-            ['name' => 'order_dir', 'value' => strval($this->_formdata->getValue('post', 'order_dir', 's', false))],
-            ['name' => 'item_per_page', 'value' => intval($this->_formdata->getValue('post', 'item_per_page', 'i', false))],
-            ['name' => 'page', 'value' => intval($this->_formdata->getValue('post', 'page', 'i', false))],
-            ['name' => 'search_tab', 'value' => strval($this->_formdata->getValue('post', 'search_tab', 's', false))],
+            ['name' => 'op', 'value' => (string)$this->_formdata->getValue('post', 'op', 's', false)],
+            ['name' => 'keyword', 'value' => (string)$this->_formdata->getValue('post', 'keyword', 's', false)],
+            ['name' => 'search_itemtype', 'value' => (string)$this->_formdata->getValue('post', 'search_itemtype', 's', false)],
+            ['name' => 'search_cache_id', 'value' => (int)$this->_formdata->getValue('post', 'search_cache_id', 'i', false)],
+            ['name' => 'order_by', 'value' => (string)$this->_formdata->getValue('post', 'order_by', 's', false)],
+            ['name' => 'order_dir', 'value' => (string)$this->_formdata->getValue('post', 'order_dir', 's', false)],
+            ['name' => 'item_per_page', 'value' => (int)$this->_formdata->getValue('post', 'item_per_page', 'i', false)],
+            ['name' => 'page', 'value' => (int)$this->_formdata->getValue('post', 'page', 'i', false)],
+            ['name' => 'search_tab', 'value' => (string)$this->_formdata->getValue('post', 'search_tab', 's', false)],
         ];
     }
 

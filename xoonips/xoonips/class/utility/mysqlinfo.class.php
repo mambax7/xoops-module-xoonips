@@ -79,9 +79,9 @@ class XooNIpsUtilityMysqlinfo extends XooNIpsUtility
         if (!preg_match('/^(\\d+)\\.(\\d+)\\.(\\d+)(.*)$/', $this->_version['full'], $regs)) {
             die('Could not get version number : '.$this->_version['full']);
         }
-        $this->_version['major'] = intval($regs[1]);
-        $this->_version['minor'] = intval($regs[2]);
-        $this->_version['micro'] = intval($regs[3]);
+        $this->_version['major'] = (int)$regs[1];
+        $this->_version['minor'] = (int)$regs[2];
+        $this->_version['micro'] = (int)$regs[3];
         $this->_version['additional'] = $regs[4];
 
         // get acceptable charsets

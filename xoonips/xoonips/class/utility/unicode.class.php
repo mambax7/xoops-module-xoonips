@@ -211,7 +211,7 @@ class XooNIpsUtilityUnicode extends XooNIpsUtility
      */
     public function _my_chr($num)
     {
-        return($num < 256) ? chr($num) : $this->_my_chr(intval($num / 256)).chr($num % 256);
+        return($num < 256) ? chr($num) : $this->_my_chr((int)($num / 256)) . chr($num % 256);
     }
 
     /**
@@ -232,13 +232,13 @@ class XooNIpsUtilityUnicode extends XooNIpsUtility
         // get unicode
         if (($chars[$idx] >= 240) && ($chars[$idx] <= 255)) {
             // 4 bytes
-            $unicode = (intval($chars[$idx] - 240) << 18) + (intval($chars[++$idx] - 128) << 12) + (intval($chars[++$idx] - 128) << 6) + (intval($chars[++$idx] - 128));
+            $unicode = ((int)($chars[$idx] - 240) << 18) + ((int)($chars[++$idx] - 128) << 12) + ((int)($chars[++$idx] - 128) << 6) + ((int)($chars[++$idx] - 128));
         } elseif (($chars[$idx] >= 224) && ($chars[$idx] <= 239)) {
             // 3 bytes
-            $unicode = (intval($chars[$idx] - 224) << 12) + (intval($chars[++$idx] - 128) << 6) + (intval($chars[++$idx] - 128));
+            $unicode = ((int)($chars[$idx] - 224) << 12) + ((int)($chars[++$idx] - 128) << 6) + ((int)($chars[++$idx] - 128));
         } elseif (($chars[$idx] >= 192) && ($chars[$idx] <= 223)) {
             // 2 bytes
-            $unicode = (intval($chars[$idx] - 192) << 6) + (intval($chars[++$idx] - 128));
+            $unicode = ((int)($chars[$idx] - 192) << 6) + ((int)($chars[++$idx] - 128));
         } else {
             // 1 bytes
             $unicode = $chars[$idx];

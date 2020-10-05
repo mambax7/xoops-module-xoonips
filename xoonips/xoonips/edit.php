@@ -173,7 +173,7 @@ function private_index_readable($item_id, $uid)
     $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER');
     $index_handler = &xoonips_getormhandler('xoonips', 'index');
     $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
-    $criteria = new CriteriaCompo(new Criteria('item_id', intval($item_id)));
+    $criteria = new CriteriaCompo(new Criteria('item_id', (int)$item_id));
     $criteria->add(new Criteria('open_level', OL_PRIVATE));
     $index_item_links = &$index_item_link_handler->getObjects($criteria, false, '', false, $join);
     foreach ($index_item_links as $link) {

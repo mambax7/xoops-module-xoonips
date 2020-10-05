@@ -256,7 +256,7 @@ if ('add_to_public' == $op && isset($check)) {
     }
     do {
         [$limitLabel, $indexCount, $indexNumberLimit] = xoonipsGetIndexCountInfo($xnpsid, $xid);
-        if ('' != "$indexNumberLimit" && $indexNumberLimit <= $indexCount) {
+        if ('' != (string)$indexNumberLimit && $indexNumberLimit <= $indexCount) {
             $error_messages[] = _MD_XOONIPS_INDEX_TOO_MANY_INDEXES;
             break;
         }
@@ -299,7 +299,7 @@ if ('add_to_public' == $op && isset($check)) {
             // Record events(insert index)
             $eventlog_handler = &xoonips_getormhandler('xoonips', 'event_log');
             $eventlog_handler->recordInsertIndexEvent($new_xid);
-            header('Location: '.XOOPS_URL.'/modules/xoonips/editindex.php?index_id='.intval($xid));
+            header('Location: '.XOOPS_URL.'/modules/xoonips/editindex.php?index_id=' . (int)$xid);
         }
     } while (false);
 } elseif ('up' == $op || 'down' == $op) {
@@ -352,7 +352,7 @@ if ('add_to_public' == $op && isset($check)) {
             }
         }
     }
-    header('Location: '.XOOPS_URL.'/modules/xoonips/editindex.php?index_id='.intval($xid));
+    header('Location: '.XOOPS_URL.'/modules/xoonips/editindex.php?index_id=' . (int)$xid);
 } elseif (('rename' == $op || 'delete' == $op || 'moveto' == $op) && isset($check)) {
     // check token ticket
     if (!$xoopsGTicket->check(true, 'xoonips_edit_index')) {
@@ -421,7 +421,7 @@ if ('add_to_public' == $op && isset($check)) {
         } elseif ('delete' == $op) {
             $index_handler = &xoonips_getormhandler('xoonips', 'index');
             if (!$index_handler->getPerm($index_id, $xoopsUser->getVar('uid'), 'delete')) {
-                redirect_header(XOOPS_URL.'/modules/xoonips/editindex.php?index_id='.intval($xid), 3, _MD_XOONIPS_ITEM_FORBIDDEN);
+                redirect_header(XOOPS_URL.'/modules/xoonips/editindex.php?index_id=' . (int)$xid, 3, _MD_XOONIPS_ITEM_FORBIDDEN);
             }
             // check publication request of lower group index
             $notification_context = xoonips_notification_before_user_index_deleted($index_id);
@@ -478,7 +478,7 @@ if ('add_to_public' == $op && isset($check)) {
             xoonips_notification_after_user_index_moved($notification_context);
         }
     }
-    header('Location: '.XOOPS_URL.'/modules/xoonips/editindex.php?index_id='.intval($xid));
+    header('Location: '.XOOPS_URL.'/modules/xoonips/editindex.php?index_id=' . (int)$xid);
 }
 
 //////////////////////// display

@@ -35,7 +35,7 @@ function inival2num($ini)
     if ($len == 0) {
         return 0.0;
     } elseif ($len == 1) {
-        return floatval($ini);
+        return (float)$ini;
     }
     $num = substr($ini, 0, $len - 1);
     $str = substr($ini, -1, 1);
@@ -50,9 +50,9 @@ function inival2num($ini)
             $ratio *= 1024.0;
             break;
         }
-        $num = floatval($num) * $ratio;
+        $num = (float)$num * $ratio;
     } else {
-        $num = floatval($ini);
+        $num = (float)$ini;
     }
 
     return $num;
@@ -67,7 +67,7 @@ function inival2bool($ini)
         return $ini;
     }
     if (is_numeric($ini)) {
-        return  intval($ini) > 0;
+        return (int)$ini > 0;
     }
     if (strtolower($ini) == 'on') {
         return true;

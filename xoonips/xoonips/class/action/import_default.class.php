@@ -90,7 +90,7 @@ class XooNIpsActionImportDefault extends XooNIpsAction
             $val = '2G';
         }
         if (preg_match('/^(-?\d+)([KMG])$/i', strtoupper($val), $matches)) {
-            $val = intval($matches[1]);
+            $val = (int)$matches[1];
             switch ($matches[2]) {
             case 'G':
                 $val *= 1024;
@@ -100,7 +100,7 @@ class XooNIpsActionImportDefault extends XooNIpsAction
                 $val *= 1024;
             }
         } else {
-            $val = intval($val);
+            $val = (int)$val;
         }
 
         return $val;

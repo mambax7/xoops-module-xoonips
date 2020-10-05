@@ -191,7 +191,7 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
     {
         $exec_uid = UID_GUEST;
         if (isset($GLOBALS['xoopsUser']) && is_object($GLOBALS['xoopsUser'])) {
-            $exec_uid = intval($GLOBALS['xoopsUser']->getVar('uid', 'n'));
+            $exec_uid = (int)$GLOBALS['xoopsUser']->getVar('uid', 'n');
         }
 
         return $exec_uid;
@@ -753,7 +753,7 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
         $obj = &$this->create();
         $obj->set('event_type_id', ETID_CERTIFY_GROUP_INDEX);
         $obj->set('exec_uid', $this->getExecUid());
-        $obj->set('index_id', intval($group_index_id));
+        $obj->set('index_id', (int)$group_index_id);
 
         return $this->insert($obj);
     }
@@ -770,7 +770,7 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
         $obj = &$this->create();
         $obj->set('event_type_id', ETID_REJECT_GROUP_INDEX);
         $obj->set('exec_uid', $this->getExecUid());
-        $obj->set('index_id', intval($group_index_id));
+        $obj->set('index_id', (int)$group_index_id);
 
         return $this->insert($obj);
     }
@@ -789,9 +789,9 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
         $obj = &$this->create();
         $obj->set('event_type_id', ETID_GROUP_INDEX_TO_PUBLIC);
         $obj->set('exec_uid', $this->getExecUid());
-        $obj->set('index_id', intval($public_index_id));
-        $obj->set('gid', intval($gid));
-        $obj->set('additional_info', intval($group_index_id));
+        $obj->set('index_id', (int)$public_index_id);
+        $obj->set('gid', (int)$gid);
+        $obj->set('additional_info', (int)$group_index_id);
 
         return $this->insert($obj);
     }
@@ -808,7 +808,7 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
         $obj = &$this->create();
         $obj->set('event_type_id', ETID_DELETE_ACCOUNT);
         $obj->set('exec_uid', $this->getExecUid());
-        $obj->set('uid', intval($uid));
+        $obj->set('uid', (int)$uid);
 
         return $this->insert($obj);
     }
@@ -826,7 +826,7 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
         $obj = &$this->create();
         $obj->set('event_type_id', ETID_UNCERTIFY_ACCOUNT);
         $obj->set('exec_uid', $this->getExecUid());
-        $obj->set('uid', intval($uid));
+        $obj->set('uid', (int)$uid);
         $obj->set('additional_info', $comments);
 
         return $this->insert($obj);

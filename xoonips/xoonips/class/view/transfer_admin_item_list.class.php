@@ -163,7 +163,7 @@ class XooNIpsViewTransferAdminItemList extends XooNIpsViewTransfer
         $result = [];
         $gids = [];
         foreach ($this->_params['group_ids_to_subscribe'] as $gid) {
-            $gids[] = intval($gid);
+            $gids[] = (int)$gid;
         }
         if (empty($gids)) {
             return $result;

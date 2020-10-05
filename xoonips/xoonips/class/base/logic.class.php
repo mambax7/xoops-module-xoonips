@@ -553,15 +553,15 @@ class XooNIpsLogic
         $mday_valid = false;
         if (empty($year) || ctype_digit($year) && (1 <= $year && $year <= 9999)) {
             $year_valid = true;
-            $int_year = intval($year);
+            $int_year = (int)$year;
         }
         if (empty($month) || ctype_digit($month) && (1 <= $month && $month <= 12)) {
             $month_valid = true;
-            $int_month = intval($month);
+            $int_month = (int)$month;
         }
         if (empty($mday) || ctype_digit($mday) && (1 <= $mday && $mday <= 31 && checkdate($int_month, $mday, $int_year))) {
             $mday_valid = true;
-            $int_mday = intval($mday);
+            $int_mday = (int)$mday;
         }
 
         if (!$year_valid

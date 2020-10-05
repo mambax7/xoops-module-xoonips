@@ -220,7 +220,7 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
     public function searchCacheExists($cache_id)
     {
         $cache_handler = &xoonips_getormhandler('xoonips', 'search_cache');
-        $cache = &$cache_handler->get(intval($cache_id));
+        $cache = &$cache_handler->get((int)$cache_id);
 
         return $cache !== false;
     }
@@ -348,7 +348,7 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
     public function getRepositoryUrl($repository_id)
     {
         $repository_handler = &xoonips_getormhandler('xoonips', 'oaipmh_repositories');
-        $repository = &$repository_handler->get(intval($repository_id));
+        $repository = &$repository_handler->get((int)$repository_id);
         if (!$repository) {
             return null;
         }

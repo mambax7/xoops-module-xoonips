@@ -72,8 +72,8 @@ class XooNIpsLogicGetFile extends XooNIpsLogic
             return false;
         } else {
             $sessionid = $vars[0];
-            $file_id = intval($vars[1]);
-            $agreement = intval($vars[2]);
+            $file_id = (int)$vars[1];
+            $agreement = (int)$vars[2];
         }
         list($result, $uid, $session) = $this->restoreSession($sessionid);
         if (!$result) {

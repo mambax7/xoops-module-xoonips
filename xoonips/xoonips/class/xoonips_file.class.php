@@ -129,8 +129,8 @@ class XooNIpsFileHandler
         if (preg_match('/'.preg_quote($separate_param, '/').'/', $doi)) {
             $tmp = explode($separate_param, $doi, 2);
             $doi = $tmp[0];
-            if (preg_match('/[1-9]/', intval($tmp[1]))) {
-                $start = intval($tmp[1]) - 1;
+            if (preg_match('/[1-9]/', (int)$tmp[1])) {
+                $start = (int)$tmp[1] - 1;
                 $criteria->setStart($start);
                 $criteria->setLimit($start + 1);
             }

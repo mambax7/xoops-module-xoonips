@@ -187,8 +187,8 @@ function get_number_of_item_by_open_level($uid, $open_level)
 {
     $criteria = new CriteriaCompo();
     $criteria->add(new Criteria('item_type_id', ITID_INDEX, '!='));
-    $criteria->add(new Criteria('open_level', intval($open_level)));
-    $criteria->add(new Criteria('uid', intval($uid), '=', 'basic'));
+    $criteria->add(new Criteria('open_level', (int)$open_level));
+    $criteria->add(new Criteria('uid', (int)$uid, '=', 'basic'));
     $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id');
     $join->cascade(new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'basic'));
     $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');

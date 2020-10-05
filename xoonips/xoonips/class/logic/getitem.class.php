@@ -79,7 +79,7 @@ class XooNIpsLogicGetItem extends XooNIpsLogic
             $id = $vars[1];
             $id_type = $vars[2];
             if ($id_type == 'item_id') {
-                $id = intval($id);
+                $id = (int)$id;
             }
         }
         // validate session

@@ -128,7 +128,7 @@ class XooNIpsViewTransferUserItemConfirm extends XooNIpsViewTransfer
         $result = [];
         $gids = [];
         foreach ($this->_params['gids_to_subscribe'] as $gid) {
-            $gids[] = intval($gid);
+            $gids[] = (int)$gid;
         }
         if (count($gids) == 0) {
             return '';

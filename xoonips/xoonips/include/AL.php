@@ -1768,7 +1768,7 @@ function xnp_selective_harvesting($from, $until, $set, $startIID, $limit, &$iids
                 if (!preg_match('/^index([0-9]+)$/', $set_index, $matches)) {
                     return $ret;
                 }
-                $xid = intval($matches[1]);
+                $xid = (int)$matches[1];
                 // check first index id must be /Public
                 if (IID_ROOT == $parent_xid && IID_PUBLIC != $xid) {
                     return $ret;

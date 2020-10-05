@@ -297,11 +297,11 @@ $num_of_data = '';
 $sum_of_data = '';
 $item_htmls = [];
 while ($row = $xoopsDB->fetchArray($res)) {
-    $inid = intval($row['index_id']);
+    $inid = (int)$row['index_id'];
     $sql2 = 'SELECT item_id FROM '.$xoopsDB->prefix('xoonips_index_item_link').' WHERE index_id='.$inid.' ';
     $res2 = $xoopsDB->query($sql2);
     while ($row2 = $xoopsDB->fetchArray($res2)) {
-        $itid = intval($row2['item_id']);
+        $itid = (int)$row2['item_id'];
             // var_dump($itid);
             switch ($val) {
         case 0:
@@ -324,7 +324,7 @@ while ($row = $xoopsDB->fetchArray($res)) {
 }
 
 // calculate maximum number of pages and offset value
-    $w_last = intval($sum_of_data / 20);
+    $w_last = (int)($sum_of_data / 20);
 if ($w_last < 1) {
     $w_last = 1;
 }
@@ -334,7 +334,7 @@ if ($page <= 0) {
 } else {
     $w_page = page_optimize($page, $w_last);
 }
-    $w_offset = intval(($w_page - 1) * 20);
+    $w_offset = (int)(($w_page - 1) * 20);
 if ($w_offset < 0) {
     $w_offset = 0;
 }
@@ -344,7 +344,7 @@ if ($w_offset < 0) {
 $xoopsTpl->assign('uid', $uid);
 
 if ($w_page > 1) {
-    $w_back = intval($w_page - 1);
+    $w_back = (int)($w_page - 1);
     $xoopsTpl->assign('w_back', $w_back);
 }
 
@@ -363,7 +363,7 @@ foreach ($pages as $key => $value) {
 
 $w_link = '';
 for ($i = 0; $i < $times; ++$i) {
-    $pag = intval($pages[$i]) + 1;
+    $pag = (int)$pages[$i] + 1;
     switch ($pag) {
     case $w_page:
         if ($w_last != 1) {
@@ -380,7 +380,7 @@ for ($i = 0; $i < $times; ++$i) {
 $xoopsTpl->assign('w_link', $w_link);
 
 if ($w_page < $w_last) {
-    $w_next = intval($w_page + 1);
+    $w_next = (int)($w_page + 1);
     $xoopsTpl->assign('w_next', $w_next);
 }
 
@@ -425,7 +425,7 @@ if ($sum_of_data !== 0) {
     $ch_a = '';
     while ($row = $xoopsDB->fetchArray($res)) {
         // show item_type's name
-        $ch_b = intval($row['item_type_id']);
+        $ch_b = (int)$row['item_type_id'];
         if (empty($ch_a) || $ch_a !== $ch_b) {
             $tab_name = $xoopsDB->prefix('xoonips_item_type');
             $tsql = 'SELECT display_name FROM '.$tab_name.' WHERE item_type_id='.$ch_b.'';
@@ -436,21 +436,21 @@ if ($sum_of_data !== 0) {
             $item_htmls[] = ['html' => $title_t, 'th' => 'on'];
         }
         // make item block
-        $tmp = itemid2ListBlock(intval($row['item_id']));
+        $tmp = itemid2ListBlock((int)$row['item_id']);
         foreach ($tmp as $key => $value) {
             $item_htmls[] = ['html' => $value];
         }
-        $ch_a = intval($row['item_type_id']);
+        $ch_a = (int)$row['item_type_id'];
     }
 }
     $xoopsTpl->assign('item_htmls', $item_htmls);
 
 if (isset($_SESSION['xoopsUserId'])) {
-    if (intval($_SESSION['xoopsUserId']) == $uid) {
+    if ((int)$_SESSION['xoopsUserId'] == $uid) {
         $piedit = 1;
         $xoopsTpl->assign('piedit', $piedit);
     }
-    $aid = intval($_SESSION['xoopsUserId']);
+    $aid = (int)$_SESSION['xoopsUserId'];
     $xoopsTpl->assign('aid', $aid);
 }
 

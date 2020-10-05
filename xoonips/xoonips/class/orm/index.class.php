@@ -363,7 +363,7 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
             // uid is session owner for group index
             $uid = UID_GUEST;
             if (isset($GLOBALS['xoopsUser']) && is_object($GLOBALS['xoopsUser'])) {
-                $uid = intval($GLOBALS['xoopsUser']->getVar('uid', 'n'));
+                $uid = (int)$GLOBALS['xoopsUser']->getVar('uid', 'n');
             }
             $ib_obj->set('uid', $uid);
         }
@@ -399,7 +399,7 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
             } else {
                 $idx_objs = &$this->getObjects($criteria, false, 'MIN(sort_number) AS min_value');
                 $idx_obj = &$idx_objs[0];
-                $sort_number = intval($idx_obj->getExtraVar('min_value')) - 1;
+                $sort_number = (int)$idx_obj->getExtraVar('min_value') - 1;
                 unset($idx_objs);
                 unset($idx_obj);
             }
@@ -418,7 +418,7 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
             } else {
                 $idx_objs = &$this->getObjects($criteria, false, 'MAX(sort_number) AS max_value');
                 $idx_obj = &$idx_objs[0];
-                $sort_number = intval($idx_obj->getExtraVar('max_value')) + 1;
+                $sort_number = (int)$idx_obj->getExtraVar('max_value') + 1;
                 unset($idx_objs);
                 unset($idx_obj);
             }

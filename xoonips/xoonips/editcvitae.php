@@ -204,9 +204,9 @@ exit();
 
 function xnpMktime($year, $month, $day)
 {
-    $int_year = intval($year);
-    $int_month = intval($month);
-    $int_day = intval($day);
+    $int_year = (int)$year;
+    $int_month = (int)$month;
+    $int_day = (int)$day;
     if ($int_month == 0) {
         $date = sprintf('%04s--%02s', $int_year, $int_day);
     } else {

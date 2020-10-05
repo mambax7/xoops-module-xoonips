@@ -77,7 +77,7 @@ class XooNIpsXmlRpcLogicUpdateItem2 extends XooNIpsXmlRpcLogic
         // transform array to object
         // parameter 2(item structure) to XooNIpsItemCompo object
         // using XooNIpsTransformCompo<itemtype>
-        $item_type_id = intval($params[1]['itemtype']);
+        $item_type_id = (int)$params[1]['itemtype'];
         $itemtype_handler = &xoonips_getormhandler('xoonips', 'item_type');
         $itemtype = &$itemtype_handler->get($item_type_id);
         if (!$itemtype) {

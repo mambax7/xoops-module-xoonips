@@ -150,7 +150,8 @@ class XooNIpsTableObject extends XoopsObject
      * @param int    $maxlength for XOBJ_DTYPE_TXTBOX type only
      * @param string $options    does this data have any select options?
      */
-    public function initVar($key, $data_type, $value = null, $required = false, $maxlength = null, $options = '')
+
+    public function initVar($key, $data_type, $value = null, $required = false, $maxlength = null, $options = '', $enumerations = '')
     {
         if (XOONIPS_DEBUG_MODE) {
             if (!in_array($data_type, $this->_data_types)) {
@@ -827,7 +828,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
      *
      * @return bool false if failed
      */
-    public function insert(&$obj, $force = false)
+    public function insert($obj, $force = false)
     {
         if (strtolower(get_class($obj)) != strtolower($this->__class_name)) {
             return false;
@@ -899,7 +900,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
      *
      * @return bool false if failed
      */
-    public function delete(&$obj, $force = false)
+    public function delete($obj, $force = false)
     {
         if (strtolower(get_class($obj)) != strtolower($this->__class_name)) {
             return false;

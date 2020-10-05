@@ -110,7 +110,7 @@ class XooNIpsOrmXoopsUsersHandler extends XooNIpsTableObjectHandler
         return $obj;
     }
 
-    public function insert(&$obj, $force = false)
+    public function insert($obj, $force = false)
     {
         if ($obj->isNew()) {
             $obj->set('user_regdate', time());

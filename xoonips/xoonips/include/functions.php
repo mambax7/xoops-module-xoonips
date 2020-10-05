@@ -92,7 +92,9 @@ function &xoonips_gethandler($module, $name)
     }
     // return result
     $falseVar = false;
-    return $handlers[$name] ?? $falseVar;
+    $res = $handlers[$name] ?? $falseVar;
+    return $res;
+
 }
 
 /**
@@ -129,7 +131,8 @@ function &xoonips_getormhandler($module, $name)
         trigger_error('Handler does not exist. Class: '.$class, E_USER_ERROR);
     }
     // return result
-    return $handlers[$module . $name] ?? $falseVar;
+    $res = $handlers[$module . $name] ?? $falseVar;
+    return $res;
 }
 
 /**
@@ -167,7 +170,8 @@ function &xoonips_getormcompohandler($module, $name)
         trigger_error('Handler does not exist. Name: '.$module.' '.$name, E_USER_ERROR);
     }
     // return result
-    return $handlers[$module . $name] ?? $falseVar;
+    $res = $handlers[$module . $name] ?? $falseVar;
+    return $res;
 }
 
 /**

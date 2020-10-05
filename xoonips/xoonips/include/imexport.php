@@ -466,11 +466,11 @@ function _xoonips_import_startElement($parser, $name, $attribs)
 
     $currentAttribs = $attribs;
 
-    array_push($parser_hash[$parser]['tagstack'], $name);
+    $parser_hash[$parser]['tagstack'][] = $name;
 
     $tags = '/'.implode('/', $parser_hash[$parser]['tagstack']);
     if (array_key_exists($tags, $parser_hash[$parser]['handler'])) {
-        array_push($parser_hash[$parser]['handlerstack'], $parser_hash[$parser]['handler'][$tags]);
+        $parser_hash[$parser]['handlerstack'][] = $parser_hash[$parser]['handler'][$tags];
     }
 
     if (count($parser_hash[$parser]['handlerstack']) > 0) {
@@ -548,12 +548,12 @@ function _xoonips_import_indexStartElement($parser, $name, $attribs, &$parser_ha
         $parser_hash['indexes'][count($parser_hash['indexes']) - 1]['titles'][] = '';
         break;
     case '/INDEXES/INDEX':
-        $ar = [
+        $ar                       = [
             'parent_id' => $attribs['PARENT_ID'],
             'index_id'  => $attribs['ID'],
             'titles'    => [],
         ];
-        array_push($parser_hash['indexes'], $ar);
+        $parser_hash['indexes'][] = $ar;
         break;
     case '/INDEXES':
         break;
@@ -631,7 +631,7 @@ function _xoonips_import_indexCharacterData($parser, $data, &$parser_hash)
     case '/INDEXES/INDEX/TITLE':
         $index = array_pop($parser_hash['indexes']);
         $index['titles'][count($index['titles']) - 1] .= $data;
-        array_push($parser_hash['indexes'], $index);
+        $parser_hash['indexes'][] = $index;
         break;
     }
 }
@@ -646,12 +646,12 @@ function _xoonips_import_indexcheckStartElement($parser, $name, $attribs, &$pars
         $parser_hash['indexlinks'] = [];
         break;
     case '/INDEXES/INDEX':
-        $ar = [
+        $ar                       = [
             'parent_id' => $attribs['PARENT_ID'],
             'index_id'  => $attribs['ID'],
             'titles'    => [],
         ];
-        array_push($parser_hash['indexes'], $ar);
+        $parser_hash['indexes'][] = $ar;
         break;
     case '/INDEXES/INDEX/TITLE':
         $parser_hash['indexes'][count($parser_hash['indexes']) - 1]['titles'][] = '';

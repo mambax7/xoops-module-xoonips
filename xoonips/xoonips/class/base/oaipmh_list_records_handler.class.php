@@ -72,7 +72,7 @@ class ListRecordsHandler extends HarvesterHandler
 
     public function startElementHandler($parser, $name, $attribs)
     {
-        array_push($this->tagstack, $name);
+        $this->tagstack[] = $name;
         $this->_cdata_buf = '';
         if ($name == 'RECORD') {
             global $xoopsDB;
@@ -95,7 +95,7 @@ class ListRecordsHandler extends HarvesterHandler
 
     public function endElementHandler($parser, $name)
     {
-        array_push($this->search_text, ' ');
+        $this->search_text[] = ' ';
         if (end($this->tagstack) == 'RESUMPTIONTOKEN') {
             $this->resumptionToken = $this->_cdata_buf;
             array_pop($this->tagstack);

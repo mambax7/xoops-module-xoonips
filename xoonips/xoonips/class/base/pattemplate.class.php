@@ -540,11 +540,11 @@ if (!class_exists('patTemplate')) {
         {
             //	check for whitespace attribute
             if (isset($attributes['whitespace'])) {
-                array_push($this->whitespace, strtolower($attributes['whitespace']));
+                $this->whitespace[] = strtolower($attributes['whitespace']);
             }
             //	use whitepspace mode from last opened template
             else {
-                array_push($this->whitespace, $this->whitespace[(count($this->whitespace) - 1)]);
+                $this->whitespace[] = $this->whitespace[(count($this->whitespace) - 1)];
             }
 
             switch ($tagname) {

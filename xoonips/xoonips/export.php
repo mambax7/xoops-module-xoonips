@@ -580,7 +580,7 @@ function xoonips_get_all_item_ids_to_export($index_id, $uid, $recursive_item = f
         $res   = xnp_get_indexes($_SESSION['XNPSID'], $i, [], $child);
         if ($res == RES_OK) {
             foreach ($child as $c) {
-                array_push($tmp_idx, $c['item_id']);
+                $tmp_idx[] = $c['item_id'];
             }
         }
     }

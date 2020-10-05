@@ -62,7 +62,7 @@ function xoonips_admin_system_check_phpext(&$category)
         $res = new XooNIpsAdminSystemCheckResult(' &raquo; '.$name);
         $mb_require_order = ['ASCII', _CHARSET];
         if (_CHARSET != 'UTF-8') {
-            array_push($mb_require_order, 'UTF-8');
+            $mb_require_order[] = 'UTF-8';
         }
         $mb_req_success = true;
         foreach ($mb_require_order as $mb_req) {

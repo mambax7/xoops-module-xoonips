@@ -359,8 +359,8 @@ class XooNIpsActionImportUpload extends XooNIpsAction
                 $visited = [$index['index_id']];
 
                 // $index is not parent of all indexes
-                $path = [];
-                array_push($path, $index['titles'][0]);
+                $path        = [];
+                $path[]      = $index['titles'][0];
                 while (isset($index_by_id[$index['parent_id']])) {
                     $parent = $index_by_id[$index['parent_id']];
                     if (in_array($parent['index_id'], $visited)) {
@@ -372,8 +372,8 @@ class XooNIpsActionImportUpload extends XooNIpsAction
                     }
                     $visited[] = $parent['index_id'];
                     $unicode = &xoonips_getutility('unicode');
-                    array_push($path, $unicode->decode_utf8($parent['titles'][0], xoonips_get_server_charset(), 'h'));
-                    $index = $parent;
+                    $path[]  = $unicode->decode_utf8($parent['titles'][0], xoonips_get_server_charset(), 'h');
+                    $index   = $parent;
                 }
                 $str_indexes .= htmlspecialchars(implode('/', array_reverse($path)), ENT_QUOTES)
                     ."<br />\n";

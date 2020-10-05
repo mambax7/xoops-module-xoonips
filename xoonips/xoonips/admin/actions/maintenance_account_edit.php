@@ -204,8 +204,8 @@ function get_requirements($uid)
         'private_item_storage_limit',
     ];
     if ($uid == 0) {
-        array_push($requirements, 'pass');
-        array_push($requirements, 'pass2');
+        $requirements[] = 'pass';
+        $requirements[] = 'pass2';
     }
     $keys = [
         // config key => array name

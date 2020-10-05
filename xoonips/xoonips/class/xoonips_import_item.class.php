@@ -1194,8 +1194,8 @@ class XooNIpsImportItemHandler
      */
     public function xmlStartElementHandler($parser, $name, $attribs)
     {
-        array_push($this->_tag_stack, $name);
-        $this->_cdata = '';
+        $this->_tag_stack[] = $name;
+        $this->_cdata       = '';
         switch (implode('/', $this->_tag_stack)) {
         case 'ITEM':
             if (!isset($attribs['VERSION'])) {

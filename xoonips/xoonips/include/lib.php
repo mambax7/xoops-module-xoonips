@@ -832,7 +832,7 @@ function xnpGetIndexDetailBlock($item_id, $button_flag = true)
             if (!array_key_exists($certified, $groupby[$open_level][$owner_gid])) {
                 $groupby[$open_level][$owner_gid][$certified] = [];
             }
-            array_push($groupby[$open_level][$owner_gid][$certified], $i);
+            $groupby[$open_level][$owner_gid][$certified][] = $i;
         }
 
         $classes                 = ['odd', 'even'];
@@ -848,7 +848,7 @@ function xnpGetIndexDetailBlock($item_id, $button_flag = true)
                         $xid = $indexes[$id]['item_id'];
                         $html .= '<a href="listitem.php?index_id='.$xid.'">'.xnpGetIndexPathString($xnpsid, $xid).'</a>';
                         $html .= '<br />';
-                        array_push($xid_array, $xid);
+                        $xid_array[] = $xid;
                     }
                     $html .= '</td>';
 
@@ -2780,7 +2780,7 @@ function xnpGetModifiedFields($item_id)
                 continue;
             }
             if (str_replace("\r\n", "\r", $item[$k]) != str_replace("\r\n", "\r", $tmp)) {
-                array_push($ret, $v);
+                $ret[] = $v;
             }
         }
     }
@@ -2794,7 +2794,7 @@ function xnpGetModifiedFields($item_id)
     }
     $diff = array_diff($titles, $item['titles']);
     if (!empty($diff)) {//modified
-        array_push($ret, _MD_XOONIPS_ITEM_TITLE_LABEL);
+        $ret[] = _MD_XOONIPS_ITEM_TITLE_LABEL;
     }
 
     //has been keyword modified ?
@@ -2802,7 +2802,7 @@ function xnpGetModifiedFields($item_id)
     $keywords = !empty($keywords) ? explode(',', $keywords) : [];
     $diff = array_diff($keywords, $item['keywords']);
     if (count($keywords) != count($item['keywords']) || !empty($diff)) {//modified
-        array_push($ret, _MD_XOONIPS_ITEM_KEYWORDS_LABEL);
+        $ret[] = _MD_XOONIPS_ITEM_KEYWORDS_LABEL;
     }
 
     //is indexes modified ?
@@ -2815,7 +2815,7 @@ function xnpGetModifiedFields($item_id)
             if (count(array_diff($old_index, $new_index)) > 0
                 || count(array_diff($new_index, $old_index)) > 0
             ) {
-                array_push($ret, _MD_XOONIPS_ITEM_INDEX_LABEL); // if you change this label, don't forget to modify xnpUpdateBasicInformation()
+                $ret[] = _MD_XOONIPS_ITEM_INDEX_LABEL; // if you change this label, don't forget to modify xnpUpdateBasicInformation()
             }
         }
     }
@@ -2842,7 +2842,7 @@ function xnpGetModifiedFields($item_id)
         if (count(array_diff($old_related_to, $new_related_to)) > 0
             || count(array_diff($new_related_to, $old_related_to)) > 0
         ) {
-            array_push($ret, _MD_XOONIPS_ITEM_RELATED_TO_LABEL);
+            $ret[] = _MD_XOONIPS_ITEM_RELATED_TO_LABEL;
         }
     }
 
@@ -2861,7 +2861,7 @@ function xnpGetModifiedFields($item_id)
         || count(array_diff($new_files, $old_files)) > 0
     ) {
         //preview is modified
-        array_push($ret, _MD_XOONIPS_ITEM_PREVIEW_LABEL);
+        $ret[] = _MD_XOONIPS_ITEM_PREVIEW_LABEL;
     }
 
     return $ret;

@@ -95,7 +95,7 @@ foreach ($index_group_index_link_handler->getObjects() as $link) {
             'group_index_path' => $textutil->html_special_chars('/'.join('/', $group_index_path)),
         ];
     }
-    array_push($group_indexes[$link->get('group_index_id')]['indexes'], ['id' => $link->get('index_id'), 'path' => $textutil->html_special_chars('/' . join('/', $index_compo_handler->getIndexPathNames($link->get('index_id'))))]);
+    $group_indexes[$link->get('group_index_id')]['indexes'][] = ['id' => $link->get('index_id'), 'path' => $textutil->html_special_chars('/' . join('/', $index_compo_handler->getIndexPathNames($link->get('index_id'))))];
 }
 
 $xoopsOption['template_main'] = 'xoonips_groupcertify.html';

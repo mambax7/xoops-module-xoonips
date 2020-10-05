@@ -36,7 +36,7 @@ class OaidcListRecordsHandler extends ListRecordsHandler
     {
         if ($this->getElementName($name) == 'DC') {
             $this->_namespaces = $this->getNamespaceArray($attrs);
-            array_push($this->tagstack, $name);
+            $this->tagstack[]  = $name;
         } else {
             parent::startElementHandler($parser, $name, $attrs);
         }

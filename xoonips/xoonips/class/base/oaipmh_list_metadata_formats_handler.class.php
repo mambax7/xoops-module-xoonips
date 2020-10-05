@@ -40,7 +40,7 @@ class ListMetadataFormatsHandler extends HarvesterHandler
 
     public function startElementHandler($parser, $name, $attribs)
     {
-        array_push($this->tagstack, $name);
+        $this->tagstack[] = $name;
     }
 
     public function endElementHandler($parser, $name)

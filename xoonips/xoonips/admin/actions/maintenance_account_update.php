@@ -184,7 +184,7 @@ function update_groups($uid, $new_groups)
     $edit_user      = $member_handler->getUser($uid);
     $old_groups     = $edit_user->getGroups();
     if ($uid == $xoopsUser->getVar('uid') && (in_array(XOOPS_GROUP_ADMIN, $old_groups)) && !(in_array(XOOPS_GROUP_ADMIN, $new_groups))) {
-        array_push($new_groups, XOOPS_GROUP_ADMIN);
+        $new_groups[] = XOOPS_GROUP_ADMIN;
     }
     foreach ($old_groups as $gid) {
         $member_handler->removeUsersFromGroup($gid, [$uid]);

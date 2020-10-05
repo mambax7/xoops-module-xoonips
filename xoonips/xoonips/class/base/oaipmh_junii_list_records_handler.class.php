@@ -92,10 +92,10 @@ class JuniiListRecordsHandler extends ListRecordsHandler
                 $this->_identifierTypeAttr = '';
             }
             $this->_cdata_buf = '';
-            array_push($this->tagstack, $name);
+            $this->tagstack[] = $name;
         } elseif ($this->getElementName($name) == 'META') {
             $this->_namespaces = $this->getNamespaceArray($attribs);
-            array_push($this->tagstack, $name);
+            $this->tagstack[]  = $name;
         } else {
             parent::startElementHandler($parser, $name, $attribs);
         }

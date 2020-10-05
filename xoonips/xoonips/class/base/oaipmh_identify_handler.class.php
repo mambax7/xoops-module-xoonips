@@ -43,7 +43,7 @@ class IdentifyHandler extends HarvesterHandler
 
     public function startElementHandler($parser, $name, $attribs)
     {
-        array_push($this->_tagstack, $name);
+        $this->_tagstack[] = $name;
     }
 
     public function endElementHandler($parser, $name)

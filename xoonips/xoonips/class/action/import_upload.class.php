@@ -81,7 +81,7 @@ class XooNIpsActionImportUpload extends XooNIpsAction
             $uploadfile = $remotefile;
         }
 
-        if (!file_exists($uploadfile)) {
+        if (!is_file($uploadfile)) {
             redirect_header('import.php?action=default', 3, _MD_XOONIPS_IMPORT_FILE_NOT_FOUND);
             exit();
         }

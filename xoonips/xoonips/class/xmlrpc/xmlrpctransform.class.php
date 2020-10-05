@@ -474,7 +474,7 @@ class XooNIpsXmlRpcTransformFactory
             return $falseVar;
         }
         $include_file = XOOPS_ROOT_PATH."/modules/{$module}/class/xmlrpc/xmlrpctransform".strtolower($name).'.class.php';
-        if (file_exists($include_file)) {
+        if (is_file($include_file)) {
             require_once $include_file;
         } else {
             return $falseVar;
@@ -536,7 +536,7 @@ class XooNIpsXmlRpcTransformCompoFactory
 
         $module = trim($module);
         $include_file = XOOPS_ROOT_PATH."/modules/{$module}/class/xmlrpc/xmlrpctransformcompo.class.php";
-        if (file_exists($include_file)) {
+        if (is_file($include_file)) {
             require_once $include_file;
         }
 

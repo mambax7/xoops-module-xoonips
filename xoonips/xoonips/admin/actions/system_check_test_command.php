@@ -50,7 +50,7 @@ function system_check_find_path($command)
         }
         foreach ($ext_array as $e) {
             $full_path = $p.$file_sep.$command.$e;
-            if (file_exists($full_path)) {
+            if (is_file($full_path)) {
                 if (is_file($full_path) && ($is_windows || is_executable($full_path))) {
                     $found = $full_path;
                     break;

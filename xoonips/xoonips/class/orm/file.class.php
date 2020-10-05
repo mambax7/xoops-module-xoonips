@@ -267,7 +267,7 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
     public function deleteFile($file)
     {
         $file_id = $file->get('file_id');
-        if (!file_exists($this->createFilepath($file))) {
+        if (!is_file($this->createFilepath($file))) {
             return true;
         }
         if (empty($file_id)) {

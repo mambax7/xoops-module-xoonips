@@ -79,7 +79,7 @@ class XooNIpsUtilityDirectory extends XooNIpsUtility
         }
         // try to use dirname of tempnam() function result
         $tempfile = @tempnam(uniqid(mt_rand(), true), 'XooNIps');
-        if (file_exists($tempfile)) {
+        if (is_file($tempfile)) {
             @unlink($tempfile);
             $path = $this->realpath(dirname($tempfile));
             if ($path !== false && $this->_check_dir_perm($path)) {

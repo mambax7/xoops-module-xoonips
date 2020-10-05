@@ -100,7 +100,7 @@ class XooNIpsNotificationHandler extends XoopsNotificationHandler
                 $tags_file = XOOPS_ROOT_PATH.'/modules/'
                     .$module->getVar('dirname').'/'.
                     $not_config['tags_file'];
-                if (file_exists($tags_file)) {
+                if (is_file($tags_file)) {
                     require_once $tags_file;
                     if (!empty($not_config['tags_func'])) {
                         $tags_func = $not_config['tags_func'];
@@ -114,7 +114,7 @@ class XooNIpsNotificationHandler extends XoopsNotificationHandler
             // RMV-NEW
             if (!empty($not_config['lookup_file'])) {
                 $lookup_file = XOOPS_ROOT_PATH.'/modules/'.$module->getVar('dirname').'/'.$not_config['lookup_file'];
-                if (file_exists($lookup_file)) {
+                if (is_file($lookup_file)) {
                     require_once $lookup_file;
                     if (!empty($not_config['lookup_func'])) {
                         $lookup_func = $not_config['lookup_func'];

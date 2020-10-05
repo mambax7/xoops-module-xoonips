@@ -71,7 +71,7 @@ class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
         $this->language = preg_replace('/[^0-9a-zA-Z_-]/', '', $myxoopsConfig['language']);
         if (defined('XOOPS_TRUST_PATH') && XOOPS_TRUST_PATH != '') {
             $langmanpath = XOOPS_TRUST_PATH.'/libs/altsys/class/D3LanguageManager.class.php';
-            if (file_exists($langmanpath)) {
+            if (is_file($langmanpath)) {
                 require_once $langmanpath;
                 $this->d3langman_instance = &D3LanguageManager::getInstance();
             }
@@ -142,7 +142,7 @@ class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
             die('invalid pagetype message catalog');
         }
         $langfile = XOOPS_ROOT_PATH.'/language/'.$this->language.'/'.$pagetype;
-        if (!file_exists($langfile)) {
+        if (!is_file($langfile)) {
             $langfile = XOOPS_ROOT_PATH.'/language/'.$this->default_language.'/'.$pagetype;
         }
         if ($read_once) {
@@ -199,7 +199,7 @@ class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
     {
         $is_directory = (substr($resource, -1, 1) == '/') ? true : false;
         $d3file = XOOPS_ROOT_PATH.'/modules/'.$mydirname.'/mytrustdirname.php';
-        if (empty($mytrustdirname) && file_exists($d3file)) {
+        if (empty($mytrustdirname) && is_file($d3file)) {
             require $d3file;
         }
         $_basepath = empty($mytrustdirname) ? XOOPS_ROOT_PATH : XOOPS_TRUST_PATH;
@@ -211,7 +211,7 @@ class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
         }
         $langfiles[] = $_basepath.'/modules/'.$_dirname.'/language/'.$this->default_language.'/'.$resource;
         foreach ($langfiles as $langfile) {
-            if (($is_directory && is_dir($langfile)) || (!$is_directory && file_exists($langfile))) {
+            if (($is_directory && is_dir($langfile)) || (!$is_directory && is_dir($langfile))) {
                 return $langfile;
             }
         }

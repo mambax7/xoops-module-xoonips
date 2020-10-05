@@ -59,7 +59,7 @@ function b_xoonips_itemtypes_show()
     foreach ($item_type_objs as $item_type_obj) {
         $name = $item_type_obj->get('name');
         $file = XOOPS_ROOT_PATH.'/modules/'.$item_type_obj->get('viewphp');
-        if (file_exists($file)) {
+        if (is_file($file)) {
             require_once $file;
         }
         $fname = $name.'GetTopBlock';

@@ -146,7 +146,7 @@ class XooNIpsUtilityDownload extends XooNIpsUtility
     public function download_file($file_path, $file_name, $mime_type)
     {
         // check file exists
-        if (!file_exists($file_path) || !is_readable($file_path)) {
+        if (!is_file($file_path) || !is_readable($file_path)) {
             die('Fatal Error : file not found');
         }
 

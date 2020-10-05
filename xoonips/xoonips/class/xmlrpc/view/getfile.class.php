@@ -46,7 +46,7 @@ class XooNIpsXmlRpcViewGetFile extends XooNIpsXmlRpcViewElement
         if (!$filetype) {
             return new XooNIpsXmlRpcFault(106, 'file_type not found: id='.$file->get('file_type_id'));
         }
-        if (!file_exists($file->getFilepath())) {
+        if (!is_file($file->getFilepath())) {
             return new XooNIpsXmlRpcFault(106, 'file not found: id='.$file->get('file_type_id'));
         }
         $resp = new XoopsXmlRpcStruct();

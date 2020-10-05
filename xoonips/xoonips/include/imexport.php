@@ -218,7 +218,7 @@ function xnpExportFile($export_path, $fhdl, $item_id)
 
     // create files directory under $export_path.
     $dir = $export_path.'/files';
-    if (!file_exists($dir)) {
+    if (!is_dir($dir)) {
         if (!mkdir($dir)) {
             xoonips_error_log("can't make directory '${dir}'");
 
@@ -235,7 +235,7 @@ function xnpExportFile($export_path, $fhdl, $item_id)
         // copy atatchment file $file['file_id'] to $dir and renamed to original file name
         // output <file> to file handle $fhdl
         $hdl = fopen(xnpGetUploadFilePath($file['file_id']), 'rb');
-        if (file_exists(xnpGetUploadFilePath($file['file_id']))) {
+        if (is_file(xnpGetUploadFilePath($file['file_id']))) {
             if (!copy(xnpGetUploadFilePath($file['file_id']), $dir.'/'.$file['file_id'])) {
                 xoonips_error_log('can\'t write a file \''.$dir.'/'.$file['file_id']."' of the item(ID=${item_id})");
 

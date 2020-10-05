@@ -281,7 +281,7 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
         $handler = &xoonips_getormhandler('xoonips', 'item_type');
         foreach ($handler->getObjects() as $item_type) {
             $path = XOOPS_ROOT_PATH.'/modules/'.$item_type->get('viewphp');
-            if (!file_exists($path)) {
+            if (!is_file($path)) {
                 continue;
             }
             if (!is_file($path)) {

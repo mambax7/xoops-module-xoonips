@@ -71,7 +71,7 @@ function &xoonips_gethandler($module, $name)
 
     if (!isset($handlers["${module}_${name}"])) {
         $include_file = XOOPS_ROOT_PATH."/modules/${module}/class/${module}_{$name}.class.php";
-        if (file_exists($include_file)) {
+        if (is_file($include_file)) {
             require_once $include_file;
         } else {
             trigger_error('file not found: '.$include_file, E_USER_ERROR);
@@ -110,7 +110,7 @@ function &xoonips_getormhandler($module, $name)
 
     if (!isset($handlers[$module.$name])) {
         $include_file = XOOPS_ROOT_PATH."/modules/${module}/class/orm/${name}.class.php";
-        if (file_exists($include_file)) {
+        if (is_file($include_file)) {
             require_once $include_file;
         } else {
             return $falseVar;
@@ -148,7 +148,7 @@ function &xoonips_getormcompohandler($module, $name)
 
     if (!isset($handlers[$module.$name])) {
         $include_file = XOOPS_ROOT_PATH."/modules/${module}/class/${module}_compo_${name}.class.php";
-        if (file_exists($include_file)) {
+        if (is_file($include_file)) {
             require_once $include_file;
         } else {
             return $falseVar;
@@ -806,7 +806,7 @@ function xoonips_get_cc_license($cc_commercial_use, $cc_modification, $version, 
     }
     $fname = sprintf('CC-%s-%s-%s.html', $condtion, $version, $region);
     $fpath = __DIR__.'/creativecommons/'.$fname;
-    if (!file_exists($fpath)) {
+    if (!is_file($fpath)) {
         // file not found
         return false;
     }

@@ -47,7 +47,7 @@ class XooNIpsUserCompoHandler extends XooNIpsRelatedObjectHandler
     /**
      * @param int $uid uid of transferee
      *
-     * @return boolean if uid is activated and certified user
+     * @return bool if uid is activated and certified user
      */
     public function isCertifiedUser($uid)
     {

@@ -529,7 +529,7 @@ class XooNIpsUtilityUnzip extends XooNIpsUtility
     /**
      * read local file header.
      *
-     * @return boolean file entry header information
+     * @return bool file entry header information
      */
     private function _read_local_file_header()
     {

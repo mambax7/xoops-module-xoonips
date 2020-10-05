@@ -379,7 +379,7 @@ function xoonips_transfer_get_private_indexes_for_dropdown($user_id)
 }
 
 /**
- * @param integer $depth
+ * @param int $depth
  */
 function xoonips_transfer_get_index_tree_for_dropdown($index_id, &$result, $depth)
 {

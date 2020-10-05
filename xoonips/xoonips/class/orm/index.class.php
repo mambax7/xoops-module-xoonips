@@ -514,7 +514,7 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
      * get all descendents parent indexes path string.
      *
      *
-     * @param integer $index_id
+     * @param int $index_id
      * @return XooNIpsOrmIndex[]
      */
     public function getAllDescendents($index_id)

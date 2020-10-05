@@ -324,7 +324,7 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
     }
 
     /**
-     * @param $page integer current page number
+     * @param $page           int current page number
      * @param double $maxpage integer max page number
      *
      * @return array of integer page numbers

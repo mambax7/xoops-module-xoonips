@@ -179,7 +179,7 @@ xoops_cp_footer();
  * get number of user's items of specified open level(ignore certify state).
  *
  * @param int $uid        user id
- * @param integer $open_level OL_PUBLIC|OL_GROUP_ONLY|OL_PRIVATE
+ * @param int $open_level OL_PUBLIC|OL_GROUP_ONLY|OL_PRIVATE
  *
  * @return int
  */

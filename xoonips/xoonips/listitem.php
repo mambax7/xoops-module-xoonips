@@ -313,8 +313,8 @@ if ($print) {
 }
 
 /**
- * @param $page integer current page number
- * @param $maxpage integer max page number
+ * @param $page    int current page number
+ * @param $maxpage int max page number
  *
  * @return array of integer page numbers
  */

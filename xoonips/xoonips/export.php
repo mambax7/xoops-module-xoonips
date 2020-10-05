@@ -538,7 +538,7 @@ function xoonips_convert_file_encoding_to_utf8($tmpfile, $filename)
  * export index tree XML to file.
  *
  * @param $fp file handle
- * @param $index_id integer index id to export
+ * @param $index_id int index id to export
  * @param $recursive bool true if recursive export
  */
 function xoonips_export_index_xml($fp, $index_id, $recursive)

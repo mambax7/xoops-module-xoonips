@@ -229,7 +229,7 @@ class XooNIpsOrmItemTypeHandler extends XooNIpsTableObjectHandler
      * @param object &$a
      * @param object &$b
      *
-     * @return integer
+     * @return int
      */
     public function _order_weight_cmp(&$a, &$b)
     {

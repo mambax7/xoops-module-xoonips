@@ -98,7 +98,7 @@ class XooNIpsItemCompoHandler extends XooNIpsRelatedObjectHandler
      * @param uid uid who access to this item
      * @param operation string
      *
-     * @return boolean if permitted
+     * @return bool if permitted
      */
     public function getPerm($id, $uid, $operation)
     {
@@ -204,7 +204,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
      * @param uid uid who access to this item
      * @param operation read|write|delete|export
      *
-     * @return boolean if permitted
+     * @return bool if permitted
      */
     public function getPerm($item_id, $uid, $operation)
     {

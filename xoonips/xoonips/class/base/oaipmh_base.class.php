@@ -651,8 +651,8 @@ class OAIPMHHandler
     /**
      * @param identifier
      *
-     * @return boolean   <metadataFormat> ... </metadataFormat>
-     * @return boolean not support this format
+     * @return bool   <metadataFormat> ... </metadataFormat>
+     * @return bool not support this format
      */
     public function metadataFormat($identifier)
     {
@@ -730,7 +730,7 @@ class HarvesterHandler
  * @param string $resumption_token
  * @param string $metadata_prefix
  * @param string $verb
- * @param integer $expire_date
+ * @param int    $expire_date
  *
  * @return nothing
  */

@@ -90,7 +90,7 @@ class XooNIpsImportItemCollection
 
     /**
      * set logging option.
-     * @param boolean $option
+     * @param bool $option
      */
     public function setLoggingOption($option)
     {
@@ -108,7 +108,7 @@ class XooNIpsImportItemCollection
     /**
      * add import item.
      *
-     * @param $item integer pseudo item id of duplicate item to add
+     * @param $item int pseudo item id of duplicate item to add
      */
     public function addItem(&$item)
     {
@@ -118,7 +118,7 @@ class XooNIpsImportItemCollection
     /**
      * remove import item.
      *
-     * @param $item integer pseudo item id of duplicate item to remove
+     * @param $item int pseudo item id of duplicate item to remove
      */
     public function removeItem(&$item)
     {
@@ -133,7 +133,7 @@ class XooNIpsImportItemCollection
     /**
      * remove import item by indexed value.
      *
-     * @param $index integer that index item to remove
+     * @param $index int that index item to remove
      */
     public function removeItemAt($index)
     {
@@ -280,7 +280,7 @@ class XooNIpsImportItem extends XoopsObject
     }
 
     /**
-     * @param integer $line
+     * @param int    $line
      * @param string $file
      * @param string $func
      */
@@ -292,7 +292,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * add duplicate pseudo id to set.
      *
-     * @param $item_id integer pseudo item id of duplicate item to add
+     * @param $item_id int pseudo item id of duplicate item to add
      */
     public function addDuplicatePseudoId($item_id)
     {
@@ -313,7 +313,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * add duplicate updatable item id to set.
      *
-     * @param $item_id integer pseudo item id of duplicate item to add
+     * @param $item_id int pseudo item id of duplicate item to add
      */
     public function addDuplicateUpdatableItemId($item_id)
     {
@@ -334,7 +334,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * add duplicate item id to set.
      *
-     * @param $item_id integer pseudo item id of duplicate item to add
+     * @param $item_id int pseudo item id of duplicate item to add
      */
     public function addDuplicateUnupdatableItemId($item_id)
     {
@@ -355,7 +355,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * add duplicate item id to set.
      *
-     * @param $item_id integer pseudo item id of duplicate item to add
+     * @param $item_id int pseudo item id of duplicate item to add
      */
     public function addDuplicateLockedItemId($item_id)
     {
@@ -376,7 +376,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * add index id item to be imported to.
      *
-     * @param $index_id integer
+     * @param $index_id int
      */
     public function addImportIndexId($index_id)
     {
@@ -457,7 +457,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * set item id of update import.
      *
-     * @param $flag integer item id to update
+     * @param $flag int item id to update
      */
     public function setUpdateItemId($item_id)
     {
@@ -467,7 +467,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * get item id of update import.
      *
-     * @return boolean item id to update
+     * @return bool item id to update
      */
     public function getUpdateItemId()
     {
@@ -497,7 +497,7 @@ class XooNIpsImportItem extends XoopsObject
     /**
      * set pseudo item id.
      *
-     * @param integer $id integer
+     * @param int $id integer
      */
     public function setPseudoId($id)
     {
@@ -698,7 +698,7 @@ class XooNIpsImportItemHandler
     /**
      * add index id item to be imported to.
      *
-     * @param $index_id integer
+     * @param $index_id int
      */
     public function addImportIndexId($index_id)
     {
@@ -709,7 +709,7 @@ class XooNIpsImportItemHandler
     /**
      * remove index id item to be imported to.
      *
-     * @param $index_id integer
+     * @param $index_id int
      */
     public function removeImportIndexId($index_id)
     {
@@ -751,7 +751,7 @@ class XooNIpsImportItemHandler
      *
      * @param $all_import_items array of reference
      * of all XooNIpsImportItem objects
-     * @param $option boolean certify auto option
+     * @param $option           bool certify auto option
      * (true means auto, false means maually)
      */
     public function setCertifyAutoOption(&$all_import_items, $option)
@@ -847,7 +847,7 @@ class XooNIpsImportItemHandler
     /**
      * @param $import_item reference of XooNIpsImportItem object
      *
-     * @return boolean integer of item ids
+     * @return bool integer of item ids
      */
     public function _equals_array($a1, $a2)
     {
@@ -1767,7 +1767,7 @@ class XooNIpsImportItemHandler
      * get index id conrresponds to indexstr
      *  (that is placed relatively from $base_index_id).
      *
-     * @param $base_index_id integer index_id of base index
+     * @param $base_index_id   int index_id of base index
      * @param string $indexstr string index path string like 'foo/bar/xxx'
      *
      * @return int index id or false
@@ -1912,7 +1912,7 @@ class XooNIpsImportItemHandler
         } elseif ($xoopsDB->getRowsNum($result) == 0) {
             return false;
         }
-        list($next_index_id) = $xoopsDB->fetchRow($result);
+        [$next_index_id] = $xoopsDB->fetchRow($result);
         array_shift($indexes);
         if (count($indexes) >= 1) {
             return $this->index_array2index_id($next_index_id, $indexes, $open_level);

@@ -123,10 +123,10 @@ class XooNIpsTableObject extends XoopsObject
      * @parem bool $doxcode use xcode
      * @parem bool $dosmiley use smiley marks
      * @parem bool $dobr use <br /> new line
-     * @param boolean $dohtml
-     * @param boolean $doxcode
-     * @param boolean $dosmiley
-     * @param boolean $dobr
+     * @param bool $dohtml
+     * @param bool $doxcode
+     * @param bool $dosmiley
+     * @param bool $dobr
      */
     public function setTextAreaDisplayAttributes($dohtml, $doxcode, $dosmiley, $dobr)
     {
@@ -175,7 +175,7 @@ class XooNIpsTableObject extends XoopsObject
      * @param mixed  $value   value to assign
      * @param bool   $not_gpc
      *
-     * @return null|boolean false if failed
+     * @return null|bool false if failed
      */
     public function setVar($key, $value, $not_gpc = false)
     {
@@ -442,7 +442,7 @@ class XooNIpsTableObject extends XoopsObject
      *
      * @param obj XooNIpsTableObject or empty value
      *
-     * @return boolean if all vars equal to obj vars
+     * @return bool if all vars equal to obj vars
      */
     public function equals($obj)
     {

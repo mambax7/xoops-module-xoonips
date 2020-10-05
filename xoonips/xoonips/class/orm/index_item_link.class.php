@@ -104,7 +104,7 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
      * Get array of item id of private items.
      * Its returns private items except public and group shared items.
      *
-     * @param $uid integer user id
+     * @param $uid int user id
      * @param array of integer of item id(s)
      */
     public function getAllPrivateOnlyItemId($uid)
@@ -203,7 +203,7 @@ class XooNIpsOrmIndexItemLinkHandler extends XooNIpsTableObjectHandler
      * @param uid uid who access to this item
      * @param operation accept|reject|withdraw
      *
-     * @return boolean if permitted
+     * @return bool if permitted
      */
     public function getPerm($index_id, $item_id, $uid, $operation)
     {

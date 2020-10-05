@@ -175,7 +175,7 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function get_private_index_id($uid)
     {

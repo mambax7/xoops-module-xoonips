@@ -784,7 +784,7 @@ class XooNIpsUtilitySearch extends XooNIpsUtility
     /**
      * load stop words.
      *
-     * @return boolean|null false if faiure
+     * @return bool|null false if faiure
      */
     public function _load_stopwords()
     {

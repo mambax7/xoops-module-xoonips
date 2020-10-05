@@ -580,7 +580,7 @@ function xoonips_notification_user_item_rejected($item_id, $index_ids)
 }
 
 /**
- * @param integer $file_id
+ * @param int $file_id
  */
 function xoonips_notification_user_file_downloaded($file_id, $downloader_uid)
 {

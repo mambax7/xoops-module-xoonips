@@ -56,7 +56,7 @@ class Xoonips_Backend extends XCube_ActionFilter
     }
 
     /**
-     * @param integer $item_id
+     * @param int    $item_id
      * @param string $fmt
      */
     public function _getItemTitle($item_id, $fmt)
@@ -72,7 +72,7 @@ class Xoonips_Backend extends XCube_ActionFilter
     }
 
     /**
-     * @param integer $item_id
+     * @param int    $item_id
      * @param string $fmt
      */
     public function _getItemUrl($item_id, $doi, $fmt)

@@ -42,7 +42,7 @@ class XooNIpsLogicGetSimpleItems extends XooNIpsLogic
      * @param[out] $response->error  error information
      * @param[out] $response->success XooNIpsItem retrieved item object
      *
-     * @return null|boolean if fault
+     * @return null|bool if fault
      */
     public function execute(&$vars, &$response)
     {

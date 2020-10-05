@@ -65,7 +65,7 @@ $request_vars = array(
 );
 $formdata = &xoonips_getutility('formdata');
 foreach ($request_vars as $key => $meta) {
-    list($type, $default) = $meta;
+    [$type, $default] = $meta;
     $$key = $formdata->getValue('both', $key, $type, false, $default);
 }
 $search_var = $formdata->getValueArray('both', 'search_var', 's', false, array());
@@ -213,7 +213,7 @@ case 'quicksearch':
         // get number of rows
         $sql = "select count(*) from $table_cache_metadata where search_cache_id = $search_cache_id";
         $result2 = $xoopsDB->query($sql);
-        list($total_count) = $xoopsDB->fetchRow($result2);
+        [$total_count] = $xoopsDB->fetchRow($result2);
 
         if ($page * $item_per_page >= $total_count) {
             $page = 1; //reset page number
@@ -224,7 +224,7 @@ case 'quicksearch':
         $metadata = array();
         while ($row = $xoopsDB->fetchRow($result)) {
             $ar = array();
-            list($ar['identifier'], $ar['repository_id'], $title) = $row;
+            [$ar['identifier'], $ar['repository_id'], $title] = $row;
             $ar['title'] = $textutil->html_special_chars($title);
             $ar['params'] = urlencode(
                 implode(
@@ -501,7 +501,7 @@ if (isset($index_id)) {
 /**
  * @param $keyword search keyword
  * @param $search_itemtype 'all'/'basic'/each item type name(ex:xnppaper)
- * @param $search_only_private boolean true if search only private items
+ * @param $search_only_private bool true if search only private items
  * @param $errorMessage reference of string to write errorMessage
  * @param $search_content_type 'item'/'metadata'/'file'
  *
@@ -626,8 +626,8 @@ function xoonips_itemsubtype_search($keyword, $search_itemtype, $search_only_pri
 /**
  * return array of XooNIpsItemCompo that is registerd to the index.
  *
- * @param $index_id integer index id
- * @param $uid integer uid (for permission check)
+ * @param $index_id int index id
+ * @param $uid int uid (for permission check)
  *
  * @return array XooNIpsItemCompo(s)
  */
@@ -655,8 +655,8 @@ function xoonips_get_indexed_items($index_id, $uid)
 /**
  * add item to index, set certify_state and lock item and indexes.
  *
- * @param $index_id integer id of index item is registerd to
- * @param $uid integer user id of executor
+ * @param $index_id int id of index item is registerd to
+ * @param $uid int user id of executor
  * @param old_selected_item_ids array id of all of already registerd items to the index( $index_id)
  * @param new_selected_item_ids array id of all of items to be registered to the index(  $index_id)
  */
@@ -796,8 +796,8 @@ function xoonips_get_page_number_label($total, $offset, $limit)
 }
 
 /**
- * @param $page integer current page number
- * @param $maxpage integer max page number
+ * @param $page int current page number
+ * @param $maxpage int max page number
  *
  * @return array of integer page numbers
  */
@@ -815,7 +815,7 @@ function xoonips_get_selectable_page_number($page, $maxpage)
 /**
  * return number of items of the file search cache.
  *
- * @param $search_cache_id integer cache id
+ * @param $search_cache_id int cache id
  *
  * @return int number of items
  */
@@ -846,7 +846,7 @@ function xoonips_get_file_count_from_search_cache($search_cache_id)
 /**
  * return number of items of the item search cache.
  *
- * @param $search_cache_id integer cache id
+ * @param $search_cache_id int cache id
  *
  * @return int number of items
  */
@@ -883,7 +883,7 @@ function xoonips_get_item_count_from_search_cache($search_cache_id)
 /**
  * return number of items of the metadata search cache.
  *
- * @param $search_cache_id integer cache id
+ * @param $search_cache_id int cache id
  *
  * @return int number of metadata
  */

@@ -108,7 +108,7 @@ function b_xoonips_quick_search_show()
     $keyword = $formdata->getValue('both', 'keyword', 'n', false, '');
     // - search_itemtype
     $selected = $formdata->getValue('both', 'search_itemtype', 's', false);
-    if (!is_null($selected) && !in_array($selected, array_keys($search_itemtypes))) {
+    if (null !== $selected && !in_array($selected, array_keys($search_itemtypes))) {
         $selected = '';
     }
 

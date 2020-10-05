@@ -540,7 +540,7 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
      */
     public function insert(&$obj, $force = false)
     {
-        if (!is_null($obj->get('sort_number'))) {
+        if (null !== $obj->get('sort_number')) {
             return parent::insert($obj, $force);
         }
         // for regular index

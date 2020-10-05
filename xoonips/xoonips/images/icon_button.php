@@ -67,7 +67,7 @@ case 'focus':
     break;
 }
 $label = $formdata->getValue('get', 'label', 'n', false);
-if (!is_null($label)) {
+if (null !== $label) {
     switch ($label) {
     case 'download':
         $text = _MD_XOONIPS_ITEM_DOWNLOAD_LABEL;

@@ -109,7 +109,7 @@ class XooNIpsOrmEventLog extends XooNIpsTableObject
             ];
             foreach ($fields as $i => $field) {
                 // check unnecessary && specified values
-                if ($eventValidFields[$event_type_id][$i] == 0 && !is_null($this->vars[$field]['value'])) {
+                if ($eventValidFields[$event_type_id][$i] == 0 && null !== $this->vars[$field]['value']) {
                     $result = false;
                     $this->setErrors("cannot specify $field if event_type_id=$event_type_id");
                 }
@@ -243,7 +243,7 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
         $obj = &$this->create();
         $obj->set('event_type_id', ETID_LOGOUT);
         $obj->set('exec_uid', $uid);
-        if (!is_null($timestamp)) {
+        if (null !== $timestamp) {
             // override timestamp for session GC
             $obj->set('timestamp', $timestamp);
         }
@@ -677,7 +677,7 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
         $obj->set('event_type_id', ETID_END_SU);
         $obj->set('exec_uid', $original_uid);
         $obj->set('uid', $target_uid);
-        if (!is_null($timestamp)) {
+        if (null !== $timestamp) {
             // override timestamp for session GC
             $obj->set('timestamp', $timestamp);
         }

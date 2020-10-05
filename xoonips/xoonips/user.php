@@ -51,7 +51,7 @@ if ($op == 'main') {
             $xoopsTpl->assign('usercookie', $_COOKIE[$myxoopsConfig['usercookie']]);
         }
         $xoops_redirect = $formdata->getValue('get', 'xoops_redirect', 's', false);
-        if (!is_null($xoops_redirect)) {
+        if (null !== $xoops_redirect) {
             $xoopsTpl->assign('redirect_page', $textutil->html_special_chars($xoops_redirect));
         }
         require XOOPS_ROOT_PATH.'/footer.php';

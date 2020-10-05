@@ -128,13 +128,13 @@ class XooNIpsAdminFileHandler extends XooNIpsFileHandler
         $file_mimetype = $xf_obj->get('mime_type');
         $file_path = $this->getFilePath($file_id);
         $fs_name = $this->_detect_file_search_plugin($file_name, $file_mimetype);
-        $fs_version = is_null($fs_name) ? null : $this->fsearch_plugins[$fs_name]['version'];
+        $fs_version = null === $fs_name ? null : $this->fsearch_plugins[$fs_name]['version'];
         if (!$force) {
             // plugin version check
             $old_fs_name = $xf_obj->get('search_module_name');
             $old_fs_version = $xf_obj->get('search_module_version');
             if ($fs_name == $old_fs_name) {
-                if (is_null($fs_name)) {
+                if (null === $fs_name) {
                     // file search is not supported
                     return true;
                 }
@@ -151,7 +151,7 @@ class XooNIpsAdminFileHandler extends XooNIpsFileHandler
             $this->xst_handler->delete($xst_obj);
         }
 
-        if ($is_deleted || !is_readable($file_path) || is_null($fs_name)) {
+        if ($is_deleted || !is_readable($file_path) || null === $fs_name) {
             // clear search plugin informations
             $xf_obj->setDefault('search_module_name');
             $xf_obj->setDefault('search_module_version');
@@ -227,7 +227,7 @@ class XooNIpsAdminFileHandler extends XooNIpsFileHandler
         $mimetype = $fileutil->get_mimetype($file_path, $file_name);
         $thumbnail = $file_ftid == $this->preview_ftid ? $fileutil->get_thumbnail($file_path, $mimetype) : null;
         $xf_obj->set('mime_type', $mimetype);
-        if (is_null($thumbnail)) {
+        if (null === $thumbnail) {
             $xf_obj->setDefault('thumbnail_file');
         } else {
             $xf_obj->set('thumbnail_file', $thumbnail);

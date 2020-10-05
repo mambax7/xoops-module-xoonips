@@ -52,11 +52,11 @@ class XooNIpsActionTransferUserRequestInitialize extends XooNIpsActionTransfer
         xoonips_deny_guest_access();
         xoonips_allow_both_method();
 
-        if (!is_null($this->_formdata->getValue('post', 'to_uid', 'i', false))) {
+        if (null !== $this->_formdata->getValue('post', 'to_uid', 'i', false)) {
             xoonips_validate_request($this->is_valid_transferee_user($this->_formdata->getValue('post', 'to_uid', 'i', false)));
         }
 
-        if (!is_null($this->_formdata->getValueArray('post', 'item_ids_to_transfer', 'i', false))) {
+        if (null !== $this->_formdata->getValueArray('post', 'item_ids_to_transfer', 'i', false)) {
             xoonips_validate_request($this->is_readable_all_items($this->_formdata->getValueArray('post', 'item_ids_to_transfer', 'i', false), $xoopsUser->getVar('uid')));
         }
     }

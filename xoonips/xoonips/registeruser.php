@@ -143,7 +143,7 @@ function userCheckXooNIps($realname, $address, $company_name, $division, $tel, $
     // -- field length
     foreach ($check_fields as $key => $info) {
         [$label, $maxlength, $errmes] = $info;
-        if (!is_null($maxlength) && strlen(${$key}) > $maxlength) {
+        if (null !== $maxlength && strlen(${$key}) > $maxlength) {
             $errors[] = $errmes;
         }
     }

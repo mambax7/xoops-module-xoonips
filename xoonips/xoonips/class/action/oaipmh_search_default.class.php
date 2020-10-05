@@ -55,7 +55,7 @@ class XooNIpsActionOaipmhSearchDefault extends XooNIpsAction
         $textutil = &xoonips_getutility('text');
 
         $repository_id = $this->_formdata->getValue('post', 'repository_id', 'i', false);
-        if (!is_null($repository_id)) {
+        if (null !== $repository_id) {
             xoonips_validate_request($this->isValidRepositoryId($repository_id));
         }
 

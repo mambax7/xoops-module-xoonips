@@ -495,7 +495,7 @@ class XooNIpsRankingHandler
     public function _get_config($key)
     {
         $val = $this->handlers['config']->getValue('ranking_'.$key);
-        if (is_null($val)) {
+        if (null === $val) {
             die('fatal error in '.__FILE__.' at '.__LINE__);
         }
 

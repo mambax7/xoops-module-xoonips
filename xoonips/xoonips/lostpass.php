@@ -51,7 +51,7 @@ if (count($getuser) != 1) {
 
 $code = $formdata->getValue('get', 'code', 's', false);
 $areyou = substr($getuser[0]->getVar('pass', 's'), 0, 5);
-if (!is_null($code) && $areyou == $code) {
+if (null !== $code && $areyou == $code) {
     $newpass     = xoops_makepass();
     $xoopsMailer = getMailer();
     $xoopsMailer->useMail();
@@ -80,7 +80,7 @@ if (!is_null($code) && $areyou == $code) {
     exit();
 } else {
     // If no validation code, send it
-    if (!is_null($code)) {
+    if (null !== $code) {
         // if invalid code send, die process
         // die( 'invalid code request' );
         die('Your new password has been send to your email address. Please check your email again.');

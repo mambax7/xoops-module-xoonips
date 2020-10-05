@@ -53,7 +53,7 @@ unset($ft_objs);
 $text = false;
 $file = $formdata->getFile('file', false);
 $errorMessage = false;
-if (!is_null($file)) {
+if (null !== $file) {
     // file was uploaded
     $originalFileName = $file['name'];
     $mimeType = $file['type'];

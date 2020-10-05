@@ -113,7 +113,7 @@ class XooNIpsActionTransferUserAccept extends XooNIpsActionTransfer
     public function get_item_ids_to_transfer()
     {
         $result = $this->_formdata->getValueArray('post', 'item_ids_to_transfer', 'i', false);
-        if (is_null($result)) {
+        if (null === $result) {
             return [];
         }
 

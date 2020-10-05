@@ -81,7 +81,7 @@ class XooNIpsXmlRpcTransformCompo extends XooNIpsXmlRpcTransformElement
     {
         //        $this->module = $module;
         //        $this->name = $name;
-        if (is_null($this->iteminfo)) {
+        if (null === $this->iteminfo) {
             require XOOPS_ROOT_PATH.'/modules/'.$module.'/iteminfo.php';
             $this->iteminfo = &$iteminfo;
         }

@@ -56,8 +56,8 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
     public function getValue($method, $name, $type, $is_required, $default_value = null)
     {
         $val = $this->_get_request_data($method, $name, $is_required);
-        if (is_null($val)) {
-            if (is_null($default_value)) {
+        if (null === $val) {
+            if (null === $default_value) {
                 return null;
             } else {
                 return $default_value;
@@ -85,7 +85,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
     {
         $ret = [];
         $vals = $this->_get_request_data($method, $name, $is_required);
-        if (is_null($vals)) {
+        if (null === $vals) {
             return $ret;
         }
         if (!is_array($vals)) {
@@ -109,7 +109,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
     public function getFile($name, $is_required)
     {
         $val = isset($_FILES[$name]) ? $_FILES[$name] : null;
-        if (is_null($val)) {
+        if (null === $val) {
             if ($is_required) {
                 $this->_form_error(__LINE__);
             }
@@ -150,7 +150,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
     {
         $ret = false;
         $val = $this->_get_request_data($method, $name, $is_required);
-        if (is_null($val)) {
+        if (null === $val) {
             return $ret;
         }
         if (is_array($val)) {
@@ -175,7 +175,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
     {
         $ret = [];
         $vals = $this->_get_request_data($method, $name, $is_required);
-        if (is_null($vals)) {
+        if (null === $vals) {
             return $ret;
         }
         if (!is_array($vals)) {
@@ -197,7 +197,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
      */
     public function set($method, $name, $val)
     {
-        if (is_null($val)) {
+        if (null === $val) {
             if ($method == 'get') {
                 unset($_GET[$name]);
             } elseif ($method == 'post') {
@@ -293,7 +293,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
         default:
             $this->_form_error(__LINE__);
         }
-        if ($is_required && is_null($val)) {
+        if ($is_required && null === $val) {
             $this->_form_error(__LINE__);
         }
 
@@ -311,7 +311,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
      */
     public function _sanitize($val, $type)
     {
-        if (is_null($val)) {
+        if (null === $val) {
             return null;
         }
         if (get_magic_quotes_gpc()) {

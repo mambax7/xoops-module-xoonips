@@ -232,7 +232,7 @@ class XooNIpsActionTransfer extends XooNIpsAction
      */
     public function is_valid_transferee_user($uid, $uid_transferer = null)
     {
-        if (!is_null($uid_transferer)) {
+        if (null !== $uid_transferer) {
             if ($uid == $uid_transferer) {
                 return false;
             }

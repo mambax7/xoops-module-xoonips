@@ -170,7 +170,7 @@ function check_variables(&$vals)
     // checkboxes
     $checkboxes = ['user_viewemail', 'attachsig'];
     foreach ($checkboxes as $type => $key) {
-        $vals['xoops'][$key] = (is_null($vals['xoops'][$key]) ? 0 : 1);
+        $vals['xoops'][$key] = (null === $vals['xoops'][$key] ? 0 : 1);
     }
 
     // item storage limit

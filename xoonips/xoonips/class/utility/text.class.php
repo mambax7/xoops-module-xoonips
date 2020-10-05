@@ -170,7 +170,7 @@ class XooNIpsUtilityText extends XooNIpsUtility
     {
         static $pattern = null;
         static $replace = null;
-        if (is_null($pattern)) {
+        if (null === $pattern) {
             // patterns
             $_numalpha = '[a-zA-Z0-9]';
             $_hex = '[a-fA-F0-9]';
@@ -522,7 +522,7 @@ class XooNIpsUtilityText extends XooNIpsUtility
     {
         static $code_prefix = null;
         static $code_postfix = null;
-        if (is_null($code_prefix)) {
+        if (null === $code_prefix) {
             $code_prefix = '<script type="text/javascript"><!--'."\n";
             $code_prefix .= 'document.write(String.fromCharCode(';
             $code_postfix = '));'."\n";

@@ -48,7 +48,7 @@ $xnpsid = $_SESSION['XNPSID'];
 // If post_id is specified, $_POST is restored.
 $formdata = &xoonips_getutility('formdata');
 $post_id = $formdata->getValue('get', 'post_id', 'n', false);
-if (!is_null($post_id) && 'GET' == $_SERVER['REQUEST_METHOD']) {
+if (null !== $post_id && 'GET' == $_SERVER['REQUEST_METHOD']) {
     if (isset($_SESSION['post_id']) && isset($_SESSION['post_id'][$post_id])) {
         $_POST = unserialize($_SESSION['post_id'][$post_id]);
     }

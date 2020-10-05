@@ -78,7 +78,7 @@ class XooNIpsOrmItemStatusHandler extends XooNIpsTableObjectHandler
         $join->cascade(new XooNIpsJoinCriteria('xoonips_item_status', 'item_id', 'item_id', 'LEFT', 'tis'), 'txil', true);
         $results = &$index_handler->getObjects($criteria1, false, 'txil.item_id, tis.is_deleted', true, $join);
         foreach ($results as $row) {
-            if (is_null($row->getExtraVar('is_deleted'))) {
+            if (null === $row->getExtraVar('is_deleted')) {
                 $item_status = &$item_status_handler->create();
                 $item_status->set('created_timestamp', time());
             } else {

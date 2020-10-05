@@ -210,7 +210,7 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
      */
     public function &getObjects($criteria = null, $id_as_key = false, $fieldlist = '', $distinct = false, $joindef = null)
     {
-        if (is_null($joindef) || !(is_subclass_of($joindef, 'xoonipsjoincriteria') || 'xoonipsjoincriteria' == strtolower(get_class($joindef)))) {
+        if (null === $joindef || !(is_subclass_of($joindef, 'xoonipsjoincriteria') || 'xoonipsjoincriteria' == strtolower(get_class($joindef)))) {
             $joindef = new XooNIpsJoinCriteria('xoonips_file_type', 'file_type_id', 'file_type_id');
         } else {
             $joindef->cascade(new XooNIpsJoinCriteria('xoonips_file_type', 'file_type_id', 'file_type_id'), 'xoonips_file');

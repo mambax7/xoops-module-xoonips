@@ -67,7 +67,7 @@ function b_xoonips_tree_show()
         }
         if ($current_script == $site_url_base.'user.php') {
             $op = $formdata->getValue('both', 'op', 's', false);
-            if (is_null($op)) {
+            if (null === $op) {
                 $xoops_redirect = $formdata->getValue('get', 'xoops_redirect', 's', false);
                 $redirect = !empty($xoops_redirect) ? '?xoops_redirect='.urlencode($xoops_redirect) : '';
                 header('Location: modules/xoonips/user.php'.$redirect);

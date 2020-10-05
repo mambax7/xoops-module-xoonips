@@ -166,7 +166,7 @@ class XooNIpsXmlRpcItemView extends XooNIpsXmlRpcViewElement
      */
     public function render($io_xmlrpc = null)
     {
-        if (is_null($io_xmlrpc)) {
+        if (null === $io_xmlrpc) {
             $iteminfo = $this->item->iteminfo['io']['xmlrpc']['item'];
         } else {
             $iteminfo = $io_xmlrpc;

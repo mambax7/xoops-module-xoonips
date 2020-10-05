@@ -218,7 +218,7 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
      */
     public function _clean_files($path = null)
     {
-        if (is_null($path)) {
+        if (null === $path) {
             $path = $this->_extract_dir;
         }
         foreach (glob($path.'/*') as $file) {

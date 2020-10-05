@@ -74,7 +74,7 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
         xoonips_validate_request(in_array($search_flag, [0, 1]));
 
         $search_cache_id = $this->_formdata->getValue('post', 'search_cache_id', 'i', false);
-        if (!is_null($search_cache_id)) {
+        if (null !== $search_cache_id) {
             xoonips_validate_request($this->searchCacheExists($search_cache_id));
         }
 
@@ -90,7 +90,7 @@ class XooNIpsActionOaipmhSearchSearch extends XooNIpsAction
         $this->_orderBy = $order_by;
         $this->_metadataPerPage = $metadata_per_page;
         $this->_page = $page;
-        $this->_searchCacheId = is_null($search_cache_id) ? '0' : $search_cache_id;
+        $this->_searchCacheId = null === $search_cache_id ? '0' : $search_cache_id;
 
         $this->_params[] = session_id();
         $this->_params[] = $repository_id;

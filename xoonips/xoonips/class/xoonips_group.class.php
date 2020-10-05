@@ -51,7 +51,7 @@ class XooNIpsGroupHandler
     public function existsGroup($gname, $except_gid = null)
     {
         $criteria = new CriteriaCompo(new Criteria('gid', GID_DEFAULT, '!='));
-        if (!is_null($except_gid)) {
+        if (null !== $except_gid) {
             $criteria->add(new Criteria('gid', $except_gid, '!='));
         }
         $criteria->add(new Criteria('gname', $gname));
@@ -91,7 +91,7 @@ class XooNIpsGroupHandler
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('uid', $uid));
         $criteria->add(new Criteria('is_admin', 1));
-        if (is_null($gid)) {
+        if (null === $gid) {
             $criteria->add(new Criteria('gid', GID_DEFAULT, '!='));
         } else {
             $criteria->add(new Criteria('gid', $gid));
@@ -111,7 +111,7 @@ class XooNIpsGroupHandler
      */
     public function getGroupIds($uid = null, $is_admin_only = false)
     {
-        if (!is_null($uid)) {
+        if (null !== $uid) {
             $criteria = new CriteriaCompo(new Criteria('gid', GID_DEFAULT, '!=', 'xgl'));
             $criteria->add(new Criteria('uid', $uid, '=', 'xgl'));
             if ($is_admin_only) {
@@ -185,7 +185,7 @@ class XooNIpsGroupHandler
     {
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('gid', GID_DEFAULT, '!=', 'xg'));
-        if (!is_null($uid)) {
+        if (null !== $uid) {
             $criteria->add(new Criteria('uid', $uid));
             if ($is_admin_only) {
                 $criteria->add(new Criteria('is_admin', 1));
@@ -215,7 +215,7 @@ class XooNIpsGroupHandler
         $join = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'idx');
         $criteria = new CriteriaCompo(new Criteria('gid', $gid, '=', 'idx'));
         $join->cascade(new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'ib'));
-        if (!is_null($uid)) {
+        if (null !== $uid) {
             $criteria->add(new Criteria('uid', $uid, '=', 'ib'));
         }
         $res = &$index_item_link_handler->open($criteria, 'ib.item_id', true, $join);
@@ -250,7 +250,7 @@ class XooNIpsGroupHandler
     public function &getGroupObjects($gids = null)
     {
         $criteria = new CriteriaCompo(new Criteria('gid', GID_DEFAULT, '!='));
-        if (!is_null($gids)) {
+        if (null !== $gids) {
             $criteria->add(new Criteria('gid', '('.implode(',', $gids).')', 'IN'));
         }
         $criteria->setSort('gname');

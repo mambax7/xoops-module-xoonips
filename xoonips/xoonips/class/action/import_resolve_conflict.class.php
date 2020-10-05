@@ -78,7 +78,7 @@ class XooNIpsActionImportResolveConflict extends XooNIpsAction
         $this->_collection = unserialize(gzuncompress(base64_decode($session['xoonips_import_items'])));
         xoonips_validate_request($this->_collection);
 
-        $this->_collection->setImportAsNewOption(!is_null($this->_formdata->getValue('post', 'import_as_new', 'i', false)));
+        $this->_collection->setImportAsNewOption(null !== $this->_formdata->getValue('post', 'import_as_new', 'i', false));
         $items = &$this->_collection->getItems();
         foreach (array_keys($items) as $key) {
             if (in_array($items[$key]->getPseudoId(), $this->getUpdatablePseudoId())) {
@@ -135,7 +135,7 @@ class XooNIpsActionImportResolveConflict extends XooNIpsAction
     public function getUpdatablePseudoId()
     {
         $updatable_pseudo_id = $this->_formdata->getValueArray('post', 'updatable_pseudo_id', 'i', false);
-        if (is_null($updatable_pseudo_id) || !is_array($updatable_pseudo_id)) {
+        if (null === $updatable_pseudo_id || !is_array($updatable_pseudo_id)) {
             return [];
         }
 
@@ -150,7 +150,7 @@ class XooNIpsActionImportResolveConflict extends XooNIpsAction
     public function getUpdatePseudoId()
     {
         $update_pseudo_id = $this->_formdata->getValueArray('post', 'update_pseudo_id', 'i', false);
-        if (is_null($update_pseudo_id) || !is_array($update_pseudo_id)) {
+        if (null === $update_pseudo_id || !is_array($update_pseudo_id)) {
             return [];
         }
 

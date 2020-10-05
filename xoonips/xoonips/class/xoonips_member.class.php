@@ -81,7 +81,7 @@ class XooNIpsMemberHandler
         // get moderator group id
         $xconfig_handler = &xoonips_getormhandler('xoonips', 'config');
         $moderator_gid = $xconfig_handler->getValue('moderator_gid');
-        if (is_null($moderator_gid)) {
+        if (null === $moderator_gid) {
             return false;
         }
         // is $uid in that group?

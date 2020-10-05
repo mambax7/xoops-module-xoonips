@@ -31,7 +31,7 @@ require_once __DIR__.'/class/base/actionfactory.class.php';
 
 $formdata = &xoonips_getutility('formdata');
 $op = $formdata->getValue('get', 'action', 'n', false);
-if (is_null($op)) {
+if (null === $op) {
     header('Location: '.XOOPS_URL.'/modules/xoonips/oaipmh_search.php?action=default');
 }
 

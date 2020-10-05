@@ -534,7 +534,7 @@ function xoonips_advanced_search($keyword, $search_itemtype, $search_only_privat
         foreach ($mysearch_vars as $var_name) {
             $ar = explode('_', $var_name);
             $var = $formdata->getValue('post', $var_name, 's', false);
-            if (in_array($ar[0], $search_target) && !is_null($var)) {
+            if (in_array($ar[0], $search_target) && null !== $var) {
                 if (!is_array($var)) {
                     if (0 != strlen($var)) {
                         $search_keywords[] = urlencode($var_name).'='.urlencode($var);
@@ -606,7 +606,7 @@ function xoonips_itemsubtype_search($keyword, $search_itemtype, $search_only_pri
         foreach ($mysearch_vars as $var_name) {
             $ar = explode('_', $var_name);
             $var = $formdata->getValue('post', $var_name, 's', false);
-            if (in_array($ar[0], $search_target) && !is_null($var)) {
+            if (in_array($ar[0], $search_target) && null !== $var) {
                 if (!is_array($var)) {
                     if (0 != strlen($var)) {
                         $search_keywords[] = urlencode($var_name).'='.urlencode($var);

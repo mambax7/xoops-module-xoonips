@@ -57,7 +57,7 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
     public function __construct($module = null)
     {
         parent::__construct();
-        if (isset($module) && is_null($this->iteminfo)) {
+        if (isset($module) && null === $this->iteminfo) {
             require XOOPS_ROOT_PATH.'/modules/'.$module.'/iteminfo.php';
             $this->iteminfo = &$iteminfo;
             $this->description = $iteminfo['description'];

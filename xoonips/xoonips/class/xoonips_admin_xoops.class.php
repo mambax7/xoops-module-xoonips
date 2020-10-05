@@ -130,13 +130,13 @@ class XooNIpsAdminXoopsHandler
     {
         $block = new XoopsBlock();
         $block->load($bid);
-        if (!is_null($visible)) {
+        if (null !== $visible) {
             $block->setVar('visible', $visible ? 1 : 0, true); // not gpc
         }
-        if (!is_null($side)) {
+        if (null !== $side) {
             $block->setVar('side', $side, true); // not gpc
         }
-        if (!is_null($weight)) {
+        if (null !== $weight) {
             $block->setVar('weight', $weight, true); // not gpc
         }
 

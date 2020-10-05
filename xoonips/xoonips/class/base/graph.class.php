@@ -194,7 +194,7 @@ class XooNIpsGraphData
      */
     public function getMax()
     {
-        if (is_null($this->cache_max)) {
+        if (null === $this->cache_max) {
             $this->_calcRange();
         }
 
@@ -208,7 +208,7 @@ class XooNIpsGraphData
      */
     public function getMin()
     {
-        if (is_null($this->cache_min)) {
+        if (null === $this->cache_min) {
             $this->_calcRange();
         }
 

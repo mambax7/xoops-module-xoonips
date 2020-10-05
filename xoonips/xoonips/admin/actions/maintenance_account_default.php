@@ -95,7 +95,7 @@ function count_users()
 }
 
 // page navigation
-$page = (is_null($get_vals['navi'])) ? 1 : $get_vals['navi'];
+$page = (null === $get_vals['navi']) ? 1 : $get_vals['navi'];
 $limit = 20;
 $pagenavi = new XooNIpsPageNavi(count_users(), $limit, $page);
 $pagenavi->setSort(['uname']);

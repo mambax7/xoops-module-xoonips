@@ -456,7 +456,7 @@ function xoonips_deny_guest_access($url = null, $msg = _MD_XOONIPS_ITEM_FORBIDDE
 {
     global $xoopsUser;
     if (!$xoopsUser) {
-        redirect_header(is_null($url) ? XOOPS_URL.'/modules/xoonips/user.php' : $url, 3, $msg);
+        redirect_header(null === $url ? XOOPS_URL . '/modules/xoonips/user.php' : $url, 3, $msg);
     }
 }
 
@@ -617,7 +617,7 @@ function xoonips_is_user_export_enabled()
 
     $xoonips_config_handler = &xoonips_getormhandler('xoonips', 'config');
     $export_enabled = $xoonips_config_handler->getValue('export_enabled');
-    if (is_null($export_enabled)) {
+    if (null === $export_enabled) {
         return false;
     }
 

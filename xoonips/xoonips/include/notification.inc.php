@@ -35,7 +35,7 @@ function xoonips_notification_get_moderator_uids()
 {
     $xoonips_config_handler = &xoonips_getormhandler('xoonips', 'config');
     $moderator_gid = $xoonips_config_handler->getValue('moderator_gid');
-    if (is_null($moderator_gid)) {
+    if (null === $moderator_gid) {
         return []; // no moderator
     }
 

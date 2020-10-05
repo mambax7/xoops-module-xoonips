@@ -89,7 +89,7 @@ class XooNIpsRpcValueHandler extends RpcValueHandler
     public function handleCharacterData(&$parser, &$data)
     {
         parent::handleCharacterData($parser, $data);
-        if (is_null($this->_tempValue)) {
+        if (null === $this->_tempValue) {
             $this->_tempValue = $data;
         } else {
             $this->_tempValue .= $data;
@@ -102,7 +102,7 @@ class XooNIpsRpcValueHandler extends RpcValueHandler
     public function handleEndElement(&$parser)
     {
         if (!isset($parser->_tempValue)) { // maybe no tag handled in <value>...</value>
-            if (!is_null($this->_tempValue)) {
+            if (null !== $this->_tempValue) {
                 $parser->setTempValue($this->_tempValue);
             } else {
                 $parser->setTempValue('');

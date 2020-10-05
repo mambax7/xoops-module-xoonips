@@ -157,7 +157,7 @@ if ('saveuser' == $op) {
     }
 
     if (1 == $myxoopsConfigUser['allow_chgmail']) {
-        if (is_null($email) || '' == $email || !checkEmail($email)) {
+        if (null === $email || '' == $email || !checkEmail($email)) {
             $errors[] = _US_INVALIDMAIL;
         }
     }

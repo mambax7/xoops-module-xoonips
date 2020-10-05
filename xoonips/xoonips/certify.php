@@ -63,7 +63,7 @@ $item_id = $formdata->getValue('post', 'item_id', 'i', false);
 $bulk = $formdata->getValue('post', 'bulk', 'i', false);
 // check request variables
 if ('certify' == $op || 'uncertify' == $op) {
-    if (0 == $bulk && is_null($item_id)) {
+    if (0 == $bulk && null === $item_id) {
         die('illegal request');
     }
 } elseif ('' != $op) {

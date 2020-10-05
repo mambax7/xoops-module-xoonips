@@ -35,7 +35,7 @@ $get_vals = xoonips_admin_get_requests('get', $get_keys);
 $uid = $get_vals['uid'];
 $upage = $get_vals['upage'];
 
-if (is_null($uid)) {
+if (null === $uid) {
     // user select
     $title = _AM_XOONIPS_MAINTENANCE_ITEM_DELETE_TITLE;
     $nextaction = 'delete';

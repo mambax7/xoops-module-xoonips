@@ -109,7 +109,7 @@ function xoonips_admin_get_configs($keys, $fmt)
     $ret = [];
     foreach ($keys as $key => $key_fmt) {
         $val = $xconfig_handler->getValue($key);
-        if (is_null($val)) {
+        if (null === $val) {
             $ret[$key] = $val;
         } else {
             switch ($key_fmt) {
@@ -163,7 +163,7 @@ function xoonips_admin_set_config($key, &$val, $type)
         $cleanv = floatval($val);
         break;
     }
-    if (is_null($cleanv)) {
+    if (null === $cleanv) {
         return false;
     }
 

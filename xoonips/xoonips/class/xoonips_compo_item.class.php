@@ -158,7 +158,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
     {
         parent::__construct($db);
         $this->db = &$db;
-        if (isset($module) && is_null($this->iteminfo)) {
+        if (isset($module) && null === $this->iteminfo) {
             require XOOPS_ROOT_PATH.'/modules/'.$module.'/iteminfo.php';
             $this->iteminfo = &$iteminfo;
             //
@@ -953,7 +953,7 @@ class XooNIpsItemInfoCompo extends XooNIpsRelatedObject
      */
     public function __construct($module = null)
     {
-        if (isset($module) && is_null($this->iteminfo)) {
+        if (isset($module) && null === $this->iteminfo) {
             require XOOPS_ROOT_PATH.'/modules/'.$module.'/iteminfo.php';
             $this->iteminfo = &$iteminfo;
             // add orm object according to $this -> iteminfo['orm']

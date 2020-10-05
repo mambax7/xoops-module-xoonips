@@ -87,7 +87,7 @@ class XooNIpsAction
 
     public function render()
     {
-        if (is_null($this->_get_view_name())) {
+        if (null === $this->_get_view_name()) {
             return;
         }
 

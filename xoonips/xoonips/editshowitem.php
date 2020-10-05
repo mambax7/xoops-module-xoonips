@@ -103,7 +103,7 @@ $item_type_ids = array_keys($item_type_names);
 
 // get showing item type id
 $item_type_id = $formdata->getValue('post', 'item_type_id', 'i', false);
-if (is_null($item_type_id)) {
+if (null === $item_type_id) {
     $item_type_id = $item_type_ids[0];
 } elseif (!in_array($item_type_id, $item_type_ids)) {
     // invalid item type id
@@ -341,7 +341,7 @@ function &_xoonips_editshowitem_get_item_objects($item_type_id, $uid, $is_owner_
     }
     $criteria->add(new Criteria('item_type_id', $item_type_id, '=', 'ib'));
     $criteria->add(new Criteria('title_id', 0, '=', 'it'));
-    if (!is_null($start)) {
+    if (null !== $start) {
         $def_sort = [
             'title' => 'it.title',
             'item_id' => 'ib.item_id',

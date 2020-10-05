@@ -237,7 +237,7 @@ if (!empty($thumbnail)) {
         $item_type_id = $item->getVar('item_type_id', 'n');
         $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');
         $item_type = &$item_type_handler->get($item_type_id);
-        if (is_null($item_type)) {
+        if (null === $item_type) {
             image_error(500);
         }
         $viewphp = $item_type->getVar('viewphp', 'n');

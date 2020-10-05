@@ -63,7 +63,7 @@ class XooNIpsActionTransferAdminInitialize extends XooNIpsActionTransfer
         $this->_view_params['to_uid'] = $this->_formdata->getValue('post', 'to_uid', 'i', false);
         $this->_view_params['to_index_id'] = $this->_formdata->getValue('post', 'to_index_id', 'i', false);
         $tmp = $this->_formdata->getValueArray('post', 'checked_item_ids', 'i', false);
-        $this->_view_params['selected_item_ids'] = !is_null($tmp) ? $tmp : [];
+        $this->_view_params['selected_item_ids'] = null !== $tmp ? $tmp : [];
         $this->_view_params['page'] = $this->_formdata->getValue('post', 'page', 's', false);
         $this->_view_params['from_user_options'] = $this->get_from_user_options();
 

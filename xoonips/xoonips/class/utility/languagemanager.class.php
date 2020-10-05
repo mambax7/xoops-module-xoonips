@@ -88,7 +88,7 @@ class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
      */
     public function read($resource, $mydirname = null, $mytrustdirname = null, $read_once = true)
     {
-        if (is_null($mydirname)) {
+        if (null === $mydirname) {
             $mydirname = $this->default_mydirname;
         }
         if (is_object($this->d3langman_instance)) {
@@ -162,7 +162,7 @@ class XooNIpsUtilityLanguagemanager extends XooNIpsUtility
      */
     public function mail_template_dir($mydirname = null, $mytrustdirname = null)
     {
-        if (is_null($mydirname)) {
+        if (null === $mydirname) {
             $mydirname = $this->default_mydirname;
         }
         $resource = 'mail_template/';

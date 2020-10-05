@@ -692,7 +692,7 @@ function xoonips_get_download_filename($file_id)
 
     $xconfig_handler = &xoonips_getormhandler('xoonips', 'config');
     $download_file_compression = $xconfig_handler->getValue('download_file_compression');
-    if (is_null($download_file_compression)) {
+    if (null === $download_file_compression) {
         return null;
     }
 
@@ -1637,7 +1637,7 @@ function xoonips_insert_event_and_send_notification_of_certification($item_id)
     $index_ids = explode(',', $xoonipsCheckedXID);
 
     $certify_item = $xconfig_handler->getValue('certify_item');
-    if (is_null($certify_item)) {
+    if (null === $certify_item) {
         $certify_item = 'on';
     }
 
@@ -3387,7 +3387,7 @@ function xnpTrimString($src, $len, $enc = null)
     //1.2 日本語非対応サーバならば，substrで部分文字列を得る
     //2 部分文字列が数値文字参照の途中で終了していたら，その数値文字参照を削除する
     //multi byte charset or numeric character reference
-    $dst = mb_substr($src, 0, $len, is_null($enc) ? mb_detect_encoding($src) : $enc);
+    $dst = mb_substr($src, 0, $len, null === $enc ? mb_detect_encoding($src) : $enc);
 
     // if the last numeric character reference is incompleted, remove it
     $within = preg_replace('/^(.*)&[^;]*$/s', '$1', $dst);
@@ -3470,7 +3470,7 @@ function xnpTrimColumn(&$assoc, $table_wo_prefix, $names = null, $enc = null)
     }
 
     foreach ($lengths as $name => $len) {
-        if (isset($assoc[$name]) && (is_null($names) || in_array($name, $names))) {
+        if (isset($assoc[$name]) && (null === $names || in_array($name, $names))) {
             [$within, $without] = xnpTrimString($assoc[$name], $len, $enc);
             $assoc[$name] = $within;
         }
@@ -3495,7 +3495,7 @@ function xnpConfirmHtml(&$assoc, $table_wo_prefix, $names = null, $enc = null)
     }
 
     foreach ($lengths as $name => $len) {
-        if (isset($assoc[$name]) && (is_null($names) || in_array($name, $names))) {
+        if (isset($assoc[$name]) && (null === $names || in_array($name, $names))) {
             $assoc[$name]['html_string'] = $textutil->html_special_chars($assoc[$name]['value']);
             [$assoc[$name]['within'], $assoc[$name]['without']] = xnpTrimString($assoc[$name]['value'], $len, $enc);
             $assoc[$name]['value'] = xnpWithinWithoutHtml($assoc[$name]['within'], $assoc[$name]['without']);
@@ -4762,7 +4762,7 @@ class XooNIpsItemLibraryHandler
     public static function &getInstance()
     {
         static $instance = null;
-        if (is_null($instance)) {
+        if (null === $instance) {
             $instance = new self();
         }
 
@@ -4835,14 +4835,14 @@ class XooNIpsItemLibraryHandler
         $formdata = &xoonips_getutility('formdata');
         if ($do_check_post_id) {
             $post_id = $formdata->getValue('get', 'post_id', 's', false);
-            if (is_null($post_id)) {
+            if (null === $post_id) {
                 // first item registeration
                 return;
             }
         }
         // title
         $value = $formdata->getValue('post', 'title', 's', false);
-        if (!is_null($value)) {
+        if (null !== $value) {
             $objs_old = &$itemlib_obj->getTitleObjects();
             $values = preg_split("/[\r\n]+/", $value);
             $objs_new = [];
@@ -4867,7 +4867,7 @@ class XooNIpsItemLibraryHandler
         }
         // keywords
         $value = $formdata->getValue('post', 'keywords', 's', false);
-        if (!is_null($value)) {
+        if (null !== $value) {
             $objs_old = &$itemlib_obj->getKeywordObjects();
             $values = explode(',', $value);
             $objs_new = [];
@@ -4892,45 +4892,45 @@ class XooNIpsItemLibraryHandler
         }
         // item type id
         $value = $formdata->getValue('post', 'item_type_id', 'i', false);
-        if (!is_null($value)) {
+        if (null !== $value) {
             $itemlib_obj->setItemTypeId($value);
         }
         // description
         $value = $formdata->getValue('post', 'description', 's', false);
-        if (!is_null($value)) {
+        if (null !== $value) {
             $itemlib_obj->setDescription($value);
         }
         // doi
         $value = $formdata->getValue('post', 'doi', 's', false);
-        if (!is_null($value)) {
+        if (null !== $value) {
             $itemlib_obj->setDOI($value);
         }
         // change log
         $value = $formdata->getValue('post', 'change_log', 's', false);
-        if (!is_null($value)) {
+        if (null !== $value) {
             $itemlib_obj->setChangeLog($value);
         }
         // publication date (yaar, month, mday)
         $value = $formdata->getValue('post', 'publicationDateYear', 'i', false);
-        if (!is_null($value)) {
+        if (null !== $value) {
             $itemlib_obj->setPublicationYear($value);
         }
         $value = $formdata->getValue('post', 'publicationDateMonth', 'i', false);
-        if (!is_null($value)) {
+        if (null !== $value) {
             $itemlib_obj->setPublicationMonth($value);
         }
         $value = $formdata->getValue('post', 'publicationDateDay', 'i', false);
-        if (!is_null($value)) {
+        if (null !== $value) {
             $itemlib_obj->setPublicationDay($value);
         }
         // lang
         $value = $formdata->getValue('post', 'lang', 's', false);
-        if (!is_null($value)) {
+        if (null !== $value) {
             $itemlib_obj->setLanguage($value);
         }
         // related to
         $value = $formdata->getValue('post', 'related_to', 's', false);
-        if (!is_null($value)) {
+        if (null !== $value) {
             $itemlib_obj->setRelatedTo($value);
         }
         // related to check (for edit)

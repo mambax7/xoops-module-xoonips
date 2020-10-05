@@ -1174,7 +1174,7 @@ class XooNIpsImportItemHandler
         $text .= "\nbasic.publication_month ".$basic->get('publication_month');
         $text .= "\nbasic.publication_mday ".$basic->get('publication_mday');
         $text .= "\nbasic.lang ".$basic->get('lang');
-        $text .= "\nfilename ".(is_null($import_item->getFilename()) ? '' : $import_item->getFilename());
+        $text .= "\nfilename ".(null === $import_item->getFilename() ? '' : $import_item->getFilename());
         $item_id = $basic->get('item_id');
         if (!empty($item_id)) {
             $text .= "\n".'basic.url '.XOOPS_URL.'/modules/xoonips/detail.php?item_id='.$basic->get('item_id');

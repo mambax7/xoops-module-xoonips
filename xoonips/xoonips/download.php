@@ -139,7 +139,7 @@ $is_post = $formdata->getRequestMethod() == 'POST' ? true : false;
 
 // get parameters
 $file_id = $formdata->getValue('both', 'file_id', 'i', false);
-if (is_null($file_id)) {
+if (null === $file_id) {
     // try to get file_id from doi parameter - NTTDK and Keio University 20080825
     $doi = $formdata->getValue('both', XNP_CONFIG_DOI_FIELD_PARAM_NAME, 's', false);
     $file_id = $file_handler->getFileIdByDOI($doi);
@@ -174,7 +174,7 @@ if (!is_object($filetype_obj)) {
     download_error(500, _MD_XOONIPS_ITEM_BAD_FILE_TYPE);
 }
 $itemtype_mid = $filetype_obj->get('mid');
-if (is_null($itemtype_mid)) {
+if (null === $itemtype_mid) {
     download_error(500, _MD_XOONIPS_ITEM_BAD_FILE_TYPE);
 }
 
@@ -190,7 +190,7 @@ $itemtype_viewphp = $itemtype_objs[0]->get('viewphp');
 $itemtype_displayname = $itemtype_objs[0]->get('display_name');
 
 // load item type's view.php
-if (is_null($itemtype_viewphp)) {
+if (null === $itemtype_viewphp) {
     // maybe this is index
     download_error(500, _MD_XOONIPS_ITEM_BAD_FILE_TYPE);
 }
@@ -239,7 +239,7 @@ if (function_exists($dlnotify_func) && $dlnotify_func($item_id)) {
 // get download mode : file only or zip in metadata.txt
 $xconfig_handler = &xoonips_getormhandler('xoonips', 'config');
 $download_file_compression = $xconfig_handler->getValue('download_file_compression');
-if (is_null($download_file_compression)) {
+if (null === $download_file_compression) {
     download_error(500, _MD_XOONIPS_DOWNLOAD_ABNORMAL_CONFIGURATION);
 }
 $do_compress = $download_file_compression == 'on';
@@ -281,7 +281,7 @@ if ($do_compress) {
     if ($dl_filepath === false) {
         download_error(500, _MD_XOONIPS_ITEM_CANNOT_CREATE_TMPFILE);
     }
-    if (is_null($dl_filename)) {
+    if (null === $dl_filename) {
         $dl_filename = $zip_filename;
     }
     $dl_mimetype = 'application/x-zip';

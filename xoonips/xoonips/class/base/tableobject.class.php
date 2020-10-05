@@ -209,7 +209,7 @@ class XooNIpsTableObject extends XoopsObject
 
         if (XOONIPS_DEBUG_MODE) {
             // fatal error if format not set
-            if (is_null($format)) {
+            if (null === $format) {
                 echo '<pre>';
                 print_r(debug_backtrace());
                 echo '</pre>';
@@ -494,7 +494,7 @@ class XooNIpsTableObject extends XoopsObject
                         $cleanv = $cleanv;
                     break;
                 case XOBJ_DTYPE_INT:
-                    if (!is_null($cleanv)) {
+                    if (null !== $cleanv) {
                         $cleanv = intval($cleanv);
                     }
                     break;
@@ -527,7 +527,7 @@ class XooNIpsTableObject extends XoopsObject
                     break;
                 case XOBJ_DTYPE_BINARY:
                         $cleanv = $v['value'];
-                    if ($v['required'] && (is_null($cleanv) || $cleanv === '')) {
+                    if ($v['required'] && (null === $cleanv || $cleanv === '')) {
                         $this->setErrors($k.' is required.');
                         continue 2;
                     }
@@ -856,7 +856,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
                 if ($name == $this->__key_name) {
                     $sql_values[] = $myid;
                 } else {
-                    $sql_values[] = (is_null($sql_arr[$name]) ? 'NULL' : $sql_arr[$name]);
+                    $sql_values[] = (null === $sql_arr[$name] ? 'NULL' : $sql_arr[$name]);
                 }
             }
             if ($obj->doReplace()) {
@@ -874,7 +874,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
                 if ($name == $this->__key_name) {
                     $sql_keyl[] = '`'.$name.'`='.$sql_arr[$name];
                 } else {
-                    $sql_setl[] = '`'.$name.'`='.(is_null($sql_arr[$name]) ? 'NULL' : $sql_arr[$name]);
+                    $sql_setl[] = '`'.$name.'`='.(null === $sql_arr[$name] ? 'NULL' : $sql_arr[$name]);
                 }
             }
             $sql = sprintf('UPDATE `%s` SET %s WHERE %s', $this->db->prefix($this->__table_name), implode(', ', $sql_setl), implode(' AND ', $sql_keyl));
@@ -1208,7 +1208,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
             case XOBJ_DTYPE_OTHER:
             case XOBJ_DTYPE_SOURCE:
             case XOBJ_DTYPE_BINARY:
-                if (is_null($vars[$k])) {
+                if (null === $vars[$k]) {
                     $ret[$k] = 'NULL';
                 } else {
                     $ret[$k] = $this->db->quoteString($vars[$k]);
@@ -1219,7 +1219,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
             case XOBJ_DTYPE_MTIME:
             case XOBJ_DTYPE_LTIME:
             default:
-                if (is_null($vars[$k])) {
+                if (null === $vars[$k]) {
                     $ret[$k] = 'NULL';
                 } else {
                     $ret[$k] = $vars[$k];

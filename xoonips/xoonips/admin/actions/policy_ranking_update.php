@@ -56,7 +56,7 @@ foreach ($post_keys as $key => $attributes) {
 }
 
 // >> ranking_days_enabled 'on' or null
-if (is_null($post_vals['ranking_days_enabled'])) {
+if (null === $post_vals['ranking_days_enabled']) {
     $post_vals['ranking_days_enabled'] = '';
 }
 // >> visible

@@ -142,7 +142,7 @@ class XooNIpsLogic
         // certify automatically?
         $xconfig_handler = &xoonips_getormhandler('xoonips', 'config');
         $certify_item = $xconfig_handler->getValue('certify_item'); // todo define string const
-        if (is_null($certify_item)) {
+        if (null === $certify_item) {
             $error->add(XNPERR_SERVER_ERROR, 'no certify_item config');
 
             return false;
@@ -414,7 +414,7 @@ class XooNIpsLogic
         // item number/storage limit check (group) (only if auto_certify)
         $xconfig_handler = &xoonips_getormhandler('xoonips', 'config');
         $certify_item = $xconfig_handler->getValue('certify_item');
-        if (is_null($certify_item)) {
+        if (null === $certify_item) {
             $error->add(XNPERR_SERVER_ERROR, 'cannot get certify_item config');
 
             return false;

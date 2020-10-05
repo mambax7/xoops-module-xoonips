@@ -119,7 +119,7 @@ class XooNIpsActionImportUpload extends XooNIpsAction
         }
 
         $handler = &xoonips_gethandler('xoonips', 'import_item');
-        $handler->setCertifyAutoOption($success['import_items'], !is_null($this->_formdata->getValue('post', 'certify_auto', 's', false)));
+        $handler->setCertifyAutoOption($success['import_items'], null !== $this->_formdata->getValue('post', 'certify_auto', 's', false));
         $collection = new XooNIpsImportItemCollection();
 
         //
@@ -132,7 +132,7 @@ class XooNIpsActionImportUpload extends XooNIpsAction
 
         $success = &$this->_response->getSuccess();
         $this->_set_errors_to_import_items($success['import_items']);
-        if (!is_null($this->_formdata->getValue('post', 'error_check_only', 's', false))
+        if (null !== $this->_formdata->getValue('post', 'error_check_only', 's', false)
             || $this->_import_item_have_errors($success['import_items'])
             || !$this->_response->getResult()
         ) {
@@ -195,7 +195,7 @@ class XooNIpsActionImportUpload extends XooNIpsAction
         foreach ($success['import_items'] as $i) {
             $collection->addItem($i);
         }
-        $collection->setLoggingOption(!is_null($this->_formdata->getValue('post', 'logging', 's', false)));
+        $collection->setLoggingOption(null !== $this->_formdata->getValue('post', 'logging', 's', false));
         if ($filetype == 'localfile') {
             $collection->setImportFileName($zipfile['name']);
         } else {

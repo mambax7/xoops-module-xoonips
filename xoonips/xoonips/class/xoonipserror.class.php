@@ -68,7 +68,7 @@ class XooNIpsError
      */
     public function __construct($code = null, $extra = null)
     {
-        if (!is_null($code)) {
+        if (null !== $code) {
             $this->add($code, $extra);
         }
     }
@@ -83,7 +83,7 @@ class XooNIpsError
     {
         $this->error[] = [
             'code' => intval($code),
-            'extra' => is_null($extra) ? '' : $extra,
+            'extra' => null === $extra ? '' : $extra,
         ];
     }
 

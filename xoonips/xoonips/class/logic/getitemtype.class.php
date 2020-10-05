@@ -72,7 +72,7 @@ class XooNIpsLogicGetItemtype extends XooNIpsLogic
             $sessionid = $vars[0];
             $item_type_id = (int) $vars[1];
         }
-        list($result, $uid, $session) = $this->restoreSession($sessionid);
+        [$result, $uid, $session] = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);

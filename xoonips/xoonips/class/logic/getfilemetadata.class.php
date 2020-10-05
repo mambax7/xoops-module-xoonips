@@ -70,7 +70,7 @@ class XooNIpsLogicGetFileMetadata extends XooNIpsLogic
             $sessionid = $vars[0];
             $file_id = (int)$vars[1];
         }
-        list($result, $uid, $session) = $this->restoreSession($sessionid);
+        [$result, $uid, $session] = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);

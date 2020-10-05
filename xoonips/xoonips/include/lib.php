@@ -511,7 +511,7 @@ function xnpGetAttachmentDetailBlock($item_id, $name)
         $html = '';
         $hidden = '';
     } else {
-        list(list($fileID, $fileName, $fileSize, $mimeType, $timestamp, $download_count)) = $files;
+        [list($fileID, $fileName, $fileSize, $mimeType, $timestamp, $download_count)] = $files;
         $htmlFileName = $textutil->html_special_chars($fileName);
         $url = XOOPS_URL.'/modules/xoonips/download.php?file_id='.$fileID;
 
@@ -718,7 +718,7 @@ function xnpGetAttachmentFilenameBlock($item_id, $name)
     if (0 == count($files)) {
         $html = '';
     } else {
-        list(list($fileID, $fileName)) = $files;
+        [list($fileID, $fileName)] = $files;
         if (mb_substr_count($fileName, '.') > 0) {
             $fileName = mb_substr($fileName, 0, mb_strrpos($fileName, '.'));
         }
@@ -743,7 +743,7 @@ function xnpGetAttachmentMimetypeBlock($item_id, $name)
     if (0 == count($files)) {
         $html = '';
     } else {
-        list(list($fileID, $mimetype)) = $files;
+        [list($fileID, $mimetype)] = $files;
         $html = $textutil->html_special_chars($mimetype);
     }
 
@@ -765,7 +765,7 @@ function xnpGetAttachmentFiletypeBlock($item_id, $name)
     if (0 == count($files)) {
         $html = '';
     } else {
-        list(list($fileID, $fileType)) = $files;
+        [list($fileID, $fileType)] = $files;
         if (0 == mb_substr_count($fileType, '.')) {
             $fileType = '';
         } else {
@@ -1135,7 +1135,7 @@ function xnpGetAttachmentEditBlock($item_id, $name)
         $fileID = false;
         $fileInfoLine = '';
     } else {
-        list(list($fileID, $fileName, $fileSize)) = $fileInfo;
+        [list($fileID, $fileName, $fileSize)] = $fileInfo;
         $fileName = $textutil->html_special_chars($fileName);
         $fileInfoLine = $fileName.' ('.$fileSize.' Bytes)'.
            ' <input class="formButton" type="button" name="file_delete_button_'.$fileID.'" value="'._MD_XOONIPS_ITEM_DELETE_BUTTON_LABEL.'" onclick="xnpSubmitFileDelete(this.form, \''.$name.'\', '.$fileID.')" />';
@@ -1468,7 +1468,7 @@ function xnpGetAttachmentConfirmBlock($item_id, $name)
     if (0 == count($files)) {
         $html = "<input type='hidden' name='${name}FileID' value='' />";
     } else {
-        list(list($fileID, $fileName, $fileSize, $mimeType, $timestamp)) = $files;
+        [list($fileID, $fileName, $fileSize, $mimeType, $timestamp)] = $files;
         $html =
         "<input type='hidden' name='${name}FileID' value='$fileID' /> ".$textutil->html_special_chars($fileName).'<br />
         <table>

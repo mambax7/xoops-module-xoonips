@@ -62,7 +62,7 @@ if (count($xoopsUserConfigs) != 1) {
 
 // update db values
 // >> activate user
-list($activation_type) = $xoopsUserConfigs;
+[$activation_type] = $xoopsUserConfigs;
 $activation_type->setConfValueForInput($post_vals['activate_user'], true);
 if (!$config_handler->insertConfig($activation_type)) {
     redirect_header($xoonips_admin['mypage_url'], 3, _AM_XOONIPS_MSG_UNEXPECTED_ERROR);

@@ -99,7 +99,7 @@ class XooNIpsLogicUpdateFile extends XooNIpsLogic
             $field_name = $vars[3];
             $file = $vars[4];
         }
-        list($result, $uid, $session) = $this->restoreSession($sessionid);
+        [$result, $uid, $session] = $this->restoreSession($sessionid);
         if (!$result) {
             $response->setResult(false);
             $error->add(XNPERR_INVALID_SESSION);

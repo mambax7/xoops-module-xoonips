@@ -82,7 +82,7 @@ class XooNIpsLogicGetItemPermission extends XooNIpsLogic
             }
         }
         // validate session
-        list($result, $uid, $session) = $this->restoreSession($sessionid);
+        [$result, $uid, $session] = $this->restoreSession($sessionid);
         if (!$result) {
             // error invalid session
             $error->add(XNPERR_INVALID_SESSION);

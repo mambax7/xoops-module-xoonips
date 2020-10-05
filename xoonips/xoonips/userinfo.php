@@ -43,8 +43,8 @@ $uid = $formdata->getValue('get', 'uid', 'i', false, $myuid);
 $xmember_handler = &xoonips_gethandler('xoonips', 'member');
 $is_admin = $xmember_handler->isAdmin($myuid);
 $is_moderator = $xmember_handler->isModerator($myuid);
-$member_handler = &xoops_gethandler('member');
-$thisUser = &$member_handler->getUser($uid);
+$member_handler = xoops_gethandler('member');
+$thisUser = $member_handler->getUser($uid);
 if (!is_object($thisUser)) {
     // selected user not found
     redirect_header(XOOPS_URL.'/', 3, _US_SELECTNG);
@@ -82,7 +82,7 @@ if ($uid == $myuid || $is_admin) {
     $xoopsTpl->assign('user_candelete', false);
 }
 
-(method_exists('MyTextSanitizer', 'sGetInstance') and $myts = &MyTextSanitizer::sGetInstance()) || $myts = &MyTextSanitizer::getInstance();
+(method_exists('MyTextSanitizer', 'sGetInstance') and $myts = &MyTextSanitizer::sGetInstance()) || $myts = MyTextSanitizer::getInstance();
 $textutil = &xoonips_getutility('text');
 
 // assign basic user information
@@ -202,18 +202,18 @@ foreach ($cv_objs as $cv_obj) {
 }
 
 // posted message list
-$gperm_handler = &xoops_gethandler('groupperm');
-$groups = ($uid != UID_GUEST) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-$module_handler = &xoops_gethandler('module');
-$criteria = new CriteriaCompo(new Criteria('hassearch', 1));
+$gperm_handler  = xoops_gethandler('groupperm');
+$groups         = ($uid != UID_GUEST) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+$module_handler = xoops_gethandler('module');
+$criteria       = new CriteriaCompo(new Criteria('hassearch', 1));
 $criteria->add(new Criteria('isactive', 1));
-$mids = &array_keys($module_handler->getList($criteria));
+$mids = array_keys($module_handler->getList($criteria));
 foreach ($mids as $mid) {
     // Hack by marcan : only return results of modules for which user has access permission
     if ($gperm_handler->checkRight('module_read', $mid, $groups)) {
-        $module = &$module_handler->get($mid);
-        $results = &$module->search('', '', 5, 0, $uid);
-        $count = count($results);
+        $module  = $module_handler->get($mid);
+        $results = $module->search('', '', 5, 0, $uid);
+        $count   = count($results);
         if (is_array($results) && $count > 0) {
             $dirname = $module->getVar('dirname', 's');
             $modname = $module->getVar('name', 's');

@@ -204,7 +204,7 @@ class XooNIpsTableObject extends XoopsObject
     public function &getVar($key, $format = null)
     {
         $ret = $this->vars[$key]['value'];
-        (method_exists('MyTextSanitizer', 'sGetInstance') and $ts = &MyTextSanitizer::sGetInstance()) || $ts = &MyTextSanitizer::getInstance();
+        (method_exists('MyTextSanitizer', 'sGetInstance') and $ts = &MyTextSanitizer::sGetInstance()) || $ts = MyTextSanitizer::getInstance();
         $textutil = &xoonips_getutility('text');
 
         if (XOONIPS_DEBUG_MODE) {
@@ -383,7 +383,7 @@ class XooNIpsTableObject extends XoopsObject
             if (!$this->vars[$field]['required']) {
                 continue;
             }
-            $var = &$this->get($field);
+            $var = $this->get($field);
             if (is_array($var) && 0 == count($var) || !is_array($var) && empty($var)) {
                 $missing[] = $field;
             }
@@ -466,7 +466,7 @@ class XooNIpsTableObject extends XoopsObject
      */
     public function cleanVars()
     {
-        (method_exists('MyTextSanitizer', 'sGetInstance') and $ts = &MyTextSanitizer::sGetInstance()) || $ts = &MyTextSanitizer::getInstance();
+        (method_exists('MyTextSanitizer', 'sGetInstance') and $ts = &MyTextSanitizer::sGetInstance()) || $ts = MyTextSanitizer::getInstance();
         foreach ($this->vars as $k => $v) {
             $cleanv = $v['value'];
             if ($v['changed']) {
@@ -475,18 +475,18 @@ class XooNIpsTableObject extends XoopsObject
                 case XOBJ_DTYPE_TXTBOX:
                     if ($v['required'] && $cleanv != '0' && $cleanv == '') {
                         $this->setErrors("$k is required.");
-                        continue;
+                        continue 2;
                     }
                         $cleanv = $ts->censorString($cleanv);
                     if (isset($v['maxlength']) && mb_strlen($cleanv, _CHARSET) > intval($v['maxlength'])) {
                         $this->setErrors("$k must be shorter than ".intval($v['maxlength']).' characters.');
-                        continue;
+                        continue 2;
                     }
                     break;
                 case XOBJ_DTYPE_TXTAREA:
                     if ($v['required'] && $cleanv != '0' && $cleanv == '') {
                         $this->setErrors("$k is required.");
-                        continue;
+                        continue 2;
                     }
                         $cleanv = $ts->censorString($cleanv);
                     break;
@@ -501,17 +501,17 @@ class XooNIpsTableObject extends XoopsObject
                 case XOBJ_DTYPE_EMAIL:
                     if ($v['required'] && $cleanv == '') {
                         $this->setErrors("$k is required.");
-                        continue;
+                        continue 2;
                     }
                     if ($cleanv != '' && !preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i", $cleanv)) {
                         $this->setErrors('Invalid Email');
-                        continue;
+                        continue 2;
                     }
                     break;
                 case XOBJ_DTYPE_URL:
                     if ($v['required'] && $cleanv == '') {
                         $this->setErrors("$k is required.");
-                        continue;
+                        continue 2;
                     }
                     if ($cleanv != '' && !preg_match("/^http[s]*:\/\//i", $cleanv)) {
                         $cleanv = 'http://'.$cleanv;
@@ -529,11 +529,11 @@ class XooNIpsTableObject extends XoopsObject
                         $cleanv = $v['value'];
                     if ($v['required'] && (is_null($cleanv) || $cleanv === '')) {
                         $this->setErrors($k.' is required.');
-                        continue;
+                        continue 2;
                     }
                     if (isset($v['maxlength']) && strlen($cleanv) > intval($v['maxlength'])) {
                         $this->setErrors("$k must be shorter than ".intval($v['maxlength']).' characters.');
-                        continue;
+                        continue 2;
                     }
                     break;
                 default:
@@ -1292,9 +1292,9 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
             $this->__last_sql = $sql.' LIMIT '.(int) $start.', '.(int) $limit;
         }
         if ($force) {
-            $result = &$this->db->queryF($sql, $limit, $start);
+            $result =$this->db->queryF($sql, $limit, $start);
         } else {
-            $result = &$this->db->query($sql, $limit, $start);
+            $result =$this->db->query($sql, $limit, $start);
         }
         if (!$result) {
             if (XOONIPS_DEBUG_MODE) {

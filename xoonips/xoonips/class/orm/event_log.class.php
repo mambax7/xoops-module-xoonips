@@ -580,8 +580,8 @@ class XooNIpsOrmEventLogHandler extends XooNIpsTableObjectHandler
         $myxoopsConfig = &xoonips_get_xoops_configs(XOOPS_CONF);
         $startpage_url = XOOPS_URL.'/index.php';
         if (isset($myxoopsConfig['startpage']) && $myxoopsConfig['startpage'] != '' && $myxoopsConfig['startpage'] != '--') {
-            $module_handler = &xoops_gethandler('module');
-            $startpage_module = &$module_handler->get($myxoopsConfig['startpage']);
+            $module_handler    = xoops_gethandler('module');
+            $startpage_module  = $module_handler->get($myxoopsConfig['startpage']);
             $startpage_dirname = $startpage_module->dirname();
             $startpage_url = XOOPS_URL.'/modules/'.$startpage_dirname.'/index.php';
         }

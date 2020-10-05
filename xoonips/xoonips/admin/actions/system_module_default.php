@@ -74,15 +74,15 @@ if (count($append_confnames) > 0) {
     }
     $criteria->add($criteria_append);
 }
-$config = &$config_handler->getConfigs($criteria);
-$count = count($config);
+$config = $config_handler->getConfigs($criteria);
+$count  = count($config);
 if ($count < 1) {
     die('error : no config');
 }
 require_once XOOPS_ROOT_PATH.'/class/xoopsformloader.php';
-$form = new XoopsThemeForm($title, 'xoonips_admin_system_module', $xoonips_admin['mypage_url']);
-$module_handler = &xoops_gethandler('module');
-$module = &$module_handler->get($module_id);
+$form           = new XoopsThemeForm($title, 'xoonips_admin_system_module', $xoonips_admin['mypage_url']);
+$module_handler = xoops_gethandler('module');
+$module         = $module_handler->get($module_id);
 
 // if has comments feature, need comment lang file
 if ($module->getVar('hascomments') == 1) {
@@ -109,8 +109,8 @@ for ($i = 0; $i < $count; ++$i) {
         }
         break;
     case 'select':
-        $ele = new XoopsFormSelect($eletitle, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput());
-        $options = &$config_handler->getConfigOptions(new Criteria('conf_id', $config[$i]->getVar('conf_id')));
+        $ele     = new XoopsFormSelect($eletitle, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput());
+        $options = $config_handler->getConfigOptions(new Criteria('conf_id', $config[$i]->getVar('conf_id')));
         $opcount = count($options);
         for ($j = 0; $j < $opcount; ++$j) {
             $optval = defined($options[$j]->getVar('confop_value')) ? constant($options[$j]->getVar('confop_value')) : $options[$j]->getVar('confop_value');
@@ -119,8 +119,8 @@ for ($i = 0; $i < $count; ++$i) {
         }
         break;
     case 'select_multi':
-        $ele = new XoopsFormSelect($eletitle, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput(), 5, true);
-        $options = &$config_handler->getConfigOptions(new Criteria('conf_id', $config[$i]->getVar('conf_id')));
+        $ele     = new XoopsFormSelect($eletitle, $config[$i]->getVar('conf_name'), $config[$i]->getConfValueForOutput(), 5, true);
+        $options = $config_handler->getConfigOptions(new Criteria('conf_id', $config[$i]->getVar('conf_id')));
         $opcount = count($options);
         for ($j = 0; $j < $opcount; ++$j) {
             $optval = defined($options[$j]->getVar('confop_value')) ? constant($options[$j]->getVar('confop_value')) : $options[$j]->getVar('confop_value');

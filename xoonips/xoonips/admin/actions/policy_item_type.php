@@ -60,8 +60,8 @@ $ticket_area = 'xoonips_admin_policy_item_type';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // >> item type order
-$module_handler = &xoops_gethandler('module');
-$it_handler = &xoonips_getormhandler('xoonips', 'item_type');
+$module_handler = xoops_gethandler('module');
+$it_handler     = &xoonips_getormhandler('xoonips', 'item_type');
 $it_objs = &$it_handler->getObjectsSortByWeight();
 $itemtype_order = array();
 $editicon = '<img src="../images/icon_modify.png" alt="'._AM_XOONIPS_LABEL_PREFERENCES.'" title="'._AM_XOONIPS_LABEL_PREFERENCES.'"/>';
@@ -73,10 +73,10 @@ foreach ($it_objs as $it_obj) {
     $display_name_e = $it_obj->getVar('display_name', 'e');
     $item_type_id = $it_obj->getVar('item_type_id', 'e');
     // get module information
-    $xoonips_module = &$module_handler->getByDirname('xoonips');
-    $xoonips_mid = $xoonips_module->getVar('mid');
-    $module = &$module_handler->get($mid);
-    $modname = $module->getVar('name', 's');
+    $xoonips_module = $module_handler->getByDirname('xoonips');
+    $xoonips_mid    = $xoonips_module->getVar('mid');
+    $module         = $module_handler->get($mid);
+    $modname        = $module->getVar('name', 's');
     // get admin page link
     $hasadmin = $module->getVar('hasadmin', 'n');
     if ($hasadmin) {

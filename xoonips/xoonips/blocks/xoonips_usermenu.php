@@ -47,8 +47,8 @@ function b_xoonips_user_show()
     $block = array();
 
     // get xoonips module id
-    $module_handler = &xoops_gethandler('module');
-    $module = &$module_handler->getByDirname('xoonips');
+    $module_handler = xoops_gethandler('module');
+    $module         = $module_handler->getByDirname('xoonips');
     if (!is_object($module)) {
         exit('Access Denied');
     }
@@ -71,8 +71,8 @@ function b_xoonips_user_show()
     $is_admin = $xoopsUser->isAdmin($mid);
 
     // get count of private messages
-    $pm_handler = &xoops_gethandler('privmessage');
-    $criteria = new CriteriaCompo(new Criteria('read_msg', 0));
+    $pm_handler = xoops_gethandler('privmessage');
+    $criteria   = new CriteriaCompo(new Criteria('read_msg', 0));
     $criteria->add(new Criteria('to_userid', $uid));
     $new_messages = $pm_handler->getCount($criteria);
 

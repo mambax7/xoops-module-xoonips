@@ -41,8 +41,8 @@ $email = $formdata->getValue('both', 'email', 's', true);
 
 $myxoopsConfig = &xoonips_get_xoops_configs(XOOPS_CONF);
 
-$member_handler = &xoops_gethandler('member');
-$getuser = &$member_handler->getUsers(new Criteria('email', addslashes($email)));
+$member_handler = xoops_gethandler('member');
+$getuser        = &$member_handler->getUsers(new Criteria('email', addslashes($email)));
 
 if (count($getuser) != 1) {
     redirect_header('user.php', 2, _US_SORRYNOTFOUND);
@@ -52,8 +52,8 @@ if (count($getuser) != 1) {
 $code = $formdata->getValue('get', 'code', 's', false);
 $areyou = substr($getuser[0]->getVar('pass', 's'), 0, 5);
 if (!is_null($code) && $areyou == $code) {
-    $newpass = xoops_makepass();
-    $xoopsMailer = &getMailer();
+    $newpass     = xoops_makepass();
+    $xoopsMailer = getMailer();
     $xoopsMailer->useMail();
     $xoopsMailer->setTemplate('lostpass2.tpl');
     $xoopsMailer->assign('SITENAME', $myxoopsConfig['sitename']);
@@ -85,7 +85,7 @@ if (!is_null($code) && $areyou == $code) {
         // die( 'invalid code request' );
         die('Your new password has been send to your email address. Please check your email again.');
     }
-    $xoopsMailer = &getMailer();
+    $xoopsMailer = getMailer();
     $xoopsMailer->useMail();
     $xoopsMailer->setTemplate('lostpass1.tpl');
     $xoopsMailer->assign('SITENAME', $myxoopsConfig['sitename']);

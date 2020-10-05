@@ -426,7 +426,7 @@ function xoonips_transfer_get_users_for_dropdown($user_id = null)
 {
     $textutil = &xoonips_getutility('text');
     $users_handler = &xoonips_getormhandler('xoonips', 'users');
-    $xoops_users_handler = &xoops_gethandler('user');
+    $xoops_users_handler = xoops_gethandler('user');
 
     $users = &$users_handler->getObjects(new Criteria('activate', 1));
 

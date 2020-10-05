@@ -381,7 +381,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
             $old_xoopsUser = null;
         }
         // prepare for xnpSearchExec
-        $member_handler = &xoops_gethandler('member');
+        $member_handler       = xoops_gethandler('member');
         $GLOBALS['xoopsUser'] = $member_handler->getUser($uid);
         // search
         $item_ids = array();
@@ -779,7 +779,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
      */
     public function getItemDetailUrl($item_id)
     {
-        (method_exists('MyTextSanitizer', 'sGetInstance') and $myts = &MyTextSanitizer::sGetInstance()) || $myts = &MyTextSanitizer::getInstance();
+        (method_exists('MyTextSanitizer', 'sGetInstance') and $myts = &MyTextSanitizer::sGetInstance()) || $myts = MyTextSanitizer::getInstance();
         $basic_handler = &xoonips_getormhandler('xoonips', 'item_basic');
         $basic = &$basic_handler->get($item_id);
         if (!$basic) {
@@ -827,10 +827,10 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
         }
 
         // get module option 'enable_dl_limit'
-        $mhandler = &xoops_gethandler('module');
-        $module = $mhandler->getByDirname($iteminfo['ormcompo']['module']);
-        $chandler = &xoops_gethandler('config');
-        $assoc = $chandler->getConfigsByCat(false, $module->mid());
+        $mhandler = xoops_gethandler('module');
+        $module   = $mhandler->getByDirname($iteminfo['ormcompo']['module']);
+        $chandler = xoops_gethandler('config');
+        $assoc    = $chandler->getConfigsByCat(false, $module->mid());
         if (isset($assoc['enable_dl_limit']) && $assoc['enable_dl_limit'] == '1') {
             // guest enabled?
             if ($uid == UID_GUEST && $detail->get('attachment_dl_limit')) {
@@ -911,8 +911,8 @@ class XooNIpsItemCompo extends XooNIpsRelatedObject
         $handler = &xoonips_getormhandler('xoonips', 'item_type');
         $itemtype = &$handler->get($basic->get('item_type_id'));
 
-        $user_handler = &xoops_gethandler('user');
-        $user = &$user_handler->get($basic->get('uid'));
+        $user_handler = xoops_gethandler('user');
+        $user         = $user_handler->get($basic->get('uid'));
 
         $ret = array();
         foreach ($titles as $title) {

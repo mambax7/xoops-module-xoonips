@@ -28,8 +28,8 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 function xoonips_admin_system_check_xoonips(&$category)
 {
-    $module_handler = &xoops_gethandler('module');
-    $module = &$module_handler->getByDirname('xoonips');
+    $module_handler = xoops_gethandler('module');
+    $module         = $module_handler->getByDirname('xoonips');
 
     $is_windows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
 

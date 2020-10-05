@@ -30,6 +30,12 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 require_once dirname(__DIR__).'/class/base/tableobject.class.php';
 require_once dirname(__DIR__).'/class/base/criteria.class.php';
 
+// session check
+if (isset($_SESSION['xnpsess_destroyed']) && $_SESSION['xnpsess_destroyed'] < time() - 300) {
+    // should not happen usually. this could be attack or due to unstable network.
+    xoonips_error_exit(401);
+}
+
 /**
  * get xoonips version.
  *
@@ -37,9 +43,9 @@ require_once dirname(__DIR__).'/class/base/criteria.class.php';
  */
 function xoonips_get_version()
 {
-    $mydirname = basename(dirname(__DIR__));
-    $module_handler = &xoops_gethandler('module');
-    $module_obj = &$module_handler->getByDirname($mydirname);
+    $mydirname      = basename(dirname(__DIR__));
+    $module_handler = xoops_gethandler('module');
+    $module_obj     = $module_handler->getByDirname($mydirname);
     if (!is_object($module_obj)) {
         return 0;
     }
@@ -53,6 +59,7 @@ function xoonips_get_version()
  *
  * @param[in] $module string module name
  * @param[in] $name string handler name
+ *
  * @param string $name
  *
  * @return reference of handler or false
@@ -71,7 +78,7 @@ function &xoonips_gethandler($module, $name)
 
             return $falseVar;
         }
-        if ($module == 'xoonips') {
+        if ('xoonips' == $module) {
             $class = 'XooNIps'.str_replace(' ', '', ucwords(str_replace('_', ' ', $name))).'Handler';
         } else {
             $class = 'XNP'.str_replace(' ', '', ucwords(str_replace('_', ' ', substr($module, 3).'_'.$name))).'Handler';
@@ -112,7 +119,7 @@ function &xoonips_getormhandler($module, $name)
         } else {
             return $falseVar;
         }
-        if (strncmp('xnp', $module, 3) == 0) {
+        if (0 == strncmp('xnp', $module, 3)) {
             $tok = substr($module, 3);
             $class = 'XNP'.ucfirst($tok).'Orm'.str_replace(' ', '', ucwords(str_replace('_', ' ', $name))).'Handler';
         } else {
@@ -154,7 +161,7 @@ function &xoonips_getormcompohandler($module, $name)
         } else {
             return $falseVar;
         }
-        if (strncmp('xnp', $module, 3) == 0) {
+        if (0 == strncmp('xnp', $module, 3)) {
             $tok = substr($module, 3);
             $class = 'XNP'.ucfirst($tok).'CompoHandler';
         } else {
@@ -217,8 +224,8 @@ function &xoonips_get_xoops_configs($category)
     if (isset($cache_configs[$category])) {
         return $cache_configs[$category];
     }
-    $config_handler = &xoops_gethandler('config');
-    $configs = $config_handler->getConfigsByCat($category); // copy
+    $config_handler = xoops_gethandler('config');
+    $configs        = $config_handler->getConfigsByCat($category); // copy
     if (defined('XOOPS_CUBE_LEGACY')) {
         // for XOOPS Cube Legacy 2.1
         switch ($category) {
@@ -273,11 +280,53 @@ function &xoonips_get_xoops_configs($category)
 }
 
 /**
+ * error exit with http status code.
+ *
+ * @param int $code
+ */
+function xoonips_error_exit($code)
+{
+    static $status = array(
+        400 => '400 Bad Request',
+        401 => '401 Unauthorized',
+        402 => '402 Payment Required',
+        403 => '403 Forbidden',
+        404 => '404 Not Found',
+        405 => '405 Method Not Allowed',
+        406 => '406 Not Acceptable',
+        407 => '407 Proxy Authentication Required',
+        408 => '408 Request Time-out',
+        409 => '409 Conflict',
+        410 => '410 Gone',
+        411 => '411 Length Required',
+        412 => '412 Precondition Failed',
+        413 => '413 Request Entity Too Large',
+        414 => '414 Request-URI Too Large',
+        415 => '415 Unsupported Media Type',
+        416 => '416 Requested Range Not Satisfiable',
+        417 => '417 Expectation Failed',
+        500 => '500 Internal Server Error',
+        501 => '501 Not Implemented',
+        502 => '502 Bad Gateway',
+        503 => '503 Service Unavailable',
+        504 => '504 Gateway Time-out',
+        505 => '505 HTTP Version Not Supported',
+    );
+    if (!isset($status[$code])) {
+        $code = 500;
+    }
+    $error = $status[$code];
+    header($_SERVER['SERVER_PROTOCOL'].' '.$error);
+    echo $error;
+    exit();
+}
+
+/**
  * @param string $str
  */
 function ISO8601toUnixTimestamp($str)
 {
-    if (preg_match('/^([0-9]{4})(-?([0-9]{2})(-?([0-9]{2})(T([0-9]{2}):([0-9]{2})(:([0-9]{2}))?(Z|([-+])([0-9]{2})([0-9]{2}))?)?)?)?$/', $str, $match) == 1) {
+    if (1 == preg_match('/^([0-9]{4})(-?([0-9]{2})(-?([0-9]{2})(T([0-9]{2}):([0-9]{2})(:([0-9]{2}))?(Z|([-+])([0-9]{2})([0-9]{2}))?)?)?)?$/', $str, $match)) {
         // $match[?]
         // $match[0]  : input($str)
         // $match[1]  : year
@@ -307,7 +356,7 @@ function ISO8601toUnixTimestamp($str)
         if (!isset($match[8])) {
             $match[8] = '00';
         }
-        if (!isset($match[10]) || $match[10] == '') {
+        if (!isset($match[10]) || '' == $match[10]) {
             $match[10] = '00';
         }
         $tm = gmmktime($match[7], $match[8], $match[10], $match[3], $match[5], $match[1]);
@@ -321,28 +370,28 @@ function ISO8601toUnixTimestamp($str)
         if ($match[8] >= 60) {
             return false;
         }
-        if ($match[7] > 24 || $match[7] == 24 && ($match[8] != 0 || $match[10] != 0)) {
+        if ($match[7] > 24 || 24 == $match[7] && (0 != $match[8] || 0 != $match[10])) {
             return false;
         }
         // mm and dd must not overflow
-        if (gmdate('Ymd', gmmktime(0, 0, 0, $match[3], $match[5], $match[1])) != $match[1].$match[3].$match[5]) {
+        if ($match[1].$match[3].$match[5] != gmdate('Ymd', gmmktime(0, 0, 0, $match[3], $match[5], $match[1]))) {
             return false;
         }
         //correct a time difference to GMT
         if (isset($match[11]) && isset($match[12]) && isset($match[13]) && isset($match[14])) {
-            if ($match[11] != 'Z' && $match[12] == '-') {
+            if ('Z' != $match[11] && '-' == $match[12]) {
                 $tm = $tm + ($match[13] * 3600 + $match[14] * 60);
-            } elseif (isset($match[12]) && $match[11] != 'Z' && $match[12] == '+') {
+            } elseif (isset($match[12]) && 'Z' != $match[11] && '+' == $match[12]) {
                 $tm = $tm - ($match[13] * 3600 + $match[14] * 60);
             }
         }
-    } elseif (preg_match('/^([0-9]{4})(-W([0-5][0-9]))(-([1-7]))$/', $str, $match) == 1) {
+    } elseif (1 == preg_match('/^([0-9]{4})(-W([0-5][0-9]))(-([1-7]))$/', $str, $match)) {
         // Week dates format
         $y = $match[1];
         $w = $match[3];
         $d = $match[5];
         $tm = gmmktime(0, 0, 0, 1, 1, $match[1]) + (($w - 1) * 7 + $d - getDayOfWeek($y, 1, 1)) * 86400;
-    } elseif (preg_match('/^([0-9]{4})(-?([0-3][0-9]{2}))$/', $str, $match) == 1) {
+    } elseif (1 == preg_match('/^([0-9]{4})(-?([0-3][0-9]{2}))$/', $str, $match)) {
         // Ordinal dates format
         $tm = gmmktime(0, 0, 0, 1, 1, $match[1]) + ($match[3] - 1) * 86400;
     } else {
@@ -353,8 +402,8 @@ function ISO8601toUnixTimestamp($str)
 }
 /**
  * @param string $year
- * @param integer $month
- * @param integer $day
+ * @param int    $month
+ * @param int    $day
  */
 function getDayOfWeek($year, $month, $day)
 {
@@ -379,7 +428,7 @@ function xoonips_get_server_charset()
 /**
  * get unicode character conversion map.
  *
- * @return integer[] map for mb_decode_numericentity
+ * @return int[] map for mb_decode_numericentity
  */
 function xoonips_get_conversion_map()
 {
@@ -390,7 +439,7 @@ function xoonips_get_conversion_map()
  * get unicode character conversion map to ascii.
  * useful to convert UTF-8 to ASCII + numeric character entity.
  *
- * @return integer[] map
+ * @return int[] map
  */
 function xoonips_get_conversion_map_to_ascii()
 {
@@ -514,7 +563,7 @@ function xoonips_get_transfer_request_item_detail_url($item_id)
  */
 function xoonips_allow_post_method()
 {
-    xoonips_validate_request($_SERVER['REQUEST_METHOD'] == 'POST');
+    xoonips_validate_request('POST' == $_SERVER['REQUEST_METHOD']);
 }
 
 /**
@@ -522,7 +571,7 @@ function xoonips_allow_post_method()
  */
 function xoonips_allow_get_method()
 {
-    xoonips_validate_request($_SERVER['REQUEST_METHOD'] == 'GET');
+    xoonips_validate_request('GET' == $_SERVER['REQUEST_METHOD']);
 }
 
 /**
@@ -530,7 +579,7 @@ function xoonips_allow_get_method()
  */
 function xoonips_allow_both_method()
 {
-    xoonips_validate_request($_SERVER['REQUEST_METHOD'] == 'GET' || $_SERVER['REQUEST_METHOD'] == 'POST');
+    xoonips_validate_request('GET' == $_SERVER['REQUEST_METHOD'] || 'POST' == $_SERVER['REQUEST_METHOD']);
 }
 
 /**
@@ -573,7 +622,7 @@ function xoonips_is_user_export_enabled()
     }
 
     //see xoonips_config setting for other users
-    return $export_enabled == 'on';
+    return 'on' == $export_enabled;
 }
 
 /**
@@ -633,7 +682,7 @@ function xoonips_is_multiple_field_too_long($ormObjects, $module, $name)
  *
  * @param XooNIpsTableObject[] $ormObjects orm to get template vars
  * @param string               $module     module name
- * @param string $name
+ * @param string               $name
  * @pamra string               $name       field name that is used as value to show
  */
 function xoonips_get_multiple_field_template_vars($ormObjects, $module, $name)
@@ -774,7 +823,7 @@ function xoonips_get_cc_license($cc_commercial_use, $cc_modification, $version, 
         return false;
     }
     $cc_html = @file_get_contents($fpath);
-    if ($cc_html === false) {
+    if (false === $cc_html) {
         // failed to read file
         return false;
     }

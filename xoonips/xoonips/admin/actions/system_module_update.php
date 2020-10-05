@@ -50,7 +50,7 @@ $startmod_updated = false;
 $lang_updated = false;
 if ($count > 0) {
     for ($i = 0; $i < $count; ++$i) {
-        $config = &$config_handler->getConfig($conf_ids[$i]);
+        $config    = $config_handler->getConfig($conf_ids[$i]);
         $new_value = &$_POST[$config->getVar('conf_name')];
         if (is_array($new_value) || $new_value != $config->getVar('conf_value')) {
             // if language has been changed
@@ -63,7 +63,7 @@ if ($count > 0) {
 
             // if default theme has been changed
             if (!$theme_updated && $config->getVar('conf_catid') == XOOPS_CONF && $config->getVar('conf_name') == 'theme_set') {
-                $member_handler = &xoops_gethandler('member');
+                $member_handler = xoops_gethandler('member');
                 $member_handler->updateUsersByField('theme', $_POST[$config->getVar('conf_name')]);
                 $theme_updated = true;
             }
@@ -79,15 +79,15 @@ if ($count > 0) {
 
                     // generate compiled files for the new theme
                     // block files only for now..
-                    $tplfile_handler = &xoops_gethandler('tplfile');
-                    $dtemplates = &$tplfile_handler->find('default', 'block');
-                    $dcount = count($dtemplates);
+                    $tplfile_handler = xoops_gethandler('tplfile');
+                    $dtemplates      = $tplfile_handler->find('default', 'block');
+                    $dcount          = count($dtemplates);
 
                     // need to do this to pass to xoops_template_touch function
                     $GLOBALS['xoopsConfig']['template_set'] = $newtplset;
 
                     for ($i = 0; $i < $dcount; ++$i) {
-                        $found = &$tplfile_handler->find($newtplset, 'block', $dtemplates[$i]->getVar('tpl_refid'), null);
+                        $found = $tplfile_handler->find($newtplset, 'block', $dtemplates[$i]->getVar('tpl_refid'), null);
                         if (count($found) > 0) {
                             // template for the new theme found, compile it
                             xoops_template_touch($found[0]->getVar('tpl_id'));
@@ -98,8 +98,8 @@ if ($count > 0) {
                     }
 
                     // generate image cache files from image binary data, save them under cache/
-                    $image_handler = &xoops_gethandler('imagesetimg');
-                    $imagefiles = &$image_handler->getObjects(new Criteria('tplset_name', $newtplset), true);
+                    $image_handler = xoops_gethandler('imagesetimg');
+                    $imagefiles    = &$image_handler->getObjects(new Criteria('tplset_name', $newtplset), true);
                     foreach (array_keys($imagefiles) as $i) {
                         if (!$fp = fopen(XOOPS_CACHE_PATH.'/'.$newtplset.'_'.$imagefiles[$i]->getVar('imgsetimg_file'), 'wb')) {
                         } else {
@@ -113,11 +113,11 @@ if ($count > 0) {
 
             // add read permission for the start module to all groups
             if (!$startmod_updated && $new_value != '--' && $config->getVar('conf_catid') == XOOPS_CONF && $config->getVar('conf_name') == 'startpage') {
-                $member_handler = &xoops_gethandler('member');
-                $groups = &$member_handler->getGroupList();
-                $moduleperm_handler = &xoops_gethandler('groupperm');
-                $module_handler = &xoops_gethandler('module');
-                $module = &$module_handler->getByDirname($new_value);
+                $member_handler     = xoops_gethandler('member');
+                $groups             = &$member_handler->getGroupList();
+                $moduleperm_handler = xoops_gethandler('groupperm');
+                $module_handler     = xoops_gethandler('module');
+                $module             = $module_handler->getByDirname($new_value);
                 foreach ($groups as $groupid => $groupname) {
                     if (!$moduleperm_handler->checkRight('module_read', $module->getVar('mid'), $groupid)) {
                         $moduleperm_handler->addRight('module_read', $module->getVar('mid'), $groupid);

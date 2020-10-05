@@ -526,7 +526,7 @@ class XooNIpsRelatedObject
                 $clone_objs = array();
                 for ($i = 0; $i < count($objs); ++$i) {
                     if (is_subclass_of($objs[$i], 'XoopsObject')) {
-                        $clone_objs[$i] = &$objs[$i]->xoopsClone();
+                        $clone_objs[$i] = $objs[$i]->xoopsClone();
                     }
                 }
                 $clone->setVar($key, $clone_objs);

@@ -33,7 +33,7 @@ $pass = $formdata->getValue('post', 'pass', 's', false, '');
 $xoops_redirect = $formdata->getValue('post', 'xoops_redirect', 's', false, '');
 $redirect = !empty($xoops_redirect) ? '?xoops_redirect='.urlencode($xoops_redirect) : '';
 
-$myts = &MyTextsanitizer::getInstance();
+$myts = MyTextsanitizer::getInstance();
 
 if ($uname == '' || $pass == '') {
     // Record events (login failure)
@@ -46,8 +46,8 @@ if ($uname == '' || $pass == '') {
 
 $myxoopsConfig = &xoonips_get_xoops_configs(XOOPS_CONF);
 
-$member_handler = &xoops_gethandler('member');
-$user = &$member_handler->loginUser(addslashes($myts->stripSlashesGPC($uname)), $myts->stripSlashesGPC($pass));
+$member_handler = xoops_gethandler('member');
+$user           = &$member_handler->loginUser(addslashes($myts->stripSlashesGPC($uname)), $myts->stripSlashesGPC($pass));
 if (false != $user) {
     if (0 == $user->getVar('level')) {
         redirect_header(XOOPS_URL.'/', 5, _US_NOACTTPADM);
@@ -103,7 +103,7 @@ if (false != $user) {
 
     // RMV-NOTIFY
     // Perform some maintenance of notification records
-    $notification_handler = &xoops_gethandler('notification');
+    $notification_handler = xoops_gethandler('notification');
     $notification_handler->doLoginMaintenance($user->getVar('uid'));
 
     // init xoonips session

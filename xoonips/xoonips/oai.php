@@ -28,8 +28,8 @@
 error_reporting(0);
 require 'include/common.inc.php';
 
-$session = session_id();
-$sess_handler = &xoops_gethandler('session');
+$session      = session_id();
+$sess_handler = xoops_gethandler('session');
 if ($sess_handler->write($session, session_encode())) {
     $_SESSION['XNPSID'] = $session;
 }
@@ -39,11 +39,11 @@ require_once 'include/AL.php';
 require_once 'class/base/oaipmh.class.php';
 
 // retrieve admin's e-mail
-$emails = array();
-$member_handler = &xoops_gethandler('member');
-$members = $member_handler->getUsersByGroup(XOOPS_GROUP_ADMIN, false);
+$emails         = array();
+$member_handler = xoops_gethandler('member');
+$members        = $member_handler->getUsersByGroup(XOOPS_GROUP_ADMIN, false);
 foreach ($members as $userid) {
-    $user = &$member_handler->getUser($userid);
+    $user     = $member_handler->getUser($userid);
     $emails[] = $user->getVar('email');
 }
 

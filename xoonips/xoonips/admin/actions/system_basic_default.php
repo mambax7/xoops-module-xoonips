@@ -64,7 +64,7 @@ $config_values = xoonips_admin_get_configs($config_keys, 'e');
 // >> moderator_gid
 $moderator_gid_title = _AM_XOONIPS_SYSTEM_BASIC_MODERATOR_GROUP_TITLE;
 $moderator_gid_desc = _AM_XOONIPS_SYSTEM_BASIC_MODERATOR_GROUP_DESC;
-$xmember_handler = &xoops_gethandler('member');
+$xmember_handler = xoops_gethandler('member');
 $grouplist = &$xmember_handler->getGroupList(new Criteria('groupid', XOOPS_GROUP_ANONYMOUS, '!='));
 $moderator_gid = array();
 foreach ($grouplist as $gid => $name) {

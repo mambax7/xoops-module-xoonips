@@ -39,7 +39,7 @@ function xoonips_notification_get_moderator_uids()
         return array(); // no moderator
     }
 
-    $xoops_member_handler = &xoops_gethandler('member');
+    $xoops_member_handler = xoops_gethandler('member');
 
     return $xoops_member_handler->getUsersByGroup($moderator_gid);
 }
@@ -78,8 +78,8 @@ function xoonips_notification_get_item_tags($item_id)
         $keyword_strings[] = $keywords[$i]->get('keyword');
     }
 
-    $xoops_user_handler = &xoops_gethandler('user');
-    $xoops_user = $xoops_user_handler->get($item_basic->get('uid'));
+    $xoops_user_handler = xoops_gethandler('user');
+    $xoops_user         = $xoops_user_handler->get($item_basic->get('uid'));
 
     $tags = array(
         'ITEM_DOI' => strval($item_basic->get('doi')),
@@ -141,8 +141,8 @@ function _xoonips_notification_get_user_tags($user_id)
  */
 function xoonips_notification_item_transfer($from_uid, $to_uid, $item_ids, $uid_to_notify = array())
 {
-    $xoops_user_handler = &xoops_gethandler('user');
-    $to_user = $xoops_user_handler->get($to_uid);
+    $xoops_user_handler = xoops_gethandler('user');
+    $to_user            = $xoops_user_handler->get($to_uid);
     $from_user = $xoops_user_handler->get($from_uid);
 
     $item_titles = _xoonips_notification_get_title_of_items($item_ids);
@@ -353,8 +353,8 @@ function xoonips_notification_user_item_transfer_request($to_uid)
 
 function xoonips_notification_user_item_transfer_accepted($from_uid, $to_uid, $item_ids)
 {
-    $xoops_user_handler = &xoops_gethandler('user');
-    $to_user = $xoops_user_handler->get($to_uid);
+    $xoops_user_handler = xoops_gethandler('user');
+    $to_user            = $xoops_user_handler->get($to_uid);
 
     $tags = array(
         'TO_UNAME' => $to_user->getVar('uname'),
@@ -373,8 +373,8 @@ function xoonips_notification_user_item_transfer_accepted($from_uid, $to_uid, $i
 
 function xoonips_notification_user_item_transfer_rejected($from_uid, $to_uid, $item_ids)
 {
-    $xoops_user_handler = &xoops_gethandler('user');
-    $to_user = $xoops_user_handler->get($to_uid);
+    $xoops_user_handler = xoops_gethandler('user');
+    $to_user            = $xoops_user_handler->get($to_uid);
     $item_titles = _xoonips_notification_get_title_of_items($item_ids);
 
     $tags = array(
@@ -586,7 +586,7 @@ function xoonips_notification_user_file_downloaded($file_id, $downloader_uid)
 {
     $file_handler = &xoonips_getormhandler('xoonips', 'file');
     $file = $file_handler->get($file_id);
-    $user_handler = &xoops_gethandler('user');
+    $user_handler = xoops_gethandler('user');
     $user = $user_handler->get($downloader_uid);
     $item_basic_handler = &xoonips_getormhandler('xoonips', 'item_basic');
     $item_basic = $item_basic_handler->get($file->get('item_id'));

@@ -40,7 +40,7 @@ function get_user_info($uid)
     $textutil = &xoonips_getutility('text');
     $u_handler = &xoonips_getormhandler('xoonips', 'xoops_users');
     $xu_handler = &xoonips_getormhandler('xoonips', 'users');
-    $m_handler = &xoops_gethandler('member');
+    $m_handler = xoops_gethandler('member');
     $p_handler = &xoonips_getormhandler('xoonips', 'positions');
     if ($uid == 0) {
         $u_obj = &$u_handler->create();

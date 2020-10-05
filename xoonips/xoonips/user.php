@@ -95,7 +95,7 @@ if ($op == 'logout') {
     //setcookie('autologin_pass', '', time() - 3600, '/', '', 0);
     // clear entry from online users table
     if (is_object($xoopsUser)) {
-        $online_handler = &xoops_gethandler('online');
+        $online_handler = xoops_gethandler('online');
         $online_handler->destroy($xoopsUser->getVar('uid'));
     }
 
@@ -141,8 +141,8 @@ if ($op == 'actv') {
 
     $id = $formdata->getValue('post', 'id', 'i', true);
     $actkey = $formdata->getValue('post', 'actkey', 's', true);
-    $member_handler = &xoops_gethandler('member');
-    $thisuser = &$member_handler->getUser($id);
+    $member_handler = xoops_gethandler('member');
+    $thisuser = $member_handler->getUser($id);
     if (!is_object($thisuser)) {
         exit();
     }
@@ -173,8 +173,8 @@ if ($op == 'actv') {
                     if ($myxoopsConfigUser['activation_type'] == 2) { //activate xoops account by xoops administrator
                         // send e-mail to the registered address
                         // notify a completion of certification to the certified user by e-mail
-                        $langman = &xoonips_getutility('languagemanager');
-                        $xoopsMailer = &getMailer();
+                        $langman     = &xoonips_getutility('languagemanager');
+                        $xoopsMailer = getMailer();
                         $xoopsMailer->useMail();
                         $xoopsMailer->setTemplateDir($langman->mail_template_dir());
                         $xoopsMailer->setTemplate('xoonips_account_certified.tpl');
@@ -249,14 +249,14 @@ if ($op == 'delete') {
     $event_handler->recordDeleteAccountEvent($uid);
 
     $config_handler = &xoonips_getormhandler('xoonips', 'config');
-    $member_handler = &xoops_gethandler('member');
-    $moderators = $member_handler->getUsersByGroup($config_handler->getValue('moderator_gid'), true);
+    $member_handler = xoops_gethandler('member');
+    $moderators     = $member_handler->getUsersByGroup($config_handler->getValue('moderator_gid'), true);
 
     //
     // notify a delete account to moderator by e-mail
     //
-    $langman = &xoonips_getutility('languagemanager');
-    $xoopsMailer = &getMailer();
+    $langman     = &xoonips_getutility('languagemanager');
+    $xoopsMailer = getMailer();
     $xoopsMailer->useMail();
     $xoopsMailer->setTemplateDir($langman->mail_template_dir());
     $xoopsMailer->setTemplate('xoonips_account_deleted.tpl');

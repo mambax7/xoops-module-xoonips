@@ -68,8 +68,8 @@ $config_values = xoonips_admin_get_configs($config_keys, 'e');
 
 // get d3forum module list
 require XOOPS_ROOT_PATH.'/class/xoopslists.php';
-$module_handler = &xoops_gethandler('module');
-$mod_dirnames = &XoopsLists::getModulesList();
+$module_handler    = xoops_gethandler('module');
+$mod_dirnames      = XoopsLists::getModulesList();
 $d3forum_not_found = true;
 $d3forums = array();
 // set empty d3forum module name
@@ -87,7 +87,7 @@ foreach ($mod_dirnames as $mod_dirname) {
     if (file_exists($trustdir_php)) {
         require $trustdir_php;
         if ($mytrustdirname == 'd3forum') {
-            $module = &$module_handler->getByDirname($mod_dirname);
+            $module = $module_handler->getByDirname($mod_dirname);
             if (is_object($module) && $module->getVar('isactive', 'n') == 1) {
                 // set found d3forum module name
                 $selected = ($config_values['item_comment_dirname'] == $mod_dirname);

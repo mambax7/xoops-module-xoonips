@@ -82,8 +82,8 @@ class XooNIpsViewTransfer extends XooNIpsView
      */
     public function get_uname_by_uid($uid)
     {
-        $handler = &xoops_gethandler('user');
-        $user = &$handler->get($uid);
+        $handler = xoops_gethandler('user');
+        $user    = $handler->get($uid);
         if (false === $user) {
             return '';
         }

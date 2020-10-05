@@ -435,9 +435,9 @@ class XooNIpsOrmIndexGroupIndexLinkHandler extends XooNIpsTableObjectHandler
     {
         global $xoopsModule, $xoopsUser;
 
-        $member_handler = &xoops_gethandler('member');
-        $notification_handler = &xoops_gethandler('notification');
-        $config_handler = &xoonips_getormhandler('xoonips', 'config');
+        $member_handler       = xoops_gethandler('member');
+        $notification_handler = xoops_gethandler('notification');
+        $config_handler       = &xoonips_getormhandler('xoonips', 'config');
         $index_handler = &xoonips_getormhandler('xoonips', 'index');
         $xgroup_handler = &xoonips_gethandler('xoonips', 'group');
         $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');

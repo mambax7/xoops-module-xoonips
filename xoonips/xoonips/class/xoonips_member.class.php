@@ -85,8 +85,8 @@ class XooNIpsMemberHandler
             return false;
         }
         // is $uid in that group?
-        $xoops_member_handler = &xoops_gethandler('member');
-        $groups = $xoops_member_handler->getGroupsByUser($uid);
+        $xoops_member_handler = xoops_gethandler('member');
+        $groups               = $xoops_member_handler->getGroupsByUser($uid);
 
         return in_array((int) $moderator_gid, $groups);
     }
@@ -101,10 +101,10 @@ class XooNIpsMemberHandler
     public function isAdmin($uid)
     {
         // xoonips admin?
-        $xoops_user_handler = &xoops_gethandler('user');
-        $user = $xoops_user_handler->get($uid);
-        $module_handler = &xoops_gethandler('module');
-        $module = &$module_handler->getByDirname('xoonips');
+        $xoops_user_handler = xoops_gethandler('user');
+        $user               = $xoops_user_handler->get($uid);
+        $module_handler     = xoops_gethandler('module');
+        $module             = $module_handler->getByDirname('xoonips');
         if (is_object($module) && is_object($user)) {
             $mid = $module->getVar('mid', 'n');
             if ($user->isAdmin($mid)) {

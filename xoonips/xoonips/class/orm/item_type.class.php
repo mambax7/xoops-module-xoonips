@@ -66,7 +66,7 @@ class XooNIpsOrmItemType extends XooNIpsTableObject
         }
 
         $this->fields = array();
-        if (!is_null($this->iteminfo['ormfield']['detail'])) {
+        if (isset($this->iteminfo['ormfield']['detail'])) {
             $this->fields = array_merge($this->fields, $this->iteminfo['ormfield']['detail']);
         }
 

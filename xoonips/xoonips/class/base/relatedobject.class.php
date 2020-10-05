@@ -360,22 +360,22 @@ class XooNIpsRelatedObjectHandler
         return false;
     }
 
-    public function setNew(&$obj)
+    public function setNew($obj)
     {
         $this->callForeachVars($obj, 'setNew');
     }
 
-    public function unsetNew(&$obj)
+    public function unsetNew($obj)
     {
         $this->callForeachVars($obj, 'unsetNew');
     }
 
-    public function setDirty(&$obj)
+    public function setDirty($obj)
     {
         $this->callForeachVars($obj, 'setDirty');
     }
 
-    public function unsetDirty(&$obj)
+    public function unsetDirty($obj)
     {
         $this->callForeachVars($obj, 'unsetDirty');
     }

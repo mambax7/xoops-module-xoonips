@@ -146,7 +146,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
      *
      * @return object object of requested form data
      */
-    public function &getObject($method, $name, &$handler, $is_required)
+    public function &getObject($method, $name, $handler, $is_required)
     {
         $ret = false;
         $val = $this->_get_request_data($method, $name, $is_required);
@@ -171,7 +171,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
      *
      * @return array object array of requested form data
      */
-    public function &getObjectArray($method, $name, &$handler, $is_required)
+    public function &getObjectArray($method, $name, $handler, $is_required)
     {
         $ret = [];
         $vals = $this->_get_request_data($method, $name, $is_required);

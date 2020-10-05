@@ -43,7 +43,7 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
      * @return success['private_item_number_limit_over']
      * @return success['private_item_storage_limit_over']
      */
-    public function execute(&$vars, $response)
+    public function execute($vars, $response)
     {
         // set import_as_new flag
         if ($vars[2]) { //import as new option is true

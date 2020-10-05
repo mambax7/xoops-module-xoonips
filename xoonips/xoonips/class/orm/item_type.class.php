@@ -231,7 +231,7 @@ class XooNIpsOrmItemTypeHandler extends XooNIpsTableObjectHandler
      *
      * @return int
      */
-    public function _order_weight_cmp(&$a, &$b)
+    public function _order_weight_cmp($a, $b)
     {
         if ($a->getExtraVar('weight') == $b->getExtraVar('weight')) {
             // mid must be uniq

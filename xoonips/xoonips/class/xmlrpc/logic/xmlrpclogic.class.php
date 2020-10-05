@@ -67,7 +67,7 @@ class XooNIpsXmlRpcLogic
         $response->setSuccess($xoonips_response->getSuccess());
     }
 
-    public function convertIndexObjectToIndexStructure($index_compo, &$response)
+    public function convertIndexObjectToIndexStructure($index_compo, $response)
     {
         $index = $index_compo->getVar('index');
 

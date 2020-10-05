@@ -44,7 +44,7 @@ class XooNIpsLogicGetSimpleItems extends XooNIpsLogic
      *
      * @return null|bool if fault
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         $error = &$response->getError();
         $response->setResult(false);

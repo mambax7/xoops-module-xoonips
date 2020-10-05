@@ -43,7 +43,7 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
      * @return success['private_item_number_limit_over']
      * @return success['private_item_storage_limit_over']
      */
-    public function execute(&$vars, &$response)
+    public function execute(&$vars, $response)
     {
         // set import_as_new flag
         if ($vars[2]) { //import as new option is true
@@ -79,7 +79,7 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
         $response->setSuccess($success);
     }
 
-    public function _is_private_item_number_limit_over(&$import_items, $uid)
+    public function _is_private_item_number_limit_over($import_items, $uid)
     {
         $import_item_count = 0;
         foreach ($import_items as $item) {
@@ -97,7 +97,7 @@ class XooNIpsLogicImportCheckImport extends XooNIpsLogic
         return $import_item_count + count($index_item_link_handler->getAllPrivateOnlyItemId($uid)) > $user->get('private_item_number_limit');
     }
 
-    public function _is_private_item_storage_limit_over(&$import_items, $uid)
+    public function _is_private_item_storage_limit_over($import_items, $uid)
     {
         $import_item_filesize = $this->_get_total_file_size_of_import_items($import_items);
         $remove_filesize = $this->_get_total_file_size_of_update_items($import_items);

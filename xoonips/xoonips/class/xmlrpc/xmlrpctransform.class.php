@@ -40,7 +40,7 @@ class XooNIpsXmlRpcTransformElement
      *
      * @return XooNIpsXmlRpcTransformEelemnt $child object to transform array
      */
-    public function add($field, &$child)
+    public function add($field, $child)
     {
         if (isset($field) && !empty($field) && isset($child) && (is_subclass_of($child, 'XooNIpsXmlRpcTransformElement') || get_class($child) == 'XooNIpsXmlRpcTransformElement')) {
             $this->childs[$field] = $child;

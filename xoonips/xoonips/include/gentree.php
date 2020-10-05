@@ -94,7 +94,7 @@ function genIndexTree0($xnpsid)
     return $indexes;
 }
 
-function genIndexTree1(&$indexes)
+function genIndexTree1($indexes)
 {
     // divide into every parents
     $indexFinder = []; // index_id -> index
@@ -230,7 +230,7 @@ function genSameAreaIndexTree($xnpsid, $uid, $refIndex)
 
     return genIndexTree1($indexes);
 }
-function filterSameAreaIndex(&$indexes, &$refIndex)
+function filterSameAreaIndex(&$indexes, $refIndex)
 {
     $len = count($indexes);
     for ($i = 0; $i < $len; ++$i) {

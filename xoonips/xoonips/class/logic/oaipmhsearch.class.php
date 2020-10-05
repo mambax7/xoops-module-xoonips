@@ -45,7 +45,7 @@ class XooNIpsLogicOaipmhSearch extends XooNIpsLogic
      * @param[out] $response->error  error information
      * @param[out] $response->success metadata search cache id
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         // parameter check
         $error = &$response->getError();

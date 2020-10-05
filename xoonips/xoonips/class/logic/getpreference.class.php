@@ -40,7 +40,7 @@ class XooNIpsLogicGetPreference extends XooNIpsLogic
      * @param[out] $response->error  error information
      * @param[out] $response->success associative array of system configure
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         global $xoopsModule;
 

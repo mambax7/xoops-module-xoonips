@@ -41,7 +41,7 @@ class XooNIpsLogicGetItemtype extends XooNIpsLogic
      * @param[out] $response->error  error information
      * @param[out] $response->success item type structure 2
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         // parameter check
         $error = &$response->getError();

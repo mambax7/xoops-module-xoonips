@@ -231,7 +231,7 @@ class XooNIpsRelatedObjectHandler
      *
      * @return bool false if failure
      */
-    public function delete(&$obj)
+    public function delete($obj)
     {
         foreach (array_keys($obj->getVars()) as $key) {
             if (!isset($this->handlers[$key])) {
@@ -383,7 +383,7 @@ class XooNIpsRelatedObjectHandler
     /**
      * @param string $methodName
      */
-    public function callForeachVars(&$obj, $methodName)
+    public function callForeachVars($obj, $methodName)
     {
         foreach (array_keys($obj->getVars()) as $key) {
             if (!isset($this->handlers[$key])) {

@@ -26,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-function xoonips_admin_system_check_phpext(&$category)
+function xoonips_admin_system_check_phpext($category)
 {
     // mbstring
     $name = 'mbstring';

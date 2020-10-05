@@ -44,7 +44,7 @@ class XooNIpsViewTransfer extends XooNIpsView
      * add link element to smarty template
      *  to $xoopsTpl to include style.css.
      */
-    public function setXooNIpsStyleSheet(&$xoopsTpl)
+    public function setXooNIpsStyleSheet($xoopsTpl)
     {
         if (!is_object($xoopsTpl)) {
             return;

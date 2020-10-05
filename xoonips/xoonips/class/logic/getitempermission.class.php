@@ -44,7 +44,7 @@ class XooNIpsLogicGetItemPermission extends XooNIpsLogic
      *
      * @return false if fault
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         // parameter check
         $error = &$response->getError();

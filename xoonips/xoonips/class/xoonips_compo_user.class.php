@@ -28,7 +28,7 @@
 require_once XOOPS_ROOT_PATH.'/modules/xoonips/class/base/relatedobject.class.php';
 class XooNIpsUserCompoHandler extends XooNIpsRelatedObjectHandler
 {
-    public function __construct(&$db)
+    public function __construct($db)
     {
         $u_handler = &xoonips_getormhandler('xoonips', 'xoops_users');
         $xu_handler = &xoonips_getormhandler('xoonips', 'users');

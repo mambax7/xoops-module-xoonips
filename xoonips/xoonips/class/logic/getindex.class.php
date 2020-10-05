@@ -41,7 +41,7 @@ class XooNIpsLogicGetIndex extends XooNIpsLogic
      * @param[out] $response->error  error information
      * @param[out] $response->success XooNIpsIndexCompo index information
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         // parameter check
         $error = &$response->getError();

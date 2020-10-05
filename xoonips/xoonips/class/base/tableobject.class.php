@@ -979,7 +979,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
      *
      * @return object
      */
-    public function &getNext(&$result)
+    public function &getNext($result)
     {
         if (!$myrow = $this->db->fetchArray($result)) {
             $ret = false;
@@ -999,7 +999,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
      *
      * @return bool false if failed
      */
-    public function close(&$result)
+    public function close($result)
     {
         if (!$result) {
             return false;
@@ -1155,7 +1155,7 @@ class XooNIpsTableObjectHandler extends XoopsObjectHandler
      *
      * @return bool
      */
-    public function updateAllObjectsByForeignKey($foreign_key, $foreign_value, &$objects)
+    public function updateAllObjectsByForeignKey($foreign_key, $foreign_value, $objects)
     {
         // insert/update creator
         $inserted_primary_ids = [];

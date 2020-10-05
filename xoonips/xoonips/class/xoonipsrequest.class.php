@@ -61,7 +61,7 @@ class XooNIpsRequest
         $this->method = $method;
     }
 
-    public function setVars(&$params)
+    public function setVars($params)
     {
         $this->vars = $params;
     }

@@ -737,7 +737,7 @@ function xoonips_get_orm_from_post($module, $name)
  *
  * @return bool true if $objs1 and $objs2 are all same objects
  */
-function xoonips_is_same_objects(&$objs1, &$objs2)
+function xoonips_is_same_objects($objs1, $objs2)
 {
     if (count($objs1) != count($objs2)) {
         return false;

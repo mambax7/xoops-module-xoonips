@@ -130,7 +130,7 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
      *
      * @return bool false if failure
      */
-    public function insert(&$file, $force = false)
+    public function insert($file, $force = false)
     {
         if (!$file->isDirty()) {
             // nothing to do
@@ -173,7 +173,7 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
      *
      * @return bool false if failure
      */
-    public function delete(&$obj, $force = false)
+    public function delete($obj, $force = false)
     {
         if (parent::delete($obj)) {
             return true;
@@ -308,7 +308,7 @@ class XooNIpsOrmFileHandler extends XooNIpsTableObjectHandler
      */
     public function getTotalDownloadCount($item_id, $file_type_name)
     {
-        list($tmp) = xnpGetFileInfo('sum(t_file.download_count)', 't_file_type.name=\''.addslashes($file_type_name).'\' and sess_id is NULL ', $item_id);
+        [$tmp] = xnpGetFileInfo('sum(t_file.download_count)', 't_file_type.name=\''.addslashes($file_type_name).'\' and sess_id is NULL ', $item_id);
 
         return $tmp[0];
     }

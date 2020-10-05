@@ -41,7 +41,7 @@ class XooNIpsLogicGetChildIndexes extends XooNIpsLogic
      * @param[out] $response->error  error information
      * @param[out] $response->success array of child indexes(XooNIpsIndexCompo[], empty if no child)
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         // parameter check
         $error = &$response->getError();

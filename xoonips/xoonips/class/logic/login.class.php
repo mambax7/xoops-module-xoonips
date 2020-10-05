@@ -45,7 +45,7 @@ class XooNIpsLogicLogin extends XooNIpsLogic
      *
      * @return null|bool if error
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         $myxoopsConfig = &xoonips_get_xoops_configs(XOOPS_CONF);
         // parameter check

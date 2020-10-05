@@ -76,7 +76,7 @@ function inival2bool($ini)
     return false;
 }
 
-function xoonips_admin_system_check_phpini(&$category)
+function xoonips_admin_system_check_phpini($category)
 {
     // general settings
     // -- default_mimetype

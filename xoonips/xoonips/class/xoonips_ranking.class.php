@@ -193,7 +193,7 @@ class XooNIpsRankingHandler
      *
      * @return bool|null false if failure
      */
-    public function _recalc_sql(&$add_days_criteria, &$sub_days_criteria, $update_sum)
+    public function _recalc_sql($add_days_criteria, $sub_days_criteria, $update_sum)
     {
         global $xoopsDB;
         $config_names = [

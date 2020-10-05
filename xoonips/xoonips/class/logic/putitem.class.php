@@ -44,7 +44,7 @@ class XooNIpsLogicPutItem extends XooNIpsLogic
      * @param[out] $response->error  error information
      * @param[out] $response$response->success item id of registered item
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, &$response)
     {
         // parameter check
         $error = &$response->getError();

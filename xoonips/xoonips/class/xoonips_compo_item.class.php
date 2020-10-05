@@ -474,7 +474,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
      *
      * @return array variables
      */
-    public function getBasicTemplateVar($type, &$item, $uid)
+    public function getBasicTemplateVar($type, $item, $uid)
     {
         if (!in_array(
             $type,

@@ -99,7 +99,7 @@ function _xoonips_eventlog_text2csv($text)
  *
  * @return string one line of csv text
  */
-function _xoonips_eventlog_array2csv(&$download, $oneline)
+function _xoonips_eventlog_array2csv($download, $oneline)
 {
     $text = '';
     $fieldsize = count($oneline);
@@ -902,7 +902,7 @@ function xoonips_eventlog_download($is_post, $log_type_id)
  * @param string $xlabel X label
  * @param string $mode   query type
  */
-function _xoonips_eventlog_graph_draw(&$xdata, &$ydata, $title, $xlabel, $mode)
+function _xoonips_eventlog_graph_draw(&$xdata, $ydata, $title, $xlabel, $mode)
 {
     // load graph library
     require_once dirname(__DIR__).'/class/base/graph.class.php';

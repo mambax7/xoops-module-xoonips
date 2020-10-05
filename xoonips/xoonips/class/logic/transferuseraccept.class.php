@@ -45,7 +45,7 @@ class XooNIpsLogicTransferUserAccept extends XooNIpsLogicTransfer
      *
      * @return bool true if succeeded
      */
-    public function execute_without_transaction(&$vars, &$error)
+    public function execute_without_transaction($vars, &$error)
     {
         $item_ids = $vars[0];
         $to_uid = $vars[1];
@@ -116,7 +116,7 @@ class XooNIpsLogicTransferUserAccept extends XooNIpsLogicTransfer
         return true;
     }
 
-    public function insert_changelog(&$error, $item_id, $from_uid, $to_uid)
+    public function insert_changelog($error, $item_id, $from_uid, $to_uid)
     {
         // insert changelog
         $xoops_user_handler = xoops_getHandler('user');

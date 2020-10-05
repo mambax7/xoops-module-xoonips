@@ -64,7 +64,7 @@ class XooNIpsOrmRankingNewItemHandler extends XooNIpsOrmAbstractRankingHandler
      *
      * @return bool false if failed
      */
-    public function insert(&$obj, $force = false)
+    public function insert($obj, $force = false)
     {
         $item_id = $obj->get('item_id');
         if ($item_id == 0) {

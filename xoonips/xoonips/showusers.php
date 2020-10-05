@@ -209,7 +209,7 @@ function _xoonips_showusers_get_item_types($fmt)
     return $ret;
 }
 
-function _xoonips_showusers_get_item_ids($item_type_id, $uid, &$navi)
+function _xoonips_showusers_get_item_ids($item_type_id, $uid, $navi)
 {
     $item_basic_handler = &xoonips_getormhandler('xoonips', 'item_basic');
     $join = new XooNIpsJoinCriteria('xoonips_item_show', 'item_id', 'item_id', 'INNER', 'its');

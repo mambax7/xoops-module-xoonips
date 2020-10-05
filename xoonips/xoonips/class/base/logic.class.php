@@ -129,7 +129,7 @@ class XooNIpsLogic
      *
      * @return bool true if succeeded
      */
-    public function touchItem1(&$error, &$item, $uid)
+    public function touchItem1($error, $item, $uid)
     {
         // get indexes
         $index_ids = [];
@@ -246,7 +246,7 @@ class XooNIpsLogic
      *
      * @return bool true if succeeded
      */
-    public function touchItem2(&$error, &$item, $uid)
+    public function touchItem2(&$error, $item, $uid)
     {
         $basic = $item->getVar('basic');
         $item_id = $basic->get('item_id');
@@ -361,7 +361,7 @@ class XooNIpsLogic
      * @param old_size[in]  current total file size of item
      * @param old_index_item_links[in]  where item is registered to
      */
-    public function isEnoughSpace(&$error, $uid, $new_size, $new_index_item_links, $old_size = 0, $old_index_item_links = [])
+    public function isEnoughSpace($error, $uid, $new_size, $new_index_item_links, $old_size = 0, $old_index_item_links = [])
     {
         $result = true;
         // check private index limit
@@ -459,7 +459,7 @@ class XooNIpsLogic
     /**
      * @brief create thumbnail image of file
      */
-    public function createThumbnail(&$error, &$file)
+    public function createThumbnail($error, $file)
     {
         $file_path = $file->getFilepath();
         $mimetype = $file->get('mime_type');
@@ -545,7 +545,7 @@ class XooNIpsLogic
         return "(internal error: unsupported lock type. lock_type=$lock_type)";
     }
 
-    public function isPublicationDateValid(&$response, $year, $month, $mday, $year_required, $month_required, $mday_required)
+    public function isPublicationDateValid($response, $year, $month, $mday, $year_required, $month_required, $mday_required)
     {
         $error = &$response->getError();
         $year_valid = false;

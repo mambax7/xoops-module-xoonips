@@ -45,7 +45,7 @@ class XooNIpsLogicUpdateFile extends XooNIpsLogic
      * @param[out] $response->error  error information
      * @param[out] $response->success new file id
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         /*
         check permission

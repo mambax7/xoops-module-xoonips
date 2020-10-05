@@ -35,7 +35,7 @@ class XooNIpsLogicImportImport extends XooNIpsLogic
         parent::__construct();
     }
 
-    public function execute(&$vars, &$response)
+    public function execute(&$vars, $response)
     {
         global $xoopsUser;
 

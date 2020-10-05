@@ -62,7 +62,7 @@ function system_check_find_path($command)
     return $found;
 }
 
-function xoonips_admin_system_check_command(&$category)
+function xoonips_admin_system_check_command($category)
 {
     $commands = [
         'pdftotext' => 'PDF',

@@ -281,7 +281,7 @@ class XooNIpsActionImportUpload extends XooNIpsAction
         return false;
     }
 
-    public function _set_errors_to_import_items(&$import_items)
+    public function _set_errors_to_import_items($import_items)
     {
         foreach (array_keys($import_items) as $key) {
             if ($import_items[$key]->getDoiConflictFlag()) {

@@ -64,7 +64,7 @@ class XooNIpsRpcDateTimeHandler extends RpcDateTimeHandler
     /**
      * parse sISO-8601 date time string.
      */
-    public function handleCharacterData(&$parser, &$data)
+    public function handleCharacterData($parser, &$data)
     {
         $parser->setTempValue(ISO8601toUnixTimestamp(trim($data)));
     }
@@ -80,13 +80,13 @@ class XooNIpsRpcValueHandler extends RpcValueHandler
      */
     public $_tempValue;
 
-    public function handleBeginElement(&$parser, &$attributes)
+    public function handleBeginElement($parser, &$attributes)
     {
         $this->_tempValue = null;
         parent::handleBeginElement($parser, $attributes);
     }
 
-    public function handleCharacterData(&$parser, &$data)
+    public function handleCharacterData($parser, &$data)
     {
         parent::handleCharacterData($parser, $data);
         if (null === $this->_tempValue) {
@@ -99,7 +99,7 @@ class XooNIpsRpcValueHandler extends RpcValueHandler
     /**
      * set content to $parser->_tempValue if $parser->_tempValue is not set.
      */
-    public function handleEndElement(&$parser)
+    public function handleEndElement($parser)
     {
         if (!isset($parser->_tempValue)) { // maybe no tag handled in <value>...</value>
             if (null !== $this->_tempValue) {

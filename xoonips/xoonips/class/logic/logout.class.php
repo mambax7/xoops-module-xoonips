@@ -42,7 +42,7 @@ class XooNIpsLogicLogout extends XooNIpsLogic
      * @return null|bool  logged out
      * @return null|bool if error
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         // parameter check
         $error = &$response->getError();

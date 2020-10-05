@@ -34,7 +34,7 @@ class XooNIpsLogicImportCheckConflict extends XooNIpsLogic
         parent::__construct();
     }
 
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         $this->_import_items = $vars[0];
         $handler = &xoonips_gethandler('xoonips', 'import_item');

@@ -75,7 +75,7 @@ class XooNIpsXmlRpcResponse
      *
      * @param XooNIpsError error
      */
-    public function setError(&$error)
+    public function setError($error)
     {
         $this->set('error', $error);
     }
@@ -93,7 +93,7 @@ class XooNIpsXmlRpcResponse
     /**
      * @brief set result of logic
      */
-    public function setSuccess(&$success)
+    public function setSuccess($success)
     {
         $this->set('success', $success);
     }

@@ -538,7 +538,7 @@ class XooNIpsOrmIndexHandler extends XooNIpsTableObjectHandler
      *
      * @see TableObject::insert
      */
-    public function insert(&$obj, $force = false)
+    public function insert($obj, $force = false)
     {
         if (null !== $obj->get('sort_number')) {
             return parent::insert($obj, $force);

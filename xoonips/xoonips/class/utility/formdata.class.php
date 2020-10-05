@@ -362,7 +362,7 @@ class XooNIpsUtilityFormdata extends XooNIpsUtility
      *
      * @return object created object
      */
-    public function &_createObject($val, &$handler)
+    public function &_createObject($val, $handler)
     {
         $pkey = $handler->getKeyName();
         $is_str_pkey = $handler->isStringPrimaryKey();

@@ -250,7 +250,7 @@ class OAIPMHHarvester
         return true;
     }
 
-    public function parse(&$data)
+    public function parse($data)
     {
         if (!xml_parse($this->parser, $data)) {
             $this->_lastError = '[XMLParser]'

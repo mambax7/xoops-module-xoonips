@@ -40,7 +40,7 @@ class XooNIpsLogicUpdateItem2 extends XooNIpsLogic
      * @param[out] $response->error  error information
      * @param[out] $response->success item id of updated item
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, &$response)
     {
         // parameter check
         $error = &$response->getError();
@@ -468,7 +468,7 @@ class XooNIpsLogicUpdateItem2 extends XooNIpsLogic
     /**
      * return true if only private index was changed.
      */
-    public function isOnlyPrivateIndexChanged(&$error, $iteminfo, $new_item, $old_item)
+    public function isOnlyPrivateIndexChanged($error, $iteminfo, $new_item, $old_item)
     {
         foreach ($iteminfo['orm'] as $orminfo) {
             $key = $orminfo['field'];
@@ -556,7 +556,7 @@ class XooNIpsLogicUpdateItem2 extends XooNIpsLogic
      *
      * @return bool true if consistent
      */
-    public function isFilesConsistent(&$error, $old_file_id_to_types, $new_file_id_to_types, $add_files, $delete_file_ids)
+    public function isFilesConsistent($error, $old_file_id_to_types, $new_file_id_to_types, $add_files, $delete_file_ids)
     {
         $file_type_handler = &xoonips_getormhandler('xoonips', 'file_type');
         $file_handler = &xoonips_getormhandler('xoonips', 'file');

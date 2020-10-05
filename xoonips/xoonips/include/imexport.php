@@ -706,7 +706,7 @@ function _xoonips_import_indexcheckCharacterData($parser, $data, &$parser_hash)
  *
  * @return no return value
  */
-function _xoonips_import_index($parent_index_id, &$indexes, &$id_table)
+function _xoonips_import_index($parent_index_id, $indexes, &$id_table)
 {
     $xnpsid = $_SESSION['XNPSID'];
     $lengths = xnpGetColumnLengths('xoonips_item_title');

@@ -57,7 +57,7 @@ class XooNIpsXmlRpcItemViewFactory
      * @retval XooNIpsXmlRpcItemViewElement corresponding to $logic
      * @retval false unknown logic or unknown item
      */
-    public function &create($logic, &$item)
+    public function &create($logic, $item)
     {
         static $falseVar = false;
         $item_type_handler = &xoonips_getormhandler('xoonips', 'item_type');

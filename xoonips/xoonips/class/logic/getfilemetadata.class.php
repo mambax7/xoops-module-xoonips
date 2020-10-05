@@ -43,7 +43,7 @@ class XooNIpsLogicGetFileMetadata extends XooNIpsLogic
      * @param[out] $response->error  error information
      * @param[out] $response->success file metadata
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         // parameter check
         $error = &$response->getError();

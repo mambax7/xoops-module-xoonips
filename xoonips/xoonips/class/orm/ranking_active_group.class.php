@@ -64,7 +64,7 @@ class XooNIpsOrmRankingActiveGroupHandler extends XooNIpsOrmAbstractRankingHandl
      *
      * @return bool false if failed
      */
-    public function insert(&$obj, $force = false)
+    public function insert($obj, $force = false)
     {
         $gid = $obj->get('gid');
         if ($gid == 0) {

@@ -95,7 +95,7 @@ function _create_item_link($item_id, $doi)
     return $url;
 }
 
-function _set_feed_items(&$feed, $output, $limit, $start)
+function _set_feed_items($feed, $output, $limit, $start)
 {
     global $event_handler;
     global $item_handler;

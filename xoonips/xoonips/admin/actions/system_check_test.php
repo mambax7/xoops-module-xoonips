@@ -113,7 +113,7 @@ class XooNIpsAdminSystemCheckCategory
         $this->name = $name;
     }
 
-    public function registerResult(&$result)
+    public function registerResult($result)
     {
         $this->results[] = $result;
     }
@@ -145,7 +145,7 @@ class XooNIpsAdminSystemCheck
     {
     }
 
-    public function registerCategory(&$category)
+    public function registerCategory($category)
     {
         $this->categories[] = $category;
     }

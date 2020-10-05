@@ -42,7 +42,7 @@ class XooNIpsLogicRemoveFile extends XooNIpsLogic
      * @param[out] $response->error  error information
      * @param[out] $response->success file ID of deleted file
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         // parameter check
         $error = &$response->getError();

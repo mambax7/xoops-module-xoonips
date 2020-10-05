@@ -33,7 +33,7 @@ require_once XOOPS_ROOT_PATH.'/kernel/notification.php';
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
 class XooNIpsNotificationHandler extends XoopsNotificationHandler
 {
-    public function __construct(&$db)
+    public function __construct($db)
     {
         parent::__construct($db);
     }

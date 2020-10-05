@@ -45,7 +45,7 @@ class XooNIpsLogicGetItem extends XooNIpsLogic
      * @return bool retrieved item object
      * @return bool       if fault
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         // parameter check
         $error = &$response->getError();
@@ -83,7 +83,7 @@ class XooNIpsLogicGetItem extends XooNIpsLogic
             }
         }
         // validate session
-        list($result, $uid, $session) = $this->restoreSession($sessionid);
+        [$result, $uid, $session] = $this->restoreSession($sessionid);
         if (!$result) {
             // error invalid session
             $error->add(XNPERR_INVALID_SESSION);
@@ -203,7 +203,7 @@ class XooNIpsLogicGetItem extends XooNIpsLogic
      *
      * @param XooNIpsItemInfoCompo item
      */
-    public function adjustPublicationDate(&$item)
+    public function adjustPublicationDate($item)
     {
         $basic = $item->getVar('basic');
         $y = $basic->get('publication_year');

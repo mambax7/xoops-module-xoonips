@@ -173,7 +173,7 @@ if (isset($index_id)) {
     }
 }
 
-function my_xoonips_get_child_index(&$db, $index_id)
+function my_xoonips_get_child_index($db, $index_id)
 {
     $sql = 'SELECT index_id FROM '.$db->prefix('xoonips_index').' WHERE parent_index_id='.$index_id.' ORDER BY sort_number';
     $results = &$db->query($sql);

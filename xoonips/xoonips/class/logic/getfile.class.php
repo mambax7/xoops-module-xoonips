@@ -44,7 +44,7 @@ class XooNIpsLogicGetFile extends XooNIpsLogic
      * @param[out] $response->error  error information
      * @param[out] $response->success XooNIpsFile file information
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         // parameter check
         $error = &$response->getError();

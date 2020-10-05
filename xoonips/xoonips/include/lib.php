@@ -4708,7 +4708,7 @@ class XooNIpsItemLibraryObject
      * @param object $obj
      * @retrun bool false if failure
      */
-    public function _truncateSimpleObject(&$obj)
+    public function _truncateSimpleObject($obj)
     {
         $keys = $obj->getKeysArray();
         foreach ($keys as $key) {
@@ -4824,7 +4824,7 @@ class XooNIpsItemLibraryHandler
      * @param object $itemlib_obj
      * @param bool   $do_check_post_id if check post_id sended
      */
-    public function fetchRequest(&$itemlib_obj, $do_check_post_id)
+    public function fetchRequest($itemlib_obj, $do_check_post_id)
     {
         $formdata = &xoonips_getutility('formdata');
         if ($do_check_post_id) {

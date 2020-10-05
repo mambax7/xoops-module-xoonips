@@ -44,7 +44,7 @@ class XooNIpsLogicRemoveItem extends XooNIpsLogic
      * @param[out] $response->error  error information
      * @param[out] $response->success item id of deleted item
      */
-    public function execute(&$vars, &$response)
+    public function execute($vars, $response)
     {
         /*
         check permission

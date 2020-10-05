@@ -39,7 +39,7 @@ class XooNIpsLogicTransfer extends XooNIpsLogic
         parent::__construct();
     }
 
-    public function execute(&$vars, &$response)
+    public function execute(&$vars, $response)
     {
         $transaction = XooNIpsTransaction::getInstance();
         $transaction->start();
@@ -69,7 +69,7 @@ class XooNIpsLogicTransfer extends XooNIpsLogic
      *
      * @return bool true if succeeded
      */
-    public function remove_item_from_achievements_if_needed(&$error, $item_id)
+    public function remove_item_from_achievements_if_needed($error, $item_id)
     {
         $xconfig_handler = &xoonips_getormhandler('xoonips', 'config');
         $item_show_optional = $xconfig_handler->getValue('item_show_optional');
@@ -101,7 +101,7 @@ class XooNIpsLogicTransfer extends XooNIpsLogic
      *
      * @return bool true if succeeded
      */
-    public function move_item_to_other_private_index(&$error, $item_id, $index_id)
+    public function move_item_to_other_private_index($error, $item_id, $index_id)
     {
         // remove from private index
         $index_item_link_handler = &xoonips_getormhandler('xoonips', 'index_item_link');
@@ -157,7 +157,7 @@ class XooNIpsLogicTransfer extends XooNIpsLogic
      *
      * @return bool true if succeeded
      */
-    public function update_item_status_if_public_certified(&$error, $item_id)
+    public function update_item_status_if_public_certified($error, $item_id)
     {
         $item_status_handler = &xoonips_getormhandler('xoonips', 'item_status');
         if ($this->_is_public_certified_item($item_id)) {
@@ -183,7 +183,7 @@ class XooNIpsLogicTransfer extends XooNIpsLogic
      *
      * @return bool true if succeeded
      */
-    public function remove_item_from_transfer_request(&$error, $item_id)
+    public function remove_item_from_transfer_request($error, $item_id)
     {
         $transfer_request_handler = &xoonips_getormhandler('xoonips', 'transfer_request');
         $transfer_request = $transfer_request_handler->get($item_id);

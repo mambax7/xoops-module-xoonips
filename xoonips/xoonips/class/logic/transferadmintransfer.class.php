@@ -48,7 +48,7 @@ class XooNIpsLogicTransferAdminTransfer extends XooNIpsLogicTransfer
      *
      * @return bool true if succeeded
      */
-    public function execute_without_transaction(&$vars, &$error)
+    public function execute_without_transaction($vars, &$error)
     {
         $item_ids = $vars[0];
         $from_uid = $vars[1];
@@ -110,7 +110,7 @@ class XooNIpsLogicTransferAdminTransfer extends XooNIpsLogicTransfer
         return true;
     }
 
-    public function add_user_to_groups(&$error, $uid, $gids)
+    public function add_user_to_groups($error, $uid, $gids)
     {
         foreach ($gids as $gid) {
             // add to group

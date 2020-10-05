@@ -43,7 +43,7 @@ class XooNIpsLogicTransferUserReject extends XooNIpsLogicTransfer
      *
      * @return bool true if succeeded
      */
-    public function execute_without_transaction(&$vars, &$error)
+    public function execute_without_transaction($vars, &$error)
     {
         $item_ids = $vars[0];
         if (!is_array($item_ids)) {

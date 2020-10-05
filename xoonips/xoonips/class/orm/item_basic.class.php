@@ -74,7 +74,7 @@ class XooNIpsOrmItemBasicHandler extends XooNIpsTableObjectHandler
     /**
      * @brief set current time to creation_date and last_update_date if these are not initialized and call parent::insert.
      */
-    public function insert(&$obj, $force = false)
+    public function insert($obj, $force = false)
     {
         $date = $obj->get('creation_date');
         if ($obj->isNew() && !isset($date)) {

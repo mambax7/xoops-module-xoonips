@@ -110,7 +110,7 @@ class XooNIpsImportItemCollection
      *
      * @param int $item pseudo item id of duplicate item to add
      */
-    public function addItem(&$item)
+    public function addItem($item)
     {
         $this->_items[] = $item;
     }
@@ -120,7 +120,7 @@ class XooNIpsImportItemCollection
      *
      * @param int $item pseudo item id of duplicate item to remove
      */
-    public function removeItem(&$item)
+    public function removeItem($item)
     {
         foreach ($this->_items as $key => $val) {
             if ($item->getPseudoId() == $val->getPseudoId()) {
@@ -754,7 +754,7 @@ class XooNIpsImportItemHandler
      * @param bool  $option           certify auto option
      * (true means auto, false means maually)
      */
-    public function setCertifyAutoOption(&$all_import_items, $option)
+    public function setCertifyAutoOption($all_import_items, $option)
     {
         foreach (array_keys($all_import_items) as $key) {
             $all_import_items[$key]->setCertifyAutoFlag($option);
@@ -1969,7 +1969,7 @@ class XooNIpsImportItemHandler
      *
      * @param reference $item of XooNIpsImportItem
      */
-    public function _set_file_delete_flag(&$item)
+    public function _set_file_delete_flag($item)
     {
         // set true to delete flag of old url_banner_file
         $basic = &$item->getVar('basic');
@@ -1991,7 +1991,7 @@ class XooNIpsImportItemHandler
      * @param reference $item of XooNIpsImportItem
      * @param reference $file of XooNIpsFile
      */
-    public function _fix_item_id_of_file(&$item, &$file)
+    public function _fix_item_id_of_file($item, $file)
     {
         if ($file->get('file_id') > 0) {
             // fix file record

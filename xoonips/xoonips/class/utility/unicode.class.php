@@ -226,7 +226,7 @@ class XooNIpsUtilityUnicode extends XooNIpsUtility
      *
      * @return string multibyte character
      */
-    public function _to_char(&$chars, &$idx, $charset, $fallback)
+    public function _to_char($chars, &$idx, $charset, $fallback)
     {
         $idx_orig = $idx;
         // get unicode

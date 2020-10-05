@@ -86,7 +86,7 @@ class XooNIpsOrmOaipmhRepositoriesHandler extends XooNIpsTableObjectHandler
         return $urls;
     }
 
-    public function setRepositories(&$repositories)
+    public function setRepositories($repositories)
     {
         // parse new repositories
         $new_repos_url = [];

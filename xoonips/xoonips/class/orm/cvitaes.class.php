@@ -63,7 +63,7 @@ class XooNIpsOrmCvitaesHandler extends XooNIpsTableObjectHandler
      *
      * @return bool FALSE if failed
      */
-    public function insert(&$obj, $force = false)
+    public function insert($obj, $force = false)
     {
         if ($obj->isNew() && !$obj->doReplace()) {
             // set cvitae_order

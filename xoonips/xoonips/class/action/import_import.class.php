@@ -111,7 +111,7 @@ class XooNIpsActionImportImport extends XooNIpsAction
         }
     }
 
-    public function _make_clone_of_update_item(&$collection)
+    public function _make_clone_of_update_item($collection)
     {
         $items = &$collection->getItems();
         foreach (array_keys($items) as $key) {

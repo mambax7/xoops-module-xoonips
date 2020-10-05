@@ -54,7 +54,7 @@ class XooNIpsLogicImportReadFile extends XooNIpsLogic
         parent::__construct();
     }
 
-    public function execute(&$vars, &$response)
+    public function execute($vars, &$response)
     {
         $this->_response = &$response;
         $this->_import_file_path = $vars[0];

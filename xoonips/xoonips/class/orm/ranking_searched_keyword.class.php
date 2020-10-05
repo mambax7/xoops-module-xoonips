@@ -64,7 +64,7 @@ class XooNIpsOrmRankingSearchedKeywordHandler extends XooNIpsOrmAbstractRankingH
      *
      * @return bool false if failed
      */
-    public function insert(&$obj, $force = false)
+    public function insert($obj, $force = false)
     {
         $keyword = $obj->get('keyword');
         // trim keyword to 255 maximum chars

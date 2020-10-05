@@ -26,7 +26,7 @@
 // ------------------------------------------------------------------------- //
 defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-function xoonips_admin_system_check_mysql(&$category)
+function xoonips_admin_system_check_mysql($category)
 {
     // mysql class
     $mysqlinfo = &xoonips_getutility('mysqlinfo');

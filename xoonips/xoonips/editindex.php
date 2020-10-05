@@ -180,7 +180,7 @@ if (RES_OK != $result) {
     xoonips_error_exit(500);
 }
 
-$handler = xoops_gethandler('user');
+$handler = xoops_getHandler('user');
 $user = $handler->get($uid);
 $operation_user_name = $user->getVar('name');
 $error = false;

@@ -901,7 +901,7 @@ class XooNIpsImportItemHandler
             if (count($item_ids) > 0) {
                 $criteria->add(new Criteria('tb.item_id', '('.implode(',', $item_ids).')', 'IN'));
             }
-            $criteria->setGroupby('tb.item_id,title having count(*)='.$count);
+            $criteria->setGroupBy('tb.item_id,title having count(*)='.$count);
             $join = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'LEFT', 'tb');
             $results = &$title_handler->getObjects($criteria, false, '*, count(*)', null, $join);
             $item_ids = array();
@@ -919,7 +919,7 @@ class XooNIpsImportItemHandler
         // select item that has same number of title
         //
         $criteria = new Criteria('item_id', '('.implode(',', $item_ids).')', 'IN');
-        $criteria->setGroupby('item_id having count(*)='.count($item->getVar('titles')));
+        $criteria->setGroupBy('item_id having count(*)='.count($item->getVar('titles')));
         $titles = &$title_handler->getObjects($criteria);
         if (count($titles) == 0) {
             return array();

@@ -66,7 +66,7 @@ class XooNIpsLogic
     {
         global $_SESSION;
         // check whether session is exists
-        $xoops_sess_handler = xoops_gethandler('session');
+        $xoops_sess_handler = xoops_getHandler('session');
         $sess_data          = $xoops_sess_handler->read($sessionid);
         if ('' == $sess_data) {
             return array(false, false, false);
@@ -106,7 +106,7 @@ class XooNIpsLogic
                 return array(false, false, false);
             }
 
-            $member_handler = xoops_gethandler('member');
+            $member_handler = xoops_getHandler('member');
             $xoops_user     = $member_handler->getUser($_SESSION['xoopsUserId']);
             if ($xoops_user) {
                 $GLOBALS['xoopsUser'] = &$xoops_user;
@@ -291,7 +291,7 @@ class XooNIpsLogic
         $criteria->add(new Criteria('gid', $gid));
         $criteria->add(new Criteria('open_level', OL_GROUP_ONLY));
         $criteria->add(new Criteria('certify_state', CERTIFIED));
-        $criteria->setGroupby('item_id');
+        $criteria->setGroupBy('item_id');
         $index_item_links = &$index_item_link_handler->getObjects($criteria, false, 'item_id', false, $join);
         $iids = array();
         foreach ($index_item_links as $link) {

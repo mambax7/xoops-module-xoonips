@@ -61,7 +61,7 @@ function xoops_module_install_xoonips($xoopsMod)
     }
 
     // define groups
-    $member_handler = xoops_gethandler('member');
+    $member_handler = xoops_getHandler('member');
     $gids           = array_keys($member_handler->getGroupList());
     $ogids = array_diff($gids, array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS, $mgid));
 

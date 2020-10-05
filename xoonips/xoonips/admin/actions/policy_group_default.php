@@ -96,7 +96,7 @@ foreach ($initvals_config_keys as $name => $value) {
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('policy_group.tmpl.html');
 
 // assign template variables

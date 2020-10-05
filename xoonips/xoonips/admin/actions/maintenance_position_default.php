@@ -102,7 +102,7 @@ $is_user_empty = (count($positions) == 0);
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('maintenance_position.tmpl.html');
 
 // assign template variables

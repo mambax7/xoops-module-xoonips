@@ -62,11 +62,11 @@ function xoonips_ranking_show($is_arrival)
     if (defined('XOOPS_CUBE_LEGACY')) {
         // get xoonips module id
         $mydirname      = basename(dirname(__DIR__));
-        $module_handler = xoops_gethandler('module');
+        $module_handler = xoops_getHandler('module');
         $module         = $module_handler->getByDirname($mydirname);
         $mid            = $module->getVar('mid', 's');
         // get block array
-        $block_handler = xoops_gethandler('block');
+        $block_handler = xoops_getHandler('block');
         $block_arr     = $block_handler->getByModule($mid);
     } else {
         global $block_arr;
@@ -131,7 +131,7 @@ function xoonips_ranking_show($is_arrival)
             $label = _MB_XOONIPS_RANKING_NEW_ITEM;
             $fields = 'tb.item_id, tt.title, DATE_FORMAT(timestamp,\'%m/%d\'), tb.doi';
             $criteria = $iperm_criteria;
-            $criteria->setGroupby('tb.item_id');
+            $criteria->setGroupBy('tb.item_id');
             $criteria->setLimit($config['num_rows']);
             $criteria->setSort('timestamp');
             $criteria->setOrder('DESC');
@@ -290,7 +290,7 @@ function xoonips_ranking_show($is_arrival)
             $criteria->setLimit($config['num_rows']);
             $criteria->setSort('count');
             $criteria->setOrder('DESC');
-            $criteria->setGroupby('tu.uid');
+            $criteria->setGroupBy('tu.uid');
             $join = new XooNIpsJoinCriteria('users', 'uid', 'uid', 'INNER', 'tu');
             $handler = &xoonips_getormhandler('xoonips', $table);
             $res = &$handler->open($criteria, $fields, true, $join);

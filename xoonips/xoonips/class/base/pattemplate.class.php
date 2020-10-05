@@ -470,7 +470,7 @@ if (!class_exists('patTemplate')) {
                         $newline = str_replace(' keep="'.$attributes['keep'].'"', $newkeep, $line);
 
                         //	use this line as data
-                        $this->dataHandler($fname, $newline, $lineno);
+                        $this->DataHandler($fname, $newline, $lineno);
 
                         //	if the tag was not empty keep the closing tag, too
                         if (substr($regs[2], -1) != '/') {
@@ -513,7 +513,7 @@ if (!class_exists('patTemplate')) {
 
                         $this->endElementHandler($fname, $tagname, $line, $lineno);
                     } else {
-                        $this->dataHandler($fname, $line, $lineno);
+                        $this->DataHandler($fname, $line, $lineno);
                     }
                 }
 
@@ -521,7 +521,7 @@ if (!class_exists('patTemplate')) {
 
                 //	No tag found => store the line
                 else {
-                    $this->dataHandler($fname, $line, $lineno);
+                    $this->DataHandler($fname, $line, $lineno);
                 }
 
                 //	goto next line

@@ -457,7 +457,7 @@ if ('avatarform' == $op) {
         $form->display();
     }
 
-    $avatar_handler =xoops_gethandler('avatar');
+    $avatar_handler =xoops_getHandler('avatar');
     $form2 = new XoopsThemeForm(_US_CHOOSEAVT, 'uploadavatar', 'edituser.php');
     $avatar_select = new XoopsFormSelect('', 'user_avatar', $xoopsUser->getVar('user_avatar'));
     $avatar_select->addOptionArray($avatar_handler->getList('S'));
@@ -488,7 +488,7 @@ if ('avatarupload' == $op) {
         if ($uploader->fetchMedia($xoops_upload_file[0])) {
             $uploader->setPrefix('cavt');
             if ($uploader->upload()) {
-                $avt_handler =xoops_gethandler('avatar');
+                $avt_handler =xoops_getHandler('avatar');
                 $avatar =$avt_handler->create();
                 $avatar->setVar('avatar_file', $uploader->getSavedFileName());
                 $avatar->setVar('avatar_name', $u_obj->getVar('uname', 'n'), true); // not gpc
@@ -538,7 +538,7 @@ if ('avatarchoose' == $op) {
             require XOOPS_ROOT_PATH.'/footer.php';
             exit();
         }
-        $avt_handler =xoops_gethandler('avatar');
+        $avt_handler =xoops_getHandler('avatar');
         if ($oldavatar && 'blank.gif' != $oldavatar && !preg_match('/^savt/', strtolower($oldavatar))) {
             $avatars = &$avt_handler->getObjects(new Criteria('avatar_file', $oldavatar));
             if (is_object($avatars[0])) {

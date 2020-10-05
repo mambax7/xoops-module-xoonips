@@ -177,9 +177,9 @@ class XooNIpsLogicGetFile extends XooNIpsLogic
 
         // get module option 'enable_dl_limit'
         $iteminfo = $detail_item_handler->getIteminfo();
-        $mhandler =xoops_gethandler('module');
+        $mhandler =xoops_getHandler('module');
         $module = $mhandler->getByDirname($iteminfo['ormcompo']['module']);
-        $chandler =xoops_gethandler('config');
+        $chandler =xoops_getHandler('config');
         $assoc = $chandler->getConfigsByCat(false, $module->mid());
         if (isset($assoc['enable_dl_limit']) && $assoc['enable_dl_limit'] == '1') {
             // send download-notification

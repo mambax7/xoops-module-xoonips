@@ -62,7 +62,7 @@ $menu = array(
 
 // templates
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('adminmenu.tmpl.html');
 $tmpl->addVar('header', 'TITLE', $title);
 $tmpl->setAttribute('description', 'visibility', 'visible');

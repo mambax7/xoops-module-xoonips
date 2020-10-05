@@ -72,7 +72,7 @@ $tree_frame_height = $config_values['tree_frame_height'];
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_tree.tmpl.html');
 
 // assign template variables

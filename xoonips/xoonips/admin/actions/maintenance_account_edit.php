@@ -40,7 +40,7 @@ function get_user_info($uid)
     $textutil = &xoonips_getutility('text');
     $u_handler = &xoonips_getormhandler('xoonips', 'xoops_users');
     $xu_handler = &xoonips_getormhandler('xoonips', 'users');
-    $m_handler = xoops_gethandler('member');
+    $m_handler = xoops_getHandler('member');
     $p_handler = &xoonips_getormhandler('xoonips', 'positions');
     if ($uid == 0) {
         $u_obj = &$u_handler->create();
@@ -332,7 +332,7 @@ $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('maintenance_account_edit.tmpl.html');
 
 // assign template variables

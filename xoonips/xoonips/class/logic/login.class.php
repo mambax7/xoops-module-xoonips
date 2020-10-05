@@ -104,7 +104,7 @@ class XooNIpsLogicLogin extends XooNIpsLogic
             }
             $xoonips_user = $user->getVar('xoonips_user');
             $uid = $xoonips_user->get('uid');
-            $xoops_user_handler = xoops_gethandler('user');
+            $xoops_user_handler = xoops_getHandler('user');
             $xoops_user = $xoops_user_handler->get($uid);
             if (0 == $xoops_user->getVar('level', 'n') || !$xoonips_user->get('activate')) { // not activated, not certified
                 // return error

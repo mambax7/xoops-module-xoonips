@@ -81,7 +81,7 @@ if ($count < 1) {
 }
 require_once XOOPS_ROOT_PATH.'/class/xoopsformloader.php';
 $form           = new XoopsThemeForm($title, 'xoonips_admin_system_module', $xoonips_admin['mypage_url']);
-$module_handler = xoops_gethandler('module');
+$module_handler = xoops_getHandler('module');
 $module         = $module_handler->get($module_id);
 
 // if has comments feature, need comment lang file
@@ -173,7 +173,7 @@ $form->addElement($button_tray);
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_module.tmpl.html');
 
 // assign template variables

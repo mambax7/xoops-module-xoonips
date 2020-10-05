@@ -42,7 +42,7 @@ $post_keys = array(
 $post_vals = xoonips_admin_get_requests('post', $post_keys);
 
 // update db values
-$module_handler = xoops_gethandler('module');
+$module_handler = xoops_getHandler('module');
 foreach ($post_vals['weight'] as $mid => $w) {
     $module      = $module_handler->get($mid);
     $weight_orig = $module->getVar('weight', 'n');

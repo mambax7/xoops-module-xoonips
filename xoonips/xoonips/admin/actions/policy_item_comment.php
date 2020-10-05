@@ -68,7 +68,7 @@ $config_values = xoonips_admin_get_configs($config_keys, 'e');
 
 // get d3forum module list
 require XOOPS_ROOT_PATH.'/class/xoopslists.php';
-$module_handler    = xoops_gethandler('module');
+$module_handler    = xoops_getHandler('module');
 $mod_dirnames      = XoopsLists::getModulesList();
 $d3forum_not_found = true;
 $d3forums = array();
@@ -136,7 +136,7 @@ if ($d3forum_not_found) {
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('policy_item_comment.tmpl.html');
 
 // assign template variables

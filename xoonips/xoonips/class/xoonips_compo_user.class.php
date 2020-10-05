@@ -95,7 +95,7 @@ class XooNIpsUserCompoHandler extends XooNIpsRelatedObjectHandler
         }
 
         //remove user from groups
-        $member_handler = xoops_gethandler('member');
+        $member_handler = xoops_getHandler('member');
         if ($member_handler->getUser($uid)) {
             $member_handler->deleteUser($member_handler->getUser($uid));
         }
@@ -111,7 +111,7 @@ class XooNIpsUserCompoHandler extends XooNIpsRelatedObjectHandler
         }
 
         //remove user from notifications
-        $notification_handler = xoops_gethandler('notification');
+        $notification_handler = xoops_getHandler('notification');
         $notification_handler->deleteAll(new Criteria('not_uid', intval($uid)));
 
         //delete xoonips user

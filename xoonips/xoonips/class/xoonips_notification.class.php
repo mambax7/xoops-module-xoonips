@@ -45,12 +45,12 @@ class XooNIpsNotificationHandler extends XoopsNotificationHandler
             $module = &$xoopsModule;
             $module_id = !empty($xoopsModule) ? $xoopsModule->getVar('mid') : 0;
         } else {
-            $module_handler = xoops_gethandler('module');
+            $module_handler = xoops_getHandler('module');
             $module         = $module_handler->get($module_id);
         }
 
         // Check if event is enabled
-        $config_handler = xoops_gethandler('config');
+        $config_handler = xoops_getHandler('config');
         $mod_config     = &$config_handler->getConfigsByCat(0, $module->getVar('mid'));
         if (empty($mod_config['notification_enabled'])) {
             return false;
@@ -153,7 +153,7 @@ class XooNIpsNotificationHandler extends XoopsNotificationHandler
             global $xoopsModule;
             $module = &$xoopsModule;
         } else {
-            $module_handler = xoops_gethandler('module');
+            $module_handler = xoops_getHandler('module');
             $module         = $module_handler->get($mid);
         }
         $langman = &xoonips_getutility('languagemanager');

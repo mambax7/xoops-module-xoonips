@@ -119,7 +119,7 @@ class XooNIpsLogicTransferUserAccept extends XooNIpsLogicTransfer
     public function insert_changelog(&$error, $item_id, $from_uid, $to_uid)
     {
         // insert changelog
-        $xoops_user_handler = xoops_gethandler('user');
+        $xoops_user_handler = xoops_getHandler('user');
         $from_user          = $xoops_user_handler->get($from_uid);
         $to_user = $xoops_user_handler->get($to_uid);
         $changelog_handler = &xoonips_getormhandler('xoonips', 'changelog');

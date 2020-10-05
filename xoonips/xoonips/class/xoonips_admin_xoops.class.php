@@ -45,7 +45,7 @@ class XooNIpsAdminXoopsHandler
      */
     public function getModuleId($dirname)
     {
-        $module_handler = xoops_gethandler('module');
+        $module_handler = xoops_getHandler('module');
         $module         = $module_handler->getByDirname($dirname);
         if (!is_object($module)) {
             return false;
@@ -199,7 +199,7 @@ class XooNIpsAdminXoopsHandler
     public function enableNotification($mid, $category, $event)
     {
         global $xoopsDB;
-        $config_handler = xoops_gethandler('config');
+        $config_handler = xoops_getHandler('config');
         $criteria       = new CriteriaCompo();
         $criteria->add(new Criteria('conf_name', 'notification_events'));
         $criteria->add(new Criteria('conf_modid', $mid));
@@ -234,7 +234,7 @@ class XooNIpsAdminXoopsHandler
      */
     public function subscribeNotification($mid, $uid, $category, $event)
     {
-        $notification_handler = xoops_gethandler('notification');
+        $notification_handler = xoops_getHandler('notification');
         $notification_handler->subscribe($category, 0, $event, null, $mid, $uid);
 
         return true;
@@ -252,7 +252,7 @@ class XooNIpsAdminXoopsHandler
      */
     public function unsubscribeNotification($mid, $uid, $category, $event)
     {
-        $notification_handler = xoops_gethandler('notification');
+        $notification_handler = xoops_getHandler('notification');
         $criteria             = new CriteriaCompo(new Criteria('not_modid', $mid));
         if ($uid != 0) {
             $criteria->add(new Criteria('not_uid', $uid));
@@ -272,7 +272,7 @@ class XooNIpsAdminXoopsHandler
      */
     public function setStartupPageModule($dirname)
     {
-        $config_handler = xoops_gethandler('config');
+        $config_handler = xoops_getHandler('config');
         $criteria       = new CriteriaCompo(new Criteria('conf_modid', 0));
         $criteria->add(new Criteria('conf_catid', XOOPS_CONF));
         $criteria->add(new Criteria('conf_name', 'startpage'));
@@ -296,7 +296,7 @@ class XooNIpsAdminXoopsHandler
      */
     public function createGroup($name, $description)
     {
-        $member_handler =xoops_gethandler('member');
+        $member_handler =xoops_getHandler('member');
         $group = &$member_handler->createGroup();
         $group->setVar('name', $name, true); // not gpc
         $group->setVar('description', $description, true); // not gpc
@@ -319,7 +319,7 @@ class XooNIpsAdminXoopsHandler
      */
     public function addUserToXoopsGroup($gid, $uid)
     {
-        $member_handler =xoops_gethandler('member');
+        $member_handler =xoops_getHandler('member');
         if (!$member_handler->addUserToGroup($gid, $uid)) {
             return false;
         }
@@ -387,7 +387,7 @@ class XooNIpsAdminXoopsHandler
         $criteria->add(new Criteria('gperm_groupid', $gid));
         $criteria->add(new Criteria('gperm_itemid', $iid));
         $criteria->add(new Criteria('gperm_modid', 1));
-        $gperm_handler =xoops_gethandler('groupperm');
+        $gperm_handler =xoops_getHandler('groupperm');
         $gperm_objs = &$gperm_handler->getObjects($criteria);
         if (count($gperm_objs) > 0) {
             // already exists

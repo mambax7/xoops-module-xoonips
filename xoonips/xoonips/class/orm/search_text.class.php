@@ -73,7 +73,7 @@ class XooNIpsOrmSearchTextHandler extends XooNIpsTableObjectHandler
         $dummy = false;
         $search_cache_id = false;
         $_SESSION['XNPSID'] = session_id();
-        $member_handler = xoops_gethandler('member');
+        $member_handler = xoops_getHandler('member');
         if (empty($GLOBALS['xoopsUser'])) {
             $GLOBALS['xoopsUser'] = $member_handler->getUser($uid);
         }

@@ -77,7 +77,7 @@ $file_count = $admin_file_handler->getCountFiles();
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('maintenance_filesearch.tmpl.html');
 
 // assign template variables

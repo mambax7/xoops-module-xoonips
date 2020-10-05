@@ -67,7 +67,7 @@ $printer_friendly_header = $config_values['printer_friendly_header'];
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_print.tmpl.html');
 
 // assign template variables

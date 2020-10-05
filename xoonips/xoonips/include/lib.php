@@ -1165,9 +1165,9 @@ function xnpGetDownloadLimitationOptionEditBlock($dirname, $option)
 function xnpGetDownloadLimitationOptionRegisterBlock($dirname, $option = 0)
 {
     global $xoopsDB;
-    $mhandler        =xoops_gethandler('module');
+    $mhandler        =xoops_getHandler('module');
     $module          = $mhandler->getByDirname($dirname);
-    $chandler        =xoops_gethandler('config');
+    $chandler        =xoops_getHandler('config');
     $assoc           = $chandler->getConfigsByCat(false, $module->mid());
     $enable_dl_limit = 0;
     if (isset($assoc['enable_dl_limit']) && '1' == $assoc['enable_dl_limit']) {
@@ -1205,9 +1205,9 @@ function xnpGetDownloadLimitationOptionRegisterBlock($dirname, $option = 0)
 function xnpGetDownloadLimitationOptionConfirmBlock($dirname)
 {
     global $xoopsDB;
-    $mhandler        =xoops_gethandler('module');
+    $mhandler        =xoops_getHandler('module');
     $module          = $mhandler->getByDirname($dirname);
-    $chandler        =xoops_gethandler('config');
+    $chandler        =xoops_getHandler('config');
     $assoc           = $chandler->getConfigsByCat(false, $module->mid());
     $enable_dl_limit = 0;
     if (isset($assoc['enable_dl_limit']) && '1' == $assoc['enable_dl_limit']) {
@@ -1244,9 +1244,9 @@ function xnpGetDownloadNotificationOptionEditBlock($dirname, $option)
 function xnpGetDownloadNotificationOptionRegisterBlock($dirname, $option = 0)
 {
     global $xoopsDB;
-    $mhandler =xoops_gethandler('module');
+    $mhandler =xoops_getHandler('module');
     $module   = $mhandler->getByDirname($dirname);
-    $chandler =xoops_gethandler('config');
+    $chandler =xoops_getHandler('config');
     $assoc    = $chandler->getConfigsByCat(false, $module->mid());
 
     if (isset($assoc['enable_dl_limit']) && '1' == $assoc['enable_dl_limit']) {
@@ -1280,9 +1280,9 @@ function xnpGetDownloadNotificationOptionRegisterBlock($dirname, $option = 0)
 function xnpGetDownloadNotificationOptionConfirmBlock($dirname)
 {
     global $xoopsDB;
-    $mhandler =xoops_gethandler('module');
+    $mhandler =xoops_getHandler('module');
     $module   = $mhandler->getByDirname($dirname);
-    $chandler =xoops_gethandler('config');
+    $chandler =xoops_getHandler('config');
     $assoc    = $chandler->getConfigsByCat(false, $module->mid());
     if (isset($assoc['enable_dl_limit']) && '1' == $assoc['enable_dl_limit']) {
         $formdata = &xoonips_getutility('formdata');

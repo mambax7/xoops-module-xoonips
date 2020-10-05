@@ -66,7 +66,7 @@ class XooNIpsOrmItemShowHandler extends XooNIpsTableObjectHandler
     {
         $join = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'ib');
         $criteria = new Criteria('uid', $uid, '=', $this->db->prefix($this->__table_name));
-        $criteria->setGroupby('ib.item_type_id');
+        $criteria->setGroupBy('ib.item_type_id');
         $res = $this->open($criteria, 'item_type_id, COUNT(DISTINCT ib.item_id)', false, $join);
         $nums = array();
         while ($obj = &$this->getNext($res)) {

@@ -80,7 +80,7 @@ $feed_url_html = $textutil->html_special_chars($feed_url_html);
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_rss.tmpl.html');
 
 // assign template variables

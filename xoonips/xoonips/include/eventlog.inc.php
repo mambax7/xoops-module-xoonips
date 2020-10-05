@@ -235,22 +235,22 @@ function &_xoonips_eventlog_get($start_time, $end_time, $event_type_id, $query_t
         break;
     case 'day':
     case 'total':
-        $criteria->setGroupby('event_date');
+        $criteria->setGroupBy('event_date');
         $criteria->setSort('event_date');
         $objs = &$eventlog_handler->getObjects($criteria, false, 'FROM_UNIXTIME(timestamp, \'%Y-%m-%d\') AS event_date, COUNT(event_type_id) AS cnt');
         break;
     case 'month':
-        $criteria->setGroupby('event_month');
+        $criteria->setGroupBy('event_month');
         $criteria->setSort('event_month');
         $objs = &$eventlog_handler->getObjects($criteria, false, 'FROM_UNIXTIME(timestamp, \'%Y-%m\') AS event_month, COUNT(event_type_id) AS cnt');
         break;
     case 'domain':
-        $criteria->setGroupby('remote_host');
+        $criteria->setGroupBy('remote_host');
         $criteria->setSort('remote_host');
         $objs = &$eventlog_handler->getObjects($criteria, false, 'remote_host, COUNT(event_type_id) AS cnt');
         break;
     case 'item':
-        $criteria->setGroupby('event_month, item_id');
+        $criteria->setGroupBy('event_month, item_id');
         $criteria->setSort('cnt');
         $criteria->setOrder('DESC');
         $join_criteria = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'basic');
@@ -259,7 +259,7 @@ function &_xoonips_eventlog_get($start_time, $end_time, $event_type_id, $query_t
         $objs = &$eventlog_handler->getObjects($criteria, false, 'FROM_UNIXTIME(timestamp, \'%Y-%m\') AS event_month, basic.item_id, users.uname AS uname, users.name AS name, itemtype.display_name as itemtype_name, COUNT(event_type_id) AS cnt', false, $join_criteria);
         break;
     case 'file':
-        $criteria->setGroupby('event_month, file_id');
+        $criteria->setGroupBy('event_month, file_id');
         $criteria->setSort('cnt');
         $criteria->setOrder('DESC');
         $join_criteria = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'basic');
@@ -269,7 +269,7 @@ function &_xoonips_eventlog_get($start_time, $end_time, $event_type_id, $query_t
         $objs = &$eventlog_handler->getObjects($criteria, false, 'FROM_UNIXTIME('.$tables['event_log'].'.timestamp, \'%Y-%m\') AS event_month, basic.item_id, file.file_id, file.original_file_name AS fname, users.uname AS uname, users.name AS name, itemtype.display_name as itemtype_name, COUNT(event_type_id) AS cnt', false, $join_criteria);
         break;
     case 'user':
-        $criteria->setGroupby('event_month, myuname');
+        $criteria->setGroupBy('event_month, myuname');
         $criteria->setSort('cnt');
         $criteria->setOrder('DESC');
         $join_criteria = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'basic');
@@ -277,7 +277,7 @@ function &_xoonips_eventlog_get($start_time, $end_time, $event_type_id, $query_t
         $objs = &$eventlog_handler->getObjects($criteria, false, 'CASE WHEN ISNULL(uname) THEN CONCAT(\'guest[\',remote_host,\']\') ELSE uname END AS myuname, FROM_UNIXTIME(timestamp, \'%Y-%m\') AS event_month, users.uname AS uname, COUNT(event_type_id) AS cnt', false, $join_criteria);
         break;
     case 'user_item':
-        $criteria->setGroupby('event_month, myuname, item_id');
+        $criteria->setGroupBy('event_month, myuname, item_id');
         $criteria->setSort('cnt');
         $criteria->setOrder('DESC');
         $join_criteria = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'basic');
@@ -286,19 +286,19 @@ function &_xoonips_eventlog_get($start_time, $end_time, $event_type_id, $query_t
         $objs = &$eventlog_handler->getObjects($criteria, false, 'CASE WHEN ISNULL(uname) THEN CONCAT(\'guest[\',remote_host,\']\') ELSE uname END AS myuname, FROM_UNIXTIME(timestamp, \'%Y-%m\') AS event_month, basic.item_id as item_id, users.uname AS uname, itemtype.display_name as itemtype_name, COUNT(event_type_id) AS cnt', false, $join_criteria);
         break;
     case 'item_sort':
-        $criteria->setGroupby('item_id');
+        $criteria->setGroupBy('item_id');
         $criteria->setSort('cnt');
         $criteria->setOrder('DESC');
         $objs = &$eventlog_handler->getObjects($criteria, false, 'item_id, COUNT(event_type_id) AS cnt');
         break;
     case 'file_sort':
-        $criteria->setGroupby('file_id');
+        $criteria->setGroupBy('file_id');
         $criteria->setSort('cnt');
         $criteria->setOrder('DESC');
         $objs = &$eventlog_handler->getObjects($criteria, false, 'file_id, COUNT(file_id) AS cnt');
         break;
     case 'user_item_sort':
-        $criteria->setGroupby('myuname, item_id');
+        $criteria->setGroupBy('myuname, item_id');
         $criteria->setSort('cnt');
         $criteria->setOrder('DESC');
         $join_criteria = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'basic');

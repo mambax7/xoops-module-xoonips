@@ -117,13 +117,13 @@ class XooNIpsPageNavi
     {
         $criteria = new CriteriaElement();
         if ($this->_order) {
-            $criteria->SetOrder($this->_order);
+            $criteria->setOrder($this->_order);
         }
         if ($this->_sort) {
-            $criteria->SetSort($this->_sort);
+            $criteria->setSort($this->_sort);
         }
-        $criteria->SetLimit($this->_limit);
-        $criteria->SetStart($this->_start);
+        $criteria->setLimit($this->_limit);
+        $criteria->setStart($this->_start);
 
         return $criteria;
     }

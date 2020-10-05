@@ -42,7 +42,7 @@ foreach ($adminmenu as $item) {
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('adminmenu.tmpl.html');
 
 // assign template variables

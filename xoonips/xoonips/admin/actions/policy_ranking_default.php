@@ -76,7 +76,7 @@ $config_values = xoonips_admin_get_configs($config_keys, 'e');
 // functions
 function xoonips_get_module_id()
 {
-    $module_handler = xoops_gethandler('module');
+    $module_handler = xoops_getHandler('module');
     $module         = $module_handler->getByDirname('xoonips');
     if (!is_object($module)) {
         return false;
@@ -88,7 +88,7 @@ function xoonips_get_module_id()
 
 function get_block_title($mid, $fname, $sfunc)
 {
-    $block_handler = xoops_gethandler('block');
+    $block_handler = xoops_getHandler('block');
     $block_objs    = $block_handler->getByModule($mid);
     $block_title   = '';
     foreach ($block_objs as $block_obj) {
@@ -162,7 +162,7 @@ $ranking_days_checked = ('on' == $config_values['ranking_days_enabled']) ? 'chec
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('policy_ranking.tmpl.html');
 
 // assign template variables

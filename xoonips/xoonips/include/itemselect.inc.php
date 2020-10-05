@@ -682,7 +682,7 @@ function xoonips_add_selected_item($index_id, $uid, $old_selected_item_ids, $new
         $xoonips_users_handler = &xoonips_getormhandler('xoonips', 'users');
         $xoonips_config_handler = &xoonips_getormhandler('xoonips', 'config');
         $moderator_gid = $xoonips_config_handler->getValue('moderator_gid');
-        $member_handler = xoops_gethandler('member');
+        $member_handler = xoops_getHandler('member');
         $users = $member_handler->getUsersByGroup($moderator_gid, true);
         foreach ($users as $u) {
             if ($xoonips_users_handler->get($u->getVar('uid'))) {
@@ -772,13 +772,13 @@ function xoonips_add_selected_item($index_id, $uid, $old_selected_item_ids, $new
                 break;
             case 'on':
                 global $xoopsModule;
-                $notification_handler = xoops_gethandler('notification');
+                $notification_handler = xoops_getHandler('notification');
                 //define tags here for notification message
                 $tags = array();
                 $tags['ITEM_URL'] = XOOPS_URL.'/modules/'.$xoopsModule->dirname()."/detail.php?item_id=${item_id}";
                 $tags['CERTIFY_URL'] = XOOPS_URL.'/modules/'.$xoopsModule->dirname().'/certify.php';
                 $tags['INDEX']        = xnpGetIndexPathString($_SESSION['XNPSID'], $index_id);
-                $notification_handler = xoops_gethandler('notification');
+                $notification_handler = xoops_getHandler('notification');
                 $result               = $notification_handler->triggerEvent('administrator', 0, 'item_certify_request', $tags, $uid_list);
                 break;
             }

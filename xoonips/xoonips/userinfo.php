@@ -43,7 +43,7 @@ $uid = $formdata->getValue('get', 'uid', 'i', false, $myuid);
 $xmember_handler = &xoonips_gethandler('xoonips', 'member');
 $is_admin = $xmember_handler->isAdmin($myuid);
 $is_moderator = $xmember_handler->isModerator($myuid);
-$member_handler = xoops_gethandler('member');
+$member_handler = xoops_getHandler('member');
 $thisUser = $member_handler->getUser($uid);
 if (!is_object($thisUser)) {
     // selected user not found
@@ -202,9 +202,9 @@ foreach ($cv_objs as $cv_obj) {
 }
 
 // posted message list
-$gperm_handler  = xoops_gethandler('groupperm');
+$gperm_handler  = xoops_getHandler('groupperm');
 $groups         = ($uid != UID_GUEST) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-$module_handler = xoops_gethandler('module');
+$module_handler = xoops_getHandler('module');
 $criteria       = new CriteriaCompo(new Criteria('hassearch', 1));
 $criteria->add(new Criteria('isactive', 1));
 $mids = array_keys($module_handler->getList($criteria));

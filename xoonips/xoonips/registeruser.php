@@ -271,7 +271,7 @@ case 'finish':
     $stop = userCheck($uname, $email, $pass, $vpass);
     $stop .= userCheckXooNIps($realname, $address, $company_name, $division, $tel, $country, $zipcode, $fax, $notice_mail);
     if (empty($stop)) {
-        $member_handler =xoops_gethandler('member');
+        $member_handler =xoops_getHandler('member');
         $newuser = &$member_handler->createUser();
         $newuser->setVar('user_viewemail', $user_viewemail, true); // not gpc
         $newuser->setVar('uname', $uname, true); // not gpc
@@ -379,7 +379,7 @@ case 'finish':
             $xoopsMailer->assign('SITENAME', $myxoopsConfig['sitename']);
             $xoopsMailer->assign('ADMINMAIL', $myxoopsConfig['adminmail']);
             $xoopsMailer->assign('SITEURL', XOOPS_URL.'/');
-            $member_handler =xoops_gethandler('member');
+            $member_handler =xoops_getHandler('member');
             $xoopsMailer->setToGroups($member_handler->getGroup($myxoopsConfigUser['activation_group']));
             $xoopsMailer->setFromEmail($myxoopsConfig['adminmail']);
             $xoopsMailer->setFromName($myxoopsConfig['sitename']);
@@ -400,7 +400,7 @@ case 'finish':
         if ($myxoopsConfigUser['new_user_notify'] == 1 && !empty($myxoopsConfigUser['new_user_notify_group'])) {
             $xoopsMailer =getMailer();
             $xoopsMailer->useMail();
-            $member_handler =xoops_gethandler('member');
+            $member_handler =xoops_getHandler('member');
             $xoopsMailer->setToGroups($member_handler->getGroup($myxoopsConfigUser['new_user_notify_group']));
             $xoopsMailer->setFromEmail($myxoopsConfig['adminmail']);
             $xoopsMailer->setFromName($myxoopsConfig['sitename']);

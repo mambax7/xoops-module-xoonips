@@ -42,12 +42,12 @@ $post_keys = array(
 $post_vals = xoonips_admin_get_requests('post', $post_keys);
 
 // activate user
-$config_handler = xoops_gethandler('config');
+$config_handler = xoops_getHandler('config');
 if (defined('XOOPS_CUBE_LEGACY')) {
     // for Cube 2.1
-    $module_handler = xoops_gethandler('module');
+    $module_handler = xoops_getHandler('module');
     $user_module    = $module_handler->getByDirname('user');
-    $user_mid = $user_module->get('mid');
+    $user_mid       = $user_module->get('mid');
     $criteria = new CriteriaCompo(new Criteria('conf_modid', $user_mid));
 } else {
     // for Cube 2.0

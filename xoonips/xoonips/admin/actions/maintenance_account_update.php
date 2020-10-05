@@ -180,7 +180,7 @@ function check_variables(&$vals)
 function update_groups($uid, $new_groups)
 {
     global $xoopsUser;
-    $member_handler = xoops_gethandler('member');
+    $member_handler = xoops_getHandler('member');
     $edit_user      = $member_handler->getUser($uid);
     $old_groups     = $edit_user->getGroups();
     if ($uid == $xoopsUser->getVar('uid') && (in_array(XOOPS_GROUP_ADMIN, $old_groups)) && !(in_array(XOOPS_GROUP_ADMIN, $new_groups))) {

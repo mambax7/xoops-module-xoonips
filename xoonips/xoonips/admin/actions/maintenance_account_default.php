@@ -133,7 +133,7 @@ foreach ($users_objs as $users_obj) {
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('maintenance_account.tmpl.html');
 
 // assign template variables

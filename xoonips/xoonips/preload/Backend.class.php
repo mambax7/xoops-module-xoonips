@@ -12,9 +12,9 @@ class Xoonips_Backend extends XCube_ActionFilter
     public function getRSSItems(&$items)
     {
         // check module_read permission
-        $module_handler = xoops_gethandler('module');
+        $module_handler = xoops_getHandler('module');
         $module         = $module_handler->getByDirname('xoonips');
-        $gperm_handler  = xoops_gethandler('groupperm');
+        $gperm_handler  = xoops_getHandler('groupperm');
         $can_read       = $gperm_handler->checkRight('module_read', $module->getVar('mid'), XOOPS_GROUP_ANONYMOUS);
         if (!$can_read) {
             return;

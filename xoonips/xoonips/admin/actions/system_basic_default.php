@@ -64,7 +64,7 @@ $config_values = xoonips_admin_get_configs($config_keys, 'e');
 // >> moderator_gid
 $moderator_gid_title = _AM_XOONIPS_SYSTEM_BASIC_MODERATOR_GROUP_TITLE;
 $moderator_gid_desc = _AM_XOONIPS_SYSTEM_BASIC_MODERATOR_GROUP_DESC;
-$xmember_handler = xoops_gethandler('member');
+$xmember_handler = xoops_getHandler('member');
 $grouplist = &$xmember_handler->getGroupList(new Criteria('groupid', XOOPS_GROUP_ANONYMOUS, '!='));
 $moderator_gid = array();
 foreach ($grouplist as $gid => $name) {
@@ -88,7 +88,7 @@ $magic_file_path = $config_values['magic_file_path'];
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_basic.tmpl.html');
 
 // assign template variables

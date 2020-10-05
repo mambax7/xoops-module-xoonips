@@ -88,7 +88,7 @@ if ($sum_start != 0 && $sum_last_update != 0) {
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('maintenance_ranking.tmpl.html');
 
 // assign template variables

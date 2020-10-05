@@ -75,7 +75,7 @@ foreach ($posi_array as $posi_id => $posi) {
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('policy_position.tmpl.html');
 
 // assign template variables

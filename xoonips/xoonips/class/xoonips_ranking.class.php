@@ -270,7 +270,7 @@ class XooNIpsRankingHandler
                     $criteria = new CriteriaCompo();
                     $criteria->add(new Criteria('event_type_id', $etid));
                     $criteria->add($days_criteria);
-                    $criteria->setGroupby('tb.item_id');
+                    $criteria->setGroupBy('tb.item_id');
                     $join_criteria = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'tb');
                     $res = &$this->handlers['event_log']->open($criteria, $fields, false, $join_criteria);
                     while ($obj = &$this->handlers['event_log']->getNext($res)) {
@@ -291,7 +291,7 @@ class XooNIpsRankingHandler
                     $criteria = new CriteriaCompo();
                     $criteria->add(new Criteria('event_type_id', $etid));
                     $criteria->add($days_criteria);
-                    $criteria->setGroupby('tb.item_id');
+                    $criteria->setGroupBy('tb.item_id');
                     $join_criteria = new XooNIpsJoinCriteria('xoonips_item_basic', 'item_id', 'item_id', 'INNER', 'tb');
                     $res = &$this->handlers['event_log']->open($criteria, $fields, false, $join_criteria);
                     while ($obj = &$this->handlers['event_log']->getNext($res)) {
@@ -380,7 +380,7 @@ class XooNIpsRankingHandler
                     $criteria->add(new Criteria('event_type_id', $etid));
                     $criteria->add($days_criteria);
                     $criteria->add(new Criteria('ISNULL(tx.gid)', '0', '='));
-                    $criteria->setGroupby('timestamp, item_id, tx.gid');
+                    $criteria->setGroupBy('timestamp, item_id, tx.gid');
                     $join_criteria = new XooNIpsJoinCriteria('xoonips_index', 'index_id', 'index_id', 'INNER', 'tx');
                     $res = &$this->handlers['event_log']->open($criteria, $fields, false, $join_criteria);
                     while ($obj = &$this->handlers['event_log']->getNext($res)) {

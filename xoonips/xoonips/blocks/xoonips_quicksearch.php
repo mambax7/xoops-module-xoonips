@@ -71,7 +71,7 @@ function b_xoonips_quick_search_show()
 
     // get installed itemtypes
     // TODO: xoonips_item_type table should have itemtype sort order.
-    $module_handler       = xoops_gethandler('module');
+    $module_handler       = xoops_getHandler('module');
     $itemtype_handler     = &xoonips_getormhandler('xoonips', 'item_type');
     $itemtype_objs = &$itemtype_handler->getObjects();
     $itemtypes = array();

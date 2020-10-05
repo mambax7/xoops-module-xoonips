@@ -381,7 +381,7 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
             $old_xoopsUser = null;
         }
         // prepare for xnpSearchExec
-        $member_handler       = xoops_gethandler('member');
+        $member_handler       = xoops_getHandler('member');
         $GLOBALS['xoopsUser'] = $member_handler->getUser($uid);
         // search
         $item_ids = array();
@@ -827,9 +827,9 @@ class XooNIpsItemInfoCompoHandler extends XooNIpsRelatedObjectHandler
         }
 
         // get module option 'enable_dl_limit'
-        $mhandler = xoops_gethandler('module');
+        $mhandler = xoops_getHandler('module');
         $module   = $mhandler->getByDirname($iteminfo['ormcompo']['module']);
-        $chandler = xoops_gethandler('config');
+        $chandler = xoops_getHandler('config');
         $assoc    = $chandler->getConfigsByCat(false, $module->mid());
         if (isset($assoc['enable_dl_limit']) && $assoc['enable_dl_limit'] == '1') {
             // guest enabled?
@@ -911,7 +911,7 @@ class XooNIpsItemCompo extends XooNIpsRelatedObject
         $handler = &xoonips_getormhandler('xoonips', 'item_type');
         $itemtype = &$handler->get($basic->get('item_type_id'));
 
-        $user_handler = xoops_gethandler('user');
+        $user_handler = xoops_getHandler('user');
         $user         = $user_handler->get($basic->get('uid'));
 
         $ret = array();

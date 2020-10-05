@@ -44,7 +44,7 @@ if (isset($_SESSION['xnpsess_destroyed']) && $_SESSION['xnpsess_destroyed'] < ti
 function xoonips_get_version()
 {
     $mydirname      = basename(dirname(__DIR__));
-    $module_handler = xoops_gethandler('module');
+    $module_handler = xoops_getHandler('module');
     $module_obj     = $module_handler->getByDirname($mydirname);
     if (!is_object($module_obj)) {
         return 0;
@@ -224,7 +224,7 @@ function &xoonips_get_xoops_configs($category)
     if (isset($cache_configs[$category])) {
         return $cache_configs[$category];
     }
-    $config_handler = xoops_gethandler('config');
+    $config_handler = xoops_getHandler('config');
     $configs        = $config_handler->getConfigsByCat($category); // copy
     if (defined('XOOPS_CUBE_LEGACY')) {
         // for XOOPS Cube Legacy 2.1

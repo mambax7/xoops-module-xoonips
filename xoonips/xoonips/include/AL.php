@@ -259,7 +259,7 @@ function _xnpal_insertItemInternal($sid, $item, &$itemid, $direct)
     $result = $xoopsDB->queryF($sql);
     if ($result) {
         // get inserted item id
-        $itemid = $xoopsDB->getInsertID();
+        $itemid = $xoopsDB->getInsertId();
         //insert titles and keywords
         if (isset($item['titles'])) {
             if (!is_array($item['titles'])) {

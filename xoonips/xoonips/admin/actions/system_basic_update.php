@@ -56,9 +56,9 @@ $config_vals = xoonips_admin_get_configs($config_keys, 'e');
 function update_block_permissions($old_gid, $new_gid)
 {
     // get handlers
-    $gperm_handler  = xoops_gethandler('groupperm');
-    $module_handler = xoops_gethandler('module');
-    $block_handler  = xoops_gethandler('block');
+    $gperm_handler  = xoops_getHandler('groupperm');
+    $module_handler = xoops_getHandler('module');
+    $block_handler  = xoops_getHandler('block');
     $module         = $module_handler->getByDirname('xoonips');
     $mid            = $module->getVar('mid');
     $block_objs     = $block_handler->getByModule($mid);

@@ -118,7 +118,7 @@ if ('' == $op) {
 if ('end' == $op) {
     if (isset($_SESSION['xoonips_old_uid'])) {
         if (is_object($xoopsUser)) {
-            $online_handler = xoops_gethandler('online');
+            $online_handler = xoops_getHandler('online');
             $online_handler->destroy($xoopsUser->getVar('uid'));
         }
 

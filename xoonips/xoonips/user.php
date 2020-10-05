@@ -95,7 +95,7 @@ if ($op == 'logout') {
     //setcookie('autologin_pass', '', time() - 3600, '/', '', 0);
     // clear entry from online users table
     if (is_object($xoopsUser)) {
-        $online_handler = xoops_gethandler('online');
+        $online_handler = xoops_getHandler('online');
         $online_handler->destroy($xoopsUser->getVar('uid'));
     }
 
@@ -141,7 +141,7 @@ if ($op == 'actv') {
 
     $id = $formdata->getValue('post', 'id', 'i', true);
     $actkey = $formdata->getValue('post', 'actkey', 's', true);
-    $member_handler = xoops_gethandler('member');
+    $member_handler = xoops_getHandler('member');
     $thisuser = $member_handler->getUser($id);
     if (!is_object($thisuser)) {
         exit();
@@ -249,7 +249,7 @@ if ($op == 'delete') {
     $event_handler->recordDeleteAccountEvent($uid);
 
     $config_handler = &xoonips_getormhandler('xoonips', 'config');
-    $member_handler = xoops_gethandler('member');
+    $member_handler = xoops_getHandler('member');
     $moderators     = $member_handler->getUsersByGroup($config_handler->getValue('moderator_gid'), true);
 
     //

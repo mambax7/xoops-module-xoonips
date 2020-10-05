@@ -60,7 +60,7 @@ $ticket_area = 'xoonips_admin_policy_item_type';
 $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 
 // >> item type order
-$module_handler = xoops_gethandler('module');
+$module_handler = xoops_getHandler('module');
 $it_handler     = &xoonips_getormhandler('xoonips', 'item_type');
 $it_objs = &$it_handler->getObjectsSortByWeight();
 $itemtype_order = array();
@@ -108,7 +108,7 @@ foreach ($itemtype_order as $key => $itemtype) {
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('policy_item_type.tmpl.html');
 
 // assign template variables

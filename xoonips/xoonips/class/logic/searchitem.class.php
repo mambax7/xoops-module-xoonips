@@ -351,7 +351,7 @@ class XooNIpsLogicSearchItem extends XooNIpsLogic
             $c->add(new Criteria('tx.uid', $uid));
             $criteria->add($c);
             $criteria->add(new Criteria('search_cache_id', $search_cache_id));
-            $criteria->setGroupby('search_cache_item_id');
+            $criteria->setGroupBy('search_cache_item_id');
 
             // join:
             //   xoonips_search_cache_item  <-  $join(xoonips_index_item_link)

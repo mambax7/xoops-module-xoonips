@@ -82,7 +82,7 @@ $proxy_pass = $config_values['proxy_pass'];
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_proxy.tmpl.html');
 
 // assign template variables

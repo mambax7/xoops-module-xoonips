@@ -267,7 +267,7 @@ $token_ticket = $xoopsGTicket->getTicketHtml(__LINE__, 1800, $ticket_area);
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('system_check.tmpl.html');
 
 // assign template variables

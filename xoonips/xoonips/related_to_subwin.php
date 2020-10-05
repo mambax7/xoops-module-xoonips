@@ -50,8 +50,8 @@ require XOOPS_ROOT_PATH.'/header.php';
 require_once '../../class/template.php';
 require_once 'blocks/xoonips_blocks.php';
 
-$module_handler = xoops_gethandler('module');
-$block_handler  = xoops_gethandler('block');
+$module_handler = xoops_getHandler('module');
+$block_handler  = xoops_getHandler('block');
 
 $xoopsModule = $module_handler->getByDirname('xoonips');
 $mod_blocks  = $block_handler->getByModule($xoopsModule->getVar('mid'));

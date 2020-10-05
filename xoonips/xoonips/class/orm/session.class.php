@@ -193,7 +193,7 @@ class XooNIpsOrmSessionHandler extends XooNIpsTableObjectHandler
                     setcookie($myxoopsConfig['session_name'], '', time() - 3600, '/', '', 0);
                 }
                 // clear entry from online users table
-                $online_handler = xoops_gethandler('online');
+                $online_handler = xoops_getHandler('online');
                 $online_handler->destroy($uid);
 
                 // redirect to top page

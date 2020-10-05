@@ -559,7 +559,7 @@ SQL;
 
     // enable available notifications
     $admin_xoops_handler = &xoonips_gethandler('xoonips', 'admin_xoops');
-    $member_handler      = xoops_gethandler('member');
+    $member_handler      = xoops_getHandler('member');
     $uids                = array_keys($member_handler->getUsers(null, true));
     $notifications = array(
         'administrator' => array(

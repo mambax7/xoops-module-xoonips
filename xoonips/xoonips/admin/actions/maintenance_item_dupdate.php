@@ -183,7 +183,7 @@ $breadcrumbs = array(
 // templates
 require_once '../class/base/pattemplate.class.php';
 $tmpl = new PatTemplate();
-$tmpl->setBaseDir('templates');
+$tmpl->setBasedir('templates');
 $tmpl->readTemplatesFromFile('maintenance_item_dupdate.tmpl.html');
 $tmpl->addVar('header', 'TITLE', $title);
 $tmpl->setAttribute('breadcrumbs', 'visibility', 'visible');

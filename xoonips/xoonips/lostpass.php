@@ -41,7 +41,7 @@ $email = $formdata->getValue('both', 'email', 's', true);
 
 $myxoopsConfig = &xoonips_get_xoops_configs(XOOPS_CONF);
 
-$member_handler = xoops_gethandler('member');
+$member_handler = xoops_getHandler('member');
 $getuser        = &$member_handler->getUsers(new Criteria('email', addslashes($email)));
 
 if (count($getuser) != 1) {

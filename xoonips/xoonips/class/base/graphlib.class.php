@@ -792,16 +792,16 @@ class XooNIpsGraphLib
 
         //calculate factor for transforming x,y physical coords to logical coords for right hand y_axis.
         $y_range = $this->calculated['y_axis_right']['max'] - $this->calculated['y_axis_right']['min'];
-        $y_range = ($y_range ? $y_range : 1);
+        $y_range = ($y_range ?: 1);
         $this->calculated['y_axis_right']['factor'] = $height / $y_range;
 
         //calculate factor for transforming x,y physical coords to logical coords for left hand axis.
         $yRange = $this->calculated['y_axis_left']['max'] - $this->calculated['y_axis_left']['min'];
-        $yRange = ($yRange ? $yRange : 1);
+        $yRange = ($yRange ?: 1);
         $this->calculated['y_axis_left']['factor'] = $height / $yRange;
         if ($this->parameter['x_axis_gridlines'] != 'auto') {
             $xRange = $this->calculated['x_axis']['max'] - $this->calculated['x_axis']['min'];
-            $xRange = ($xRange ? $xRange : 1);
+            $xRange = ($xRange ?: 1);
             $this->calculated['x_axis']['factor'] = $widthPlot / $xRange;
         }
 
